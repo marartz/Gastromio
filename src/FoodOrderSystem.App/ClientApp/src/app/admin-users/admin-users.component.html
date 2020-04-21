@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="search">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+      </div>
+      <div class="restaurants mt-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>
+                <div class="float-right">
+                  <button class="btn btn-success" id="addUser" (click)="openAddUserForm()">Hinzufügen</button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of pageOfUsers" class="user">
+              <td>{{user.name}}</td>
+              <td>{{localizeRole(user.role)}}</td>
+              <td>
+                <div class="float-right">
+                  <button class="btn btn-primary btn-sm m-1" (click)="openChangeUserDetailsForm(user)">Bearbeiten</button>
+                  <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)">Password ändern</button>
+                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)">Entfernen</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination [items]="users" (changePage)="onChangePage($event)"></pagination>
+      </div>
+    </div>
+  </div>
+</div>

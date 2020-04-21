@@ -1,0 +1,52 @@
+#restaurant-search {
+}
+
+div.restaurant {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  min-height: 7em;
+  border: 1px solid lightgrey;
+  margin: 10px;
+}
+
+div.restaurant-logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  border-right: solid 1px lightgrey;
+  position: relative;
+  width: 120px;
+  padding: 10px;
+}
+
+div.restaurant-logo {
+  max-width: 90px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0px;
+  right: 0px;
+  padding: 10px;
+  margin: auto;
+}
+
+img.restaurant-logo {
+  width: 100%;
+  max-height: 80px;
+  height: auto;
+}
+
+div.restaurant-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  position: relative;
+  padding: 10px;
+}
+
+div.restaurant-info {
+}
+
+div.restaurant-cond {
+}

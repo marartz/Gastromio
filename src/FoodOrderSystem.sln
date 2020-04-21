@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Domain", "FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj", "{7DD621AA-BEB4-478C-B066-8ED740D689FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence.InMemory", "FoodOrderSystem.Persistence.InMemory\FoodOrderSystem.Persistence.InMemory.csproj", "{1C233437-CB3E-4801-A2CD-300D8D7D6235}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence", "FoodOrderSystem.Persistence\FoodOrderSystem.Persistence.csproj", "{26466FB1-578D-4162-B14A-0AFDC487F5BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.App", "FoodOrderSystem.App\FoodOrderSystem.App.csproj", "{00B578CE-7A6C-4212-823C-165A7693361E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.MSSQL", "FoodOrderSystem.Persistence.MSSQL\FoodOrderSystem.Persistence.MSSQL.csproj", "{88E31A82-7049-43F0-B573-CB38EEFAFB6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {030DBEE1-CBC0-479C-B6CF-9144419D2108}
+	EndGlobalSection
+EndGlobal

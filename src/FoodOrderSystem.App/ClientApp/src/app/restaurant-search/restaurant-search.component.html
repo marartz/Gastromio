@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="search">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      </div>
+      <div class="restaurants mt-3">
+        <div *ngFor="let restaurant of restaurants" class="restaurant">
+          <div class="restaurant-logo-wrapper">
+            <div class="restaurant-logo">
+              <img src="assets/logo.png" class="restaurant-logo" />
+            </div>
+          </div>
+          <div class="restaurant-info-wrapper">
+            <div class="restaurant-info">
+              <p class="font-weight-bold mb-0">{{ restaurant.name }}</p>
+              <p class="font-weight-normal">{{ restaurant.description }}&nbsp;</p>
+            </div>
+            <div class="restaurant-cond">
+              <span class="font-weight-light px-1">{{ restaurant.nextDeliveryTime }}</span>
+              <span class="font-weight-light px-1">{{ restaurant.deliveryCosts }}</span>
+              <span class="font-weight-light px-1">min. {{ restaurant.minimumOrderValue }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

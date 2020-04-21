@@ -1,0 +1,6 @@
+﻿namespace FoodOrderSystem.Domain.Commands
+{
+    public interface ICommand
+    {
+    }
+}

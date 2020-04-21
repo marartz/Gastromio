@@ -1,0 +1,10 @@
+#bottom-bar {
+  background-color: forestgreen;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+#links a {
+  margin-left: 2em;
+  margin-right: 2em;
+}
