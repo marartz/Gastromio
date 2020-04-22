@@ -19,6 +19,20 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("FoodOrderSystem.Persistence.CuisineRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cuisine");
+                });
+
             modelBuilder.Entity("FoodOrderSystem.Persistence.DeliveryTimeRow", b =>
                 {
                     b.Property<Guid>("RestaurantId")
@@ -140,6 +154,21 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentMethod");
+                });
+
+            modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantCuisineRow", b =>
+                {
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CuisineId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RestaurantId", "CuisineId");
+
+                    b.HasIndex("CuisineId");
+
+                    b.ToTable("RestaurantCuisineRow");
                 });
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantPaymentMethodRow", b =>
@@ -271,6 +300,21 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.DishRow", "Dish")
                         .WithMany("Variants")
                         .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantCuisineRow", b =>
+                {
+                    b.HasOne("FoodOrderSystem.Persistence.CuisineRow", "Cuisine")
+                        .WithMany("RestaurantCuisines")
+                        .HasForeignKey("CuisineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
+                        .WithMany("RestaurantCuisines")
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

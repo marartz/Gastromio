@@ -9,6 +9,7 @@ namespace FoodOrderSystem.Persistence
         }
 
         public DbSet<UserRow> Users { get; set; }
+        public DbSet<CuisineRow> Cuisines { get; set; }
         public DbSet<PaymentMethodRow> PaymentMethods { get; set; }
         public DbSet<RestaurantRow> Restaurants { get; set; }
         public DbSet<DishCategoryRow> Categories { get; set; }
@@ -21,40 +22,55 @@ namespace FoodOrderSystem.Persistence
 
             modelBuilder.Entity<DeliveryTimeRow>()
                 .HasOne(dt => dt.Restaurant)
-                .WithMany(s => s.DeliveryTimes)
+                .WithMany(r => r.DeliveryTimes)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(dt => dt.RestaurantId);
 
-            modelBuilder.Entity<RestaurantPaymentMethodRow>()
-                .HasKey(spm => new { spm.RestaurantId, spm.PaymentMethodId });
+            modelBuilder.Entity<RestaurantCuisineRow>()
+                .HasKey(rc => new { rc.RestaurantId, rc.CuisineId });
 
-            modelBuilder.Entity<RestaurantPaymentMethodRow>()
-                .HasOne(spm => spm.Restaurant)
-                .WithMany(s => s.RestaurantPaymentMethods)
+            modelBuilder.Entity<RestaurantCuisineRow>()
+                .HasOne(rc => rc.Restaurant)
+                .WithMany(r => r.RestaurantCuisines)
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(spm => spm.RestaurantId);
+                .HasForeignKey(rc => rc.RestaurantId);
+
+            modelBuilder.Entity<RestaurantCuisineRow>()
+                .HasOne(rc => rc.Cuisine)
+                .WithMany(c => c.RestaurantCuisines)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(rc => rc.CuisineId);
 
             modelBuilder.Entity<RestaurantPaymentMethodRow>()
-                .HasOne(spm => spm.PaymentMethod)
+                .HasKey(rpm => new { rpm.RestaurantId, rpm.PaymentMethodId });
+
+            modelBuilder.Entity<RestaurantPaymentMethodRow>()
+                .HasOne(rpm => rpm.Restaurant)
+                .WithMany(r => r.RestaurantPaymentMethods)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(rpm => rpm.RestaurantId);
+
+            modelBuilder.Entity<RestaurantPaymentMethodRow>()
+                .HasOne(rpm => rpm.PaymentMethod)
                 .WithMany(pm => pm.RestaurantPaymentMethods)
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(spm => spm.PaymentMethodId);
+                .HasForeignKey(rpm => rpm.PaymentMethodId);
 
             modelBuilder.Entity<DishCategoryRow>()
-                .HasOne(c => c.Restaurant)
-                .WithMany(s => s.Categories)
+                .HasOne(dc => dc.Restaurant)
+                .WithMany(r => r.Categories)
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(c => c.RestaurantId);
+                .HasForeignKey(dc => dc.RestaurantId);
 
             modelBuilder.Entity<DishRow>()
                 .HasOne(d => d.Restaurant)
-                .WithMany(s => s.Dishes)
+                .WithMany(r => r.Dishes)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(d => d.RestaurantId);
 
             modelBuilder.Entity<DishRow>()
                 .HasOne(d => d.Category)
-                .WithMany(s => s.Dishes)
+                .WithMany(dc => dc.Dishes)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(d => d.CategoryId);
 

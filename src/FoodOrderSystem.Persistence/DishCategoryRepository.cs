@@ -23,7 +23,7 @@ namespace FoodOrderSystem.Persistence
                 var restaurantRow = dbContext.Restaurants.FirstOrDefault(en => en.Id == restaurantId.Value);
                 if (restaurantRow == null)
                     return null;
-                return (ICollection<DishCategory>)restaurantRow.Categories.Select(en => FromRow(en)).ToList();
+                return (ICollection<DishCategory>)restaurantRow.Categories.OrderBy(en => en.Name).Select(en => FromRow(en)).ToList();
             }, cancellationToken);
         }
 

@@ -9,11 +9,9 @@ import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { LoginComponent } from './login/login.component';
-import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { ChangeUserDetailsComponent } from './change-user-details/change-user-details.component';
-import { RestaurantAdminHomeComponent } from './restaurant-admin-home/restaurant-admin-home.component';
 import { OrderHomeComponent } from './order-home/order-home.component';
 import { RestaurantSearchComponent } from './restaurant-search/restaurant-search.component';
 
@@ -24,15 +22,21 @@ import { UserAdminService } from './user/user-admin.service';
 import { ChangeUserPasswordComponent } from './change-user-password/change-user-password.component';
 import { RemoveUserComponent } from './remove-user/remove-user.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { AdminCuisinesComponent } from './admin-cuisines/admin-cuisines.component';
+import { AdminPaymentMethodsComponent } from './admin-payment-methods/admin-payment-methods.component';
+import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
+import { CuisineAdminService } from './cuisine/cuisine-admin.service';
+import { ChangeCuisineComponent } from './change-cuisine/change-cuisine.component';
+import { RemoveCuisineComponent } from './remove-cuisine/remove-cuisine.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     RouterModule.forRoot([
       { path: '', component: OrderHomeComponent },
-      { path: 'admin', component: AdminHomeComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard] },
-      { path: 'restaurant/admin', component: RestaurantAdminHomeComponent },
+      { path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard] },
+      { path: 'admin/paymentmethods', component: AdminPaymentMethodsComponent, canActivate: [SystemAdminAuthGuard] },
     ]),
     ReactiveFormsModule,
     NgbModule,
@@ -44,13 +48,16 @@ import { PaginationComponent } from './pagination/pagination.component';
     TopBarComponent,
     BottomBarComponent,
     LoginComponent,
-    AdminHomeComponent,
     AdminUsersComponent,
     AddUserComponent,
     ChangeUserDetailsComponent,
     ChangeUserPasswordComponent,
     RemoveUserComponent,
-    RestaurantAdminHomeComponent,
+    AdminCuisinesComponent,
+    AddCuisineComponent,
+    ChangeCuisineComponent,
+    RemoveCuisineComponent,
+    AdminPaymentMethodsComponent,
     OrderHomeComponent,
     RestaurantSearchComponent,
   ],
@@ -59,6 +66,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     SystemAdminAuthGuard,
     RestaurantAdminAuthGuard,
     UserAdminService,
+    CuisineAdminService,
   ],
   bootstrap: [AppComponent]
 })

@@ -19,7 +19,18 @@ namespace FoodOrderSystem.Persistence
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<PaymentMethod>)dbContext.PaymentMethods.Select(en => FromRow(en)).ToList();
+                return (ICollection<PaymentMethod>)dbContext.PaymentMethods.OrderBy(en => en.Name).Select(en => FromRow(en)).ToList();
+            }, cancellationToken);
+        }
+
+        public Task<PaymentMethod> FindByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var row = dbContext.PaymentMethods.FirstOrDefault(en => en.Name == name);
+                if (row == null)
+                    return null;
+                return FromRow(row);
             }, cancellationToken);
         }
 
@@ -34,6 +45,45 @@ namespace FoodOrderSystem.Persistence
             }, cancellationToken);
         }
 
+        public Task StoreAsync(PaymentMethod paymentMethod, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.PaymentMethods;
+
+                var row = dbSet.FirstOrDefault(x => x.Id == paymentMethod.Id.Value);
+                if (row != null)
+                {
+                    ToRow(paymentMethod, row);
+                    dbSet.Update(row);
+                }
+                else
+                {
+                    row = new PaymentMethodRow();
+                    ToRow(paymentMethod, row);
+                    dbSet.Add(row);
+                }
+
+                dbContext.SaveChanges();
+            }, cancellationToken);
+        }
+
+        public Task RemoveAsync(PaymentMethodId paymentMethodId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.PaymentMethods;
+
+                var row = dbSet.FirstOrDefault(en => en.Id == paymentMethodId.Value);
+                if (row != null)
+                {
+                    dbSet.Remove(row);
+                    dbContext.SaveChanges();
+                }
+            }, cancellationToken);
+        }
+
+
         private static PaymentMethod FromRow(PaymentMethodRow row)
         {
             return new PaymentMethod(new PaymentMethodId(row.Id),
@@ -42,14 +92,11 @@ namespace FoodOrderSystem.Persistence
             );
         }
 
-        private static PaymentMethodRow ToRow(PaymentMethod obj)
+        private static void ToRow(PaymentMethod obj, PaymentMethodRow row)
         {
-            return new PaymentMethodRow
-            {
-                Id = obj.Id.Value,
-                Name = obj.Name,
-                Description = obj.Description
-            };
+            row.Id = obj.Id.Value;
+            row.Name = obj.Name;
+            row.Description = obj.Description;
         }
     }
 }

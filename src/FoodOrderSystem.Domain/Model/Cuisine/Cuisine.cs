@@ -9,6 +9,11 @@
         }
 
         public CuisineId Id { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
+
+        public void Change(string name)
+        {
+            Name = name;
+        }
     }
 }

@@ -10,7 +10,13 @@
         }
 
         public PaymentMethodId Id { get; }
-        public string Name { get; }
-        public string Description { get; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+
+        public void Change(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
     }
 }

@@ -27,6 +27,16 @@ export class TopBarComponent implements OnInit {
     return currentUser !== undefined ? currentUser.name : undefined;
   }
 
+  systemAdminAllowed(): boolean {
+    let currentUser: UserModel = this.authService.getUser();
+    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === "SystemAdmin";
+  }
+
+  restaurantAdminAllowed(): boolean {
+    let currentUser: UserModel = this.authService.getUser();
+    return currentUser !== undefined && currentUser.role !== undefined && (currentUser.role === "SystemAdmin" || currentUser.role === "RestaurantAdmin");
+  }
+
   openLoginForm(): void {
     this.modalService.open(LoginComponent);
   }

@@ -21,7 +21,7 @@ namespace FoodOrderSystem.Persistence
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<Restaurant>)dbContext.Restaurants.Select(FromRow).ToList();
+                return (ICollection<Restaurant>)dbContext.Restaurants.OrderBy(en => en.Name).Select(FromRow).ToList();
             }, cancellationToken);
         }
 

@@ -25,6 +25,9 @@ namespace FoodOrderSystem.Domain.Commands.RemoveUser
             if (currentUser.Role < Role.SystemAdmin)
                 return new ForbiddenCommandResult();
 
+            if (command.UserId == currentUser.Id)
+                return new FailureCommandResult<string>("cannot delete user that is currently logged in");
+
             await userRepository.RemoveAsync(command.UserId, cancellationToken);
 
             return new SuccessCommandResult();

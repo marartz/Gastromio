@@ -16,14 +16,14 @@ export class AuthService {
   }
 
   public getToken(): string {
-    var token = localStorage.getItem('token');
+    let token = localStorage.getItem('token');
     if (token === null)
       return undefined;
     return token;
   }
 
   public getUser(): UserModel {
-    var userJSON = localStorage.getItem('user');
+    let userJSON = localStorage.getItem('user');
     if (userJSON === null)
       return undefined;
     return JSON.parse(userJSON);

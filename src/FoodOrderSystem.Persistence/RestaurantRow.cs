@@ -32,7 +32,9 @@ namespace FoodOrderSystem.Persistence
         public string WebSite { get; set; }
         
         public string Imprint { get; set; }
-        
+
+        public virtual ICollection<RestaurantCuisineRow> RestaurantCuisines { get; set; } = new List<RestaurantCuisineRow>();
+
         public virtual ICollection<RestaurantPaymentMethodRow> RestaurantPaymentMethods { get; set; } = new List<RestaurantPaymentMethodRow>();
         
         public virtual ICollection<DishCategoryRow> Categories { get; set; } = new List<DishCategoryRow>();

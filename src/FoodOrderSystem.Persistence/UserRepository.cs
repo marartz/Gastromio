@@ -21,7 +21,7 @@ namespace FoodOrderSystem.Persistence
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<User>)dbContext.Users.Select(FromRow).ToList();
+                return (ICollection<User>)dbContext.Users.Select(FromRow).OrderBy(en => en.Name).ToList();
             }, cancellationToken);
         }
 
@@ -29,7 +29,7 @@ namespace FoodOrderSystem.Persistence
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<User>)dbContext.Users.Where(en => EF.Functions.Like(en.Name, $"%{searchPhrase}%")).Select(FromRow).ToList();
+                return (ICollection<User>)dbContext.Users.Where(en => EF.Functions.Like(en.Name, $"%{searchPhrase}%")).OrderBy(en => en.Name).Select(FromRow).ToList();
             }, cancellationToken);
         }
 
@@ -38,7 +38,7 @@ namespace FoodOrderSystem.Persistence
             return Task.Factory.StartNew(() =>
             {
                 var dbRole = ToDbRole(role);
-                return (ICollection<User>)dbContext.Users.Where(en => en.Role == dbRole).Select(FromRow).ToList();
+                return (ICollection<User>)dbContext.Users.Where(en => en.Role == dbRole).OrderBy(en => en.Name).Select(FromRow).ToList();
             }, cancellationToken);
         }
 
@@ -93,7 +93,7 @@ namespace FoodOrderSystem.Persistence
             {
                 var dbSet = dbContext.Users;
 
-                var row = dbContext.Users.FirstOrDefault(en => en.Id == userId.Value);
+                var row = dbSet.FirstOrDefault(en => en.Id == userId.Value);
                 if (row != null)
                 {
                     dbSet.Remove(row);
@@ -151,7 +151,6 @@ namespace FoodOrderSystem.Persistence
             row.Role = ToDbRole(obj.Role);
             row.PasswordSalt = obj.PasswordSalt;
             row.PasswordHash = obj.PasswordHash;
-            var role = ToDbRole(obj.Role);
         }
     }
 }
