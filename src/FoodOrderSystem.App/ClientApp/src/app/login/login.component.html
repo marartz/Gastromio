@@ -1,6 +1,6 @@
 <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
   <div class="modal-header">
-    <h4 class="modal-title">Login</h4>
+    <h4 class="modal-title">Anmelden</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -18,6 +18,6 @@
   </div>
   <div class="modal-footer">
     <p class="error" *ngIf="message !== undefined">{{message}}</p>
-    <button class="btn btn-primary" type="submit">Login</button>
+    <button class="btn btn-primary" type="submit">Anmelden</button>
   </div>
 </form>

@@ -28,6 +28,10 @@ import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { CuisineAdminService } from './cuisine/cuisine-admin.service';
 import { ChangeCuisineComponent } from './change-cuisine/change-cuisine.component';
 import { RemoveCuisineComponent } from './remove-cuisine/remove-cuisine.component';
+import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
+import { ChangePaymentMethodComponent } from './change-payment-method/change-payment-method.component';
+import { RemovePaymentMethodComponent } from './remove-payment-method/remove-payment-method.component';
+import { PaymentMethodAdminService } from './payment-method/payment-method-admin.service';
 
 @NgModule({
   imports: [
@@ -58,6 +62,9 @@ import { RemoveCuisineComponent } from './remove-cuisine/remove-cuisine.componen
     ChangeCuisineComponent,
     RemoveCuisineComponent,
     AdminPaymentMethodsComponent,
+    AddPaymentMethodComponent,
+    ChangePaymentMethodComponent,
+    RemovePaymentMethodComponent,
     OrderHomeComponent,
     RestaurantSearchComponent,
   ],
@@ -67,6 +74,7 @@ import { RemoveCuisineComponent } from './remove-cuisine/remove-cuisine.componen
     RestaurantAdminAuthGuard,
     UserAdminService,
     CuisineAdminService,
+    PaymentMethodAdminService
   ],
   bootstrap: [AppComponent]
 })

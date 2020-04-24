@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h4 class="modal-title">Cuisine entfernen</h4>
+  <h4 class="modal-title">Zahlungsmethode entfernen</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <h5>Sind Sie sicher, dass Sie die Cuisine '{{cuisine.name}}' löschen wollen?</h5>
+  <h5>Sind Sie sicher, dass Sie die Zahlungsmethode '{{paymentMethod.name}}' löschen wollen?</h5>
 </div>
 <div class="modal-footer">
   <p class="error" *ngIf="message !== undefined">{{message}}</p>

@@ -1,6 +1,6 @@
-<form [formGroup]="addCuisineForm" (ngSubmit)="onSubmit(addCuisineForm.value)">
+<form [formGroup]="addPaymentMethodForm" (ngSubmit)="onSubmit(addPaymentMethodForm.value)">
   <div class="modal-header">
-    <h4 class="modal-title">Cuisine hinzufügen</h4>
+    <h4 class="modal-title">Zahlungsmethode hinzufügen</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -9,6 +9,10 @@
     <div class="form-group">
       <label for="name">Name</label>
       <input id="name" class="form-control" type="text" placeholder="Name" formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="description">Beschreibung</label>
+      <input id="description" class="form-control" type="text" placeholder="Beschreibung" formControlName="description">
     </div>
   </div>
   <div class="modal-footer">
