@@ -63,6 +63,13 @@ namespace FoodOrderSystem.App.Controllers.V1
             }
         }
 
+        [Route("ping")]
+        [HttpGet]
+        public IActionResult Ping()
+        {
+            return Ok("pong");
+        }
+
         private string GenerateJSONWebToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));

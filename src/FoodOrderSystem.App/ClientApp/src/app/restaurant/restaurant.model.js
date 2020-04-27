@@ -2,20 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var RestaurantModel = /** @class */ (function () {
     function RestaurantModel() {
+        this.address = new AddressModel();
+        this.deliveryTimes = new Array();
+        this.paymentMethods = new Array();
     }
     return RestaurantModel;
 }());
 exports.RestaurantModel = RestaurantModel;
-var RestaurantAddress = /** @class */ (function () {
-    function RestaurantAddress() {
+var AddressModel = /** @class */ (function () {
+    function AddressModel() {
     }
-    return RestaurantAddress;
+    return AddressModel;
 }());
-exports.RestaurantAddress = RestaurantAddress;
-var DeliveryTime = /** @class */ (function () {
-    function DeliveryTime() {
+exports.AddressModel = AddressModel;
+var DeliveryTimeModel = /** @class */ (function () {
+    function DeliveryTimeModel() {
     }
-    return DeliveryTime;
+    return DeliveryTimeModel;
 }());
-exports.DeliveryTime = DeliveryTime;
+exports.DeliveryTimeModel = DeliveryTimeModel;
 //# sourceMappingURL=restaurant.model.js.map

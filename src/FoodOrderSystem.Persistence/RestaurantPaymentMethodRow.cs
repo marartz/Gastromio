@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodOrderSystem.Persistence
 {
+    [Table("RestaurantPaymentMethod")]
     public class RestaurantPaymentMethodRow
     {
         public Guid RestaurantId { get; set; }

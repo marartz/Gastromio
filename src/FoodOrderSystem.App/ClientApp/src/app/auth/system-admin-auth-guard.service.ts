@@ -20,6 +20,15 @@ export class SystemAdminAuthGuardService implements CanActivate {
     if (currentUser === undefined || currentUser.role !== "SystemAdmin") {
       this.router.navigate(['']);
       return false;
+    } else {
+      let subscription = this.auth.pingAsync().subscribe(() => {
+        subscription.unsubscribe();
+      }, (error) => {
+        subscription.unsubscribe();
+        console.error(error);
+        this.auth.logout();
+        this.router.navigate(['']);
+      });
     }
 
     return true;

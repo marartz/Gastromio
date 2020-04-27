@@ -1,6 +1,7 @@
 ﻿using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace FoodOrderSystem.Domain
             services.AddTransient<IUserFactory, UserFactory>();
             services.AddTransient<ICuisineFactory, CuisineFactory>();
             services.AddTransient<IPaymentMethodFactory, PaymentMethodFactory>();
+            services.AddTransient<IRestaurantFactory, RestaurantFactory>();
 
             // Register command classes
             services.AddTransient<ICommandDispatcher, CommandDispatcher>();

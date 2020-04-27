@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,5 +14,7 @@ namespace FoodOrderSystem.Persistence
         public string Role { get; set; }
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
+        public virtual ICollection<RestaurantUserRow> RestaurantUsers { get; set; } = new List<RestaurantUserRow>();
+
     }
 }

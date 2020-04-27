@@ -6,6 +6,7 @@ import { UserModel } from '../user/user.model';
 @Injectable()
 export class AuthService {
   private loginUrl: string = "api/v1/auth/login";
+  private pingUrl: string = "api/v1/auth/ping";
 
   constructor(
     private http: HttpClient
@@ -55,6 +56,18 @@ export class AuthService {
         subscription.unsubscribe();
       };
     });
+  }
+
+  public pingAsync(): Observable<{}> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.getToken(),
+      })
+    };
+
+    return this.http.get<{}>(this.pingUrl, httpOptions);
   }
 
   public logout(): void {

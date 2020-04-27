@@ -30,7 +30,7 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
 
             var cuisine = await cuisineRepository.FindByNameAsync(command.Name, cancellationToken);
             if (cuisine != null)
-                return new FailureCommandResult<string>("payment method name already exists");
+                return new FailureCommandResult<string>("cuisine name already exists");
 
             cuisine = cuisineFactory.Create(command.Name);
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);

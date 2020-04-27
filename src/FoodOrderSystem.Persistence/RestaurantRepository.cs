@@ -1,5 +1,6 @@
 ﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,21 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
+        public Task<ICollection<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var rows = dbContext.Restaurants.Where(en => EF.Functions.Like(en.Name, $"%{searchPhrase}%")).OrderBy(en => en.Name).ToList();
+                return (ICollection<Restaurant>)rows.Select(FromRow).ToList();
+            }, cancellationToken);
+        }
+
         public Task<ICollection<Restaurant>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<Restaurant>)dbContext.Restaurants.OrderBy(en => en.Name).Select(FromRow).ToList();
+                var rows = dbContext.Restaurants.OrderBy(en => en.Name).ToList();
+                return (ICollection<Restaurant>)rows.Select(FromRow).ToList();
             }, cancellationToken);
         }
 
@@ -33,6 +44,44 @@ namespace FoodOrderSystem.Persistence
                 if (row == null)
                     return null;
                 return FromRow(row);
+            }, cancellationToken);
+        }
+
+        public Task StoreAsync(Restaurant restaurant, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.Restaurants;
+
+                var row = dbSet.FirstOrDefault(x => x.Id == restaurant.Id.Value);
+                if (row != null)
+                {
+                    ToRow(restaurant, row);
+                    dbSet.Update(row);
+                }
+                else
+                {
+                    row = new RestaurantRow();
+                    ToRow(restaurant, row);
+                    dbSet.Add(row);
+                }
+
+                dbContext.SaveChanges();
+            }, cancellationToken);
+        }
+
+        public Task RemoveAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.Restaurants;
+
+                var row = dbSet.FirstOrDefault(en => en.Id == restaurantId.Value);
+                if (row != null)
+                {
+                    dbSet.Remove(row);
+                    dbContext.SaveChanges();
+                }
             }, cancellationToken);
         }
 
@@ -50,22 +99,48 @@ namespace FoodOrderSystem.Persistence
             );
         }
 
-        private static RestaurantRow ToRow(Restaurant obj)
+        private static void ToRow(Restaurant obj, RestaurantRow row)
         {
             // TODO
-            return new RestaurantRow
+            row.Id = obj.Id.Value;
+            row.Name = obj.Name;
+            if (obj.Address != null)
             {
-                Id = obj.Id.Value,
-                Name = obj.Name,
-                AddressLine1 = obj.Address?.Line1,
-                AddressLine2 = obj.Address?.Line2,
-                AddressZipCode = obj.Address?.ZipCode,
-                AddressCity = obj.Address?.City,
-                MinimumOrderValue = obj.MinimumOrderValue,
-                DeliveryCosts = obj.DeliveryCosts,
-                WebSite = obj.WebSite,
-                Imprint = obj.Imprint,
-            };
+                row.AddressLine1 = obj.Address.Line1;
+                row.AddressLine2 = obj.Address.Line2;
+                row.AddressZipCode = obj.Address.ZipCode;
+                row.AddressCity = obj.Address.City;
+            }
+            if (obj.DeliveryTimes != null && obj.DeliveryTimes.Count > 0)
+            {
+                row.DeliveryTimes = new List<DeliveryTimeRow>();
+                foreach (var deliveryTime in obj.DeliveryTimes)
+                {
+                    row.DeliveryTimes.Add(new DeliveryTimeRow
+                    {
+                        RestaurantId = obj.Id.Value,
+                        DayOfWeek = deliveryTime.DayOfWeek,
+                        StartTime = (int)deliveryTime.Start.TotalMinutes,
+                        EndTime = (int)deliveryTime.End.TotalMinutes
+                    });
+                }
+            }
+            row.MinimumOrderValue = obj.MinimumOrderValue;
+            row.DeliveryCosts = obj.DeliveryCosts;
+            row.WebSite = obj.WebSite;
+            row.Imprint = obj.Imprint;
+            if (obj.PaymentMethods != null && obj.PaymentMethods.Count > 0)
+            {
+                row.RestaurantPaymentMethods = new List<RestaurantPaymentMethodRow>();
+                foreach (var paymentMethod in obj.PaymentMethods)
+                {
+                    row.RestaurantPaymentMethods.Add(new RestaurantPaymentMethodRow
+                    {
+                        RestaurantId = obj.Id.Value,
+                        PaymentMethodId = paymentMethod.Value
+                    });
+                }
+            }
         }
     }
 }

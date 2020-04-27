@@ -49,7 +49,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 
                     b.HasKey("RestaurantId", "DayOfWeek", "StartTime");
 
-                    b.ToTable("DeliveryTimeRow");
+                    b.ToTable("DeliveryTime");
                 });
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.DishCategoryRow", b =>
@@ -68,7 +68,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Category");
+                    b.ToTable("DishCategory");
                 });
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.DishRow", b =>
@@ -168,7 +168,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 
                     b.HasIndex("CuisineId");
 
-                    b.ToTable("RestaurantCuisineRow");
+                    b.ToTable("RestaurantCuisine");
                 });
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantPaymentMethodRow", b =>
@@ -183,7 +183,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 
                     b.HasIndex("PaymentMethodId");
 
-                    b.ToTable("RestaurantPaymentMethodRow");
+                    b.ToTable("RestaurantPaymentMethod");
                 });
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantRow", b =>
@@ -222,6 +222,21 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant");
+                });
+
+            modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantUserRow", b =>
+                {
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RestaurantId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RestaurantUser");
                 });
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.UserRow", b =>
@@ -330,6 +345,21 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("RestaurantPaymentMethods")
                         .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantUserRow", b =>
+                {
+                    b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
+                        .WithMany("RestaurantUsers")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FoodOrderSystem.Persistence.UserRow", "User")
+                        .WithMany("RestaurantUsers")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

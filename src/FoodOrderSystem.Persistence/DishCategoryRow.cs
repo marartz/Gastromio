@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodOrderSystem.Persistence
 {
-    [Table("Category")]
+    [Table("DishCategory")]
     public class DishCategoryRow
     {
         public Guid Id { get; set; }

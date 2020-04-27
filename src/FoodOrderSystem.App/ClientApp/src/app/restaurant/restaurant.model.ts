@@ -1,15 +1,17 @@
-import { PaymentMethodModel } from "../payment-method/payment-method.model";
-
 export class RestaurantModel {
-  constructor() { }
+  constructor() {
+    this.address = new AddressModel();
+    this.deliveryTimes = new Array<DeliveryTimeModel>();
+    this.paymentMethods = new Array<string>();
+  }
 
   public id: string;
 
   public name: string;
 
-  public address: RestaurantAddress;
+  public address: AddressModel;
 
-  public deliveryTimes: DeliveryTime[];
+  public deliveryTimes: DeliveryTimeModel[];
 
   public minimumOrderValue: number;
 
@@ -19,10 +21,10 @@ export class RestaurantModel {
 
   public imprint: string;
 
-  public paymentMethods: PaymentMethodModel[];
+  public paymentMethods: string[];
 }
 
-export class RestaurantAddress {
+export class AddressModel {
   constructor() { }
 
   public line1: string;
@@ -34,7 +36,7 @@ export class RestaurantAddress {
   public city: string;
 }
 
-export class DeliveryTime {
+export class DeliveryTimeModel {
   constructor() { }
 
   public dayOfWeek: number;
@@ -43,4 +45,3 @@ export class DeliveryTime {
 
   public end: number;
 }
-

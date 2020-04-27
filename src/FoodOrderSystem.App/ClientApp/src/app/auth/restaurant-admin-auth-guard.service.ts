@@ -20,6 +20,15 @@ export class RestaurantAdminAuthGuardService implements CanActivate {
     if (currentUser === undefined || (currentUser.role !== "SystemAdmin" && currentUser.role !== "RestaurantAdmin")) {
       this.router.navigate(['']);
       return false;
+    } else {
+      let subscription = this.auth.pingAsync().subscribe(() => {
+        subscription.unsubscribe();
+      }, (error) => {
+        subscription.unsubscribe();
+        console.error(error);
+        this.auth.logout();
+        this.router.navigate(['']);
+      });
     }
 
     return true;

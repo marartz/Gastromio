@@ -40,5 +40,7 @@ namespace FoodOrderSystem.Persistence
         public virtual ICollection<DishCategoryRow> Categories { get; set; } = new List<DishCategoryRow>();
         
         public virtual ICollection<DishRow> Dishes { get; set; } = new List<DishRow>();
+
+        public virtual ICollection<RestaurantUserRow> RestaurantUsers { get; set; } = new List<RestaurantUserRow>();
     }
 }

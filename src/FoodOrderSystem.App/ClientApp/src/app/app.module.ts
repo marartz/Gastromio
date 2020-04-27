@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import { BlockUIModule } from 'ng-block-ui';
 
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
@@ -14,7 +15,6 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { ChangeUserDetailsComponent } from './change-user-details/change-user-details.component';
 import { OrderHomeComponent } from './order-home/order-home.component';
 import { RestaurantSearchComponent } from './restaurant-search/restaurant-search.component';
-
 import { AuthService } from './auth/auth.service';
 import { SystemAdminAuthGuardService as SystemAdminAuthGuard } from './auth/system-admin-auth-guard.service';
 import { RestaurantAdminAuthGuardService as RestaurantAdminAuthGuard } from './auth/restaurant-admin-auth-guard.service';
@@ -32,6 +32,13 @@ import { AddPaymentMethodComponent } from './add-payment-method/add-payment-meth
 import { ChangePaymentMethodComponent } from './change-payment-method/change-payment-method.component';
 import { RemovePaymentMethodComponent } from './remove-payment-method/remove-payment-method.component';
 import { PaymentMethodAdminService } from './payment-method/payment-method-admin.service';
+import { AdminRestaurantsComponent } from './admin-restaurants/admin-restaurants.component';
+import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
+import { ChangeRestaurantNameComponent } from './change-restaurant-name/change-restaurant-name.component';
+import { RemoveRestaurantComponent } from './remove-restaurant/remove-restaurant.component';
+import { RestaurantSysAdminService } from './restaurant-sys-admin/restaurant-sys-admin.service';
+import { RestaurantRestAdminService } from './restaurant-rest-admin/restaurant-rest-admin.service';
+import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
 
 @NgModule({
   imports: [
@@ -41,10 +48,13 @@ import { PaymentMethodAdminService } from './payment-method/payment-method-admin
       { path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/paymentmethods', component: AdminPaymentMethodsComponent, canActivate: [SystemAdminAuthGuard] },
+      { path: 'admin/restaurants', component: AdminRestaurantsComponent, canActivate: [SystemAdminAuthGuard] },
+      { path: 'admin/restaurants/:restaurantId', component: AdminRestaurantComponent, canActivate: [RestaurantAdminAuthGuard] },
     ]),
     ReactiveFormsModule,
     NgbModule,
     HttpClientModule,
+    BlockUIModule.forRoot(),
   ],
   declarations: [
     AppComponent,
@@ -65,8 +75,13 @@ import { PaymentMethodAdminService } from './payment-method/payment-method-admin
     AddPaymentMethodComponent,
     ChangePaymentMethodComponent,
     RemovePaymentMethodComponent,
+    AdminRestaurantsComponent,
+    AddRestaurantComponent,
+    ChangeRestaurantNameComponent,
+    RemoveRestaurantComponent,
     OrderHomeComponent,
     RestaurantSearchComponent,
+    AdminRestaurantComponent,
   ],
   providers: [
     AuthService,
@@ -74,7 +89,9 @@ import { PaymentMethodAdminService } from './payment-method/payment-method-admin
     RestaurantAdminAuthGuard,
     UserAdminService,
     CuisineAdminService,
-    PaymentMethodAdminService
+    PaymentMethodAdminService,
+    RestaurantSysAdminService,
+    RestaurantRestAdminService,
   ],
   bootstrap: [AppComponent]
 })

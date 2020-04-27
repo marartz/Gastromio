@@ -17,6 +17,21 @@ namespace FoodOrderSystem.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<RestaurantUserRow>()
+                .HasKey(rpm => new { rpm.RestaurantId, rpm.UserId });
+
+            modelBuilder.Entity<RestaurantUserRow>()
+                .HasOne(rpm => rpm.Restaurant)
+                .WithMany(r => r.RestaurantUsers)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(rpm => rpm.RestaurantId);
+
+            modelBuilder.Entity<RestaurantUserRow>()
+                .HasOne(rpm => rpm.User)
+                .WithMany(pm => pm.RestaurantUsers)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(rpm => rpm.UserId);
+
             modelBuilder.Entity<DeliveryTimeRow>()
                 .HasKey(dt => new { dt.RestaurantId, dt.DayOfWeek, dt.StartTime });
 

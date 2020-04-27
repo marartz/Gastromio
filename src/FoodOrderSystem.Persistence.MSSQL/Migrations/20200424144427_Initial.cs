@@ -3,10 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Cuisine",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cuisine", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "PaymentMethod",
                 columns: table => new
@@ -56,26 +68,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    RestaurantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Category_Restaurant_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DeliveryTimeRow",
+                name: "DeliveryTime",
                 columns: table => new
                 {
                     RestaurantId = table.Column<Guid>(nullable: false),
@@ -85,9 +78,9 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeliveryTimeRow", x => new { x.RestaurantId, x.DayOfWeek, x.StartTime });
+                    table.PrimaryKey("PK_DeliveryTime", x => new { x.RestaurantId, x.DayOfWeek, x.StartTime });
                     table.ForeignKey(
-                        name: "FK_DeliveryTimeRow_Restaurant_RestaurantId",
+                        name: "FK_DeliveryTime_Restaurant_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurant",
                         principalColumn: "Id",
@@ -95,7 +88,50 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestaurantPaymentMethodRow",
+                name: "DishCategory",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RestaurantId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DishCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DishCategory_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantCuisine",
+                columns: table => new
+                {
+                    RestaurantId = table.Column<Guid>(nullable: false),
+                    CuisineId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantCuisine", x => new { x.RestaurantId, x.CuisineId });
+                    table.ForeignKey(
+                        name: "FK_RestaurantCuisine_Cuisine_CuisineId",
+                        column: x => x.CuisineId,
+                        principalTable: "Cuisine",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RestaurantCuisine_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantPaymentMethod",
                 columns: table => new
                 {
                     RestaurantId = table.Column<Guid>(nullable: false),
@@ -103,17 +139,41 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantPaymentMethodRow", x => new { x.RestaurantId, x.PaymentMethodId });
+                    table.PrimaryKey("PK_RestaurantPaymentMethod", x => new { x.RestaurantId, x.PaymentMethodId });
                     table.ForeignKey(
-                        name: "FK_RestaurantPaymentMethodRow_PaymentMethod_PaymentMethodId",
+                        name: "FK_RestaurantPaymentMethod_PaymentMethod_PaymentMethodId",
                         column: x => x.PaymentMethodId,
                         principalTable: "PaymentMethod",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_RestaurantPaymentMethodRow_Restaurant_RestaurantId",
+                        name: "FK_RestaurantPaymentMethod_Restaurant_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantUser",
+                columns: table => new
+                {
+                    RestaurantId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantUser", x => new { x.RestaurantId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_RestaurantUser_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RestaurantUser_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -133,9 +193,9 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 {
                     table.PrimaryKey("PK_Dish", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Dish_Category_CategoryId",
+                        name: "FK_Dish_DishCategory_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
+                        principalTable: "DishCategory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -193,11 +253,6 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Category_RestaurantId",
-                table: "Category",
-                column: "RestaurantId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Dish_CategoryId",
                 table: "Dish",
                 column: "CategoryId");
@@ -208,36 +263,60 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestaurantPaymentMethodRow_PaymentMethodId",
-                table: "RestaurantPaymentMethodRow",
+                name: "IX_DishCategory_RestaurantId",
+                table: "DishCategory",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestaurantCuisine_CuisineId",
+                table: "RestaurantCuisine",
+                column: "CuisineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestaurantPaymentMethod_PaymentMethodId",
+                table: "RestaurantPaymentMethod",
                 column: "PaymentMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestaurantUser_UserId",
+                table: "RestaurantUser",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DeliveryTimeRow");
+                name: "DeliveryTime");
 
             migrationBuilder.DropTable(
                 name: "DishVariantExtra");
 
             migrationBuilder.DropTable(
-                name: "RestaurantPaymentMethodRow");
+                name: "RestaurantCuisine");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "RestaurantPaymentMethod");
+
+            migrationBuilder.DropTable(
+                name: "RestaurantUser");
 
             migrationBuilder.DropTable(
                 name: "DishVariant");
 
             migrationBuilder.DropTable(
+                name: "Cuisine");
+
+            migrationBuilder.DropTable(
                 name: "PaymentMethod");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Dish");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "DishCategory");
 
             migrationBuilder.DropTable(
                 name: "Restaurant");

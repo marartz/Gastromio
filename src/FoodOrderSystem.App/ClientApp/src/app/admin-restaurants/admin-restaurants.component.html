@@ -1,1 +1,38 @@
-admin-home works...
+<div class="container">
+  <div class="row">
+    <div class="col p-2">
+      <div class="mb-4">
+        <h3>Restaurantverwaltung</h3>
+      </div>
+      <div class="search">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+      </div>
+      <div class="restaurants mt-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>
+                <div class="float-right">
+                  <button class="btn btn-success" id="addRestaurant" (click)="openAddRestaurantForm()"><i class="fas fa-plus"></i></button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let restaurant of pageOfRestaurants" class="restaurant">
+              <td>{{restaurant.name}}</td>
+              <td>
+                <div class="float-right">
+                  <button class="btn btn-secondary btn-sm m-1" [routerLink]="[restaurant.id]"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveRestaurantForm(restaurant)"><i class="fas fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
+      </div>
+    </div>
+  </div>
+</div>

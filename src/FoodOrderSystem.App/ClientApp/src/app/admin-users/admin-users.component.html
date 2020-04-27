@@ -15,20 +15,22 @@
               <th>Role</th>
               <th>
                 <div class="float-right">
-                  <button class="btn btn-success" id="addUser" (click)="openAddUserForm()">Hinzufügen</button>
+                  <button class="btn btn-success" id="addUser" (click)="openAddUserForm()"><i class="fas fa-plus"></i></button>
                 </div>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let user of pageOfUsers" class="user">
-              <td>{{user.name}}</td>
+              <td>
+                {{user.name}}
+              </td>
               <td>{{localizeRole(user.role)}}</td>
               <td>
                 <div class="float-right">
-                  <button class="btn btn-primary btn-sm m-1" (click)="openChangeUserDetailsForm(user)">Bearbeiten</button>
-                  <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)">Password ändern</button>
-                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)">Entfernen</button>
+                  <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)"><i class="fas fa-key"></i></button>
+                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)"><i class="fas fa-trash"></i></button>
                 </div>
               </td>
             </tr>
