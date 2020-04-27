@@ -1,23 +1,25 @@
-<form [formGroup]="changePaymentMethodForm" (ngSubmit)="onSubmit(changePaymentMethodForm.value)">
-  <div class="modal-header">
-    <h4 class="modal-title">Zahlungsmethode ändern</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input id="name" class="form-control" type="text" placeholder="Name" formControlName="name">
-    </div>
+<section class="setting-modal">
+    <form [formGroup]="changePaymentMethodForm" (ngSubmit)="onSubmit(changePaymentMethodForm.value)">
+        <div class="setting-top">
+            <h4 class="setting-title">Zahlungsmethode ändern</h4>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" class="form-control" type="text" placeholder="Name" formControlName="name">
+            </div>
 
-    <div class="form-group">
-      <label for="description">Beschreibung</label>
-      <input id="description" class="form-control" type="text" placeholder="Beschreibung" formControlName="description">
-    </div>
-  </div>
-  <div class="modal-footer">
-    <p class="error" *ngIf="message !== undefined">{{message}}</p>
-    <button class="btn btn-primary" type="submit">Ändern</button>
-  </div>
-</form>
+            <div class="form-group">
+                <label for="description">Beschreibung</label>
+                <input id="description" class="form-control" type="text" placeholder="Beschreibung" formControlName="description">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="error" *ngIf="message !== undefined">{{message}}</p>
+            <button class="button-submit" type="submit">Ändern</button>
+        </div>
+    </form>
+</section>

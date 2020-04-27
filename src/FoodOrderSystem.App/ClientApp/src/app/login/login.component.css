@@ -1,42 +1,42 @@
 .login-modal {
-    display: flex;
-    flex-flow: column;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
 }
 
 .modal-top {
-    background-color: #fff;
-    padding: 20px 16px;
-    height: 72px;
-    clip-path: none;
+  background-color: #fff;
+  padding: 20px 16px;
+  height: 72px;
+  clip-path: none;
 }
 
 .login-title {
-    font-family: bilo, sans-serif;
-    font-weight: 600;
-    color: #0a3847;
-    font-size: 20px;
-    text-align: center;
+  font-family: bilo, sans-serif;
+  font-weight: 600;
+  color: #0a3847;
+  font-size: 20px;
+  text-align: center;
 }
 
 .form-area {
-    font-family: bilo, sans-serif;
-    font-size: 17px;
-    color: #0a3847;
-    line-height: 18px;
-    margin-bottom: 12px;
+  font-family: bilo, sans-serif;
+  font-size: 17px;
+  color: #0a3847;
+  line-height: 18px;
+  margin-bottom: 12px;
 }
 
 .form-input {
-    position: relative;
-    border-radius: 3px;
-    background: #fff;
-    width: 100%;
+  position: relative;
+  border-radius: 3px;
+  background: #fff;
+  width: 100%;
 }
 
-.form-input::after {
+  .form-input::after {
     position: absolute;
     display: inline-flex;
     top: 0;
@@ -45,39 +45,180 @@
     text-align: center;
     height: 35px;
     line-height: 35px !important;
-}
+  }
 
 .--input {
-    position: relative;
-    width: 100%;
-    height: 38px;
-    background: none;
-    border: 1px solid #d7d7d7;
-    color: #666;
-    border-radius: 0;
-    margin-top: 7px;
-    padding: 8px 16px;
+  position: relative;
+  width: 100%;
+  height: 38px;
+  background: none;
+  border: 1px solid #d7d7d7;
+  color: #666;
+  border-radius: 0;
+  margin-top: 7px;
+  padding: 8px 16px;
 }
 
 .button-submit {
-    width: 100%;
-    background-color: #1574f5;
-    color: #fff;
-    font-family: bilo, sans-serif;
-    font-weight: 600;
-    user-select: none;
-    padding: 0 16px;
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    height: 56px;
-    line-height: 1.5;
-    font-size: 16px;
-    border: 0;
-    outline: 0;
-    vertical-align: baseline;
+  width: 100%;
+  background-color: #1574f5;
+  color: #fff;
+  font-family: bilo, sans-serif;
+  font-weight: 600;
+  user-select: none;
+  padding: 0 16px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  height: 56px;
+  line-height: 1.5;
+  font-size: 16px;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
 }
 
-.button-submit:focus, .button-submit:hover, {
+  .button-submit:focus, .button-submit:hover, {
     background-color: #0953bd;
- }
+  }
+
+/*.LoginPage-container {
+    background-color: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 1px;
+    margin-top: 40px;
+    margin-bottom: 100px;
+    width: 608px;
+    padding: 16px 104px 20px;
+}
+
+.LoginPage-menu {
+    display: flex;
+    flex-direction: row;
+    margin-top: -16px;
+    margin-right: -104px;
+    margin-left: -104px;
+    height:  56px;
+}
+
+.login-title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: bilo, sans-serif;
+  font-size: 16px;
+  color: #666;
+  border-bottom: 1px solid #d8d8d8;
+  cursor: pointer;
+}
+
+.login-title-active {
+    font-weight: 700;
+    color: #52ae31;
+    border-bottom: 2px solid #52ae31;
+}
+
+.login-content {
+    padding-top: 20px;
+}
+
+.login-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.login-formContainer {
+    width: 100%;
+    background-color: #fff;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.login-formInput {
+    flex: 1;
+    margin-bottom: 24px;
+    border: none;
+    user-select: none;
+}
+
+.FormFieldComponentContainer {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+}
+
+.InputWrapper {
+    width: 100%;
+}
+
+.FormInput {
+    position: relative;
+    width: 100%;
+    height: 47px;
+    max-height: 47px;
+    text-align: left;
+    display: flex;
+    align-items: flex-end;
+    border-radius: 2px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(215, 215, 215);
+}
+
+.InputField {
+    width: 100%;
+    height: 100%;
+    padding-top: 16px;
+    border: medium none;
+    outline: currentcolor none medium;
+    padding-left: 16px;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%;
+    text-rendering: optimizeLegibility;
+}
+
+.InputPlaceholder {
+    position: absolute;
+    top: calc(100% -32px);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    cursor: default;
+    font-family: bilo, sans-serif;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(10, 56, 71);
+    left: 16px;
+    text-align: left;
+}
+
+.Button {
+    font-family: bilo, sans-serif;
+    line-height: 26px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 2px;
+    border: 0;
+    text-rendering: optimizeLegibility;
+}
+
+.Button-Primary {
+    height: 32px;
+    color: #fff;
+    background-color: #1574f5;
+    transition: background-color .25s ease-in;
+}
+
+.SubmitLogin {
+    border-radius: 2px;
+    height: 48px;
+}*/

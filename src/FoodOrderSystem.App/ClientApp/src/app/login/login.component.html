@@ -26,3 +26,33 @@
         </div>
     </form>
 </section>
+<!--form-- class="" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+    <div class="LoginPage-container">
+        <div class="LoginPage-menu">
+            <h4 class="login-title login-title-active">Einloggen</h4>
+        </div>
+        <div class="login-content">
+            <div class="login-root">
+                <div class="login-formContainer">
+                    <div class="login-formInput">
+                        <div class="FormFieldComponentContainer">
+                            <div class="InputWrapper FormInput">
+                                <input class="InputField" id="username" type="text" formControlName="username" required="" ngbAutofocus>
+                                <label class="InputPlaceholder" for="username">Benutzername</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-formInput">
+                        <div class="FormFieldComponentContainer">
+                            <div class="InputWrapper FormInput">
+                                <input class="InputField" id="password" type="password" formControlName="password" required="">
+                                <label class="InputPlaceholder" for="password">Passwort</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="Button Button-Primary SubmitLogin" type="submit">Einloggen</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </!--form-->
