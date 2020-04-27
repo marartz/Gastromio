@@ -1,0 +1,83 @@
+.login-modal {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+
+.modal-top {
+    background-color: #fff;
+    padding: 20px 16px;
+    height: 72px;
+    clip-path: none;
+}
+
+.login-title {
+    font-family: bilo, sans-serif;
+    font-weight: 600;
+    color: #0a3847;
+    font-size: 20px;
+    text-align: center;
+}
+
+.form-area {
+    font-family: bilo, sans-serif;
+    font-size: 17px;
+    color: #0a3847;
+    line-height: 18px;
+    margin-bottom: 12px;
+}
+
+.form-input {
+    position: relative;
+    border-radius: 3px;
+    background: #fff;
+    width: 100%;
+}
+
+.form-input::after {
+    position: absolute;
+    display: inline-flex;
+    top: 0;
+    right: 0;
+    width: 32px;
+    text-align: center;
+    height: 35px;
+    line-height: 35px !important;
+}
+
+.--input {
+    position: relative;
+    width: 100%;
+    height: 38px;
+    background: none;
+    border: 1px solid #d7d7d7;
+    color: #666;
+    border-radius: 0;
+    margin-top: 7px;
+    padding: 8px 16px;
+}
+
+.button-submit {
+    width: 100%;
+    background-color: #1574f5;
+    color: #fff;
+    font-family: bilo, sans-serif;
+    font-weight: 600;
+    user-select: none;
+    padding: 0 16px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    height: 56px;
+    line-height: 1.5;
+    font-size: 16px;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
+}
+
+.button-submit:focus, .button-submit:hover, {
+    background-color: #0953bd;
+ }
