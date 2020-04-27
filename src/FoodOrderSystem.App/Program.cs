@@ -3,6 +3,7 @@ using FoodOrderSystem.Domain.Commands.EnsureAdminUser;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Persistence;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,38 +20,18 @@ namespace FoodOrderSystem.App
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
-                var currentUser = new User(new UserId(Guid.Empty), "admin", Role.SystemAdmin, null, null);
-
-                var commandDispatcher = services.GetService<ICommandDispatcher>();
-                var result = commandDispatcher.PostAsync(new EnsureAdminUserCommand(), currentUser).Result;
+                var dbContext = services.GetService<SystemDbContext>();
+                dbContext.Database.Migrate();
             }
 
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
 
-                var userRepository = services.GetService<IUserRepository>();
-                var userFactory = services.GetService<IUserFactory>();
+                var currentUser = new User(new UserId(Guid.Empty), "admin", Role.SystemAdmin, null, null);
 
-                for (var i = 0; i < 100; i++)
-                {
-                    var username = $"user{(i + 1)}";
-                    var password = "Start2020!";
-
-                    var user = userRepository.FindByNameAsync(username).Result;
-                    if (user == null)
-                    {
-                        user = userFactory.Create(username, Role.Customer, password);
-                        userRepository.StoreAsync(user).Wait();
-                    }
-                    else
-                    {
-                        user.ChangeDetails(username, Role.Customer);
-                        user.ChangePassword(password);
-                        userRepository.StoreAsync(user).Wait();
-                    }
-                }
+                var commandDispatcher = services.GetService<ICommandDispatcher>();
+                var result = commandDispatcher.PostAsync(new EnsureAdminUserCommand(), currentUser).Result;
             }
 
             host.Run();

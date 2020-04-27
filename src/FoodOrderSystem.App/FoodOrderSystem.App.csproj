@@ -82,6 +82,7 @@
     <ProjectReference Include="..\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence.InMemory\FoodOrderSystem.Persistence.InMemory.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence.MSSQL\FoodOrderSystem.Persistence.MSSQL.csproj" />
+    <ProjectReference Include="..\FoodOrderSystem.Persistence.SQLite\FoodOrderSystem.Persistence.SQLite.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence\FoodOrderSystem.Persistence.csproj" />
   </ItemGroup>
 

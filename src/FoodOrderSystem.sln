@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.App", "FoodOrderSystem.App\FoodOrderSystem.App.csproj", "{00B578CE-7A6C-4212-823C-165A7693361E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.MSSQL", "FoodOrderSystem.Persistence.MSSQL\FoodOrderSystem.Persistence.MSSQL.csproj", "{88E31A82-7049-43F0-B573-CB38EEFAFB6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence.MSSQL", "FoodOrderSystem.Persistence.MSSQL\FoodOrderSystem.Persistence.MSSQL.csproj", "{88E31A82-7049-43F0-B573-CB38EEFAFB6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.SQLite", "FoodOrderSystem.Persistence.SQLite\FoodOrderSystem.Persistence.SQLite.csproj", "{0FA095CC-1398-4891-B377-A9C3A8129E33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
