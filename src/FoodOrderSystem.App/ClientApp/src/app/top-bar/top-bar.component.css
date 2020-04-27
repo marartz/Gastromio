@@ -1,5 +1,72 @@
 #top-bar {
-  background-color: forestgreen;
+  background-color: #52AE31;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+}
+
+.header {
+  background-color: #52AE31;
+  margin: -1px auto;
+  text-align: center;
+  padding: 11px 15px 0;
+  max-width: 470px
+}
+
+@media (min-width:1004px) {
+  .header {
+    max-width: 630px
+  }
+}
+
+@media (min-width:1280px) {
+  .header {
+    max-width: 660px
+  }
+}
+
+.topbar-container {
+  position: relative;
+  background-color: #52AE31;
+  z-index: 17
+}
+
+.topbar {
+  align-items: center;
+  display: flex;
+  height: 72px;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 1rem
+}
+
+@media (min-width:1004px) {
+  .topbar {
+    position: relative
+  }
+}
+
+@media (min-width:1280px) {
+  .topbar {
+    padding: 1rem 1.5rem
+  }
+}
+
+.topbar .menu-navigation,
+.topbar-logo {
+  flex: 1
+}
+
+.topbar-logo {
+  max-height: 1.60rem
+}
+
+.topbar-logo .large-logo {
+  display: none;
+  height: 78px
+}
+
+@media (min-width:1004px) {
+  .topbar-logo .large-logo {
+    display: inline
+  }
 }

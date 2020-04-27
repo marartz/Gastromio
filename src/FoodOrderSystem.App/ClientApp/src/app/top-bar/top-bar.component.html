@@ -1,34 +1,39 @@
 <div id="top-bar" class="row align-items-center top-bar-row">
 
-  <div class="col">
-    <a [routerLink]="['/']" class="text-light">
-      <h2>BOH-liefert-Essen</h2>
-    </a>
-  </div>
-
-  <div class="col">
-  </div>
-
-  <div class="col">
-    <div class="float-right">
-      <div *ngIf="getUsername() === undefined">
-        <button class="btn btn-outline-light" id="login" (click)="openLoginForm()">Anmelden</button>
-      </div>
-      <div *ngIf="getUsername() !== undefined">
-        <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-light" id="userDropDown" ngbDropdownToggle>{{getUsername()}}</button>
-          <div ngbDropdownMenu aria-labelledby="userDropDown">
-            <h6 *ngIf="systemAdminAllowed()" class="dropdown-header">Systemadministration</h6>
-            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
-            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
-            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>
-            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</button>
-            <div class="dropdown-divider"></div>
-            <button ngbDropdownItem (click)="logout()">Abmelden</button>
-          </div>
+    <div class="topbar-container">
+        <div class="topbar">
+            <div class="topbar-logo">
+                <a [routerLink]="['/']">
+                    <div class="large-logo-container">
+                        <img src="../assets/img/logo/logo_w-1024x781.png" alt="" class="large-logo" />
+                    </div>
+                </a>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+
+    <div class="col"></div>
+
+    <div class="col">
+        <div class="float-right">
+            <div *ngIf="getUsername() === undefined">
+                <button class="btn btn-outline-light" id="login" (click)="openLoginForm()">Anmelden</button>
+            </div>
+            <div *ngIf="getUsername() !== undefined">
+                <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-outline-light" id="userDropDown" ngbDropdownToggle>{{getUsername()}}</button>
+                    <div ngbDropdownMenu aria-labelledby="userDropDown">
+                        <h6 *ngIf="systemAdminAllowed()" class="dropdown-header">Systemadministration</h6>
+                        <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
+                        <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
+                        <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>
+                        <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</button>
+                        <div class="dropdown-divider"></div>
+                        <button ngbDropdownItem (click)="logout()">Abmelden</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

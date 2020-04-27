@@ -1,20 +1,31 @@
 #restaurant-search {
+    font-family: bilo, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    height: 35px;
+    background: none;
+    color: #0a3874;
+    border: 1px solid #d7d7d7
 }
 
+
 div.restaurant {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  min-height: 7em;
-  border: 1px solid lightgrey;
-  margin: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    padding: 2px;
+    border-radius: 2px;
+    border: 1px solid #ebebeb;
+    margin: 10px;
+    min-height: 7em;
 }
 
 div.restaurant-logo-wrapper {
   display: flex;
   flex-direction: column;
   float: left;
-  border-right: solid 1px lightgrey;
+  border-right: solid 1px #ebebeb;
   position: relative;
   width: 120px;
   padding: 10px;
@@ -48,5 +59,48 @@ div.restaurant-info-wrapper {
 div.restaurant-info {
 }
 
+.restaurant-name {
+    font-family: bilo, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0a3847;
+    padding: 0;
+    line-height: 22px;
+    max-height: 66px;
+}
+
+.restaurant-beschreibung {
+    font-family: skolar-latin, serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 8px 4px 0;
+    margin-bottom: 24px
+}
+
 div.restaurant-cond {
+}
+
+.nextdeliverytime {
+    color: #999;
+    font-size: 13px;
+    font-family:;
+    margin-right: 4px;
+}
+
+.delivery-cost {
+  color: #999;
+  font-size: 13px;
+  font-family:;
+  margin-right: 4px;
+}
+
+.min-order {
+  color: #999;
+  font-size: 13px;
+  font-family:;
+  margin-right: 4px;
 }

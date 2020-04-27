@@ -1,0 +1,86 @@
+.header-container .header-top {
+    width: 100%;
+    background-color: #52AE31
+}
+
+.header {
+    background-color: #52AE31;
+    margin: -1px auto;
+    text-align: center;
+    padding: 11px 15px 0;
+    max-width: 470px
+}
+
+@media (min-width:1004px) {
+    .header {
+        max-width: 630px
+
+    }
+}
+
+@media (min-width:1280px) {
+    .header {
+        max-width: 660px
+
+    }
+}
+
+.header-title {
+    font-family: bilo, sans-serif;
+    font-weight: 600;
+    font-variant-ligatures: common-ligatures;
+    font-feature-settings: "liga", "clig";
+    color: #fff;
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 0
+}
+
+@media (min-width:570px) {
+    .header-title {
+        font-size: 46px
+    }
+}
+
+@media (min-width:1004px) {
+    .header-title {
+        font-size: 62px
+    }
+}
+
+@media (min-width:1280px) {
+    .header-title {
+        font-size: 72px
+
+    }
+}
+
+.header-slogan {
+    font-family: bilo, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #fff;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: normal
+}
+
+@media (min-width:320px) {
+    .header-slogan {
+        font-size: 18px;
+        padding: 0 0 16px;
+        margin: 0
+    }
+}
+
+@media (min-width:570px) {
+    .header-slogan {
+        font-size: 24px
+    }
+}
+
+@media (min-width:1004px) {
+    .header-slogan {
+        font-size: 26px
+    }
+}
