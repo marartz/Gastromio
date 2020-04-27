@@ -1,21 +1,25 @@
 <div class="container">
     <div class="row">
         <div class="col p-2">
-            <div class="mb-4">
-                <h3>Benutzerverwaltung</h3>
+            <div class="Setting-Section-Title">
+                <h1>Benutzerverwaltung</h1>
             </div>
-            <div class="search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Suchbegriff eingeben ..." aria-label="Search" (keyup)="onSearchType($event.target.value)">
+            <div class="Search">
+                <div class="SearchContainer">
+                    <input class="SearchInput" type="search" placeholder="Nach Benutzern suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+                </div>
             </div>
             <div class="restaurants mt-3">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Rolle</th>
+                            <th class="SearchTableTitle">Name</th>
+                            <th class="SearchTableTitle">Rolle</th>
                             <th>
                                 <div class="float-right">
-                                    <button class="btn btn-success" id="addUser" (click)="openAddUserForm()"><i class="fas fa-plus"></i></button>
+                                    <button class="btn btn-success SettingAddButton" id="addUser" (click)="openAddUserForm()">
+                                        <i class="fas fa-user-plus"></i>
+                                    </button>
                                 </div>
                             </th>
                         </tr>
@@ -26,9 +30,9 @@
                             <td>{{localizeRole(user.role)}}</td>
                             <td>
                                 <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)"><i class="fas fa-user-edit"></i></button>
                                     <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)"><i class="fas fa-key"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </td>
                         </tr>

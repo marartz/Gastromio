@@ -1,87 +1,88 @@
 .footer {
-  text-align: left;
-  background-color: #52AE31;
-  padding-bottom: 0;
-  color: #fff;
-  position: relative;
+    text-align: left;
+    background-color: #52AE31;
+    padding-bottom: 0;
+    color: #fff;
+    position: relative;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 @media (min-width:1004px) {
-  .footer {
-    z-index: 16
-  }
+    .footer {
+        z-index: 16
+    }
 }
 
 .footer .content {
-  margin: 0 auto;
-  padding-left: 42px;
-  padding-right: 42px;
-  padding-top: 40px
+    margin: 0 auto;
+    padding-left: 42px;
+    padding-right: 42px;
+    padding-top: 40px
 }
 
-@media (min-width:570px) {
-  .footer .content {
-    padding-left: 52px;
-    padding-right: 52px
-  }
+@media (min-width: 570px) {
+    .footer .content {
+        padding-left: 52px;
+        padding-right: 52px
+    }
 }
 
 @media (min-width:1280px) {
-  .footer .content {
-    max-width: 1280px
-  }
+    .footer .content {
+        max-width: 1280px
+    }
 }
 
 .footer .content a {
-  color: #fff;
-  line-height: 1.5;
-  display: inline-block;
-  cursor: pointer;
-  white-space: nowrap;
-  font-size: 14px
+    color: #fff;
+    line-height: 1.5;
+    display: inline-block;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px
 }
 
 .footer .content .logo {
-  text-align: center;
-  margin-bottom: 56px;
-  height: 100px
+    text-align: center;
+    margin-bottom: 56px;
+    height: 100px
 }
 
-@media (max-width:570px) {
-  .footer .content .logo {
-    height: 90px
-  }
+@media (max-width: 570px) {
+    .footer .content .logo {
+        height: 90px
+    }
 }
 
 .footer .content .logo img {
-  display: inline-block;
-  height: 100%
+    display: inline-block;
+    height: 100%
 }
 
 .footer .content .footer-items {
-  border-bottom: 1px solid hsla(0, 0%, 84%, .5)
+    border-bottom: 1px solid hsla(0, 0%, 84%, .5)
 }
 
-@media (min-width:1004px) {
-  .footer .content .footer-items {
-    columns: 4
-  }
+@media (min-width: 1004px) {
+    .footer .content .footer-items {
+        columns: 4
+    }
 }
 
 .footer .content .title {
-  font-family: bilo, sans-serif!important;
-  font-weight: 600;
-  font-size: 16px;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 24px;
-  letter-spacing: normal;
-  color: #fff;
-  position: relative;
-  cursor: pointer
+    font-family: bilo, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: normal;
+    color: #fff;
+    position: relative;
+    cursor: pointer
 }
 
-  .footer .content .title:after {
+.footer .content .title:after {
     content: "\E953";
     font-family: fontello;
     position: absolute;
@@ -89,101 +90,101 @@
     font-size: 16px;
     transform: rotate(0deg);
     transition: all .2s ease-in-out
-  }
-
-@media (min-width:1004px) {
-  .footer .content .title:after {
-    content: none
-  }
 }
 
-@media (min-width:1004px) {
-  .footer .content .title {
-    cursor: default
-  }
+@media (min-width: 1004px) {
+    .footer .content .title:after {
+        content: none
+    }
 }
 
-@media (min-width:1004px) {
-  .footer .content .footer-nav {
-    page-break-inside: avoid
-  }
+@media (min-width: 1004px) {
+    .footer .content .title {
+        cursor: default
+    }
+}
+
+@media (min-width: 1004px) {
+    .footer .content .footer-nav {
+        page-break-inside: avoid
+    }
 }
 
 .footer .content .footer-nav.open .title:after {
-  transform: rotate(180deg);
-  transition: all .2s ease-in-out
+    transform: rotate(180deg);
+    transition: all .2s ease-in-out
 }
 
-@media (min-width:1004px) {
-  .footer .content .footer-nav.open .title:after {
-    content: none
-  }
+@media (min-width: 1004px) {
+    .footer .content .footer-nav.open .title:after {
+        content: none
+    }
 }
 
 .footer .content .footer-nav li {
-  font-family: bilo, sans-serif !important;
-  font-weight: 400;
-  display: block;
-  text-align: left;
-  font-size: 14px;
-  font-style: normal;
-  font-stretch: normal;
-  height: 48px;
-  line-height: 28px;
-  letter-spacing: normal
+    font-family: bilo, sans-serif !important;
+    font-weight: 400;
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    height: 48px;
+    line-height: 28px;
+    letter-spacing: normal
 }
 
-  .footer .content .footer-nav li a:hover {
+.footer .content .footer-nav li a:hover {
     text-decoration: underline
-  }
+}
 
 .footer .content .footer-nav ul {
-  max-height: 0;
-  overflow: hidden;
-  transition: all .2s ease-in-out;
-  margin-bottom: 28px
+    max-height: 0;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+    margin-bottom: 28px
 }
 
-@media (min-width:1004px) {
-  .footer .content .footer-nav ul {
-    max-height: 2500px;
-    margin-top: 28px
-  }
+@media (min-width: 1004px) {
+    .footer .content .footer-nav ul {
+        max-height: 2500px;
+        margin-top: 28px
+    }
 }
 
 .footer .content .footer-nav.open ul {
-  margin-top: 28px;
-  max-height: 2500px;
-  overflow: hidden;
-  border-bottom: 1px solid hsla(0, 0%, 84%, .5)
+    margin-top: 28px;
+    max-height: 2500px;
+    overflow: hidden;
+    border-bottom: 1px solid hsla(0, 0%, 84%, .5)
 }
 
-@media (min-width:1004px) {
-  .footer .content .footer-nav.open ul {
-    border-bottom: 0
-  }
+@media (min-width: 1004px) {
+    .footer .content .footer-nav.open ul {
+        border-bottom: 0
+    }
 }
 
 .footer .content .footer-nav.open ul.last {
-  border-bottom: 0
+    border-bottom: 0
 }
 
 .footer .content li {
-  height: 28px;
-  line-height: 28px;
-  color: #fff;
-  text-align: left;
-  display: block
+    height: 28px;
+    line-height: 28px;
+    color: #fff;
+    text-align: left;
+    display: block
 }
 
 .footer .content .infos {
-  text-align: center;
-  padding-bottom: 6px
+    text-align: center;
+    padding-bottom: 6px
 }
 
-  .footer .content .infos a {
+.footer .content .infos a {
     font-family: bilo, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     text-align: center;
     display: block;
     font-size: 16px;
@@ -191,34 +192,32 @@
     font-stretch: normal;
     line-height: 48px;
     letter-spacing: normal
-  }
+}
 
-    .footer .content .infos a:hover {
-      font-weight: 400;
-      text-decoration: none
+.footer .content .infos a:hover {
+    font-weight: 500;
+    text-decoration: none
+}
+
+@media (min-width: 570px) {
+    .footer .content .infos a {
+        display: inline-block;
+        margin-left: 24px;
+        line-height: 48px
     }
-
-@media (min-width:570px) {
-  .footer .content .infos a {
-    display: inline-block;
-    margin-left: 24px;
-    line-height: 48px
-  }
-
     .footer .content .infos a:first-child {
-      margin-left: 0
+        margin-left: 0
     }
 }
 
 .footer .content .links {
-  text-align: center;
-  padding-bottom: 18px
+    text-align: center;
+    padding-bottom: 18px
 }
 
-  .footer .content .links .copyright,
-  .footer .content .links a {
+.footer .content .links .copyright, .footer .content .links a {
     font-family: bilo, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     text-align: center;
     display: block;
     font-size: 15px;
@@ -226,35 +225,30 @@
     font-stretch: normal;
     line-height: 48px;
     letter-spacing: normal
-  }
+}
 
-    .footer .content .links .copyright:hover,
-    .footer .content .links a:hover {
-      text-decoration: none
+.footer .content .links .copyright:hover, .footer .content .links a:hover {
+    text-decoration: none
+}
+
+@media (min-width: 570px) {
+    .footer .content .links .copyright, .footer .content .links a {
+        display: inline-block;
+        margin-left: 24px;
+        line-height: 48px
     }
-
-@media (min-width:570px) {
-  .footer .content .links .copyright,
-  .footer .content .links a {
-    display: inline-block;
-    margin-left: 24px;
-    line-height: 48px
-  }
-
-    .footer .content .links .copyright:first-child,
-    .footer .content .links a:first-child {
-      margin-left: 0
+    .footer .content .links .copyright:first-child, .footer .content .links a:first-child {
+        margin-left: 0
     }
 }
 
-.footer .content .links .copyright,
-.footer .content .links .copyright:hover {
-  text-decoration: none
+.footer .content .links .copyright, .footer .content .links .copyright:hover {
+    text-decoration: none
 }
 
-@media (min-width:570px) {
-  .footer .content .links .copyright {
-    display: block;
-    line-height: 48px
-  }
+@media (min-width: 570px) {
+    .footer .content .links .copyright {
+        display: block;
+        line-height: 48px
+    }
 }

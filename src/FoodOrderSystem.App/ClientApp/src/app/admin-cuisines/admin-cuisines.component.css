@@ -1,0 +1,30 @@
+.Setting-Section-Title {
+  font-family: bilo, sans-serif;
+  font-size: 40px;
+  text-align: center;
+  margin-top: 20px;
+  line-height: 1.14;
+}
+
+  .Setting-Section-Title h1 {
+    font-size: 35px;
+    margin-bottom: 12px;
+    color: #0a3847
+  }
+
+.SettingAddButton {
+  background-color: #218838;
+  color: #fff;
+  font-weight: 500;
+  user-select: none;
+  padding: 0 16px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  height: 40px;
+  line-height: 1.5;
+  font-size: 17px;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+}

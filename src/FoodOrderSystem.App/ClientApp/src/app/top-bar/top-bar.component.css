@@ -60,10 +60,10 @@
   max-height: 1.60rem
 }
 
-.topbar-logo .large-logo {
-  display: none;
-  height: 78px
-}
+  .topbar-logo .large-logo {
+    display: none;
+    height: 78px
+  }
 
 @media (min-width:1004px) {
   .topbar-logo .large-logo {
