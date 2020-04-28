@@ -85,8 +85,10 @@ namespace FoodOrderSystem.Persistence
 
         private static Cuisine FromRow(CuisineRow row)
         {
-            return new Cuisine(new CuisineId(row.Id),
-                row.Name
+            return new Cuisine(
+                new CuisineId(row.Id),
+                row.Name,
+                row.Image
             );
         }
 
@@ -94,6 +96,7 @@ namespace FoodOrderSystem.Persistence
         {
             row.Id = obj.Id.Value;
             row.Name = obj.Name;
+            row.Image = obj.Image;
         }
     }
 }

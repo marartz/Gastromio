@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var UserModel = /** @class */ (function () {
-    function UserModel() {
+var CuisineModel = /** @class */ (function () {
+    function CuisineModel() {
     }
-    return UserModel;
+    return CuisineModel;
 }());
-exports.UserModel = UserModel;
-//# sourceMappingURL=user.model.js.map
+exports.CuisineModel = CuisineModel;
+//# sourceMappingURL=cuisine.model.js.map

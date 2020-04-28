@@ -32,7 +32,7 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
             if (cuisine != null)
                 return new FailureCommandResult<string>("cuisine name already exists");
 
-            cuisine = cuisineFactory.Create(command.Name);
+            cuisine = cuisineFactory.Create(command.Name, command.Image);
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 
             return new SuccessCommandResult<Cuisine>(cuisine);

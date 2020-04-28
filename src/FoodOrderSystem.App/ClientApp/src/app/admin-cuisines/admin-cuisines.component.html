@@ -1,36 +1,38 @@
 <div class="container">
-    <div class="row">
-        <div class="col p-2">
-            <div class="mb-4">
-                <div class="Setting-Section-Title">
-                    <h1>Cuisine-Verwaltung</h1>
-                </div>
-            </div>
-            <div class="restaurants mt-3">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="SearchTableTitle">Name</th>
-                            <th>
-                                <div class="float-right">
-                                    <button class="btn btn-success SettingAddButton" id="addCuisine" (click)="openAddCuisineForm()"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let cuisine of cuisines | async" class="cuisine">
-                            <td>{{cuisine.name}}</td>
-                            <td>
-                                <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeCuisineForm(cuisine)"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveCuisineForm(cuisine)"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+  <div class="row">
+    <div class="col p-2">
+      <div class="mb-4">
+        <div class="Setting-Section-Title">
+          <h1>Cuisine-Verwaltung</h1>
         </div>
+      </div>
+      <div class="restaurants mt-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:100px;">Bild</th>
+              <th class="SearchTableTitle">Name</th>
+              <th>
+                <div class="float-right">
+                  <button class="btn btn-success SettingAddButton" id="addCuisine" (click)="openAddCuisineForm()"><i class="fas fa-plus"></i></button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cuisine of cuisines | async" class="cuisine">
+              <td><img [src]="cuisine.image" height="40"></td>
+              <td>{{cuisine.name}}</td>
+              <td>
+                <div class="float-right">
+                  <button class="btn btn-secondary btn-sm m-1" (click)="openChangeCuisineForm(cuisine)"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveCuisineForm(cuisine)"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>

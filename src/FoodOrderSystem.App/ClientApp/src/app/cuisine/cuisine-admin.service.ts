@@ -24,7 +24,7 @@ export class CuisineAdminService {
     return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions);
   }
 
-  public addCuisineAsync(name: string): Observable<CuisineModel> {
+  public addCuisineAsync(name: string, image: string): Observable<CuisineModel> {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -32,10 +32,10 @@ export class CuisineAdminService {
         'Authorization': 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', { name: name }, httpOptions);
+    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', { name: name, image: image }, httpOptions);
   }
 
-  public changeCuisineAsync(cuisineId: string, name: string): Observable<CuisineModel> {
+  public changeCuisineAsync(cuisineId: string, name: string, image: string): Observable<CuisineModel> {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class CuisineAdminService {
         'Authorization': 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines/' + cuisineId + '/change', { name: name }, httpOptions);
+    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines/' + cuisineId + '/change', { name: name, image: image }, httpOptions);
   }
 
   public removeCuisineAsync(cuisineId: string): Observable<void> {
