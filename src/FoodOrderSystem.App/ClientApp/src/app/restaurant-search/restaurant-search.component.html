@@ -5,21 +5,21 @@
                 <input class="form-control mr-sm-2" id="restaurant-search" type="search" maxlength="30" placeholder="Restaurant, z.B. Pizzeria La Piccola" aria-label="Search">
             </div>
             <div class="restaurants mt-3">
-                <div *ngFor="let restaurant of restaurants" class="restaurant">
+                <div class="restaurant" *ngFor="let restaurant of restaurants">
                     <div class="restaurant-logo-wrapper">
                         <div class="restaurant-logo">
-                            <img src="assets/logo.png" class="restaurant-logo" alt="" />
+                            <img class="" src="assets/logo.png" alt="{{ restaurant.name }}" border="0" />
                         </div>
                     </div>
                     <div class="restaurant-info-wrapper">
-                        <div class="restaurant-info">
-                            <p class="restaurant-name mb-0">{{ restaurant.name }}</p>
-                            <p class="restaurant-beschreibung">{{ restaurant.description }}&nbsp;</p>
-                        </div>
-                        <div class="restaurant-cond">
-                            <span class="nextdeliverytime px-1">Ab {{ restaurant.nextDeliveryTime }}</span>
-                            <span class="delivery-cost px-1">{{ restaurant.deliveryCosts }}</span>
-                            <span class="min-order px-1">min. {{ restaurant.minimumOrderValue }}</span>
+                        <h2 class="restaurantname">{{ restaurant.name }}</h2>
+                        <div class="restaurantbeschreibung">{{ restaurant.description }}</div>
+                        <div class="bottom-wrapper details">
+                            <div class="delivery">
+                                <div class="nextdeliverytime">Ab {{ restaurant.nextDeliveryTime }}</div>
+                                <div class="delivery-cost">{{ restaurant.deliveryCosts }}</div>
+                                <div class="min-order">Min. {{ restaurant.minimumOrderValue }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>

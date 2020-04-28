@@ -1,15 +1,12 @@
-#restaurant-search {
-    font-family: bilo, sans-serif;
-    font-weight: 300;
-    font-size: 15px;
-    height: 35px;
-    background: none;
-    color: #0a3874;
-    border: 1px solid #d7d7d7
+@font-face {
+  font-family: fontello;
+  src: url(../../assets/fonts/fontello/fontello.eot);
+  src: url(../../assets/fonts/fontello/fontello.eot#iefix) format("embedded-opentype"), url(../../assets/fonts/fontello/fontello.woff2) format("woff2"), url(../../assets/fonts/fontello/fontello.woff) format("woff"), url(../../assets/fonts/fontello/fontello.ttf) format("truetype"), url(../../assets/fonts/fontello/fontello.svg#fontello) format("svg");
+  font-weight: 400;
+  font-style: normal
 }
 
-
-div.restaurant {
+.restaurant {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -21,86 +18,177 @@ div.restaurant {
     min-height: 7em;
 }
 
-div.restaurant-logo-wrapper {
-  display: flex;
-  flex-direction: column;
-  float: left;
-  border-right: solid 1px #ebebeb;
-  position: relative;
-  width: 120px;
-  padding: 10px;
+.restaurant .restaurant-logo-wrapper {
+    flex: 0 0 98px;
+    text-align:center;
+    border-right:1px solid #ebebeb;
+    min-height:120px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative
 }
 
-div.restaurant-logo {
-  max-width: 90px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0px;
-  right: 0px;
-  padding: 10px;
-  margin: auto;
+@media (min-width: 570px) {
+    .restaurant .restaurant-logo-wrapper {
+        flex: 0 0 118px
+    }
 }
 
-img.restaurant-logo {
-  width: 100%;
-  max-height: 80px;
-  height: auto;
+@media (min-width: 1004px) {
+    .restaurant .restaurant-logo-wrapper {
+        flex: 0 0 138px;
+    }
 }
 
-div.restaurant-info-wrapper {
-  display: flex;
-  flex-direction: column;
-  float: left;
-  position: relative;
-  padding: 10px;
+.restaurant .restaurant-logo {
+    z-index: 1;
+    max-width: 80px;
+    text-align: left;
+    font-size: 12px;
+    position: absolute;
+    width: 100%;
+    top: 45%;
+    transform: translateY(-50%);
+    margin: auto;
+    left: 0;
+    right: 0
 }
 
-div.restaurant-info {
+.restaurant .restaurant-logo img {
+    width: 100%;
+    max-height: 80px;
+    height: auto;
+    vertical-align: middle
 }
 
-.restaurant-name {
-    font-family: bilo, sans-serif;
+.restaurant .restaurant-info-wrapper {
+    flex: 1;
+    min-height: 120px;
+    line-height: 1.7;
+    font-size: 15px;
+    padding: 8px 0 0 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden
+}
+
+.restaurant .restaurantname {
+    font-family: bilo ,sans-serif;
     font-weight: 600;
-    font-size: 18px;
-    color: #0a3847;
     padding: 0;
+    color: #0a3847;
+    font-size: 18px;
     line-height: 22px;
     max-height: 66px;
+    overflow: hidden;
+    margin: 0 8px 0 0
 }
 
-.restaurant-beschreibung {
-    font-family: skolar-latin, serif;
+.restaurant .restaurant-info-wrapper .restaurantbeschreibung {
+    line-height: 22px;
+    font-family: roboto-slab, Arial, sans-serif;
     font-weight: 300;
-    font-size: 15px;
-    color: #666;
+    font-size: 13px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 8px 4px 0;
-    margin-bottom: 24px
+    color: #666
 }
 
-div.restaurant-cond {
+@media (min-width: 570px) {
+    .restaurant .restaurant-info-wrapper .restaurantbeschreibung {
+        margin: 0 0 8px
+    }
 }
 
-.nextdeliverytime {
-    color: #999;
-    font-size: 13px;
-    font-family:;
+.restaurant .bottom-wrapper {
+    line-height: 12px;
+    display: flex;
+    margin-top: auto;
+}
+
+@media (min-width: 570px) {
+    .restaurant .bottom-wrapper {
+        line-height: 16px
+    }
+}
+
+.restaurant .restaurant-info-wrapper .details {
+    font-size: 12px;
+    line-height: 2em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-bottom: 3px
+}
+
+@media (min-width: 570px) {
+    .restaurant .restaurant-info-wrapper .details {
+        margin-bottom: 6px
+    }
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery {
+    width: 100%;
+    line-height: 18px;
+    font-family: roboto-slab, Arial, sans-serif;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap
+}
+.restaurant .restaurant-info-wrapper .details .delivery div {
+    margin-right: 8px
+}
+
+@media (min-width: 1004px) {
+    .restaurant .restaurant-info-wrapper .details .delivery div {
+        margin-right: 16px
+    }
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery.hidden {
+    display: none
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .nextdeliverytime:before,
+.restaurant .restaurant-info-wrapper .details .delivery .delivery-cost:before,
+.restaurant .restaurant-info-wrapper .details .delivery .min-order:before {
     margin-right: 4px;
+    font-family: fontello;
+    color: #999;
+    font-size: 11px
 }
 
-.delivery-cost {
-  color: #999;
-  font-size: 13px;
-  font-family:;
-  margin-right: 4px;
+.restaurant .restaurant-info-wrapper .details .delivery .clock-icon:before {
+    margin-right: 4px;
+    font-family: fontello;
+    font-size: 11px
 }
 
-.min-order {
-  color: #999;
-  font-size: 13px;
-  font-family:;
-  margin-right: 4px;
+.restaurant .restaurant-info-wrapper .details .delivery .delivery-cost:before {
+    content: "\e97d"
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .min-order:before {
+    content: "\e97c"
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .nextdeliverytime:before,
+.restaurant .restaurant-info-wrapper .details .delivery .clock-icon:before {
+    content: "\e95d"
+}
+
+#restaurant-search {
+  font-family: bilo, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  height: 35px;
+  background: none;
+  color: #0a3874;
+  border: 1px solid #d7d7d7
 }
