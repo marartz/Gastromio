@@ -1,224 +1,210 @@
-.login-modal {
-  display: flex;
-  flex-flow: column;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-}
-
-.modal-top {
-  background-color: #fff;
-  padding: 20px 16px;
-  height: 72px;
-  clip-path: none;
-}
-
-.login-title {
-  font-family: bilo, sans-serif;
-  font-weight: 600;
-  color: #0a3847;
-  font-size: 20px;
-  text-align: center;
-}
-
-.form-area {
-  font-family: bilo, sans-serif;
-  font-size: 17px;
-  color: #0a3847;
-  line-height: 18px;
-  margin-bottom: 12px;
-}
-
-.form-input {
-  position: relative;
-  border-radius: 3px;
-  background: #fff;
-  width: 100%;
-}
-
-  .form-input::after {
-    position: absolute;
-    display: inline-flex;
-    top: 0;
-    right: 0;
-    width: 32px;
-    text-align: center;
-    height: 35px;
-    line-height: 35px !important;
-  }
-
-.--input {
-  position: relative;
-  width: 100%;
-  height: 38px;
-  background: none;
-  border: 1px solid #d7d7d7;
-  color: #666;
-  border-radius: 0;
-  margin-top: 7px;
-  padding: 8px 16px;
-}
-
-.button-submit {
-  width: 100%;
-  background-color: #1574f5;
-  color: #fff;
-  font-family: bilo, sans-serif;
-  font-weight: 500;
-  user-select: none;
-  padding: 0 16px;
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
-  height: 56px;
-  line-height: 1.5;
-  font-size: 16px;
-  border: 0;
-  outline: 0;
-  vertical-align: baseline;
-}
-
-  .button-submit:focus, .button-submit:hover, {
-    background-color: #0953bd;
-  }
-
-/*.LoginPage-container {
-    background-color: #fff;
-    border: 1px solid #d8d8d8;
-    border-radius: 1px;
-    margin-top: 40px;
-    margin-bottom: 100px;
-    width: 608px;
-    padding: 16px 104px 20px;
-}
-
-.LoginPage-menu {
-    display: flex;
-    flex-direction: row;
-    margin-top: -16px;
-    margin-right: -104px;
-    margin-left: -104px;
-    height:  56px;
-}
-
-.login-title {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-family: bilo, sans-serif;
-  font-size: 16px;
-  color: #666;
-  border-bottom: 1px solid #d8d8d8;
-  cursor: pointer;
-}
-
-.login-title-active {
-    font-weight: 700;
-    color: #52ae31;
-    border-bottom: 2px solid #52ae31;
-}
-
-.login-content {
-    padding-top: 20px;
-}
-
-.login-root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+.login-modal .login-content {
     position: relative;
+    width: 100%;
+    outline: none;
+    left: 50%;
+    background: #fff;
+    border-bottom: 5px solid #52AE31;
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+    -webkit-transform: translate(-50%);
+    -moz-transform: translate(-50%);
+    -ms-transform: translate(-50%);
+    -o-transform: translate(-50%);
+    transform: translate(-50%)
 }
 
-.login-formContainer {
+@media only screen and (min-width: 600px) {
+    .login-modal .login-content {
+        max-width: 500px;
+        top: 5%;
+        bottom: 5%
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .login-modal .login-content {
+        min-height: 100%
+    }
+}
+
+.login-modal .login-header {
+    position: relative;
     width: 100%;
-    background-color: #fff;
+    height: auto;
+    padding: 16px;
+    font-family: bilo, sans-serif;
+    font-size: 24px;
+    background: #52AE31;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2)
+}
+
+.login-modal .login-close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    right: 16px;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer
+}
+
+.login-modal .login-close:before {
+    display: block;
+    position: relative;
+    content: "\E918";
+    font-family: fontello;
+    font-weight: 200;
+    line-height: 1;
+}
+
+.button-container {
+    text-align: center
+}
+
+.login-modal .login-header {
+    border-bottom: initial;
+    top: 20%;
+    padding-bottom: 20px
+}
+
+.login-form * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
 }
 
 .login-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    width: auto;
+    min-width: 1px;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-transition: min-width .3s ease .3s;
+    -moz-transition: min-width .3s ease .3s;
+    -o-transition: min-width .3s ease .3s;
+    transition: min-width .3s ease .3s
 }
 
-.login-formInput {
-    flex: 1;
+.login-form .headline {
+    margin: 0 0 10px;
+    font-family: bilo, sans-serif;
+    font-weight: 400;
+    font-size: 22px
+}
+
+.login-form .tab-login {
+    padding: 20px 32px
+}
+
+.login-form .input {
+    position: relative;
     margin-bottom: 24px;
-    border: none;
-    user-select: none;
+    border-radius: 3px;
+    background: #fff;
+    width: 100%
 }
 
-.FormFieldComponentContainer {
-    display: flex;
-    flex: 1 1 0%;
-    flex-direction: column;
-}
-
-.InputWrapper {
-    width: 100%;
-}
-
-.FormInput {
+.login-form .input input, .login-form .input textarea {
     position: relative;
     width: 100%;
-    height: 47px;
-    max-height: 47px;
-    text-align: left;
-    display: flex;
-    align-items: flex-end;
-    border-radius: 2px;
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(215, 215, 215);
+    height: 50px;
+    padding: 8px 16px;
+    z-index: 1;
+    background: none;
+    color: #000;
+    border: 1px solid #cfcac4;
+    border-radius: 3px
 }
 
-.InputField {
-    width: 100%;
-    height: 100%;
-    padding-top: 16px;
-    border: medium none;
-    outline: currentcolor none medium;
-    padding-left: 16px;
-    background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%;
-    text-rendering: optimizeLegibility;
+.login-form .input input:hover, .login-form .input textarea:hover {
+    border: 1px solid #50aecc
 }
 
-.InputPlaceholder {
+.login-form .input input:active,
+.login-form .input input:focus,
+.login-form .input input:hover,
+.login-form .input textarea:active,
+.login-form .input textarea:focus,
+.login-form .input textarea:hover {
+    box-shadow: 0 0 8px #f9f5f1;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0)
+}
+
+.login-form .input input:active,
+.login-form .input input:focus,
+.login-form .input textarea:active,
+.login-form .input textarea:focus {
+    border-color: #50aecc !important
+}
+
+.login-form .input label {
     position: absolute;
-    top: calc(100% -32px);
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s;
-    cursor: default;
-    font-family: bilo, sans-serif;
-    font-size: 16px;
-    line-height: 22px;
-    color: rgb(10, 56, 71);
+    cursor: text;
+    padding: 0 4px;
+    border-radius: 3px;
+    color: #000;
+    z-index: 2;
+    background: #fff;
     left: 16px;
-    text-align: left;
+    top: -6px;
+    font-size: 13px;
+    line-height: 1
 }
 
-.Button {
-    font-family: bilo, sans-serif;
-    line-height: 26px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 2px;
-    border: 0;
-    text-rendering: optimizeLegibility;
+.login-form .input:after {
+    right: 0
 }
 
-.Button-Primary {
-    height: 32px;
+.login-modal .button-container {
+    padding: 16px
+}
+
+.login-modal .button-container {
+    text-align: right;
+    padding-top: 0
+}
+
+.login-form .button-submit {
+    width: 100%;
+    background-color: #50aecc;
     color: #fff;
-    background-color: #1574f5;
-    transition: background-color .25s ease-in;
+    font-family: bilo, sans-serif;
+    font-weight: 500;
+    user-select: none;
+    padding: 0 16px;
+    box-shadow: 0 2px 2px rgba(0,0,0,.2);
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    height: 56px;
+    line-height: 1.5;
+    font-size: 17px;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
 }
 
-.SubmitLogin {
-    border-radius: 2px;
-    height: 48px;
-}*/
+.login-form .form-notification {
+    font-family: bilo, Arial, sans-serif;
+    font-weight: 300;
+    padding: 12px;
+    position: relative;
+    background-color: #fa4329;
+    border: 1px solid #fa4329;
+    border-radius: 3px;
+    margin-bottom: 12px;
+    color: #fff
+}

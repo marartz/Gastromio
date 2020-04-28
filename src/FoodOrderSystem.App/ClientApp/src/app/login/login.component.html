@@ -1,58 +1,31 @@
-<section class="login-modal">
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-        <div class="modal-top">
-            <h4 class="login-title">Anmelden</h4>
-            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<div class="login-modal">
+    <div class="login-content">
+        <div class="login-header">ANMELDEN
+            <!--span class="login-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
         </div>
-        <div class="modal-body">
-            <div class="form-area">
-                <label for="username">Benutzername</label>
-                <div class="form-input">
-                    <input id="username" class="--input" type="text" formControlName="username" ngbAutofocus>
-                </div>
-            </div>
-            <div class="form-area">
-                <label for="password">Passwort</label>
-                <div class="form-input">
-                    <input id="password" class="--input" type="password" formControlName="password">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <p class="error" *ngIf="message !== undefined">{{message}}</p>
-            <button class="button-submit" type="submit">Einloggen</button>
-        </div>
-    </form>
-</section>
-<!--form-- class="" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-    <div class="LoginPage-container">
-        <div class="LoginPage-menu">
-            <h4 class="login-title login-title-active">Einloggen</h4>
-        </div>
-        <div class="login-content">
-            <div class="login-root">
-                <div class="login-formContainer">
-                    <div class="login-formInput">
-                        <div class="FormFieldComponentContainer">
-                            <div class="InputWrapper FormInput">
-                                <input class="InputField" id="username" type="text" formControlName="username" required="" ngbAutofocus>
-                                <label class="InputPlaceholder" for="username">Benutzername</label>
-                            </div>
+        <div class="login-form">
+            <div class="tab tab-login">
+                <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+                    <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
+                    <div class="form-input">
+                        <div class="input">
+                            <input type="text" id="username" formControlName="username" ngbAutofocus>
+                            <label for="username">Benutzername</label>
+                        </div>
+                        <div class="input">
+                            <input type="password" id="password" formControlName="password">
+                            <label for="password">Passwort</label>
                         </div>
                     </div>
-                    <div class="login-formInput">
-                        <div class="FormFieldComponentContainer">
-                            <div class="InputWrapper FormInput">
-                                <input class="InputField" id="password" type="password" formControlName="password" required="">
-                                <label class="InputPlaceholder" for="password">Passwort</label>
-                            </div>
-                        </div>
+                    <!-- Platz für Social-Media Logins?
+                         z.B. Facebook, Google, ...
+
+                         oder auch "Restaurant anmelden"? -->
+                    <div class="button-container">
+                        <button class="button-submit" type="submit">Einloggen</button>
                     </div>
-                    <button class="Button Button-Primary SubmitLogin" type="submit">Einloggen</button>
-                </div>
+                </form>
             </div>
         </div>
-        </div>
-    </!--form-->
+    </div>
+</div>
