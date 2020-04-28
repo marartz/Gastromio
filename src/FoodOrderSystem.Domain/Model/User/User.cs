@@ -20,13 +20,15 @@ namespace FoodOrderSystem.Domain.Model.User
         public UserId Id { get; }
         public string Name { get; private set; }
         public Role Role { get; private set; }
+        public string Email { get; private set; }
         public byte[] PasswordSalt { get; private set; }
         public byte[] PasswordHash { get; private set; }
 
-        public void ChangeDetails(string name, Role role)
+        public void ChangeDetails(string name, Role role, string email)
         {
             Name = name;
             Role = role;
+            Email = email;
         }
 
         public bool ValidatePassword(string password)

@@ -27,11 +27,13 @@ export class ChangeUserDetailsComponent implements OnInit {
     this.changeUserDetailsForm = this.formBuilder.group({
       name: this.user.name,
       role: this.user.role,
+      email: this.user.email
     });
   }
 
   onSubmit(data) {
-    this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role)
+    console.log("Data: ", data);
+    this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
       .subscribe(() => {
         this.message = undefined;
         this.changeUserDetailsForm.reset();

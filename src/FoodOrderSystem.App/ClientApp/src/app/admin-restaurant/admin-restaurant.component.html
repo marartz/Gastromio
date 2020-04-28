@@ -97,6 +97,55 @@
             Lieferzeiten
           </div>
           <div class="card-body">
+            <table class="table col-sm-12">
+              <thead>
+                <tr>
+                  <th>Tag</th>
+                  <th>Beginn</th>
+                  <th>Ende</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
+                  <td>{{deliveryTime.dayOfWeekText}}</td>
+                  <td>{{deliveryTime.startTimeText}}</td>
+                  <td>{{deliveryTime.endTimeText}}</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <form [formGroup]="addDeliveryTimeForm">
+              <table class="table col-sm-12">
+                <tbody>
+                  <tr>
+                    <td>
+                      <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
+                        <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
+                        <option value="0">Montag</option>
+                        <option value="1">Dienstag</option>
+                        <option value="2">Mittwoch</option>
+                        <option value="3">Donnerstag</option>
+                        <option value="4">Freitag</option>
+                        <option value="5">Samstag</option>
+                        <option value="6">Sonntag</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Startzeit" class="form-control" formControlName="start" />
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Endzeit" class="form-control" formControlName="end" />
+                    </td>
+                    <td>
+                      <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
           </div>
         </div>
 

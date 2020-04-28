@@ -12,7 +12,8 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Role</th>
+              <th>Rolle</th>
+              <th>E-Mail</th>
               <th>
                 <div class="float-right">
                   <button class="btn btn-success" id="addUser" (click)="openAddUserForm()"><i class="fas fa-plus"></i></button>
@@ -26,6 +27,7 @@
                 {{user.name}}
               </td>
               <td>{{localizeRole(user.role)}}</td>
+              <td>{{user.email}}</td>
               <td>
                 <div class="float-right">
                   <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)"><i class="fas fa-edit"></i></button>

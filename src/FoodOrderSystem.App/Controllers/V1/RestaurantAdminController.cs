@@ -1,9 +1,11 @@
 ﻿using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
+using FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantName;
+using FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
@@ -186,5 +188,73 @@ namespace FoodOrderSystem.App.Controllers.V1
             }
         }
 
+        [Route("restaurants/{restaurantId}/adddeliverytime")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddDeliveryTimeAsync(Guid restaurantId, [FromBody] AddDeliveryTimeToRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var start = TimeSpan.FromMinutes(model.Start);
+            var end = TimeSpan.FromMinutes(model.End);
+
+            var commandResult = await commandDispatcher.PostAsync(
+                new AddDeliveryTimeToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
+                currentUser
+            );
+
+            switch (commandResult)
+            {
+                case UnauthorizedCommandResult _:
+                    return Unauthorized();
+                case ForbiddenCommandResult _:
+                    return Forbid();
+                case FailureCommandResult result:
+                    return BadRequest(result);
+                case SuccessCommandResult<Restaurant> result:
+                    return Ok(RestaurantModel.FromRestaurant(result.Value));
+                default:
+                    throw new InvalidOperationException("internal server error");
+            }
+        }
+
+        [Route("restaurants/{restaurantId}/adddeliverytime")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveDeliveryTimeAsync(Guid restaurantId, [FromBody] RemoveDeliveryTimeFromRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var start = TimeSpan.FromMinutes(model.Start);
+
+            var commandResult = await commandDispatcher.PostAsync(
+                new RemoveDeliveryTimeFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
+                currentUser
+            );
+
+            switch (commandResult)
+            {
+                case UnauthorizedCommandResult _:
+                    return Unauthorized();
+                case ForbiddenCommandResult _:
+                    return Forbid();
+                case FailureCommandResult result:
+                    return BadRequest(result);
+                case SuccessCommandResult<Restaurant> result:
+                    return Ok(RestaurantModel.FromRestaurant(result.Value));
+                default:
+                    throw new InvalidOperationException("internal server error");
+            }
+        }
     }
 }

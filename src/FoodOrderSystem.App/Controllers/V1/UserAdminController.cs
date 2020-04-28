@@ -115,7 +115,11 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var role = (Role)Enum.Parse(typeof(Role), changeUserDetailsModel.Role);
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangeUserDetailsCommand(new UserId(userId), changeUserDetailsModel.Name, role), currentUser);
+            var commandResult = await commandDispatcher.PostAsync(
+                new ChangeUserDetailsCommand(new UserId(userId), changeUserDetailsModel.Name, role, changeUserDetailsModel.Email),
+                currentUser
+            );
+
             switch (commandResult)
             {
                 case UnauthorizedCommandResult _:

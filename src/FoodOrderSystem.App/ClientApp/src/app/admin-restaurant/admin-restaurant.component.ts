@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RestaurantModel, AddressModel } from '../restaurant/restaurant.model';
+import { RestaurantModel, AddressModel, DeliveryTimeModel } from '../restaurant/restaurant.model';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeRestaurantNameComponent } from '../change-restaurant-name/change-restaurant-name.component';
@@ -18,7 +18,17 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   changeAddressForm: FormGroup;
   changeContactDetailsForm: FormGroup;
   changeDeliveryDataForm: FormGroup;
+  addDeliveryTimeForm: FormGroup;
 
+  daysOfMonth = [
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+    "Sonntag"
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +55,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       deliveryCosts: 0,
     });
 
+    this.addDeliveryTimeForm = this.formBuilder.group({
+      dayOfWeek: "",
+      start: "",
+      end: ""
+    });
   }
 
   ngOnInit() {
@@ -73,7 +88,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
             minimumOrderValue: this.restaurant.minimumOrderValue,
             deliveryCosts: this.restaurant.deliveryCosts,
           });
-
         },
         (error) => {
           subscription.unsubscribe();
@@ -84,6 +98,34 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  getDeliveryTimeViewModels(): Array<DeliveryTimeViewModel> {
+    let tempDeliveryTimes = this.restaurant.deliveryTimes.sort((a, b) => {
+      if (a.dayOfWeek < b.dayOfWeek)
+        return -1;
+      else if (a.dayOfWeek > b.dayOfWeek)
+        return +1;
+
+      if (a.start < b.start)
+        return -1;
+      else if (a.start > b.start)
+        return +1;
+    });
+
+    let result = new Array<DeliveryTimeViewModel>();
+    for (let deliveryTime of tempDeliveryTimes) {
+      let viewModel = new DeliveryTimeViewModel();
+      viewModel.dayOfWeek = deliveryTime.dayOfWeek;
+      viewModel.dayOfWeekText = this.daysOfMonth[deliveryTime.dayOfWeek];
+      viewModel.startTime = deliveryTime.start;
+      viewModel.startTimeText = this.toTimeViewModel(deliveryTime.start);
+      viewModel.endTime = deliveryTime.end;
+      viewModel.endTimeText = this.toTimeViewModel(deliveryTime.end);
+      result.push(viewModel);
+    }
+
+    return result;
   }
 
   openChangeRestaurantNameForm(): void {
@@ -127,4 +169,19 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       // TODO
     });
   }
+
+  private toTimeViewModel(totalMinutes: number): string {
+    let hours = Math.floor(totalMinutes / 60);
+    let minutes = Math.floor(totalMinutes % 60);
+    return hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+  }
+}
+
+export class DeliveryTimeViewModel {
+  dayOfWeek: number;
+  dayOfWeekText: string;
+  startTime: number;
+  startTimeText: string;
+  endTime: number;
+  endTimeText: string;
 }

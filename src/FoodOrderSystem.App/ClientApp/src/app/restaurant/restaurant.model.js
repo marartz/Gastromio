@@ -4,7 +4,6 @@ var RestaurantModel = /** @class */ (function () {
     function RestaurantModel() {
         this.address = new AddressModel();
         this.deliveryTimes = new Array();
-        this.paymentMethods = new Array();
     }
     return RestaurantModel;
 }());

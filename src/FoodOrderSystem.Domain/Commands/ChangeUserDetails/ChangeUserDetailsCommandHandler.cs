@@ -29,7 +29,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeUserDetails
             if (user == null)
                 return new FailureCommandResult<string>("user does not exist");
 
-            user.ChangeDetails(command.Name, command.Role);
+            user.ChangeDetails(command.Name, command.Role, command.Email);
 
             await userRepository.StoreAsync(user, cancellationToken);
 

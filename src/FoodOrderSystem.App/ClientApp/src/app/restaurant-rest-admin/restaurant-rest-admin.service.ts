@@ -68,4 +68,26 @@ export class RestaurantRestAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changedeliverydata", { minimumOrderValue: minimumOrderValue, deliveryCosts: deliveryCosts }, httpOptions);
   }
 
+  public addDeliveryTimeToRestaurantAsync(id: string, dayOfWeek: number, start: number, end: number): Observable<RestaurantModel> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/adddeliverytime", { dayOfWeek: dayOfWeek, start: start, end: end }, httpOptions);
+  }
+
+  public removeDeliveryTimeFromRestaurantAsync(id: string, dayOfWeek: number, start: number): Observable<RestaurantModel> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removedeliverytime", { dayOfWeek: dayOfWeek, start: start }, httpOptions);
+  }
+
 }

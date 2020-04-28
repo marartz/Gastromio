@@ -2,7 +2,6 @@ export class RestaurantModel {
   constructor() {
     this.address = new AddressModel();
     this.deliveryTimes = new Array<DeliveryTimeModel>();
-    this.paymentMethods = new Array<string>();
   }
 
   public id: string;
@@ -20,8 +19,6 @@ export class RestaurantModel {
   public webSite: string;
 
   public imprint: string;
-
-  public paymentMethods: string[];
 }
 
 export class AddressModel {
