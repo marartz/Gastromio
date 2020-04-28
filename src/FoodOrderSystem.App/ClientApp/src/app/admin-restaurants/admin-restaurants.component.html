@@ -1,38 +1,38 @@
-<div class="container">
-  <div class="row">
-    <div class="col p-2">
-      <div class="mb-4">
-        <h3>Restaurantverwaltung</h3>
-      </div>
-      <div class="search">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-      </div>
-      <div class="restaurants mt-3">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>
-                <div class="float-right">
-                  <button class="btn btn-success" id="addRestaurant" (click)="openAddRestaurantForm()"><i class="fas fa-plus"></i></button>
+<div class="container" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col">
+            <div class="Setting-Section-Title">
+                <h1>Restaurantverwaltung</h1>
+            </div>
+
+            <div class="search">
+                <input class="form-control mr-sm-2" type="search" placeholder="Restaurant, z.B. Pizzeria Mamma Mia" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+                <button class="btn btn-success" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
+            </div>
+
+
+            <div class="restaurants mt-3">
+                <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
+                    <div class="restaurant-logo-wrapper">
+                        <div class="restaurant-logo">
+                            <img class="" src="assets/logo.png" alt="{{restaurant.name}}" border="0" /><!-- Hier später Restaurant Logo! -->
+                        </div>
+                    </div>
+                    <div class="restaurant-info-wrapper">
+                        <h2 class="restaurantname">{{restaurant.name}}</h2>
+                        <!-- {{restaurant.street }}   {{restaurant.plz}} {{restaurant.city}} -->
+                        <div class="restaurantbeschreibung">Werther Straße 213<br />46395 Bocholt</div>
+                        <div class="bottom-wrapper details">
+                            <div class="delivery">
+                                <a href="#" class="edit-restaurant-settings" [routerLink]="[restaurant.id]">Details ändern</a>
+                                &nbsp;&ndash;&nbsp;
+                                <a class="edit-restaurant-settings" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let restaurant of pageOfRestaurants" class="restaurant">
-              <td>{{restaurant.name}}</td>
-              <td>
-                <div class="float-right">
-                  <button class="btn btn-secondary btn-sm m-1" [routerLink]="[restaurant.id]"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveRestaurantForm(restaurant)"><i class="fas fa-trash"></i></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
-      </div>
+            </div>
+            <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
+        </div>
     </div>
-  </div>
 </div>

@@ -1,41 +1,52 @@
-<div class="container">
-        <div class="row">
-            <div class="col p-2">
 
-                <div class="mb-4">
-                    <h3>{{restaurant.name}} <button class="btn btn-secondary btn-sm m-1" (click)="openChangeRestaurantNameForm()"><i class="fas fa-edit"></i></button></h3>
-                </div>
-
-                <div>
-                    <div class="card mb-4">
+<div class="setting-header">
+    {{restaurant.name}} <button class="btn btn-secondary btn-sm m-1" (click)="openChangeRestaurantNameForm()"><i class="fas fa-edit"></i></button>
+</div>
+<div class="container" style="margin-top: 20px">
+    <div class="row">
+        <div class="col p-2">
+            <div>
+                <div class="card mb-4">
                         <div class="card-header">Adresse</div>
                         <div class="card-body">
-                            <form [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
+                            <form class="setting-form" [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
                                 <div class="form-group row">
                                     <label for="line1" class="col-sm-2 col-form-label">1. Zeile</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="line1" formControlName="line1">
+                                        <div class="input">
+                                            <input type="text" id="line1" formControlName="line1">
+                                            <label for="line1">1. Zeile</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="line2" class="col-sm-2 col-form-label">2. Zeile</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="line2" formControlName="line2">
+                                        <div class="input">
+                                            <input type="text" id="line2" formControlName="line2">
+                                            <label for="line2">2. Zeile</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="zipCode" class="col-sm-2 col-form-label">Postleitzahl</label>
                                     <div class="col-sm-3">
-                                        <input type="text" class="form-control" id="zipCode" formControlName="zipCode">
+                                        <div class="input">
+                                            <input type="text" id="zipCode" formControlName="zipCode">
+                                            <label for="zipCode">Postleitzahl</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="city" class="col-sm-2 col-form-label">Stadt</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="city" formControlName="city">
+                                        <div class="input">
+                                            <input type="text" id="city" formControlName="city">
+                                            <label for="city">Stadt</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Speichern</button>
+                                <button class="button-form button" type="submit">Adresse ändern</button>
                             </form>
                         </div>
                     </div>
@@ -43,20 +54,26 @@
                     <div class="card mb-4">
                         <div class="card-header">Andere Kontaktdaten</div>
                         <div class="card-body">
-                            <form [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
+                            <form class="setting-form" [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
                                 <div class="form-group row">
                                     <label for="webSite" class="col-sm-2 col-form-label">Webseite</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="webSite" formControlName="webSite">
+                                        <div class="input">
+                                            <input type="text" id="webSite" formControlName="webSite">
+                                            <label for="webSite">Webseite</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="imprint" class="col-sm-2 col-form-label">Impressum</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control" id="imprint" rows="4" formControlName="imprint"></textarea>
+                                        <div class="input">
+                                            <textarea style="height: 100%!important" id="imprint" rows="4" formControlName="imprint"></textarea>
+                                            <label for="imprint">Impressum</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Speichern</button>
+                                <button class="button-form button" type="submit">Änderungen speichern</button>
                             </form>
                         </div>
                     </div>
@@ -64,80 +81,86 @@
                     <div class="card mb-4">
                         <div class="card-header">Lieferung (allgemein)</div>
                         <div class="card-body">
-                            <form [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
+                            <form class="setting-form" [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
                                 <div class="form-group row">
                                     <label for="minimumOrderValue" class="col-sm-2 col-form-label">Mindestbestellwert</label>
                                     <div class="col-sm-3">
-                                        <input type="number" class="form-control" id="minimumOrderValue" formControlName="minimumOrderValue">
+                                        <div class="input">
+                                            <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue">
+                                            <label for="minimumOrderValue">Mindestbestellwert</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="deliveryCosts" class="col-sm-2 col-form-label">Lieferkosten</label>
                                     <div class="col-sm-3">
-                                        <input type="number" class="form-control" id="deliveryCosts" formControlName="deliveryCosts">
+                                        <div class="input">
+                                            <input type="number" id="deliveryCosts" formControlName="deliveryCosts">
+                                            <label for="deliveryCosts">Lieferkosten</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Speichern</button>
+                                <button class="button-form button" type="submit">Änderungen speichern</button>
                             </form>
                         </div>
                     </div>
 
-        <div class="card mb-4">
-          <div class="card-header">
-            Lieferzeiten
-          </div>
-          <div class="card-body">
-            <table class="table col-sm-12">
-              <thead>
-                <tr>
-                  <th>Tag</th>
-                  <th>Beginn</th>
-                  <th>Ende</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
-                  <td>{{deliveryTime.dayOfWeekText}}</td>
-                  <td>{{deliveryTime.startTimeText}}</td>
-                  <td>{{deliveryTime.endTimeText}}</td>
-                  <td>
-                    <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <form [formGroup]="addDeliveryTimeForm">
-              <table class="table col-sm-12">
-                <tbody>
-                  <tr>
-                    <td>
-                      <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
-                        <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
-                        <option value="0">Montag</option>
-                        <option value="1">Dienstag</option>
-                        <option value="2">Mittwoch</option>
-                        <option value="3">Donnerstag</option>
-                        <option value="4">Freitag</option>
-                        <option value="5">Samstag</option>
-                        <option value="6">Sonntag</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input type="text" placeholder="Startzeit" class="form-control" formControlName="start" />
-                    </td>
-                    <td>
-                      <input type="text" placeholder="Endzeit" class="form-control" formControlName="end" />
-                    </td>
-                    <td>
-                      <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-          </div>
-        </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Lieferzeiten
+                        </div>
+                        <div class="card-body">
+                            <table class="table col-sm-12">
+                                <thead>
+                                    <tr>
+                                        <th>Tag</th>
+                                        <th>Beginn</th>
+                                        <th>Ende</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
+                                        <td>{{deliveryTime.dayOfWeekText}}</td>
+                                        <td>{{deliveryTime.startTimeText}}</td>
+                                        <td>{{deliveryTime.endTimeText}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <form class="setting-form" [formGroup]="addDeliveryTimeForm">
+                                <table class="table col-sm-12">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
+                                                    <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
+                                                    <option value="0">Montag</option>
+                                                    <option value="1">Dienstag</option>
+                                                    <option value="2">Mittwoch</option>
+                                                    <option value="3">Donnerstag</option>
+                                                    <option value="4">Freitag</option>
+                                                    <option value="5">Samstag</option>
+                                                    <option value="6">Sonntag</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Startzeit" class="form-control" formControlName="start" />
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Endzeit" class="form-control" formControlName="end" />
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
 
                     <div class="card mb-4">
                         <div class="card-header">Zahlungsmethoden</div>

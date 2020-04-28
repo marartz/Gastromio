@@ -1,15 +1,19 @@
-<section class="setting-modal">
-    <div class="setting-top">
-        <h4 class="setting-title">Restaurant entfernen</h4>
-        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="setting-modal">
+    <div class="setting-content">
+        <div class="setting-header">
+            RESTAURANT LÖSCHEN
+            <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
+        </div>
+        <div class="setting-form">
+            <div class="tab tab-setting">
+                <div class="form-setting">
+                    <h5>Bist du sicher, dass du das Restaurant<br /><strong>'{{restaurant.name}}' löschen</strong><br />möchtest?</h5>
+                    <p style="margin-bottom: 5px;"><small>(Dieser Vorgang kann nicht rückgängig gemacht werden.)</small></p>
+                </div>
+                <div class="button-container">
+                    <button class="button-submit" type="submit" (click)="onSubmit()">Löschen</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="modal-body">
-        <h5>Bist du sicher, dass du das Restaurant <b>'{{restaurant.name}}'</b> löschen möchtest?</h5>
-    </div>
-    <div class="modal-footer">
-        <p class="error" *ngIf="message !== undefined">{{message}}</p>
-        <button class="button-submit" type="submit" (click)="onSubmit()">Entfernen</button>
-    </div>
-</section>
+</div>

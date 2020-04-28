@@ -1,34 +1,36 @@
-<section class="setting-modal">
-    <form [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
-        <div class="setting-top">
-            <h4 class="setting-title">Benutzer ändern</h4>
-            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<div class="setting-modal">
+    <div class="setting-content">
+        <div class="setting-header">
+            BENUTZERDATEN ÄNDERN
+            <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
         </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="name">Benutzername</label>
-                <input id="name" class="form-control" type="text" placeholder="Benutzername" formControlName="name">
-            </div>
-
-            <div class="form-group">
-                <label for="role">Rolle</label>
-                <select id="role" class="form-control" formControlName="role">
-                    <option value="Customer">Kunde</option>
-                    <option value="RestaurantAdmin">Restaurantadministrator</option>
-                    <option value="SystemAdmin">Systemadministrator</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input id="email" class="form-control" type="text" placeholder="Email" formControlName="email">
+        <div class="setting-form">
+            <div class="tab tab-setting">
+                <form class="setting-form" [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
+                    <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
+                    <div class="form-setting">
+                        <div class="input">
+                            <input type="text" id="name" formControlName="name">
+                            <label for="username">Benutzername</label>
+                        </div>
+                        <div class="input">
+                            <select id="role" formControlName="role">
+                                <option value="Customer">Kunde</option>
+                                <option value="RestaurantAdmin">Restaurantadministrator</option>
+                                <option value="SystemAdmin">Systemadministrator</option>
+                            </select>
+                            <label for="role">Rolle</label>
+                        </div>
+                        <div class="input">
+                            <input type="text" id="email" formControlName="email">
+                            <label for="email">E-Mail-Adresse</label>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <button class="button-submit" type="submit">Ändern</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="modal-footer">
-            <p class="error" *ngIf="message !== undefined">{{message}}</p>
-            <button class="button-submit" type="submit">Ändern</button>
-        </div>
-    </form>
-</section>
+    </div>
+</div>
