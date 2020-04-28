@@ -30,7 +30,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeCuisine
             if (cuisine == null)
                 return new FailureCommandResult<string>("user does not exist");
 
-            cuisine.Change(command.Name);
+            cuisine.Change(command.Name, command.Image);
 
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 

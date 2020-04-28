@@ -22,6 +22,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 

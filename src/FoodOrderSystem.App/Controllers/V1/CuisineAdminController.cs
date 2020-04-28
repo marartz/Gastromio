@@ -10,10 +10,14 @@ using FoodOrderSystem.Domain.Queries.GetAllCuisines;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.App.Controllers.V1
@@ -53,11 +57,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 case ForbiddenQueryResult _:
                     return Forbid();
                 case SuccessQueryResult<ICollection<Cuisine>> result:
-                    var model = result.Value.Select(en => new CuisineModel
-                    {
-                        Id = en.Id.Value,
-                        Name = en.Name
-                    }).ToList();
+                    var model = result.Value.Select(CuisineModel.FromCuisine).ToList();
                     return Ok(model);
                 default:
                     throw new InvalidOperationException("internal server error");
@@ -76,7 +76,9 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new AddCuisineCommand(addCuisineModel.Name), currentUser);
+            var image = ConvertFromImageUrl(addCuisineModel.Image);
+
+            var commandResult = await commandDispatcher.PostAsync(new AddCuisineCommand(addCuisineModel.Name, image), currentUser);
             switch (commandResult)
             {
                 case UnauthorizedCommandResult _:
@@ -86,12 +88,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 case FailureCommandResult result:
                     return BadRequest(result);
                 case SuccessCommandResult<Cuisine> result:
-                    var model = new CuisineModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name
-                    };
-                    return Ok(model);
+                    return Ok(CuisineModel.FromCuisine(result.Value));
                 default:
                     throw new InvalidOperationException("internal server error");
             }
@@ -109,7 +106,9 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name), currentUser);
+            var image = ConvertFromImageUrl(changeCuisineModel.Image);
+
+            var commandResult = await commandDispatcher.PostAsync(new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name, image), currentUser);
             switch (commandResult)
             {
                 case UnauthorizedCommandResult _:
@@ -119,12 +118,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 case FailureCommandResult result:
                     return BadRequest(result);
                 case SuccessCommandResult<Cuisine> result:
-                    var model = new CuisineModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name
-                    };
-                    return Ok(model);
+                    return Ok(CuisineModel.FromCuisine(result.Value));
                 default:
                     throw new InvalidOperationException("internal server error");
             }
@@ -155,6 +149,19 @@ namespace FoodOrderSystem.App.Controllers.V1
                     return Ok();
                 default:
                     throw new InvalidOperationException("internal server error");
+            }
+        }
+
+        private static byte[] ConvertFromImageUrl(string imgUrl)
+        {
+            var base64Data = Regex.Match(imgUrl, @"data:image/(?<type>.+?);(?<format>.+?),(?<data>.+)").Groups["data"].Value;
+            var binData = Convert.FromBase64String(base64Data);
+
+            using (var image = Image.Load(binData))
+            using (var memStream = new MemoryStream())
+            {
+                image.SaveAsPng(memStream);
+                return memStream.ToArray();
             }
         }
     }

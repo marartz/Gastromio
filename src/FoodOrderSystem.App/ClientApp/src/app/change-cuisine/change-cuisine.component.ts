@@ -16,6 +16,8 @@ export class ChangeCuisineComponent implements OnInit {
   changeCuisineForm: FormGroup;
   message: string;
 
+  imgUrl: any;
+
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -26,11 +28,29 @@ export class ChangeCuisineComponent implements OnInit {
   ngOnInit() {
     this.changeCuisineForm = this.formBuilder.group({
       name: this.cuisine.name,
+      image: this.cuisine.image
     });
+    this.imgUrl = this.cuisine.image;
+  }
+
+  onImageChange(event) {
+    if (!event.target.files || !event.target.files.length)
+      return;
+    let reader = new FileReader();
+    const [file] = event.target.files;
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.changeCuisineForm.patchValue({
+        image: reader.result
+      });
+
+      this.imgUrl = reader.result;
+    };
   }
 
   onSubmit(data) {
-    this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
+    this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name, data.image)
       .subscribe(() => {
         this.message = undefined;
         this.changeCuisineForm.reset();

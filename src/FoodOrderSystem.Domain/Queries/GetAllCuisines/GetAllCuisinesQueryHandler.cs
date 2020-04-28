@@ -21,12 +21,6 @@ namespace FoodOrderSystem.Domain.Queries.GetAllCuisines
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
-            if (currentUser == null)
-                return new UnauthorizedQueryResult();
-
-            if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenQueryResult();
-
             return new SuccessQueryResult<ICollection<Cuisine>>(await cuisineRepository.FindAllAsync(cancellationToken));
         }
     }
