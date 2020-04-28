@@ -1,36 +1,36 @@
 <div class="container">
-  <div class="row">
-    <div class="col p-2">
-      <div class="mb-4">
-        <h3>Zahlungsmethodenverwaltung</h3>
-      </div>
-      <div class="restaurants mt-3">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Beschreibung</th>
-              <th>
-                <div class="float-right">
-                  <button class="btn btn-success" id="addPaymentMethod" (click)="openAddPaymentMethodForm()"><i class="fas fa-plus"></i></button>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let paymentMethod of paymentMethods | async" class="payment-method">
-              <td>{{paymentMethod.name}}</td>
-              <td>{{paymentMethod.description}}</td>
-              <td>
-                <div class="float-right">
-                  <button class="btn btn-secondary btn-sm m-1" (click)="openChangePaymentMethodForm(paymentMethod)"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm m-1" (click)="openRemovePaymentMethodForm(paymentMethod)"><i class="fas fa-trash"></i></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="row">
+        <div class="col p-2">
+            <div class="Setting-Section-Title">
+                <h1>Zahlungsmethodenverwaltung</h1>
+            </div>
+            <div class="restaurants mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="SearchTableTitle">Name</th>
+                            <th class="SearchTableTitle">Beschreibung</th>
+                            <th>
+                                <div class="float-right">
+                                    <button class="btn btn-success SettingAddButton" id="addPaymentMethod" (click)="openAddPaymentMethodForm()"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let paymentMethod of paymentMethods | async" class="payment-method">
+                            <td>{{paymentMethod.name}}</td>
+                            <td>{{paymentMethod.description}}</td>
+                            <td>
+                                <div class="float-right">
+                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangePaymentMethodForm(paymentMethod)"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemovePaymentMethodForm(paymentMethod)"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

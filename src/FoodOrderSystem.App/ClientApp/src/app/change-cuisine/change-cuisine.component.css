@@ -1,0 +1,45 @@
+.setting-modal {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+
+.setting-top {
+  background-color: #fff;
+  padding: 20px 16px;
+  height: 72px;
+  clip-path: none;
+}
+
+.setting-title {
+  font-family: bilo, sans-serif;
+  font-weight: 600;
+  color: #0a3847;
+  font-size: 20px;
+  text-align: center;
+}
+
+.button-submit {
+  width: 100%;
+  background-color: #1574f5;
+  color: #fff;
+  font-family: bilo, sans-serif;
+  font-weight: 600;
+  user-select: none;
+  padding: 0 16px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  height: 56px;
+  line-height: 1.5;
+  font-size: 17px;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+}
+
+  .button-submit:focus, .button-submit:hover, {
+    background-color: #0953bd;
+  }

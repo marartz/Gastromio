@@ -1,32 +1,34 @@
-<form [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
-  <div class="modal-header">
-    <h4 class="modal-title">Benutzer ändern</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <label for="name">Benutzername</label>
-      <input id="name" class="form-control" type="text" placeholder="Benutzername" formControlName="name">
-    </div>
+<section class="setting-modal">
+    <form [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
+        <div class="setting-top">
+            <h4 class="setting-title">Benutzer ändern</h4>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="name">Benutzername</label>
+                <input id="name" class="form-control" type="text" placeholder="Benutzername" formControlName="name">
+            </div>
 
-    <div class="form-group">
-      <label for="role">Rolle</label>
-      <select id="role" class="form-control" formControlName="role">
-        <option value="Customer">Kunde</option>
-        <option value="RestaurantAdmin">Restaurantadministrator</option>
-        <option value="SystemAdmin">Systemadministrator</option>
-      </select>
-    </div>
+            <div class="form-group">
+                <label for="role">Rolle</label>
+                <select id="role" class="form-control" formControlName="role">
+                    <option value="Customer">Kunde</option>
+                    <option value="RestaurantAdmin">Restaurantadministrator</option>
+                    <option value="SystemAdmin">Systemadministrator</option>
+                </select>
+            </div>
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" class="form-control" type="text" placeholder="Email" formControlName="email">
-    </div>
-  </div>
-  <div class="modal-footer">
-    <p class="error" *ngIf="message !== undefined">{{message}}</p>
-    <button class="btn btn-primary" type="submit">Ändern</button>
-  </div>
-</form>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" class="form-control" type="text" placeholder="Email" formControlName="email">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="error" *ngIf="message !== undefined">{{message}}</p>
+            <button class="button-submit" type="submit">Ändern</button>
+        </div>
+    </form>
+</section>

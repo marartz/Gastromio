@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
       }, (status: number) => {
           this.loginForm.reset();
           if (status === 401)
-            this.message = "Benutzername und/oder Passwort sind nicht korrekt.";
+            this.message = "Benutzername und/oder Passwort ist nicht korrekt.";
           else
             this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
       });
