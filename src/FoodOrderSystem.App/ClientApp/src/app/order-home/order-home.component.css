@@ -1,86 +1,279 @@
 .header-container .header-top {
-    width: 100%;
-    background-color: #52AE31
+  width: 100%;
+  background-color: #52AE31
 }
 
 .header {
-    background-color: #52AE31;
-    margin: -1px auto;
-    text-align: center;
-    padding: 11px 15px 0;
-    max-width: 470px
+  background-color: #52AE31;
+  margin: -1px auto;
+  text-align: center;
+  padding: 11px 15px 0;
+  max-width: 470px
 }
 
 @media (min-width:1004px) {
-    .header {
-        max-width: 630px
-
-    }
+  .header {
+    max-width: 630px
+  }
 }
 
 @media (min-width:1280px) {
-    .header {
-        max-width: 660px
-
-    }
+  .header {
+    max-width: 660px
+  }
 }
 
 .header-title {
-    font-family: bilo, sans-serif;
-    font-weight: 600;
-    font-variant-ligatures: common-ligatures;
-    font-feature-settings: "liga", "clig";
-    color: #fff;
-    font-size: 36px;
-    line-height: 1;
-    margin-bottom: 0
+  font-family: bilo, sans-serif;
+  font-weight: 600;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: "liga", "clig";
+  color: #fff;
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 0
 }
 
 @media (min-width:570px) {
-    .header-title {
-        font-size: 46px
-    }
+  .header-title {
+    font-size: 46px
+  }
 }
 
 @media (min-width:1004px) {
-    .header-title {
-        font-size: 62px
-    }
+  .header-title {
+    font-size: 62px
+  }
 }
 
 @media (min-width:1280px) {
-    .header-title {
-        font-size: 72px
-
-    }
+  .header-title {
+    font-size: 72px
+  }
 }
 
 .header-slogan {
-    font-family: bilo, sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    color: #fff;
-    font-style: normal;
-    font-stretch: normal;
-    letter-spacing: normal
+  font-family: bilo, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #fff;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal
 }
 
 @media (min-width:320px) {
-    .header-slogan {
-        font-size: 18px;
-        padding: 0 0 16px;
-        margin: 0
-    }
+  .header-slogan {
+    font-size: 18px;
+    padding: 0 0 16px;
+    margin: 0
+  }
 }
 
 @media (min-width:570px) {
-    .header-slogan {
-        font-size: 24px
-    }
+  .header-slogan {
+    font-size: 24px
+  }
 }
 
 @media (min-width:1004px) {
-    .header-slogan {
-        font-size: 26px
-    }
+  .header-slogan {
+    font-size: 26px
+  }
+}
+
+@font-face {
+  font-family: fontello;
+  src: url(../../assets/fonts/fontello/fontello.eot);
+  src: url(../../assets/fonts/fontello/fontello.eot#iefix) format("embedded-opentype"), url(../../assets/fonts/fontello/fontello.woff2) format("woff2"), url(../../assets/fonts/fontello/fontello.woff) format("woff"), url(../../assets/fonts/fontello/fontello.ttf) format("truetype"), url(../../assets/fonts/fontello/fontello.svg#fontello) format("svg");
+  font-weight: 400;
+  font-style: normal
+}
+
+.cuisine {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  padding: 2px;
+  border-radius: 2px;
+  border: 1px solid #ebebeb;
+  margin: 10px;
+  min-height: 7em;
+}
+
+  .cuisine .cuisine-logo-wrapper {
+    flex: 0 0 98px;
+    text-align: center;
+    border-right: 1px solid #ebebeb;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative
+  }
+
+@media (min-width: 570px) {
+  .cuisine .cuisine-logo-wrapper {
+    flex: 0 0 118px
+  }
+}
+
+@media (min-width: 1004px) {
+  .cuisine .cuisine-logo-wrapper {
+    flex: 0 0 138px;
+  }
+}
+
+.cuisine .cuisine-logo {
+  z-index: 1;
+  max-width: 80px;
+  text-align: left;
+  font-size: 12px;
+  position: absolute;
+  width: 100%;
+  top: 45%;
+  transform: translateY(-50%);
+  margin: auto;
+  left: 0;
+  right: 0
+}
+
+  .cuisine .cuisine-logo img {
+    width: 100%;
+    max-height: 80px;
+    height: auto;
+    vertical-align: middle
+  }
+
+.cuisine .cuisine-info-wrapper {
+  flex: 1;
+  min-height: 120px;
+  line-height: 1.7;
+  font-size: 15px;
+  padding: 8px 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden
+}
+
+.cuisine .cuisinename {
+  font-family: bilo,sans-serif;
+  font-weight: 600;
+  padding: 0;
+  color: #0a3847;
+  font-size: 18px;
+  line-height: 22px;
+  max-height: 66px;
+  overflow: hidden;
+  margin: 0 8px 0 0
+}
+
+.cuisine .cuisine-info-wrapper .cuisinebeschreibung {
+  line-height: 22px;
+  font-family: roboto-slab, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 8px 4px 0;
+  color: #666
+}
+
+@media (min-width: 570px) {
+  .cuisine .cuisine-info-wrapper .cuisinebeschreibung {
+    margin: 0 0 8px
+  }
+}
+
+.cuisine .bottom-wrapper {
+  line-height: 12px;
+  display: flex;
+  margin-top: auto;
+}
+
+@media (min-width: 570px) {
+  .cuisine .bottom-wrapper {
+    line-height: 16px
+  }
+}
+
+.cuisine .cuisine-info-wrapper .details {
+  font-size: 12px;
+  line-height: 2em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin-bottom: 3px
+}
+
+@media (min-width: 570px) {
+  .cuisine .cuisine-info-wrapper .details {
+    margin-bottom: 6px
+  }
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery {
+  width: 100%;
+  line-height: 18px;
+  font-family: roboto-slab, Arial, sans-serif;
+  font-weight: 300;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap
+}
+
+  .cuisine .cuisine-info-wrapper .details .delivery div {
+    margin-right: 8px
+  }
+
+@media (min-width: 1004px) {
+  .cuisine .cuisine-info-wrapper .details .delivery div {
+    margin-right: 16px
+  }
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery.hidden {
+  display: none
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery .nextdeliverytime:before,
+.cuisine .cuisine-info-wrapper .details .delivery .delivery-cost:before,
+.cuisine .cuisine-info-wrapper .details .delivery .min-order:before {
+  margin-right: 4px;
+  font-family: fontello;
+  color: #999;
+  font-size: 11px
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery .clock-icon:before {
+  margin-right: 4px;
+  font-family: fontello;
+  font-size: 11px
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery .delivery-cost:before {
+  content: "\e97d"
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery .min-order:before {
+  content: "\e97c"
+}
+
+.cuisine .cuisine-info-wrapper .details .delivery .nextdeliverytime:before,
+.cuisine .cuisine-info-wrapper .details .delivery .clock-icon:before {
+  content: "\e95d"
+}
+
+#cuisine-search {
+  font-family: bilo, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  height: 35px;
+  background: none;
+  color: #0a3874;
+  border: 1px solid #d7d7d7
 }

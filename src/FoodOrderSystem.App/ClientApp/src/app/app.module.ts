@@ -39,6 +39,7 @@ import { RemoveRestaurantComponent } from './remove-restaurant/remove-restaurant
 import { RestaurantSysAdminService } from './restaurant-sys-admin/restaurant-sys-admin.service';
 import { RestaurantRestAdminService } from './restaurant-rest-admin/restaurant-rest-admin.service';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
+import { CuisineService } from './cuisine/cuisine.service';
 
 @NgModule({
   imports: [
@@ -87,6 +88,7 @@ import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.co
     AuthService,
     SystemAdminAuthGuard,
     RestaurantAdminAuthGuard,
+    CuisineService,
     UserAdminService,
     CuisineAdminService,
     PaymentMethodAdminService,

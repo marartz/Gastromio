@@ -1,17 +1,26 @@
-<!--<div class="container-fluid">
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-      <h1 class="display-4">Fluid jumbotron</h1>
-      <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+<div class="header-container">
+  <div class="header-top">
+    <div class="header">
+      <div class="header-title">Bocholt Liefert</div>
+      <div class="header-slogan">Irgendein Slogan zum Thema Online bestellen</div>
     </div>
   </div>
-</div>-->
-    <div class="header-container">
-        <div class="header-top">
-            <div class="header">
-                <div class="header-title">Bocholt Liefert</div>
-                <div class="header-slogan">Irgendein Slogan zum Thema Online bestellen</div>
+</div>
+<div class="container" style="padding-top: 20px">
+  <div class="row">
+    <div class="col">
+      <div class="cuisines mt-3">
+        <div class="cuisine" *ngFor="let cuisine of cuisines | async">
+          <div class="cuisine-logo-wrapper">
+            <div class="cuisine-logo">
+              <img class="" [src]="cuisine.image" border="0" />
             </div>
+          </div>
+          <div class="cuisine-info-wrapper">
+            <h2 class="cuisinenname">{{cuisine.name}}</h2>
+          </div>
         </div>
+      </div>
     </div>
-    <app-restaurant-search></app-restaurant-search>
+  </div>
+</div>

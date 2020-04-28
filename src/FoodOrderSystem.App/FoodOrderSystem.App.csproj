@@ -32,23 +32,8 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +57,7 @@
     <None Remove="ClientApp\src\app\change-user-password\change-user-password.component.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine-admin.service.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine.model.ts" />
+    <None Remove="ClientApp\src\app\cuisine\cuisine.service.ts" />
     <None Remove="ClientApp\src\app\login\login.component.ts" />
     <None Remove="ClientApp\src\app\order-home\order-home.component.ts" />
     <None Remove="ClientApp\src\app\pagination\pagination.component.ts" />
