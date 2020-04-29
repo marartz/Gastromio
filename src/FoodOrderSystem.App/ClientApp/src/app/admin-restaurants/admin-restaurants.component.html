@@ -1,38 +1,46 @@
-<div class="container" style="padding-top: 20px;">
+<div class="container no-header">
     <div class="row">
         <div class="col">
-            <div class="Setting-Section-Title">
+            <div class="setting-title">
                 <h1>Restaurantverwaltung</h1>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <input class="form-control" type="search" placeholder="Nach Restaurants suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="button-add" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
 
-            <div class="search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Restaurant, z.B. Pizzeria Mamma Mia" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-                <button class="btn btn-success" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
-            </div>
-
-            <div class="restaurants mt-3">
-                <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
-                    <div class="restaurant-logo-wrapper">
-                        <div class="restaurant-logo">
-                            <img class="" src="assets/logo.png" alt="{{restaurant.name}}" border="0" /><!-- Hier später Restaurant Logo! -->
-                        </div>
+        <div class="restaurants mt-3">
+            <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
+                <div class="restaurant-logo-wrapper">
+                    <div class="restaurant-logo">
+                        <img src="assets/logo.png" alt="" border="0" /><!-- Hier später Restaurant Logo! -->
                     </div>
-                    <div class="restaurant-info-wrapper">
-                        <h2 class="restaurantname">{{restaurant.name}}</h2>
-                        <!-- {{restaurant.street }}   {{restaurant.plz}} {{restaurant.city}} -->
-                        <div class="restaurantbeschreibung">Werther Straße 213<br />46395 Bocholt</div>
-                        <div class="bottom-wrapper details">
-                            <div class="delivery">
-                                <a href="#" class="edit-restaurant-settings" [routerLink]="[restaurant.id]">Details ändern</a>
-                                &nbsp;&ndash;&nbsp;
-                                <a class="edit-restaurant-settings" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
-                            </div>
+                </div>
+                <div class="restaurant-info-wrapper">
+                    <h2 class="restaurantname">{{restaurant.name}}</h2>
+                    <!-- {{restaurant.street}}   {{restaurant.plz}} {{restaurant.city}} -->
+                    <div class="restaurantbeschreibung">Werther Straße 213<br />46395 Bocholt</div>
+                    <div class="bottom-wrapper details">
+                        <div class="delivery">
+                            <a href="#" class="edit-restaurant-settings" [routerLink]="[restaurant.id]">Details ändern</a>
+                            &nbsp;&ndash;&nbsp;
+                            <a class="edit-restaurant-settings" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
+        <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
+
         </div>
     </div>
 </div>
