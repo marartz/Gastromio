@@ -10,7 +10,6 @@
                 <button class="btn btn-success" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
             </div>
 
-
             <div class="restaurants mt-3">
                 <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
                     <div class="restaurant-logo-wrapper">
@@ -32,6 +31,7 @@
                     </div>
                 </div>
             </div>
+
             <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
         </div>
     </div>
