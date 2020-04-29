@@ -1,20 +1,27 @@
-<div class="container">
+<div class="container no-header">
     <div class="row">
-        <div class="col p-2">
-            <div class="Setting-Section-Title">
+        <div class="col">
+            <div class="setting-title">
                 <h1>Zahlungsmethodenverwaltung</h1>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <!--input class="form-control" type="search" placeholder="Nach Cuisines suchen" aria-label="Search"-->
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="button-add" id="addPaymentMethod" (click)="openAddPaymentMethodForm()">Zahlungsmethode hinzufügen</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col p-2">
             <div class="restaurants mt-3">
                 <table class="table">
                     <thead>
                         <tr>
                             <th class="SearchTableTitle">Name</th>
                             <th class="SearchTableTitle">Beschreibung</th>
-                            <th>
-                                <div class="float-right">
-                                    <button class="btn btn-success SettingAddButton" id="addPaymentMethod" (click)="openAddPaymentMethodForm()"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>

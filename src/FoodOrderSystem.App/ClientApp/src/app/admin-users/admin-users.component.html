@@ -1,14 +1,21 @@
-<div class="container">
+<div class="container no-header">
     <div class="row">
-        <div class="col p-2">
-            <div class="Setting-Section-Title">
+        <div class="col">
+            <div class="setting-title">
                 <h1>Benutzerverwaltung</h1>
             </div>
-            <div class="Search">
-                <div class="SearchContainer">
-                    <input class="SearchInput" type="search" placeholder="Nach Benutzern suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <input class="form-control" type="search" placeholder="Nach Benutzern suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="button-add" id="addUser" (click)="openAddUserForm()">Benutzer hinzufügen</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col p-2">
             <div class="restaurants mt-3">
                 <table class="table">
                     <thead>
@@ -16,13 +23,6 @@
                             <th class="SearchTableTitle">Name</th>
                             <th class="SearchTableTitle">Rolle</th>
                             <th class="SearchTableTitle">E-Mail</th>
-                            <th>
-                                <div class="float-right">
-                                    <button class="btn btn-success SettingAddButton" id="addUser" (click)="openAddUserForm()">
-                                        <i class="fas fa-user-plus"></i>
-                                    </button>
-                                </div>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
