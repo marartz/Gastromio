@@ -8,7 +8,7 @@
                 <div class="restaurant" *ngFor="let restaurant of restaurants">
                     <div class="restaurant-logo-wrapper">
                         <div class="restaurant-logo">
-                            <img class="" src="assets/logo.png" alt="{{ restaurant.name }}" border="0" />
+                            <img class="" [src]="restaurant.logo" alt="{{ restaurant.name }}" border="0" />
                         </div>
                     </div>
                     <div class="restaurant-info-wrapper">

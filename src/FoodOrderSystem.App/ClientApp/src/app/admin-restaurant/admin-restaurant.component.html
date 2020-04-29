@@ -1,6 +1,6 @@
 
 <div class="setting-header">
-    {{restaurant.name}} <button class="btn btn-secondary btn-sm m-1" (click)="openChangeRestaurantNameForm()"><i class="fas fa-edit"></i></button>
+    {{restaurant.name}} <button style="background-color: transparent; border: 0; color: #fff" (click)="openChangeRestaurantNameForm()"><i class="fas fa-edit"></i></button>
 </div>
 <div class="container" style="margin-top: 20px">
     <div class="row">
@@ -52,7 +52,7 @@
                     </div>
 
                     <div class="card mb-4">
-                        <div class="card-header">Andere Kontaktdaten</div>
+                        <div class="card-header">Andere Daten</div>
                         <div class="card-body">
                             <form class="setting-form" [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
                                 <div class="form-group row">
