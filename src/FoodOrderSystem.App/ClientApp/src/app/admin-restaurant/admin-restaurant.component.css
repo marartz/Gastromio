@@ -1,19 +1,28 @@
 .setting-header {
-  position: relative;
-  width: 100%;
-  height: auto;
-  padding: 16px;
-  font-family: bilo, sans-serif;
-  font-size: 24px;
-  background: #52AE31;
-  color: #fff;
-  text-align: center;
-  font-weight: 300;
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 16px;
+    font-family: bilo, sans-serif;
+    font-size: 24px;
+    background: #52AE31;
+    color: #fff;
+    text-align: center;
+    font-weight: 300;
 }
 
 .setting-header {
-  border-bottom: initial;
-  padding-bottom: 20px
+    border-bottom: initial;
+    padding-bottom: 20px
+}
+
+.card-head {
+    font-family: bilo, sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.5;
+    background-color: #52AE31;
+    color: #fff
 }
 
 .button-container {
