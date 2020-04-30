@@ -260,7 +260,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             }
         }
 
-        [Route("restaurants/{restaurantId}/adddeliverytime")]
+        [Route("restaurants/{restaurantId}/removedeliverytime")]
         [HttpPost]
         public async Task<IActionResult> PostRemoveDeliveryTimeAsync(Guid restaurantId, [FromBody] RemoveDeliveryTimeFromRestaurantModel model)
         {

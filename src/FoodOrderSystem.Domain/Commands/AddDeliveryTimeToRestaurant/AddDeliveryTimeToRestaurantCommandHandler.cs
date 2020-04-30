@@ -27,10 +27,12 @@ namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
                 return new ForbiddenCommandResult();
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            if (restaurant != null)
+            if (restaurant == null)
                 return new FailureCommandResult<string>("restaurant does not exist");
 
             restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
+
+            await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
             return new SuccessCommandResult<Restaurant>(restaurant);
         }

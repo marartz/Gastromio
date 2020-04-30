@@ -133,12 +133,12 @@
                   <td>{{deliveryTime.startTimeText}}</td>
                   <td>{{deliveryTime.endTimeText}}</td>
                   <td>
-                    <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger btn-sm m-1" (click)="onRemoveDeliveryTime(deliveryTime)"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <form class="setting-form" [formGroup]="addDeliveryTimeForm">
+            <form class="setting-form" [formGroup]="addDeliveryTimeForm" (ngSubmit)="onAddDeliveryTime(addDeliveryTimeForm.value)">
               <table class="table col-sm-12">
                 <tbody>
                   <tr>
@@ -156,9 +156,15 @@
                     </td>
                     <td>
                       <input type="text" placeholder="Startzeit, z.B. 15:00 Uhr" class="form-control" formControlName="start" />
+                      <div *ngIf="startTimeError !== undefined">
+                        <small id="startTimeError" class="text-danger">{{startTimeError}}</small>
+                      </div>
                     </td>
                     <td>
                       <input type="text" placeholder="Endzeit, z.B. 22:00 Uhr" class="form-control" formControlName="end" />
+                      <div *ngIf="endTimeError !== undefined">
+                        <small id="endTimeError" class="text-danger">{{endTimeError}}</small>
+                      </div>
                     </td>
                     <td>
                       <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>

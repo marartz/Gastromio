@@ -23,7 +23,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   imgUrl: any;
 
-
   daysOfMonth = [
     "Montag",
     "Dienstag",
@@ -33,6 +32,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     "Samstag",
     "Sonntag"
   ];
+
+  startTimeError: string;
+  endTimeError: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -214,10 +216,77 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
+  onAddDeliveryTime(value): void {
+    let dayOfWeek: number = Number(value.dayOfWeek);
+
+    let startParseResult: TimeParseResult = this.parseTimeValue(value.start);
+    if (!startParseResult.isValid) {
+      this.startTimeError = "Geben Sie eine gültige Zeit ein";
+      return;
+    } else {
+      this.startTimeError = undefined;
+    }
+
+    let endParseResult: TimeParseResult = this.parseTimeValue(value.end);
+    if (!endParseResult.isValid) {
+      this.endTimeError = "Geben Sie eine gültige Zeit ein";
+      return;
+    } else {
+      this.endTimeError = undefined;
+    }
+
+    let subscription = this.restaurantRestAdminService.addDeliveryTimeToRestaurantAsync(this.restaurant.id, dayOfWeek, startParseResult.value, endParseResult.value).subscribe((data) => {
+      subscription.unsubscribe();
+      this.addDeliveryTimeForm.reset();
+      this.restaurant.deliveryTimes = data.deliveryTimes;
+    }, () => {
+      subscription.unsubscribe();
+      // TODO
+    });
+  }
+
+  onRemoveDeliveryTime(deliveryTime: DeliveryTimeViewModel) {
+    let subscription = this.restaurantRestAdminService.removeDeliveryTimeFromRestaurantAsync(this.restaurant.id, deliveryTime.dayOfWeek, deliveryTime.startTime).subscribe((data) => {
+      subscription.unsubscribe();
+      this.restaurant.deliveryTimes = data.deliveryTimes;
+    }, () => {
+      subscription.unsubscribe();
+      // TODO
+    });
+  }
+
   private toTimeViewModel(totalMinutes: number): string {
     let hours = Math.floor(totalMinutes / 60);
     let minutes = Math.floor(totalMinutes % 60);
     return hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+  }
+
+  private parseTimeValue(text: string): TimeParseResult {
+    text = text.trim();
+
+    if (text.length < 5)
+      return new TimeParseResult(false, 0);
+
+    text = text.substr(0, 5);
+
+    if (text.substr(2, 1) !== ":")
+      return new TimeParseResult(false, 0);
+
+    let hoursText = text.substr(0, 2);
+    let hours = Number(hoursText);
+    if (hours === Number.NaN)
+      return new TimeParseResult(false, 0);
+    if (hours < 0 || hours > 23)
+      return new TimeParseResult(false, 0);
+
+    let minutesText = text.substr(3, 2);
+    let minutes = Number(minutesText);
+    if (minutes === Number.NaN)
+      return new TimeParseResult(false, 0);
+    if (minutes < 0 || minutes > 59)
+      return new TimeParseResult(false, 0);
+
+    return new TimeParseResult(true, hours * 60 + minutes);
   }
 }
 
@@ -228,4 +297,14 @@ export class DeliveryTimeViewModel {
   startTimeText: string;
   endTime: number;
   endTimeText: string;
+}
+
+class TimeParseResult {
+  constructor(isValid: boolean, value: number) {
+    this.isValid = isValid;
+    this.value = value;
+  }
+
+  isValid: boolean;
+  value: number;
 }
