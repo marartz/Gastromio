@@ -6,13 +6,23 @@
     <div class="col p-2">
       <div>
         <div class="card mb-4">
-          <div class="card-header card-head">Bild</div>
+            <div class="card-header card-head">Logo</div>
           <div class="card-body">
-            <form class="setting-form" [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
-              <img class="input" [src]="imgUrl" *ngIf="imgUrl" style="vertical-align: middle; padding-top: 24px; width:200px;">
-              <input type="file" id="image" accept="image/*" (change)="onImageChange($event)">
-              <button class="button-form button" type="submit">Bild ändern</button>
-            </form>
+              <form class="setting-form" [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
+                  <div class="row">
+                      <div class="col">
+                          <div class="input">
+                              <img class="input" [src]="imgUrl" *ngIf="imgUrl" style="vertical-align: middle; padding-top: 24px; width:200px;">
+                              <input type="file" id="image" accept="image/*" (change)="onImageChange($event)">
+                          </div>
+                      </div>
+                      <div class="col">
+
+                      </div>
+                  </div>
+
+              </form>
+              <button class="button-form button" type="submit">Logo aktualisieren</button>
           </div>
         </div>
 

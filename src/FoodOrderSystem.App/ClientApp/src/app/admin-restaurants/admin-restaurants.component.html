@@ -21,12 +21,11 @@
             <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
                 <div class="restaurant-logo-wrapper">
                     <div class="restaurant-logo">
-                        <img *ngIf="restaurant.image !== null" src="{{restaurant.image}}" alt="{{restaurant.name}}" border="0" />
+                        <img *ngIf="restaurant.image !== null" src="{{restaurant.image}}" alt="" border="0" />
                     </div>
                 </div>
                 <div class="restaurant-info-wrapper">
                     <h2 class="restaurantname">{{restaurant.name}}</h2>
-                    <!-- {{restaurant.street}}   {{restaurant.plz}} {{restaurant.city}} -->
                     <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
                     <div class="bottom-wrapper details">
                         <div class="delivery">
