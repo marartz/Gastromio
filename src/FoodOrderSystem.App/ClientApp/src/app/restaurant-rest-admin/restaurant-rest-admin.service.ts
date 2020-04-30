@@ -35,6 +35,17 @@ export class RestaurantRestAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changename", { name: name }, httpOptions);
   }
 
+  public changeRestaurantImageAsync(id: string, image: string): Observable<RestaurantModel> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changeimage", { image: image}, httpOptions);
+  }
+
   public changeRestaurantAddressAsync(id: string, address: AddressModel): Observable<RestaurantModel> {
     let httpOptions = {
       headers: new HttpHeaders({
@@ -46,7 +57,7 @@ export class RestaurantRestAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changeaddress", address, httpOptions);
   }
 
-  public changeRestaurantContactDetailsAsync(id: string, webSite: string, imprint: string): Observable<RestaurantModel> {
+  public changeRestaurantContactDetailsAsync(id: string, phone: string, webSite: string, imprint: string): Observable<RestaurantModel> {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -54,7 +65,7 @@ export class RestaurantRestAdminService {
         'Authorization': 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changecontactdetails", { webSite: webSite, imprint: imprint }, httpOptions);
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changecontactdetails", { phone: phone, webSite: webSite, imprint: imprint }, httpOptions);
   }
 
   public changeRestaurantDeliveryDataAsync(id: string, minimumOrderValue: number, deliveryCosts: number): Observable<RestaurantModel> {

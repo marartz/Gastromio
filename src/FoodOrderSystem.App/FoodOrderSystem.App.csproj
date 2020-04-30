@@ -57,9 +57,9 @@
     <None Remove="ClientApp\src\app\change-user-password\change-user-password.component.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine-admin.service.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine.model.ts" />
-    <None Remove="ClientApp\src\app\cuisine\cuisine.service.ts" />
     <None Remove="ClientApp\src\app\login\login.component.ts" />
     <None Remove="ClientApp\src\app\order-home\order-home.component.ts" />
+    <None Remove="ClientApp\src\app\order\order.service.ts" />
     <None Remove="ClientApp\src\app\pagination\pagination.component.ts" />
     <None Remove="ClientApp\src\app\payment-method\payment-method-admin.service.ts" />
     <None Remove="ClientApp\src\app\payment-method\payment-method.model.ts" />
@@ -67,8 +67,6 @@
     <None Remove="ClientApp\src\app\remove-payment-method\remove-payment-method.component.ts" />
     <None Remove="ClientApp\src\app\remove-restaurant\remove-restaurant.component.ts" />
     <None Remove="ClientApp\src\app\remove-user\remove-user.component.ts" />
-    <None Remove="ClientApp\src\app\restaurant-rest-admin\restaurant-rest-admin.service.ts" />
-    <None Remove="ClientApp\src\app\restaurant-search\restaurant-search.component.ts" />
     <None Remove="ClientApp\src\app\restaurant-sys-admin\restaurant-sys-admin.service.ts" />
     <None Remove="ClientApp\src\app\restaurant\restaurant.model.ts" />
     <None Remove="ClientApp\src\app\systemadmin-auth-guard.service.ts" />
@@ -159,9 +157,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\remove-user\remove-user.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\restaurant-search\restaurant-search.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

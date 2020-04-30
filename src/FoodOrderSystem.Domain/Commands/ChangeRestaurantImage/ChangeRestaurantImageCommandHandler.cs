@@ -4,18 +4,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
+namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantImage
 {
-    public class ChangeRestaurantContactDetailsCommandHandler : ICommandHandler<ChangeRestaurantContactDetailsCommand>
+    public class ChangeRestaurantImageCommandHandler : ICommandHandler<ChangeRestaurantImageCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public ChangeRestaurantContactDetailsCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRestaurantImageCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(ChangeRestaurantContactDetailsCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult> HandleAsync(ChangeRestaurantImageCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -30,7 +30,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
             if (restaurant == null)
                 return new FailureCommandResult<string>("user does not exist");
 
-            restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint);
+            restaurant.ChangeImage(command.Image);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

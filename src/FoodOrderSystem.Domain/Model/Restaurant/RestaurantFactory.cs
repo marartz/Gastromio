@@ -11,10 +11,12 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             return new Restaurant(
                 new RestaurantId(Guid.NewGuid()),
                 name,
-                new Address(null, null, null, null),
+                null,
+                new Address(null, null, null),
                 new List<DeliveryTime>(),
                 0,
                 0,
+                null,
                 null,
                 null,
                 new HashSet<PaymentMethodId>()

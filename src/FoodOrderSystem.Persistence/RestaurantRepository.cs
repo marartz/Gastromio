@@ -89,10 +89,12 @@ namespace FoodOrderSystem.Persistence
         {
             return new Restaurant(new RestaurantId(row.Id),
                 row.Name,
-                new Address(row.AddressLine1, row.AddressLine2, row.AddressZipCode, row.AddressCity),
+                row.Image,
+                new Address(row.AddressStreet, row.AddressZipCode, row.AddressCity),
                 row.DeliveryTimes.Select(en => new DeliveryTime(en.DayOfWeek, TimeSpan.FromMinutes(en.StartTime), TimeSpan.FromMinutes(en.EndTime))).ToList(),
                 row.MinimumOrderValue,
                 row.DeliveryCosts,
+                row.Phone,
                 row.WebSite,
                 row.Imprint,
                 new HashSet<PaymentMethodId>(row.RestaurantPaymentMethods.Select(en => new PaymentMethodId(en.PaymentMethodId)))
@@ -104,10 +106,10 @@ namespace FoodOrderSystem.Persistence
             // TODO
             row.Id = obj.Id.Value;
             row.Name = obj.Name;
+            row.Image = obj.Image;
             if (obj.Address != null)
             {
-                row.AddressLine1 = obj.Address.Line1;
-                row.AddressLine2 = obj.Address.Line2;
+                row.AddressStreet = obj.Address.Street;
                 row.AddressZipCode = obj.Address.ZipCode;
                 row.AddressCity = obj.Address.City;
             }
@@ -127,6 +129,7 @@ namespace FoodOrderSystem.Persistence
             }
             row.MinimumOrderValue = obj.MinimumOrderValue;
             row.DeliveryCosts = obj.DeliveryCosts;
+            row.Phone = obj.Phone;
             row.WebSite = obj.WebSite;
             row.Imprint = obj.Imprint;
             if (obj.PaymentMethods != null && obj.PaymentMethods.Count > 0)

@@ -195,10 +195,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<string>("AddressCity")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("AddressLine1")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AddressLine2")
+                    b.Property<string>("AddressStreet")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AddressZipCode")
@@ -207,6 +204,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<decimal>("DeliveryCosts")
                         .HasColumnType("decimal(5, 2)");
 
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("Imprint")
                         .HasColumnType("TEXT");
 
@@ -214,6 +214,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                         .HasColumnType("decimal(5, 2)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("WebSite")

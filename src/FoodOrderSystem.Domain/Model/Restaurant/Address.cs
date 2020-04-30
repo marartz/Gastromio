@@ -2,16 +2,14 @@
 {
     public class Address
     {
-        public Address(string line1, string line2, string zipCode, string city)
+        public Address(string street, string zipCode, string city)
         {
-            Line1 = line1;
-            Line2 = line2;
+            Street = street;
             ZipCode = zipCode;
             City = city;
         }
 
-        public string Line1 { get; }
-        public string Line2 { get; }
+        public string Street { get; }
         public string ZipCode { get; }
         public string City { get; }
     }

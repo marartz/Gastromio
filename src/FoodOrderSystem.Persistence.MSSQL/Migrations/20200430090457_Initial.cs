@@ -12,7 +12,8 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Image = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,12 +39,13 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    AddressLine1 = table.Column<string>(nullable: true),
-                    AddressLine2 = table.Column<string>(nullable: true),
+                    Image = table.Column<byte[]>(nullable: true),
+                    AddressStreet = table.Column<string>(nullable: true),
                     AddressZipCode = table.Column<string>(nullable: true),
                     AddressCity = table.Column<string>(nullable: true),
                     MinimumOrderValue = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
                     DeliveryCosts = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
+                    Phone = table.Column<string>(nullable: true),
                     WebSite = table.Column<string>(nullable: true),
                     Imprint = table.Column<string>(nullable: true)
                 },
@@ -59,6 +61,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true)
                 },

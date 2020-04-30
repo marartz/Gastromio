@@ -198,10 +198,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     b.Property<string>("AddressCity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AddressLine1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AddressLine2")
+                    b.Property<string>("AddressStreet")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressZipCode")
@@ -210,6 +207,9 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     b.Property<decimal>("DeliveryCosts")
                         .HasColumnType("decimal(5, 2)");
 
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Imprint")
                         .HasColumnType("nvarchar(max)");
 
@@ -217,6 +217,9 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                         .HasColumnType("decimal(5, 2)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebSite")

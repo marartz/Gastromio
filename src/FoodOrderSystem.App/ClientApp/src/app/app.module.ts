@@ -14,7 +14,6 @@ import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { ChangeUserDetailsComponent } from './change-user-details/change-user-details.component';
 import { OrderHomeComponent } from './order-home/order-home.component';
-import { RestaurantSearchComponent } from './restaurant-search/restaurant-search.component';
 import { AuthService } from './auth/auth.service';
 import { SystemAdminAuthGuardService as SystemAdminAuthGuard } from './auth/system-admin-auth-guard.service';
 import { RestaurantAdminAuthGuardService as RestaurantAdminAuthGuard } from './auth/restaurant-admin-auth-guard.service';
@@ -39,7 +38,7 @@ import { RemoveRestaurantComponent } from './remove-restaurant/remove-restaurant
 import { RestaurantSysAdminService } from './restaurant-sys-admin/restaurant-sys-admin.service';
 import { RestaurantRestAdminService } from './restaurant-rest-admin/restaurant-rest-admin.service';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
-import { CuisineService } from './cuisine/cuisine.service';
+import { OrderService } from './order/order.service';
 
 @NgModule({
   imports: [
@@ -81,19 +80,18 @@ import { CuisineService } from './cuisine/cuisine.service';
     ChangeRestaurantNameComponent,
     RemoveRestaurantComponent,
     OrderHomeComponent,
-    RestaurantSearchComponent,
     AdminRestaurantComponent,
   ],
   providers: [
     AuthService,
     SystemAdminAuthGuard,
     RestaurantAdminAuthGuard,
-    CuisineService,
     UserAdminService,
     CuisineAdminService,
     PaymentMethodAdminService,
     RestaurantSysAdminService,
     RestaurantRestAdminService,
+    OrderService,
   ],
   bootstrap: [AppComponent]
 })

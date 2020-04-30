@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.App.Models;
+﻿using FoodOrderSystem.App.Helper;
+using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddCuisine;
 using FoodOrderSystem.Domain.Commands.ChangeCuisine;
@@ -10,14 +11,10 @@ using FoodOrderSystem.Domain.Queries.GetAllCuisines;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.App.Controllers.V1
@@ -76,7 +73,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var image = ConvertFromImageUrl(addCuisineModel.Image);
+            var image = ImageHelper.ConvertFromImageUrl(addCuisineModel.Image);
 
             var commandResult = await commandDispatcher.PostAsync(new AddCuisineCommand(addCuisineModel.Name, image), currentUser);
             switch (commandResult)
@@ -106,7 +103,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var image = ConvertFromImageUrl(changeCuisineModel.Image);
+            var image = ImageHelper.ConvertFromImageUrl(changeCuisineModel.Image);
 
             var commandResult = await commandDispatcher.PostAsync(new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name, image), currentUser);
             switch (commandResult)
@@ -149,19 +146,6 @@ namespace FoodOrderSystem.App.Controllers.V1
                     return Ok();
                 default:
                     throw new InvalidOperationException("internal server error");
-            }
-        }
-
-        private static byte[] ConvertFromImageUrl(string imgUrl)
-        {
-            var base64Data = Regex.Match(imgUrl, @"data:image/(?<type>.+?);(?<format>.+?),(?<data>.+)").Groups["data"].Value;
-            var binData = Convert.FromBase64String(base64Data);
-
-            using (var image = Image.Load(binData))
-            using (var memStream = new MemoryStream())
-            {
-                image.SaveAsPng(memStream);
-                return memStream.ToArray();
             }
         }
     }

@@ -12,10 +12,10 @@ namespace FoodOrderSystem.Persistence
         public Guid Id { get; set; }
         
         public string Name { get; set; }
-        
-        public string AddressLine1 { get; set; }
-        
-        public string AddressLine2 { get; set; }
+
+        public byte[] Image { get; set; }
+
+        public string AddressStreet { get; set; }
         
         public string AddressZipCode { get; set; }
         
@@ -28,6 +28,8 @@ namespace FoodOrderSystem.Persistence
 
         [Column(TypeName = "decimal(5, 2)")]
         public decimal DeliveryCosts { get; set; }
+
+        public string Phone { get; set; }
         
         public string WebSite { get; set; }
         

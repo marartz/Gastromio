@@ -10,14 +10,16 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
     {
         private IList<DeliveryTime> deliveryTimes;
 
-        public Restaurant(RestaurantId id, string name, Address address, IList<DeliveryTime> deliveryTimes, decimal minimumOrderValue, decimal deliveryCosts, string webSite, string imprint, ISet<PaymentMethodId> paymentMethods)
+        public Restaurant(RestaurantId id, string name, byte[] image, Address address, IList<DeliveryTime> deliveryTimes, decimal minimumOrderValue, decimal deliveryCosts, string phone, string webSite, string imprint, ISet<PaymentMethodId> paymentMethods)
         {
             Id = id;
             Name = name;
+            Image = image;
             Address = address;
             this.deliveryTimes = deliveryTimes;
             MinimumOrderValue = minimumOrderValue;
             DeliveryCosts = deliveryCosts;
+            Phone = phone;
             WebSite = webSite;
             Imprint = imprint;
             PaymentMethods = paymentMethods;
@@ -25,17 +27,30 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
 
         public RestaurantId Id { get; }
         public string Name { get; private set; }
+        public byte[] Image { get; private set; }
         public Address Address { get; private set; }
         public IReadOnlyCollection<DeliveryTime> DeliveryTimes => new ReadOnlyCollection<DeliveryTime>(deliveryTimes);
         public decimal MinimumOrderValue { get; private set; }
         public decimal DeliveryCosts { get; private set; }
+        public string Phone { get; private set; }
         public string WebSite { get; private set; }
         public string Imprint { get; private set; }
         public ISet<PaymentMethodId> PaymentMethods { get; }
 
+        public DateTime CalculateNextDeliveryTime()
+        {
+            // TODO
+            return DateTime.Now;
+        }
+
         public void ChangeName(string name)
         {
             Name = name;
+        }
+
+        public void ChangeImage(byte[] image)
+        {
+            Image = image;
         }
 
         public void ChangeAddress(Address address)
@@ -43,8 +58,9 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             Address = address;
         }
 
-        public void ChangeContactDetails(string webSite, string imprint)
+        public void ChangeContactDetails(string phone, string webSite, string imprint)
         {
+            Phone = phone;
             WebSite = webSite;
             Imprint = imprint;
         }

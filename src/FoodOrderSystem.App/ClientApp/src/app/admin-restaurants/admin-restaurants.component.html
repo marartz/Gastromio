@@ -21,13 +21,13 @@
             <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
                 <div class="restaurant-logo-wrapper">
                     <div class="restaurant-logo">
-                        <img src="assets/logo.png" alt="{{restaurant.name}}" border="0" /><!-- Hier später Restaurant Logo! -->
+                        <img src="{{restaurant.image}}" alt="{{restaurant.name}}" border="0" />
                     </div>
                 </div>
                 <div class="restaurant-info-wrapper">
                     <h2 class="restaurantname">{{restaurant.name}}</h2>
                     <!-- {{restaurant.street}}   {{restaurant.plz}} {{restaurant.city}} -->
-                    <div class="restaurantbeschreibung">Werther Straße 213<br />46395 Bocholt</div>
+                    <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
                     <div class="bottom-wrapper details">
                         <div class="delivery">
                             <a href="#" class="edit-restaurant-settings" [routerLink]="[restaurant.id]">Details ändern</a>

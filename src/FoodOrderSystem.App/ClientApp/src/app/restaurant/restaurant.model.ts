@@ -6,15 +6,27 @@ export class RestaurantModel {
 
   public id: string;
 
+  public image: string;
+
   public name: string;
 
   public address: AddressModel;
 
   public deliveryTimes: DeliveryTimeModel[];
 
+  public nextDeliveryTime: string;
+
+  public nextDeliveryTimeText: string;
+
   public minimumOrderValue: number;
 
+  public minimumOrderValueText: string;
+
   public deliveryCosts: number;
+
+  public deliveryCostsText: string;
+
+  public phone: string;
 
   public webSite: string;
 
@@ -24,9 +36,7 @@ export class RestaurantModel {
 export class AddressModel {
   constructor() { }
 
-  public line1: string;
-
-  public line2: string;
+  public street: string;
 
   public zipCode: string;
 

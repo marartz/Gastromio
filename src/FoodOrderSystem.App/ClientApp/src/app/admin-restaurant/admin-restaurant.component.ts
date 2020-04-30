@@ -15,10 +15,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   restaurantId: string;
   restaurant: RestaurantModel;
 
+  changeImageForm: FormGroup;
   changeAddressForm: FormGroup;
   changeContactDetailsForm: FormGroup;
   changeDeliveryDataForm: FormGroup;
   addDeliveryTimeForm: FormGroup;
+
+  imgUrl: any;
+
 
   daysOfMonth = [
     "Montag",
@@ -38,14 +42,18 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   ) {
     this.restaurant = new RestaurantModel();
 
+    this.changeImageForm = this.formBuilder.group({
+      image: ""
+    });
+
     this.changeAddressForm = this.formBuilder.group({
-      line1: "",
-      line2: "",
+      street: "",
       zipCode: "",
       city: "",
     });
 
     this.changeContactDetailsForm = this.formBuilder.group({
+      phone: "",
       webSite: "",
       imprint: "",
     });
@@ -72,14 +80,20 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
           this.restaurant = data;
 
+          this.imgUrl = this.restaurant.image;
+
+          this.changeImageForm.patchValue({
+            image: this.restaurant.image
+          });
+
           this.changeAddressForm.patchValue({
-            line1: this.restaurant.address != null ? this.restaurant.address.line1 : "",
-            line2: this.restaurant.address != null ? this.restaurant.address.line2 : "",
+            street: this.restaurant.address != null ? this.restaurant.address.street : "",
             zipCode: this.restaurant.address != null ? this.restaurant.address.zipCode : "",
             city: this.restaurant.address != null ? this.restaurant.address.city : "",
           });
 
           this.changeContactDetailsForm.patchValue({
+            phone: this.restaurant.phone,
             webSite: this.restaurant.webSite,
             imprint: this.restaurant.imprint,
           });
@@ -98,6 +112,22 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  onImageChange(event) {
+    if (!event.target.files || !event.target.files.length)
+      return;
+    let reader = new FileReader();
+    const [file] = event.target.files;
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.changeImageForm.patchValue({
+        image: reader.result
+      });
+
+      this.imgUrl = reader.result;
+    };
   }
 
   getDeliveryTimeViewModels(): Array<DeliveryTimeViewModel> {
@@ -138,6 +168,16 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
+  onSaveImage(value): void {
+    let subscription = this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, value.image).subscribe((data) => {
+      subscription.unsubscribe();
+      this.restaurant.image = data.image;
+    }, () => {
+      subscription.unsubscribe();
+      // TODO
+    });
+  }
+
   onSaveAddress(value): void {
     let subscription = this.restaurantRestAdminService.changeRestaurantAddressAsync(this.restaurant.id, value).subscribe((data) => {
       subscription.unsubscribe();
@@ -149,8 +189,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   onSaveContactDetails(value): void {
-    let subscription = this.restaurantRestAdminService.changeRestaurantContactDetailsAsync(this.restaurant.id, value.webSite, value.imprint).subscribe((data) => {
+    let subscription = this.restaurantRestAdminService.changeRestaurantContactDetailsAsync(this.restaurant.id, value.phone, value.webSite, value.imprint).subscribe((data) => {
       subscription.unsubscribe();
+      this.restaurant.phone = data.phone;
       this.restaurant.webSite = data.webSite;
       this.restaurant.imprint = data.imprint;
     }, () => {
