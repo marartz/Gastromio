@@ -1,6 +1,6 @@
 ﻿namespace FoodOrderSystem.Domain.Commands
 {
-    public abstract class CommandResult
+    public abstract class CommandResult<TResult>
     {
     }
 }

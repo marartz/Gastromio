@@ -1,12 +1,13 @@
 ﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
 {
-    public class AddPaymentMethodCommandHandler : ICommandHandler<AddPaymentMethodCommand>
+    public class AddPaymentMethodCommandHandler : ICommandHandler<AddPaymentMethodCommand, PaymentMethodViewModel>
     {
         private readonly IPaymentMethodFactory paymentMethodFactory;
         private readonly IPaymentMethodRepository paymentMethodRepository;
@@ -17,25 +18,25 @@ namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(AddPaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<PaymentMethodViewModel>> HandleAsync(AddPaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<PaymentMethodViewModel>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<PaymentMethodViewModel>();
 
             var paymentMethod = await paymentMethodRepository.FindByNameAsync(command.Name, cancellationToken);
             if (paymentMethod != null)
-                return new FailureCommandResult<string>("payment method name already exists");
+                return new FailureCommandResult<PaymentMethodViewModel>();
 
             paymentMethod = paymentMethodFactory.Create(command.Name, command.Description);
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 
-            return new SuccessCommandResult<PaymentMethod>(paymentMethod);
+            return new SuccessCommandResult<PaymentMethodViewModel>(PaymentMethodViewModel.FromPaymentMethod(paymentMethod));
         }
     }
 }

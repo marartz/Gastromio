@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.App.Models;
+﻿using FoodOrderSystem.App.Helper;
+using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddUser;
 using FoodOrderSystem.Domain.Commands.ChangeUserDetails;
@@ -7,6 +8,7 @@ using FoodOrderSystem.Domain.Commands.RemoveUser;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.SearchForUsers;
+using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,24 +47,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync(new SearchForUsersQuery(search), currentUser);
-            switch (queryResult)
-            {
-                case UnauthorizedQueryResult _:
-                    return Unauthorized();
-                case ForbiddenQueryResult _:
-                    return Forbid();
-                case SuccessQueryResult<ICollection<User>> result:
-                    var model = result.Value.Select(en => new UserModel
-                    {
-                        Id = en.Id.Value,
-                        Name = en.Name,
-                        Role = en.Role.ToString()
-                    }).ToList();
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var queryResult = await queryDispatcher.PostAsync<SearchForUsersQuery, ICollection<UserViewModel>>(new SearchForUsersQuery(search), currentUser);
+            return ResultHelper.HandleQueryResult(queryResult);
         }
 
         [Route("users")]
@@ -79,26 +65,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var role = (Role)Enum.Parse(typeof(Role), addUserModel.Role);
 
-            var commandResult = await commandDispatcher.PostAsync(new AddUserCommand(addUserModel.Name, role, addUserModel.Password), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<User> result:
-                    var model = new UserModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name,
-                        Role = result.Value.Role.ToString()
-                    };
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<AddUserCommand, UserViewModel>(new AddUserCommand(addUserModel.Name, role, addUserModel.Email, addUserModel.Password), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("users/{userId}/changedetails")]
@@ -115,30 +83,12 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var role = (Role)Enum.Parse(typeof(Role), changeUserDetailsModel.Role);
 
-            var commandResult = await commandDispatcher.PostAsync(
+            var commandResult = await commandDispatcher.PostAsync<ChangeUserDetailsCommand, bool>(
                 new ChangeUserDetailsCommand(new UserId(userId), changeUserDetailsModel.Name, role, changeUserDetailsModel.Email),
                 currentUser
             );
 
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<User> result:
-                    var model = new UserModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name,
-                        Role = result.Value.Role.ToString()
-                    };
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("users/{userId}/changepassword")]
@@ -153,26 +103,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangeUserPasswordCommand(new UserId(userId), changeUserPasswordModel.Password), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<User> result:
-                    var model = new UserModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name,
-                        Role = result.Value.Role.ToString()
-                    };
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<ChangeUserPasswordCommand, bool>(new ChangeUserPasswordCommand(new UserId(userId), changeUserPasswordModel.Password), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("users/{userId}")]
@@ -187,20 +119,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new RemoveUserCommand(new UserId(userId)), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult result:
-                    return Ok();
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<RemoveUserCommand, bool>(new RemoveUserCommand(new UserId(userId)), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
     }
 }

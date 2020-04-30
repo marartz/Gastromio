@@ -13,40 +13,21 @@ export class AddCuisineComponent implements OnInit {
   addCuisineForm: FormGroup;
   message: string;
 
-  imgUrl: any;
-
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private cuisineAdminService: CuisineAdminService,
   ) {
     this.addCuisineForm = this.formBuilder.group({
-      name: '',
-      image: undefined
+      name: ''
     });
   }
 
   ngOnInit() {
   }
 
-  onImageChange(event) {
-    if (!event.target.files || !event.target.files.length)
-      return;
-    let reader = new FileReader();
-    const [file] = event.target.files;
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      this.addCuisineForm.patchValue({
-        image: reader.result
-      });
-
-      this.imgUrl = reader.result;
-    };
-  }
-
   onSubmit(data) {
-    this.cuisineAdminService.addCuisineAsync(data.name, data.image)
+    this.cuisineAdminService.addCuisineAsync(data.name)
       .subscribe(() => {
         this.message = undefined;
         this.addCuisineForm.reset();

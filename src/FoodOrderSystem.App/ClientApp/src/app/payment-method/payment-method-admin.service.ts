@@ -35,7 +35,7 @@ export class PaymentMethodAdminService {
     return this.http.post<PaymentMethodModel>(this.baseUrl + '/paymentmethods', { name: name, description: description }, httpOptions);
   }
 
-  public changePaymentMethodAsync(paymentMethodId: string, name: string, description: string): Observable<PaymentMethodModel> {
+  public changePaymentMethodAsync(paymentMethodId: string, name: string, description: string): Observable<boolean> {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class PaymentMethodAdminService {
         'Authorization': 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<PaymentMethodModel>(this.baseUrl + '/paymentmethods/' + paymentMethodId + '/change', { name: name, description: description }, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/paymentmethods/' + paymentMethodId + '/change', { name: name, description: description }, httpOptions);
   }
 
   public removePaymentMethodAsync(paymentMethodId: string): Observable<void> {

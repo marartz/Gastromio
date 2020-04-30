@@ -124,6 +124,7 @@ namespace FoodOrderSystem.Persistence
             return new User(new UserId(row.Id),
                 row.Name,
                 role,
+                row.Email,
                 row.PasswordSalt,
                 row.PasswordHash
             );
@@ -149,6 +150,7 @@ namespace FoodOrderSystem.Persistence
             row.Id = obj.Id.Value;
             row.Name = obj.Name;
             row.Role = ToDbRole(obj.Role);
+            row.Email = obj.Email;
             row.PasswordSalt = obj.PasswordSalt;
             row.PasswordHash = obj.PasswordHash;
         }

@@ -15,7 +15,7 @@ namespace FoodOrderSystem.Domain.Queries
 
         public static void Initialize(IServiceCollection services)
         {
-            var queryHandlerType = typeof(IQueryHandler<>);
+            var queryHandlerType = typeof(IQueryHandler<,>);
             var handlerTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type.GetInterfaces().Any(intf => intf.IsGenericType && intf.GetGenericTypeDefinition() == queryHandlerType));
@@ -33,14 +33,14 @@ namespace FoodOrderSystem.Domain.Queries
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<QueryResult> PostAsync<TQuery>(TQuery query, User currentUser, CancellationToken cancellationToken = default) where TQuery : IQuery
+        public async Task<QueryResult<TResult>> PostAsync<TQuery, TResult>(TQuery query, User currentUser, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
         {
             var queryType = typeof(TQuery);
 
             if (!queryHandlerMapping.TryGetValue(queryType, out var handlerType))
                 throw new InvalidOperationException($"could not find handler for query with type {queryType.FullName}");
 
-            var handler = serviceProvider.GetService(handlerType) as IQueryHandler<TQuery>;
+            var handler = serviceProvider.GetService(handlerType) as IQueryHandler<TQuery, TResult>;
 
             return await handler.HandleAsync(query, currentUser, cancellationToken);
         }

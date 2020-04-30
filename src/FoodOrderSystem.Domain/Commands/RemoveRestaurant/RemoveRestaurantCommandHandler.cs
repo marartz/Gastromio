@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.RemoveRestaurant
 {
-    public class RemoveRestaurantCommandHandler : ICommandHandler<RemoveRestaurantCommand>
+    public class RemoveRestaurantCommandHandler : ICommandHandler<RemoveRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -15,20 +15,20 @@ namespace FoodOrderSystem.Domain.Commands.RemoveRestaurant
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(RemoveRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(RemoveRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             await restaurantRepository.RemoveAsync(command.RestaurantId, cancellationToken);
 
-            return new SuccessCommandResult();
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

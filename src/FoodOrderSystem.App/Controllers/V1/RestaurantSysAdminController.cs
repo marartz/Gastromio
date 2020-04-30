@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.App.Models;
+﻿using FoodOrderSystem.App.Helper;
+using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveRestaurant;
@@ -6,6 +7,7 @@ using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants;
+using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,19 +46,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync(new SysAdminSearchForRestaurantsQuery(search), currentUser);
-            switch (queryResult)
-            {
-                case UnauthorizedQueryResult _:
-                    return Unauthorized();
-                case ForbiddenQueryResult _:
-                    return Forbid();
-                case SuccessQueryResult<ICollection<Restaurant>> result:
-                    var model = result.Value.Select(RestaurantModel.FromRestaurant).ToList();
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var queryResult = await queryDispatcher.PostAsync<SysAdminSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(new SysAdminSearchForRestaurantsQuery(search), currentUser);
+            return ResultHelper.HandleQueryResult(queryResult);
         }
 
         [Route("restaurants")]
@@ -71,20 +62,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new AddRestaurantCommand(addRestaurantModel.Name), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<AddRestaurantCommand, RestaurantViewModel>(new AddRestaurantCommand(addRestaurantModel.Name), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}")]
@@ -99,20 +78,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new RemoveRestaurantCommand(new RestaurantId(restaurantId)), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult result:
-                    return Ok();
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<RemoveRestaurantCommand, bool>(new RemoveRestaurantCommand(new RestaurantId(restaurantId)), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
     }
 }

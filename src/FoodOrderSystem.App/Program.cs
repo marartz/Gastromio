@@ -28,10 +28,10 @@ namespace FoodOrderSystem.App
             {
                 var services = scope.ServiceProvider;
 
-                var currentUser = new User(new UserId(Guid.Empty), "admin", Role.SystemAdmin, null, null);
+                var currentUser = new User(new UserId(Guid.Empty), "admin", Role.SystemAdmin, null, null, null);
 
                 var commandDispatcher = services.GetService<ICommandDispatcher>();
-                var result = commandDispatcher.PostAsync(new EnsureAdminUserCommand(), currentUser).Result;
+                var result = commandDispatcher.PostAsync<EnsureAdminUserCommand, bool>(new EnsureAdminUserCommand(), currentUser).Result;
             }
 
             host.Run();

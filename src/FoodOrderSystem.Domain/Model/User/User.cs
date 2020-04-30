@@ -8,11 +8,12 @@ namespace FoodOrderSystem.Domain.Model.User
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
 
-        public User(UserId id, string name, Role role, byte[] passwordSalt, byte[] passwordHash)
+        public User(UserId id, string name, Role role, string email, byte[] passwordSalt, byte[] passwordHash)
         {
             Id = id;
             Name = name;
             Role = role;
+            Email = email;
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
         }

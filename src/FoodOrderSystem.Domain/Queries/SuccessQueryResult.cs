@@ -1,16 +1,12 @@
 ﻿namespace FoodOrderSystem.Domain.Queries
 {
-    public class SuccessQueryResult : QueryResult
+    public class SuccessQueryResult<TResult> : QueryResult<TResult>
     {
-    }
-
-    public class SuccessQueryResult<TValue> : SuccessQueryResult
-    {
-        public SuccessQueryResult(TValue value)
+        public SuccessQueryResult(TResult value)
         {
             Value = value;
         }
 
-        public TValue Value { get; }
+        public TResult Value { get; }
     }
 }

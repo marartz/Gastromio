@@ -1,6 +1,8 @@
-﻿namespace FoodOrderSystem.Domain.Commands.Login
+﻿using FoodOrderSystem.Domain.ViewModels;
+
+namespace FoodOrderSystem.Domain.Commands.Login
 {
-    public class LoginCommand : ICommand
+    public class LoginCommand : ICommand<UserViewModel>
     {
         public LoginCommand(string username, string password)
         {

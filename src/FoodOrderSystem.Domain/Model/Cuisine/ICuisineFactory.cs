@@ -2,6 +2,6 @@
 {
     public interface ICuisineFactory
     {
-        Cuisine Create(string name, byte[] image);
+        Cuisine Create(string name);
     }
 }

@@ -1,12 +1,13 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
 {
-    public class AddDeliveryTimeToRestaurantCommandHandler : ICommandHandler<AddDeliveryTimeToRestaurantCommand>
+    public class AddDeliveryTimeToRestaurantCommandHandler : ICommandHandler<AddDeliveryTimeToRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -15,26 +16,26 @@ namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(AddDeliveryTimeToRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(AddDeliveryTimeToRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return new FailureCommandResult<string>("restaurant does not exist");
+                return new FailureCommandResult<bool>();
 
             restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return new SuccessCommandResult<Restaurant>(restaurant);
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

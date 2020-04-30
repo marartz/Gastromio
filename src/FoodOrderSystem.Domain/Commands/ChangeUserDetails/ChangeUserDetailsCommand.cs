@@ -1,8 +1,9 @@
 ﻿using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeUserDetails
 {
-    public class ChangeUserDetailsCommand : ICommand
+    public class ChangeUserDetailsCommand : ICommand<bool>
     {
         public ChangeUserDetailsCommand(UserId userId, string name, Role role, string email)
         {

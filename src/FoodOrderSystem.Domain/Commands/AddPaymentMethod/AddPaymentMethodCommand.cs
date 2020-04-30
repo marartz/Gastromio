@@ -1,6 +1,8 @@
-﻿namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
+﻿using FoodOrderSystem.Domain.ViewModels;
+
+namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
 {
-    public class AddPaymentMethodCommand : ICommand
+    public class AddPaymentMethodCommand : ICommand<PaymentMethodViewModel>
     {
         public AddPaymentMethodCommand(string name, string description)
         {

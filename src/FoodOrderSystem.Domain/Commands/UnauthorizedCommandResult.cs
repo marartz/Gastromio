@@ -1,6 +1,6 @@
 ﻿namespace FoodOrderSystem.Domain.Commands
 {
-    public class UnauthorizedCommandResult : FailureCommandResult
+    public class UnauthorizedCommandResult<TResult> : FailureCommandResult<TResult>
     {
     }
 }

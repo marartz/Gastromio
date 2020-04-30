@@ -2,16 +2,20 @@
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant;
+using FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantImage;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant;
+using FoodOrderSystem.Domain.Commands.RemovePaymentMethodFromRestaurant;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetRestaurantById;
+using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -49,18 +53,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), currentUser);
-            switch (queryResult)
-            {
-                case UnauthorizedQueryResult _:
-                    return Unauthorized();
-                case ForbiddenQueryResult _:
-                    return Forbid();
-                case SuccessQueryResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var queryResult = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), currentUser);
+            return ResultHelper.HandleQueryResult(queryResult);
         }
 
         [Route("restaurants/{restaurantId}/changename")]
@@ -75,20 +69,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantNameCommand, bool>(new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changeimage")]
@@ -105,20 +87,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var image = ImageHelper.ConvertFromImageUrl(changeRestaurantImageModel.Image);
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangeRestaurantImageCommand(new RestaurantId(restaurantId), image), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantImageCommand, bool>(new ChangeRestaurantImageCommand(new RestaurantId(restaurantId), image), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changeaddress")]
@@ -139,20 +109,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 changeRestaurantAddressModel.City
             );
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangeRestaurantAddressCommand(new RestaurantId(restaurantId), address), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantAddressCommand, bool>(new ChangeRestaurantAddressCommand(new RestaurantId(restaurantId), address), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changecontactdetails")]
@@ -167,7 +125,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantContactDetailsCommand, bool>(
                 new ChangeRestaurantContactDetailsCommand(
                     new RestaurantId(restaurantId),
                     changeRestaurantContactDetailsModel.Phone,
@@ -178,19 +136,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changedeliverydata")]
@@ -205,24 +151,12 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantDeliveryDataCommand, bool>(
                 new ChangeRestaurantDeliveryDataCommand(new RestaurantId(restaurantId), changeRestaurantDeliveryDataModel.MinimumOrderValue, changeRestaurantDeliveryDataModel.DeliveryCosts),
                 currentUser
             );
 
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/adddeliverytime")]
@@ -240,24 +174,12 @@ namespace FoodOrderSystem.App.Controllers.V1
             var start = TimeSpan.FromMinutes(model.Start);
             var end = TimeSpan.FromMinutes(model.End);
 
-            var commandResult = await commandDispatcher.PostAsync(
+            var commandResult = await commandDispatcher.PostAsync<AddDeliveryTimeToRestaurantCommand, bool>(
                 new AddDeliveryTimeToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
                 currentUser
             );
 
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removedeliverytime")]
@@ -274,24 +196,52 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var start = TimeSpan.FromMinutes(model.Start);
 
-            var commandResult = await commandDispatcher.PostAsync(
+            var commandResult = await commandDispatcher.PostAsync<RemoveDeliveryTimeFromRestaurantCommand, bool>(
                 new RemoveDeliveryTimeFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
                 currentUser
             );
 
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Restaurant> result:
-                    return Ok(RestaurantModel.FromRestaurant(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            return ResultHelper.HandleCommandResult(commandResult);
+        }
+
+        [Route("restaurants/{restaurantId}/addpaymentmethod")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddPaymentMethodAsync(Guid restaurantId, [FromBody] AddPaymentMethodToRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<AddPaymentMethodToRestaurantCommand, bool>(
+                new AddPaymentMethodToRestaurantCommand(new RestaurantId(restaurantId), new PaymentMethodId(model.PaymentMethodId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleCommandResult(commandResult);
+        }
+
+        [Route("restaurants/{restaurantId}/removepaymentmethod")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemovePaymentMethodAsync(Guid restaurantId, [FromBody] RemovePaymentMethodFromRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<RemovePaymentMethodFromRestaurantCommand, bool>(
+                new RemovePaymentMethodFromRestaurantCommand(new RestaurantId(restaurantId), new PaymentMethodId(model.PaymentMethodId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleCommandResult(commandResult);
         }
     }
 }

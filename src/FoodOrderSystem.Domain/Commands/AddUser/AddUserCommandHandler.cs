@@ -1,11 +1,12 @@
 ﻿using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.AddUser
 {
-    public class AddUserCommandHandler : ICommandHandler<AddUserCommand>
+    public class AddUserCommandHandler : ICommandHandler<AddUserCommand, UserViewModel>
     {
         private readonly IUserFactory userFactory;
         private readonly IUserRepository userRepository;
@@ -16,25 +17,26 @@ namespace FoodOrderSystem.Domain.Commands.AddUser
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<UserViewModel>> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<UserViewModel>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<UserViewModel>();
 
             var user = await userRepository.FindByNameAsync(command.Name, cancellationToken);
             if (user != null)
-                return new FailureCommandResult<string>("user name already exists");
+                return new FailureCommandResult<UserViewModel>();
 
-            user = userFactory.Create(command.Name, command.Role, command.Password);
+            user = userFactory.Create(command.Name, command.Role, command.Email, command.Password);
+
             await userRepository.StoreAsync(user, cancellationToken);
 
-            return new SuccessCommandResult<User>(user);
+            return new SuccessCommandResult<UserViewModel>(UserViewModel.FromUser(user));
         }
     }
 }

@@ -114,9 +114,9 @@ namespace FoodOrderSystem.Persistence
                 row.AddressZipCode = obj.Address.ZipCode;
                 row.AddressCity = obj.Address.City;
             }
+            row.DeliveryTimes = new List<DeliveryTimeRow>();
             if (obj.DeliveryTimes != null && obj.DeliveryTimes.Count > 0)
             {
-                row.DeliveryTimes = new List<DeliveryTimeRow>();
                 foreach (var deliveryTime in obj.DeliveryTimes)
                 {
                     row.DeliveryTimes.Add(new DeliveryTimeRow
@@ -134,9 +134,9 @@ namespace FoodOrderSystem.Persistence
             row.WebSite = obj.WebSite;
             row.Imprint = obj.Imprint;
             row.OrderEmailAddress = obj.OrderEmailAddress;
+            row.RestaurantPaymentMethods = new List<RestaurantPaymentMethodRow>();
             if (obj.PaymentMethods != null && obj.PaymentMethods.Count > 0)
             {
-                row.RestaurantPaymentMethods = new List<RestaurantPaymentMethodRow>();
                 foreach (var paymentMethod in obj.PaymentMethods)
                 {
                     row.RestaurantPaymentMethods.Add(new RestaurantPaymentMethodRow

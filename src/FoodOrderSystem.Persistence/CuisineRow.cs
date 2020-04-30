@@ -11,7 +11,6 @@ namespace FoodOrderSystem.Persistence
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public byte[] Image { get; set; }
         public virtual ICollection<RestaurantCuisineRow> RestaurantCuisines { get; set; } = new List<RestaurantCuisineRow>();
     }
 }

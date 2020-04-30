@@ -15,7 +15,7 @@ namespace FoodOrderSystem.Domain.Commands
 
         public static void Initialize(IServiceCollection services)
         {
-            var CommandHandlerType = typeof(ICommandHandler<>);
+            var CommandHandlerType = typeof(ICommandHandler<,>);
             var handlerTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type.GetInterfaces().Any(intf => intf.IsGenericType && intf.GetGenericTypeDefinition() == CommandHandlerType));
@@ -33,14 +33,14 @@ namespace FoodOrderSystem.Domain.Commands
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<CommandResult> PostAsync<TCommand>(TCommand Command, User currentUser, CancellationToken cancellationToken = default) where TCommand : ICommand
+        public async Task<CommandResult<TResult>> PostAsync<TCommand, TResult>(TCommand Command, User currentUser, CancellationToken cancellationToken = default) where TCommand : ICommand<TResult>
         {
             var commandType = typeof(TCommand);
 
             if (!commandHandlerMapping.TryGetValue(commandType, out var handlerType))
                 throw new InvalidOperationException($"could not find handler for command with type {commandType.FullName}");
 
-            var handler = serviceProvider.GetService(handlerType) as ICommandHandler<TCommand>;
+            var handler = serviceProvider.GetService(handlerType) as ICommandHandler<TCommand, TResult>;
 
             return await handler.HandleAsync(Command, currentUser, cancellationToken);
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantName
 {
-    public class ChangeRestaurantNameCommandHandler : ICommandHandler<ChangeRestaurantNameCommand>
+    public class ChangeRestaurantNameCommandHandler : ICommandHandler<ChangeRestaurantNameCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -15,26 +15,26 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantName
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(ChangeRestaurantNameCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(ChangeRestaurantNameCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return new FailureCommandResult<string>("user does not exist");
+                return new FailureCommandResult<bool>();
 
             restaurant.ChangeName(command.Name);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return new SuccessCommandResult<Restaurant>(restaurant);
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

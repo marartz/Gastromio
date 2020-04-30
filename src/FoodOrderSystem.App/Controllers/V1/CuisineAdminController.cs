@@ -8,6 +8,7 @@ using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllCuisines;
+using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -46,19 +47,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync(new GetAllCuisinesQuery(), currentUser);
-            switch (queryResult)
-            {
-                case UnauthorizedQueryResult _:
-                    return Unauthorized();
-                case ForbiddenQueryResult _:
-                    return Forbid();
-                case SuccessQueryResult<ICollection<Cuisine>> result:
-                    var model = result.Value.Select(CuisineModel.FromCuisine).ToList();
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var queryResult = await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineViewModel>>(new GetAllCuisinesQuery(), currentUser);
+            return ResultHelper.HandleQueryResult(queryResult);
         }
 
         [Route("cuisines")]
@@ -73,22 +63,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var image = ImageHelper.ConvertFromImageUrl(addCuisineModel.Image);
-
-            var commandResult = await commandDispatcher.PostAsync(new AddCuisineCommand(addCuisineModel.Name, image), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Cuisine> result:
-                    return Ok(CuisineModel.FromCuisine(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<AddCuisineCommand, CuisineViewModel>(new AddCuisineCommand(addCuisineModel.Name), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("cuisines/{cuisineId}/change")]
@@ -103,22 +79,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var image = ImageHelper.ConvertFromImageUrl(changeCuisineModel.Image);
-
-            var commandResult = await commandDispatcher.PostAsync(new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name, image), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<Cuisine> result:
-                    return Ok(CuisineModel.FromCuisine(result.Value));
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<ChangeCuisineCommand, bool>(new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("cuisines/{cuisineId}")]
@@ -133,20 +95,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new RemoveCuisineCommand(new CuisineId(cuisineId)), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult result:
-                    return Ok();
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<RemoveCuisineCommand, bool>(new RemoveCuisineCommand(new CuisineId(cuisineId)), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
     }
 }

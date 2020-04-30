@@ -2,7 +2,7 @@
 
 namespace FoodOrderSystem.Domain.Commands.RemovePaymentMethod
 {
-    public class RemovePaymentMethodCommand : ICommand
+    public class RemovePaymentMethodCommand : ICommand<bool>
     {
         public RemovePaymentMethodCommand(PaymentMethodId paymentMethodId)
         {

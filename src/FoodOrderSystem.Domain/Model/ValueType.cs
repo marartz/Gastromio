@@ -28,7 +28,9 @@ namespace FoodOrderSystem.Domain.Model
 
         public int CompareTo(object obj)
         {
-            return Value.CompareTo(obj);
+            if (!(obj is ValueType<T>))
+                return -1;
+            return Value.CompareTo((obj as ValueType<T>).Value);
         }
 
         public static bool operator ==(ValueType<T> left, ValueType<T> right)
@@ -38,7 +40,7 @@ namespace FoodOrderSystem.Domain.Model
 
         public static bool operator !=(ValueType<T> left, ValueType<T> right)
         {
-            return !(left == right);
+            return !left.Equals(right);
         }
     }
 }

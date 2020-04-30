@@ -1,16 +1,12 @@
 ﻿namespace FoodOrderSystem.Domain.Commands
 {
-    public class SuccessCommandResult : CommandResult
+    public class SuccessCommandResult<TResult> : CommandResult<TResult>
     {
-    }
-
-    public class SuccessCommandResult<TValue> : SuccessCommandResult
-    {
-        public SuccessCommandResult(TValue value)
+        public SuccessCommandResult(TResult value)
         {
             Value = value;
         }
 
-        public TValue Value { get; }
+        public TResult Value { get; }
     }
 }

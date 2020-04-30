@@ -1,8 +1,9 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantName
 {
-    public class ChangeRestaurantNameCommand : ICommand
+    public class ChangeRestaurantNameCommand : ICommand<bool>
     {
         public ChangeRestaurantNameCommand(RestaurantId restaurantId, string name)
         {

@@ -13,11 +13,6 @@
                             <input type="text" id="name" formControlName="name" ngbAutofocus>
                             <label for="name">Name</label>
                         </div>
-                        <div class="input">
-                            <input type="image" id="image" accept="image/*" type="file" (change)="onImageChange($event)">
-                            <img class="input" [src]="imgUrl" height="200" *ngIf="imgUrl" style="vertical-align: middle; padding-top: 24px; height: 100%">
-                            <label for="image">Bild</label>
-                        </div>
                     </div>
                     <div class="button-container">
                         <button class="button-submit" type="submit">Ändern</button>

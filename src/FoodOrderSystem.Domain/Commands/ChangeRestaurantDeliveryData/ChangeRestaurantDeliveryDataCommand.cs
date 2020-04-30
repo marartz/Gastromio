@@ -1,8 +1,9 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData
 {
-    public class ChangeRestaurantDeliveryDataCommand : ICommand
+    public class ChangeRestaurantDeliveryDataCommand : ICommand<bool>
     {
         public ChangeRestaurantDeliveryDataCommand(RestaurantId restaurantId, decimal minimumOrderValue, decimal deliveryCosts)
         {

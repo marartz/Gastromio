@@ -24,7 +24,7 @@ export class UserAdminService {
     return this.http.get<UserModel[]>(this.baseUrl + '/users?search=' + encodeURIComponent(search), httpOptions);
   }
 
-  public addUserAsync(name: string, role: string, password: string): Observable<UserModel> {
+  public addUserAsync(name: string, role: string, email: string, password: string): Observable<UserModel> {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export class UserAdminService {
         'Authorization': 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<UserModel>(this.baseUrl + '/users', { name: name, role: role, password: password }, httpOptions);
+    return this.http.post<UserModel>(this.baseUrl + '/users', { name: name, role: role, email: email, password: password }, httpOptions);
   }
 
   public changeUserDetailsAsync(userId: string, name: string, role: string, email: string): Observable<UserModel> {

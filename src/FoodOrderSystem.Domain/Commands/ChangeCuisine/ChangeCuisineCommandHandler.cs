@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeCuisine
 {
-    public class ChangeCuisineCommandHandler : ICommandHandler<ChangeCuisineCommand>
+    public class ChangeCuisineCommandHandler : ICommandHandler<ChangeCuisineCommand, bool>
     {
         private readonly ICuisineRepository cuisineRepository;
 
@@ -15,26 +15,26 @@ namespace FoodOrderSystem.Domain.Commands.ChangeCuisine
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(ChangeCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(ChangeCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             var cuisine = await cuisineRepository.FindByCuisineIdAsync(command.CuisineId, cancellationToken);
             if (cuisine == null)
-                return new FailureCommandResult<string>("user does not exist");
+                return new FailureCommandResult<bool>();
 
-            cuisine.Change(command.Name, command.Image);
+            cuisine.Change(command.Name);
 
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 
-            return new SuccessCommandResult<Cuisine>(cuisine);
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

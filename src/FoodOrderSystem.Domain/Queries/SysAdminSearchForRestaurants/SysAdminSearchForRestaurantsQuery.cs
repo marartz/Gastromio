@@ -1,6 +1,9 @@
-﻿namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
+﻿using FoodOrderSystem.Domain.ViewModels;
+using System.Collections.Generic;
+
+namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
 {
-    public class SysAdminSearchForRestaurantsQuery : IQuery
+    public class SysAdminSearchForRestaurantsQuery : IQuery<ICollection<RestaurantViewModel>>
     {
         public SysAdminSearchForRestaurantsQuery(string searchPhrase)
         {

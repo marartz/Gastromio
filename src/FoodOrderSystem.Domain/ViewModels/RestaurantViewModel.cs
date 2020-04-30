@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FoodOrderSystem.App.Models
+namespace FoodOrderSystem.Domain.ViewModels
 {
-    public class RestaurantModel
+    public class RestaurantViewModel
     {
         public Guid Id { get; set; }
 
@@ -14,9 +14,9 @@ namespace FoodOrderSystem.App.Models
 
         public string Image { get; set; }
 
-        public AddressModel Address { get; set; }
-        
-        public IList<DeliveryTimeModel> DeliveryTimes { get; set; }
+        public AddressViewModel Address { get; set; }
+
+        public IList<DeliveryTimeViewModel> DeliveryTimes { get; set; }
 
         public DateTime NextDeliveryTime { get; set; }
 
@@ -38,9 +38,9 @@ namespace FoodOrderSystem.App.Models
 
         public string OrderEmailAddress { get; set; }
 
-        public IList<Guid> PaymentMethods { get; set; }
+        public IList<PaymentMethodViewModel> PaymentMethods { get; set; }
 
-        public static RestaurantModel FromRestaurant(Restaurant restaurant)
+        public static RestaurantViewModel FromRestaurant(Restaurant restaurant, IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods)
         {
             string image = null;
             if (restaurant.Image != null && restaurant.Image.Length != 0)
@@ -53,23 +53,14 @@ namespace FoodOrderSystem.App.Models
 
             var nextDeliveryTime = restaurant.CalculateNextDeliveryTime();
 
-            return new RestaurantModel
+            return new RestaurantViewModel
             {
                 Id = restaurant.Id.Value,
                 Name = restaurant.Name,
                 Image = image,
-                Address = restaurant.Address != null ? new AddressModel
-                {
-                    Street = restaurant.Address.Street,
-                    ZipCode = restaurant.Address.ZipCode,
-                    City = restaurant.Address.City
-                } : null,
-                DeliveryTimes = restaurant.DeliveryTimes != null ? restaurant.DeliveryTimes.Select(en => new DeliveryTimeModel
-                {
-                    DayOfWeek = en.DayOfWeek,
-                    Start = (int)en.Start.TotalMinutes,
-                    End = (int)en.End.TotalMinutes
-                }).ToList() : new List<DeliveryTimeModel>(),
+                Address = restaurant.Address != null ? AddressViewModel.FromAddress(restaurant.Address) : null,
+                DeliveryTimes = restaurant.DeliveryTimes != null ? restaurant.DeliveryTimes
+                    .Select(en => DeliveryTimeViewModel.FromDeliveryTime(en)).ToList() : new List<DeliveryTimeViewModel>(),
                 NextDeliveryTime = nextDeliveryTime,
                 NextDeliveryTimeText = nextDeliveryTime.ToString("hh:mm"),
                 MinimumOrderValue = restaurant.MinimumOrderValue,
@@ -80,8 +71,14 @@ namespace FoodOrderSystem.App.Models
                 WebSite = restaurant.WebSite,
                 Imprint = restaurant.Imprint,
                 OrderEmailAddress = restaurant.OrderEmailAddress,
-                PaymentMethods = restaurant.PaymentMethods != null ? restaurant.PaymentMethods.Select(en => en.Value).ToList() : new List<Guid>()
+                PaymentMethods = restaurant.PaymentMethods != null ? restaurant.PaymentMethods
+                    .Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value)).ToList() : new List<PaymentMethodViewModel>()
             };
+        }
+
+        public static PaymentMethodViewModel RetrievePaymentMethodModel(IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, Guid paymentMethodId)
+        {
+            return allPaymentMethods.TryGetValue(paymentMethodId, out var model) ? model : null;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.RemoveUser
 {
-    public class RemoveUserCommandHandler : ICommandHandler<RemoveUserCommand>
+    public class RemoveUserCommandHandler : ICommandHandler<RemoveUserCommand, bool>
     {
         private readonly IUserRepository userRepository;
 
@@ -14,23 +14,23 @@ namespace FoodOrderSystem.Domain.Commands.RemoveUser
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(RemoveUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(RemoveUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             if (command.UserId == currentUser.Id)
-                return new FailureCommandResult<string>("cannot delete user that is currently logged in");
+                return new FailureCommandResult<bool>();
 
             await userRepository.RemoveAsync(command.UserId, cancellationToken);
 
-            return new SuccessCommandResult();
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

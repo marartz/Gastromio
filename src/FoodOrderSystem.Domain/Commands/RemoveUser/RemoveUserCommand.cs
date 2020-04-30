@@ -2,7 +2,7 @@
 
 namespace FoodOrderSystem.Domain.Commands.RemoveUser
 {
-    public class RemoveUserCommand : ICommand
+    public class RemoveUserCommand : ICommand<bool>
     {
         public RemoveUserCommand(UserId userId)
         {

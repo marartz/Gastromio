@@ -1,8 +1,9 @@
 ﻿using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeUserPassword
 {
-    public class ChangeUserPasswordCommand : ICommand
+    public class ChangeUserPasswordCommand : ICommand<bool>
     {
         public ChangeUserPasswordCommand(UserId userId, string password)
         {

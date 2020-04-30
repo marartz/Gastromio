@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.RemovePaymentMethod
 {
-    public class RemovePaymentMethodCommandHandler : ICommandHandler<RemovePaymentMethodCommand>
+    public class RemovePaymentMethodCommandHandler : ICommandHandler<RemovePaymentMethodCommand, bool>
     {
         private readonly IPaymentMethodRepository paymentMethodRepository;
 
@@ -15,20 +15,20 @@ namespace FoodOrderSystem.Domain.Commands.RemovePaymentMethod
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(RemovePaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(RemovePaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             await paymentMethodRepository.RemoveAsync(command.PaymentMethodId, cancellationToken);
 
-            return new SuccessCommandResult();
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.App.Models;
+﻿using FoodOrderSystem.App.Helper;
+using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddPaymentMethod;
 using FoodOrderSystem.Domain.Commands.ChangePaymentMethod;
@@ -7,6 +8,7 @@ using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllPaymentMethods;
+using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,24 +47,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync(new GetAllPaymentMethodsQuery(), currentUser);
-            switch (queryResult)
-            {
-                case UnauthorizedQueryResult _:
-                    return Unauthorized();
-                case ForbiddenQueryResult _:
-                    return Forbid();
-                case SuccessQueryResult<ICollection<PaymentMethod>> result:
-                    var model = result.Value.Select(en => new PaymentMethodModel
-                    {
-                        Id = en.Id.Value,
-                        Name = en.Name,
-                        Description = en.Description
-                    }).ToList();
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var queryResult = await queryDispatcher.PostAsync<GetAllPaymentMethodsQuery, ICollection<PaymentMethodViewModel>>(new GetAllPaymentMethodsQuery(), currentUser);
+            return ResultHelper.HandleQueryResult(queryResult);
         }
 
         [Route("paymentMethods")]
@@ -77,26 +63,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new AddPaymentMethodCommand(addPaymentMethodModel.Name, addPaymentMethodModel.Description), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<PaymentMethod> result:
-                    var model = new PaymentMethodModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name,
-                        Description = result.Value.Description
-                    };
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<AddPaymentMethodCommand, PaymentMethodViewModel>(new AddPaymentMethodCommand(addPaymentMethodModel.Name, addPaymentMethodModel.Description), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("paymentMethods/{paymentMethodId}/change")]
@@ -111,26 +79,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new ChangePaymentMethodCommand(new PaymentMethodId(paymentMethodId), changePaymentMethodModel.Name, changePaymentMethodModel.Description), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult<PaymentMethod> result:
-                    var model = new PaymentMethodModel
-                    {
-                        Id = result.Value.Id.Value,
-                        Name = result.Value.Name,
-                        Description = result.Value.Description
-                    };
-                    return Ok(model);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<ChangePaymentMethodCommand, bool>(new ChangePaymentMethodCommand(new PaymentMethodId(paymentMethodId), changePaymentMethodModel.Name, changePaymentMethodModel.Description), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
 
         [Route("paymentMethods/{paymentMethodId}")]
@@ -145,20 +95,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync(new RemovePaymentMethodCommand(new PaymentMethodId(paymentMethodId)), currentUser);
-            switch (commandResult)
-            {
-                case UnauthorizedCommandResult _:
-                    return Unauthorized();
-                case ForbiddenCommandResult _:
-                    return Forbid();
-                case FailureCommandResult result:
-                    return BadRequest(result);
-                case SuccessCommandResult result:
-                    return Ok();
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
+            var commandResult = await commandDispatcher.PostAsync<RemovePaymentMethodCommand, bool>(new RemovePaymentMethodCommand(new PaymentMethodId(paymentMethodId)), currentUser);
+            return ResultHelper.HandleCommandResult(commandResult);
         }
     }
 }

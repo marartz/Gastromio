@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands
 {
-    public interface ICommandHandler<in TCommand> where TCommand : ICommand
+    public interface ICommandHandler<in TCommand, TResult> where TCommand : ICommand<TResult>
     {
-        Task<CommandResult> HandleAsync(TCommand command, User currentUser, CancellationToken cancellationToken = default);
+        Task<CommandResult<TResult>> HandleAsync(TCommand command, User currentUser, CancellationToken cancellationToken = default);
     }
 }

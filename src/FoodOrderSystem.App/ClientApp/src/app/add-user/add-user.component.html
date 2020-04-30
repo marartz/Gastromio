@@ -1,41 +1,45 @@
 <div class="setting-modal">
-    <div class="setting-content">
-        <div class="setting-header">
-            BENUTZER HINZUFÜGEN
-            <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
-        </div>
-        <div class="setting-form">
-            <div class="tab tab-setting">
-                <form class="setting-form" [formGroup]="addUserForm" (ngSubmit)="onSubmit(addUserForm.value)">
-                    <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
-                    <div class="form-setting">
-                        <div class="input">
-                            <input type="text" id="username" formControlName="username" ngbAutofocus>
-                            <label for="username">Benutzername</label>
-                        </div>
-                        <div class="input">
-                            <select id="role" formControlName="role">
-                                <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
-                                <option value="Customer">Kunde</option>
-                                <option value="RestaurantAdmin">Restaurantadministrator</option>
-                                <option value="SystemAdmin">Systemadministrator</option>
-                            </select>
-                            <label for="role">Rolle</label>
-                        </div>
-                        <div class="input">
-                            <input type="password" id="password" formControlName="password">
-                            <label for="password">Passwort</label>
-                        </div>
-                        <div class="input">
-                            <input type="password" id="passwordRepeat" formControlName="passwordRepeat">
-                            <label for="password">Passwort wiederholen</label>
-                        </div>
-                    </div>
-                    <div class="button-container">
-                        <button class="button-submit" type="submit">Hinzufügen</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div class="setting-content">
+    <div class="setting-header">
+      BENUTZER HINZUFÜGEN
+      <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
     </div>
+    <div class="setting-form">
+      <div class="tab tab-setting">
+        <form class="setting-form" [formGroup]="addUserForm" (ngSubmit)="onSubmit(addUserForm.value)">
+          <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
+          <div class="form-setting">
+            <div class="input">
+              <input type="text" id="username" formControlName="username" ngbAutofocus>
+              <label for="username">Benutzername</label>
+            </div>
+            <div class="input">
+              <select id="role" formControlName="role">
+                <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
+                <option value="Customer">Kunde</option>
+                <option value="RestaurantAdmin">Restaurantadministrator</option>
+                <option value="SystemAdmin">Systemadministrator</option>
+              </select>
+              <label for="role">Rolle</label>
+            </div>
+            <div class="input">
+              <input type="text" id="email" formControlName="email">
+              <label for="email">E-Mail-Adresse</label>
+            </div>
+            <div class="input">
+              <input type="password" id="password" formControlName="password">
+              <label for="password">Passwort</label>
+            </div>
+            <div class="input">
+              <input type="password" id="passwordRepeat" formControlName="passwordRepeat">
+              <label for="password">Passwort wiederholen</label>
+            </div>
+          </div>
+          <div class="button-container">
+            <button class="button-submit" type="submit">Hinzufügen</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div> 

@@ -1,14 +1,14 @@
-﻿namespace FoodOrderSystem.Domain.Commands.AddCuisine
+﻿using FoodOrderSystem.Domain.ViewModels;
+
+namespace FoodOrderSystem.Domain.Commands.AddCuisine
 {
-    public class AddCuisineCommand : ICommand
+    public class AddCuisineCommand : ICommand<CuisineViewModel>
     {
-        public AddCuisineCommand(string name, byte[] image)
+        public AddCuisineCommand(string name)
         {
             Name = name;
-            Image = image;
         }
 
         public string Name { get; }
-        public byte[] Image { get; }
     }
 }

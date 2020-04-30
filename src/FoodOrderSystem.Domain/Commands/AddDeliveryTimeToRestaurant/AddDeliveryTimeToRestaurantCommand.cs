@@ -1,9 +1,10 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
 
 namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
 {
-    public class AddDeliveryTimeToRestaurantCommand : ICommand
+    public class AddDeliveryTimeToRestaurantCommand : ICommand<bool>
     {
         public AddDeliveryTimeToRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan start, TimeSpan end)
         {

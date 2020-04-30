@@ -1,12 +1,14 @@
 ﻿using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Queries.SearchForUsers
 {
-    public class SearchForUsersQueryHandler : IQueryHandler<SearchForUsersQuery>
+    public class SearchForUsersQueryHandler : IQueryHandler<SearchForUsersQuery, ICollection<UserViewModel>>
     {
         private readonly IUserRepository userRepository;
 
@@ -15,18 +17,20 @@ namespace FoodOrderSystem.Domain.Queries.SearchForUsers
             this.userRepository = userRepository;
         }
 
-        public async Task<QueryResult> HandleAsync(SearchForUsersQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<QueryResult<ICollection<UserViewModel>>> HandleAsync(SearchForUsersQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return new UnauthorizedQueryResult();
+                return new UnauthorizedQueryResult<ICollection<UserViewModel>>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenQueryResult();
+                return new ForbiddenQueryResult<ICollection<UserViewModel>>();
 
-            return new SuccessQueryResult<ICollection<User>>(await userRepository.SearchAsync(query.SearchPhrase, cancellationToken));
+            var users = await userRepository.SearchAsync(query.SearchPhrase, cancellationToken);
+
+            return new SuccessQueryResult<ICollection<UserViewModel>>(users.Select(UserViewModel.FromUser).ToList());
         }
     }
 }

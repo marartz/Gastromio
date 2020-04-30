@@ -1,6 +1,6 @@
 ﻿namespace FoodOrderSystem.Domain.Commands.EnsureAdminUser
 {
-    public class EnsureAdminUserCommand : ICommand
+    public class EnsureAdminUserCommand : ICommand<bool>
     {
     }
 }

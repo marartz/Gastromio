@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FoodOrderSystem.Persistence.MSSQL.Migrations
+namespace FoodOrderSystem.Persistence.SQLite.Migrations
 {
     public partial class Initial : Migration
     {
@@ -12,8 +12,7 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Image = table.Column<byte[]>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

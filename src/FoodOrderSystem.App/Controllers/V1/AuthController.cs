@@ -1,7 +1,7 @@
 ﻿using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.Login;
-using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -39,25 +39,16 @@ namespace FoodOrderSystem.App.Controllers.V1
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var commandResult = await commandDispatcher.PostAsync(new LoginCommand(loginModel.Username, loginModel.Password), null);
+            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Username, loginModel.Password), null);
             switch (commandResult)
             {
-                case UnauthorizedCommandResult _:
+                case UnauthorizedCommandResult<UserViewModel> _:
                     return Unauthorized();
-                case ForbiddenCommandResult _:
+                case ForbiddenCommandResult< UserViewModel> _:
                     return Forbid();
-                case SuccessCommandResult<User> result:
+                case SuccessCommandResult<UserViewModel> result:
                     var tokenString = GenerateJSONWebToken(result.Value);
-
-                    var user = result.Value;
-                    var userModel = new UserModel
-                    {
-                        Id = user.Id.Value,
-                        Name = user.Name,
-                        Role = user.Role.ToString()
-                    };
-
-                    return Ok(new { token = tokenString, user = userModel });
+                    return Ok(new { token = tokenString, user = result.Value });
                 default:
                     throw new InvalidOperationException("internal server error");
             }
@@ -70,7 +61,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             return Ok("pong");
         }
 
-        private string GenerateJSONWebToken(User user)
+        private string GenerateJSONWebToken(UserViewModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

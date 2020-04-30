@@ -19,8 +19,9 @@ export class AddUserComponent implements OnInit {
     private userAdminService: UserAdminService,
   ) {
     this.addUserForm = this.formBuilder.group({
-      name: '',
+      username: '',
       role: '',
+      email: '',
       password: '',
       passwordRepeat: ''
     });
@@ -45,7 +46,7 @@ export class AddUserComponent implements OnInit {
       return;
     }
 
-    this.userAdminService.addUserAsync(data.name, data.role, data.password)
+    this.userAdminService.addUserAsync(data.username, data.role, data.email, data.password)
       .subscribe(() => {
         this.message = undefined;
         this.addUserForm.reset();

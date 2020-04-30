@@ -6,6 +6,6 @@ namespace FoodOrderSystem.Domain.Queries
 {
     public interface IQueryDispatcher
     {
-        Task<QueryResult> PostAsync<TQuery>(TQuery query, User currentUser, CancellationToken cancellationToken = default) where TQuery : IQuery;
+        Task<QueryResult<TResult>> PostAsync<TQuery, TResult>(TQuery query, User currentUser, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>;
     }
 }

@@ -175,7 +175,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   onSaveImage(value): void {
     let subscription = this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, value.image).subscribe((data) => {
       subscription.unsubscribe();
-      this.restaurant.image = data.image;
+      this.restaurant.image = value.image;
     }, () => {
       subscription.unsubscribe();
       // TODO
@@ -185,7 +185,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   onSaveAddress(value): void {
     let subscription = this.restaurantRestAdminService.changeRestaurantAddressAsync(this.restaurant.id, value).subscribe((data) => {
       subscription.unsubscribe();
-      this.restaurant.address = data.address;
+      this.restaurant.address = value;
     }, () => {
       subscription.unsubscribe();
       // TODO
@@ -195,10 +195,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   onSaveContactDetails(value): void {
     let subscription = this.restaurantRestAdminService.changeRestaurantContactDetailsAsync(this.restaurant.id, value.phone, value.webSite, value.imprint, value.orderEmailAddress).subscribe((data) => {
       subscription.unsubscribe();
-      this.restaurant.phone = data.phone;
-      this.restaurant.webSite = data.webSite;
-      this.restaurant.imprint = data.imprint;
-      this.restaurant.orderEmailAddress = data.orderEmailAddress;
+      this.restaurant.phone = value.phone;
+      this.restaurant.webSite = value.webSite;
+      this.restaurant.imprint = value.imprint;
+      this.restaurant.orderEmailAddress = value.orderEmailAddress;
     }, () => {
       subscription.unsubscribe();
       // TODO
@@ -208,8 +208,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   onSaveDeliveryData(value): void {
     let subscription = this.restaurantRestAdminService.changeRestaurantDeliveryDataAsync(this.restaurant.id, value.minimumOrderValue, value.deliveryCosts).subscribe((data) => {
       subscription.unsubscribe();
-      this.restaurant.minimumOrderValue = data.minimumOrderValue;
-      this.restaurant.deliveryCosts = data.deliveryCosts;
+      this.restaurant.minimumOrderValue = value.minimumOrderValue;
+      this.restaurant.deliveryCosts = value.deliveryCosts;
     }, () => {
       subscription.unsubscribe();
       // TODO
@@ -238,7 +238,13 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     let subscription = this.restaurantRestAdminService.addDeliveryTimeToRestaurantAsync(this.restaurant.id, dayOfWeek, startParseResult.value, endParseResult.value).subscribe((data) => {
       subscription.unsubscribe();
       this.addDeliveryTimeForm.reset();
-      this.restaurant.deliveryTimes = data.deliveryTimes;
+
+      var model = new DeliveryTimeModel();
+      model.dayOfWeek = dayOfWeek;
+      model.start = startParseResult.value;
+      model.end = endParseResult.value;
+
+      this.restaurant.deliveryTimes.push(model);
     }, () => {
       subscription.unsubscribe();
       // TODO
@@ -248,7 +254,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   onRemoveDeliveryTime(deliveryTime: DeliveryTimeViewModel) {
     let subscription = this.restaurantRestAdminService.removeDeliveryTimeFromRestaurantAsync(this.restaurant.id, deliveryTime.dayOfWeek, deliveryTime.startTime).subscribe((data) => {
       subscription.unsubscribe();
-      this.restaurant.deliveryTimes = data.deliveryTimes;
+
+      let index = this.restaurant.deliveryTimes.findIndex(elem => elem.dayOfWeek === deliveryTime.dayOfWeek && elem.start === deliveryTime.startTime);
+      if (index > -1) {
+        this.restaurant.deliveryTimes.splice(index, 1);
+      }
     }, () => {
       subscription.unsubscribe();
       // TODO

@@ -2,17 +2,15 @@
 
 namespace FoodOrderSystem.Domain.Commands.ChangeCuisine
 {
-    public class ChangeCuisineCommand : ICommand
+    public class ChangeCuisineCommand : ICommand<bool>
     {
-        public ChangeCuisineCommand(CuisineId cuisineId, string name, byte[] image)
+        public ChangeCuisineCommand(CuisineId cuisineId, string name)
         {
             CuisineId = cuisineId;
             Name = name;
-            Image = image;
         }
 
         public CuisineId CuisineId { get; }
         public string Name { get; }
-        public byte[] Image { get; }
     }
 }

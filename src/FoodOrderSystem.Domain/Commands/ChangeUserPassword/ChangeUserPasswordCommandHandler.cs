@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeUserPassword
 {
-    public class ChangeUserPasswordCommandHandler : ICommandHandler<ChangeUserPasswordCommand>
+    public class ChangeUserPasswordCommandHandler : ICommandHandler<ChangeUserPasswordCommand, bool>
     {
         private readonly IUserRepository userRepository;
 
@@ -14,26 +14,26 @@ namespace FoodOrderSystem.Domain.Commands.ChangeUserPassword
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(ChangeUserPasswordCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(ChangeUserPasswordCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             if (user == null)
-                return new FailureCommandResult<string>("user does not exist");
+                return new FailureCommandResult<bool>();
 
             user.ChangePassword(command.Password);
 
             await userRepository.StoreAsync(user, cancellationToken);
 
-            return new SuccessCommandResult<User>(user);
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

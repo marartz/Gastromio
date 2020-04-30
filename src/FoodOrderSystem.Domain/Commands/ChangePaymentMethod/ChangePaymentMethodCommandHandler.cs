@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Commands.ChangePaymentMethod
 {
-    public class ChangePaymentMethodCommandHandler : ICommandHandler<ChangePaymentMethodCommand>
+    public class ChangePaymentMethodCommandHandler : ICommandHandler<ChangePaymentMethodCommand, bool>
     {
         private readonly IPaymentMethodRepository paymentMethodRepository;
 
@@ -15,26 +15,26 @@ namespace FoodOrderSystem.Domain.Commands.ChangePaymentMethod
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<CommandResult> HandleAsync(ChangePaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(ChangePaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult();
+                return new UnauthorizedCommandResult<bool>();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult();
+                return new ForbiddenCommandResult<bool>();
 
             var paymentMethod = await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId, cancellationToken);
             if (paymentMethod == null)
-                return new FailureCommandResult<string>("user does not exist");
+                return new FailureCommandResult<bool>();
 
             paymentMethod.Change(command.Name, command.Description);
 
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 
-            return new SuccessCommandResult<PaymentMethod>(paymentMethod);
+            return new SuccessCommandResult<bool>(true);
         }
     }
 }

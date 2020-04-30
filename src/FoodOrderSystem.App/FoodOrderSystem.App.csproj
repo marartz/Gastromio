@@ -53,7 +53,6 @@
     <None Remove="ClientApp\src\app\change-cuisine\change-cuisine.component.ts" />
     <None Remove="ClientApp\src\app\change-payment-method\change-payment-method.component.ts" />
     <None Remove="ClientApp\src\app\change-restaurant-name\change-restaurant-name.component.ts" />
-    <None Remove="ClientApp\src\app\change-user-details\change-user-details.component.ts" />
     <None Remove="ClientApp\src\app\change-user-password\change-user-password.component.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine-admin.service.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine.model.ts" />

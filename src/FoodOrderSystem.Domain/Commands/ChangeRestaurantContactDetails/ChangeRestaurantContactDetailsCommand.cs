@@ -1,8 +1,9 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
 {
-    public class ChangeRestaurantContactDetailsCommand : ICommand
+    public class ChangeRestaurantContactDetailsCommand : ICommand<bool>
     {
         public ChangeRestaurantContactDetailsCommand(RestaurantId restaurantId, string phone, string webSite, string imprint, string orderEmailAddress)
         {

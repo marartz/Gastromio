@@ -87,8 +87,7 @@ namespace FoodOrderSystem.Persistence
         {
             return new Cuisine(
                 new CuisineId(row.Id),
-                row.Name,
-                row.Image
+                row.Name
             );
         }
 
@@ -96,7 +95,6 @@ namespace FoodOrderSystem.Persistence
         {
             row.Id = obj.Id.Value;
             row.Name = obj.Name;
-            row.Image = obj.Image;
         }
     }
 }

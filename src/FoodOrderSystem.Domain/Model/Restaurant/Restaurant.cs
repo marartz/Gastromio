@@ -96,5 +96,19 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         {
             deliveryTimes = deliveryTimes.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
         }
+
+        public void AddPaymentMethod(PaymentMethodId paymentMethodId)
+        {
+            if (PaymentMethods.Contains(paymentMethodId))
+                return;
+            PaymentMethods.Add(paymentMethodId);
+        }
+
+        public void RemovePaymentMethod(PaymentMethodId paymentMethodId)
+        {
+            if (!PaymentMethods.Contains(paymentMethodId))
+                return;
+            PaymentMethods.Remove(paymentMethodId);
+        }
     }
 }

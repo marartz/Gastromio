@@ -1,32 +1,42 @@
-﻿using FoodOrderSystem.Domain.Model.Restaurant;
+﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
 {
-    public class GetRestaurantByIdQueryHandler : IQueryHandler<GetRestaurantByIdQuery>
+    public class GetRestaurantByIdQueryHandler : IQueryHandler<GetRestaurantByIdQuery, RestaurantViewModel>
     {
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IPaymentMethodRepository paymentMethodRepository;
 
-        public GetRestaurantByIdQueryHandler(IRestaurantRepository restaurantRepository)
+        public GetRestaurantByIdQueryHandler(IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository)
         {
             this.restaurantRepository = restaurantRepository;
+            this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<QueryResult> HandleAsync(GetRestaurantByIdQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<QueryResult<RestaurantViewModel>> HandleAsync(GetRestaurantByIdQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return new UnauthorizedQueryResult();
+                return new UnauthorizedQueryResult<RestaurantViewModel>();
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return new ForbiddenQueryResult();
+                return new ForbiddenQueryResult<RestaurantViewModel>();
 
-            return new SuccessQueryResult<Restaurant>(await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId));
+            var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
+                .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
+
+            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId);
+
+            return new SuccessQueryResult<RestaurantViewModel>(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods));
         }
     }
 }

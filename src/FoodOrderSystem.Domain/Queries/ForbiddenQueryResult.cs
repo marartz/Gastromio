@@ -1,6 +1,6 @@
 ﻿namespace FoodOrderSystem.Domain.Queries
 {
-    public class ForbiddenQueryResult : FailureQueryResult
+    public class ForbiddenQueryResult<TResult> : FailureQueryResult<TResult>
     {
     }
 }

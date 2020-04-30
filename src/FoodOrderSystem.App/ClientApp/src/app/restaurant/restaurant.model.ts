@@ -1,3 +1,5 @@
+import { PaymentMethodModel } from "../payment-method/payment-method.model";
+
 export class RestaurantModel {
   constructor() {
     this.address = new AddressModel();
@@ -33,6 +35,8 @@ export class RestaurantModel {
   public imprint: string;
 
   public orderEmailAddress: string;
+
+  public paymentMethods: PaymentMethodModel[];
 }
 
 export class AddressModel {

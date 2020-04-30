@@ -1,6 +1,8 @@
-﻿namespace FoodOrderSystem.Domain.Commands.AddRestaurant
+﻿using FoodOrderSystem.Domain.ViewModels;
+
+namespace FoodOrderSystem.Domain.Commands.AddRestaurant
 {
-    public class AddRestaurantCommand : ICommand
+    public class AddRestaurantCommand : ICommand<RestaurantViewModel>
     {
         public AddRestaurantCommand(string name)
         {

@@ -4,6 +4,4 @@ export class CuisineModel {
   public id: string;
 
   public name: string;
-
-  public image: string;
 }
