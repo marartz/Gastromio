@@ -20,8 +20,8 @@
                 <div class="component-setting-dropdown" *ngIf="getUsername() !== undefined">
                     <div class="d-inline-block" ngbDropdown>
                         <span class="button" id="userDropDown" ngbDropdownToggle>Einstellungen</span>
-                        <div ngbDropdownMenu aria-labelledby="userDropDown">
-                            <h6 class="dropdown-header" *ngIf="systemAdminAllowed()">Einstellungen</h6><!--{{getUsername()}}-->
+                        <div class="dropdown-container" ngbDropdownMenu aria-labelledby="userDropDown">
+                            <h6 class="dropdown-header" *ngIf="systemAdminAllowed()">Systemadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6><!--{{getUsername()}}-->
                             <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
                             <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
                             <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>
