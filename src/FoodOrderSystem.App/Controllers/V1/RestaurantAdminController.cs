@@ -172,7 +172,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                     new RestaurantId(restaurantId),
                     changeRestaurantContactDetailsModel.Phone,
                     changeRestaurantContactDetailsModel.Website,
-                    changeRestaurantContactDetailsModel.Imprint
+                    changeRestaurantContactDetailsModel.Imprint,
+                    changeRestaurantContactDetailsModel.OrderEmailAddress
                 ),
                 currentUser
             );

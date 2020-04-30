@@ -30,7 +30,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
             if (restaurant == null)
                 return new FailureCommandResult<string>("user does not exist");
 
-            restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint);
+            restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint, command.OrderEmailAddress);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

@@ -10,7 +10,20 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
     {
         private IList<DeliveryTime> deliveryTimes;
 
-        public Restaurant(RestaurantId id, string name, byte[] image, Address address, IList<DeliveryTime> deliveryTimes, decimal minimumOrderValue, decimal deliveryCosts, string phone, string webSite, string imprint, ISet<PaymentMethodId> paymentMethods)
+        public Restaurant(
+            RestaurantId id,
+            string name,
+            byte[] image,
+            Address address,
+            IList<DeliveryTime> deliveryTimes,
+            decimal minimumOrderValue,
+            decimal deliveryCosts,
+            string phone,
+            string webSite,
+            string imprint,
+            string orderEmailAddress,
+            ISet<PaymentMethodId> paymentMethods
+        )
         {
             Id = id;
             Name = name;
@@ -22,6 +35,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             Phone = phone;
             WebSite = webSite;
             Imprint = imprint;
+            OrderEmailAddress = orderEmailAddress;
             PaymentMethods = paymentMethods;
         }
 
@@ -35,6 +49,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public string Phone { get; private set; }
         public string WebSite { get; private set; }
         public string Imprint { get; private set; }
+        public string OrderEmailAddress { get; private set; }
         public ISet<PaymentMethodId> PaymentMethods { get; }
 
         public DateTime CalculateNextDeliveryTime()
@@ -58,11 +73,12 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             Address = address;
         }
 
-        public void ChangeContactDetails(string phone, string webSite, string imprint)
+        public void ChangeContactDetails(string phone, string webSite, string imprint, string orderEmailAddress)
         {
             Phone = phone;
             WebSite = webSite;
             Imprint = imprint;
+            OrderEmailAddress = orderEmailAddress;
         }
 
         public void ChangeDeliveryData(decimal minimumOrderValue, decimal deliveryCosts)

@@ -216,6 +216,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("OrderEmailAddress")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 

@@ -36,6 +36,8 @@ namespace FoodOrderSystem.App.Models
 
         public string Imprint { get; set; }
 
+        public string OrderEmailAddress { get; set; }
+
         public IList<Guid> PaymentMethods { get; set; }
 
         public static RestaurantModel FromRestaurant(Restaurant restaurant)
@@ -77,6 +79,7 @@ namespace FoodOrderSystem.App.Models
                 Phone = restaurant.Phone,
                 WebSite = restaurant.WebSite,
                 Imprint = restaurant.Imprint,
+                OrderEmailAddress = restaurant.OrderEmailAddress,
                 PaymentMethods = restaurant.PaymentMethods != null ? restaurant.PaymentMethods.Select(en => en.Value).ToList() : new List<Guid>()
             };
         }

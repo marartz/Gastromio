@@ -56,6 +56,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       phone: "",
       webSite: "",
       imprint: "",
+      orderEmailAddress: "",
     });
 
     this.changeDeliveryDataForm = this.formBuilder.group({
@@ -96,6 +97,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
             phone: this.restaurant.phone,
             webSite: this.restaurant.webSite,
             imprint: this.restaurant.imprint,
+            orderEmailAddress: this.restaurant.orderEmailAddress,
           });
 
           this.changeDeliveryDataForm.patchValue({
@@ -189,11 +191,12 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   onSaveContactDetails(value): void {
-    let subscription = this.restaurantRestAdminService.changeRestaurantContactDetailsAsync(this.restaurant.id, value.phone, value.webSite, value.imprint).subscribe((data) => {
+    let subscription = this.restaurantRestAdminService.changeRestaurantContactDetailsAsync(this.restaurant.id, value.phone, value.webSite, value.imprint, value.orderEmailAddress).subscribe((data) => {
       subscription.unsubscribe();
       this.restaurant.phone = data.phone;
       this.restaurant.webSite = data.webSite;
       this.restaurant.imprint = data.imprint;
+      this.restaurant.orderEmailAddress = data.orderEmailAddress;
     }, () => {
       subscription.unsubscribe();
       // TODO

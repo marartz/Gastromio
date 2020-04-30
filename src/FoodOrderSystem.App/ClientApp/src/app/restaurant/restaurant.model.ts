@@ -31,6 +31,8 @@ export class RestaurantModel {
   public webSite: string;
 
   public imprint: string;
+
+  public orderEmailAddress: string;
 }
 
 export class AddressModel {

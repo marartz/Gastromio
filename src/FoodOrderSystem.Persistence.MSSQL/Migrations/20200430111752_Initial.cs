@@ -47,7 +47,8 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                     DeliveryCosts = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
                     Phone = table.Column<string>(nullable: true),
                     WebSite = table.Column<string>(nullable: true),
-                    Imprint = table.Column<string>(nullable: true)
+                    Imprint = table.Column<string>(nullable: true),
+                    OrderEmailAddress = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

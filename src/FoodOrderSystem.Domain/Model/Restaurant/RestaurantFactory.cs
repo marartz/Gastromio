@@ -19,6 +19,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 null,
                 null,
                 null,
+                null,
                 new HashSet<PaymentMethodId>()
             );
         }

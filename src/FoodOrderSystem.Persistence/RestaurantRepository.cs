@@ -97,6 +97,7 @@ namespace FoodOrderSystem.Persistence
                 row.Phone,
                 row.WebSite,
                 row.Imprint,
+                row.OrderEmailAddress,
                 new HashSet<PaymentMethodId>(row.RestaurantPaymentMethods.Select(en => new PaymentMethodId(en.PaymentMethodId)))
             );
         }
@@ -132,6 +133,7 @@ namespace FoodOrderSystem.Persistence
             row.Phone = obj.Phone;
             row.WebSite = obj.WebSite;
             row.Imprint = obj.Imprint;
+            row.OrderEmailAddress = obj.OrderEmailAddress;
             if (obj.PaymentMethods != null && obj.PaymentMethods.Count > 0)
             {
                 row.RestaurantPaymentMethods = new List<RestaurantPaymentMethodRow>();

@@ -57,7 +57,7 @@ export class RestaurantRestAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changeaddress", address, httpOptions);
   }
 
-  public changeRestaurantContactDetailsAsync(id: string, phone: string, webSite: string, imprint: string): Observable<RestaurantModel> {
+  public changeRestaurantContactDetailsAsync(id: string, phone: string, webSite: string, imprint: string, orderEmailAddress: string): Observable<RestaurantModel> {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export class RestaurantRestAdminService {
         'Authorization': 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changecontactdetails", { phone: phone, webSite: webSite, imprint: imprint }, httpOptions);
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changecontactdetails", { phone: phone, webSite: webSite, imprint: imprint, orderEmailAddress: orderEmailAddress }, httpOptions);
   }
 
   public changeRestaurantDeliveryDataAsync(id: string, minimumOrderValue: number, deliveryCosts: number): Observable<RestaurantModel> {

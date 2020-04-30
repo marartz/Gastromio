@@ -10,5 +10,7 @@ namespace FoodOrderSystem.App.Models
         public string Website { get; set; }
         [Required]
         public string Imprint { get; set; }
+        [Required]
+        public string OrderEmailAddress { get; set; }
     }
 }

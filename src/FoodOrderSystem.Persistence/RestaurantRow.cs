@@ -35,6 +35,8 @@ namespace FoodOrderSystem.Persistence
         
         public string Imprint { get; set; }
 
+        public string OrderEmailAddress { get; set; }
+
         public virtual ICollection<RestaurantCuisineRow> RestaurantCuisines { get; set; } = new List<RestaurantCuisineRow>();
 
         public virtual ICollection<RestaurantPaymentMethodRow> RestaurantPaymentMethods { get; set; } = new List<RestaurantPaymentMethodRow>();

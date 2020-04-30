@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20200430090457_Initial")]
+    [Migration("20200430111752_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,6 +219,9 @@ namespace FoodOrderSystem.Persistence.MSSQL.Migrations
                         .HasColumnType("decimal(5, 2)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderEmailAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
