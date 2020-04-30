@@ -3,10 +3,10 @@
   {{restaurant.name}} <button style="background-color: transparent; border: 0; color: #fff" (click)="openChangeRestaurantNameForm()"><i class="fas fa-edit"></i></button>
 </div>
 <div class="container" style="margin-top: 20px">
-  <div class="row">
-    <div class="col p-2">
-      <div>
-        <div class="card mb-4">
+    <div class="row">
+        <div class="col p-2">
+            <div>
+                <div class="card mb-4">
           <div class="card-header">Bild</div>
           <div class="card-body">
             <form class="setting-form" [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
@@ -17,173 +17,152 @@
           </div>
         </div>
 
-        <div class="card mb-4">
-          <div class="card-header">Adresse</div>
-          <div class="card-body">
-            <form class="setting-form" [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
-              <div class="form-group row">
-                <label for="street" class="col-sm-2 col-form-label">Straße</label>
-                <div class="col-sm-10">
-                  <div class="input">
-                    <input type="text" id="street" formControlName="street" maxlength="100">
-                    <label for="street">Straße</label>
-                  </div>
+                <div class="card mb-4">
+                    <div class="card-header card-head">Adresse</div>
+                    <div class="card-body">
+                        <form class="setting-form" [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="input">
+                                        <input type="text" id="street" formControlName="street" maxlength="100">
+                                        <label for="street">Straße</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input">
+                                        <input type="text" id="zipCode" formControlName="zipCode" maxlength="5">
+                                        <label for="zipCode">Postleitzahl</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input">
+                                        <input type="text" id="city" formControlName="city">
+                                        <label for="city">Stadt</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button-form button" type="submit">Daten speichern</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="zipCode" class="col-sm-2 col-form-label">Postleitzahl</label>
-                <div class="col-sm-3">
-                  <div class="input">
-                    <input type="text" id="zipCode" formControlName="zipCode" maxlength="5">
-                    <label for="zipCode">Postleitzahl</label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="city" class="col-sm-2 col-form-label">Stadt</label>
-                <div class="col-sm-10">
-                  <div class="input">
-                    <input type="text" id="city" formControlName="city">
-                    <label for="city">Stadt</label>
-                  </div>
-                </div>
-              </div>
-              <button class="button-form button" type="submit">Adresse ändern</button>
-            </form>
-          </div>
-        </div>
 
-        <div class="card mb-4">
-          <div class="card-header">Andere Daten</div>
-          <div class="card-body">
-            <form class="setting-form" [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
-              <div class="form-group row">
-                <label for="phone" class="col-sm-2 col-form-label">Telefon</label>
-                <div class="col-sm-10">
-                  <div class="input">
-                    <input type="text" id="phone" formControlName="phone">
-                    <label for="webSite">Telefon</label>
-                  </div>
+                <div class="card mb-4">
+                    <div class="card-header card-head">Weitere Daten</div>
+                    <div class="card-body">
+                        <form class="setting-form" [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
+                            <div class="form-group row">
+                                <label for="webSite" class="col-sm-2 col-form-label">Website</label>
+                                <div class="col-sm-10">
+                                    <div class="input">
+                                        <input type="text" id="webSite" formControlName="webSite">
+                                        <label for="webSite">Webseite</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="imprint" class="col-sm-2 col-form-label">Impressum</label>
+                                <div class="col-sm-10">
+                                    <div class="input">
+                                        <textarea style="height: 100%!important" id="imprint" rows="8" formControlName="imprint"></textarea>
+                                        <label for="imprint">Impressum</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button-form button" type="submit">Daten speichern</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="webSite" class="col-sm-2 col-form-label">Webseite</label>
-                <div class="col-sm-10">
-                  <div class="input">
-                    <input type="text" id="webSite" formControlName="webSite">
-                    <label for="webSite">Webseite</label>
-                  </div>
+
+                <div class="card mb-4">
+                    <div class="card-header card-head">Lieferkosten</div>
+                    <div class="card-body">
+                        <form class="setting-form" [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
+                            <div class="form-group row">
+                                <div class="col">
+                                    <div class="input">
+                                        <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue">
+                                        <label for="minimumOrderValue">Mindestbestellwert (in &euro;)</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input">
+                                        <input type="number" id="deliveryCosts" formControlName="deliveryCosts">
+                                        <label for="deliveryCosts">Lieferkosten (in &euro;) </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button-form button" type="submit">Daten speichern</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="imprint" class="col-sm-2 col-form-label">Impressum</label>
-                <div class="col-sm-10">
-                  <div class="input">
-                    <textarea style="height: 100%!important" id="imprint" rows="4" formControlName="imprint"></textarea>
-                    <label for="imprint">Impressum</label>
-                  </div>
+
+                <div class="card mb-4">
+                    <div class="card-header card-head">Lieferzeiten</div>
+                    <div class="card-body">
+                        <table class="table col-sm-12">
+                            <thead>
+                                <tr>
+                                    <th>Tag</th>
+                                    <th>Beginn</th><th>Ende</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
+                                    <td>{{deliveryTime.dayOfWeekText}}</td>
+                                    <td>{{deliveryTime.startTimeText}}</td>
+                                    <td>{{deliveryTime.endTimeText}}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <form class="setting-form" [formGroup]="addDeliveryTimeForm">
+                            <table class="table col-sm-12">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
+                                                <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
+                                                <option value="0">Montag</option>
+                                                <option value="1">Dienstag</option>
+                                                <option value="2">Mittwoch</option>
+                                                <option value="3">Donnerstag</option>
+                                                <option value="4">Freitag</option>
+                                                <option value="5">Samstag</option>
+                                                <option value="6">Sonntag</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="Startzeit, z.B. 15:00 Uhr" class="form-control" formControlName="start" />
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="Endzeit, z.B. 22:00 Uhr" class="form-control" formControlName="end" />
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <button class="button-form button" type="submit">Änderungen speichern</button>
-            </form>
-          </div>
-        </div>
 
-        <div class="card mb-4">
-          <div class="card-header">Lieferung (allgemein)</div>
-          <div class="card-body">
-            <form class="setting-form" [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
-              <div class="form-group row">
-                <label for="minimumOrderValue" class="col-sm-2 col-form-label">Mindestbestellwert</label>
-                <div class="col-sm-3">
-                  <div class="input">
-                    <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue">
-                    <label for="minimumOrderValue">Mindestbestellwert</label>
-                  </div>
+                <div class="card mb-4">
+                    <div class="card-header card-head">Zahlungsmethoden</div>
+                    <div class="card-body"></div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="deliveryCosts" class="col-sm-2 col-form-label">Lieferkosten</label>
-                <div class="col-sm-3">
-                  <div class="input">
-                    <input type="number" id="deliveryCosts" formControlName="deliveryCosts">
-                    <label for="deliveryCosts">Lieferkosten</label>
-                  </div>
+
+                <div class="card mb-4">
+                    <div class="card-header card-head">Restaurant-Verwalter</div>
+                    <div class="card-body"></div>
                 </div>
-              </div>
-              <button class="button-form button" type="submit">Änderungen speichern</button>
-            </form>
-          </div>
-        </div>
 
-        <div class="card mb-4">
-          <div class="card-header">
-            Lieferzeiten
-          </div>
-          <div class="card-body">
-            <table class="table col-sm-12">
-              <thead>
-                <tr>
-                  <th>Tag</th>
-                  <th>Beginn</th>
-                  <th>Ende</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
-                  <td>{{deliveryTime.dayOfWeekText}}</td>
-                  <td>{{deliveryTime.startTimeText}}</td>
-                  <td>{{deliveryTime.endTimeText}}</td>
-                  <td>
-                    <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <form class="setting-form" [formGroup]="addDeliveryTimeForm">
-              <table class="table col-sm-12">
-                <tbody>
-                  <tr>
-                    <td>
-                      <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
-                        <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
-                        <option value="0">Montag</option>
-                        <option value="1">Dienstag</option>
-                        <option value="2">Mittwoch</option>
-                        <option value="3">Donnerstag</option>
-                        <option value="4">Freitag</option>
-                        <option value="5">Samstag</option>
-                        <option value="6">Sonntag</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input type="text" placeholder="Startzeit" class="form-control" formControlName="start" />
-                    </td>
-                    <td>
-                      <input type="text" placeholder="Endzeit" class="form-control" formControlName="end" />
-                    </td>
-                    <td>
-                      <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-          </div>
+            </div>
         </div>
-
-        <div class="card mb-4">
-          <div class="card-header">Zahlungsmethoden</div>
-          <div class="card-body"></div>
-        </div>
-
-        <div class="card mb-4">
-          <div class="card-header">Administratoren</div>
-          <div class="card-body"></div>
-        </div>
-
-      </div>
     </div>
-  </div>
 </div>
