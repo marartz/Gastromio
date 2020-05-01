@@ -39,12 +39,22 @@ import { RestaurantSysAdminService } from './restaurant-sys-admin/restaurant-sys
 import { RestaurantRestAdminService } from './restaurant-rest-admin/restaurant-rest-admin.service';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
 import { OrderService } from './order/order.service';
+import { CustomerInformationComponent } from './customer-information/customer-information.component';
+import { RestaurantInformationComponent } from './restaurant-information/restaurant-information.component';
+import { GeneralTermsAndConditionsComponent } from './general-terms-and-conditions/general-terms-and-conditions.component';
+import { ImprintComponent } from './imprint/imprint.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     RouterModule.forRoot([
       { path: '', component: OrderHomeComponent },
+      { path: 'customer-information', component: CustomerInformationComponent },
+      { path: 'restaurant-information', component: RestaurantInformationComponent },
+      { path: 'general-terms-and-conditions', component: GeneralTermsAndConditionsComponent },
+      { path: 'imprint', component: ImprintComponent },
+      { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/paymentmethods', component: AdminPaymentMethodsComponent, canActivate: [SystemAdminAuthGuard] },
@@ -82,6 +92,11 @@ import { OrderService } from './order/order.service';
     RemoveRestaurantComponent,
     OrderHomeComponent,
     AdminRestaurantComponent,
+    CustomerInformationComponent,
+    RestaurantInformationComponent,
+    GeneralTermsAndConditionsComponent,
+    ImprintComponent,
+    PrivacyPolicyComponent,
   ],
   providers: [
     AuthService,
