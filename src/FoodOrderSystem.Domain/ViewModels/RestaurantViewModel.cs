@@ -1,4 +1,5 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,9 @@ namespace FoodOrderSystem.Domain.ViewModels
 
         public IList<PaymentMethodViewModel> PaymentMethods { get; set; }
 
-        public static RestaurantViewModel FromRestaurant(Restaurant restaurant, IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods)
+        public IList<UserViewModel> Administrators { get; set; }
+
+        public static RestaurantViewModel FromRestaurant(Restaurant restaurant, IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, IUserRepository userRepository)
         {
             string image = null;
             if (restaurant.Image != null && restaurant.Image.Length != 0)
@@ -72,13 +75,23 @@ namespace FoodOrderSystem.Domain.ViewModels
                 Imprint = restaurant.Imprint,
                 OrderEmailAddress = restaurant.OrderEmailAddress,
                 PaymentMethods = restaurant.PaymentMethods != null ? restaurant.PaymentMethods
-                    .Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value)).ToList() : new List<PaymentMethodViewModel>()
+                    .Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value)).ToList() : new List<PaymentMethodViewModel>(),
+                Administrators = restaurant.Administrators != null ? restaurant.Administrators
+                    .Select(en => RetrieveUserModel(userRepository, en)).ToList() : new List<UserViewModel>()
             };
         }
 
         public static PaymentMethodViewModel RetrievePaymentMethodModel(IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, Guid paymentMethodId)
         {
             return allPaymentMethods.TryGetValue(paymentMethodId, out var model) ? model : null;
+        }
+
+        public static UserViewModel RetrieveUserModel(IUserRepository userRepository, UserId userId)
+        {
+            var user = userRepository.FindByUserIdAsync(userId).Result;
+            if (user == null)
+                return null;
+            return UserViewModel.FromUser(user);
         }
     }
 }

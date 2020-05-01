@@ -14,11 +14,13 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
+        private readonly IUserRepository userRepository;
 
-        public SysAdminSearchForRestaurantsQueryHandler(IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository)
+        public SysAdminSearchForRestaurantsQueryHandler(IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository, IUserRepository userRepository)
         {
             this.restaurantRepository = restaurantRepository;
             this.paymentMethodRepository = paymentMethodRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<QueryResult<ICollection<RestaurantViewModel>>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
@@ -38,7 +40,7 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
             var restaurants = await restaurantRepository.SearchAsync(query.SearchPhrase, cancellationToken);
 
             return new SuccessQueryResult<ICollection<RestaurantViewModel>>(restaurants
-                .Select(en => RestaurantViewModel.FromRestaurant(en, paymentMethods)).ToList());
+                .Select(en => RestaurantViewModel.FromRestaurant(en, paymentMethods, userRepository)).ToList());
         }
     }
 }

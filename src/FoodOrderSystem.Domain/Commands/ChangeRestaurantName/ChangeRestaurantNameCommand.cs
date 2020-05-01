@@ -1,5 +1,4 @@
 ﻿using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantName
 {

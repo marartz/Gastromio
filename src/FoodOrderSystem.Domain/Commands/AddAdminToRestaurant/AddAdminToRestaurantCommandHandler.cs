@@ -4,18 +4,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
+namespace FoodOrderSystem.Domain.Commands.AddAdminToRestaurant
 {
-    public class AddDeliveryTimeToRestaurantCommandHandler : ICommandHandler<AddDeliveryTimeToRestaurantCommand, bool>
+    public class AddAdminToRestaurantCommandHandler : ICommandHandler<AddAdminToRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public AddDeliveryTimeToRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public AddAdminToRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<CommandResult<bool>> HandleAsync(AddDeliveryTimeToRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<CommandResult<bool>> HandleAsync(AddAdminToRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -30,7 +30,7 @@ namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
             if (restaurant == null)
                 return new FailureCommandResult<bool>();
 
-            restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
+            restaurant.AddAdministrator(command.UserId);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

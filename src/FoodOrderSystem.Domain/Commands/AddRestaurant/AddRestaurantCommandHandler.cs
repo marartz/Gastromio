@@ -14,12 +14,14 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
         private readonly IRestaurantFactory restaurantFactory;
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
+        private readonly IUserRepository userRepository;
 
-        public AddRestaurantCommandHandler(IRestaurantFactory restaurantFactory, IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository)
+        public AddRestaurantCommandHandler(IRestaurantFactory restaurantFactory, IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository, IUserRepository userRepository)
         {
             this.restaurantFactory = restaurantFactory;
             this.restaurantRepository = restaurantRepository;
             this.paymentMethodRepository = paymentMethodRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<CommandResult<RestaurantViewModel>> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
@@ -39,7 +41,7 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
             var restaurant = restaurantFactory.CreateWithName(command.Name);
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return new SuccessCommandResult<RestaurantViewModel>(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods));
+            return new SuccessCommandResult<RestaurantViewModel>(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods, userRepository));
         }
     }
 }

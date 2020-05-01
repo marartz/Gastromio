@@ -1,5 +1,6 @@
 ﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -98,7 +99,8 @@ namespace FoodOrderSystem.Persistence
                 row.WebSite,
                 row.Imprint,
                 row.OrderEmailAddress,
-                new HashSet<PaymentMethodId>(row.RestaurantPaymentMethods.Select(en => new PaymentMethodId(en.PaymentMethodId)))
+                new HashSet<PaymentMethodId>(row.RestaurantPaymentMethods.Select(en => new PaymentMethodId(en.PaymentMethodId))),
+                new HashSet<UserId>(row.RestaurantUsers.Select(en => new UserId(en.UserId)))
             );
         }
 
@@ -143,6 +145,18 @@ namespace FoodOrderSystem.Persistence
                     {
                         RestaurantId = obj.Id.Value,
                         PaymentMethodId = paymentMethod.Value
+                    });
+                }
+            }
+            row.RestaurantUsers = new List<RestaurantUserRow>();
+            if (obj.Administrators != null && obj.Administrators.Count > 0)
+            {
+                foreach (var administrator in obj.Administrators)
+                {
+                    row.RestaurantUsers.Add(new RestaurantUserRow
+                    {
+                        RestaurantId = obj.Id.Value,
+                        UserId = administrator.Value
                     });
                 }
             }

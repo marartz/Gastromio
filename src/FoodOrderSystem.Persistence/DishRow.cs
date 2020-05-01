@@ -10,21 +10,21 @@ namespace FoodOrderSystem.Persistence
     {
         [Key]
         public Guid Id { get; set; }
-        
+
         public Guid RestaurantId { get; set; }
-        
+
         public virtual RestaurantRow Restaurant { get; set; }
-        
+
         public Guid CategoryId { get; set; }
-        
+
         public virtual DishCategoryRow Category { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public string Description { get; set; }
-        
+
         public string ProductInfo { get; set; }
-        
+
         public virtual ICollection<DishVariantRow> Variants { get; set; }
     }
 }

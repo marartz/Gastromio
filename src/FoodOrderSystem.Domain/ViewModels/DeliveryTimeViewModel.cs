@@ -16,9 +16,9 @@ namespace FoodOrderSystem.Domain.ViewModels
         }
 
         public int DayOfWeek { get; }
-        
+
         public int Start { get; }
-        
+
         public int End { get; }
 
         public static DeliveryTimeViewModel FromDeliveryTime(DeliveryTime deliveryTime)

@@ -8,7 +8,7 @@ namespace FoodOrderSystem.Persistence
     public class DishVariantRow
     {
         public Guid DishId { get; set; }
-        
+
         public virtual DishRow Dish { get; set; }
 
         [Column(TypeName = "varchar(100)")]
@@ -16,7 +16,7 @@ namespace FoodOrderSystem.Persistence
 
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
-        
+
         public virtual ICollection<DishVariantExtraRow> Extras { get; set; }
     }
 }

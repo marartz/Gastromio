@@ -1,4 +1,5 @@
 ﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,7 +23,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             string webSite,
             string imprint,
             string orderEmailAddress,
-            ISet<PaymentMethodId> paymentMethods
+            ISet<PaymentMethodId> paymentMethods,
+            ISet<UserId> administrators
         )
         {
             Id = id;
@@ -37,6 +39,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             Imprint = imprint;
             OrderEmailAddress = orderEmailAddress;
             PaymentMethods = paymentMethods;
+            Administrators = administrators;
         }
 
         public RestaurantId Id { get; }
@@ -51,6 +54,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public string Imprint { get; private set; }
         public string OrderEmailAddress { get; private set; }
         public ISet<PaymentMethodId> PaymentMethods { get; }
+        public ISet<UserId> Administrators { get; }
 
         public DateTime CalculateNextDeliveryTime()
         {
@@ -109,6 +113,20 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             if (!PaymentMethods.Contains(paymentMethodId))
                 return;
             PaymentMethods.Remove(paymentMethodId);
+        }
+
+        public void AddAdministrator(UserId userId)
+        {
+            if (Administrators.Contains(userId))
+                return;
+            Administrators.Add(userId);
+        }
+
+        public void RemoveAdministrator(UserId userId)
+        {
+            if (!Administrators.Contains(userId))
+                return;
+            Administrators.Remove(userId);
         }
     }
 }

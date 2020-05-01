@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { RestaurantModel, AddressModel } from '../restaurant/restaurant.model';
+import { PaymentMethodModel } from '../payment-method/payment-method.model';
+import { UserModel } from '../user/user.model';
 
 @Injectable()
 export class RestaurantRestAdminService {
@@ -22,6 +24,28 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions);
+  }
+
+  public getPaymentMethodsAsync(): Observable<PaymentMethodModel[]> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.get<PaymentMethodModel[]>(this.baseUrl + '/paymentmethods', httpOptions);
+  }
+
+  public searchForUsersAsync(search: string): Observable<UserModel[]> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.get<UserModel[]>(this.baseUrl + '/users?search=' + encodeURIComponent(search), httpOptions);
   }
 
   public changeRestaurantNameAsync(id: string, name: string): Observable<boolean> {
@@ -121,6 +145,28 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removepaymentmethod", { paymentMethodId: paymentMethodId }, httpOptions);
+  }
+
+  public addAdminToRestaurantAsync(id: string, userId: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/addadmin", { userId: userId }, httpOptions);
+  }
+
+  public removeAdminFromRestaurantAsync(id: string, userId: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removeadmin", { userId: userId }, httpOptions);
   }
 
 }

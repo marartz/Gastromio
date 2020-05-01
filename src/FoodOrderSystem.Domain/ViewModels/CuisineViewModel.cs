@@ -1,6 +1,5 @@
 ﻿using FoodOrderSystem.Domain.Model.Cuisine;
 using System;
-using System.Text;
 
 namespace FoodOrderSystem.Domain.ViewModels
 {
@@ -15,9 +14,9 @@ namespace FoodOrderSystem.Domain.ViewModels
             Name = name;
         }
 
-        public Guid Id { get;  }
+        public Guid Id { get; }
 
-        public string Name { get;  }
+        public string Name { get; }
 
         public static CuisineViewModel FromCuisine(Cuisine cuisine)
         {

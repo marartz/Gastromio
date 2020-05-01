@@ -25,7 +25,7 @@ namespace FoodOrderSystem.Domain.Queries.SearchForUsers
             if (currentUser == null)
                 return new UnauthorizedQueryResult<ICollection<UserViewModel>>();
 
-            if (currentUser.Role < Role.SystemAdmin)
+            if (currentUser.Role < Role.RestaurantAdmin)
                 return new ForbiddenQueryResult<ICollection<UserViewModel>>();
 
             var users = await userRepository.SearchAsync(query.SearchPhrase, cancellationToken);

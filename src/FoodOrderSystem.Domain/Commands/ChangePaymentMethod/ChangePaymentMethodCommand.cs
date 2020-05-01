@@ -1,5 +1,4 @@
 ﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangePaymentMethod
 {

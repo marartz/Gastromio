@@ -24,7 +24,7 @@ namespace FoodOrderSystem.App
             Domain.Initializer.ConfigureServices(services);
 
             Persistence.Initializer.ConfigureServices(services);
-            
+
             //Persistence.InMemory.Initializer.ConfigureServices(services);
 
             var connectionString = ConfigurationExtensions.GetConnectionString(Configuration, "DefaultConnection");
@@ -72,7 +72,7 @@ namespace FoodOrderSystem.App
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

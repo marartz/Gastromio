@@ -1,7 +1,5 @@
 ﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.ViewModels;
-using System;
 
 namespace FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant
 {

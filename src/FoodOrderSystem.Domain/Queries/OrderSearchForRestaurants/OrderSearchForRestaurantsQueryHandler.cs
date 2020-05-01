@@ -14,11 +14,13 @@ namespace FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
+        private readonly IUserRepository userRepository;
 
-        public OrderSearchForRestaurantsQueryHandler(IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository)
+        public OrderSearchForRestaurantsQueryHandler(IRestaurantRepository restaurantRepository, IPaymentMethodRepository paymentMethodRepository, IUserRepository userRepository)
         {
             this.restaurantRepository = restaurantRepository;
             this.paymentMethodRepository = paymentMethodRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<QueryResult<ICollection<RestaurantViewModel>>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
@@ -32,7 +34,7 @@ namespace FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants
             var restaurants = await restaurantRepository.SearchAsync(query.SearchPhrase, cancellationToken);
 
             return new SuccessQueryResult<ICollection<RestaurantViewModel>>(restaurants
-                .Select(en => RestaurantViewModel.FromRestaurant(en, paymentMethods)).ToList());
+                .Select(en => RestaurantViewModel.FromRestaurant(en, paymentMethods, userRepository)).ToList());
         }
     }
 }

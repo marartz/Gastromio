@@ -5,7 +5,6 @@ using FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

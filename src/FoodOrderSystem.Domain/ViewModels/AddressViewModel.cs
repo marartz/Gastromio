@@ -16,9 +16,9 @@ namespace FoodOrderSystem.Domain.ViewModels
         }
 
         public string Street { get; }
-        
+
         public string ZipCode { get; }
-        
+
         public string City { get; }
 
         public static AddressViewModel FromAddress(Address address)

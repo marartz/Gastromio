@@ -5,6 +5,10 @@ import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeRestaurantNameComponent } from '../change-restaurant-name/change-restaurant-name.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { PaymentMethodModel } from '../payment-method/payment-method.model';
+import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
+import { UserModel } from '../user/user.model';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -13,13 +17,17 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {
   restaurantId: string;
+
   restaurant: RestaurantModel;
+
+  paymentMethods: PaymentMethodModel[];
 
   changeImageForm: FormGroup;
   changeAddressForm: FormGroup;
   changeContactDetailsForm: FormGroup;
   changeDeliveryDataForm: FormGroup;
   addDeliveryTimeForm: FormGroup;
+  addPaymentMethodForm: FormGroup;
 
   imgUrl: any;
 
@@ -35,6 +43,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   startTimeError: string;
   endTimeError: string;
+
+  public userToBeAdded: UserModel;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,15 +81,19 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       start: "",
       end: ""
     });
+
+    this.addPaymentMethodForm = this.formBuilder.group({
+      paymentMethodId: ""
+    });
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.restaurantId = params.get('restaurantId');
 
-      let subscription = this.restaurantRestAdminService.getRestaurantAsync(this.restaurantId).subscribe(
+      let getRestaurantSubscription = this.restaurantRestAdminService.getRestaurantAsync(this.restaurantId).subscribe(
         (data) => {
-          subscription.unsubscribe();
+          getRestaurantSubscription.unsubscribe();
 
           this.restaurant = data;
 
@@ -108,7 +122,18 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           });
         },
         (error) => {
-          subscription.unsubscribe();
+          getRestaurantSubscription.unsubscribe();
+          // TODO
+        }
+      );
+
+      let getPaymentMethodsSubscription = this.restaurantRestAdminService.getPaymentMethodsAsync().subscribe(
+        (data) => {
+          getPaymentMethodsSubscription.unsubscribe();
+          this.paymentMethods = data;
+        },
+        (error) => {
+          getPaymentMethodsSubscription.unsubscribe();
           // TODO
         }
       );
@@ -259,6 +284,59 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       if (index > -1) {
         this.restaurant.deliveryTimes.splice(index, 1);
       }
+    }, () => {
+      subscription.unsubscribe();
+      // TODO
+    });
+  }
+
+  searchForUser = (text: Observable<string>) =>
+    text.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap(term => term.length < 2 ? of([]) : this.restaurantRestAdminService.searchForUsersAsync(term)),
+      take(10)
+    );
+
+  formatUser(user: UserModel): string {
+    let result = user.name;
+
+    if (user.email !== undefined && user.email !== null) {
+      result = result + " (" + user.email + ")";
+    }
+
+    return result;
+  }
+
+  addSelectedUser(): void {
+    if (this.userToBeAdded === undefined)
+      return;
+
+    let subscription = this.restaurantRestAdminService.addAdminToRestaurantAsync(this.restaurant.id, this.userToBeAdded.id).subscribe((data) => {
+      subscription.unsubscribe();
+
+      if (this.restaurant.administrators.findIndex(en => en.id === this.userToBeAdded.id) > -1)
+        return;
+
+      this.restaurant.administrators.push(this.userToBeAdded);
+      this.restaurant.administrators.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      });
+    }, () => {
+      subscription.unsubscribe();
+      // TODO
+    });
+  }
+
+  removeUser(user: UserModel): void {
+    let subscription = this.restaurantRestAdminService.removeAdminFromRestaurantAsync(this.restaurant.id, user.id).subscribe((data) => {
+      subscription.unsubscribe();
+      let index = this.restaurant.administrators.findIndex(en => en.id === user.id);
+      this.restaurant.administrators.splice(index, 1);
     }, () => {
       subscription.unsubscribe();
       // TODO

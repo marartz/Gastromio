@@ -23,12 +23,6 @@ namespace FoodOrderSystem.Domain.Queries.GetAllPaymentMethods
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
-            if (currentUser == null)
-                return new UnauthorizedQueryResult<ICollection<PaymentMethodViewModel>>();
-
-            if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenQueryResult<ICollection<PaymentMethodViewModel>>();
-
             var paymentMethods = await paymentMethodRepository.FindAllAsync(cancellationToken);
 
             return new SuccessQueryResult<ICollection<PaymentMethodViewModel>>(paymentMethods.Select(PaymentMethodViewModel.FromPaymentMethod).ToList());

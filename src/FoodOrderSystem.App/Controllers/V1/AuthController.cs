@@ -44,7 +44,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             {
                 case UnauthorizedCommandResult<UserViewModel> _:
                     return Unauthorized();
-                case ForbiddenCommandResult< UserViewModel> _:
+                case ForbiddenCommandResult<UserViewModel> _:
                     return Forbid();
                 case SuccessCommandResult<UserViewModel> result:
                     var tokenString = GenerateJSONWebToken(result.Value);

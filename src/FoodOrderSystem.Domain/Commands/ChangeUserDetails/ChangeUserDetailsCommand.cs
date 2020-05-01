@@ -1,5 +1,4 @@
 ﻿using FoodOrderSystem.Domain.Model.User;
-using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ChangeUserDetails
 {
