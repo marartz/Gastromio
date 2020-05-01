@@ -7,7 +7,7 @@ import { UserAdminService } from '../user/user-admin.service';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  styleUrls: ['./add-user.component.css','../../assets/css/forms.min.css']
 })
 export class AddUserComponent implements OnInit {
   addUserForm: FormGroup;

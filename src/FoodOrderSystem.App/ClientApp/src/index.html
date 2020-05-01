@@ -4,7 +4,7 @@
     <base href="/">
 
     <!-- Google Tag Manager -->
-    <!--style>.async-hide {opacity: 0 !important}</!--style>
+    <style>.async-hide {opacity: 0 !important}</style>
     <script>
         // dataLayer
         window.dataLayer = window.dataLayer || [];
@@ -28,7 +28,7 @@
             j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
             f.parentNode.insertBefore(j, f);
         })(window, document, "script", "dataLayer", "GTM-TK67W5R");
-    </script-->
+    </script>
     <!-- End Google Tag Manager -->
 
     <meta charset="UTF-8" />
@@ -90,5 +90,13 @@
 </head>
 <body>
     <app-root></app-root>
+    <script>window.onUsersnapCXLoad = function (api) {
+            api.init();
+        }
+        var script = document.createElement('script');
+        script.async = 1;
+        script.src = 'https://widget.usersnap.com/load/c89b99ff-129a-40f8-be7b-70549a557eee?onload=onUsersnapCXLoad';
+        document.getElementsByTagName('head')[0].appendChild(script);
+    </script>
 </body>
 </html>

@@ -21,7 +21,7 @@
             <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
                 <div class="restaurant-logo-wrapper">
                     <div class="restaurant-logo">
-                        <img *ngIf="restaurant.image !== null" src="{{restaurant.image}}" alt="" border="0" />
+                        <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
                     </div>
                 </div>
                 <div class="restaurant-info-wrapper">
