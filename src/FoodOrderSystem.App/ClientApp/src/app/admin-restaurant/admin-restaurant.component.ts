@@ -54,7 +54,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   addDeliveryTimeError: string;
   removeDeliveryTimeError: string;
 
-  paymentMethods: PaymentMethodModel[];
+  availablePaymentMethods: PaymentMethodModel[];
+  addPaymentMethodForm: FormGroup;
+  addPaymentMethodError: string;
+  removePaymentMethodError: string;
 
   public userToBeAdded: UserModel;
   addUserError: string;
@@ -96,6 +99,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       start: "",
       end: ""
     });
+
+    this.addPaymentMethodForm = this.formBuilder.group({
+      paymentMethodId: ""
+    });
   }
 
   ngOnInit() {
@@ -109,6 +116,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           this.blockUI.stop();
 
           this.restaurant = data;
+
+          this.restaurant.paymentMethods.sort((a, b) => {
+            if (a.name < b.name)
+              return -1;
+            if (a.name > b.name)
+              return 1;
+            return 0;
+          });
 
           this.imgUrl = this.restaurant.image;
 
@@ -140,10 +155,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
 
           let getPaymentMethodsSubscription = this.restaurantRestAdminService.getPaymentMethodsAsync().subscribe(
-            (data) => {
+            (paymentMethods) => {
               getPaymentMethodsSubscription.unsubscribe();
+              this.availablePaymentMethods = paymentMethods.filter(paymentMethod => this.restaurant.paymentMethods.findIndex(en => en.id === paymentMethod.id) == -1);
               this.blockUI.stop();
-              this.paymentMethods = data;
             },
             (error: HttpErrorResponse) => {
               getPaymentMethodsSubscription.unsubscribe();
@@ -338,6 +353,54 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       subscription.unsubscribe();
       this.blockUI.stop();
       this.removeDeliveryTimeError = this.httpErrorHandlingService.handleError(response);
+    });
+  }
+
+  onAddPaymentMethod(value): void {
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.restaurantRestAdminService.addPaymentMethodToRestaurantAsync(this.restaurant.id, value.paymentMethodId).subscribe((data) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.addPaymentMethodError = undefined;
+      this.addPaymentMethodForm.reset();
+      let index = this.availablePaymentMethods.findIndex(en => en.id === value.paymentMethodId);
+      this.restaurant.paymentMethods.push(this.availablePaymentMethods[index]);
+      this.availablePaymentMethods.splice(index, 1);
+      this.restaurant.paymentMethods.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      });
+    }, (response: HttpErrorResponse) => {
+        console.log("Response: ", response);
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.addPaymentMethodError = this.httpErrorHandlingService.handleError(response);
+    });
+  }
+
+  onRemovePaymentMethod(paymentMethodId: string) {
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.restaurantRestAdminService.removePaymentMethodFromRestaurantAsync(this.restaurant.id, paymentMethodId).subscribe((data) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.removePaymentMethodError = undefined;
+      let index = this.restaurant.paymentMethods.findIndex(en => en.id == paymentMethodId);
+      this.availablePaymentMethods.push(this.restaurant.paymentMethods[index]);
+      this.restaurant.paymentMethods.splice(index, 1);
+      this.restaurant.paymentMethods.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      });
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.removePaymentMethodError = this.httpErrorHandlingService.handleError(response);
     });
   }
 

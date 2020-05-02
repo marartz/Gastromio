@@ -14,7 +14,10 @@ export class HttpErrorHandlingService {
     } else if (error.status === 403) {
       return "Sie sind nicht berechtigt, diese Aktion auszuführen!";
     } else {
-      return error.error;
+      if (typeof error.error === "string")
+        return error.error;
+      else
+        return "Huch, das hätte nicht passieren sollen! Bitte versuchen Sie es nochmals bzw. kontaktieren Sie uns, wenn das Problem anhält."
     }
   }
 }
