@@ -1,37 +1,44 @@
 <div class="header">
-    <div class="header-desktop">
-        <div class="component-hero" style="height: 250px; background-image: url(assets/img/header/header_index.jpg);">
-            <!--div class="component-infobar" style="top: auto; bottom: 0px; position: absolute;">
-                <div class="inner">
-                    <h2 class="title">getTitle()</h2>
-                </div>
-            </div-->
-            <div class="component-wrapper-inner" style="padding: 0px;">
-                <div class="component-logo">
-                    <div class="logo-boli">
-                        <a [routerLink]="['/']">
-                            <img src="../../assets/img/logo/logo_w-1024x781.png" alt="" />
-                        </a>
-                    </div>
-                </div>
-                <div class="component-setting-dropdown" *ngIf="getUsername() === undefined">
-                    <span class="button" id="login" (click)="openLoginForm()">Einloggen</span>
-                </div>
-                <div class="component-setting-dropdown" *ngIf="getUsername() !== undefined">
-                    <div class="d-inline-block" ngbDropdown>
-                        <span class="button" id="userDropDown" ngbDropdownToggle>Einstellungen</span>
-                        <div class="dropdown-container" ngbDropdownMenu aria-labelledby="userDropDown">
-                            <h6 class="dropdown-header" *ngIf="systemAdminAllowed()">Systemadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6><!--{{getUsername()}}-->
-                            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
-                            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
-                            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>
-                            <button *ngIf="systemAdminAllowed()" ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</button>
-                            <div class="dropdown-divider"></div>
-                            <button ngbDropdownItem (click)="logout()"><i class="fas fa-sign-out-alt"></i> Ausloggen</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="header-desktop">
+    <div class="component-hero" style="height: 250px; background-image: url(assets/img/header/header_index.jpg);">
+      <!--div class="component-infobar" style="top: auto; bottom: 0px; position: absolute;">
+          <div class="inner">
+              <h2 class="title">getTitle()</h2>
+          </div>
+      </div-->
+      <div class="component-wrapper-inner" style="padding: 0px;">
+        <div class="component-logo">
+          <div class="logo-boli">
+            <a [routerLink]="['/']">
+              <img src="../../assets/img/logo/logo_w-1024x781.png" alt="" />
+            </a>
+          </div>
         </div>
+        <div class="component-setting-dropdown" *ngIf="getUsername() === undefined">
+          <span class="button" id="login" (click)="openLoginForm()">Einloggen</span>
+        </div>
+        <div class="component-setting-dropdown" *ngIf="getUsername() !== undefined">
+          <div class="d-inline-block" ngbDropdown>
+            <span class="button" id="userDropDown" ngbDropdownToggle>Einstellungen</span>
+            <div class="dropdown-container" ngbDropdownMenu aria-labelledby="userDropDown">
+              <ng-container *ngIf="isSystemAdmin()">
+                <h6 class="dropdown-header">Systemadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6><!--{{getUsername()}}-->
+                <button ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
+                <button ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
+                <button ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>
+                <button ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</button>
+                <div class="dropdown-divider"></div>
+              </ng-container>
+              <ng-container *ngIf="isRestaurantAdmin()">
+                <h6 class="dropdown-header">Restaurantadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6><!--{{getUsername()}}-->
+                <button ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Meine Restaurants</button>
+                <div class="dropdown-divider"></div>
+              </ng-container>
+              <button ngbDropdownItem (click)="logout()"><i class="fas fa-sign-out-alt"></i> Ausloggen</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

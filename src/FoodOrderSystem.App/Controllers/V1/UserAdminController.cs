@@ -8,6 +8,7 @@ using FoodOrderSystem.Domain.Commands.RemoveUser;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.SearchForUsers;
+using FoodOrderSystem.Domain.Services;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +30,16 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly IUserRepository userRepository;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
+        private readonly IFailureMessageService failureMessageService;
 
-        public UserAdminController(ILogger<UserAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public UserAdminController(ILogger<UserAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher,
+            IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
         {
             this.logger = logger;
             this.userRepository = userRepository;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
+            this.failureMessageService = failureMessageService;
         }
 
         [Route("users")]
@@ -48,7 +52,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<SearchForUsersQuery, ICollection<UserViewModel>>(new SearchForUsersQuery(search), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("users")]
@@ -66,7 +70,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var role = (Role)Enum.Parse(typeof(Role), addUserModel.Role);
 
             var commandResult = await commandDispatcher.PostAsync<AddUserCommand, UserViewModel>(new AddUserCommand(addUserModel.Name, role, addUserModel.Email, addUserModel.Password), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("users/{userId}/changedetails")]
@@ -88,7 +92,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("users/{userId}/changepassword")]
@@ -104,7 +108,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<ChangeUserPasswordCommand, bool>(new ChangeUserPasswordCommand(new UserId(userId), changeUserPasswordModel.Password), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("users/{userId}")]
@@ -120,7 +124,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<RemoveUserCommand, bool>(new RemoveUserCommand(new UserId(userId)), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
     }
 }

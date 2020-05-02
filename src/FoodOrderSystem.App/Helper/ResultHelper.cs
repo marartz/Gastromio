@@ -1,5 +1,5 @@
-﻿using FoodOrderSystem.Domain.Commands;
-using FoodOrderSystem.Domain.Queries;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -7,35 +7,23 @@ namespace FoodOrderSystem.App.Helper
 {
     public static class ResultHelper
     {
-        public static IActionResult HandleCommandResult<TResult>(CommandResult<TResult> commandResult)
+        public static IActionResult HandleResult<TResult>(Result<TResult> result, IFailureMessageService failureMessageService)
         {
-            switch (commandResult)
+            switch (result)
             {
-                case UnauthorizedCommandResult<TResult> _:
-                    return new UnauthorizedResult();
-                case ForbiddenCommandResult<TResult> _:
-                    return new ForbidResult();
-                case FailureCommandResult<TResult> _:
-                    return new BadRequestResult();
-                case SuccessCommandResult<TResult> result:
-                    return new OkObjectResult(result.Value);
-                default:
-                    throw new InvalidOperationException("internal server error");
-            }
-        }
-
-        public static IActionResult HandleQueryResult<TResult>(QueryResult<TResult> queryResult)
-        {
-            switch (queryResult)
-            {
-                case UnauthorizedQueryResult<TResult> _:
-                    return new UnauthorizedResult();
-                case ForbiddenQueryResult<TResult> _:
-                    return new ForbidResult();
-                case FailureCommandResult<TResult> _:
-                    return new BadRequestResult();
-                case SuccessQueryResult<TResult> result:
-                    return new OkObjectResult(result.Value);
+                case SuccessResult<TResult> successResult:
+                    return new OkObjectResult(successResult.Value);
+                case FailureResult<TResult> failureResult:
+                    switch (failureResult.Code)
+                    {
+                        case FailureResultCode.Unauthorized:
+                            return new UnauthorizedResult();
+                        case FailureResultCode.Forbidden:
+                            return new ForbidResult();
+                        default:
+                            var message = failureMessageService.GetMessageFromResult(failureResult);
+                            return new BadRequestObjectResult(message);
+                    }
                 default:
                     throw new InvalidOperationException("internal server error");
             }

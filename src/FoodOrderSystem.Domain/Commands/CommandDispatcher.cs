@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.User;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.User;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<CommandResult<TResult>> PostAsync<TCommand, TResult>(TCommand Command, User currentUser, CancellationToken cancellationToken = default) where TCommand : ICommand<TResult>
+        public async Task<Result<TResult>> PostAsync<TCommand, TResult>(TCommand Command, User currentUser, CancellationToken cancellationToken = default) where TCommand : ICommand<TResult>
         {
             var commandType = typeof(TCommand);
 

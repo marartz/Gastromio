@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
@@ -18,14 +19,14 @@ namespace FoodOrderSystem.Domain.Queries.GetAllPaymentMethods
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<QueryResult<ICollection<PaymentMethodViewModel>>> HandleAsync(GetAllPaymentMethodsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<PaymentMethodViewModel>>> HandleAsync(GetAllPaymentMethodsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             var paymentMethods = await paymentMethodRepository.FindAllAsync(cancellationToken);
 
-            return new SuccessQueryResult<ICollection<PaymentMethodViewModel>>(paymentMethods.Select(PaymentMethodViewModel.FromPaymentMethod).ToList());
+            return SuccessResult<ICollection<PaymentMethodViewModel>>.Create(paymentMethods.Select(PaymentMethodViewModel.FromPaymentMethod).ToList());
         }
     }
 }

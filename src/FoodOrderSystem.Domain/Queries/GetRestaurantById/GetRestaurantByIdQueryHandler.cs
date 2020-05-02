@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
@@ -22,23 +23,23 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
             this.userRepository = userRepository;
         }
 
-        public async Task<QueryResult<RestaurantViewModel>> HandleAsync(GetRestaurantByIdQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<RestaurantViewModel>> HandleAsync(GetRestaurantByIdQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return new UnauthorizedQueryResult<RestaurantViewModel>();
+                return FailureResult<RestaurantViewModel>.Unauthorized();
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return new ForbiddenQueryResult<RestaurantViewModel>();
+                return FailureResult<RestaurantViewModel>.Forbidden();
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId);
 
-            return new SuccessQueryResult<RestaurantViewModel>(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods, userRepository));
+            return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods, userRepository));
         }
     }
 }

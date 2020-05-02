@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { RestaurantSysAdminService } from '../restaurant-sys-admin/restaurant-sys-admin.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -10,6 +11,8 @@ import { RestaurantSysAdminService } from '../restaurant-sys-admin/restaurant-sy
   styleUrls: ['./add-restaurant.component.css']
 })
 export class AddRestaurantComponent implements OnInit {
+  @BlockUI() blockUI: NgBlockUI;
+
   addRestaurantForm: FormGroup;
   message: string;
 
@@ -27,19 +30,24 @@ export class AddRestaurantComponent implements OnInit {
   }
 
   onSubmit(data) {
-    this.restaurantAdminService.addRestaurantAsync(data.name)
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.restaurantAdminService.addRestaurantAsync(data.name)
       .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
         this.message = undefined;
         this.addRestaurantForm.reset();
         this.activeModal.close('Close click');
       }, (status: number) => {
-          this.addRestaurantForm.reset();
-          if (status === 401)
-            this.message = "Sie sind nicht angemdeldet.";
-          else if (status === 403)
-            this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-          else
-            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.addRestaurantForm.reset();
+        if (status === 401)
+          this.message = "Sie sind nicht angemdeldet.";
+        else if (status === 403)
+          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
+        else
+          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
       });
   }
 }

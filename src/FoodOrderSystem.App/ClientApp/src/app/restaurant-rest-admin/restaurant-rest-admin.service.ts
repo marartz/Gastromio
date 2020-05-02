@@ -15,6 +15,17 @@ export class RestaurantRestAdminService {
     private authService: AuthService
   ) { }
 
+  public getMyRestaurantsAsync(): Observable<RestaurantModel[]> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/myrestaurants', httpOptions);
+  }
+
   public getRestaurantAsync(id: string): Observable<RestaurantModel> {
     let httpOptions = {
       headers: new HttpHeaders({

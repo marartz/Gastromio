@@ -1,10 +1,14 @@
 ﻿using FoodOrderSystem.Domain.Commands;
+using FoodOrderSystem.Domain.Model;
 using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
+using FoodOrderSystem.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Globalization;
 
 namespace FoodOrderSystem.Domain
 {
@@ -25,6 +29,26 @@ namespace FoodOrderSystem.Domain
             // Register query classes
             services.AddTransient<IQueryDispatcher, QueryDispatcher>();
             QueryDispatcher.Initialize(services);
+
+            // Initialize failure messages
+            var failureMessageService = new FailureMessageService();
+            services.AddSingleton<IFailureMessageService>(failureMessageService);
+
+            var deDeCultureInfo = new CultureInfo("de-DE");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Unauthorized, "Sie sind nicht angemeldet");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Forbidden, "Sie sind nicht berechtigt, diese Aktion auszuführen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserAlreadyExists, "Benutzer existiert bereits");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CannotRemoveCurrentUser, "Sie können nicht den gerade angemeldeten Benutzer löschen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineDoesNotExist, "Cuisine existiert nicht");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineAlreadyExists, "Cuisine existiert bereits");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodDoesNotExist, "Zahlungsmethode existiert nicht");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodAlreadyExists, "Zahlungsmethode existiert bereits");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CannotRemoveCurrentUserFromRestaurantAdmins, "Sie können nicht den gerade angemeldeten Benutzer aus den Administratoren des Restaurants löschen");
+
+            if (!failureMessageService.AreAllCodesRegisteredForCulture(deDeCultureInfo))
+                throw new InvalidOperationException($"Not all messages for culture {deDeCultureInfo} are registered");
         }
     }
 }

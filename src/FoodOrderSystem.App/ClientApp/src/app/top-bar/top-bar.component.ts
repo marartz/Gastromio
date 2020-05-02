@@ -27,14 +27,19 @@ export class TopBarComponent implements OnInit {
     return currentUser !== undefined ? currentUser.name : undefined;
   }
 
-  systemAdminAllowed(): boolean {
+  getUserrole(): string {
+    let currentUser: UserModel = this.authService.getUser();
+    return currentUser !== undefined ? currentUser.role : undefined;
+  }
+
+  isSystemAdmin(): boolean {
     let currentUser: UserModel = this.authService.getUser();
     return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === "SystemAdmin";
   }
 
-  restaurantAdminAllowed(): boolean {
+  isRestaurantAdmin(): boolean {
     let currentUser: UserModel = this.authService.getUser();
-    return currentUser !== undefined && currentUser.role !== undefined && (currentUser.role === "SystemAdmin" || currentUser.role === "RestaurantAdmin");
+    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === "RestaurantAdmin";
   }
 
   openLoginForm(): void {

@@ -18,7 +18,9 @@ using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllPaymentMethods;
 using FoodOrderSystem.Domain.Queries.GetRestaurantById;
+using FoodOrderSystem.Domain.Queries.RestAdminMyRestaurants;
 using FoodOrderSystem.Domain.Queries.SearchForUsers;
+using FoodOrderSystem.Domain.Services;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.App.Controllers.V1
@@ -40,13 +43,29 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly IUserRepository userRepository;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
+        private readonly IFailureMessageService failureMessageService;
 
-        public RestaurantAdminController(ILogger<RestaurantAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public RestaurantAdminController(ILogger<RestaurantAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher,
+            IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
         {
             this.logger = logger;
             this.userRepository = userRepository;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
+            this.failureMessageService = failureMessageService;
+        }
+
+        [Route("myrestaurants")]
+        [HttpGet]
+        public async Task<IActionResult> GetMyRestaurantsAsync()
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var queryResult = await queryDispatcher.PostAsync<RestAdminMyRestaurantsQuery, ICollection<RestaurantViewModel>>(new RestAdminMyRestaurantsQuery(), currentUser);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}")]
@@ -59,7 +78,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("paymentmethods")]
@@ -72,7 +91,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<GetAllPaymentMethodsQuery, ICollection<PaymentMethodViewModel>>(new GetAllPaymentMethodsQuery(), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("users")]
@@ -85,7 +104,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<SearchForUsersQuery, ICollection<UserViewModel>>(new SearchForUsersQuery(search), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/changename")]
@@ -101,7 +120,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantNameCommand, bool>(new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/changeimage")]
@@ -117,9 +136,9 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var image = ImageHelper.ConvertFromImageUrl(changeRestaurantImageModel.Image);
-
+            
             var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantImageCommand, bool>(new ChangeRestaurantImageCommand(new RestaurantId(restaurantId), image), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/changeaddress")]
@@ -141,7 +160,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             );
 
             var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantAddressCommand, bool>(new ChangeRestaurantAddressCommand(new RestaurantId(restaurantId), address), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/changecontactdetails")]
@@ -167,7 +186,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/changedeliverydata")]
@@ -187,7 +206,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/adddeliverytime")]
@@ -210,7 +229,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/removedeliverytime")]
@@ -232,7 +251,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/addpaymentmethod")]
@@ -252,7 +271,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/removepaymentmethod")]
@@ -272,7 +291,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/addadmin")]
@@ -292,7 +311,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/removeadmin")]
@@ -312,7 +331,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 currentUser
             );
 
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
     }
 }

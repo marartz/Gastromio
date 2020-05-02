@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.User;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.User;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace FoodOrderSystem.Domain.Queries
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<QueryResult<TResult>> PostAsync<TQuery, TResult>(TQuery query, User currentUser, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
+        public async Task<Result<TResult>> PostAsync<TQuery, TResult>(TQuery query, User currentUser, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
         {
             var queryType = typeof(TQuery);
 

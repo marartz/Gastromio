@@ -25,7 +25,6 @@ export class CustomerAuthGuardService implements CanActivate {
         subscription.unsubscribe();
       }, (error) => {
         subscription.unsubscribe();
-        console.error(error);
         this.auth.logout();
         this.router.navigate(['']);
       });

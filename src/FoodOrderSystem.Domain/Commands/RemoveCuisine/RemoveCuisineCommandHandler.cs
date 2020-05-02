@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.Cuisine;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Threading;
@@ -15,20 +16,20 @@ namespace FoodOrderSystem.Domain.Commands.RemoveCuisine
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<CommandResult<bool>> HandleAsync(RemoveCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(RemoveCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult<bool>();
+                return FailureResult<bool>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult<bool>();
+                return FailureResult<bool>.Forbidden();
 
             await cuisineRepository.RemoveAsync(command.CuisineId, cancellationToken);
 
-            return new SuccessCommandResult<bool>(true);
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

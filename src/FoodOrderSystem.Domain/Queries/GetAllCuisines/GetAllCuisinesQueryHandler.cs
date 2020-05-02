@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.Cuisine;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
@@ -18,14 +19,14 @@ namespace FoodOrderSystem.Domain.Queries.GetAllCuisines
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<QueryResult<ICollection<CuisineViewModel>>> HandleAsync(GetAllCuisinesQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<CuisineViewModel>>> HandleAsync(GetAllCuisinesQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             var cuisines = await cuisineRepository.FindAllAsync(cancellationToken);
 
-            return new SuccessQueryResult<ICollection<CuisineViewModel>>(cuisines.Select(CuisineViewModel.FromCuisine).ToList());
+            return SuccessResult<ICollection<CuisineViewModel>>.Create(cuisines.Select(CuisineViewModel.FromCuisine).ToList());
         }
     }
 }

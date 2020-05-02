@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
@@ -23,23 +24,23 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
             this.userRepository = userRepository;
         }
 
-        public async Task<QueryResult<ICollection<RestaurantViewModel>>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<RestaurantViewModel>>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return new UnauthorizedQueryResult<ICollection<RestaurantViewModel>>();
+                return FailureResult<ICollection<RestaurantViewModel>>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenQueryResult<ICollection<RestaurantViewModel>>();
+                return FailureResult<ICollection<RestaurantViewModel>>.Forbidden();
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
             var restaurants = await restaurantRepository.SearchAsync(query.SearchPhrase, cancellationToken);
 
-            return new SuccessQueryResult<ICollection<RestaurantViewModel>>(restaurants
+            return SuccessResult<ICollection<RestaurantViewModel>>.Create(restaurants
                 .Select(en => RestaurantViewModel.FromRestaurant(en, paymentMethods, userRepository)).ToList());
         }
     }

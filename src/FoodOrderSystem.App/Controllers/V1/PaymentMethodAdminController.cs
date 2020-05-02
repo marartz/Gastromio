@@ -8,6 +8,7 @@ using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllPaymentMethods;
+using FoodOrderSystem.Domain.Services;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +30,16 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly IUserRepository userRepository;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
+        private readonly IFailureMessageService failureMessageService;
 
-        public PaymentMethodAdminController(ILogger<PaymentMethodAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public PaymentMethodAdminController(ILogger<PaymentMethodAdminController> logger, IUserRepository userRepository,
+            ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
         {
             this.logger = logger;
             this.userRepository = userRepository;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
+            this.failureMessageService = failureMessageService;
         }
 
         [Route("paymentMethods")]
@@ -48,7 +52,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<GetAllPaymentMethodsQuery, ICollection<PaymentMethodViewModel>>(new GetAllPaymentMethodsQuery(), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("paymentMethods")]
@@ -64,7 +68,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<AddPaymentMethodCommand, PaymentMethodViewModel>(new AddPaymentMethodCommand(addPaymentMethodModel.Name, addPaymentMethodModel.Description), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("paymentMethods/{paymentMethodId}/change")]
@@ -80,7 +84,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<ChangePaymentMethodCommand, bool>(new ChangePaymentMethodCommand(new PaymentMethodId(paymentMethodId), changePaymentMethodModel.Name, changePaymentMethodModel.Description), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("paymentMethods/{paymentMethodId}")]
@@ -96,7 +100,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<RemovePaymentMethodCommand, bool>(new RemovePaymentMethodCommand(new PaymentMethodId(paymentMethodId)), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
     }
 }

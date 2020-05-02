@@ -74,7 +74,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   onSearchType(value: string) {
-    console.log(value);
     this.searchPhraseUpdated.next(value);
   }
 

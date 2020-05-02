@@ -1,0 +1,33 @@
+<div class="container no-header">
+  <div class="row">
+    <div class="col">
+      <div class="setting-title">
+        <h1>Meine Restaurants</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+
+      <div class="restaurants mt-3">
+        <div class="restaurant" *ngFor="let restaurant of restaurants">
+          <div class="restaurant-logo-wrapper">
+            <div class="restaurant-logo">
+              <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
+            </div>
+          </div>
+          <div class="restaurant-info-wrapper">
+            <h2 class="restaurantname">{{restaurant.name}}</h2>
+            <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
+            <div class="bottom-wrapper details">
+              <div class="delivery">
+                <a href="#" class="edit-restaurant-settings" [routerLink]="['/admin/restaurants/', restaurant.id]">Details ändern</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Threading;
@@ -15,26 +16,26 @@ namespace FoodOrderSystem.Domain.Commands.ChangePaymentMethod
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<CommandResult<bool>> HandleAsync(ChangePaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangePaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult<bool>();
+                return FailureResult<bool>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult<bool>();
+                return FailureResult<bool>.Forbidden();
 
             var paymentMethod = await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId, cancellationToken);
             if (paymentMethod == null)
-                return new FailureCommandResult<bool>();
+                return FailureResult<bool>.Create(FailureResultCode.PaymentMethodDoesNotExist);
 
             paymentMethod.Change(command.Name, command.Description);
 
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 
-            return new SuccessCommandResult<bool>(true);
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

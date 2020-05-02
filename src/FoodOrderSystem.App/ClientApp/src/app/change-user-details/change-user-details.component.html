@@ -1,36 +1,38 @@
 <div class="setting-modal">
-    <div class="setting-content">
-        <div class="setting-header">
-            BENUTZERDATEN ÄNDERN
-            <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
-        </div>
-        <div class="setting-form">
-            <div class="tab tab-setting">
-                <form class="setting-form" [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
-                    <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
-                    <div class="form-setting">
-                        <div class="input">
-                            <input type="text" id="name" formControlName="name">
-                            <label for="username">Benutzername</label>
-                        </div>
-                        <div class="input">
-                            <select id="role" formControlName="role">
-                                <option value="Customer">Kunde</option>
-                                <option value="RestaurantAdmin">Restaurantadministrator</option>
-                                <option value="SystemAdmin">Systemadministrator</option>
-                            </select>
-                            <label for="role">Rolle</label>
-                        </div>
-                        <div class="input">
-                            <input type="text" id="email" formControlName="email">
-                            <label for="email">E-Mail-Adresse</label>
-                        </div>
-                    </div>
-                    <div class="button-container">
-                        <button class="button-submit" type="submit">Ändern</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div class="setting-content">
+    <div class="setting-header">
+      BENUTZERDATEN ÄNDERN
+      <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
     </div>
+    <div class="setting-form">
+      <div class="tab tab-setting">
+        <block-ui>
+          <form class="setting-form" [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
+            <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
+            <div class="form-setting">
+              <div class="input">
+                <input type="text" id="name" formControlName="name">
+                <label for="username">Benutzername</label>
+              </div>
+              <div class="input">
+                <select id="role" formControlName="role">
+                  <option value="Customer">Kunde</option>
+                  <option value="RestaurantAdmin">Restaurantadministrator</option>
+                  <option value="SystemAdmin">Systemadministrator</option>
+                </select>
+                <label for="role">Rolle</label>
+              </div>
+              <div class="input">
+                <input type="text" id="email" formControlName="email">
+                <label for="email">E-Mail-Adresse</label>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="button-submit" type="submit">Ändern</button>
+            </div>
+          </form>
+        </block-ui>
+      </div>
+    </div>
+  </div>
 </div>

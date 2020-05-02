@@ -48,6 +48,19 @@ namespace FoodOrderSystem.Persistence
             }, cancellationToken);
         }
 
+        public Task<ICollection<Restaurant>> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var rows = dbContext.Restaurants
+                    .Where(rest => rest.RestaurantUsers.Any(restuser => restuser.UserId == userId.Value))
+                    .OrderBy(en => en.Name)
+                    .ToList();
+                return (ICollection<Restaurant>)rows.Select(FromRow).ToList(); ;
+            }, cancellationToken);
+        }
+
+
         public Task StoreAsync(Restaurant restaurant, CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>

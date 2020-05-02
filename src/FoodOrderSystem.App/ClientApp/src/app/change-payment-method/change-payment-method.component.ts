@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PaymentMethodModel } from '../payment-method/payment-method.model';
 import { PaymentMethodAdminService } from '../payment-method/payment-method-admin.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-change-payment-method',
@@ -11,6 +12,7 @@ import { PaymentMethodAdminService } from '../payment-method/payment-method-admi
 })
 export class ChangePaymentMethodComponent implements OnInit {
   @Input() public paymentMethod: PaymentMethodModel;
+  @BlockUI() blockUI: NgBlockUI;
 
   changePaymentMethodForm: FormGroup;
   message: string;
@@ -30,18 +32,23 @@ export class ChangePaymentMethodComponent implements OnInit {
   }
 
   onSubmit(data) {
-    this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
       .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
         this.message = undefined;
         this.changePaymentMethodForm.reset();
         this.activeModal.close('Close click');
       }, (status: number) => {
-          if (status === 401)
-            this.message = "Sie sind nicht angemdeldet.";
-          else if (status === 403)
-            this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-          else
-            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        if (status === 401)
+          this.message = "Sie sind nicht angemdeldet.";
+        else if (status === 403)
+          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
+        else
+          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
       });
   }
 }

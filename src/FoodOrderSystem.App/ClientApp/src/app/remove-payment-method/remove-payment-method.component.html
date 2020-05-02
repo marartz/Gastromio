@@ -1,18 +1,20 @@
 <div class="setting-modal">
-    <div class="setting-content">
-        <div class="setting-header">
-            ZAHLUNGSMETHODE LÖSCHEN
-            <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
-        </div>
-        <div class="setting-form">
-            <div class="tab tab-setting">
-                <div class="form-setting">
-                    <h5>Bist du sicher, dass du die Zahlungsmethode<br /><strong>'{{paymentMethod.name}}' löschen</strong><br />möchtest?</h5>
-                </div>
-                <div class="button-container">
-                    <button class="button-submit" type="submit" (click)="onSubmit()">Löschen</button>
-                </div>
-            </div>
-        </div>
+  <div class="setting-content">
+    <div class="setting-header">
+      ZAHLUNGSMETHODE LÖSCHEN
+      <!--span class="setting-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
     </div>
+    <div class="setting-form">
+      <div class="tab tab-setting">
+        <block-ui>
+          <div class="form-setting">
+            <h5>Bist du sicher, dass du die Zahlungsmethode<br /><strong>'{{paymentMethod.name}}' löschen</strong><br />möchtest?</h5>
+          </div>
+          <div class="button-container">
+            <button class="button-submit" type="submit" (click)="onSubmit()">Löschen</button>
+          </div>
+        </block-ui>
+      </div>
+    </div>
+  </div>
 </div>

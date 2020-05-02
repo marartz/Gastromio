@@ -115,6 +115,11 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             PaymentMethods.Remove(paymentMethodId);
         }
 
+        public bool HasAdministrator(UserId userId)
+        {
+            return Administrators.Contains(userId);
+        }
+
         public void AddAdministrator(UserId userId)
         {
             if (Administrators.Contains(userId))

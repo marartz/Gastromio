@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FoodOrderSystem.Domain.Model.User;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         Task<ICollection<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
 
         Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
+
+        Task<ICollection<Restaurant>> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
 
         Task<ICollection<Restaurant>> FindAllAsync(CancellationToken cancellationToken = default);
 

@@ -44,6 +44,8 @@ import { RestaurantInformationComponent } from './restaurant-information/restaur
 import { GeneralTermsAndConditionsComponent } from './general-terms-and-conditions/general-terms-and-conditions.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { AdminMyRestaurantsComponent } from './admin-my-restaurants/admin-my-restaurants.component';
+import { HttpErrorHandlingService } from './http-error-handling/http-error-handling.service';
 
 @NgModule({
   imports: [
@@ -59,6 +61,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
       { path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/paymentmethods', component: AdminPaymentMethodsComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/restaurants', component: AdminRestaurantsComponent, canActivate: [SystemAdminAuthGuard] },
+      { path: 'admin/myrestaurants', component: AdminMyRestaurantsComponent, canActivate: [RestaurantAdminAuthGuard] },
       { path: 'admin/restaurants/:restaurantId', component: AdminRestaurantComponent, canActivate: [RestaurantAdminAuthGuard] },
     ]),
     ReactiveFormsModule,
@@ -97,6 +100,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     GeneralTermsAndConditionsComponent,
     ImprintComponent,
     PrivacyPolicyComponent,
+    AdminMyRestaurantsComponent
   ],
   providers: [
     AuthService,
@@ -108,6 +112,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     RestaurantSysAdminService,
     RestaurantRestAdminService,
     OrderService,
+    HttpErrorHandlingService
   ],
   bootstrap: [AppComponent]
 })

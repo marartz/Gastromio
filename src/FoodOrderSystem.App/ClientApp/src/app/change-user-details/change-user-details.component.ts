@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-change-user-details',
@@ -12,6 +13,7 @@ import { UserModel } from '../user/user.model';
 })
 export class ChangeUserDetailsComponent implements OnInit {
   @Input() public user: UserModel;
+  @BlockUI() blockUI: NgBlockUI;
 
   changeUserDetailsForm: FormGroup;
   message: string;
@@ -32,19 +34,23 @@ export class ChangeUserDetailsComponent implements OnInit {
   }
 
   onSubmit(data) {
-    console.log("Data: ", data);
-    this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
       .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
         this.message = undefined;
         this.changeUserDetailsForm.reset();
         this.activeModal.close('Close click');
       }, (status: number) => {
-          if (status === 401)
-            this.message = "Sie sind nicht angemdeldet.";
-          else if (status === 403)
-            this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-          else
-            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        if (status === 401)
+          this.message = "Sie sind nicht angemdeldet.";
+        else if (status === 403)
+          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
+        else
+          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
       });
   }
 }

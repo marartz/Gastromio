@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
@@ -24,16 +25,16 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult<RestaurantViewModel>> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<RestaurantViewModel>> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult<RestaurantViewModel>();
+                return FailureResult<RestaurantViewModel>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult<RestaurantViewModel>();
+                return FailureResult<RestaurantViewModel>.Forbidden();
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
@@ -41,7 +42,7 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
             var restaurant = restaurantFactory.CreateWithName(command.Name);
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return new SuccessCommandResult<RestaurantViewModel>(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods, userRepository));
+            return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods, userRepository));
         }
     }
 }

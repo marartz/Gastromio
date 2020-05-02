@@ -34,6 +34,7 @@
     <Content Remove="$(SpaRoot)**" />
 	<None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <None Remove="ClientApp\src\app\admin-my-restaurants\admin-my-restaurants.component.ts" />
     <None Remove="FoodOrderSystem.db-shm" />
     <None Remove="FoodOrderSystem.db-wal" />
     <None Remove="FoodOrderSystem.db-wal" />
@@ -111,6 +112,9 @@
     <TypeScriptCompile Update="ClientApp\src\app\admin-cuisines\admin-cuisines.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\admin-my-restaurants\admin-my-restaurants.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\admin-payment-methods\admin-payment-methods.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -184,7 +188,7 @@
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
       <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
-      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

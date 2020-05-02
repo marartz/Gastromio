@@ -1,6 +1,8 @@
 ﻿using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.Login;
+using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Services;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +25,14 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly ILogger logger;
         private readonly IConfiguration config;
         private readonly ICommandDispatcher commandDispatcher;
+        private readonly IFailureMessageService failureMessageService;
 
-        public AuthController(ILogger<AuthController> logger, IConfiguration config, ICommandDispatcher commandDispatcher)
+        public AuthController(ILogger<AuthController> logger, IConfiguration config, ICommandDispatcher commandDispatcher, IFailureMessageService failureMessageService)
         {
             this.logger = logger;
             this.config = config;
             this.commandDispatcher = commandDispatcher;
+            this.failureMessageService = failureMessageService;
         }
 
         [AllowAnonymous]
@@ -42,13 +46,20 @@ namespace FoodOrderSystem.App.Controllers.V1
             var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Username, loginModel.Password), null);
             switch (commandResult)
             {
-                case UnauthorizedCommandResult<UserViewModel> _:
-                    return Unauthorized();
-                case ForbiddenCommandResult<UserViewModel> _:
-                    return Forbid();
-                case SuccessCommandResult<UserViewModel> result:
-                    var tokenString = GenerateJSONWebToken(result.Value);
-                    return Ok(new { token = tokenString, user = result.Value });
+                case SuccessResult<UserViewModel> successResult:
+                    var tokenString = GenerateJSONWebToken(successResult.Value);
+                    return Ok(new { token = tokenString, user = successResult.Value });
+                case FailureResult<UserViewModel> failureResult:
+                    switch (failureResult.Code)
+                    {
+                        case FailureResultCode.Unauthorized:
+                            return new UnauthorizedResult();
+                        case FailureResultCode.Forbidden:
+                            return new ForbidResult();
+                        default:
+                            var message = failureMessageService.GetMessageFromResult(failureResult);
+                            return new BadRequestObjectResult(message);
+                    }
                 default:
                     throw new InvalidOperationException("internal server error");
             }

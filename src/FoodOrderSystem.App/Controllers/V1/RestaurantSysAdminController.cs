@@ -7,6 +7,7 @@ using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants;
+using FoodOrderSystem.Domain.Services;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,13 +29,16 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly IUserRepository userRepository;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
+        private readonly IFailureMessageService failureMessageService;
 
-        public RestaurantSysAdminController(ILogger<RestaurantSysAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public RestaurantSysAdminController(ILogger<RestaurantSysAdminController> logger, IUserRepository userRepository,
+            ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
         {
             this.logger = logger;
             this.userRepository = userRepository;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
+            this.failureMessageService = failureMessageService;
         }
 
         [Route("restaurants")]
@@ -47,7 +51,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<SysAdminSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(new SysAdminSearchForRestaurantsQuery(search), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("restaurants")]
@@ -63,7 +67,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<AddRestaurantCommand, RestaurantViewModel>(new AddRestaurantCommand(addRestaurantModel.Name), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}")]
@@ -79,7 +83,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<RemoveRestaurantCommand, bool>(new RemoveRestaurantCommand(new RestaurantId(restaurantId)), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
     }
 }

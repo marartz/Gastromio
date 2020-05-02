@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.User;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Threading;
@@ -15,7 +16,7 @@ namespace FoodOrderSystem.Domain.Commands.Login
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult<UserViewModel>> HandleAsync(LoginCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<UserViewModel>> HandleAsync(LoginCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -26,12 +27,12 @@ namespace FoodOrderSystem.Domain.Commands.Login
 
             var user = await userRepository.FindByNameAsync(command.Username, cancellationToken);
             if (user == null)
-                return new UnauthorizedCommandResult<UserViewModel>();
+                return FailureResult<UserViewModel>.Unauthorized();
 
             if (!user.ValidatePassword(command.Password))
-                return new UnauthorizedCommandResult<UserViewModel>();
+                return FailureResult<UserViewModel>.Unauthorized();
 
-            return new SuccessCommandResult<UserViewModel>(UserViewModel.FromUser(user));
+            return SuccessResult<UserViewModel>.Create(UserViewModel.FromUser(user));
         }
     }
 }

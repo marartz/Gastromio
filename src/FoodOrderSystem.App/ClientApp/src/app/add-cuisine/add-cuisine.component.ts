@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-add-cuisine',
@@ -10,6 +11,8 @@ import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
   styleUrls: ['./add-cuisine.component.css']
 })
 export class AddCuisineComponent implements OnInit {
+  @BlockUI() blockUI: NgBlockUI;
+
   addCuisineForm: FormGroup;
   message: string;
 
@@ -27,12 +30,17 @@ export class AddCuisineComponent implements OnInit {
   }
 
   onSubmit(data) {
-    this.cuisineAdminService.addCuisineAsync(data.name)
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.cuisineAdminService.addCuisineAsync(data.name)
       .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
         this.message = undefined;
         this.addCuisineForm.reset();
         this.activeModal.close('Close click');
       }, (status: number) => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
         this.addCuisineForm.reset();
         if (status === 401)
           this.message = "Sie sind nicht angemdeldet.";

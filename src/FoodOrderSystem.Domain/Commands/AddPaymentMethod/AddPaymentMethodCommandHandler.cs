@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
@@ -18,25 +19,25 @@ namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<CommandResult<PaymentMethodViewModel>> HandleAsync(AddPaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<PaymentMethodViewModel>> HandleAsync(AddPaymentMethodCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult<PaymentMethodViewModel>();
+                return FailureResult<PaymentMethodViewModel>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult<PaymentMethodViewModel>();
+                return FailureResult<PaymentMethodViewModel>.Forbidden();
 
             var paymentMethod = await paymentMethodRepository.FindByNameAsync(command.Name, cancellationToken);
             if (paymentMethod != null)
-                return new FailureCommandResult<PaymentMethodViewModel>();
+                return FailureResult<PaymentMethodViewModel>.Create(FailureResultCode.PaymentMethodAlreadyExists);
 
             paymentMethod = paymentMethodFactory.Create(command.Name, command.Description);
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 
-            return new SuccessCommandResult<PaymentMethodViewModel>(PaymentMethodViewModel.FromPaymentMethod(paymentMethod));
+            return SuccessResult<PaymentMethodViewModel>.Create(PaymentMethodViewModel.FromPaymentMethod(paymentMethod));
         }
     }
 }

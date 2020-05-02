@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.User;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,23 +15,23 @@ namespace FoodOrderSystem.Domain.Commands.RemoveUser
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult<bool>> HandleAsync(RemoveUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(RemoveUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult<bool>();
+                return FailureResult<bool>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult<bool>();
+                return FailureResult<bool>.Forbidden();
 
             if (command.UserId == currentUser.Id)
-                return new FailureCommandResult<bool>();
+                return FailureResult<bool>.Create(FailureResultCode.CannotRemoveCurrentUser);
 
             await userRepository.RemoveAsync(command.UserId, cancellationToken);
 
-            return new SuccessCommandResult<bool>(true);
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

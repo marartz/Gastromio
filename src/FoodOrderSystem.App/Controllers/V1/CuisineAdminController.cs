@@ -8,6 +8,7 @@ using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllCuisines;
+using FoodOrderSystem.Domain.Services;
 using FoodOrderSystem.Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.App.Controllers.V1
@@ -29,13 +31,16 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly IUserRepository userRepository;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
+        private readonly IFailureMessageService failureMessageService;
 
-        public CuisineAdminController(ILogger<CuisineAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public CuisineAdminController(ILogger<CuisineAdminController> logger, IUserRepository userRepository, ICommandDispatcher commandDispatcher,
+            IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
         {
             this.logger = logger;
             this.userRepository = userRepository;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
+            this.failureMessageService = failureMessageService;
         }
 
         [Route("cuisines")]
@@ -48,7 +53,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineViewModel>>(new GetAllCuisinesQuery(), currentUser);
-            return ResultHelper.HandleQueryResult(queryResult);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
         [Route("cuisines")]
@@ -64,7 +69,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<AddCuisineCommand, CuisineViewModel>(new AddCuisineCommand(addCuisineModel.Name), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("cuisines/{cuisineId}/change")]
@@ -80,7 +85,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<ChangeCuisineCommand, bool>(new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("cuisines/{cuisineId}")]
@@ -96,7 +101,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var commandResult = await commandDispatcher.PostAsync<RemoveCuisineCommand, bool>(new RemoveCuisineCommand(new CuisineId(cuisineId)), currentUser);
-            return ResultHelper.HandleCommandResult(commandResult);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
     }
 }

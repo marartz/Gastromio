@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
@@ -23,7 +24,7 @@ namespace FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants
             this.userRepository = userRepository;
         }
 
-        public async Task<QueryResult<ICollection<RestaurantViewModel>>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<RestaurantViewModel>>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -33,7 +34,7 @@ namespace FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants
 
             var restaurants = await restaurantRepository.SearchAsync(query.SearchPhrase, cancellationToken);
 
-            return new SuccessQueryResult<ICollection<RestaurantViewModel>>(restaurants
+            return SuccessResult<ICollection<RestaurantViewModel>>.Create(restaurants
                 .Select(en => RestaurantViewModel.FromRestaurant(en, paymentMethods, userRepository)).ToList());
         }
     }

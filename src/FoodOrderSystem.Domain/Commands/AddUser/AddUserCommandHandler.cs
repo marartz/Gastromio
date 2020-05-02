@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.User;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Threading;
@@ -17,26 +18,26 @@ namespace FoodOrderSystem.Domain.Commands.AddUser
             this.userRepository = userRepository;
         }
 
-        public async Task<CommandResult<UserViewModel>> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<UserViewModel>> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return new UnauthorizedCommandResult<UserViewModel>();
+                return FailureResult<UserViewModel>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenCommandResult<UserViewModel>();
+                return FailureResult<UserViewModel>.Forbidden();
 
             var user = await userRepository.FindByNameAsync(command.Name, cancellationToken);
             if (user != null)
-                return new FailureCommandResult<UserViewModel>();
+                return FailureResult<UserViewModel>.Create(FailureResultCode.UserAlreadyExists);
 
             user = userFactory.Create(command.Name, command.Role, command.Email, command.Password);
 
             await userRepository.StoreAsync(user, cancellationToken);
 
-            return new SuccessCommandResult<UserViewModel>(UserViewModel.FromUser(user));
+            return SuccessResult<UserViewModel>.Create(UserViewModel.FromUser(user));
         }
     }
 }

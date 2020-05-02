@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.User;
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,20 +18,20 @@ namespace FoodOrderSystem.Domain.Queries.GetAllUsers
             this.userRepository = userRepository;
         }
 
-        public async Task<QueryResult<ICollection<UserViewModel>>> HandleAsync(GetAllUsersQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<UserViewModel>>> HandleAsync(GetAllUsersQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return new UnauthorizedQueryResult<ICollection<UserViewModel>>();
+                return FailureResult<ICollection<UserViewModel>>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return new ForbiddenQueryResult<ICollection<UserViewModel>>();
+                return FailureResult<ICollection<UserViewModel>>.Forbidden();
 
             var users = await userRepository.FindAllAsync(cancellationToken);
 
-            return new SuccessQueryResult<ICollection<UserViewModel>>(users.Select(UserViewModel.FromUser).ToList());
+            return SuccessResult<ICollection<UserViewModel>>.Create(users.Select(UserViewModel.FromUser).ToList());
         }
     }
 }
