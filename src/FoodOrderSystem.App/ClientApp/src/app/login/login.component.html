@@ -1,29 +1,38 @@
 <div class="login-modal">
     <div class="login-content">
-        <div class="login-header">ANMELDEN
+        <div class="login-header">Anmelden
             <!--span class="login-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></span-->
         </div>
         <div class="login-form">
             <div class="tab tab-login">
                 <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                    <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
+
                     <div class="form-input">
                         <div class="input">
-                            <input type="text" id="username" formControlName="username" ngbAutofocus>
-                            <label for="username">Benutzername</label>
+                            <input id="username" formControlName="username" type="text" spellcheck="false" autocorrect="off" ngbAutofocus>
+                            <label class="inputLabelold" for="username">Benutzername</label>
                         </div>
                         <div class="input">
                             <input type="password" id="password" formControlName="password">
                             <label for="password">Passwort</label>
                         </div>
                     </div>
-                    <!-- Platz für Social-Media Logins?
-                         z.B. Facebook, Google, ...
 
-                         oder auch "Restaurant anmelden"? -->
-                    <div class="button-container">
-                        <button class="button-submit" type="submit">Einloggen</button>
+                    <p class="errorMessage">{{message}}</p>
+
+                    <div>
+                        <span class="buttonContainer">
+                            <button class="SubmitButton" type="submit">
+                                <span class="ButtonText">Einloggen</span>
+                            </button>
+                        </span>
+                        <span class="buttonContainer">
+                            <button class="RegisterButton">
+                                <span class="ButtonText" onclick="location.href = 'https://forms.gle/SPMGmNxVAjcvQqi17'">Restaurant anmelden</span>
+                            </button>
+                        </span>
                     </div>
+
                 </form>
             </div>
         </div>

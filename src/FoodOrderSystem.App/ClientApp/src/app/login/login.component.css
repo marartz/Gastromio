@@ -41,12 +41,14 @@
     width: 100%;
     height: auto;
     padding: 16px;
-    font-family: bilo, sans-serif;
-    font-size: 24px;
+    font-family: ibm-plex-sans, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
     background: #52AE31;
     color: #fff;
     text-align: center;
-    box-shadow: 0 0 3px rgba(0, 0, 0, .2)
+    text-transform: uppercase;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
 }
 
 .login-modal .login-close {
@@ -176,43 +178,114 @@
     right: 0
 }
 
-.login-modal .button-container {
-    padding: 16px
+
+
+
+
+.errorMessage {
+    color: #E64135;
+    font-size: 12px;
+    line-height: 16px;
+    display: block;
+    font-family: ibm-plex-sans, sans-serif;
+    margin: 0;
+    font-weight: 400;
+    -webkit-font-smoothing: subpixel-antialiased;
+    padding-top: 0px;
+    padding-bottom: 10px;
 }
 
-.login-modal .button-container {
-    text-align: right;
-    padding-top: 0
-}
 
-.login-form .button-submit {
+.buttonContainer {
+    display: block;
     width: 100%;
-    background-color: #50aecc;
-    color: #fff;
-    font-family: bilo, sans-serif;
-    font-weight: 500;
-    user-select: none;
-    padding: 0 16px;
-    box-shadow: 0 2px 2px rgba(0,0,0,.2);
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    height: 56px;
-    line-height: 1.5;
-    font-size: 17px;
-    border: 0;
-    outline: 0;
-    vertical-align: baseline;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-.login-form .form-notification {
-    font-family: bilo, Arial, sans-serif;
-    font-weight: 300;
-    padding: 12px;
+.buttonContainer .SubmitButton {
+    display: block;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-family: ibm-plex-sans, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 24px;
+    margin: 0;
+    cursor: pointer;
     position: relative;
-    background-color: #fa4329;
-    border: 1px solid #fa4329;
-    border-radius: 3px;
-    margin-bottom: 12px;
-    color: #fff
+    min-height: 48px;
+    padding: 12px 24px;
+    color: #fff;
+    background: #52AE31;
+    -webkit-transition-property: background, webkit-box-shadow;
+    transition-property: background, webkit-box-shadow;
+    transition-property: background, box-shadow;
+    transition-property: background, box-shadow, webkit-box-shadow;
+    -webkit-transition-duration: .15s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+.buttonContainer .RegisterButton {
+    display: block;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 22px;
+    border: 1px solid #E8EBEB;
+    background-color: #fff;
+    color: #52AE31;
+    font-family: ibm-plex-sans, sans-serif;
+    font-weight: 400;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-family: ibm-plex-sans, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 24px;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+    min-height: 48px;
+    padding: 12px 24px;
+    -webkit-transition-property: background, webkit-box-shadow;
+    transition-property: background, webkit-box-shadow;
+    transition-property: background, box-shadow;
+    transition-property: background, box-shadow, webkit-box-shadow;
+    -webkit-transition-duration: .15s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+.buttonContainer .SubmitButton .ButtonText {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-align: center;
 }
