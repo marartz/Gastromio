@@ -6,7 +6,7 @@
     </div>
   </div>
 </div>
-<div class="container" style="padding-top: 20px">
+<div class="container" style="padding-top: 20px; padding-bottom: 20px;">
   <div class="row">
     <div class="col">
       <div class="search">
@@ -16,7 +16,7 @@
         <div class="restaurant" *ngFor="let restaurant of restaurants">
           <div class="restaurant-logo-wrapper">
             <div class="restaurant-logo">
-              <img class="" [src]="restaurant.image" alt="{{ restaurant.name }}" border="0" />
+              <img [src]="restaurant.image" alt="" border="0" />
             </div>
           </div>
           <div class="restaurant-info-wrapper">
