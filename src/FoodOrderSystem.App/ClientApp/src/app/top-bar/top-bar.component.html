@@ -23,6 +23,7 @@
                 <span class="vertical-spacer"></span>
                 <button class="link-container" type="button" aria-disabled="false" role="button" style="max-width: 100%; min-height: 42px;">
                     <span class="link-button">
+
                         <div class="link-icon">
                             <svg class="icon-svg" focusable="false" viewBox="0 0 288 288" color="white" aria-hidden="true" role="presentation">
                                 <g>
@@ -32,9 +33,9 @@
                                 </g>
                             </svg>
                         </div>
+
                         <div class="link-text" *ngIf="getUsername() === undefined" id="login" (click)="openLoginForm()">Anmelden</div>
 
-                        <!-- Werde ich morgen redesignen!! -->
                         <div class="link-text" *ngIf="getUsername() !== undefined">
                             <div ngbDropdown>
                                 <span id="userDropDown" ngbDropdownToggle>Einstellungen</span>
@@ -50,15 +51,18 @@
                                     </ng-container>
 
                                     <ng-container *ngIf="isRestaurantAdmin()">
-                                        <h6 class="dropdown-header">Restaurantadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6>
+                                        <div class="link-dropdown-header">
+                                            <h6 class="dropdown-header">Restaurantadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6>
+                                        </div>
                                         <button ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Meine Restaurants</button>
                                         <div class="dropdown-divider"></div>
                                     </ng-container>
 
-                                    <button ngbDropdownItem (click)="logout()"><i class="fas fa-sign-out-alt"></i> Ausloggen</button>
+                                    <button ngbDropdownItem (click)="logout()"><i class="fas fa-sign-out-alt"></i> Abmelden</button>
                                 </div>
                             </div>
                         </div>
+
                     </span>
                 </button>
             </div>
