@@ -203,8 +203,37 @@
 
 .legal-wrapper .legal-content .legal-child .wrapper .inner .content-text .title-1 {
     color: #172026;
-    font-size: 37px;
+    font-size: 28px;
     font-weight: 700;
     line-height: 33px;
     letter-spacing: 0;
+    margin: 48px 0 24px 0;
+}
+
+.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text .title-3 {
+    color: #172026;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0;
+}
+
+.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text p {
+    margin: 0 0 20px 0;
+    color: rgb(102, 112, 147);
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.dptable {
+    margin: 24px 0;
+    display: grid;
+    grid-gap: 4px 20px;
+}
+
+@media (min-widt: 768px) {
+    .dptable {
+        grid-template-columns: 30% auto;
+        grid-gap: 12px 20px;
+    }
 }

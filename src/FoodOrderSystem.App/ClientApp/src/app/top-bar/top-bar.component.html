@@ -1,31 +1,29 @@
 <header class="header">
     <div>
         <div class="header-container">
-            <div class="logo-wrapper">
-                <a aria-label="logo" role="button" [routerLink]="['/']">
-                    <!-- Logo (bestm. in SVG) -->
-                </a>
-            </div>
-            <div class="spacer"></div>
-            <div class="link-wrapper">
-                <button class="link-container" type="button" aria-disabled="false" role="button" style="max-width: 100%; min-height: 42px;">
+            <div class="left"><a aria-label="logo" role="button" [routerLink]="['/']"><!-- Logo (bestm. in SVG) --></a></div>
+            <div class="middle"></div>
+            <div class="right">
+
+                <button class="link-container" tabindex="0" type="button" aria-disabled="false" role="button" style="max-width: 100%; min-height: 42px;">
                     <span class="link-button">
                         <div class="link-icon">
-                            <svg class="icon-svg" focusable="false" viewBox="0 0 24 24" color="white" aria-hidden="true" role="presentation">
+                            <svg class="svg" focusable="false" viewBox="0 0 24 24" color="white" aria-hidden="true" role="presentation">
                                 <g transform="translate(2.000000, 2.000000)">
                                     <path d="M10.0048023,19.2980769 C11.3948926,19.2980769 12.7176429,19.0240385 13.9153332,18.5336538 C13.9441932,18.5192308 13.9682432,18.5096154 13.9971032,18.5 C14.0019132,18.5 14.0067232,18.5 14.0067232,18.4951923 C14.1750732,18.4326923 14.3578533,18.3990385 14.5454433,18.3990385 C14.7522733,18.3990385 14.9494834,18.4375 15.1274534,18.5144231 L19.1678543,20 L18.1048441,15.75 C18.1048441,15.4951923 18.1769941,15.2548077 18.2924341,15.0480769 L18.2924341,15.0480769 C18.3309142,14.9855769 18.3693942,14.9230769 18.4126842,14.8701923 C19.4179744,13.3653846 19.9999845,11.5769231 19.9999845,9.65865385 C20.0096045,4.32211538 15.5314935,0 10.0048023,0 C4.47811101,0 0,4.32211538 0,9.64903846 C0,14.9807692 4.47811101,19.2980769 10.0048023,19.2980769 Z M14.6224033,8.46153846 C15.4737735,8.46153846 16.1616037,9.14903846 16.1616037,10 C16.1616037,10.8509615 15.4737735,11.5384615 14.6224033,11.5384615 C13.7710331,11.5384615 13.083203,10.8509615 13.083203,10 C13.083203,9.14903846 13.7710331,8.46153846 14.6224033,8.46153846 Z M10.0048023,8.46153846 C10.8561725,8.46153846 11.5440026,9.14903846 11.5440026,10 C11.5440026,10.8509615 10.8561725,11.5384615 10.0048023,11.5384615 C9.15343207,11.5384615 8.46560192,10.8509615 8.46560192,10 C8.46560192,9.14903846 9.15343207,8.46153846 10.0048023,8.46153846 Z M5.38720122,8.46153846 C6.23857141,8.46153846 6.92640157,9.14903846 6.92640157,10 C6.92640157,10.8509615 6.23857141,11.5384615 5.38720122,11.5384615 C4.53583103,11.5384615 3.84800087,10.8509615 3.84800087,10 C3.84800087,9.14903846 4.53583103,8.46153846 5.38720122,8.46153846 Z" transform="translate(10.000000, 10.000000) scale(-1, 1) translate(-10.000000, -10.000000) "></path>
                                 </g>
                             </svg>
                         </div>
-                        <div class="link-text">Fragen?</div>
+                        <div class="link-text lc">Fragen?</div>
                     </span>
                 </button>
-                <span class="vertical-spacer"></span>
-                <button class="link-container" type="button" aria-disabled="false" role="button" style="max-width: 100%; min-height: 42px;">
-                    <span class="link-button">
 
+                <span class="vertical-spacer"></span>
+
+                <button class="link-container" tabindex="0" type="button" aria-disabled="false" role="button" style="max-width: 100%; min-height: 42px;">
+                    <span class="link-button">
                         <div class="link-icon">
-                            <svg class="icon-svg" focusable="false" viewBox="0 0 288 288" color="white" aria-hidden="true" role="presentation">
+                            <svg class="svg" focusable="false" viewBox="0 0 288 288" color="white" aria-hidden="true" role="presentation">
                                 <g>
                                     <path d="M144,48a96,96,0,1,1-96,96,96.11,96.11,0,0,1,96-96m0-24A120,120,0,1,0,264,144,120,120,0,0,0,144,24Z"></path>
                                     <path d="M144,68.88a36,36,0,1,0,36,36A36,36,0,0,0,144,68.88Z"></path>
@@ -42,7 +40,8 @@
                                 <div class="dropdown-container" ngbDropdownMenu aria-labelledby="userDropDown">
 
                                     <ng-container *ngIf="isSystemAdmin()">
-                                        <h6 class="dropdown-header">Systemadministration<br /><small class="benutzername">Angemeldet als: {{getUsername()}}</small></h6>
+                                        <div class="dropdown-header">Systemadministration</div>
+                                        <div style="height: 38px;"></div>
                                         
                                         <button ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
                                         <button ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
