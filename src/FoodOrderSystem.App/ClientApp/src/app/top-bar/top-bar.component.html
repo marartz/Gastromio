@@ -17,7 +17,7 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="link-text">Feedback</div>
+                        <div class="link-text">Fragen?</div>
                     </span>
                 </button>
                 <span class="vertical-spacer"></span>
@@ -42,7 +42,8 @@
                                 <div class="dropdown-container" ngbDropdownMenu aria-labelledby="userDropDown">
 
                                     <ng-container *ngIf="isSystemAdmin()">
-                                        <h6 class="dropdown-header">Systemadministration<br /><small>Angemeldet als: {{getUsername()}}</small></h6>
+                                        <h6 class="dropdown-header">Systemadministration<br /><small class="benutzername">Angemeldet als: {{getUsername()}}</small></h6>
+                                        
                                         <button ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
                                         <button ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
                                         <button ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>

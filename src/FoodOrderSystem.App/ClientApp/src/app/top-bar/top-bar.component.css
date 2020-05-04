@@ -103,8 +103,38 @@
 }
 
 .header .header-container .link-wrapper .link-container .link-button .link-text {
+    font-family: proxima-nova, sans-serif;
+    font-size: 15px;
     padding-right: 25px;
     padding-left: 10px;
+}
+
+.header .header-container .link-wrapper .link-container .link-button .link-text .dropdown-container {
+    background-color: #f8f8f8;;
+    border: none;
+}
+
+.header .header-container .link-wrapper .link-container .link-button .link-text .dropdown-container button {
+    color: #172026;
+    background-color: transparent;
+}
+
+.header .header-container .link-wrapper .link-container .link-button .link-text .dropdown-header {
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #172026;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.header .header-container .link-wrapper .link-container .link-button .link-text .benutzername {
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #8D9499;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .header .header-container .link-wrapper .verical-spacer {

@@ -1,6 +1,6 @@
 .footer {
     position: relative;
-    font-family: ibm-plex-sans, sans-serif;
+    font-family: proxima-nova, sans-serif;
     background-color: #f8f8f8;
     -moz-osx-font-smoothing: grayscale
 }
@@ -48,10 +48,10 @@
 
 .footer .footer-container .linkContainer .inner .footer-column p strong {
     display: inline-block;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     color: #2E3333;
-    font-family: stratos, sans-serif;
-    font-weight: 600;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 700;
 }
 
 .footer .footer-container .linkContainer .inner .footer-column ul {

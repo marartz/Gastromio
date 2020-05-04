@@ -6,6 +6,7 @@
 }
 
 .order-wrapper .order-content {
+    font-family: proxima-nova, sans-serif;
     position: relative;
     flex: 1 0 auto;
     display: flex;
@@ -302,7 +303,7 @@
 
 .restaurant .restaurant-logo {
   z-index: 1;
-  max-width: 80px;
+  max-width: 120px;
   text-align: left;
   font-size: 12px;
   position: absolute;
@@ -333,8 +334,8 @@
 }
 
 .restaurant .restaurantname {
-  font-family: bilo,sans-serif;
-  font-weight: 600;
+  font-family: proxima-nova, sans-serif;
+  font-weight: 700;
   padding: 0;
   color: #0a3847;
   font-size: 18px;
