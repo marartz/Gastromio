@@ -10,18 +10,15 @@
     padding-top: 20px
 }
 
-.setting-title {
-    font-family: bilo, sans-serif;
-    font-size: 40px;
+.setting-title h1 {
+    font-family: proxima-nova, sans-serif;
+    font-weight: 700;
+    font-size: 42px;
     text-align: center;
     margin-top: 20px;
     line-height: 1.14;
-}
-
-.setting-title h1 {
-    font-size: 35px;
+    color: #0a3847;
     margin-bottom: 12px;
-    color: #0a3847
 }
 
 .restaurant {

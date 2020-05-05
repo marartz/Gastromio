@@ -1,20 +1,48 @@
-<footer>
-    <div class="footer">
-        <div class="content">
-            <div class="logo">
-                <img src="../assets/img/logo/logo_w-1024x781.png" alt="">
-            </div>
-            <div class="infos">
-                <a [routerLink]="['/customer-information']">Informationen für Kunden</a>
-                <a [routerLink]="['/restaurant-information']">Informationen für Lieferdienste</a>
-            </div>
-            <div class="links">
-                <a [routerLink]="['/general-terms-and-conditions']">AGB</a>
-                <a [routerLink]="['/imprint']">Impressum</a>
-                <a [routerLink]="['/privacy-policy']">Datenschutzerklärung</a>
-                <a href="">Cookie-Richtlinie</a>
-                <div class="copyright">&copy; 2020 BOH-Liefert.de</div>
+<div class="footer">
+    <div class="footer-container">
+        <div class="linkContainer">
+            <div class="inner">
+                <div class="footer-column">
+                    <div>
+                        <p><strong>Bocholt Liefert</strong></p>
+                        <ul>
+                            <li><a>Über &rdquo;Bocholt liefert&rdquo;</a></li>
+                            <li><a>Wer steckt dahinter?</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <div>
+                        <p><strong>Rechtliches</strong></p>
+                        <ul>
+                            <li><a [routerLink]="['/general-terms-and-conditions']">AGB</a></li>
+                            <li><a [routerLink]="['/privacy-policy']">Datenschutz</a></li>
+                            <li><a [routerLink]="['/imprint']">Impressum</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <div>
+                        <p><strong>Informationen für</strong></p>
+                        <ul>
+                            <li><a>Restaurants &amp; Lieferdienste</a></li>
+                            <li><a>Kunden</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <div>
+                        <p><strong>Möchten Sie Ihr Restaurant oder Imbiss eintragen?</strong></p>
+                        <p>Senden Sie uns Ihre Informationen und wir werden Ihnen helfen, Ihr Restaurant einzutragen.</p>
+                    </div>
+                    <span class="footer-cta">
+                        <a href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer"><span>Jetzt anmelden &rsaquo;</span></a>
+                    </span>
+                </div>
             </div>
         </div>
+        <div class="copyrightContainer">
+            <div class="copyright">&copy; 2020 Bocholt Liefert &ndash; Alle Rechte vorbehalten</div>
+        </div>
     </div>
-</footer>
+</div>
