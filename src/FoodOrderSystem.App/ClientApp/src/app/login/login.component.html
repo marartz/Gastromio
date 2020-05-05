@@ -21,36 +21,46 @@
             <div class="wrapper">
                 <div class="top">
                     <form class="form-login" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+
                         <div class="input-wrapper">
                             <div class="input">
                                 <label class="label" data-shrink="false">Benutzername</label>
                                 <div class="base">
-                                    <input class="input-form" id="username" formControlName="username" type="text" autocorrect="off" ngbAutofocus />
+                                    <input class="input-form" id="username" formControlName="username" type="text" autocorrect="off" placeholder="Benutzername" ngbAutofocus />
+                                    <span class="border"></span>
                                 </div>
                             </div>
                         </div>
+
                         <div class="input-wrapper">
                             <div class="input">
                                 <label class="label" data-shrink="false">Passwort</label>
                                 <div class="base">
-                                    <input class="input-form" id="password" formControlName="password" type="password" />
+                                    <input class="input-form" id="password" formControlName="password" type="password" placeholder="Passwort" />
+                                    <span class="border"></span>
                                 </div>
                             </div>
                         </div>
+
                         <h1 class="error-caption" style="max-width: 100%;">{{message}}</h1>
+
                         <div class="button-wrapper">
                             <button class="submit" type="submit" tabindex="-1" role="button" style="max-width: 100%; min-height: 60px;">
                                 <span class="text">Anmelden</span>
                                 <span class="root"></span>
                             </button>
                         </div>
+
                         <a class="interner-link" href="">Passwort vergessen?</a>
+
                         <div class="horizontal-spacer"></div>
+
                         <div class="bottom">
                             <aside class="anmeldung" style="max-width: 100%;">
                                 Dein Restaurant/Imbiss ist noch nicht dabei? <span class="space"><a class="interner-link" href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer">Registrieren</a></span>
                             </aside>
                         </div>
+
                     </form>
                 </div>
             </div>

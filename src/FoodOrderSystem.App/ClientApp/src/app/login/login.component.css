@@ -181,6 +181,17 @@
     z-index: 2;
 }
 
+.modal-login .content .children .wrapper .top .form-login .input-wrapper .input .base::before {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: "\00a0";
+    position: absolute;
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    pointer-events: none;
+}
+
 .modal-login .content .children .wrapper .top .form-login .input-wrapper .input .base {
     align-items: center;
     box-sizing: border-box;
@@ -196,14 +207,13 @@
 }
 
 .modal-login .content .children .wrapper .top .form-login .input-wrapper .input .base::after {
-    border-bottom-color: rgb(0, 108, 187);
     bottom: 0;
     content: "";
     left: 0;
     pointer-events: none;
     position: absolute;
     right: 0;
-    transform: scaleX(0);
+    transform: scaleX(1);
     transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
 }    
 
@@ -214,7 +224,6 @@
 }
 
 .modal-login .content .children .wrapper .top .form-login .input-wrapper .input .base .input-form {
-    animation-name: MuiInputBase-keyframes-auto-fill-cancel;
     background: none;
     background-color: rgb(242, 244, 245);
     border: 0;
@@ -231,6 +240,20 @@
     padding: 28px 16px 10px;
     width: 100%;
     -webkit-tap-highlight-color: transparent;
+}
+
+.modal-login .content .children .wrapper .top .form-login .input-wrapper .input .base .input-form  ~ .border {
+    border-bottom: 1px solid rgb(82, 174, 49)!important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+}
+
+.modal-login .content .children .wrapper .top .form-login .input-wrapper .input .base .input-form:focus  ~ .border {
+    width: 100%;
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
 .modal-login .content .children .wrapper .top .form-login .error-caption {
@@ -342,294 +365,4 @@
 
 .modal-login .content .children .wrapper .top .form-login .bottom .anmeldung .space {
     margin-left: 5px;
-}
-
-@-moz-keyframes MuiInputBase-keyframes-auto-fill-cancel {
-    
-}
-
-
-
-.login-modal .login-content {
-    position: relative;
-    width: 100%;
-    outline: none;
-    left: 50%;
-    background: #fff;
-    border-bottom: 5px solid #52AE31;
-    border-radius: 3px 3px 0 0;
-    overflow: hidden;
-    -webkit-transform: translate(-50%);
-    -moz-transform: translate(-50%);
-    -ms-transform: translate(-50%);
-    -o-transform: translate(-50%);
-    transform: translate(-50%)
-}
-
-@media only screen and (min-width: 600px) {
-    .login-modal .login-content {
-        max-width: 500px;
-        top: 5%;
-        bottom: 5%
-    }
-}
-
-@media only screen and (max-width: 599px) {
-    .login-modal .login-content {
-        min-height: 100%
-    }
-}
-
-.login-modal .login-header {
-    position: relative;
-    width: 100%;
-    height: auto;
-    padding: 16px;
-    font-family: ibm-plex-sans, sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    background: #52AE31;
-    color: #fff;
-    text-align: center;
-    text-transform: uppercase;
-    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
-}
-
-.login-modal .login-close {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: 50%;
-    right: 16px;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    cursor: pointer
-}
-
-.login-modal .login-close:before {
-    display: block;
-    position: relative;
-    content: "\E918";
-    font-family: fontello;
-    font-weight: 200;
-    line-height: 1;
-}
-
-.button-container {
-    text-align: center
-}
-
-.login-modal .login-header {
-    border-bottom: initial;
-    top: 20%;
-    padding-bottom: 20px
-}
-
-.login-form * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box
-}
-
-.login-form {
-    width: auto;
-    min-width: 1px;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    -webkit-transition: min-width .3s ease .3s;
-    -moz-transition: min-width .3s ease .3s;
-    -o-transition: min-width .3s ease .3s;
-    transition: min-width .3s ease .3s
-}
-
-.login-form .headline {
-    margin: 0 0 10px;
-    font-family: bilo, sans-serif;
-    font-weight: 400;
-    font-size: 22px
-}
-
-.login-form .tab-login {
-    padding: 20px 32px
-}
-
-.login-form .input {
-    position: relative;
-    margin-bottom: 24px;
-    border-radius: 3px;
-    background: #fff;
-    width: 100%
-}
-
-.login-form .input input, .login-form .input textarea {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    padding: 8px 16px;
-    z-index: 1;
-    background: none;
-    color: #000;
-    border: 1px solid #cfcac4;
-    border-radius: 3px
-}
-
-.login-form .input input:hover, .login-form .input textarea:hover {
-    border: 1px solid #50aecc
-}
-
-.login-form .input input:active,
-.login-form .input input:focus,
-.login-form .input input:hover,
-.login-form .input textarea:active,
-.login-form .input textarea:focus,
-.login-form .input textarea:hover {
-    box-shadow: 0 0 8px #f9f5f1;
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
-    -webkit-transform: translateZ(0);
-    -moz-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -o-transform: translateZ(0);
-    transform: translateZ(0)
-}
-
-.login-form .input input:active,
-.login-form .input input:focus,
-.login-form .input textarea:active,
-.login-form .input textarea:focus {
-    border-color: #50aecc !important
-}
-
-.login-form .input label {
-    position: absolute;
-    cursor: text;
-    padding: 0 4px;
-    border-radius: 3px;
-    color: #000;
-    z-index: 2;
-    background: #fff;
-    left: 16px;
-    top: -6px;
-    font-size: 13px;
-    line-height: 1
-}
-
-.login-form .input:after {
-    right: 0
-}
-
-
-
-
-
-.errorMessage {
-    color: #E64135;
-    font-size: 12px;
-    line-height: 16px;
-    display: block;
-    font-family: ibm-plex-sans, sans-serif;
-    margin: 0;
-    font-weight: 400;
-    -webkit-font-smoothing: subpixel-antialiased;
-    padding-top: 0px;
-    padding-bottom: 10px;
-}
-
-
-.buttonContainer {
-    display: block;
-    width: 100%;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.buttonContainer .SubmitButton {
-    display: block;
-    width: 100%;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 4px;
-    font-weight: 600;
-    font-family: ibm-plex-sans, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    line-height: 24px;
-    margin: 0;
-    cursor: pointer;
-    position: relative;
-    min-height: 48px;
-    padding: 12px 24px;
-    color: #fff;
-    background: #52AE31;
-    -webkit-transition-property: background, webkit-box-shadow;
-    transition-property: background, webkit-box-shadow;
-    transition-property: background, box-shadow;
-    transition-property: background, box-shadow, webkit-box-shadow;
-    -webkit-transition-duration: .15s;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-}
-
-.buttonContainer .RegisterButton {
-    display: block;
-    width: 100%;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    line-height: 22px;
-    border: 1px solid #E8EBEB;
-    background-color: #fff;
-    color: #52AE31;
-    font-family: ibm-plex-sans, sans-serif;
-    font-weight: 400;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 4px;
-    font-weight: 600;
-    font-family: ibm-plex-sans, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    line-height: 24px;
-    margin: 0;
-    cursor: pointer;
-    position: relative;
-    min-height: 48px;
-    padding: 12px 24px;
-    -webkit-transition-property: background, webkit-box-shadow;
-    transition-property: background, webkit-box-shadow;
-    transition-property: background, box-shadow;
-    transition-property: background, box-shadow, webkit-box-shadow;
-    -webkit-transition-duration: .15s;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-}
-
-.buttonContainer .SubmitButton .ButtonText {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    text-align: center;
 }
