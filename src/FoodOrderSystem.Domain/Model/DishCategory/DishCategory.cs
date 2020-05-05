@@ -4,15 +4,20 @@ namespace FoodOrderSystem.Domain.Model.DishCategory
 {
     public class DishCategory
     {
-        public DishCategory(DishCategoryId categoryId, RestaurantId restaurantId, string name)
+        public DishCategory(DishCategoryId id, RestaurantId restaurantId, string name)
         {
-            CategoryId = categoryId;
+            Id = id;
             RestaurantId = restaurantId;
             Name = name;
         }
 
-        public DishCategoryId CategoryId { get; }
+        public DishCategoryId Id { get; }
         public RestaurantId RestaurantId { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
+
+        public void ChangeName(string name)
+        {
+            Name = name;
+        }
     }
 }

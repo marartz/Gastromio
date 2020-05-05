@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { RestaurantModel, AddressModel } from '../restaurant/restaurant.model';
 import { PaymentMethodModel } from '../payment-method/payment-method.model';
 import { UserModel } from '../user/user.model';
+import { DishCategoryModel } from '../dish-category/dish-category.model';
 
 @Injectable()
 export class RestaurantRestAdminService {
@@ -35,6 +36,17 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions);
+  }
+
+  public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
   }
 
   public getPaymentMethodsAsync(): Observable<PaymentMethodModel[]> {
@@ -178,6 +190,39 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removeadmin", { userId: userId }, httpOptions);
+  }
+
+  public addDishCategoryToRestaurantAsync(id: string, name: string): Observable<string> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/adddishcategory", { name: name }, httpOptions);
+  }
+
+  public changeDishCategoryOfRestaurantAsync(id: string, dishCategoryId: string, name: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/changedishcategory", { dishCategoryId: dishCategoryId, name: name }, httpOptions);
+  }
+
+  public removeDishCategoryFromRestaurantAsync(id: string, dishCategoryId: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removedishcategory", { dishCategoryId: dishCategoryId }, httpOptions);
   }
 
 }

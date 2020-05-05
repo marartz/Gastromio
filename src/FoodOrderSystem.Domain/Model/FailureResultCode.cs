@@ -12,6 +12,11 @@
         PaymentMethodDoesNotExist,
         PaymentMethodAlreadyExists,
         RestaurantDoesNotExist,
+        RestaurantContainsDishCategories,
+        RestaurantContainsDishes,
+        DishCategoryDoesNotBelongToRestaurant,
+        DishCategoryContainsDishes,
+        DishDoesNotBelongToDishCategory,
         CannotRemoveCurrentUserFromRestaurantAdmins
     }
 }

@@ -3,7 +3,9 @@ using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddAdminToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant;
+using FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant;
+using FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData;
@@ -11,12 +13,15 @@ using FoodOrderSystem.Domain.Commands.ChangeRestaurantImage;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Domain.Commands.RemoveAdminFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant;
+using FoodOrderSystem.Domain.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemovePaymentMethodFromRestaurant;
+using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllPaymentMethods;
+using FoodOrderSystem.Domain.Queries.GetDishesOfRestaurantForEdit;
 using FoodOrderSystem.Domain.Queries.GetRestaurantById;
 using FoodOrderSystem.Domain.Queries.RestAdminMyRestaurants;
 using FoodOrderSystem.Domain.Queries.SearchForUsers;
@@ -78,6 +83,22 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var queryResult = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), currentUser);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/dishes")]
+        [HttpGet]
+        public async Task<IActionResult> GetDishesOfRestaurantAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantForEditQuery, ICollection<DishCategoryViewModel>>(
+                new GetDishesOfRestaurantForEditQuery(new RestaurantId(restaurantId)),
+                currentUser
+            );
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
@@ -333,5 +354,66 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
+
+        [Route("restaurants/{restaurantId}/adddishcategory")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddDishCategoryAsync(Guid restaurantId, [FromBody] AddDishCategoryToRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<AddDishCategoryToRestaurantCommand, Guid>(
+                new AddDishCategoryToRestaurantCommand(new RestaurantId(restaurantId), model.Name),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/changedishcategory")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeDishCategoryAsync(Guid restaurantId, [FromBody] ChangeDishCategoryOfRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeDishCategoryOfRestaurantCommand, bool>(
+                new ChangeDishCategoryOfRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId), model.Name),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/removedishcategory")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveDishCategoryAsync(Guid restaurantId, [FromBody] RemoveDishCategoryFromRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<RemoveDishCategoryFromRestaurantCommand, bool>(
+                new RemoveDishCategoryFromRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
     }
 }

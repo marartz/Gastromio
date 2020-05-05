@@ -1,4 +1,5 @@
 ﻿using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
@@ -16,6 +17,7 @@ namespace FoodOrderSystem.Persistence
             services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IDishCategoryRepository, DishCategoryRepository>();
+            services.AddTransient<IDishRepository, DishRepository>();
         }
     }
 }

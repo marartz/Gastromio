@@ -38,6 +38,8 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId);
+            if (restaurant == null)
+                return FailureResult<RestaurantViewModel>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, paymentMethods, userRepository));
         }

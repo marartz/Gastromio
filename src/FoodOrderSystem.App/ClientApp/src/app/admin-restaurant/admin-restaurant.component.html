@@ -276,6 +276,64 @@
             </div>
           </div>
 
+          <div class="card mb-4">
+            <div class="card-header card-head">Gerichte</div>
+            <div class="card-body">
+              <div class="form-notification" *ngIf="false">TODO</div>
+              <div class="row">
+                <div class="col col-sm-12">
+
+                  <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeDishCategoryId">
+                    <li [ngbNavItem]="dishCategory.id" *ngFor="let dishCategory of dishCategories">
+                      <a ngbNavLink>
+                        {{dishCategory.name}}
+                        <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
+                          <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1"><i class="fas fa-edit"></i></span>
+                          <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1"><i class="fas fa-trash-alt"></i></span>
+                        </ng-container>
+                      </a>
+                      <ng-template ngbNavContent>
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Beschreibung</th>
+                              <th>
+                                <div class="float-right">
+                                  <button class="btn btn-primary btn-sm m-1" (click)="openEditDishCategoryForm(dishCategory, undefined)"><i class="fas fa-plus"></i></button>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let dish of dishCategory.dishes">
+                              <td>{{dish.name}}</td>
+                              <td>{{dish.description}}</td>
+                              <td>
+                                <div class="float-right">
+                                  <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-edit"></i></button>
+                                  <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash-alt"></i></button>
+                                  <!--<button class="btn btn-secondary btn-sm m-1 ml-2"><i class="fas fa-arrow-up"></i></button>
+                                  <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-arrow-down"></i></button>-->
+                                  <button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </ng-template>
+                    </li>
+                    <li>
+                      <button class="btn btn-primary btn-sm m-1" (click)="openAddDishCategoryForm()"><i class="fas fa-plus"></i></button>
+                    </li>
+                  </ul>
+                  <div [ngbNavOutlet]="nav"></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

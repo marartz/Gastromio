@@ -12,6 +12,12 @@ import { UserModel } from '../user/user.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AddDishCategoryComponent } from '../add-dish-category/add-dish-category.component';
+import { ChangeDishCategoryComponent } from '../change-dish-category/change-dish-category.component';
+import { DishCategoryModel } from '../dish-category/dish-category.model';
+import { RemoveDishCategoryComponent } from '../remove-dish-category/remove-dish-category.component';
+import { DishModel } from '../dish-category/dish.model';
+import { EditDishComponent } from '../edit-dish/edit-dish.component';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -63,6 +69,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   addUserError: string;
   removeUserError: string;
 
+  dishCategories: DishCategoryModel[];
+  activeDishCategoryId: string; 
+
   constructor(
     private route: ActivatedRoute,
     private modalService: NgbModal,
@@ -113,7 +122,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       let getRestaurantSubscription = this.restaurantRestAdminService.getRestaurantAsync(this.restaurantId).subscribe(
         (data) => {
           getRestaurantSubscription.unsubscribe();
-          this.blockUI.stop();
 
           this.restaurant = data;
 
@@ -153,19 +161,35 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           });
           this.changeDeliveryDataForm.markAsPristine();
 
+          let getDishesSubscription = this.restaurantRestAdminService.getDishesOfRestaurantAsync(this.restaurantId).subscribe(
+            (dishCategories) => {
+              getDishesSubscription.unsubscribe();
 
-          let getPaymentMethodsSubscription = this.restaurantRestAdminService.getPaymentMethodsAsync().subscribe(
-            (paymentMethods) => {
-              getPaymentMethodsSubscription.unsubscribe();
-              this.availablePaymentMethods = paymentMethods.filter(paymentMethod => this.restaurant.paymentMethods.findIndex(en => en.id === paymentMethod.id) == -1);
-              this.blockUI.stop();
+              this.dishCategories = dishCategories;
+
+              if (this.dishCategories !== undefined && this.dishCategories.length > 0)
+                this.activeDishCategoryId = this.dishCategories[0].id;
+
+              let getPaymentMethodsSubscription = this.restaurantRestAdminService.getPaymentMethodsAsync().subscribe(
+                (paymentMethods) => {
+                  getPaymentMethodsSubscription.unsubscribe();
+                  this.availablePaymentMethods = paymentMethods.filter(paymentMethod => this.restaurant.paymentMethods.findIndex(en => en.id === paymentMethod.id) == -1);
+                  this.blockUI.stop();
+                },
+                (error: HttpErrorResponse) => {
+                  getPaymentMethodsSubscription.unsubscribe();
+                  this.blockUI.stop();
+                  this.generalError = this.httpErrorHandlingService.handleError(error);
+                }
+              );
             },
             (error: HttpErrorResponse) => {
-              getPaymentMethodsSubscription.unsubscribe();
+              getDishesSubscription.unsubscribe();
               this.blockUI.stop();
               this.generalError = this.httpErrorHandlingService.handleError(error);
             }
           );
+
         },
         (error: HttpErrorResponse) => {
           getRestaurantSubscription.unsubscribe();
@@ -464,6 +488,53 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       this.removeUserError = this.httpErrorHandlingService.handleError(response);
     });
   }
+
+  openAddDishCategoryForm(): void {
+    let modalRef = this.modalService.open(AddDishCategoryComponent);
+    modalRef.componentInstance.restaurantId = this.restaurant.id;
+    modalRef.result.then((result: DishCategoryModel) => {
+      this.dishCategories.push(result);
+      this.activeDishCategoryId = result.id;
+    }, () => {
+      // TODO
+    });
+  }
+
+  openChangeDishCategoryForm(dishCategory: DishCategoryModel): void {
+    let modalRef = this.modalService.open(ChangeDishCategoryComponent);
+    modalRef.componentInstance.restaurantId = this.restaurant.id;
+    modalRef.componentInstance.dishCategory = dishCategory;
+    modalRef.result.then((result: DishCategoryModel) => {
+      dishCategory.name = result.name;
+    }, () => {
+      // TODO
+    });
+  }
+
+  openRemoveDishCategoryForm(dishCategory: DishCategoryModel): void {
+    let modalRef = this.modalService.open(RemoveDishCategoryComponent);
+    modalRef.componentInstance.restaurantId = this.restaurant.id;
+    modalRef.componentInstance.dishCategory = dishCategory;
+    modalRef.result.then((result) => {
+      let index = this.dishCategories.findIndex(en => en.id == dishCategory.id);
+      if (index > -1)
+        this.dishCategories.splice(index, 1);
+    }, () => {
+      // TODO
+    });
+  }
+
+  openEditDishCategoryForm(dishCategory: DishCategoryModel, dish: DishModel): void {
+    let modalRef = this.modalService.open(EditDishComponent);
+    modalRef.componentInstance.restaurantId = this.restaurant.id;
+    modalRef.componentInstance.dishCategoryId = dishCategory.id;
+    modalRef.componentInstance.dish = dish;
+    modalRef.result.then((result) => {
+    }, () => {
+      // TODO
+    });
+  }
+
 
   private toTimeViewModel(totalMinutes: number): string {
     let hours = Math.floor(totalMinutes / 60);

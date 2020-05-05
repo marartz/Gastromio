@@ -6,9 +6,9 @@ namespace FoodOrderSystem.Domain.Model.Dish
 {
     public class Dish
     {
-        public Dish(DishId dishId, RestaurantId restaurantId, DishCategoryId categoryId, string name, string description, string productInfo, IList<DishVariant> variants)
+        public Dish(DishId id, RestaurantId restaurantId, DishCategoryId categoryId, string name, string description, string productInfo, IList<DishVariant> variants)
         {
-            DishId = dishId;
+            Id = id;
             RestaurantId = restaurantId;
             CategoryId = categoryId;
             Name = name;
@@ -17,7 +17,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
             Variants = variants;
         }
 
-        public DishId DishId { get; }
+        public DishId Id { get; }
         public RestaurantId RestaurantId { get; }
         public DishCategoryId CategoryId { get; }
         public string Name { get; }

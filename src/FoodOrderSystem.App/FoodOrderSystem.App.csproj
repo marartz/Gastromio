@@ -35,6 +35,11 @@
 	<None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <None Remove="ClientApp\src\app\admin-my-restaurants\admin-my-restaurants.component.ts" />
+    <None Remove="ClientApp\src\app\change-dish-category\change-dish-category.component.ts" />
+    <None Remove="ClientApp\src\app\dish-category\dish-category.model.ts" />
+    <None Remove="ClientApp\src\app\dish-category\dish-variant-extra.model.ts" />
+    <None Remove="ClientApp\src\app\dish-category\dish-variant.model.ts" />
+    <None Remove="ClientApp\src\app\dish-category\dish.model.ts" />
     <None Remove="FoodOrderSystem.db-shm" />
     <None Remove="FoodOrderSystem.db-wal" />
     <None Remove="FoodOrderSystem.db-wal" />
@@ -130,6 +135,9 @@
     <TypeScriptCompile Update="ClientApp\src\app\change-cuisine\change-cuisine.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\change-dish-category\change-dish-category.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\change-payment-method\change-payment-method.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -140,6 +148,18 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\cuisine\cuisine.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish-category.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish-variant-extra.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish-variant.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish.model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\login\login.component.ts">

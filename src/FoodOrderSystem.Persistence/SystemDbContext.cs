@@ -12,7 +12,7 @@ namespace FoodOrderSystem.Persistence
         public DbSet<CuisineRow> Cuisines { get; set; }
         public DbSet<PaymentMethodRow> PaymentMethods { get; set; }
         public DbSet<RestaurantRow> Restaurants { get; set; }
-        public DbSet<DishCategoryRow> Categories { get; set; }
+        public DbSet<DishCategoryRow> DishCategories { get; set; }
         public DbSet<DishRow> Dishes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

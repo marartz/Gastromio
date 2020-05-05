@@ -1,0 +1,57 @@
+﻿using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Model.Dish;
+using FoodOrderSystem.Domain.Model.DishCategory;
+using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.User;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace FoodOrderSystem.Domain.Commands.RemoveDishCategoryFromRestaurant
+{
+    public class RemoveDishCategoryFromRestaurantCommandHandler : ICommandHandler<RemoveDishCategoryFromRestaurantCommand, bool>
+    {
+        private readonly IRestaurantRepository restaurantRepository;
+        private readonly IDishCategoryRepository dishCategoryRepository;
+        private readonly IDishRepository dishRepository;
+
+        public RemoveDishCategoryFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository, IDishCategoryRepository dishCategoryRepository, IDishRepository dishRepository)
+        {
+            this.restaurantRepository = restaurantRepository;
+            this.dishCategoryRepository = dishCategoryRepository;
+            this.dishRepository = dishRepository;
+        }
+
+        public async Task<Result<bool>> HandleAsync(RemoveDishCategoryFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+
+            if (currentUser == null)
+                return FailureResult<bool>.Unauthorized();
+
+            if (currentUser.Role < Role.RestaurantAdmin)
+                return FailureResult<bool>.Forbidden();
+
+            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            if (restaurant == null)
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+
+            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
+                return FailureResult<bool>.Forbidden();
+
+            var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            if (dishCategories == null || !dishCategories.Any(en => en.Id == command.DishCategoryId))
+                return FailureResult<bool>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
+
+            var dishes = await dishRepository.FindByDishCategoryIdAsync(command.DishCategoryId, cancellationToken);
+            if (dishes != null && dishes.Count > 0)
+                return FailureResult<bool>.Create(FailureResultCode.DishCategoryContainsDishes);
+
+            await dishCategoryRepository.RemoveAsync(command.DishCategoryId, cancellationToken);
+
+            return SuccessResult<bool>.Create(true);
+        }
+    }
+}
