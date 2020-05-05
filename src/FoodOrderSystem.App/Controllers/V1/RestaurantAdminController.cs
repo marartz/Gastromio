@@ -4,6 +4,7 @@ using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddAdminToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant;
+using FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress;
@@ -409,6 +410,26 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<RemoveDishCategoryFromRestaurantCommand, bool>(
                 new RemoveDishCategoryFromRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/addoreditdish")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddOrEditDishAsync(Guid restaurantId, [FromBody] AddOrChangeDishOfRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<AddOrChangeDishOfRestaurantCommand, Guid>(
+                new AddOrChangeDishOfRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId), model.Dish),
                 currentUser
             );
 

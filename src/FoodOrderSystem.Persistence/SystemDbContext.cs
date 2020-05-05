@@ -90,7 +90,7 @@ namespace FoodOrderSystem.Persistence
                 .HasForeignKey(d => d.CategoryId);
 
             modelBuilder.Entity<DishVariantRow>()
-                .HasKey(dv => new { dv.DishId, dv.Name });
+                .HasKey(dv => new { dv.DishId, dv.VariantId });
 
             modelBuilder.Entity<DishVariantRow>()
                 .HasOne(dv => dv.Dish)
@@ -99,13 +99,13 @@ namespace FoodOrderSystem.Persistence
                 .HasForeignKey(dv => dv.DishId);
 
             modelBuilder.Entity<DishVariantExtraRow>()
-                .HasKey(dve => new { dve.DishId, dve.VariantName, dve.Name });
+                .HasKey(dve => new { dve.DishId, dve.VariantId, dve.ExtraId });
 
             modelBuilder.Entity<DishVariantExtraRow>()
                 .HasOne(dve => dve.Variant)
                 .WithMany(dv => dv.Extras)
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(dve => new { dve.DishId, dve.VariantName });
+                .HasForeignKey(dve => new { dve.DishId, dve.VariantId });
         }
     }
 }

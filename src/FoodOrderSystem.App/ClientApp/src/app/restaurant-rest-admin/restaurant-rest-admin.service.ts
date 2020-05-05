@@ -6,6 +6,7 @@ import { RestaurantModel, AddressModel } from '../restaurant/restaurant.model';
 import { PaymentMethodModel } from '../payment-method/payment-method.model';
 import { UserModel } from '../user/user.model';
 import { DishCategoryModel } from '../dish-category/dish-category.model';
+import { DishModel } from '../dish-category/dish.model';
 
 @Injectable()
 export class RestaurantRestAdminService {
@@ -223,6 +224,17 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removedishcategory", { dishCategoryId: dishCategoryId }, httpOptions);
+  }
+
+  public addOrChangeDishOfRestaurantAsync(id: string, dishCategoryId: string, dish: DishModel): Observable<string> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/addoreditdish", { dishCategoryId: dishCategoryId, dish: dish }, httpOptions);
   }
 
 }

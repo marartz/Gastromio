@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FoodOrderSystem.Persistence.SQLite.Migrations
+namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 {
     public partial class Initial : Migration
     {
@@ -214,12 +214,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 columns: table => new
                 {
                     DishId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", nullable: false),
+                    VariantId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(type: "varchar(100)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(5, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DishVariant", x => new { x.DishId, x.Name });
+                    table.PrimaryKey("PK_DishVariant", x => new { x.DishId, x.VariantId });
                     table.ForeignKey(
                         name: "FK_DishVariant_Dish_DishId",
                         column: x => x.DishId,
@@ -233,14 +234,15 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 columns: table => new
                 {
                     DishId = table.Column<Guid>(nullable: false),
-                    VariantName = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", nullable: false),
+                    VariantId = table.Column<Guid>(nullable: false),
+                    ExtraId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(type: "varchar(100)", nullable: true),
                     ProductInfo = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(type: "decimal(5, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DishVariantExtra", x => new { x.DishId, x.VariantName, x.Name });
+                    table.PrimaryKey("PK_DishVariantExtra", x => new { x.DishId, x.VariantId, x.ExtraId });
                     table.ForeignKey(
                         name: "FK_DishVariantExtra_Dish_DishId",
                         column: x => x.DishId,
@@ -248,10 +250,10 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DishVariantExtra_DishVariant_DishId_VariantName",
-                        columns: x => new { x.DishId, x.VariantName },
+                        name: "FK_DishVariantExtra_DishVariant_DishId_VariantId",
+                        columns: x => new { x.DishId, x.VariantId },
                         principalTable: "DishVariant",
-                        principalColumns: new[] { "DishId", "Name" },
+                        principalColumns: new[] { "DishId", "VariantId" },
                         onDelete: ReferentialAction.Restrict);
                 });
 

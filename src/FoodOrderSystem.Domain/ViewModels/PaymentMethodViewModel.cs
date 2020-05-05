@@ -5,26 +5,20 @@ namespace FoodOrderSystem.Domain.ViewModels
 {
     public class PaymentMethodViewModel
     {
-        public PaymentMethodViewModel(
-            Guid id,
-            string name,
-            string description
-        )
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-        }
+        public Guid Id { get; set; }
 
-        public Guid Id { get; }
+        public string Name { get; set; }
 
-        public string Name { get; }
-
-        public string Description { get; }
+        public string Description { get; set; }
 
         public static PaymentMethodViewModel FromPaymentMethod(PaymentMethod paymentMethod)
         {
-            return new PaymentMethodViewModel(paymentMethod.Id.Value, paymentMethod.Name, paymentMethod.Description);
+            return new PaymentMethodViewModel
+            {
+                Id = paymentMethod.Id.Value, 
+                Name = paymentMethod.Name,
+                Description = paymentMethod.Description
+            };
         }
     }
 }

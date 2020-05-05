@@ -1,19 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FoodOrderSystem.Domain.ViewModels
 {
     public class DishVariantViewModel
     {
-        public DishVariantViewModel(string name, decimal price, IList<DishVariantExtraViewModel> extras)
-        {
-            Name = name;
-            Price = price;
-            Extras = new ReadOnlyCollection<DishVariantExtraViewModel>(extras);
-        }
-
-        public string Name { get; }
-        public decimal Price { get; }
-        public IReadOnlyList<DishVariantExtraViewModel> Extras { get; }
+        public Guid VariantId { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public List<DishVariantExtraViewModel> Extras { get; set; }
     }
 }

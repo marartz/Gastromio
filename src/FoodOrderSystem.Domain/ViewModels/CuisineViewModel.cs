@@ -5,22 +5,17 @@ namespace FoodOrderSystem.Domain.ViewModels
 {
     public class CuisineViewModel
     {
-        public CuisineViewModel(
-            Guid id,
-            string name
-        )
-        {
-            Id = id;
-            Name = name;
-        }
+        public Guid Id { get; set; }
 
-        public Guid Id { get; }
-
-        public string Name { get; }
+        public string Name { get; set; }
 
         public static CuisineViewModel FromCuisine(Cuisine cuisine)
         {
-            return new CuisineViewModel(cuisine.Id.Value, cuisine.Name);
+            return new CuisineViewModel
+            {
+                Id = cuisine.Id.Value,
+                Name = cuisine.Name
+            };
         }
     }
 }

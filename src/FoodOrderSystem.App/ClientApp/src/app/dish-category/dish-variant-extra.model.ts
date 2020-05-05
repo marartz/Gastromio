@@ -5,6 +5,8 @@ export class DishVariantExtraModel {
     Object.assign(this, init);
   }
 
+  public extraId: string;
+
   public name: string;
 
   public productInfo: string;

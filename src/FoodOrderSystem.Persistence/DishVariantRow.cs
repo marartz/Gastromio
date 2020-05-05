@@ -11,6 +11,8 @@ namespace FoodOrderSystem.Persistence
 
         public virtual DishRow Dish { get; set; }
 
+        public Guid VariantId { get; set; }
+
         [Column(TypeName = "varchar(100)")]
         public string Name { get; set; }
 

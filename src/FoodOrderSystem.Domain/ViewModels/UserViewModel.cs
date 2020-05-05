@@ -5,25 +5,23 @@ namespace FoodOrderSystem.Domain.ViewModels
 {
     public class UserViewModel
     {
-        public UserViewModel(Guid id, string name, string role, string email)
-        {
-            Id = id;
-            Name = name;
-            Role = role;
-            Email = email;
-        }
+        public Guid Id { get; set; }
 
-        public Guid Id { get; }
+        public string Name { get; set; }
 
-        public string Name { get; }
+        public string Role { get; set; }
 
-        public string Role { get; }
-
-        public string Email { get; }
+        public string Email { get; set; }
 
         public static UserViewModel FromUser(User user)
         {
-            return new UserViewModel(user.Id.Value, user.Name, user.Role.ToString(), user.Email);
+            return new UserViewModel
+            {
+                Id = user.Id.Value,
+                Name = user.Name,
+                Role = user.Role.ToString(),
+                Email = user.Email
+            };
         }
     }
 }

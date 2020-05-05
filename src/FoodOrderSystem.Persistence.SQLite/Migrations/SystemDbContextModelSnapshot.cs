@@ -103,8 +103,11 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<Guid>("DishId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("VariantName")
-                        .HasColumnType("varchar(100)");
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ExtraId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("varchar(100)");
@@ -115,7 +118,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<string>("ProductInfo")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("DishId", "VariantName", "Name");
+                    b.HasKey("DishId", "VariantId", "ExtraId");
 
                     b.ToTable("DishVariantExtra");
                 });
@@ -125,13 +128,16 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<Guid>("DishId")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("varchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(5, 2)");
 
-                    b.HasKey("DishId", "Name");
+                    b.HasKey("DishId", "VariantId");
 
                     b.ToTable("DishVariant");
                 });
@@ -311,7 +317,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
 
                     b.HasOne("FoodOrderSystem.Persistence.DishVariantRow", "Variant")
                         .WithMany("Extras")
-                        .HasForeignKey("DishId", "VariantName")
+                        .HasForeignKey("DishId", "VariantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

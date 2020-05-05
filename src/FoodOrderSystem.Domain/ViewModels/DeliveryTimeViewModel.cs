@@ -4,26 +4,20 @@ namespace FoodOrderSystem.Domain.ViewModels
 {
     public class DeliveryTimeViewModel
     {
-        public DeliveryTimeViewModel(
-            int dayOfWeek,
-            int start,
-            int end
-        )
-        {
-            DayOfWeek = dayOfWeek;
-            Start = start;
-            End = end;
-        }
+        public int DayOfWeek { get; set; }
 
-        public int DayOfWeek { get; }
+        public int Start { get; set; }
 
-        public int Start { get; }
-
-        public int End { get; }
+        public int End { get; set; }
 
         public static DeliveryTimeViewModel FromDeliveryTime(DeliveryTime deliveryTime)
         {
-            return new DeliveryTimeViewModel(deliveryTime.DayOfWeek, (int)deliveryTime.Start.TotalMinutes, (int)deliveryTime.End.TotalMinutes);
+            return new DeliveryTimeViewModel
+            {
+                DayOfWeek = deliveryTime.DayOfWeek,
+                Start = (int)deliveryTime.Start.TotalMinutes,
+                End = (int)deliveryTime.End.TotalMinutes
+            };
         }
     }
 }

@@ -7,23 +7,29 @@
     </div>
     <div class="setting-form">
       <div class="tab tab-setting">
-        <block-ui>
-          <form class="setting-form" [formGroup]="editDishForm" (ngSubmit)="onSubmit(editDishForm.value)">
-            <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
-            <div class="form-setting">
-              <div class="input">
-                <input type="text" id="name" formControlName="name" ngbAutofocus>
-                <label for="name">Name</label>
-              </div>
+        <form class="setting-form" [formGroup]="editDishForm" (ngSubmit)="onSubmit(editDishForm.value)">
+          <div class="form-notification" *ngIf="message !== undefined">{{message}}</div>
+          <div class="form-setting">
+            <div class="input">
+              <input type="text" id="name" formControlName="name" ngbAutofocus>
+              <label for="name">Name</label>
             </div>
-            <div class="button-container">
-              <button class="button-submit" type="submit">
-                <ng-container *ngIf="isNew">Hinzufügen</ng-container>
-                <ng-container *ngIf="!isNew">Speichern</ng-container>
-              </button>
+            <div class="input">
+              <input type="text" id="description" formControlName="description">
+              <label for="description">Beschreibung</label>
             </div>
-          </form>
-        </block-ui>
+            <div class="input">
+              <input type="text" id="productInfo" formControlName="productInfo">
+              <label for="productInfo">Produktinformation</label>
+            </div>
+          </div>
+          <div class="button-container">
+            <button class="button-submit" type="submit">
+              <ng-container *ngIf="isNew">Hinzufügen</ng-container>
+              <ng-container *ngIf="!isNew">Speichern</ng-container>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

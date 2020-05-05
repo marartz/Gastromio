@@ -3,6 +3,7 @@ using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,14 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                 dish = dishes?.FirstOrDefault(en => en.Id.Value == command.Dish.Id);
                 if (dish == null)
                     return FailureResult<Guid>.Create(FailureResultCode.DishDoesNotBelongToDishCategory);
+
+                if (!string.Equals(dish.Name,command.Dish.Name))
+                    dish.ChangeName(command.Dish.Name);
+                if (!string.Equals(dish.Description, command.Dish.Description))
+                    dish.ChangeDescription(command.Dish.Description);
+                if (!string.Equals(dish.ProductInfo,command.Dish.ProductInfo))
+                    dish.ChangeProductInfo(command.Dish.ProductInfo);
+                dish.ReplaceVariants(FromVariantViewModels(command.Dish.Variants));
             }
             else
             {
@@ -64,11 +73,26 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                     command.Dish.Name,
                     command.Dish.Description,
                     command.Dish.ProductInfo,
-                    new List<DishVariant>() // TODO
+                    FromVariantViewModels(command.Dish.Variants)
                 );
             }
 
+            await dishRepository.StoreAsync(dish, cancellationToken);
+
             return SuccessResult<Guid>.Create(dishCategory.Id.Value);
+        }
+
+        IList<DishVariant> FromVariantViewModels(IList<DishVariantViewModel> variants)
+        {
+            return variants != null ? variants.Select(variant =>
+                new DishVariant(
+                    variant.VariantId,
+                    variant.Name,
+                    variant.Price,
+                    variant.Extras != null ? variant.Extras.Select(extra =>
+                        new DishVariantExtra(extra.ExtraId, extra.Name, extra.ProductInfo, extra.Price)
+                    ).ToList() : new List<DishVariantExtra>()
+                )).ToList() : new List<DishVariant>();
         }
     }
 }

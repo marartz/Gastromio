@@ -1,16 +1,12 @@
-﻿namespace FoodOrderSystem.Domain.ViewModels
+﻿using System;
+
+namespace FoodOrderSystem.Domain.ViewModels
 {
     public class DishVariantExtraViewModel
     {
-        public DishVariantExtraViewModel(string name, string productInfo, decimal price)
-        {
-            Name = name;
-            ProductInfo = productInfo;
-            Price = price;
-        }
-
-        public string Name { get; }
-        public string ProductInfo { get; }
-        public decimal Price { get; }
+        public Guid ExtraId { get; set; }
+        public string Name { get; set; }
+        public string ProductInfo { get; set; }
+        public decimal Price { get; set; }
     }
 }

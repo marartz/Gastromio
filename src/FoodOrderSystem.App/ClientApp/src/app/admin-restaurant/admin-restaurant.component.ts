@@ -525,11 +525,16 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   openEditDishCategoryForm(dishCategory: DishCategoryModel, dish: DishModel): void {
+    let isNew = dish === undefined;
+
     let modalRef = this.modalService.open(EditDishComponent);
     modalRef.componentInstance.restaurantId = this.restaurant.id;
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
     modalRef.componentInstance.dish = dish;
-    modalRef.result.then((result) => {
+    modalRef.result.then((resultDish: DishModel) => {
+      if (isNew) {
+        dishCategory.dishes.push(resultDish);
+      }
     }, () => {
       // TODO
     });

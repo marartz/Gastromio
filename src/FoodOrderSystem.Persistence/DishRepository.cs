@@ -103,16 +103,19 @@ namespace FoodOrderSystem.Persistence
                 row.Name,
                 row.Description,
                 row.ProductInfo,
-                row.Variants
+                row.Variants != null ? row.Variants
                     .Select(variantRow => new DishVariant(
+                        variantRow.VariantId,
                         variantRow.Name,
                         variantRow.Price,
-                        variantRow.Extras
+                        variantRow.Extras != null ? variantRow.Extras
                             .Select(extraRow => new DishVariantExtra(
+                                extraRow.ExtraId,
                                 extraRow.Name,
                                 extraRow.ProductInfo,
                                 extraRow.Price)
-                            ).ToList())).ToList()
+                            ).ToList() : new List<DishVariantExtra>()
+                    )).ToList() : new List<DishVariant>()
             );
         }
 
@@ -128,13 +131,15 @@ namespace FoodOrderSystem.Persistence
                 .Select(variant => new DishVariantRow()
                 {
                     DishId = obj.Id.Value,
+                    VariantId = variant.VariantId,
                     Name = variant.Name,
                     Price = variant.Price,
                     Extras = variant.Extras
                         .Select(extra => new DishVariantExtraRow()
                         {
                             DishId = obj.Id.Value,
-                            VariantName = variant.Name,
+                            VariantId = variant.VariantId,
+                            ExtraId = extra.ExtraId,
                             Name = extra.Name,
                             ProductInfo = extra.ProductInfo,
                             Price = extra.Price

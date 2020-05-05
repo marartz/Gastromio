@@ -71,19 +71,43 @@ namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurantForEdit
                                     {
                                         foreach (var extra in variant.Extras)
                                         {
-                                            extraViewModels.Add(new DishVariantExtraViewModel(extra.Name, extra.ProductInfo, extra.Price));
+                                            extraViewModels.Add(new DishVariantExtraViewModel
+                                            {
+                                                ExtraId = extra.ExtraId,
+                                                Name = extra.Name,
+                                                ProductInfo = extra.ProductInfo,
+                                                Price = extra.Price
+                                            });
                                         }
                                     }
 
-                                    variantViewModels.Add(new DishVariantViewModel(variant.Name, variant.Price, extraViewModels));
+                                    variantViewModels.Add(new DishVariantViewModel
+                                    {
+                                        VariantId = variant.VariantId,
+                                        Name = variant.Name,
+                                        Price = variant.Price,
+                                        Extras = extraViewModels
+                                    });
                                 }
                             }
 
-                            dishViewModels.Add(new DishViewModel(dish.Id.Value, dish.Name, dish.Description, dish.ProductInfo, variantViewModels));
+                            dishViewModels.Add(new DishViewModel
+                            {
+                                Id = dish.Id.Value,
+                                Name = dish.Name,
+                                Description = dish.Description,
+                                ProductInfo = dish.ProductInfo,
+                                Variants = variantViewModels
+                            });
                         }
                     }
 
-                    result.Add(new DishCategoryViewModel(dishCategory.Id.Value, dishCategory.Name, dishViewModels));
+                    result.Add(new DishCategoryViewModel
+                    {
+                        Id = dishCategory.Id.Value,
+                        Name = dishCategory.Name,
+                        Dishes = dishViewModels
+                    });
                 }
             }
 

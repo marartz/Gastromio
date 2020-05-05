@@ -1,1 +1,1 @@
-{"version":3,"file":"dish-variant.model.js","sourceRoot":"","sources":["dish-variant.model.ts"],"names":[],"mappings":";;AAEA;IACE,0BAAY,IAAgC;QAC1C,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,IAAI,CAAC,CAAC;IAC5B,CAAC;IAOH,uBAAC;AAAD,CAAC,AAVD,IAUC;AAVY,4CAAgB"}
+{"version":3,"file":"dish-variant.model.js","sourceRoot":"","sources":["dish-variant.model.ts"],"names":[],"mappings":";;AAEA;IACE,0BAAY,IAAgC;QAC1C,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,IAAI,CAAC,CAAC;IAC5B,CAAC;IASH,uBAAC;AAAD,CAAC,AAZD,IAYC;AAZY,4CAAgB"}

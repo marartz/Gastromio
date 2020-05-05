@@ -3,29 +3,32 @@ using System;
 using FoodOrderSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FoodOrderSystem.Persistence.SQLite.Migrations
+namespace FoodOrderSystem.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20200430164655_Initial")]
+    [Migration("20200505203532_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3");
+                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("FoodOrderSystem.Persistence.CuisineRow", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -35,16 +38,16 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
             modelBuilder.Entity("FoodOrderSystem.Persistence.DeliveryTimeRow", b =>
                 {
                     b.Property<Guid>("RestaurantId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("DayOfWeek")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("StartTime")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("EndTime")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("RestaurantId", "DayOfWeek", "StartTime");
 
@@ -55,13 +58,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RestaurantId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -74,22 +77,22 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductInfo")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RestaurantId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -103,10 +106,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
             modelBuilder.Entity("FoodOrderSystem.Persistence.DishVariantExtraRow", b =>
                 {
                     b.Property<Guid>("DishId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("VariantName")
-                        .HasColumnType("varchar(100)");
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ExtraId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("varchar(100)");
@@ -115,9 +121,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                         .HasColumnType("decimal(5, 2)");
 
                     b.Property<string>("ProductInfo")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DishId", "VariantName", "Name");
+                    b.HasKey("DishId", "VariantId", "ExtraId");
 
                     b.ToTable("DishVariantExtra");
                 });
@@ -125,7 +131,10 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
             modelBuilder.Entity("FoodOrderSystem.Persistence.DishVariantRow", b =>
                 {
                     b.Property<Guid>("DishId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("varchar(100)");
@@ -133,7 +142,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(5, 2)");
 
-                    b.HasKey("DishId", "Name");
+                    b.HasKey("DishId", "VariantId");
 
                     b.ToTable("DishVariant");
                 });
@@ -142,13 +151,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -158,10 +167,10 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
             modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantCuisineRow", b =>
                 {
                     b.Property<Guid>("RestaurantId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CuisineId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RestaurantId", "CuisineId");
 
@@ -173,10 +182,10 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
             modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantPaymentMethodRow", b =>
                 {
                     b.Property<Guid>("RestaurantId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PaymentMethodId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RestaurantId", "PaymentMethodId");
 
@@ -189,40 +198,40 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AddressCity")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressStreet")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressZipCode")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DeliveryCosts")
                         .HasColumnType("decimal(5, 2)");
 
                     b.Property<byte[]>("Image")
-                        .HasColumnType("BLOB");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Imprint")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MinimumOrderValue")
                         .HasColumnType("decimal(5, 2)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OrderEmailAddress")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebSite")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -232,10 +241,10 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
             modelBuilder.Entity("FoodOrderSystem.Persistence.RestaurantUserRow", b =>
                 {
                     b.Property<Guid>("RestaurantId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RestaurantId", "UserId");
 
@@ -248,22 +257,22 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("BLOB");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("BLOB");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Role")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -313,7 +322,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
 
                     b.HasOne("FoodOrderSystem.Persistence.DishVariantRow", "Variant")
                         .WithMany("Extras")
-                        .HasForeignKey("DishId", "VariantName")
+                        .HasForeignKey("DishId", "VariantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

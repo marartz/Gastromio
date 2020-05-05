@@ -5,6 +5,8 @@ export class DishVariantModel {
     Object.assign(this, init);
   }
 
+  public variantId: string;
+
   public name: string;
 
   public price: number;
