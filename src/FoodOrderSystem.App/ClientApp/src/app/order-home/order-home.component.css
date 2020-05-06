@@ -1,16 +1,16 @@
 .order-wrapper {
     display: flex;
+    flex: 1 1 0%;
     flex-direction: column;
     height: 100%;
-    flex: 1 1 0%;
 }
 
 .order-wrapper .order-content {
-    font-family: proxima-nova, sans-serif;
-    position: relative;
-    flex: 1 0 auto;
     display: flex;
+    font-family: proxima-nova, sans-serif;
+    flex: 1 0 auto;
     flex-direction: column;
+    position: relative;
     z-index: 2;
 }
 
@@ -23,88 +23,88 @@
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper {
-    width: 100%;
-    overflow: hidden;
+    align-items: center;
+    background-color: rgb(30, 26, 52);
     display: flex;
     flex-direction: column;
-    position: relative;
-    -moz-box-align: center;
-    align-items: center;
-    -moz-box-pack: center;
     justify-content: center;
-    background-color: rgb(30, 26, 52);
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    -moz-box-align: center;
+    -moz-box-pack: center;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .order-bg-mobile {
+    filter: blur(30px);
     height: 100%;
-    width: 100%;
-    top: 0px;
     left: 0px;
     object-fit: cover;
-    position: absolute;
     overflow: hidden;
-    filter: blur(30px);
+    position: absolute;
+    top: 0px;
+    width: 100%;
     z-index: 1;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .order-bg-desktop {
     height: 100%;
-    width: 100%;
-    top: 0px;
     left: 0px;
     object-fit: cover;
-    position: absolute;
     overflow: hidden;
     opacity: 1;
+    position: absolute;
+    top: 0px;
     transform: scale(1);
     transform-origin: center center 0px;
     transition: opacity 1s ease-in-out 0s;
+    width: 100%;
     z-index: 2;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .order-title {
-    text-shadow: rgba(23, 32, 38, 0.2) 0px 2px 10px, rgba(23, 32, 38, 0.2) 0px 2px 4px;
-    pointer-events: none;
     margin-bottom: 20px;
+    pointer-events: none;
     position: relative;
+    text-shadow: rgba(23, 32, 38, 0.2) 0px 2px 10px, rgba(23, 32, 38, 0.2) 0px 2px 4px;
     z-index: 2;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .order-title .ot3 {
-    transition: none;
-    margin-bottom: 0.35em;
-    text-align: center;
     font-size: 56px;
-    line-height: 1.3;
+    font-weight: 800;
+    line-height: 1;
     letter-spacing: 0.5px;
     margin: 0;
     margin-bottom: 0px;
+    text-align: center;
+    transition: none;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .order-title .otp {
-    transition: none;
-    margin-bottom: 0.35em;
-    text-align: center;
     font-size: 25px;
+    text-align: center;
+    transition: none;
     line-height: 1.3;
     letter-spacing: 0.5px;
     margin: 0;
-    margin-bottom: 0px;
+    margin-bottom: 0.35em;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper {
     flex: 0 0 auto;
-    width: 100%;
     position: relative;
+    width: 100%;
     z-index: 3;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content {
-    flex: 1 1 auto;
-    width: 100%;
     background-position: center center;
+    flex: 1 1 auto;
     position: relative;
+    width: 100%;
 }
+
 @media (min-width: 960px) {
     .order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content {
         background-position: center center;
@@ -112,10 +112,10 @@
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content .restaurants-inner {
-    position: relative;
     margin: 0px auto;
-    width: 100%;
     max-width: 920px;
+    position: relative;
+    width: 100%;
 }
 
 .order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content .restaurants-inner .content {
@@ -123,7 +123,13 @@
 }
 
 .restaurant-search-box {
-    padding: 0px;
+    padding: 0px 16px;
+}
+
+@media (min-width: 960px) {
+  .restaurant-search-box {
+        padding: 0px;
+    }
 }
 
 .restaurant-search-box .restaurant-search-container {
@@ -246,7 +252,7 @@
 }
 
 
-
+/* LÖSCHEN NACH ENTFERNUNG IN HTML! >> TODO */
 
 
 
