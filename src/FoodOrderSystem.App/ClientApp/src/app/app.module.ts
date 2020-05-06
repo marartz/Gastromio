@@ -40,6 +40,7 @@ import { PaymentMethodAdminService } from './payment-method/payment-method-admin
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { RemoveCuisineComponent } from './remove-cuisine/remove-cuisine.component';
 import { RemoveDishCategoryComponent } from './remove-dish-category/remove-dish-category.component';
+import { RemoveDishComponent } from './remove-dish/remove-dish.component';
 import { RemovePaymentMethodComponent } from './remove-payment-method/remove-payment-method.component';
 import { RemoveRestaurantComponent } from './remove-restaurant/remove-restaurant.component';
 import { RemoveUserComponent } from './remove-user/remove-user.component';
@@ -61,6 +62,8 @@ import { UserAdminService } from './user/user-admin.service';
       { path: 'general-terms-and-conditions', component: GeneralTermsAndConditionsComponent },
       { path: 'imprint', component: ImprintComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
+      //{ path: 'restaurants', component: TODO },
+      //{ path: 'restaurants/:restaurantId', component: TODO },
       { path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/paymentmethods', component: AdminPaymentMethodsComponent, canActivate: [SystemAdminAuthGuard] },
@@ -104,6 +107,7 @@ import { UserAdminService } from './user/user-admin.service';
     PrivacyPolicyComponent,
     RemoveCuisineComponent,
     RemoveDishCategoryComponent,
+    RemoveDishComponent,
     RemovePaymentMethodComponent,
     RemoveRestaurantComponent,
     RemoveUserComponent,

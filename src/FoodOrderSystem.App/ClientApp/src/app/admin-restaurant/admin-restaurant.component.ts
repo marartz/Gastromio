@@ -18,6 +18,7 @@ import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { RemoveDishCategoryComponent } from '../remove-dish-category/remove-dish-category.component';
 import { DishModel } from '../dish-category/dish.model';
 import { EditDishComponent } from '../edit-dish/edit-dish.component';
+import { RemoveDishComponent } from '../remove-dish/remove-dish.component';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -524,7 +525,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
-  openEditDishCategoryForm(dishCategory: DishCategoryModel, dish: DishModel): void {
+  openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
     let isNew = dish === undefined;
 
     let modalRef = this.modalService.open(EditDishComponent);
@@ -533,6 +534,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.dish = dish;
     modalRef.result.then((resultDish: DishModel) => {
       if (isNew) {
+        if (dishCategory.dishes === undefined)
+          dishCategory.dishes = new Array<DishModel>();
         dishCategory.dishes.push(resultDish);
       }
     }, () => {
@@ -540,6 +543,19 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
+  openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
+    let modalRef = this.modalService.open(RemoveDishComponent);
+    modalRef.componentInstance.restaurantId = this.restaurant.id;
+    modalRef.componentInstance.dishCategoryId = dishCategory.id;
+    modalRef.componentInstance.dish = dish;
+    modalRef.result.then((result) => {
+      let index = dishCategory.dishes.findIndex(en => en.id == dish.id);
+      if (index > -1)
+        dishCategory.dishes.splice(index, 1);
+    }, () => {
+      // TODO
+    });
+  }
 
   private toTimeViewModel(totalMinutes: number): string {
     let hours = Math.floor(totalMinutes / 60);
