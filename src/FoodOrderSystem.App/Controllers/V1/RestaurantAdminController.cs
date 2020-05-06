@@ -15,7 +15,9 @@ using FoodOrderSystem.Domain.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Domain.Commands.RemoveAdminFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDishCategoryFromRestaurant;
+using FoodOrderSystem.Domain.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemovePaymentMethodFromRestaurant;
+using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
@@ -430,6 +432,26 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<AddOrChangeDishOfRestaurantCommand, Guid>(
                 new AddOrChangeDishOfRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId), model.Dish),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/removedish")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveDishAsync(Guid restaurantId, [FromBody] RemoveDishFromRestaurantModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<RemoveDishFromRestaurantCommand, bool>(
+                new RemoveDishFromRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId), new DishId(model.DishId)),
                 currentUser
             );
 

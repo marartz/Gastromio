@@ -42,16 +42,20 @@ export class EditDishComponent implements OnInit {
 
     this.blockUI.start("Verarbeite Daten...");
 
-    if (this.dish === undefined)
+    if (this.dish === undefined) {
       this.dish = new DishModel();
+    }
     this.dish.name = data.name;
     this.dish.description = data.description;
     this.dish.productInfo = data.productInfo;
 
     let subscription = this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish)
-      .subscribe(() => {
+      .subscribe((newDishId) => {
         subscription.unsubscribe();
         this.blockUI.stop();
+
+        this.dish.id = newDishId;
+
         this.message = undefined;
         this.editDishForm.reset();
         this.activeModal.close(this.dish);

@@ -79,7 +79,7 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
 
             await dishRepository.StoreAsync(dish, cancellationToken);
 
-            return SuccessResult<Guid>.Create(dishCategory.Id.Value);
+            return SuccessResult<Guid>.Create(dish.Id.Value);
         }
 
         IList<DishVariant> FromVariantViewModels(IList<DishVariantViewModel> variants)

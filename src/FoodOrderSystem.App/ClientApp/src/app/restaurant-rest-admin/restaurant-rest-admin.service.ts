@@ -237,4 +237,15 @@ export class RestaurantRestAdminService {
     return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/addoreditdish", { dishCategoryId: dishCategoryId, dish: dish }, httpOptions);
   }
 
+  public removeDishFromRestaurantAsync(id: string, dishCategoryId: string, dishId: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removedish", { dishCategoryId: dishCategoryId, dishId: dishId }, httpOptions);
+  }
+
 }
