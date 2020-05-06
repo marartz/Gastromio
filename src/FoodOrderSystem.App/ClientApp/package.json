@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@ng-bootstrap/ng-bootstrap": "^6.0.2",
     "bootstrap": "^4.4.1",
+    "guid-typescript": "^1.0.9",
     "ng-block-ui": "^2.1.8",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",

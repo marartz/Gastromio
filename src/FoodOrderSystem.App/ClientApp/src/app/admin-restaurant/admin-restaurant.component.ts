@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RestaurantModel, AddressModel, DeliveryTimeModel } from '../restaurant/restaurant.model';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeRestaurantNameComponent } from '../change-restaurant-name/change-restaurant-name.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PaymentMethodModel } from '../payment-method/payment-method.model';
