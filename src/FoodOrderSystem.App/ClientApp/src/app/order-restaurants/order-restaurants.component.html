@@ -1,0 +1,29 @@
+<div class="container" style="padding-top: 20px; padding-bottom: 20px;">
+  <div class="row">
+    <div class="col">
+      <div class="search">
+        <input class="form-control mr-sm-2" id="restaurant-search" type="search" maxlength="30" placeholder="Restaurant, z.B. Pizzeria La Piccola" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+      </div>
+      <div class="restaurants mt-3">
+        <div class="restaurant" *ngFor="let restaurant of restaurants">
+          <div class="restaurant-logo-wrapper">
+            <div class="restaurant-logo">
+              <img [src]="restaurant.image" alt="" border="0" />
+            </div>
+          </div>
+          <div class="restaurant-info-wrapper">
+            <h2 class="restaurantname"><a [routerLink]="['/restaurants', restaurant.id]">{{ restaurant.name }}</a></h2>
+            <div class="restaurantbeschreibung">{{ restaurant.description }}</div>
+            <div class="bottom-wrapper details">
+              <div class="delivery">
+                <div class="nextdeliverytime">Ab {{ restaurant.nextDeliveryTimeText }} Uhr</div>
+                <div class="delivery-cost">{{ restaurant.deliveryCostsText }} €</div>
+                <div class="min-order">Min. {{ restaurant.minimumOrderValueText }} €</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

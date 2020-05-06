@@ -2,11 +2,11 @@
 using FoodOrderSystem.Domain.ViewModels;
 using System.Collections.Generic;
 
-namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurantForEdit
+namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant
 {
-    public class GetDishesOfRestaurantForEditQuery : IQuery<ICollection<DishCategoryViewModel>>
+    public class GetDishesOfRestaurantQuery : IQuery<ICollection<DishCategoryViewModel>>
     {
-        public GetDishesOfRestaurantForEditQuery(RestaurantId restaurantId)
+        public GetDishesOfRestaurantQuery(RestaurantId restaurantId)
         {
             RestaurantId = restaurantId;
         }

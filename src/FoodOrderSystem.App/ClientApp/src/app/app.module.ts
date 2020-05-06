@@ -34,6 +34,8 @@ import { HttpErrorHandlingService } from './http-error-handling/http-error-handl
 import { ImprintComponent } from './imprint/imprint.component';
 import { LoginComponent } from './login/login.component';
 import { OrderHomeComponent } from './order-home/order-home.component';
+import { OrderRestaurantComponent } from './order-restaurant/order-restaurant.component';
+import { OrderRestaurantsComponent } from './order-restaurants/order-restaurants.component';
 import { OrderService } from './order/order.service';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PaymentMethodAdminService } from './payment-method/payment-method-admin.service';
@@ -62,8 +64,8 @@ import { UserAdminService } from './user/user-admin.service';
       { path: 'general-terms-and-conditions', component: GeneralTermsAndConditionsComponent },
       { path: 'imprint', component: ImprintComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
-      //{ path: 'restaurants', component: TODO },
-      //{ path: 'restaurants/:restaurantId', component: TODO },
+      { path: 'restaurants', component: OrderRestaurantsComponent },
+      { path: 'restaurants/:restaurantId', component: OrderRestaurantComponent },
       { path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard] },
       { path: 'admin/paymentmethods', component: AdminPaymentMethodsComponent, canActivate: [SystemAdminAuthGuard] },
@@ -103,6 +105,8 @@ import { UserAdminService } from './user/user-admin.service';
     ImprintComponent,
     LoginComponent,
     OrderHomeComponent,
+    OrderRestaurantComponent,
+    OrderRestaurantsComponent,
     PaginationComponent,
     PrivacyPolicyComponent,
     RemoveCuisineComponent,

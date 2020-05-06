@@ -10,15 +10,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurantForEdit
+namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant
 {
-    public class GetDishesOfRestaurantForEditQueryHandler : IQueryHandler<GetDishesOfRestaurantForEditQuery, ICollection<DishCategoryViewModel>>
+    public class GetDishesOfRestaurantQueryHandler : IQueryHandler<GetDishesOfRestaurantQuery, ICollection<DishCategoryViewModel>>
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IDishCategoryRepository dishCategoryRepository;
         private readonly IDishRepository dishRepository;
 
-        public GetDishesOfRestaurantForEditQueryHandler(
+        public GetDishesOfRestaurantQueryHandler(
             IRestaurantRepository restaurantRepository,
             IDishCategoryRepository dishCategoryRepository,
             IDishRepository dishRepository
@@ -29,16 +29,10 @@ namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurantForEdit
             this.dishRepository = dishRepository;
         }
 
-        public async Task<Result<ICollection<DishCategoryViewModel>>> HandleAsync(GetDishesOfRestaurantForEditQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<DishCategoryViewModel>>> HandleAsync(GetDishesOfRestaurantQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
-
-            if (currentUser == null)
-                return FailureResult<ICollection<DishCategoryViewModel>>.Unauthorized();
-
-            if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<ICollection<DishCategoryViewModel>>.Forbidden();
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
             if (restaurant == null)

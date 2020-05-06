@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OrderService } from '../order/order.service';
 import { RestaurantModel } from '../restaurant/restaurant.model';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject, Subscription, Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-home',
@@ -10,52 +11,34 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./order-home.component.css']
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
-  restaurants: RestaurantModel[];
-  pageOfRestaurants: RestaurantModel[];
-
-  private searchPhrase: string;
-  private searchPhraseUpdated: Subject<string> = new Subject<string>();
-
-  private updateSearchSubscription: Subscription;
+  selectedRestaurant: RestaurantModel;
 
   constructor(
-    private orderService: OrderService
+    private orderService: OrderService,
+    public router: Router
   ) {
-    this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
-      .subscribe((value: string) => {
-        this.searchPhrase = value;
-        this.updateSearch();
-      });
   }
 
   ngOnInit() {
-    this.searchPhrase = '';
-    this.updateSearch();
   }
 
   ngOnDestroy() {
-    if (this.updateSearchSubscription !== undefined) {
-      this.updateSearchSubscription.unsubscribe();
-    }
   }
 
-  onSearchType(value: string) {
-    this.searchPhraseUpdated.next(value);
+  searchForRestaurant = (text: Observable<string>) =>
+    text.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap(term => term.length < 2 ? of([]) : this.orderService.searchForRestaurantsAsync(term)),
+      take(10)
+    );
+
+  formatRestaurant(restaurant: RestaurantModel): string {
+    return restaurant.name;
   }
 
-  onChangePage(pageOfRestaurants: RestaurantModel[]) {
-    this.pageOfRestaurants = pageOfRestaurants;
-  }
-
-  updateSearch(): void {
-    if (this.updateSearchSubscription !== undefined)
-      this.updateSearchSubscription.unsubscribe();
-
-    let observable = this.orderService.searchForRestaurantsAsync(this.searchPhrase);
-
-    this.updateSearchSubscription = observable.subscribe((result) => {
-      this.restaurants = result;
-    }, (error) => {
-    });
+  onRestaurantSelected(restaurant: RestaurantModel): void {
+    console.log("restaurant selected:", restaurant);
+    this.router.navigate(['/restaurants', restaurant.id]);
   }
 }
