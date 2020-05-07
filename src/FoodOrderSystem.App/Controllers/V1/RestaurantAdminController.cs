@@ -24,7 +24,7 @@ using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetAllPaymentMethods;
-using FoodOrderSystem.Domain.Queries.GetDishesOfRestaurantForEdit;
+using FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant;
 using FoodOrderSystem.Domain.Queries.GetRestaurantById;
 using FoodOrderSystem.Domain.Queries.RestAdminMyRestaurants;
 using FoodOrderSystem.Domain.Queries.SearchForUsers;
@@ -98,8 +98,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantForEditQuery, ICollection<DishCategoryViewModel>>(
-                new GetDishesOfRestaurantForEditQuery(new RestaurantId(restaurantId)),
+            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryViewModel>>(
+                new GetDishesOfRestaurantQuery(new RestaurantId(restaurantId)),
                 currentUser
             );
             return ResultHelper.HandleResult(queryResult, failureMessageService);

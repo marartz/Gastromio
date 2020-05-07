@@ -23,6 +23,54 @@
               <label for="productInfo">Produktinformation</label>
             </div>
           </div>
+
+          <ng-container *ngIf="dish.variants.length <= 1">
+            <div class="input">
+              <input type="number" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}">
+              <label for="price">Preis</label>
+            </div>
+
+            <div class="float-right">
+              <button type="button" class="btn btn-primary btn-sm m-1" (click)="onAddVariant()">Variante hinzufügen</button>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="dish.variants.length >= 2">
+            <h5>Varianten</h5>
+
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Preis</th>
+                  <th>
+                    <div class="float-right">
+                      <button type="button" class="btn btn-primary btn-sm m-1" (click)="onAddVariant()"><i class="fas fa-plus"></i></button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let variant of dish.variants">
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="variant.name" [ngModelOptions]="{standalone: true}">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" [(ngModel)]="variant.price" [ngModelOptions]="{standalone: true}">
+                  </td>
+                  <td>
+                    <div class="float-right" style="white-space: nowrap;">
+                      <button type="button" class="btn btn-danger btn-sm m-1" (click)="onRemoveVariant(variant)"><i class="fas fa-trash-alt"></i></button>
+                      <!--<button class="btn btn-secondary btn-sm m-1 ml-2"><i class="fas fa-arrow-up"></i></button>
+                      <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-arrow-down"></i></button>
+                      <button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+
           <div class="button-container">
             <button class="button-submit" type="submit">
               <ng-container *ngIf="isNew">Hinzufügen</ng-container>

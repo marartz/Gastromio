@@ -1,0 +1,14 @@
+<block-ui>
+  <div class="container" style="padding-top: 20px; padding-bottom: 20px;">
+    <div class="row" *ngIf="generalError !== undefined">
+      <div class="col-12 setting-form">
+        <div class="form-notification">{{generalError}}</div>
+      </div>
+    </div>
+    <div class="row" *ngIf="generalError === undefined && restaurant !== undefined">
+      <div class="col">
+        {{restaurant.name}}
+      </div>
+    </div>
+  </div>
+</block-ui>

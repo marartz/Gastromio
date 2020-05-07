@@ -41,12 +41,16 @@
                                             </div>
                                             <div class="restaurant-search-form">
                                                 <input class="restaurant-search-input" placeholder="Suche nach Restaurants" tabindex="1"  />
+                                                <input class="restaurant-search-input" placeholder="Suche nach Restaurants" tabindex="1" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)"/>
+                                                <ng-template #rt let-r="result" let-t="term">
+                                                  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                                                </ng-template>
                                             </div>
                                         </div>
                                     </div>
                                     <div></div>
                                     <button class="restaurant-searchby-type" tabindex="0" type="button" role="button" style="max-width: 100%; min-height: 60px;">
-                                        <span class="restaurant-button-label">Suche nach Kategorien</span>
+                                        <span class="restaurant-button-label"><a [routerLink]="['/restaurants']">Suche nach Kategorien</a></span>
                                         <span class="restaurant-button-label-wrapper"></span>
                                     </button>
                                 </div>
@@ -58,34 +62,3 @@
         </div>
     </div>
 </main>
-
-
-<div class="container" style="padding-top: 20px; padding-bottom: 20px;">
-  <div class="row">
-    <div class="col">
-      <div class="search">
-        <input class="form-control mr-sm-2" id="restaurant-search" type="search" maxlength="30" placeholder="Restaurant, z.B. Pizzeria La Piccola" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-      </div>
-      <div class="restaurants mt-3">
-        <div class="restaurant" *ngFor="let restaurant of restaurants">
-          <div class="restaurant-logo-wrapper">
-            <div class="restaurant-logo">
-              <img [src]="restaurant.image" alt="" border="0" />
-            </div>
-          </div>
-          <div class="restaurant-info-wrapper">
-            <h2 class="restaurantname">{{ restaurant.name }}</h2>
-            <div class="restaurantbeschreibung">{{ restaurant.description }}</div>
-            <div class="bottom-wrapper details">
-              <div class="delivery">
-                <div class="nextdeliverytime">Ab {{ restaurant.nextDeliveryTimeText }} Uhr</div>
-                <div class="delivery-cost">{{ restaurant.deliveryCostsText }} €</div>
-                <div class="min-order">Min. {{ restaurant.minimumOrderValueText }} €</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

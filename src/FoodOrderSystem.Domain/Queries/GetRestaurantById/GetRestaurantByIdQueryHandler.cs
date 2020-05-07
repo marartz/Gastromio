@@ -28,12 +28,6 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
-            if (currentUser == null)
-                return FailureResult<RestaurantViewModel>.Unauthorized();
-
-            if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<RestaurantViewModel>.Forbidden();
-
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 

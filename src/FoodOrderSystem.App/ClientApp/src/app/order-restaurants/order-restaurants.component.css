@@ -1,0 +1,455 @@
+.order-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1 1 0%;
+}
+
+.order-wrapper .order-content {
+    font-family: proxima-nova, sans-serif;
+    position: relative;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.order-wrapper .order-content .order-inner {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    -moz-box-align: center;
+    align-items: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    background-color: rgb(30, 26, 52);
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .order-bg-mobile {
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    object-fit: cover;
+    position: absolute;
+    overflow: hidden;
+    filter: blur(30px);
+    z-index: 1;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .order-bg-desktop {
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    object-fit: cover;
+    position: absolute;
+    overflow: hidden;
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: center center 0px;
+    transition: opacity 1s ease-in-out 0s;
+    z-index: 2;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .order-title {
+    text-shadow: rgba(23, 32, 38, 0.2) 0px 2px 10px, rgba(23, 32, 38, 0.2) 0px 2px 4px;
+    pointer-events: none;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .order-title .ot3 {
+    transition: none;
+    margin-bottom: 0.35em;
+    text-align: center;
+    font-size: 56px;
+    line-height: 1.3;
+    letter-spacing: 0.5px;
+    margin: 0;
+    margin-bottom: 0px;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .order-title .otp {
+    transition: none;
+    margin-bottom: 0.35em;
+    text-align: center;
+    font-size: 25px;
+    line-height: 1.3;
+    letter-spacing: 0.5px;
+    margin: 0;
+    margin-bottom: 0px;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper {
+    flex: 0 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content {
+    flex: 1 1 auto;
+    width: 100%;
+    background-position: center center;
+    position: relative;
+}
+@media (min-width: 960px) {
+    .order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content {
+        background-position: center center;
+    }
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content .restaurants-inner {
+    position: relative;
+    margin: 0px auto;
+    width: 100%;
+    max-width: 920px;
+}
+
+.order-wrapper .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content .restaurants-inner .content {
+    overflow: visible;
+}
+
+.restaurant-search-box {
+    padding: 0px;
+}
+
+.restaurant-search-box .restaurant-search-container {
+    align-items: center;
+    background: #fff;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    height: 72px;
+    justify-content: center;
+    position: relative;
+}
+
+.restaurant-search-box .restaurant-search-container .searchby-icon {
+    cursor: pointer;
+    pointer-events: none;
+    position: absolute;
+    margin: auto 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 36px;
+    padding-left: 16px;
+    padding-right: 19px;
+}
+
+.restaurant-search-box .restaurant-search-container .searchby-icon .icon {
+    height: 36px;
+    width: 36px;
+}
+
+.restaurant-search-box .restaurant-search-container .searchby-icon .icon .search-icon {
+    color: #172026;
+    height: 36px;
+    width: 36px;
+    pointer-events: none;
+    fill: currentColor;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    -moz-user-select: none;
+}
+
+.restaurant-search-form {
+    flex: 1;
+}
+
+.restaurant-search-form .restaurant-search-input {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0;
+    border: 0;
+    color: #172026;
+    overflow: hidden;
+    outline: 0;
+    padding: 0 100px 0 74px;
+    text-overflow: ellipsis;
+    width: 100%;
+    background: transparent;
+    min-height: 72px;
+}
+
+.restaurant-searchby-type {
+    border-style: none;
+    height: 60px;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.3;
+    padding-top: 0;
+    white-space: normal;
+    border-radius: 0;
+    letter-spacing: 1px;
+    padding-bottom: 0;
+    width: 100%;
+    padding: 15px 30px 14px;
+    font-size: 0.9375rem;
+    color: #fff;
+    box-shadow: none;
+    min-width: 64px;
+    box-sizing: border-box;
+    background-color: #52AE31;
+    text-transform: uppercase;
+    border: 0;
+    cursor: pointer;
+    margin: 0;
+    display: inline-flex;
+    outline: 0;
+    position: relative;
+    align-items: center;
+    vertical-align: middle;
+    -moz-appearance: none;
+    justify-content: center;
+    text-decoration: none;
+    -moz-user-select: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.restaurant-searchby-type:hover {
+    background-color: #428b27
+}
+
+.restaurant-searchby-type .restaurant-button-label {
+    width: 100%;
+    display: inherit;
+    align-items: inherit;
+    justify-content: inherit;
+}
+
+.restaurant-searchby-type restaurant-button-label-wrapper {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    overflow: hidden;
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+
+
+
+
+
+@font-face {
+  font-family: fontello;
+  src: url(../../assets/fonts/fontello/fontello.eot);
+  src: url(../../assets/fonts/fontello/fontello.eot#iefix) format("embedded-opentype"), url(../../assets/fonts/fontello/fontello.woff2) format("woff2"), url(../../assets/fonts/fontello/fontello.woff) format("woff"), url(../../assets/fonts/fontello/fontello.ttf) format("truetype"), url(../../assets/fonts/fontello/fontello.svg#fontello) format("svg");
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: fontello;
+  src: url(../../assets/fonts/fontello/fontello.eot);
+  src: url(../../assets/fonts/fontello/fontello.eot#iefix) format("embedded-opentype"), url(../../assets/fonts/fontello/fontello.woff2) format("woff2"), url(../../assets/fonts/fontello/fontello.woff) format("woff"), url(../../assets/fonts/fontello/fontello.ttf) format("truetype"), url(../../assets/fonts/fontello/fontello.svg#fontello) format("svg");
+  font-weight: 400;
+  font-style: normal
+}
+
+.restaurant {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  padding: 2px;
+  border-radius: 2px;
+  border: 1px solid #ebebeb;
+  margin: 10px;
+  min-height: 7em;
+}
+
+  .restaurant .restaurant-logo-wrapper {
+    flex: 0 0 98px;
+    text-align: center;
+    border-right: 1px solid #ebebeb;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative
+  }
+
+@media (min-width: 570px) {
+  .restaurant .restaurant-logo-wrapper {
+    flex: 0 0 118px
+  }
+}
+
+@media (min-width: 1004px) {
+  .restaurant .restaurant-logo-wrapper {
+    flex: 0 0 138px;
+  }
+}
+
+.restaurant .restaurant-logo {
+  z-index: 1;
+  max-width: 120px;
+  text-align: left;
+  font-size: 12px;
+  position: absolute;
+  width: 100%;
+  top: 45%;
+  transform: translateY(-50%);
+  margin: auto;
+  left: 0;
+  right: 0
+}
+
+  .restaurant .restaurant-logo img {
+    width: 100%;
+    max-height: 80px;
+    height: auto;
+    vertical-align: middle
+  }
+
+.restaurant .restaurant-info-wrapper {
+  flex: 1;
+  min-height: 120px;
+  line-height: 1.7;
+  font-size: 15px;
+  padding: 8px 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden
+}
+
+.restaurant .restaurantname {
+  font-family: proxima-nova, sans-serif;
+  font-weight: 700;
+  padding: 0;
+  color: #0a3847;
+  font-size: 18px;
+  line-height: 22px;
+  max-height: 66px;
+  overflow: hidden;
+  margin: 0 8px 0 0
+}
+
+.restaurant .restaurant-info-wrapper .restaurantbeschreibung {
+  line-height: 22px;
+  font-family: roboto-slab, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 8px 4px 0;
+  color: #666
+}
+
+@media (min-width: 570px) {
+  .restaurant .restaurant-info-wrapper .restaurantbeschreibung {
+    margin: 0 0 8px
+  }
+}
+
+.restaurant .bottom-wrapper {
+  line-height: 12px;
+  display: flex;
+  margin-top: auto;
+}
+
+@media (min-width: 570px) {
+  .restaurant .bottom-wrapper {
+    line-height: 16px
+  }
+}
+
+.restaurant .restaurant-info-wrapper .details {
+  font-size: 12px;
+  line-height: 2em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin-bottom: 3px
+}
+
+@media (min-width: 570px) {
+  .restaurant .restaurant-info-wrapper .details {
+    margin-bottom: 6px
+  }
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery {
+  width: 100%;
+  line-height: 18px;
+  font-family: roboto-slab, Arial, sans-serif;
+  font-weight: 300;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap
+}
+
+  .restaurant .restaurant-info-wrapper .details .delivery div {
+    margin-right: 8px
+  }
+
+@media (min-width: 1004px) {
+  .restaurant .restaurant-info-wrapper .details .delivery div {
+    margin-right: 16px
+  }
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery.hidden {
+  display: none
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .nextdeliverytime:before,
+.restaurant .restaurant-info-wrapper .details .delivery .delivery-cost:before,
+.restaurant .restaurant-info-wrapper .details .delivery .min-order:before {
+  margin-right: 4px;
+  font-family: fontello;
+  color: #999;
+  font-size: 11px
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .clock-icon:before {
+  margin-right: 4px;
+  font-family: fontello;
+  font-size: 11px
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .delivery-cost:before {
+  content: "\e97d"
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .min-order:before {
+  content: "\e97c"
+}
+
+.restaurant .restaurant-info-wrapper .details .delivery .nextdeliverytime:before,
+.restaurant .restaurant-info-wrapper .details .delivery .clock-icon:before {
+  content: "\e95d"
+}
+
+#restaurant-search {
+  font-family: bilo, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  height: 35px;
+  background: none;
+  color: #0a3874;
+  border: 1px solid #d7d7d7
+}
