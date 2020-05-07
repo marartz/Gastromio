@@ -2,7 +2,8 @@
     position: relative;
     font-family: proxima-nova, sans-serif;
     background-color: #f8f8f8;
-    -moz-osx-font-smoothing: grayscale
+    -moz-osx-font-smoothing: grayscale;
+    z-index: 1;
 }
 
 .footer .footer-container {

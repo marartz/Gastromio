@@ -1,5 +1,39 @@
 <block-ui>
-  <div class="container" style="padding-top: 20px; padding-bottom: 20px;">
+    <main class="restaurant-wrapper">
+        <div class="restaurant-content">
+            <div class="restaurant-inner">
+                <div class="restaurant-header">
+
+                    <!-- Von Restaurantadministrator einstellbar? -->
+                    <div class="background">
+                        <div class="overlay"></div>
+                        <div class="hero-image" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
+                    </div>
+
+                    <div class="info-wrapper">
+                        <div class="info-content">
+                            <div class="info">
+                                <div class="left">
+                                    <div class="name">
+                                        <h1 class="restaurantname" style="max-width: 100%; color: rgb(23, 32, 38);">{{restaurant.name}}</h1>
+                                    </div>
+                                    <div class="weitere-infos">
+                                        <span class="adresse">
+                                            <!-- Adresse wird nicht angezeigt -->
+                                            <aside class="text" style="max-width: 100%;">{{restaurant.address.street}}</aside>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+  <!--div class="container" style="padding-top: 20px; padding-bottom: 20px;">
     <div class="row" *ngIf="generalError !== undefined">
       <div class="col-12 setting-form">
         <div class="form-notification">{{generalError}}</div>
@@ -10,5 +44,5 @@
         {{restaurant.name}}
       </div>
     </div>
-  </div>
+  </div-->
 </block-ui>

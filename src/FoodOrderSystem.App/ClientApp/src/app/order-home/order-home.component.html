@@ -40,10 +40,13 @@
                                                 </div>
                                             </div>
                                             <div class="restaurant-search-form">
-                                                <input class="restaurant-search-input" placeholder="Suche nach Restaurants" tabindex="1"  />
-                                                <input class="restaurant-search-input" placeholder="Suche nach Restaurants" tabindex="1" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)"/>
-                                                <ng-template #rt let-r="result" let-t="term">
-                                                  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                                                <input class="restaurant-search-input" placeholder="Suche nach Restaurants" tabindex="1" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
+                                                <ng-template class="search-result-wrapper" #rt let-r="result" let-t="term" style="opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
+                                                    <div class="search-result-container">
+                                                        <ul class="result-list">
+                                                            <ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight>
+                                                        </ul>
+                                                    </div>
                                                 </ng-template>
                                             </div>
                                         </div>
@@ -57,6 +60,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="footer-wrapper">
+                    <footer class="transparent-footer">
+                        <span class="copyright">&copy; 2020 Bocholt Liefert</span>
+                        <div class="link-wrapper">
+                            <a class="link" target="_blank" [routerLink]="['/general-terms-and-conditions']">AGB</a>
+                            <a class="link" target="_blank" [routerLink]="['/imprint']">Impressum</a>
+                            <a class="link" target="_blank" [routerLink]="['/privacy-policy']">Datenschutz</a>
+                        </div>
+                    </footer>
                 </div>
             </div>
         </div>

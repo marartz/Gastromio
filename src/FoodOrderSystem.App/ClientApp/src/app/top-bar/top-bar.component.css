@@ -144,17 +144,15 @@
     }
 }
 
-
-
-
 .dd-start {
     right: 7px;
     z-index: 1;
-        background-color: #fff;
+    background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0px -2px 4px 0px rgba(0, 0, 0, 0.05);
     width: 320px;
     max-height: 515px;
+    margin-top: 20px;
 }
 
 .dd-start .dd-head {
