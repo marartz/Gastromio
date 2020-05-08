@@ -8,6 +8,8 @@ import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 import { OrderService } from '../order/order.service';
 
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-order-restaurant',
   templateUrl: './order-restaurant.component.html',

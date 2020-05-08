@@ -178,7 +178,7 @@
 .restaurant-wrapper .restaurant-content .restaurant-inner .header .informations-wrapper .info-content .info .left .bottom .beschreibung {
     color: #8D9499;
     font-family: proxima-nova, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 300;
     letter-spacing: 0.00938em;
     line-height: 21px;
@@ -231,7 +231,7 @@
 
 
 
-/* RESTAURANT MENÜ */
+/* RESTAURANT MENÜ */ /* // TODO: Dropdown für Allergien & Unvertrgl. fertigstellen */
 .restauarant-menu-wrapper {
     background: #F2F4F5;
     flex: 1 1 auto;
@@ -255,4 +255,170 @@
 
 .restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content {
     display: flex;
+}
+
+@media (min-width: 960px) {
+    .restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left {
+        flex: 1;
+        display: flex;
+        padding: 44px 0;
+    }
+    .restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .right {
+        width: 400px;
+        padding-top: 44px;
+        padding-bottom: 44px;
+    }
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-category-wrapper {
+    flex: 0 0 auto;
+    width: 313px;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper {
+    flex: 1 1 0%;
+    position: relative;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    word-break: break-word;
+    border-radius: 0px;
+    background-color: rgb(242, 244, 245);
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header {
+    box-sizing: border-box;
+    padding: 20px 24px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .inner {
+    display: flex;
+    -moz-box-pack: justify;
+    justify-content: space-between;
+    -moz-box-align: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    text-align: left;
+    border: medium none;
+    outline: currentcolor none medium;
+}
+
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .inner .wrapper {
+    -moz-box-align: center;
+    align-items: center;
+    display: flex;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .inner .wrapper .icon {
+    height: 24px;
+    width: 24px;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .inner .wrapper .icon .icon-svg {
+    height: 24px;
+    width: 24px;
+    color: #006CBB;
+    pointer-events: none;
+    fill: currentColor;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    -moz-user-select: none;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .inner .title {
+    font-size: 14px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0;
+    margin: 0;
+    color: #006CBB;
+    transition: none;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .mi-dropdown {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-out 0s;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .mi-dropdown .icon-wrapper {
+    height: 24px;
+    width: 24px;
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .mi-dropdown .icon-wrapper .icon svg {
+    fill: rgb(141, 148, 153);
+}
+
+.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper .menu-items-list .mi-header .mi-dropdown .icon-wrapper .icon {
+    color: #8D9499;
+    height: 24px;
+    width: 24px;
+    pointer-events: none;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    -moz-user-select: none;
+}
+
+.mi-dropdown-content {
+    font-weight: 400;
+    color: rgb(141, 148, 153);
+    max-height: 0px;
+    transition: max-height 0.3s ease-out 0s;
+    overflow: hidden;
+    font-size: 14px;
+    background-color: rgb(255, 255, 255); /* ----- */
+}
+
+/* RESTAURANT MODALS */
+.modal.show {
+  display: block
+}
+
+.restaurant-modal-section {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 70px 0;
+}
+
+.restaurant-modal-section .wrapper {
+    z-index: -1;
+    position: fixed;
+    inset: 0px;
+    background-color: rgba(255, 255, 255, 0.7);
+    touch-action: none;
+}
+
+.restaurant-modal-section .wrapper .restaurant-modal {
+    background-color: #fff;
+    border-radius: 8px;
+    bottom: 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0px -2px 4px 0px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 345px;
+    outline: none;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+}
+
+.restaurant-modal-section .wrapper .restaurant-modal .restaurant-modal-content {
+    overflow: auto;
+    position: relative;
 }

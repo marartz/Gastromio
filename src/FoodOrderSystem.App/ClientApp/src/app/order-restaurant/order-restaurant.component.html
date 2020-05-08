@@ -23,12 +23,12 @@
                                     </div>
                                     <div class="bottom">
                                         <span class="adresse">
-                                            <aside class="beschreibung" style="max-width: 100%;">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</aside>
+                                            <aside class="beschreibung" role="button" style="max-width: 100%;">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</aside>
                                         </span>
 
                                         <!-- // TODO: Soll Modal öffnen mit Öffnungszeiten -->
                                         <span class="zeiten">
-                                            <aside class="beschreibung" style="max-width: 100%;">Öffnungszeiten</aside>
+                                            <aside class="beschreibung" role="button" style="max-width: 100%;">Öffnungszeiten</aside>
                                         </span>
 
                                         <!-- // TODO: Soll Modal öffnen mit Impressum, Karte, Telefon, Web, etc. -->
@@ -49,11 +49,44 @@
             </div>
             <div class="restauarant-menu-wrapper">
                 <div class="restaurant-menu-inner">
-                    <div class="restaurant-menu-content" style="min-height: 307px;"> <!-- Platzhalter -->
-                          <!-- LINKS: bspw. Kategorien
-                               (MITTE) RECHTS: bspw. Speisen
-                               (RECHTS) bspw. Warenkorb
-                          -->
+                    <div class="restaurant-menu-content" style="min-height: 307px;">
+                        <!-- Platzhalter -->
+                        <!-- LINKS: bspw. Kategorien
+                             (MITTE) RECHTS: bspw. Speisen
+                             (RECHTS) bspw. Warenkorb
+                        -->
+                        <div class="left">
+                            <div class="menu-category-wrapper"></div>
+                            <div class="menu-items-wrapper" style="max-width: 100%;">
+                                <div class="menu-items-list">
+                                    <div class="mi-header">
+                                        <div class="inner">
+                                            <div class="wrapper">
+                                                <div class="icon">
+                                                    <svg class="icon-svg" focusable="false" viewBox="0 0 24 24" color="secondary" aria-hidden="true" role="presentation">
+                                                        <path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-.022 16.349a1.46 1.46 0 100-2.92 1.46 1.46 0 000 2.92zm.314-4.345c.647-3.05 1.664-4.177 1.664-5.823C13.956 7.054 13.22 6 11.978 6S10 7.054 10 8.181c0 1.646.998 2.773 1.663 5.823h.629z"></path>
+                                                    </svg>
+                                                </div>
+                                                <p class="title" style="max-width: 100%;">Allergien & Unverträglichkeiten</p>
+                                            </div>
+                                            <div class="mi-dropdown">
+                                                <div class="" style="margin-right: 14px!important;">
+                                                    <div class="icon-wrapper">
+                                                        <svg class="icon" focusable="false" viewBox="0 0 24 24" color="grey" aria-hidden="true" role="presentation">
+                                                            <path d="M6.85,10.6458333 L11.6341667,15.43 C11.836431,15.6315119 12.163569,15.6315119 12.3658333,15.43 L17.15,10.6458333 C17.3286368,10.4682104 17.3824204,10.2003408 17.2861918,9.96752963 C17.1899631,9.73471843 16.9627478,9.5829951 16.7108333,9.58333333 L7.28916667,9.58333333 C7.03725222,9.5829951 6.81003686,9.73471843 6.71380823,9.96752963 C6.61757961,10.2003408 6.67136323,10.4682104 6.85,10.6458333 Z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--div class="mi-dropdown-content">
+
+                                        </!--div-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right"></div>
                     </div>
                 </div>
             </div>
