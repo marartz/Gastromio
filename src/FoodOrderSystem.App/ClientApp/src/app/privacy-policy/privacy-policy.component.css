@@ -1,40 +1,85 @@
-.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text .disclaimer {
-    font-weight: 400;
-    font-size: 14px;
-    vertical-align: top;
-    padding-bottom: 8px;
-    margin: 0;
+.datenschutz {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text .paragraph {
-    margin-bottom: 16px;
-    font-size: 14px;
+@media (min-width: 1200px) {
+    .datenschutz {
+        max-width: 980px;
+    }
+}
+
+.datenschutz h3 {
+    margin: 24px 0 12px 0;
+}
+
+.datenschutz p {
     font-weight: 300;
-    line-height: 21px;
-    letter-spacing: 0.00938em;
-    margin: 0;
+    color: rgb(102, 112, 147);
+    margin: 0 0 20px 0;
+    font-size: 16px !important;
 }
 
-.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text .title-1 {
-    color: #172026;
-    font-size: 28px;
+.datenschutz strong {
+    color: #000;
+    font-weight: 600;
+}
+
+.datenschutz a {
+    text-decoration: none;
+}
+
+.datenschutz ul {
+    font-weight: 300;
+    color: rgb(102, 112, 147);
+    padding: 0 0 0 20px;
+    margin: 0 0 20px 0;
+}
+
+.datenschutz .t1, .t2, .t3, .t4, .t5, .t6 {
+    display: block;
+    font-family: inherit;
+    line-height: 1.25;
+}
+
+.datenschutz h1, h2, h3, .t1, .t2, .t3 {
     font-weight: 700;
-    line-height: 33px;
-    letter-spacing: 0;
+}
+
+.datenschutz h4, h5, h6, .t4, .t5, .t6 {
+  font-weight: bold;
+}
+
+.datenschutz .t3 {
+    font-size: 32px;
     margin: 48px 0 24px 0;
 }
 
-.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text .title-3 {
-    color: #172026;
-    font-size: 22px;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: 0;
+.datenschutz .t4 {
+    font-size: 24px;
 }
 
-.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text p {
-    margin: 0 0 20px 0;
+.datenschutz  .dptable {
     color: rgb(102, 112, 147);
-    font-weight: 300;
-    font-size: 16px;
+    margin: 24px 0;
+    display: grid;
+    grid-gap: 4px 20px;
+}
+
+@media (min-width: 768px) {
+    .datenschutz .dptable {
+        grid-template-columns: 30% auto;
+        grid-gap: 12px 20px;
+    }
+}
+
+.datenschutz .dptable div:nth-child(2n+1) {
+    color: rgb(102, 112, 147);
+    font-weight: 600;
+}
+
+.datenschutz .block {
+    display: block;
 }
