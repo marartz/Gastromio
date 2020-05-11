@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 null,
                 null,
                 null,
+                new HashSet<CuisineId>(),
                 new HashSet<PaymentMethodId>(),
                 new HashSet<UserId>()
             );

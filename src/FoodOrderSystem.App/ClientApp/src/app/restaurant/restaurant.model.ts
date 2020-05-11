@@ -1,5 +1,6 @@
 import { PaymentMethodModel } from "../payment-method/payment-method.model";
 import { UserModel } from "../user/user.model";
+import { CuisineModel } from "../cuisine/cuisine.model";
 
 export class RestaurantModel {
   constructor() {
@@ -36,6 +37,8 @@ export class RestaurantModel {
   public imprint: string;
 
   public orderEmailAddress: string;
+
+  public cuisines: CuisineModel[];
 
   public paymentMethods: PaymentMethodModel[];
 

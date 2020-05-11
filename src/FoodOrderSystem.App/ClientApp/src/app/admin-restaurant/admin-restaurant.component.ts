@@ -19,6 +19,7 @@ import { RemoveDishCategoryComponent } from '../remove-dish-category/remove-dish
 import { DishModel } from '../dish-category/dish.model';
 import { EditDishComponent } from '../edit-dish/edit-dish.component';
 import { RemoveDishComponent } from '../remove-dish/remove-dish.component';
+import { CuisineModel } from '../cuisine/cuisine.model';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -60,6 +61,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   endTimeError: string;
   addDeliveryTimeError: string;
   removeDeliveryTimeError: string;
+
+  availableCuisines: CuisineModel[];
+  addCuisineForm: FormGroup;
+  addCuisineError: string;
+  removeCuisineError: string;
 
   availablePaymentMethods: PaymentMethodModel[];
   addPaymentMethodForm: FormGroup;
@@ -110,6 +116,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       end: ""
     });
 
+    this.addCuisineForm = this.formBuilder.group({
+      cuisineId: ""
+    });
+
     this.addPaymentMethodForm = this.formBuilder.group({
       paymentMethodId: ""
     });
@@ -125,6 +135,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           getRestaurantSubscription.unsubscribe();
 
           this.restaurant = data;
+
+          this.restaurant.cuisines.sort((a, b) => {
+            if (a.name < b.name)
+              return -1;
+            if (a.name > b.name)
+              return 1;
+            return 0;
+          });
 
           this.restaurant.paymentMethods.sort((a, b) => {
             if (a.name < b.name)
@@ -171,18 +189,31 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
               if (this.dishCategories !== undefined && this.dishCategories.length > 0)
                 this.activeDishCategoryId = this.dishCategories[0].id;
 
-              let getPaymentMethodsSubscription = this.restaurantRestAdminService.getPaymentMethodsAsync().subscribe(
-                (paymentMethods) => {
-                  getPaymentMethodsSubscription.unsubscribe();
-                  this.availablePaymentMethods = paymentMethods.filter(paymentMethod => this.restaurant.paymentMethods.findIndex(en => en.id === paymentMethod.id) == -1);
-                  this.blockUI.stop();
+              let getCuisinesSubscription = this.restaurantRestAdminService.getCuisinesAsync().subscribe(
+                (cuisines) => {
+                  getCuisinesSubscription.unsubscribe();
+                  this.availableCuisines = cuisines.filter(cuisine => this.restaurant.cuisines.findIndex(en => en.id === cuisine.id) == -1);
+
+                  let getPaymentMethodsSubscription = this.restaurantRestAdminService.getPaymentMethodsAsync().subscribe(
+                    (paymentMethods) => {
+                      getPaymentMethodsSubscription.unsubscribe();
+                      this.availablePaymentMethods = paymentMethods.filter(paymentMethod => this.restaurant.paymentMethods.findIndex(en => en.id === paymentMethod.id) == -1);
+                      this.blockUI.stop();
+                    },
+                    (error: HttpErrorResponse) => {
+                      getPaymentMethodsSubscription.unsubscribe();
+                      this.blockUI.stop();
+                      this.generalError = this.httpErrorHandlingService.handleError(error);
+                    }
+                  );
                 },
                 (error: HttpErrorResponse) => {
-                  getPaymentMethodsSubscription.unsubscribe();
+                  getCuisinesSubscription.unsubscribe();
                   this.blockUI.stop();
                   this.generalError = this.httpErrorHandlingService.handleError(error);
                 }
               );
+
             },
             (error: HttpErrorResponse) => {
               getDishesSubscription.unsubscribe();
@@ -378,6 +409,54 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       subscription.unsubscribe();
       this.blockUI.stop();
       this.removeDeliveryTimeError = this.httpErrorHandlingService.handleError(response);
+    });
+  }
+
+  onAddCuisine(value): void {
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.restaurantRestAdminService.addCuisineToRestaurantAsync(this.restaurant.id, value.cuisineId).subscribe((data) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.addCuisineError = undefined;
+      this.addCuisineForm.reset();
+      let index = this.availableCuisines.findIndex(en => en.id === value.cuisineId);
+      this.restaurant.cuisines.push(this.availableCuisines[index]);
+      this.availableCuisines.splice(index, 1);
+      this.restaurant.cuisines.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      });
+    }, (response: HttpErrorResponse) => {
+      console.log("Response: ", response);
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.addCuisineError = this.httpErrorHandlingService.handleError(response);
+    });
+  }
+
+  onRemoveCuisine(cuisineId: string) {
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.restaurantRestAdminService.removeCuisineFromRestaurantAsync(this.restaurant.id, cuisineId).subscribe((data) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.removeCuisineError = undefined;
+      let index = this.restaurant.cuisines.findIndex(en => en.id == cuisineId);
+      this.availableCuisines.push(this.restaurant.cuisines[index]);
+      this.restaurant.cuisines.splice(index, 1);
+      this.restaurant.cuisines.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      });
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.removeCuisineError = this.httpErrorHandlingService.handleError(response);
     });
   }
 

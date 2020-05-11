@@ -7,6 +7,7 @@ import { PaymentMethodModel } from '../payment-method/payment-method.model';
 import { UserModel } from '../user/user.model';
 import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { DishModel } from '../dish-category/dish.model';
+import { CuisineModel } from '../cuisine/cuisine.model';
 
 @Injectable()
 export class RestaurantRestAdminService {
@@ -48,6 +49,17 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
+  }
+
+  public getCuisinesAsync(): Observable<CuisineModel[]> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions);
   }
 
   public getPaymentMethodsAsync(): Observable<PaymentMethodModel[]> {
@@ -147,6 +159,28 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removedeliverytime", { dayOfWeek: dayOfWeek, start: start }, httpOptions);
+  }
+
+  public addCuisineToRestaurantAsync(id: string, cuisineId: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/addcuisine", { cuisineId: cuisineId }, httpOptions);
+  }
+
+  public removeCuisineFromRestaurantAsync(id: string, cuisineId: string): Observable<boolean> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + "/removecuisine", { cuisineId: cuisineId }, httpOptions);
   }
 
   public addPaymentMethodToRestaurantAsync(id: string, paymentMethodId: string): Observable<boolean> {

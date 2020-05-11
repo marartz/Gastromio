@@ -39,11 +39,17 @@ namespace FoodOrderSystem.Domain.ViewModels
 
         public string OrderEmailAddress { get; set; }
 
+        public IList<CuisineViewModel> Cuisines { get; set; }
+
         public IList<PaymentMethodViewModel> PaymentMethods { get; set; }
 
         public IList<UserViewModel> Administrators { get; set; }
 
-        public static RestaurantViewModel FromRestaurant(Restaurant restaurant, IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, IUserRepository userRepository)
+        public static RestaurantViewModel FromRestaurant(
+            Restaurant restaurant,
+            IDictionary<Guid, CuisineViewModel> allCuisines,
+            IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods,
+            IUserRepository userRepository)
         {
             string image = null;
             if (restaurant.Image != null && restaurant.Image.Length != 0)
@@ -74,11 +80,18 @@ namespace FoodOrderSystem.Domain.ViewModels
                 WebSite = restaurant.WebSite,
                 Imprint = restaurant.Imprint,
                 OrderEmailAddress = restaurant.OrderEmailAddress,
+                Cuisines = restaurant.Cuisines != null ? restaurant.Cuisines
+                    .Select(en => RetrieveCuisineModel(allCuisines, en.Value)).ToList() : new List<CuisineViewModel>(),
                 PaymentMethods = restaurant.PaymentMethods != null ? restaurant.PaymentMethods
                     .Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value)).ToList() : new List<PaymentMethodViewModel>(),
                 Administrators = restaurant.Administrators != null ? restaurant.Administrators
                     .Select(en => RetrieveUserModel(userRepository, en)).ToList() : new List<UserViewModel>()
             };
+        }
+
+        public static CuisineViewModel RetrieveCuisineModel(IDictionary<Guid, CuisineViewModel> allCuisines, Guid cuisineId)
+        {
+            return allCuisines.TryGetValue(cuisineId, out var model) ? model : null;
         }
 
         public static PaymentMethodViewModel RetrievePaymentMethodModel(IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, Guid paymentMethodId)

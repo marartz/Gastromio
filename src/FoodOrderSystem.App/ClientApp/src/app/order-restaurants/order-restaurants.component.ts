@@ -58,4 +58,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }, (error) => {
     });
   }
+
+  getRestaurantSubText(restaurant: RestaurantModel): string {
+    if (restaurant === undefined || restaurant.cuisines === undefined || restaurant.cuisines.length === 0)
+      return "";
+    return restaurant.cuisines.map(en => en.name).join(", ");
+  }
 }

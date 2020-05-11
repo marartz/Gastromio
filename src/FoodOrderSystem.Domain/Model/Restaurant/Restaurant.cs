@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.Domain.Model.PaymentMethod;
+﻿using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             string webSite,
             string imprint,
             string orderEmailAddress,
+            ISet<CuisineId> cuisines,
             ISet<PaymentMethodId> paymentMethods,
             ISet<UserId> administrators
         )
@@ -38,6 +40,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             WebSite = webSite;
             Imprint = imprint;
             OrderEmailAddress = orderEmailAddress;
+            Cuisines = cuisines;
             PaymentMethods = paymentMethods;
             Administrators = administrators;
         }
@@ -53,6 +56,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public string WebSite { get; private set; }
         public string Imprint { get; private set; }
         public string OrderEmailAddress { get; private set; }
+        public ISet<CuisineId> Cuisines { get; }
         public ISet<PaymentMethodId> PaymentMethods { get; }
         public ISet<UserId> Administrators { get; }
 
@@ -99,6 +103,20 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public void RemoveDeliveryTime(int dayOfWeek, TimeSpan start)
         {
             deliveryTimes = deliveryTimes.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
+        }
+
+        public void AddCuisine(CuisineId cuisineId)
+        {
+            if (Cuisines.Contains(cuisineId))
+                return;
+            Cuisines.Add(cuisineId);
+        }
+
+        public void RemoveCuisine(CuisineId cuisineId)
+        {
+            if (!Cuisines.Contains(cuisineId))
+                return;
+            Cuisines.Remove(cuisineId);
         }
 
         public void AddPaymentMethod(PaymentMethodId paymentMethodId)
