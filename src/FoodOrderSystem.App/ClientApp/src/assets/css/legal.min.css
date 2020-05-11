@@ -1,0 +1,184 @@
+.no-top {
+    background-color: #52AE31;
+    top: -50px;
+    width: 100%;
+}
+
+.legal-header {
+    align-items: center;
+    background-color: #52AE31;
+    display: flex;
+    height: 80px;
+    justify-content: center;
+    padding: 12px 20px 24px;
+    z-index: 2; 
+}
+
+@media (min-width: 960px) {
+    .legal-header {
+        height: 140px;
+        justify-content: center;
+        padding: 15px 60px 35px;
+    }
+}
+
+.legal-header .header-title {
+    font-family: proxima-nova, sans-serif;
+    font-size: 56px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    margin: 0;
+    text-align: center;
+    transition: none;
+}
+
+.legal-header .header-title .title {
+    font-weight: 600;
+}
+
+@media (min-width: 960px) {
+    .legal-header .header-title .title {
+        font-weight: 700;
+    }
+}
+
+.multi-tabs-wrapper {
+    background-color: #52AE31;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    height: 60px;
+}
+
+.multi-tabs-wrapper .multi-tabs-root {
+    background-color: #52AE31;
+    color: #fff;
+    display: flex;
+    min-height: 48px;
+    height: 60px;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.multi-tabs-wrapper .multi-tabs-root .multi-tabs-scroller {
+    display: inline-block;
+    flex: 1 1 auto;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.multi-tabs-wrapper .multi-tabs-root .multi-tabs-container {
+    display: flex;
+    justify-content: center;
+}
+
+.multi-tabs-wrapper .multi-tabs-root .multi-tabs-container .multi-tab {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    border-style: none;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    height: 60px;
+    justify-content: center;
+    letter-spacing: normal;
+    line-height: 1.3;
+    margin: 0;
+    min-height: 48px;
+    opacity: 0.7;
+    outline: 0;
+    overflow: hidden;
+    padding: 6px 12px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    vertical-align: middle;
+    white-space: normal;
+    -moz-user-select: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 600px) {
+    .multi-tabs-wrapper .multi-tabs-root .multi-tabs-container .multi-tab {
+        font-size: 16px;
+        min-width: 160px;
+    }
+}
+
+.multi-tabs-wrapper .multi-tabs-root .multi-tabs-container .active {
+    border-bottom: 3px solid #fff;
+    color: #fff;
+    opacity: 1;
+}
+
+.multi-tabs-wrapper .multi-tabs-root .multi-tabs-container .multi-tab-wrapper {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.legal-wrapper {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    font-family: proxima-nova, sans-serif;
+    height: 100%;
+}
+
+.legal-wrapper .legal-content {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+}
+
+.legal-wrapper .legal-content .legal-child {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+}
+
+.legal-wrapper .legal-content .legal-child .wrapper {
+    background-position: center center;
+    flex: 1 1 auto;
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 960px) {
+    .legal-wrapper .legal-content .legal-child .wrapper {
+        background-position: center center;
+    }
+}
+
+.legal-wrapper .legal-content .legal-child .wrapper .inner {
+    margin: 0px auto;
+    max-width: 920px;
+    position: relative;
+    width: 100%;
+}
+
+.legal-wrapper .legal-content .legal-child .wrapper .inner .content-text {
+    margin: 72px auto 118px;
+    width: 100%
+}
+
+@media (max-width: 960px) {
+    .legal-wrapper .legal-content .legal-child .wrapper .inner .content-text {
+        padding: 12px 16px 40px;
+    }
+}
