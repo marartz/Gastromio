@@ -8,7 +8,10 @@ import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 import { OrderService } from '../order/order.service';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DishModel } from '../dish-category/dish.model';
+import { OrderRestaurantOpeningHoursComponent } from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
+import { OrderRestaurantImprintComponent } from '../order-restaurant-imprint/order-restaurant-imprint.component';
 
 @Component({
   selector: 'app-order-restaurant',
@@ -26,10 +29,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   imgUrl: any;
 
+  openingHours: string;
+
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
+    private modalService: NgbModal,
   ) {
   }
 
@@ -53,6 +59,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
           });
 
           this.imgUrl = this.restaurant.image;
+
+          this.openingHours = "Mo. 10:00-14:00";
 
           let getDishesSubscription = this.orderService.getDishesOfRestaurantAsync(this.restaurantId).subscribe(
             (dishCategories) => {
@@ -78,5 +86,24 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  openOpeningHoursModal(): void {
+    let modalRef = this.modalService.open(OrderRestaurantOpeningHoursComponent);
+    modalRef.result.then(() => {
+    }, () => { });
+  }
+
+  openImprintModal(): void {
+    let modalRef = this.modalService.open(OrderRestaurantImprintComponent);
+    modalRef.result.then(() => {
+    }, () => { });
+  }
+
+  getFirstDishVariant(dish: DishModel): string {
+    if (dish === undefined || dish.variants === undefined || dish.variants.length === 0)
+      return "0,00";
+
+    return dish.variants[0].price.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 }

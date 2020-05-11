@@ -35,6 +35,8 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { LoginComponent } from './login/login.component';
 import { OrderHomeComponent } from './order-home/order-home.component';
 import { OrderRestaurantComponent } from './order-restaurant/order-restaurant.component';
+import { OrderRestaurantImprintComponent } from './order-restaurant-imprint/order-restaurant-imprint.component';
+import { OrderRestaurantOpeningHoursComponent } from './order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import { OrderRestaurantsComponent } from './order-restaurants/order-restaurants.component';
 import { OrderService } from './order/order.service';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -106,6 +108,8 @@ import { UserAdminService } from './user/user-admin.service';
     LoginComponent,
     OrderHomeComponent,
     OrderRestaurantComponent,
+    OrderRestaurantImprintComponent,
+    OrderRestaurantOpeningHoursComponent,
     OrderRestaurantsComponent,
     PaginationComponent,
     PrivacyPolicyComponent,

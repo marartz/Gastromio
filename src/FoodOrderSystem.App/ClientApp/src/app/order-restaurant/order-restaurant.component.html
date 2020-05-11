@@ -1,111 +1,114 @@
 <block-ui>
-    <main class="restaurant-wrapper">
-        <div class="restaurant-content">
-            <div class="restaurant-inner">
-                <div class="header">
+  <div class="row" *ngIf="generalError !== undefined">
+    <div class="col-12 setting-form">
+      <div class="form-notification">{{generalError}}</div>
+    </div>
+  </div>
+  <main class="restaurant-wrapper" *ngIf="generalError === undefined && restaurant !== undefined">
+    <div class="restaurant-content">
+      <div class="restaurant-inner">
+        <div class="header">
 
-                    <!-- // TODO:
-                            1. Vom Restaurantadministrator einstellbar ODER
-                            2. Aus voreingestellten Bildern vom R-ADM. auswählbar
-                    -->
-                    <div class="banner">
-                        <div class="overlay"></div>
-                        <div class="hero" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
+          <!-- // TODO:
+                  1. Vom Restaurantadministrator einstellbar ODER
+                  2. Aus voreingestellten Bildern vom R-ADM. auswählbar
+          -->
+          <div class="banner">
+            <div class="overlay"></div>
+            <div class="hero" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
+          </div>
+
+          <div class="informations-wrapper">
+            <div class="info-content">
+              <div class="info">
+                <div class="left">
+                  <!-- // TODO: Restaurant-Logo vor Restaurant-namen und Adresse -->
+                  <div class="top">
+                    <h1 class="name" style="max-width: 100%; color: rgb(23, 32, 38);">{{restaurant.name}}</h1>
+                  </div>
+                  <div class="bottom">
+                    <span class="adresse">
+                      <aside class="beschreibung" role="button" style="max-width: 100%;">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</aside>
+                    </span>
+
+                    <span class="zeiten">
+                      <aside class="beschreibung" role="button" style="max-width: 100%;"><a (click)="openOpeningHoursModal()">Öffnungszeiten</a></aside>
+                    </span>
+
+                    <div class="rechtliches">
+                      <div class="info">
+                        <a (click)="openImprintModal()">
+                          <svg class="icon" focusable="false" viewBox="0 0 24 24" color="grey" aria-hidden="true" role="presentation">
+                            <path d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z"></path>
+                          </svg>
+                        </a>
+                      </div>
                     </div>
 
-                    <div class="informations-wrapper">
-                        <div class="info-content">
-                            <div class="info">
-                                <div class="left">
-                                    <!-- // TODO: Restaurant-Logo vor Restaurant-namen und Adresse -->
-                                    <div class="top">
-                                        <h1 class="name" style="max-width: 100%; color: rgb(23, 32, 38);">{{restaurant.name}}</h1>
-                                    </div>
-                                    <div class="bottom">
-                                        <span class="adresse">
-                                            <aside class="beschreibung" role="button" style="max-width: 100%;">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</aside>
-                                        </span>
-
-                                        <!-- // TODO: Soll Modal öffnen mit Öffnungszeiten -->
-                                        <span class="zeiten">
-                                            <aside class="beschreibung" role="button" style="max-width: 100%;">Öffnungszeiten</aside>
-                                        </span>
-
-                                        <!-- // TODO: Soll Modal öffnen mit Impressum, Karte, Telefon, Web, etc. -->
-                                        <div class="rechtliches">
-                                            <div class="info">
-                                                <svg class="icon" focusable="false" viewBox="0 0 24 24" color="grey" aria-hidden="true" role="presentation">
-                                                    <path d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="restauarant-menu-wrapper">
-                <div class="restaurant-menu-inner">
-                    <div class="restaurant-menu-content" style="min-height: 307px;">
-                        <!-- Platzhalter -->
-                        <!-- LINKS: bspw. Kategorien
-                             (MITTE) RECHTS: bspw. Speisen
-                             (RECHTS) bspw. Warenkorb
-                        -->
-                        <div class="left">
-                            <div class="menu-category-wrapper"></div>
-                            <div class="menu-items-wrapper" style="max-width: 100%;">
-                                <div class="menu-items-list">
-
-                                        <div class="disclaimer">
-                                            <div class="top">
-                                                <div class="title-container">
-                                                    <div class="icon-container">
-                                                        <div class="icon-wrap">
-                                                            <svg class="icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                                                                <path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-.022 16.349a1.46 1.46 0 100-2.92 1.46 1.46 0 000 2.92zm.314-4.345c.647-3.05 1.664-4.177 1.664-5.823C13.956 7.054 13.22 6 11.978 6S10 7.054 10 8.181c0 1.646.998 2.773 1.663 5.823h.629z"></path>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <p class="title" style="max-width: 100%;">Allergien &amp; Unverträglichkeiten</p>
-                                                </div>
-                                                <div class="rotate-container">
-                                                    <div class="icon-wrap">
-                                                        <svg class="icon rotate" focusable="false" viewBox="0 0 24 24" color="grey" aria-hidden="true" role="presentation">
-                                                            <path d="M6.85,10.6458333 L11.6341667,15.43 C11.836431,15.6315119 12.163569,15.6315119 12.3658333,15.43 L17.15,10.6458333 C17.3286368,10.4682104 17.3824204,10.2003408 17.2861918,9.96752963 C17.1899631,9.73471843 16.9627478,9.5829951 16.7108333,9.58333333 L7.28916667,9.58333333 C7.03725222,9.5829951 6.81003686,9.73471843 6.71380823,9.96752963 C6.61757961,10.2003408 6.67136323,10.4682104 6.85,10.6458333 Z"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="bottom">
-                                                <div class="description">Gastromio ist nicht an der Zubereitung von Speisen beteiligt. Wenn Sie an einer Nahrungsmittelallergie oder -unverträglichkeit leiden (oder jemand, für den Sie bestellen), rufen Sie {{restaurant.name}} unter {{restaurant.phone}} an, bevor Sie Ihre Bestellung aufgeben.</div>
-                                            </div>
-                                        </div>
-                                
-                                </div>
-                            </div>
-                        </div>
-                        <div class="right"></div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </main>
+      </div>
+      <div class="restauarant-menu-wrapper">
+        <div class="restaurant-menu-inner">
+          <div class="restaurant-menu-content" style="min-height: 307px;">
+            <!-- Platzhalter -->
+            <!-- LINKS: bspw. Kategorien
+                 (MITTE) RECHTS: bspw. Speisen
+                 (RECHTS) bspw. Warenkorb
+            -->
+            <div class="left">
+              <div class="menu-category-wrapper">
+                <div *ngFor="let dishCategory of dishCategories"><a href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a></div>
+              </div>
+              <div class="menu-items-wrapper" style="max-width: 100%;">
+                <div class="menu-items-list">
+
+                  <div class="disclaimer">
+                    <div class="top">
+                      <div class="title-container">
+                        <div class="icon-container">
+                          <div class="icon-wrap">
+                            <svg class="icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                              <path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-.022 16.349a1.46 1.46 0 100-2.92 1.46 1.46 0 000 2.92zm.314-4.345c.647-3.05 1.664-4.177 1.664-5.823C13.956 7.054 13.22 6 11.978 6S10 7.054 10 8.181c0 1.646.998 2.773 1.663 5.823h.629z"></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <p class="title" style="max-width: 100%;">Allergien &amp; Unverträglichkeiten</p>
+                      </div>
+                      <div class="rotate-container">
+                        <div class="icon-wrap">
+                          <svg class="icon rotate" focusable="false" viewBox="0 0 24 24" color="grey" aria-hidden="true" role="presentation">
+                            <path d="M6.85,10.6458333 L11.6341667,15.43 C11.836431,15.6315119 12.163569,15.6315119 12.3658333,15.43 L17.15,10.6458333 C17.3286368,10.4682104 17.3824204,10.2003408 17.2861918,9.96752963 C17.1899631,9.73471843 16.9627478,9.5829951 16.7108333,9.58333333 L7.28916667,9.58333333 C7.03725222,9.5829951 6.81003686,9.73471843 6.71380823,9.96752963 C6.61757961,10.2003408 6.67136323,10.4682104 6.85,10.6458333 Z"></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="bottom">
+                      <div class="description">Gastromio ist nicht an der Zubereitung von Speisen beteiligt. Wenn Sie an einer Nahrungsmittelallergie oder -unverträglichkeit leiden (oder jemand, für den Sie bestellen), rufen Sie {{restaurant.name}} unter {{restaurant.phone}} an, bevor Sie Ihre Bestellung aufgeben.</div>
+                    </div>
+                  </div>
+
+                  <div *ngFor="let dishCategory of dishCategories" id="{{dishCategory.id}}">
+                    <div>{{dishCategory.name}}</div>
+                    <div *ngFor="let dish of dishCategory.dishes">
+                      {{dish.name}} - {{dish.description}} - {{dish.productInfo}} {{getFirstDishVariant(dish)}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <div>
+                <h5>Warenkorb</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </block-ui>
-
-
-  <!--div class="container" style="padding-top: 20px; padding-bottom: 20px;">
-    <div class="row" *ngIf="generalError !== undefined">
-      <div class="col-12 setting-form">
-        <div class="form-notification">{{generalError}}</div>
-      </div>
-    </div>
-    <div class="row" *ngIf="generalError === undefined && restaurant !== undefined">
-      <div class="col">
-        {{restaurant.name}}
-      </div>
-    </div>
-  </div-->

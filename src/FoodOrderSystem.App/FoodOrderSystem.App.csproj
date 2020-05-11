@@ -40,6 +40,8 @@
     <None Remove="ClientApp\src\app\dish-category\dish-variant-extra.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-variant.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish.model.ts" />
+    <None Remove="ClientApp\src\app\order-restaurant-imprint\order-restaurant-imprint.component.ts" />
+    <None Remove="ClientApp\src\app\order-restaurant-opening-hours\order-restaurant-opening-hours.component.ts" />
     <None Remove="ClientApp\src\app\order-restaurant\order-restaurant.component.ts" />
     <None Remove="ClientApp\src\app\order-restaurants\order-restaurants.component.ts" />
     <None Remove="ClientApp\src\app\remove-dish\remove-dish.component.spec.ts" />
@@ -170,6 +172,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\order-home\order-home.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\order-restaurant-imprint\order-restaurant-imprint.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\order-restaurant-opening-hours\order-restaurant-opening-hours.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\order-restaurants\order-restaurants.component.ts">
