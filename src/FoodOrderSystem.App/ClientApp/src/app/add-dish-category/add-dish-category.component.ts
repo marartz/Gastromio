@@ -8,7 +8,7 @@ import { DishCategoryModel } from '../dish-category/dish-category.model';
 @Component({
   selector: 'app-add-dish-category',
   templateUrl: './add-dish-category.component.html',
-  styleUrls: ['./add-dish-category.component.css']
+  styleUrls: ['./add-dish-category.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class AddDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

@@ -1,3 +1,7 @@
+.admin-payment-methods {
+    background-image: url(../../assets/img/header/admin-payment-methods-header.jpg);
+}
+
 @font-face {
     font-family: fontello;
     src: url(../../assets/fonts/fontello/fontello.eot);
@@ -8,17 +12,6 @@
 
 .no-header {
     padding-top: 20px
-}
-
-.setting-title h1 {
-    font-family: proxima-nova, sans-serif;
-    font-weight: 700;
-    font-size: 42px;
-    text-align: center;
-    margin-top: 20px;
-    line-height: 1.14;
-    color: #0a3847;
-    margin-bottom: 12px;
 }
 
 .button-add {

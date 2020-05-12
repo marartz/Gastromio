@@ -7,7 +7,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-remove-payment-method',
   templateUrl: './remove-payment-method.component.html',
-  styleUrls: ['./remove-payment-method.component.css']
+  styleUrls: ['./remove-payment-method.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class RemovePaymentMethodComponent implements OnInit {
   @Input() public paymentMethod: PaymentMethodModel;

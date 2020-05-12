@@ -9,7 +9,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-change-dish-category',
   templateUrl: './change-dish-category.component.html',
-  styleUrls: ['./change-dish-category.component.css']
+  styleUrls: ['./change-dish-category.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class ChangeDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

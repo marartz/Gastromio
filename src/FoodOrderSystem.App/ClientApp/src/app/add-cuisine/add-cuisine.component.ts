@@ -8,7 +8,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-add-cuisine',
   templateUrl: './add-cuisine.component.html',
-  styleUrls: ['./add-cuisine.component.css']
+  styleUrls: ['./add-cuisine.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class AddCuisineComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

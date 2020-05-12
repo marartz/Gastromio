@@ -8,7 +8,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-change-restaurant-name',
   templateUrl: './change-restaurant-name.component.html',
-  styleUrls: ['./change-restaurant-name.component.css']
+  styleUrls: ['./change-restaurant-name.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class ChangeRestaurantNameComponent implements OnInit {
   @Input() public restaurant: RestaurantModel;

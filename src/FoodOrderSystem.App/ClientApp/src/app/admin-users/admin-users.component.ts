@@ -12,7 +12,7 @@ import { RemoveUserComponent } from '../remove-user/remove-user.component';
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
-  styleUrls: ['./admin-users.component.css']
+  styleUrls: ['./admin-users.component.css', '../../assets/css/admin.min.css']
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
   users: UserModel[];

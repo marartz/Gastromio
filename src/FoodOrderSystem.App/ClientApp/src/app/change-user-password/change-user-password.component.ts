@@ -9,7 +9,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-change-user-password',
   templateUrl: './change-user-password.component.html',
-  styleUrls: ['./change-user-password.component.css']
+  styleUrls: ['./change-user-password.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class ChangeUserPasswordComponent implements OnInit {
   @Input() public user: UserModel;

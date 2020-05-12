@@ -8,7 +8,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-remove-user',
   templateUrl: './remove-user.component.html',
-  styleUrls: ['./remove-user.component.css']
+  styleUrls: ['./remove-user.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class RemoveUserComponent implements OnInit {
   @Input() public user: UserModel;

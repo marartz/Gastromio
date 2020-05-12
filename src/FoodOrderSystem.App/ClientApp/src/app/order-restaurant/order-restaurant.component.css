@@ -1,3 +1,10 @@
+/*
+    //TODO Luca: Kategorie-Wrapper für Handheld
+    //TODO Marco: Kategorie-Wrapper CSS Klassen bei Klick
+*/
+
+
+
 .restaurant-wrapper {
     display: flex;
     flex: 1 1 0%;
@@ -231,7 +238,7 @@
 
 
 
-/* RESTAURANT MENÜ */ /* // TODO: Dropdown für Allergien & Unvertrgl. fertigstellen */
+/* RESTAURANT MENÜ */
 .restauarant-menu-wrapper {
     background: #F2F4F5;
     flex: 1 1 auto;
@@ -270,11 +277,6 @@
     }
 }
 
-.restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-category-wrapper {
-    flex: 0 0 auto;
-    width: 313px;
-}
-
 .restauarant-menu-wrapper .restaurant-menu-inner .restaurant-menu-content .left .menu-items-wrapper {
     flex: 1 1 0%;
     position: relative;
@@ -309,6 +311,141 @@
     outline: currentcolor none medium;
 }
 
+/* START: Kategorien (Desktop) */
+.left .menu-category-bar {
+    flex: 0 0 auto;
+    width: 313px;
+}
+
+.left .menu-category-bar .mcb-container {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: padding 0.4s ease-out;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list {
+    width: 100%;
+    top: 90px !important;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container {
+    flex: 1 1 auto;
+    width: 100%;
+    background-position: center center;
+    position: relative;
+}
+
+@media (min-width: 960px) {
+    .left .menu-category-bar .mcb-container .mcb-list .list-container {
+        background-position: center center;
+    }
+
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner {
+    position: relative;
+    margin: 0px auto;
+    width: 100%;
+    max-width: 1440px;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list {
+    width: 313px;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 44px;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper {
+    background: #F7F9FA;
+    border-radius: 8px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-right: 24px;
+    padding: 32px 24px;
+    min-height: 0;
+    position: relative;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 24px;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-family: proxima-nova, sans-serif;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner .category {
+    color: rgb(201, 206, 209);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    max-width: none;
+    overflow: hidden;
+    padding: 12px 14px;
+    pointer-events: none;
+    position: relative;
+    text-overflow: unset;
+    white-space: unset;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner .category.not-selected {
+    color: rgb(141, 148, 153);
+    pointer-events: auto;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner .category.selected {
+    color: transparent;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner .category-name {
+    color: rgb(23, 32, 38);
+    font-weight: 500;
+    left: 14px;
+    letter-spacing: 0px;
+    line-height: 1.25;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 14px;
+    text-overflow: unset;
+    white-space: unset;
+    top: 12px;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner .category-name.selected {
+    opacity: 1;
+}
+
+.left .menu-category-bar .mcb-container .mcb-list .list-container .list-inner .list .list-wrapper .list-content .list-content-inner .category-border {
+    width: 2px;
+    height: 1px;
+    left: 0px;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    background: rgb(82, 174, 49) none repeat scroll 0% 0%;
+    transform-origin: 0px 0px 0px;
+    transition: transform 0.1s ease 0s;
+}
+
+/* ENDE: Kategorien (Links) */
 
 /* START: Disclaimer */
 .disclaimer {
@@ -405,3 +542,234 @@
     padding-top: 16px;
 }
 /* ENDE: Disclaimer */
+
+/* START: Restaurant Speisen */
+.restaurant-menu-item {}
+
+.rm-header {
+    margin: -1px 0px 0px;
+    padding: 30px 16px 16px;
+}
+
+@media (min-width: 960px) {
+    .rm-header {
+        padding: 30px 0px 16px;
+    }
+}
+
+.rm-header .category {
+    transition: none;
+    font-size: 20px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+.rm-list {}
+
+.rm-list .rm-container {
+    position: relative;
+}
+
+.rm-list .rm-container .rm-wrapper {
+    cursor: none;
+    background-color: rgb(255, 255, 255);
+    height: auto;
+    overflow: hidden;
+}
+
+@media (min-width: 960px) {
+    .rm-list .rm-container .rm-wrapper {
+        padding: 0px 24px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper {
+    padding: 18px 16px;
+    position: static;
+    cursor: pointer;
+}
+
+@media (min-width: 960px) {
+    .rm-list .rm-container .rm-wrapper .rm-innerwrapper {
+        padding: 24px 0px;
+    }
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer {
+    display: flex;
+    justify-content: space-between;
+    -moz-box-pack: justify;
+}
+
+@media (max-width: 1150px) and (min-width: 960px) {
+    .rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer {
+        flex-direction: column-reverse;
+    }
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper {}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .title {
+    flex: 1 1 0%;
+    padding-right: 10px;
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .title .rm-item {
+    transition: none;
+    color: #172026;
+    font-size: 18px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .title .rm-item-info {
+    font-weight: 300;
+    font-size: 11px;
+    font-family: proxima-nova, sans-serif;
+    color: #1574f5;
+    vertical-align: baseline;
+    border: 0;
+    outline: 0;
+    background: 0 0;
+    cursor: pointer;
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .description {
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    -moz-box-align: center;
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .description .rm-desc {
+    transition: none;
+    color: rgb(141, 148, 153);
+    font-size: 14px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .price {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    -moz-box-align: center;
+}
+
+.rm-list .rm-container .rm-wrapper .rm-innerwrapper .rm-flexcontainer .textwrapper .price .rm-price {
+    transition: none;
+    color: rgb(82, 174, 49);
+    font-size: 16px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0;
+    margin: 0;
+}
+/* ENDE: Restaurant Speisen */
+
+/* START: Warenkorb */
+.cart {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.cart .cart-wrapper {
+    flex: 1 1 auto;
+    width: 100%;
+    background-position: center center;
+    position: relative;
+}
+
+@media (min-width: 960px) {
+    .cart .cart-wrapper {
+        background-position: center center;
+    }
+}
+
+.cart .cart-wrapper .cart-inner {
+    position: relative;
+    margin: 0px auto;
+    width: 100%;
+    max-width: 1440px;
+}
+
+.cart .cart-wrapper .cart-inner .sticky-inner {
+    display: flex;
+    -moz-box-pack: end;
+    justify-content: flex-end;
+}
+
+.cart .cart-wrapper .cart-inner .sticky-inner .content {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    pointer-events: auto;
+}
+
+@media (min-width: 960px) {
+    .cart .cart-wrapper .cart-inner .sticky-inner .content {
+        width: 400px;
+        padding: 0px 30px 0px 24px;
+    }
+}
+
+.cart .cart-wrapper .cart-inner .sticky-inner .content .innerwrapper {
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 40px 32px;
+}
+
+.cart .cart-wrapper .cart-inner .sticky-inner .content .innerwrapper .title {
+    width: 300px;
+}
+
+.cart .cart-wrapper .cart-inner .sticky-inner .content .innerwrapper .title h6 {
+    transition: none;
+    text-align: center;
+    font-size: 20px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+.cart .cart-wrapper .cart-inner .sticky-inner .content .innerwrapper .description {
+    padding: 16px 0px 32px;
+    width: 314px;
+}
+
+  .cart .cart-wrapper .cart-inner .sticky-inner .content .innerwrapper .description aside {
+    transition: none;
+    text-align: center;
+    color: #8D9499;
+    font-size: 14px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0.00938em;
+}
+/* ENDE: Warenkorb */

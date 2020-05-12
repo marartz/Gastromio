@@ -8,7 +8,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-remove-cuisine',
   templateUrl: './remove-cuisine.component.html',
-  styleUrls: ['./remove-cuisine.component.css']
+  styleUrls: ['./remove-cuisine.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class RemoveCuisineComponent implements OnInit {
   @Input() public cuisine: CuisineModel;

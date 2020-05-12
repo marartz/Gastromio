@@ -1,0 +1,256 @@
+.admin-modal {
+	  background-color: rgb(255, 255, 255);
+	  border-radius: 8px;
+	  bottom: 0px;
+	  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px, rgba(0, 0, 0, 0.05) 0px -2px 4px 0px;
+	  display: flex;
+	  flex-direction: column;
+	  max-height: 100%;
+	  overflow: hidden;
+	  position: relative;
+	  outline: currentcolor none medium;
+	  backface-visibility: hidden;
+	  transform: translate3d(0px, 0px, 0px);
+	  margin: 15px;
+}
+
+.admin-modal .modal-header {
+	  background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+	  border-top: 1px solid rgb(225, 229, 232);
+	  box-shadow: rgba(0, 0, 0, 0.05) 0px -2px 4px 0px;
+	  padding: 22px 0px;
+	  width: 100%;
+	  z-index: 2;
+}
+
+.admin-modal .modal-header .wrapper {
+	  display: flex;
+	  justify-content: center;
+	  padding: 0px 60px;
+	  position: relative;
+	  width: 100%;
+}
+
+.admin-modal .title {
+    transition: none;
+    text-align: center;
+    font-size: 20px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+.admin-modal .modal-header .iconwrapper {
+    left: 0px;
+    position: absolute;
+    top: -8px;
+}
+
+.admin-modal .modal-header .iconwrapper .iconbutton {
+	  flex: 0 0 auto;
+	  color: rgba(0, 0, 0, 0.54);
+	  padding: 8px;
+	  overflow: visible;
+	  font-size: 1.5rem;
+	  text-align: center;
+	  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	  border-radius: 50%;
+    border: 0;
+    cursor: pointer;
+    margin: 0;
+    display: inline-flex;
+    outline: 0;
+    position: relative;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    text-decoration: none;
+    -moz-user-select: none;
+    background-color: transparent;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.admin-modal .modal-header .iconwrapper .iconbutton .iconlabel {
+	  width: 100%;
+	  display: flex;
+	  align-items: inherit;
+	  justify-content: inherit;
+}
+
+.admin-modal .modal-header .iconwrapper .iconbutton .iconlabel .icon-inner {
+    height: 28px;
+    width: 28px;
+}
+
+.admin-modal .modal-header .iconwrapper .iconbutton .iconlabel .icon-inner .icon {
+    color: #8D9499;
+    height: 28px;
+    width: 28px;
+    pointer-events: none;
+    fill: currentColor;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    flex-shrink: 0;
+    -moz-user-select: none;
+}
+
+.admin-modal .modal-header .iconwrapper .iconbutton .icon-root {
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  z-index: 0;
+	  overflow: hidden;
+	  position: absolute;
+	  border-radius: inherit;
+	  pointer-events: none;
+}
+
+
+
+.admin-modal .modal-body {
+    overflow: auto;
+    position: relative;
+}
+
+.admin-modal .modal-body .wrapper {
+	  background-color: rgb(255, 255, 255);
+	  padding: 0px 24px 16px;
+}
+
+.admin-modal .modal-body .wrapper .admin-input {
+    width: 100%;
+    border: 0;
+    margin: 0;
+    display: inline-flex;
+    padding: 0;
+    position: relative;
+    min-width: 0;
+    flex-direction: column;
+    vertical-align: top;
+}
+
+.admin-modal .modal-body .wrapper .admin-input .input-underline {
+    margin-top: 0px;
+    width: 100%;
+    color: #172026;
+    cursor: text;
+    display: inline-flex;
+    font-size: 1rem;
+    box-sizing: border-box;
+    align-items: center;
+    font-family: proxima-nova, sans-serif;
+    line-height: 1.1875em;
+}
+
+.admin-modal .modal-body .wrapper .admin-input .input-underline::before {
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  content: "\00a0";
+	  position: absolute;
+	  transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+	  pointer-events: none;
+}
+
+.admin-modal .modal-body .wrapper .admin-input .input-underline::after {
+    border-bottom-color: rgb(0, 108, 187);
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  content: "";
+	  position: absolute;
+	  transform: scaleX(0);
+	  transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+	  border-bottom: 2px solid #BE1028;
+	  pointer-events: none;
+}
+
+.admin-modal .modal-body .wrapper .admin-input .input-underline .input {
+	  background-color: #8D9499;
+	  color: rgb(23, 32, 38);
+	  box-sizing: border-box;
+	  font-weight: 400;
+	  padding: 28px 16px 10px;
+	  font-size: 14px;
+	  border-radius: 4px 4px 0px 0px;
+	  height: 59px;
+    font-family: proxima-nova, sans-serif;
+	  width: 100%;
+	  border: 0;
+	  margin: 0;
+	  display: block;
+	  min-width: 0;
+	  background: none;
+	  animation-name: MuiInputBase-keyframes-auto-fill-cancel;
+	  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-modal .modal-submit {
+	  background: rgb(82, 174, 49) none repeat scroll 0% 0%;
+	  z-index: 2;
+}
+
+.admin-modal .modal-submit .button-submit {
+    height: 60px;
+	  text-align: center;
+	  font-weight: 600;
+	  line-height: 1.3;
+	  padding-top: 0;
+	  white-space: normal;
+	  border-radius: 0;
+	  letter-spacing: 1px;
+	  padding-bottom: 0;
+    width: 100%;
+    padding: 15px 30px 14px;
+    font-size: 0.9375rem;
+    color: #fff;
+    background-color: #52AE31;
+    min-width: 64px;
+    box-sizing: border-box;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    text-transform: uppercase;
+	  border: 0;
+	  cursor: pointer;
+	  margin: 0;
+	  display: inline-flex;
+	  outline: 0;
+	  position: relative;
+	  align-items: center;
+	  justify-content: center;
+	  text-decoration: none;
+	  -moz-user-select: none;
+	  -webkit-appearance: none;
+	  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-modal .modal-body .wrapper .admin-input .delete-text {
+    font-family: proxima-nova, sans-serif;
+    text-align: center;
+}
+
+.admin-modal .modal-submit .delete {
+    background-color: darkred;
+}
+
+.admin-modal .modal-submit .button-submit .buttonlabel {
+	  width: 100%;
+	  display: inherit;
+	  align-items: inherit;
+	  justify-content: inherit;
+}
+
+.admin-modal .modal-submit .button-submit .buttonlabel .labelwrapper {
+    width: 100%;
+    display: flex;
+    flex: 4;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

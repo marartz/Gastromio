@@ -8,7 +8,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  styleUrls: ['./add-user.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class AddUserComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

@@ -7,7 +7,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-remove-restaurant',
   templateUrl: './remove-restaurant.component.html',
-  styleUrls: ['./remove-restaurant.component.css']
+  styleUrls: ['./remove-restaurant.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class RemoveRestaurantComponent implements OnInit {
   @Input() public restaurant: RestaurantModel;

@@ -8,7 +8,7 @@ import { DishModel } from '../dish-category/dish.model';
 @Component({
   selector: 'app-remove-dish',
   templateUrl: './remove-dish.component.html',
-  styleUrls: ['./remove-dish.component.css']
+  styleUrls: ['./remove-dish.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class RemoveDishComponent implements OnInit {
   @Input() public restaurantId: string;

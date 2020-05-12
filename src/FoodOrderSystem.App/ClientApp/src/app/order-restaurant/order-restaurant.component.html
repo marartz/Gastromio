@@ -9,10 +9,6 @@
       <div class="restaurant-inner">
         <div class="header">
 
-          <!-- // TODO:
-                  1. Vom Restaurantadministrator einstellbar ODER
-                  2. Aus voreingestellten Bildern vom R-ADM. auswählbar
-          -->
           <div class="banner">
             <div class="overlay"></div>
             <div class="hero" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
@@ -22,7 +18,6 @@
             <div class="info-content">
               <div class="info">
                 <div class="left">
-                  <!-- // TODO: Restaurant-Logo vor Restaurant-namen und Adresse -->
                   <div class="top">
                     <h1 class="name" style="max-width: 100%; color: rgb(23, 32, 38);">{{restaurant.name}}</h1>
                   </div>
@@ -52,22 +47,49 @@
           </div>
         </div>
       </div>
+
       <div class="restauarant-menu-wrapper">
         <div class="restaurant-menu-inner">
           <div class="restaurant-menu-content" style="min-height: 307px;">
-            <!-- Platzhalter -->
-            <!-- LINKS: bspw. Kategorien
-                 (MITTE) RECHTS: bspw. Speisen
-                 (RECHTS) bspw. Warenkorb
-            -->
             <div class="left">
-              <div class="menu-category-wrapper">
-                <div *ngFor="let dishCategory of dishCategories"><a href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a></div>
+
+              <div class="menu-category-bar">
+                <div class="mcb-container">
+                  <div class="mcb-list" style="top: 0px; z-index: 1; position: sticky;">
+                    <div class="list-container">
+                      <div class="list-inner">
+                        <div class="list" style="max-height: 100%;">
+                          <div class="list-wrapper">
+                            <div class="list-content">
+                              <div class="list-content-inner">
+
+                                <div *ngFor="let dishCategory of dishCategories">
+                                  <!-- Dieser div nur bei Klick -->
+                                  <div class="category-border" style="transform: translate(0px, 12px) scale(1, 21);" transform="translate(0, 12px) scale(1, 21)"></div>
+                                  <!-- class="selected" bei Klick, sonst class="not-selected" -->
+                                  <div class="category selected">{{dishCategory.name}}
+                                    <!-- class="selected" bei Klick, sonst class="category-name" -->
+                                    <div class="category-name selected">{{dishCategory.name}}</div>
+                                                            <!--a href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a-->
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+
+
               <div class="menu-items-wrapper" style="max-width: 100%;">
                 <div class="menu-items-list">
 
-                  <div class="disclaimer">
+                  <!--div class="disclaimer">
                     <div class="top">
                       <div class="title-container">
                         <div class="icon-container">
@@ -90,20 +112,64 @@
                     <div class="bottom">
                       <div class="description">Gastromio ist nicht an der Zubereitung von Speisen beteiligt. Wenn Sie an einer Nahrungsmittelallergie oder -unverträglichkeit leiden (oder jemand, für den Sie bestellen), rufen Sie {{restaurant.name}} unter {{restaurant.phone}} an, bevor Sie Ihre Bestellung aufgeben.</div>
                     </div>
-                  </div>
+                  </div-->
 
-                  <div *ngFor="let dishCategory of dishCategories" id="{{dishCategory.id}}">
-                    <div>{{dishCategory.name}}</div>
-                    <div *ngFor="let dish of dishCategory.dishes">
-                      {{dish.name}} - {{dish.description}} - {{dish.productInfo}} {{getFirstDishVariant(dish)}}
+                  <!-- Restaurant Speisen -->
+                  <div class="restaurant-menu-item">
+                    <div *ngFor="let dishCategory of dishCategories" id="{{dishCategory.id}}">
+
+                        <div class="rm-header" tabindex="0">
+                            <h6 class="category" style="max-width: 100%;">{{dishCategory.name}}</h6>
+                        </div>
+
+                        <div class="rm-list" *ngFor="let dish of dishCategory.dishes">
+                            <div class="rm-container">
+                                <div class="rm-wrapper" style="max-width: 100%;" role="button" tabindex="0" itemscope="" itemtype="http://schema.org/Product">
+                                    <div class="rm-innerwrapper">
+                                        <div class="rm-flexcontainer">
+                                            <div class="textwrapper">
+                                                <div class="title">
+                                                    <h3 class="rm-item" style="max-width: 100%;" itemprop="name">{{dish.name}}<button class="rm-item-info" title="Weitere Produktinformationen">Produktinfo</button></h3>
+                                                    <!-- Bitte Modal für Produktinfo, Anruf-Text bei nichts Angegeben -->
+                                                </div>
+                                                <div class="description">
+                                                    <h3 class="rm-desc" style="max-width: 100%;" itemprop="description">{{dish.description}}</h3>
+                                                </div>
+                                                <div class="price">
+                                                    <h3 class="rm-price" style="max-width: 100%;" itemprop="price">&euro;{{getFirstDishVariant(dish)}}</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="right">
-              <div>
-                <h5>Warenkorb</h5>
+              <div class="cart">
+                <div style="top: 134px; z-index: 1; position: sticky;">
+                  <div class="cart-wrapper">
+                    <div class="cart-inner">
+                      <div class="sticky-inner">
+                        <div class="content">
+                          <div class="innerwrapper">
+                            <div class="title">
+                                <h6 style="max-width: 100%;">Dein Warenkorb</h6>
+                            </div>
+                            <div class="description">
+                                <aside style="max-width: 100%;">Wähle leckere Gerichte aus der Karte von {{restaurant.name}} und bestelle Dein Menü.</aside>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

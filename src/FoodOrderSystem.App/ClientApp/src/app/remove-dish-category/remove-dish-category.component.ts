@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-remove-dish-category',
   templateUrl: './remove-dish-category.component.html',
-  styleUrls: ['./remove-dish-category.component.css']
+  styleUrls: ['./remove-dish-category.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class RemoveDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

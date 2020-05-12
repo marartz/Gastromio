@@ -1,11 +1,20 @@
-<div class="container no-header">
-    <div class="row">
-        <div class="col">
-            <div class="setting-title">
-                <h1>Restaurantverwaltung</h1>
+<main class="wrapper">
+    <div class="content">
+        <div class="childrenwrapper">
+            <div class="innerwrapper">
+
+                <div class="header admin-restaurants">
+                    <div class="textwrapper">
+                        <h1 class="title" style="max-width: 100%; color: rgb(255, 255, 255);">Restaurantverwaltung</h1>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+</main>
+
+<div class="container no-header">
     <div class="row">
         <div class="col-12 col-md-8">
             <input class="form-control" type="search" placeholder="Nach Restaurants suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">

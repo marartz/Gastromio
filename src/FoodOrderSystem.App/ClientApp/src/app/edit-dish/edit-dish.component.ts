@@ -10,7 +10,7 @@ import { Guid } from "guid-typescript";
 @Component({
   selector: 'app-edit-dish',
   templateUrl: './edit-dish.component.html',
-  styleUrls: ['./edit-dish.component.css']
+  styleUrls: ['./edit-dish.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class EditDishComponent implements OnInit {
   @Input() public restaurantId: string;
