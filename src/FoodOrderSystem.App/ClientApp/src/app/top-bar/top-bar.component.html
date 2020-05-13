@@ -2,8 +2,11 @@
     <div>
         <div class="header-container">
             <div class="left">
-                <a aria-label="logo" role="button" [routerLink]="['/']">
-                    <img class="logo" src="../../assets/img/logo/logo_line_w.png" alt="logo" height="32" /></a>
+                <div class="logo">
+                    <a aria-label="logo" role="button" [routerLink]="['/']">
+                        <img class="logo" src="../../assets/img/logo/logo_line_w.png" alt="logo" height="32" />
+                    </a>
+                </div>
             </div>
             <div class="middle"></div>
             <div class="right">
@@ -21,7 +24,7 @@
                     </span>
                 </button>
 
-                <span class="vertical-spacer"></span>
+                <span class="vertical-spacer hideonmobile"></span>
 
                 <button class="link-container" tabindex="0" type="button" aria-disabled="false" role="button" style="max-width: 100%; min-height: 42px;">
                     <span class="link-button">
@@ -35,13 +38,14 @@
                             </svg>
                         </div>
 
-                        <div class="link-text" *ngIf="getUsername() === undefined" id="login" (click)="openLoginForm()">Anmelden</div>
+                        <div class="link-text hideonmobile" *ngIf="getUsername() === undefined" id="login" (click)="openLoginForm()">Anmelden</div>
 
                         <div class="link-text" *ngIf="getUsername() !== undefined">
 
 
                             <div style="opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;" ngbDropdown>
-                                <span id="userDropDown" ngbDropdownToggle>Einstellungen</span>
+                                
+                                <span id="userDropDown" ngbDropdownToggle><span class="hideonmobile">Einstellungen&nbsp;</span></span>
 
                                 <div class="dd-start" ngbDropdownMenu aria-labelledby="userDropDown" style="border-top: 2px solid #52AE31">
                                     <ng-container *ngIf="isSystemAdmin()">
