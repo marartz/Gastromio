@@ -28,7 +28,7 @@
 .wrapper .content .childrenwrapper .innerwrapper .header {
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: right;
+    background-position: right center;
     padding-top: 90px;
     margin-top: -90px;
     width: 100%;
@@ -36,7 +36,7 @@
 
 .wrapper .content .childrenwrapper .innerwrapper .header .textwrapper {
     padding: 5px 60px 45px;
-	text-shadow: 0 1px 12px rgba(124,106,106,0.49);
+	  text-shadow: 0 1px 12px rgba(124, 106, 106, 0.49);
 }
 
 .wrapper .content .childrenwrapper .innerwrapper .header .textwrapper .title {
@@ -52,13 +52,19 @@
 }
 
 @media (max-width: 960px) {
+    .wrapper .content .childrenwrapper .innerwrapper .header {
+        padding-top: 72px;
+        margin-top: -72px;
+    }
     .wrapper .content .childrenwrapper .innerwrapper .header .textwrapper .title {
         font-size: 44px;
+        font-weight: 600;
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 480px) {
     .wrapper .content .childrenwrapper .innerwrapper .header .textwrapper .title {
-        font-size: 38px;
+        font-size: 29px;
+        font-weight: 600;
     }
 }
