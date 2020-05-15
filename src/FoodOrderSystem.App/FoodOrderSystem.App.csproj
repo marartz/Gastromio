@@ -89,7 +89,6 @@
     <None Remove="ClientApp\src\app\systemadmin-auth-guard.service.ts" />
     <None Remove="ClientApp\src\app\top-bar\top-bar.component.ts" />
     <None Remove="ClientApp\src\app\user.model.ts" />
-    <None Remove="ClientApp\src\app\user\user-admin.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -228,7 +227,7 @@
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
       <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
-      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

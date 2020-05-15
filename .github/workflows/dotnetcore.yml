@@ -22,3 +22,6 @@ jobs:
       run: dotnet build --configuration Release --no-restore ./src/FoodOrderSystem.App
     - name: Test
       run: dotnet test --no-restore --verbosity normal ./src/FoodOrderSystem.App
+    - name: Publish
+      run: dotnet publish --configuration Release --no-restore --no-build ./src/FoodOrderSystem.App
+      
