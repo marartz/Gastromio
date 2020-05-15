@@ -74,5 +74,52 @@
 
         </section>
 
+        <aside class="cart-column">
+            <div>
+                <div class="desktop-cart mobile-cart-hidden">
+                    <div class="desktop-cart-container" style="position: fixed; max-height: 598px; width: 336px;">
+
+                        <div class="desktop-cart-header">
+                            <h3 class="desktop-cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
+                            <p class="desktop-cart-order-message">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
+                        </div>
+
+                        <!-- Eigentlicher Warenkorb -->
+                        <!-- TODO: Einzelne Bestellitems auflisten-->
+                        <div class="desktop-cart-order">
+                            <div class="checkout-summary-wrapper" style="max-height: 307px;"></div>
+                        </div>
+
+                        <!-- Preisliste -->
+                        <!-- TODO:
+                             Variablen für Preise hinzufügen
+                             Mindestbestellwert beachten!
+                             Preise zusammenrechnen +7% USt. auf DE LEH nach § 12 UStG (Aufrufbar unter www.gesetze-im-internet.de/ustg_1980/__12.html)
+                        -->
+                        <div class="desktop-cart-footer">
+                            <div class="desktop-cart-order-subtotal-container">
+                                <div class="order-subtotal">
+                                    Zwischensumme
+                                    <span class="order-subtotal-price">&euro; 0,00</span>
+                                </div>
+                                <div class="order-delivery">
+                                    <div class="delivery-fee">Lieferkosten</div>
+                                    <span class="delivery-price">&euro; {{restaurant.deliveryCostsText}}</span><!-- Wenn LK 0,00 == Gratis -->
+                                </div>
+                                <div class="order-total">
+                                    Gesamt
+                                    <em class="total-note">(inkl. USt)</em><!-- Für Essen/LEH 7%! -->
+                                    <div class="total-price">&euro; 1,23</div>
+                                </div>
+                            </div>
+                            <!-- div class="order-checkout-button-container"></div-->
+                            <!-- z.B. auch Google reCaptcha? -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </aside>
+
     </main>
 </block-ui>
