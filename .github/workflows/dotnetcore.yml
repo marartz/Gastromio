@@ -28,4 +28,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: package
-        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/**/*.*
+        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/
