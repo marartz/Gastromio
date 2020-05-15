@@ -28,6 +28,7 @@ import { ChangeUserDetailsComponent } from './change-user-details/change-user-de
 import { ChangeUserPasswordComponent } from './change-user-password/change-user-password.component';
 import { CuisineAdminService } from './cuisine/cuisine-admin.service';
 import { CustomerInformationComponent } from './customer-information/customer-information.component';
+import { DishProductInfoComponent } from './dish-productinfo/dish-productinfo.component';
 import { EditDishComponent } from './edit-dish/edit-dish.component';
 import { GeneralTermsAndConditionsComponent } from './general-terms-and-conditions/general-terms-and-conditions.component';
 import { HttpErrorHandlingService } from './http-error-handling/http-error-handling.service';
@@ -52,6 +53,7 @@ import { RestaurantAdminAuthGuardService as RestaurantAdminAuthGuard } from './a
 import { RestaurantInformationComponent } from './restaurant-information/restaurant-information.component';
 import { RestaurantRestAdminService } from './restaurant-rest-admin/restaurant-rest-admin.service';
 import { RestaurantSysAdminService } from './restaurant-sys-admin/restaurant-sys-admin.service';
+import { ScrollSpyDirective } from './scroll-spy.directive';
 import { SystemAdminAuthGuardService as SystemAdminAuthGuard } from './auth/system-admin-auth-guard.service';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { UserAdminService } from './user/user-admin.service';
@@ -102,6 +104,7 @@ import { UserAdminService } from './user/user-admin.service';
     ChangeUserDetailsComponent,
     ChangeUserPasswordComponent,
     CustomerInformationComponent,
+    DishProductInfoComponent,
     EditDishComponent,
     GeneralTermsAndConditionsComponent,
     ImprintComponent,
@@ -120,6 +123,7 @@ import { UserAdminService } from './user/user-admin.service';
     RemoveRestaurantComponent,
     RemoveUserComponent,
     RestaurantInformationComponent,
+    ScrollSpyDirective,
     TopBarComponent,
   ],
   providers: [

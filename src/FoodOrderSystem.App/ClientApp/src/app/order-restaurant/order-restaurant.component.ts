@@ -12,6 +12,10 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DishModel } from '../dish-category/dish.model';
 import { OrderRestaurantOpeningHoursComponent } from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import { OrderRestaurantImprintComponent } from '../order-restaurant-imprint/order-restaurant-imprint.component';
+import { CartModel } from '../cart/cart.model';
+import { DishVariantModel } from '../dish-category/dish-variant.model';
+import { OrderedDishModel } from '../cart/ordered-dish.model';
+import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.component';
 
 @Component({
   selector: 'app-order-restaurant',
@@ -30,6 +34,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   imgUrl: any;
 
   openingHours: string;
+
+  currentDishCategoryDivId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -67,6 +73,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
               getDishesSubscription.unsubscribe();
               this.blockUI.stop();
               this.dishCategories = dishCategories;
+              this.orderService.startOrderAtRestaurant(this.restaurant);
             },
             (error: HttpErrorResponse) => {
               getDishesSubscription.unsubscribe();
@@ -88,6 +95,33 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  onDishCategoryChange(dishCategoryDivId: string): void {
+    this.currentDishCategoryDivId = dishCategoryDivId;
+  }
+
+  scrollToDishCategory(dishCategoryId: string): void {
+    let element = document.querySelector('#dc' + dishCategoryId);
+    if (element === null)
+      return;
+    element.scrollIntoView();
+  }
+
+  openProductInfoModal(dish: DishModel): void {
+    let modalRef = this.modalService.open(DishProductInfoComponent, { centered: true });
+    modalRef.componentInstance.dish = dish;
+    modalRef.result.then(() => {
+    }, () => { });
+  }
+
+  isCartEmpty(): boolean {
+    let cart = this.orderService.getCart();
+    return cart === undefined || cart.orderedDishes === undefined || cart.orderedDishes.length === 0;
+  }
+
+  getCart(): CartModel {
+    return this.orderService.getCart();
+  }
+
   openOpeningHoursModal(): void {
     let modalRef = this.modalService.open(OrderRestaurantOpeningHoursComponent);
     modalRef.result.then(() => {
@@ -105,5 +139,29 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return "0,00";
 
     return dish.variants[0].price.toLocaleString('de', { minimumFractionDigits: 2 });
+  }
+
+  public onAddDishToCart(dish: DishModel): void {
+    if (dish === undefined || dish.variants === undefined || dish.variants.length === 0)
+      return;
+    this.orderService.addDishVariantToCart(dish, dish.variants[0]);
+  }
+
+  public onIncrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
+    if (orderedDishVariant === undefined)
+      return;
+    this.orderService.incrementDishVariantCount(orderedDishVariant.itemId);
+  }
+
+  public onDecrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
+    if (orderedDishVariant === undefined)
+      return;
+    this.orderService.decrementDishVariantCount(orderedDishVariant.itemId);
+  }
+
+  public onRemoveDishVariantFromCart(orderedDishVariant: OrderedDishModel): void {
+    if (orderedDishVariant === undefined)
+      return;
+    this.orderService.removeDishVariantFromCart(orderedDishVariant.itemId);
   }
 }

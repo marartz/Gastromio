@@ -1,0 +1,1 @@
+{"version":3,"file":"ordered-dish.model.js","sourceRoot":"","sources":["ordered-dish.model.ts"],"names":[],"mappings":";;AAEA,mDAAuC;AAEvC;IACE;QACE,IAAI,CAAC,MAAM,GAAG,sBAAI,CAAC,MAAM,EAAE,CAAC,QAAQ,EAAE,CAAC;IACzC,CAAC;IAYM,mCAAQ,GAAf;QACE,OAAO,IAAI,CAAC,KAAK,GAAG,IAAI,CAAC,OAAO,CAAC,KAAK,CAAC;IACzC,CAAC;IACH,uBAAC;AAAD,CAAC,AAlBD,IAkBC;AAlBY,4CAAgB"}

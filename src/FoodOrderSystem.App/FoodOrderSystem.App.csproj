@@ -35,6 +35,8 @@
 	<None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <None Remove="ClientApp\src\app\admin-my-restaurants\admin-my-restaurants.component.ts" />
+    <None Remove="ClientApp\src\app\cart\cart.model.ts" />
+    <None Remove="ClientApp\src\app\cart\ordered-dish.model.ts" />
     <None Remove="ClientApp\src\app\change-dish-category\change-dish-category.component.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-category.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-variant-extra.model.ts" />
