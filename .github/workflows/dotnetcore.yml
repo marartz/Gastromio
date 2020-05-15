@@ -24,4 +24,8 @@ jobs:
       run: dotnet test --no-restore --verbosity normal ./src/FoodOrderSystem.App
     - name: Publish
       run: dotnet publish --configuration Release --no-restore --no-build ./src/FoodOrderSystem.App
-      
+    - name: Stash build artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: build-artifacts
+        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish
