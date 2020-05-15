@@ -40,7 +40,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.blockUI.start("Lade Restaurantdaten...");
+    this.blockUI.start("Restaurant wird geladen ...");
     this.route.paramMap.subscribe(params => {
       this.restaurantId = params.get('restaurantId');
 
