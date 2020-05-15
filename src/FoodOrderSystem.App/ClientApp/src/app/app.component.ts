@@ -13,10 +13,10 @@ export class AppComponent {
   routerOutlet: RouterOutlet;
   showBottomBar = true;
 
-  currentDivId: string;
-
-  constructor(private element: ElementRef, private titleService: Title) {
-    titleService.setTitle('Gastromio.de - Einfach, Bestellen, Unterstützen');
+  constructor(
+    private titleService: Title
+  ) {
+    titleService.setTitle("Gastromio.de | Einfach, Bestellen, Unterstützen");
   }
 
   onActivate(component: any): void {

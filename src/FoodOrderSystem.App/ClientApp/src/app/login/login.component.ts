@@ -7,7 +7,7 @@ import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
           if (status === 401)
             this.message = "Benutzername und/oder Passwort ist nicht korrekt.";
           else
-            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
       });
   }
 }

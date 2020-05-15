@@ -1,176 +1,125 @@
 <block-ui>
-  <div class="row" *ngIf="generalError !== undefined">
-    <div class="col-12 setting-form">
-      <div class="form-notification">{{generalError}}</div>
-    </div>
-  </div>
-
-  <main class="restaurant-wrapper" *ngIf="generalError === undefined && restaurant !== undefined">
-    <div class="restaurant-content">
-      <div class="restaurant-inner">
-        <div class="header">
-
-          <div class="banner">
-            <div class="overlay"></div>
-            <div class="hero" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
-          </div>
-
-          <div class="informations-wrapper">
-            <div class="info-content">
-              <div class="info">
-                <div class="left">
-                  <div class="top">
-                    <h1 class="name" style="max-width: 100%; color: rgb(23, 32, 38);">{{restaurant.name}}</h1>
-                  </div>
-                  <div class="bottom">
-                    <span class="adresse">
-                      <aside class="beschreibung" role="button" style="max-width: 100%;">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</aside>
-                    </span>
-
-                    <span class="zeiten">
-                      <aside class="beschreibung" role="button" style="max-width: 100%;"><a (click)="openOpeningHoursModal()">Öffnungszeiten</a></aside>
-                    </span>
-
-                    <div class="rechtliches">
-                      <div class="info">
-                        <a (click)="openImprintModal()">
-                          <svg class="icon" focusable="false" viewBox="0 0 24 24" color="grey" aria-hidden="true" role="presentation">
-                            <path d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z"></path>
-                          </svg>
-                        </a>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="row" *ngIf="generalError !== undefined">
+        <div class="col-12 setting-form">
+            <div class="form-notification">{{generalError}}</div>
         </div>
-      </div>
-
-      <div class="restauarant-menu-wrapper">
-        <div class="restaurant-menu-inner">
-          <div class="restaurant-menu-content" style="min-height: 307px;">
-            <div class="left">
-
-              <div class="menu-category-bar">
-                <div class="mcb-container">
-                  <div class="mcb-list" style="top: 0px; z-index: 1; position: sticky;">
-                    <div class="list-container">
-                      <div class="list-inner">
-                        <div class="list" style="max-height: 100%;">
-                          <div class="list-wrapper">
-                            <div class="list-content">
-                              <div class="list-content-inner">
-
-                                <div *ngFor="let dishCategory of dishCategories">
-                                  <div class="category-border" *ngIf="currentDishCategoryDivId === 'dc' + dishCategory.id" style="transform: translate(0px, 12px) scale(1, 21);" transform="translate(0, 12px) scale(1, 21)"></div>
-                                  <!-- class="selected" bei Klick, sonst class="not-selected" -->
-                                  <div class="category" (click)="scrollToDishCategory(dishCategory.id)" [ngClass]="{ 'selected': currentDishCategoryDivId === 'dc' + dishCategory.id, 'not-selected': currentDishCategoryDivId !== 'dc' + dishCategory.id }">
-                                    {{dishCategory.name}}
-                                    <div class="category-name" [ngClass]="{ 'selected': currentDishCategoryDivId === 'dc' + dishCategory.id }">{{dishCategory.name}}</div>
-                                    <!--a href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a-->
-                                  </div>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-              <div class="menu-items-wrapper" style="max-width: 100%;">
-                <div class="menu-items-list">
-
-                  <!-- Restaurant Speisen -->
-                  <div class="restaurant-menu-item" scrollSpy [spiedTags]="['DIV']" (sectionChange)="onDishCategoryChange($event)">
-                    <div *ngFor="let dishCategory of dishCategories" id="dc{{dishCategory.id}}">
-
-                      <div class="rm-header" tabindex="0">
-                        <h6 class="category" style="max-width: 100%;">{{dishCategory.name}}</h6>
-                      </div>
-
-                      <div class="rm-list" *ngFor="let dish of dishCategory.dishes">
-                        <div class="rm-container">
-                          <div class="rm-wrapper" style="max-width: 100%;" role="button" tabindex="0" itemscope="" itemtype="http://schema.org/Product">
-                            <div class="rm-innerwrapper">
-                              <div class="rm-flexcontainer">
-                                <div class="textwrapper">
-                                  <div class="title">
-                                    <h3 class="rm-item" style="max-width: 100%;" itemprop="name">{{dish.name}}<button class="rm-item-info" title="Weitere Produktinformationen" (click)="openProductInfoModal(dish)">Produktinfo</button></h3>
-                                  </div>
-                                  <div class="description">
-                                    <h3 class="rm-desc" style="max-width: 100%;" itemprop="description">{{dish.description}}</h3>
-                                  </div>
-                                  <div class="price">
-                                    <h3 class="rm-price" style="max-width: 100%;" itemprop="price">&euro;{{getFirstDishVariant(dish)}}</h3>
-                                  </div>
-                                  <div class="add">
-                                    <button (click)="onAddDishToCart(dish)">+</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="right">
-              <div class="cart">
-                <div style="top: 134px; z-index: 1; position: sticky;">
-                  <div class="cart-wrapper">
-                    <div class="cart-inner">
-                      <div class="sticky-inner">
-                        <div class="content">
-                          <div class="innerwrapper">
-                            <div class="title">
-                              <h6 style="max-width: 100%;">Dein Warenkorb</h6>
-                            </div>
-                            <div class="description" *ngIf="isCartEmpty()">
-                              <aside style="max-width: 100%;">Wähle leckere Gerichte aus der Karte von {{restaurant.name}} und bestelle Dein Menü.</aside>
-                            </div>
-                            <div class="description" *ngIf="!isCartEmpty()">
-                              <aside style="max-width: 100%">
-                                <table>
-                                  <tbody>
-                                    <tr *ngFor="let orderedDishVariant of getCart().orderedDishes">
-                                      <td>{{orderedDishVariant.count}}x</td>
-                                      <td>{{orderedDishVariant.dish.name}}</td>
-                                      <td><button (click)="onIncrementDishVariantCount(orderedDishVariant)">+</button></td>
-                                      <td><button (click)="onDecrementDishVariantCount(orderedDishVariant)">-</button></td>
-                                      <td>{{orderedDishVariant.getPriceText()}}€</td>
-                                      <td><button (click)="onRemoveDishVariantFromCart(orderedDishVariant)">X</button></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                                <div>Zwischensumme: {{getCart().getPriceOfOrderText()}}€</div>
-                                <div *ngIf="getCart().getDeliveryCosts() > 0">Lieferkosten: {{getCart().getPriceOfOrderText()}}€</div>
-                                <div>Gesamt: {{getCart().getTotalPriceText()}}€</div>
-                              </aside>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </main>
+
+    <main class="order-restaurant" *ngIf="generalError === undefined && restaurant !== undefined">
+
+        <section class="order-section">
+
+            <div class="hero-banner-wrapper">
+                <div class="order-banner" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
+
+                <div class="restaurant-info-container">
+                    <div class="restaurant-info-main">
+                        <div class="restaurant-name">
+                            <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
+                        </div>
+                        <div class="restaurant-info-button">
+                            <span (click)="openImprintModal()">
+                                <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                                    <path d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <!--a (click)="openOpeningHoursModal()">Öffnungszeiten</!a-->
+                    </div>
+                </div>
+
+            </div>
+
+            <nav class="dish-menu-category-list" style="top: 1px;">
+                <div class="dish-control-holder">
+                    <div class="nav-holder">
+                        <ul style="transform: translateX(0px);">
+                            <li *ngFor="let dishCategory of dishCategories">
+                                <a class="" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}" title="{{dishCategory.name}}">{{dishCategory.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <section class="dish-menu-list">
+
+                <div class="dish-category-section" *ngFor="let dishCategory of dishCategories">
+                    <div class="dish-inner-wrapper" id="{{dishCategory.id}}">
+                        <h2 class="dish-category-title">{{dishCategory.name}}</h2>
+                        <ul class="dish-list">
+
+                            <li class="dish-card" *ngFor="let dish of dishCategory.dishes">
+                                <span class="dish-react-root">
+                                    <div class="dish-info-container">
+                                        <div class="dish-info">
+                                            <h3 class="dish-name"><span>{{dish.name}}</span></h3>
+                                            <p class="dish-description">{{dish.description}}</p>
+                                        </div>
+                                    </div>
+                                    <section class="action-bar">
+                                        <div class="action-bar-content">
+                                            <span class="dish-price">&euro;{{getFirstDishVariant(dish)}}</span>
+                                        </div>
+                                        <!--button class="button">+</!--button-->
+                                    </section>
+                                </span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+
+        </section>
+
+        <aside class="cart-column">
+            <div>
+                <div class="desktop-cart mobile-cart-hidden">
+                    <div class="desktop-cart-container" style="position: fixed; max-height: 598px; width: 336px;">
+
+                        <div class="desktop-cart-header">
+                            <h3 class="desktop-cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
+                            <p class="desktop-cart-order-message">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
+                        </div>
+
+                        <!-- Eigentlicher Warenkorb -->
+                        <!-- TODO: Einzelne Bestellitems auflisten-->
+                        <div class="desktop-cart-order">
+                            <div class="checkout-summary-wrapper" style="max-height: 307px;"></div>
+                        </div>
+
+                        <!-- Preisliste -->
+                        <!-- TODO:
+                             Variablen für Preise hinzufügen
+                             Mindestbestellwert beachten!
+                             Preise zusammenrechnen +7% USt. auf DE LEH nach § 12 UStG (Aufrufbar unter www.gesetze-im-internet.de/ustg_1980/__12.html)
+                        -->
+                        <div class="desktop-cart-footer">
+                            <div class="desktop-cart-order-subtotal-container">
+                                <div class="order-subtotal">
+                                    Zwischensumme
+                                    <span class="order-subtotal-price">&euro; 0,00</span>
+                                </div>
+                                <div class="order-delivery">
+                                    <div class="delivery-fee">Lieferkosten</div>
+                                    <span class="delivery-price">&euro; {{restaurant.deliveryCostsText}}</span><!-- Wenn LK 0,00 == Gratis -->
+                                </div>
+                                <div class="order-total">
+                                    Gesamt
+                                    <em class="total-note">(inkl. USt)</em><!-- Für Essen/LEH 7%! -->
+                                    <div class="total-price">&euro; 1,23</div>
+                                </div>
+                            </div>
+                            <!-- div class="order-checkout-button-container"></div-->
+                            <!-- z.B. auch Google reCaptcha? -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
 </block-ui>
