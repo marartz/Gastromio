@@ -25,7 +25,7 @@ jobs:
     - name: Publish
       run: dotnet publish --configuration Release --no-restore --no-build ./src/FoodOrderSystem.App
     - name: Upload build artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: package
-          path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/**/*.*
+      uses: actions/upload-artifact@v1
+      with:
+        name: package
+        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/**/*.*
