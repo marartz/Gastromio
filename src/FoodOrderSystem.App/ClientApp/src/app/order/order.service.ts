@@ -21,6 +21,7 @@ export class OrderService {
     private authService: AuthService
   ) { }
 
+
   public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
     let httpOptions = {
       headers: new HttpHeaders({

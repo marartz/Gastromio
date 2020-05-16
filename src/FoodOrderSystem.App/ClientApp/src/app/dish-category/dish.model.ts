@@ -3,6 +3,7 @@ import { DishVariantModel } from './dish-variant.model';
 export class DishModel {
   constructor(init?: Partial<DishModel>) {
     Object.assign(this, init);
+    this.id = undefined;
   }
 
   public id: string;

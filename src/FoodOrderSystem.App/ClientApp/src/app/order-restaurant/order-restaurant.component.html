@@ -5,26 +5,30 @@
         </div>
     </div>
 
-    <main class="order-restaurant" *ngIf="generalError === undefined && restaurant !== undefined">
+    <main class="order-restaurant" *ngIf="generalError === undefined && initialized">
 
         <section class="order-section">
 
             <div class="hero-banner-wrapper">
-                <div class="order-banner" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
+                <div class="order-banner"
+                    style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
 
                 <div class="restaurant-info-container">
                     <div class="restaurant-info-main">
                         <div class="restaurant-name">
-                            <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
+                            <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}},
+                                    {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
                         </div>
                         <div class="restaurant-info-button">
                             <span (click)="openImprintModal()">
                                 <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                                    <path d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z"></path>
+                                    <path
+                                        d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z">
+                                    </path>
                                 </svg>
                             </span>
                         </div>
-                        <!--a (click)="openOpeningHoursModal()">Öffnungszeiten</!a-->
+                        <a (click)="openOpeningHoursModal()">Öffnungszeiten</a>
                     </div>
                 </div>
 
@@ -35,7 +39,8 @@
                     <div class="nav-holder">
                         <ul style="transform: translateX(0px);">
                             <li *ngFor="let dishCategory of dishCategories">
-                                <a class="" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}" title="{{dishCategory.name}}">{{dishCategory.name}}</a>
+                                <a class="" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}"
+                                    title="{{dishCategory.name}}">{{dishCategory.name}}</a>
                             </li>
                         </ul>
                     </div>
@@ -61,7 +66,7 @@
                                         <div class="action-bar-content">
                                             <span class="dish-price">&euro;{{getFirstDishVariant(dish)}}</span>
                                         </div>
-                                        <button class="add"></button>
+                                        <button class="add" (click)="onAddDishToCart(dish)"></button>
                                     </section>
                                 </span>
                             </li>
@@ -89,13 +94,37 @@
 
                         <div class="cart-header">
                             <h3 class="cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
-                            <p class="cart-noitems">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
+                            <p class="cart-noitems" *ngIf="isCartEmpty()">Du hast noch nichts in deinen Warenkorb
+                                gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
                         </div>
 
                         <!-- Eigentlicher Warenkorb -->
-                        <!-- TODO: Einzelne Bestellitems auflisten-->
-                        <div class="desktop-cart-order">
-                            <div class="checkout-summary-wrapper" style="max-height: 307px;"></div>
+                        <div class="desktop-cart-order" *ngIf="!isCartEmpty()">
+                            <div class="checkout-summary-wrapper" style="max-height: 307px;">
+                                <table>
+                                    <tbody>
+                                        <tr *ngFor="let orderedDish of getCart().orderedDishes">
+                                            <td>{{orderedDish.count}}</td>
+                                            <td>
+                                                {{orderedDish.dish.name}}
+                                                <span *ngIf="orderedDish.hasMultipleVariants()">{{orderedDish.variant.name}}</span>
+                                            </td>
+                                            <td>
+                                                <button (click)="onIncrementDishVariantCount(orderedDish)">+</button>
+                                            </td>
+                                            <td>
+                                                <button (click)="onDecrementDishVariantCount(orderedDish)">-</button>
+                                            </td>
+                                            <td>
+                                                <button (click)="onRemoveDishVariantFromCart(orderedDish)">X</button>
+                                            </td>
+                                            <td>
+                                                &euro; {{orderedDish.getPriceText()}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Preisliste -->
@@ -108,23 +137,26 @@
                             <div class="desktop-cart-order-subtotal-container">
                                 <div class="order-subtotal">
                                     Zwischensumme
-                                    <span class="order-subtotal-price">&euro; 0.00</span>
+                                    <span class="order-subtotal-price">&euro; {{getCart().getValueOfOrderText()}}</span>
                                 </div>
                                 <div class="order-min-order">
                                     Mindestbestellwert
-                                    <span class="min-order-value">&euro; {{restaurant.minimumOrderValueText}}</span>
+                                    <span class="min-order-value">&euro; {{getCart().getMinimumOrderValueText()}}</span>
                                 </div>
                                 <div class="order-min-order-diff">
                                     Differenz zu Min.
-                                    <span class="min-order-value">&euro; 0.00</span>
+                                    <span class="min-order-value">&euro;
+                                        {{getCart().getMissingValueToMinimumText()}}</span>
                                 </div>
                                 <div class="order-delivery">
                                     <div class="delivery-fee">Lieferkosten</div>
-                                    <span class="delivery-price">&euro; {{restaurant.deliveryCostsText}}</span><!-- Wenn LK 0,00 == Gratis -->
+                                    <span class="delivery-price" *ngIf="getCart().isDeliveryForFree()">Gratis</span>
+                                    <span class="delivery-price" *ngIf="!getCart().isDeliveryForFree()">&euro;
+                                        {{getCart().getDeliveryCostsText()}}</span>
                                 </div>
                                 <div class="order-total">
                                     Gesamt <em class="total-note">(inkl. USt)</em>
-                                    <div class="total-price">&euro; 1,23</div>
+                                    <div class="total-price">&euro; {{getCart().getTotalPriceText()}}</div>
                                 </div>
                             </div>
                             <div class="order-checkout">
