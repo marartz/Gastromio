@@ -2,30 +2,73 @@ name: Build and Publish
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
-  build:
+  build-sources:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+    
     - name: Install dependencies
       run: dotnet restore ./src/FoodOrderSystem.App
+    
     - name: Build
       run: dotnet build --configuration Release --no-restore ./src/FoodOrderSystem.App
+    
     - name: Test
       run: dotnet test --no-restore --verbosity normal ./src/FoodOrderSystem.App
+    
     - name: Publish
       run: dotnet publish --configuration Release --no-restore --no-build ./src/FoodOrderSystem.App
-    - name: Upload package
+    
+    - name: Stash package
       uses: actions/upload-artifact@v1
       with:
         name: package
         path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/
+
+  
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: build-sources
+
+    steps:
+    - uses: actions/checkout@v2
+  
+    - name: Unstash package
+      uses: actions/download-artifact@v1
+      with:
+        name: package
+        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/
+      
+    - if: ${{ github.event_name == 'push' }}
+      shell: bash
+      run: echo "::set-env name=TAG_NAME::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+
+    - if: ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      run: echo "::set-env name=TAG_NAME::$(echo ${GITHUB_HEAD_REF#refs/heads/} | sed 's/\//_/g')"
+
+    - name: Determined tag name
+      run: echo "${TAG_NAME}"
+
+    - name: Build docker image
+      run: docker build --no-cache --tag marartz/food_order_system:${TAG_NAME} .
+
+    - name: Login to docker
+      run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+
+    - name: Push docker image
+      run: docker push marartz/food_order_system
