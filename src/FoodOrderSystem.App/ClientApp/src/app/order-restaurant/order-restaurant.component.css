@@ -21,7 +21,7 @@
     position: relative;
     max-height: 100%;
     width: 100%;
-    z-index: 2;
+    z-index: 1;
 }
 
 @media (min-width: 1440px) {
@@ -736,7 +736,7 @@
     -ms-flex: 0 0 0px;
 	  -webkit-box-flex: 0;
 	  -webkit-flex: 0 0 0;
-	  z-index: 1299;
+	  z-index: 2;
 }
 
 @media (min-width: 960px) {
@@ -745,7 +745,7 @@
         -ms-flex: 0 0 352px;
 	      -webkit-box-flex: 0;
 	      -webkit-flex: 0 0 352px;
-	      z-index: 101;
+	      z-index: 2;
     }
 }
 
@@ -756,7 +756,7 @@
 }
 
 .cart-column .desktop-cart {
-    z-index: 1299
+    z-index: 2
 }
 
 @media (min-width: 960px) {
@@ -768,7 +768,7 @@
 	      overflow: visible;
         padding: 8px;
         width: auto;
-        z-index: 900
+        z-index: 2
     }
 }
 

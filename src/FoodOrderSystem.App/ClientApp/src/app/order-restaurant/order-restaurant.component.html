@@ -10,15 +10,14 @@
         <section class="order-section">
 
             <div class="hero-banner-wrapper">
-                <div class="order-banner"
-                    style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
+                <div class="order-banner" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
 
-                <div class="restaurant-info-container">
+                <div class="restaurant-info-container" (click)="openImprintModal()">
                     <div class="restaurant-info-main">
                         <div class="restaurant-name">
                             <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
                         </div>
-                        <div class="restaurant-info-button">
+                        <div class="restaurant-info-button" (click)="openImprintModal()">
                             <span (click)="openImprintModal()">
                                 <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
                                     <path
@@ -27,7 +26,6 @@
                                 </svg>
                             </span>
                         </div>
-                        <a (click)="openOpeningHoursModal()">Öffnungszeiten</a>
                     </div>
                 </div>
 
