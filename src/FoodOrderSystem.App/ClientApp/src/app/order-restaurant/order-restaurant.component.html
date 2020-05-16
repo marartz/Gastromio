@@ -78,14 +78,14 @@
             <div>
                 <div class="desktop-cart mobile-hidden">
 
-                    <p class="delivery-time">
-                        <!-- TODO: Neues Icon -->
-                        <i class="icon-delivery fas fa-history"></i>
-                        <!-- TODO: Durchsch. ø Lieferzeit -->
-                        <span class="delivery-time">30 Min.</span>
-                    </p>
-
                     <div class="desktop-cart-container" style="position: fixed; max-height: 598px; width: 336px;">
+
+                        <p class="delivery-time">
+                            <!-- TODO: Neues Icon -->
+                            <i class="icon-delivery fas fa-history"></i>
+                            <!-- TODO: Durchsch. ø Lieferzeit -->
+                            <span class="delivery-time">30 Min.</span>
+                        </p>
 
                         <div class="cart-header">
                             <h3 class="cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
@@ -108,7 +108,15 @@
                             <div class="desktop-cart-order-subtotal-container">
                                 <div class="order-subtotal">
                                     Zwischensumme
-                                    <span class="order-subtotal-price">&euro; 0,00</span>
+                                    <span class="order-subtotal-price">&euro; 0.00</span>
+                                </div>
+                                <div class="order-min-order">
+                                    Mindestbestellwert
+                                    <span class="min-order-value">&euro; {{restaurant.minimumOrderValueText}}</span>
+                                </div>
+                                <div class="order-min-order-diff">
+                                    Differenz zu Min.
+                                    <span class="min-order-value">&euro; 0.00</span>
                                 </div>
                                 <div class="order-delivery">
                                     <div class="delivery-fee">Lieferkosten</div>
