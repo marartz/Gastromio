@@ -741,7 +741,6 @@
 
 @media (min-width: 960px) {
     .cart-column {
-        margin-top: 64px;
         flex: 0 0 352px;
         -ms-flex: 0 0 352px;
 	      -webkit-box-flex: 0;
@@ -773,15 +772,37 @@
     }
 }
 
-.cart-column .mobile-cart-hidden {
+.cart-column .mobile-hidden {
     display: none;
 }
 
 @media (min-width: 960px) {
-    .cart-column .mobile-cart-hidden {
+    .cart-column .mobile-hidden {
         display: block;
     }
 }
+
+/* START: Warenkorb/PreHeader */
+.cart-column .delivery-time {
+    clear: both;
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+.cart-column .delivery-time .icon-delivery {
+    line-height: 1em;
+    margin: 0 10px 0 0;
+    vertical-align: middle;
+}
+
+.cart-column .delivery-time .delivery-time {
+    color: #333333;
+    font-family: proxima-nova, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    vertical-align: middle;
+}
+/* ENDE: Warenkorb/PreHeader */
 
 .cart-column .desktop-cart-container {
 	  position: relative;
@@ -799,51 +820,53 @@
     }
 }
 
-.cart-column .desktop-cart-container .desktop-cart-header {
+/* START: Warenkorb/Header */
+.cart-column .desktop-cart-container .cart-header {
     overflow: auto;
 }
 
 @media (min-width: 960px) {
-    .cart-column .desktop-cart-container {
-        width: 98%;
+    .cart-column .desktop-cart-container .cart-header {
         margin: 0 auto;
+        width: 98%;
     }
 }
 
-.cart-column .desktop-cart-container .desktop-cart-header .desktop-cart-title {
+.cart-column .desktop-cart-container .cart-header .cart-title {
+    border-bottom: 1px solid #ebebeb;
+    font-family: proxima-nova, sans-serif;
 	  font-size: 17px;
 	  font-weight: 400;
-    font-family: proxima-nova, sans-serif;
-	  text-align: center;
 	  line-height: 20px;
 	  margin: 0 0 16px;
+    text-align: center;
 	  padding: 16px 8px;
-	  border-bottom: 1px solid #ebebeb;
 }
 
-.cart-column .desktop-cart-container .desktop-cart-header .desktop-cart-title span {
-    font-weight: 600;
+.cart-column .desktop-cart-container .cart-header .cart-title span {
     font-size: 19px;
+    font-weight: 600;
 }
 
 @media (min-width: 960px) {
-    .cart-column .desktop-cart-container .desktop-cart-header .desktop-cart-title {
+    .cart-column .desktop-cart-container .cart-header .cart-title {
 	      border: none;
 	      padding-bottom: 0;
 	      margin: 0;
     }
 }
 
-.cart-column .desktop-cart-container .desktop-cart-header .desktop-cart-order-message {
+.cart-column .desktop-cart-container .cart-header .cart-noitems {
+    color: #707070;
 	  font-size: 15px;
 	  font-weight: 300;
     font-family: proxima-nova, sans-serif;
 	  text-align: center;
-	  color: #707070;
+    line-height: 1.4;
 	  margin-bottom: 0;
 	  margin-top: 8px;
-	  line-height: 1.4;
 }
+/* ENDE: Warenkorb/Header */
 
 .cart-column .desktop-cart-container .desktop-cart-order {
     padding: 0;
@@ -863,34 +886,37 @@
 }
 
 .cart-column .desktop-cart-container .desktop-cart-footer {
-    position: relative;
-    opacity: 1;
     line-height: 1.83;
+    opacity: 1;
+    position: relative;
 }
 
 @media (min-width: 960px) {
     .cart-column .desktop-cart-container .desktop-cart-footer {
-        padding: 0;
         margin: 0;
+        padding: 0;
     }
 }
 
+/* START: Warenkorb/Preise */
 .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container {
     padding: 0;
 }
 
 @media (min-width: 960px) {
     .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container {
-	      width: 98%;
 	      margin-left: auto;
 	      margin-right: auto;
+        width: 98%;
     }
 }
 
 .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container .order-subtotal {
-    padding: 16px 8px 0;
     border-top: 1px solid #ebebeb;
+    color: #333333;
+    font-family: proxima-nova, sans-serif;
     font-weight: 300;
+    padding: 16px 8px 0;
 }
 
 @media (min-width: 960px) {
@@ -905,10 +931,11 @@
 }
 
 .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container .order-delivery {
-    position: relative;
     color: #707070;
-    padding: 0 8px;
+    font-family: proxima-nova, sans-serif;
     font-weight: 300;
+    padding: 0 8px;
+    position: relative;
 }
 
 @media (min-width: 960px) {
@@ -928,7 +955,9 @@
 }
 
 .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container .order-total {
-	  font-weight: 500;
+    color: #333333;
+    font-family: proxima-nova, sans-serif;
+	  font-weight: 700;
 	  padding: 8px;
 }
 
@@ -941,12 +970,70 @@
 
 .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container .order-total .total-note {
 	  font-size: 12px;
-	  font-weight: 400;
-	  font-style: normal;
+    font-style: normal;
+	  font-weight: 500;
 }
 
 .cart-column .desktop-cart-container .desktop-cart-footer .desktop-cart-order-subtotal-container .order-total .total-price {
     display: inline-block;
     float: right;
 }
+/* ENDE: Warenkorb/Preise */
+/* START: Warenkorb/Checkout */
+.order-checkout {
+    background: #fff;
+	  position: fixed;
+	  padding: 16px;
+    margin-top: 25px;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+    overflow: hidden;
+}
+
+@media (min-width: 960px) {
+    .order-checkout {
+        background: none;
+        padding: 0;
+        position: static;
+    }
+}
+
+.order-checkout .checkout-button {
+    color: #fff;
+    cursor: pointer;
+    backface-visibility: hidden;
+    background-color: #52AE31;
+    border: 1px solid;
+    border-color: #52AE31;
+    border-radius: unset;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    display: inline-block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 46px;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    touch-action: manipulation;
+    user-select: none;
+    vertical-align: middle;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    word-wrap: normal;
+    z-index: 1;
+    -moz-user-select: none;
+    -ms-touch-action: manipulation;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+/* ENDE: Warenkorb/Checkout */
 /* ENDE: Warenkorb */

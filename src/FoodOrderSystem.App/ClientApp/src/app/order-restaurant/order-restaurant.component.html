@@ -76,12 +76,20 @@
 
         <aside class="cart-column">
             <div>
-                <div class="desktop-cart mobile-cart-hidden">
+                <div class="desktop-cart mobile-hidden">
+
+                    <p class="delivery-time">
+                        <!-- TODO: Neues Icon -->
+                        <i class="icon-delivery fas fa-history"></i>
+                        <!-- TODO: Durchsch. ø Lieferzeit -->
+                        <span class="delivery-time">30 Min.</span>
+                    </p>
+
                     <div class="desktop-cart-container" style="position: fixed; max-height: 598px; width: 336px;">
 
-                        <div class="desktop-cart-header">
-                            <h3 class="desktop-cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
-                            <p class="desktop-cart-order-message">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
+                        <div class="cart-header">
+                            <h3 class="cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
+                            <p class="cart-noitems">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
                         </div>
 
                         <!-- Eigentlicher Warenkorb -->
@@ -94,7 +102,7 @@
                         <!-- TODO:
                              Variablen für Preise hinzufügen
                              Mindestbestellwert beachten!
-                             Preise zusammenrechnen +7% USt. auf DE LEH nach § 12 UStG (Aufrufbar unter www.gesetze-im-internet.de/ustg_1980/__12.html)
+                             Checkout-Btn bitte funktionabel machen!
                         -->
                         <div class="desktop-cart-footer">
                             <div class="desktop-cart-order-subtotal-container">
@@ -107,13 +115,13 @@
                                     <span class="delivery-price">&euro; {{restaurant.deliveryCostsText}}</span><!-- Wenn LK 0,00 == Gratis -->
                                 </div>
                                 <div class="order-total">
-                                    Gesamt
-                                    <em class="total-note">(inkl. USt)</em><!-- Für Essen/LEH 7%! -->
+                                    Gesamt <em class="total-note">(inkl. USt)</em>
                                     <div class="total-price">&euro; 1,23</div>
                                 </div>
                             </div>
-                            <!-- div class="order-checkout-button-container"></div-->
-                            <!-- z.B. auch Google reCaptcha? -->
+                            <div class="order-checkout">
+                                <button class="checkout-button">Fortfahren</button>
+                            </div>
                         </div>
 
                     </div>
