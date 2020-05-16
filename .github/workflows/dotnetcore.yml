@@ -2,9 +2,9 @@ name: Build and Publish
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   build-sources:
@@ -50,5 +50,10 @@ jobs:
         name: package
         path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/
     
-    - name: Build docker image
+    - name: Build docker image (Push)
+      if: ${{ github.event_name == 'push' }}
       run: docker build --nocache --tag food_order_system:${GITHUB_REF#refs/heads/}
+    
+    - name: Build docker image (Pull Request)
+      if: ${{ github.event_name == 'pull_request' }}
+      run: docker build --nocache --tag food_order_system:${GITHUB_HEAD_REF#refs/heads/}      
