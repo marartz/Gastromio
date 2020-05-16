@@ -25,6 +25,8 @@ import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.c
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
 
+  initialized: boolean = false;
+
   restaurantId: string;
   restaurant: RestaurantModel;
   dishCategories: DishCategoryModel[];
@@ -74,6 +76,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
               this.blockUI.stop();
               this.dishCategories = dishCategories;
               this.orderService.startOrderAtRestaurant(this.restaurant);
+              this.initialized = true;
             },
             (error: HttpErrorResponse) => {
               getDishesSubscription.unsubscribe();

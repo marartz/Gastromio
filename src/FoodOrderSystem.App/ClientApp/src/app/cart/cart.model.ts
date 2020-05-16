@@ -13,7 +13,7 @@ export class CartModel {
 
   public orderedDishes: OrderedDishModel[];
 
-  public getPriceOfOrder(): number {
+  public getValueOfOrder(): number {
     if (this.orderedDishes === undefined || this.orderedDishes.length === 0)
       return 0;
     let result = 0;
@@ -23,9 +23,34 @@ export class CartModel {
     return result;
   }
 
-  public getPriceOfOrderText(): string {
-    let val = this.getPriceOfOrder();
+  public getValueOfOrderText(): string {
+    let val = this.getValueOfOrder();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
+  }
+
+  public getMinimumOrderValue(): number {
+    return this.restaurant.minimumOrderValue;
+  }
+
+  public getMinimumOrderValueText(): string {
+    let val = this.getMinimumOrderValue();
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+  }
+
+  public getMissingValueToMinimum(): number {
+    let val = this.getMinimumOrderValue() - this.getValueOfOrder();
+    if (val < 0)
+      val = 0;
+      return val;
+  }
+
+  public getMissingValueToMinimumText(): string {
+    let val = this.getMissingValueToMinimum();
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+  }
+
+  public isDeliveryForFree(): boolean {
+    return this.restaurant.deliveryCosts === 0;
   }
 
   public getDeliveryCosts(): number {
@@ -38,7 +63,7 @@ export class CartModel {
   }
 
   public getTotalPrice(): number {
-    return this.getPriceOfOrder() + this.getDeliveryCosts();
+    return this.getValueOfOrder() + this.getDeliveryCosts();
   }
 
   public getTotalPriceText(): string {

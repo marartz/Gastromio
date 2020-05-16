@@ -25,4 +25,9 @@ export class OrderedDishModel {
     let val = this.getPrice();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
+
+  public hasMultipleVariants(): boolean {
+    return this.dish.variants !== undefined && this.dish.variants.length > 1;
+  }
+
 }
