@@ -16,8 +16,7 @@
                 <div class="restaurant-info-container">
                     <div class="restaurant-info-main">
                         <div class="restaurant-name">
-                            <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}},
-                                    {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
+                            <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
                         </div>
                         <div class="restaurant-info-button">
                             <span (click)="openImprintModal()">
@@ -86,53 +85,46 @@
                     <div class="desktop-cart-container" style="position: fixed; max-height: 598px; width: 336px;">
 
                         <p class="delivery-time">
-                            <!-- TODO: Neues Icon -->
                             <i class="icon-delivery fas fa-history"></i>
                             <!-- TODO: Durchsch. ø Lieferzeit -->
-                            <span class="delivery-time">30 Min.</span>
+                            <span class="delivery-time">XY Min.</span>
                         </p>
 
                         <div class="cart-header">
                             <h3 class="cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
-                            <p class="cart-noitems" *ngIf="isCartEmpty()">Du hast noch nichts in deinen Warenkorb
-                                gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
+                            <p class="cart-noitems" style="display: block;" *ngIf="isCartEmpty()">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
                         </div>
 
-                        <!-- Eigentlicher Warenkorb -->
                         <div class="desktop-cart-order" *ngIf="!isCartEmpty()">
                             <div class="checkout-summary-wrapper" style="max-height: 307px;">
-                                <table>
-                                    <tbody>
-                                        <tr *ngFor="let orderedDish of getCart().orderedDishes">
-                                            <td>{{orderedDish.count}}</td>
-                                            <td>
-                                                {{orderedDish.dish.name}}
-                                                <span *ngIf="orderedDish.hasMultipleVariants()">{{orderedDish.variant.name}}</span>
-                                            </td>
-                                            <td>
-                                                <button (click)="onIncrementDishVariantCount(orderedDish)">+</button>
-                                            </td>
-                                            <td>
-                                                <button (click)="onDecrementDishVariantCount(orderedDish)">-</button>
-                                            </td>
-                                            <td>
-                                                <button (click)="onRemoveDishVariantFromCart(orderedDish)">X</button>
-                                            </td>
-                                            <td>
-                                                &euro; {{orderedDish.getPriceText()}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="checkout-summary">
+                                    <div class="cart-body">
+
+                                        <div class="cart-item" *ngFor="let orderedDish of getCart().orderedDishes">
+                                            <div class="item-row">
+
+                                                <div class="item-minus" (click)="onDecrementDishVariantCount(orderedDish)">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24"><defs><path id="cart-minus-a" d="M6 12h11v1H6z"></path></defs><g fill="none" fill-rule="evenodd"><mask id="cart-minus-b" fill="#fff"><use xlink:href="#cart-minus-a"></use></mask><use fill="#858585" xlink:href="#cart-minus-a"></use><g fill="#52AE31" mask="url(#cart-minus-b)"><path d="M0 0h24v24H0z"></path></g></g></svg>
+                                                </div>
+
+                                                <div class="item-quantity">{{orderedDish.count}}</div>
+
+                                                <div class="item-plus" (click)="onIncrementDishVariantCount(orderedDish)">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24"><defs><path id="cart-plus-a" d="M12 12V7h1v5h5v1h-5v5h-1v-5H7v-1h5z"></path></defs><g fill="none" fill-rule="evenodd"><mask id="cart-plus-b" fill="#fff"><use xlink:href="#cart-plus-a"></use></mask><use fill="#858585" xlink:href="#cart-plus-a"></use><g fill="#52AE31" mask="url(#cart-plus-b)"><path d="M0 0h24v24H0z"></path></g></g></svg>
+                                                </div>
+
+                                                <div class="item-name">{{orderedDish.dish.name}}</div>
+
+                                                <div class="item-price">&euro; {{orderedDish.getPriceText()}}</div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Preisliste -->
-                        <!-- TODO:
-                             Variablen für Preise hinzufügen
-                             Mindestbestellwert beachten!
-                             Checkout-Btn bitte funktionabel machen!
-                        -->
                         <div class="desktop-cart-footer">
                             <div class="desktop-cart-order-subtotal-container">
                                 <div class="order-subtotal">
@@ -143,16 +135,14 @@
                                     Mindestbestellwert
                                     <span class="min-order-value">&euro; {{getCart().getMinimumOrderValueText()}}</span>
                                 </div>
-                                <div class="order-min-order-diff">
+                                <div class="order-min-order-diff" *ngIf="!isCartEmpty()">
                                     Differenz zu Min.
-                                    <span class="min-order-value">&euro;
-                                        {{getCart().getMissingValueToMinimumText()}}</span>
+                                    <span class="min-order-value">&euro; {{getCart().getMissingValueToMinimumText()}}</span>
                                 </div>
                                 <div class="order-delivery">
                                     <div class="delivery-fee">Lieferkosten</div>
-                                    <span class="delivery-price" *ngIf="getCart().isDeliveryForFree()">Gratis</span>
-                                    <span class="delivery-price" *ngIf="!getCart().isDeliveryForFree()">&euro;
-                                        {{getCart().getDeliveryCostsText()}}</span>
+                                    <span class="delivery-price" *ngIf="getCart().isDeliveryForFree()">Kostenlos</span>
+                                    <span class="delivery-price" *ngIf="!getCart().isDeliveryForFree()">&euro; {{getCart().getDeliveryCostsText()}}</span>
                                 </div>
                                 <div class="order-total">
                                     Gesamt <em class="total-note">(inkl. USt)</em>
@@ -161,6 +151,10 @@
                             </div>
                             <div class="order-checkout">
                                 <button class="checkout-button">Fortfahren</button>
+                                <!-- class="active" wenn Mindestbestellwert erreicht -->
+
+                                <!--<button class="checkout-button">Geschlossen</button>-->
+                                <!-- Wenn Bestellung außerhalb Lieferzeit -->
                             </div>
                         </div>
 
