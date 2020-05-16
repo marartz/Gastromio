@@ -52,8 +52,8 @@ jobs:
     
     - name: Build docker image (Push)
       if: ${{ github.event_name == 'push' }}
-      run: docker build --nocache --tag food_order_system:${GITHUB_REF#refs/heads/}
+      run: docker build --no-cache --tag food_order_system:${GITHUB_REF#refs/heads/} .
     
     - name: Build docker image (Pull Request)
       if: ${{ github.event_name == 'pull_request' }}
-      run: docker build --nocache --tag food_order_system:${GITHUB_HEAD_REF#refs/heads/}      
+      run: docker build --no-cache --tag food_order_system:${GITHUB_HEAD_REF#refs/heads/} .
