@@ -21,7 +21,6 @@
     position: relative;
     max-height: 100%;
     width: 100%;
-    z-index: 1;
 }
 
 @media (min-width: 1440px) {
@@ -32,8 +31,19 @@
 
 .hero-banner-wrapper .order-banner {
 	  background-size: cover;
-	  background-position: center;
-	  height: 200px;
+	  background-position: 50%;
+}
+
+.hero-banner-wrapper .order-banner::before {
+	  content: "";
+	  height: 100%;
+	  width: 100%;
+	  left: 0;
+	  bottom: 0;
+	  position: absolute;
+	  display: block;
+	  background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.31));
+	  z-index: 0;
 }
 
 @media (min-width: 960px) {
@@ -42,203 +52,78 @@
         height: auto;
     }
     .hero-banner-wrapper .order-banner::before {
-	      display: block;
-	      content: "";
+        content: "";
+        display: block;
 	      width: 100%;
 	      padding-top: 25%;
 	      background: none;
     }
 }
-/* ENDE: Banner */
 
-/* START: Restaurantinfo */
-.restaurant-info-container::before {
-    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 100%);
-	  content: "";
-    height: 16px;
-    left: 0;
-	  position: absolute;
-    top: -16px;
-	  width: 100%;
+.hero-banner-wrapper .order-banner .box-shadow {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
 }
 
-.restaurant-info-container {
-	  position: relative;
+@media (min-width: 992px) {
+    .hero-banner-wrapper .order-banner .p-lg-9 {
+	      padding: 2rem !important;
+    }
+}
+
+.hero-banner-wrapper .order-banner .order-logo {
 	  background-color: #fff;
-	  text-align: center;
-	  border-bottom: 1px solid #ebebeb;
-	  cursor: pointer;
-}
-
-.restaurant-info-container .restaurant-info-main {
-    align-items: center;
-    display: flex;
-    display: -ms-flexbox;
-	  display: -webkit-box;
-	  display: -webkit-flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    height: auto;
-    min-height: 64px;
-    padding: 0 16px;
-    padding-top: 16px;
-	  padding-bottom: 16px;
-    -ms-flex-align: center;
-    -ms-flex-flow: row wrap;
-    -ms-flex-pack: start;
-    -webkit-box-align: center;
-    -webkit-box-direction: normal;
-    -webkit-align-items: center;
-	  -webkit-box-orient: horizontal;
-	  -webkit-box-pack: start;
-	  -webkit-flex-flow: row wrap;
-	  -webkit-justify-content: flex-start;
-}
-
-@media (min-width: 480px) {
-    .restaurant-info-container .restaurant-info-main {
-	      padding: 24px;
-    }
-}
-
-@media (min-width: 960px) {
-    .restaurant-info-container .restaurant-info-main {
-        max-width: 1248px;
-	      margin-left: auto;
-	      margin-right: auto;
-	      padding-left: 16px;
-	      padding-right: 16px;
-        position: relative;
-	      width: 100%;
-    }
-}
-
-@media (min-width: 960px) and (min-width: 480px) {
-    .restaurant-info-container .restaurant-info-main {
-        padding-left: 24px;
-        padding-right: 24px;
-    }
-}
-
-@media (min-width: 960px) and (min-width: 768px) {
-    .restaurant-info-container .restaurant-info-main {
-        padding-left: 48px;
-        padding-right: 48px;
-    }
-}
-
-@media (min-width: 960px) and (min-width: 1265px) {
-    .restaurant-info-container .restaurant-info-main {
-        padding-left: 80px;
-        padding-right: 80px;
-    }
-}
-
-.restaurant-info-container .restaurant-info-main .restaurant-name {
-    align-items: center;
-	  display: flex;
-    display: -ms-flexbox;
-	  display: -webkit-box;
-	  display: -webkit-flex;
-    flex-flow: column;
-    margin-right: 8px;
-    -ms-flex-align: center;
-    -ms-flex-flow: column;
-    -webkit-align-items: center;
-	  -webkit-box-align: center;
-	  -webkit-box-orient: vertical;
-	  -webkit-box-direction: normal;
-	  -webkit-flex-flow: column; 
-}
-
-@media (min-width: 768px) {
-    .restaurant-info-container .restaurant-info-main .restaurant-name {
-        flex-flow: row wrap;
-	      margin-right: 0;
-        -ms-flex-flow: row wrap;
-        -webkit-box-direction: normal;
-	      -webkit-box-orient: horizontal;
-	      -webkit-flex-flow: row wrap;
-    }
-}
-
-.restaurant-info-container .restaurant-info-main .restaurant-name h1 {
-    margin: 0 8px 0 0;
-    text-align: left;
+	  border: 1px solid #dfdfdf;
+	  border-radius: 50%;
     display: inline-block;
+    position: relative;
+    height: 56px;
+    width: 56px;
+    z-index: 2;
+}
+
+@media (min-width: 992px) {
+    .hero-banner-wrapper .order-banner .order-logo {
+        margin-right: 1.5rem;
+    }
+}
+
+.hero-banner-wrapper .order-banner .order-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hero-banner-wrapper .order-banner .restaurant-name {
+    color: #333333;
     font-family: proxima-nova, sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: rgb(51, 51, 51);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: .5rem;
+    margin-top: 0;
 }
 
-@media (min-width: 1265px) {
-    .restaurant-info-container .restaurant-info-main .restaurant-name h1 {
-	      font-size: 28px;
-	      font-weight: 500;
-        white-space: nowrap;
+@media (min-width: 992px) {
+    .hero-banner-wrapper .order-banner .restaurant-name {
+        margin-bottom: .25rem;
     }
 }
 
-.restaurant-info-container .restaurant-info-main .restaurant-name h1 .restaurant-adress {
-    color: #8D9499;
-    font-size: 15px;
+.hero-banner-wrapper .order-banner .restaurant-address {
+    color: #707070;
+    font-family: proxima-nova, sans-serif;
+    font-size: 16px;
     font-weight: 300;
-    letter-spacing: 0.00938em;
-    line-height: 21px;
-    margin: 0;
-    transition: none;
+    margin-bottom: .5rem;
 }
 
-.restaurant-info-container .restaurant-info-main .restaurant-info-button {
-	  align-items: center;
-	  align-self: center;
-	  display: flex;
-	  display: -ms-flexbox;
-	  display: -webkit-box;
-	  display: -webkit-flex;
-	  flex: 0 0 auto;
-	  height: auto;
-	  margin-bottom: -6px;
-	  position: absolute;
-	  text-align: right;
-	  top: 16px;
-	  right: 24px;
-	  vertical-align: middle;
-	  -ms-flex: 0 0 auto;
-	  -ms-flex-align: center;
-	  -ms-flex-item-align: center;
-	  -webkit-align-items: center;
-	  -webkit-box-align: center;
-	  -webkit-box-flex: 0;
-	  -webkit-flex: 0 0 auto;
-}
-
-.restaurant-info-container .restaurant-info-main .restaurant-info-button span {
-    align-self: flex-start;
-	  line-height: 3;
-	  -ms-flex-item-align: start;
-}
-
-.restaurant-info-container .restaurant-info-main .restaurant-info-button span svg {
-    color: #8D9499;
-    display: inline-block;
-    fill: #52AE31;
-    font-size: 1.5rem;
-    height: 26px;
-    pointer-events: none;
-    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    width: 26px;
-    -moz-user-select: none;
-}
-
-@media (max-width: 960px) {
-    .restaurant-info-container .restaurant-info-main .restaurant-info-button span svg {
-        height: 22px;
-        width: 22px;
+@media (min-width: 992px) {
+    .hero-banner-wrapper .order-banner .restaurant-address {
+        margin-bottom: 0;
     }
 }
-/* ENDE: Restaurantinfo */
+/* ENDE: Banner */
 
 /* START: Dish-Kategorien */
 .dish-menu-category-list {
@@ -725,3 +610,87 @@
     text-decoration: none;
 }
 /* ENDE: Dish-Liste */
+
+
+
+
+
+
+
+.order-header::after {
+	  content: "";
+	  display: block;
+	  position: relative;
+	  bottom: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 60px;
+	  background: #fff;
+}
+
+@media (min-width: 960px) {
+    .order-header::after {
+        display: none;
+        height: 410px;
+        margin-bottom: 0;
+    }
+}
+.order-header .banner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+	  background-size: cover;
+	  background-position: 50%;
+}
+.order-header .banner::before {
+	  content: "";
+	  height: 100%;
+	  width: 100%;
+	  left: 0;
+	  bottom: 0;
+	  position: absolute;
+	  display: block;
+	  background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.31));
+	  z-index: 0;
+}
+
+.order-header .banner .container {
+    height: 100%;
+	  width: 100%;
+	  padding-right: 16px;
+	  padding-left: 16px;
+	  margin-right: auto;
+	  margin-left: auto;
+}
+
+@media (min-width: 1200px) {
+    .order-header .banner .container {
+        max-width: 1200px;
+    }
+}
+
+@media (min-width: 960px) {
+    .order-header .banner .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 768px) {
+    .order-header .banner .container {
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 540px) {
+    .order-header .banner .container {
+        max-width: 540px;
+    }
+}
+
+.order-header .banner .container .row {
+    height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -16px;
+	margin-left: -16px;
+}

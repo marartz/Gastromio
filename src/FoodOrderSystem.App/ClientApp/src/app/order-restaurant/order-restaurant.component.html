@@ -10,21 +10,25 @@
         <section class="order-section">
 
             <div class="hero-banner-wrapper">
-                <div class="order-banner" style='background-image: url("../../assets/img/home/order-restaurant/default.jpg");'></div>
 
-                <div class="restaurant-info-container" (click)="openImprintModal()">
-                    <div class="restaurant-info-main">
-                        <div class="restaurant-name">
-                            <h1>{{restaurant.name}}<br /><span class="restaurant-adress">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span></h1>
-                        </div>
-                        <div class="restaurant-info-button" (click)="openImprintModal()">
-                            <span (click)="openImprintModal()">
-                                <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                                    <path
-                                        d="M12,2 C14.6521649,2 17.195704,3.0535684 19.0710678,4.92893219 C20.9464316,6.80429597 22,9.3478351 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 C16.9705627,21 21,16.9705627 21,12 C21,9.61305159 20.0517884,7.32386638 18.363961,5.63603897 C16.6761336,3.94821156 14.3869484,3 12,3 Z M10.784,18 L10.784,10 L13.216,10 L13.216,18 L10.784,18 Z M13.44,7.472 C13.44,8.272 12.8,8.88 12,8.88 C11.2,8.88 10.56,8.272 10.56,7.472 C10.56,6.672 11.2,6.064 12,6.064 C12.8,6.064 13.44,6.672 13.44,7.472 Z">
-                                    </path>
-                                </svg>
-                            </span>
+                <div class="order-banner h-100 w-100" style='background-image: url("https://images.pexels.com/photos/2619967/pexels-photo-2619967.jpeg?crop=entropy&cs=srgb&dl=pizza-2619967.jpg&fit=crop&fm=jpg&h=853&w=1280");'>
+                    <div class="container h-100">
+                        <div class="row h-100">
+                            <div class="col-lg-7 col-xl-6 d-lg-flex flex-column">
+                                <div class="position-relative bg-white box-shadow w-100 p-7 p-lg-9 mb-3 text-center text-lg-left d-flex flex-column" style="margin-top: 120px; border-radius: 8px;">
+                                    <div class="mb-3 mb-lg-7 mt-lg-0 d-lg-flex" style="margin-top: -52px;">
+                                        <div>
+                                            <div class="order-logo mb-3 mb-lg-0 mr-lg-7 position-relative">
+                                                <img class="rounded-circle position-relative" alt="{{restaurant.name}} logo" [src]="restaurant.image" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h1 class="restaurant-name">{{restaurant.name}}</h1>
+                                            <span class="restaurant-address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -36,8 +40,7 @@
                     <div class="nav-holder">
                         <ul style="transform: translateX(0px);">
                             <li *ngFor="let dishCategory of dishCategories">
-                                <a class="" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}"
-                                    title="{{dishCategory.name}}">{{dishCategory.name}}</a>
+                                <a class="" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}" title="{{dishCategory.name}}">{{dishCategory.name}}</a>
                             </li>
                         </ul>
                     </div>
