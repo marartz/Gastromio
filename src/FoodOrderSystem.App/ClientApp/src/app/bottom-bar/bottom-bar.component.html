@@ -1,48 +1,17 @@
-<div class="footer">
-    <div class="footer-container">
-        <div class="linkContainer">
-            <div class="inner">
-                <div class="footer-column">
-                    <div>
-                        <p><strong>Bocholt Liefert</strong></p>
-                        <ul>
-                            <li><a>Über &rdquo;Bocholt liefert&rdquo;</a></li>
-                            <li><a>Wer steckt dahinter?</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <div>
-                        <p><strong>Rechtliches</strong></p>
-                        <ul>
-                            <li><a [routerLink]="['/general-terms-and-conditions']">AGB</a></li>
-                            <li><a [routerLink]="['/privacy-policy']">Datenschutz</a></li>
-                            <li><a [routerLink]="['/imprint']">Impressum</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <div>
-                        <p><strong>Informationen für</strong></p>
-                        <ul>
-                            <li><a>Restaurants &amp; Lieferdienste</a></li>
-                            <li><a>Kunden</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <div>
-                        <p><strong>Möchten Sie Ihr Restaurant oder Imbiss eintragen?</strong></p>
-                        <p>Senden Sie uns Ihre Informationen und wir werden Ihnen helfen, Ihr Restaurant einzutragen.</p>
-                    </div>
-                    <span class="footer-cta">
-                        <a href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer"><span>Jetzt anmelden &rsaquo;</span></a>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="copyrightContainer">
-            <div class="copyright">&copy; 2020 Bocholt Liefert &ndash; Alle Rechte vorbehalten</div>
-        </div>
+<footer class="footer">
+    <div class="logo-wrapper">
+        <svg class="logo" [routerLink]="['/']" alt="logo" viewBox="0 0 1704.22 2487.42">
+            <g>
+                <path class="logo" d="M778.32,1975.52c-47.88,16.74-66.39,42.43-80.22,94.31-3.7,13.84-78.2,234.51-43.52,277.82,49.46,61.78,125.74-64.22,156.49-108.33,20.8-29.82,80.91-118,92.91-130s29.41-49.63,80.23-47.9c381.38,13,505.11-219.49,519.31-239.08,8.16-11.26,15.13-23.38,23.26-34.66,9.49-13.2,18.64-13,29.2-.11,3.42,4.17,7.07,8.16,10.41,12.4,20.82,26.42,142.39,169.24,154.31,284.26,19.25,185.69-87,416.12-69.13,468.94,26.76,79.34,503.12,165.9,434.12,55.68-7.62-12.17-124.29-110.13-156-132.75-111.22-79.27-31.58-180.44-15.78-215.73,89.83-200.68,103.21-216,38-389.52-7.55-20.11-115.48-259.57-125.48-300-25.81-104.26-63.8-354.13,16.2-357.94,130.55-6.22,210.26-80.81,196.83-103.09h-622.8c-13.61,0-7.09,8.57-7.09,8.57,65.48,82.2,272.89-12.75,354.1,79,32,34.84,27.42,93.67-89.48,130.22-164.14,51.33-355.25,15.13-442-25.43-3.4-1.59-8.49-.49-6.34,5.5,11.76,32.73,48,138.78,7.41,266-55.38,173.53-90.78,274.39-454.88,401.76m730.76-1469,.38,0c-.78-11.22-1.27-22.47-2.41-33.65-1.14-11-3.4-11.76-15-11.08-5.29,1-393.45,28.07-398.38,27.89-12.21.85-12.3,2.27-12.2,12.28.58,9.95,1.43,19.85,2.11,29.75,12.65,184.2,145.1,220.64,228.64,214.31,81-5,209.84-59.57,196.91-239.47m224.67-126c3.49-10.92,1.94-21.66-7.83-30.66-9.29-8.55-19.51-10-31.13-9.14Q1605.93,347,1517.07,353c-15.38,1.06-22.08-3.23-24.42-18.41-6.37-46.4-48.54-162.49-214.21-160.08-222.1,11.8-206.29,225.15-202,255.83,1.69,12.23,4,14.38,16.57,13.91,1.8-.07,608.11-41.94,616.59-42.94,12.62-1.49,20.68-9.82,24.2-20.82m215.62,246.78c-5.6-1.5-12.53-3-16.94-4.3-5.79-1.49-6.78-5-6.86-6.64-2.27-48.44-18.62-88.26-68.3-90.69-56.16-2.73-70.44,42.85-76,90.25a9.17,9.17,0,0,1-7.32,7.78c-232.94,66-400.48,239.06-407,430.94,0,2.9.27,7.75,8.93,7.75h965.39c6.63,0,6.91-3.78,5.92-8.07-57.89-233.74-191-371.79-397.89-427m232.89-330.54c-2.3-68.41-43.72-105.1-66.62-120.24-8.84-5.84-13.74-2.49-12.85,7.08,2.22,24,2.53,70.76-22.61,102.26-28,35-91.84,50.19-99.88,129.66-8,78.59,33.74,106.47,57.71,115.93,9.32,3.67,14.93-.58,14.15-8.45-1.65-16.7-2.14-45.7,11-63.74,18.1-24.89,122.31-67.7,119.12-162.5M2349.55,419c-2.3-68.41-43.73-105.1-66.63-120.24-8.84-5.84-13.73-2.49-12.85,7.08,2.22,24,2.54,70.76-22.6,102.26-28,35-91.85,50.19-99.89,129.66-7.94,78.59,33.75,106.47,57.72,115.93,9.32,3.67,14.92-.58,14.14-8.44-1.65-16.71-2.13-45.71,11-63.75,18.1-24.89,122.31-67.69,119.12-162.5" transform="translate(-645.4 -173.61)" />
+            </g>
+        </svg>
     </div>
-</div>
+    <div class="link-wrapper">
+        <button class="link" [routerLink]="['/datenschutz']">Datenschutzerklärung</button>
+        <button class="link" [routerLink]="['/datenschutz#cookies']">Cookie-Richtlinie</button>
+        <button class="link" [routerLink]="['/datenschutz#einleitung']">EU-Datenschutzhinweise</button>
+        <button class="link" [routerLink]="['/impressum']">Impressum</button>
+        <button class="link" [routerLink]="['/agb']">Allgemeine Geschäftsbedingungen</button>
+    </div>
+    <div class="copyright">&copy; 2020 Gastromio. Alle Rechte vorbehalten.</div>
+</footer>
