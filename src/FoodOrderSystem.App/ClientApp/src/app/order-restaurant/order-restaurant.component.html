@@ -49,8 +49,8 @@
 
             <section class="dish-menu-list">
 
-                <div class="dish-category-section" *ngFor="let dishCategory of dishCategories">
-                    <div class="dish-inner-wrapper" id="{{dishCategory.id}}">
+                <div class="dish-category-section" id="{{dishCategory.id}}" *ngFor="let dishCategory of dishCategories">
+                    <div class="dish-inner-wrapper">
                         <h2 class="dish-category-title">{{dishCategory.name}}</h2>
                         <ul class="dish-list">
 
@@ -146,7 +146,7 @@
                                     <span class="delivery-price" *ngIf="!getCart().isDeliveryForFree()">&euro; {{getCart().getDeliveryCostsText()}}</span>
                                 </div>
                                 <div class="order-total">
-                                    Gesamt <em class="total-note">(inkl. USt)</em>
+                                    Gesamt <em class="total-note">(inkl. MWSt)</em>
                                     <div class="total-price">&euro; {{getCart().getTotalPriceText()}}</div>
                                 </div>
                             </div>

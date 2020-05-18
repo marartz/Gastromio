@@ -180,8 +180,8 @@
     display: -ms-flexbox;
     display: -webkit-box;
 	  display: -webkit-flex;
-    padding: 0 24px;
     justify-content: space-between;
+    padding: 0 24px;
 	  width: 100%;
     -ms-flex-pack: justify;
 	  -webkit-box-pack: justify;

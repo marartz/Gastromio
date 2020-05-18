@@ -25,6 +25,7 @@
 .order-home .order-content .order-inner .inner-wrapper {
     align-items: center;
     background-color: rgb(30, 26, 52);
+    background-size: cover;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -49,6 +50,7 @@
 }
 
 .order-home .order-content .order-inner .inner-wrapper .order-bg-desktop {
+    background-size: cover;
     height: 100%;
     left: 0px;
     object-fit: cover;
@@ -371,7 +373,7 @@
     position: fixed;
     bottom: 0px;
     margin-bottom: 0px;
-    z-index: 4;
+    z-index: 2;
 }
 
 .transparent-footer {
@@ -394,7 +396,7 @@
     text-decoration: none;
     text-rendering: optimizeLegibility;
     -moz-appearance: none;
-    z-index: 4;
+    z-index: 2;
 }
 
 .transparent-footer .copyright {
