@@ -20,16 +20,14 @@ namespace FoodOrderSystem.Domain.Commands.Login
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
-            if (string.IsNullOrWhiteSpace(command.Username))
-                throw new InvalidOperationException("username is null or whitespace");
-            if (string.IsNullOrWhiteSpace(command.Password))
-                throw new InvalidOperationException("password is null or whitespace");
+            if (string.IsNullOrWhiteSpace(command.Username) || string.IsNullOrWhiteSpace(command.Password))
+                return FailureResult<UserViewModel>.Create(FailureResultCode.RequiredFieldEmpty);
 
             var user = await userRepository.FindByNameAsync(command.Username, cancellationToken);
             if (user == null)
                 return FailureResult<UserViewModel>.Unauthorized();
 
-            if (!user.ValidatePassword(command.Password))
+            if ((user?.ValidatePassword(command.Password)) != true)
                 return FailureResult<UserViewModel>.Unauthorized();
 
             return SuccessResult<UserViewModel>.Create(UserViewModel.FromUser(user));

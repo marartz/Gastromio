@@ -4,13 +4,16 @@ namespace FoodOrderSystem.Domain.Model
 {
     public class FailureResult<TResult> : Result<TResult>
     {
-        public FailureResult(FailureResultCode code, params object[] args)
+        public FailureResult(FailureResultCode code, int statusCode, params object[] args)
         {
             Code = code;
+            StatusCode = statusCode;
             Args = args;
         }
 
         public FailureResultCode Code { get; }
+
+        public int StatusCode { get; }
 
         public object[] Args { get; }
 
@@ -20,6 +23,7 @@ namespace FoodOrderSystem.Domain.Model
             sb.Append("Failure(");
             
             sb.Append(Code);
+            sb.Append(StatusCode);
 
             if (Args != null && Args.Length != 0)
             {
@@ -42,19 +46,20 @@ namespace FoodOrderSystem.Domain.Model
             return sb.ToString();
         }
 
-        public static FailureResult<TResult> Unauthorized(params object[] args)
+        public static FailureResult<TResult> Unauthorized(FailureResultCode code = FailureResultCode.SessionExpired, params object[] args)
         {
-            return new FailureResult<TResult>(FailureResultCode.Unauthorized, args);
+            return new FailureResult<TResult>(code, 401, args);
         }
 
-        public static FailureResult<TResult> Forbidden(params object[] args)
+        public static FailureResult<TResult> Forbidden(FailureResultCode code = FailureResultCode.Forbidden, params object[] args)
         {
-            return new FailureResult<TResult>(FailureResultCode.Forbidden, args);
+            return new FailureResult<TResult>(code, 403, args);
         }
 
-        public static FailureResult<TResult> Create(FailureResultCode code, params object[] args)
+        public static FailureResult<TResult> Create(FailureResultCode code, int statusCode = 400, params object[] args)
         {
-            return new FailureResult<TResult>(code, args);
+            return new FailureResult<TResult>(code, 400, args);
         }
+
     }
 }

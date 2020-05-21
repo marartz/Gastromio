@@ -46,7 +46,7 @@ export class AuthService {
           observer.next({});
         },
         (err: HttpErrorResponse) => {
-          observer.error(err.status);
+          observer.error(err);
         },
         () => {
           observer.complete();

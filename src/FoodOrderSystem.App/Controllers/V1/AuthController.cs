@@ -1,4 +1,5 @@
-﻿using FoodOrderSystem.App.Models;
+﻿using FoodOrderSystem.App.Helper;
+using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.Login;
 using FoodOrderSystem.Domain.Model;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -44,25 +46,13 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return BadRequest();
 
             var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Username, loginModel.Password), null);
-            switch (commandResult)
+            if (commandResult is SuccessResult<UserViewModel> successResult)
             {
-                case SuccessResult<UserViewModel> successResult:
-                    var tokenString = GenerateJSONWebToken(successResult.Value);
-                    return Ok(new { token = tokenString, user = successResult.Value });
-                case FailureResult<UserViewModel> failureResult:
-                    switch (failureResult.Code)
-                    {
-                        case FailureResultCode.Unauthorized:
-                            return new UnauthorizedResult();
-                        case FailureResultCode.Forbidden:
-                            return new ForbidResult();
-                        default:
-                            var message = failureMessageService.GetMessageFromResult(failureResult);
-                            return new BadRequestObjectResult(message);
-                    }
-                default:
-                    throw new InvalidOperationException("internal server error");
+                var tokenString = GenerateJSONWebToken(successResult.Value);
+                return Ok(new { token = tokenString, user = successResult.Value });
             }
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("ping")]

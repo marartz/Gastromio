@@ -30,13 +30,18 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<CuisineViewModel>.Forbidden();
 
+            if (string.IsNullOrWhiteSpace(command.Name))
+            {
+                return FailureResult<CuisineViewModel>.Create(FailureResultCode.RequiredFieldEmpty);
+            }
+
             var cuisine = await cuisineRepository.FindByNameAsync(command.Name, cancellationToken);
             if (cuisine != null)
                 return FailureResult<CuisineViewModel>.Create(FailureResultCode.CuisineAlreadyExists);
 
             cuisine = cuisineFactory.Create(command.Name);
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
-
+            
             return SuccessResult<CuisineViewModel>.Create(CuisineViewModel.FromCuisine(cuisine));
         }
     }

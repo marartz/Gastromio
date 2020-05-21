@@ -1,7 +1,11 @@
 ﻿using FoodOrderSystem.Domain.Model;
 using FoodOrderSystem.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FoodOrderSystem.App.Helper
 {
@@ -9,24 +13,16 @@ namespace FoodOrderSystem.App.Helper
     {
         public static IActionResult HandleResult<TResult>(Result<TResult> result, IFailureMessageService failureMessageService)
         {
-            switch (result)
+            if (result is SuccessResult<TResult> successResult)
             {
-                case SuccessResult<TResult> successResult:
-                    return new OkObjectResult(successResult.Value);
-                case FailureResult<TResult> failureResult:
-                    switch (failureResult.Code)
-                    {
-                        case FailureResultCode.Unauthorized:
-                            return new UnauthorizedResult();
-                        case FailureResultCode.Forbidden:
-                            return new ForbidResult();
-                        default:
-                            var message = failureMessageService.GetMessageFromResult(failureResult);
-                            return new BadRequestObjectResult(message);
-                    }
-                default:
-                    throw new InvalidOperationException("internal server error");
+                return new OkObjectResult(successResult.Value);
             }
+            if (result is FailureResult<TResult> failureResult)
+            {
+                var message = failureMessageService.GetMessageFromResult(failureResult);
+                return new BadRequestObjectResult(message) { StatusCode = failureResult.StatusCode };
+            }
+            throw new InvalidOperationException("internal server error");
         }
     }
 }
