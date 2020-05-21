@@ -1,77 +1,111 @@
 <main class="order-home">
-    <div class="order-content">
-        <div class="order-inner">
-            <div class="inner-wrapper" style="height: 980px; padding-top: 90px; margin-top: -90px;">
-                <picture>
-                    <source class="order-bg-mobile" srcset="../../assets/img/home/search/mobil/default.webp" type="image/webp" />
-                    <source class="order-bg-mobile" srcset="../../assets/img/home/search/mobil/default.jpg" type="image/jpg" />
-                    <img class="order-bg-mobile" alt="" src="../../assets/img/home/search/mobil/default.jpg" />
-                </picture>
-                <picture>
-                    <source class="order-bg-desktop" srcset="../../assets/img/home/search/desktop/default.webp" type="image/webp">
-                    <source class="order-bg-desktop" srcset="../../assets/img/home/search/desktop/default.jpg" type="image/jpg">
-                    <img class="order-bg-desktop" alt="" src="../../assets/img/home/search/desktop/default.jpg">
-                </picture>
-                <div class="order-title" style="margin-top: -90px;">
-                    <h1 class="ot3" style="font-weight: 600; max-width: 100%; color: rgb(255, 255, 255);">Einfach, Bestellen, Unterstützen.</h1>
-                    <p class="otp" style="font-weight: 400; max-width: 100%; color: rgb(255, 255, 255);">100% des Geldes geht an den Gastronomen. So einfach ist das.</p>
+    <div class="order-wrapper">
+        <div class="content">
+
+            <section class="title-wrapper">
+                <div class="inner">
+                    <span>Einfach. Lokal. Bestellen.</span>
+                    <p>100% des Geldes geht an den Gastronomen. So einfach ist das.</p>
                 </div>
-                <div class="restaurants-wrapper">
-                    <div class="restaurants-content">
-                        <div class="restaurants-inner">
-                            <div class="content">
-                                <div class="restaurant-search-box">
-                                    <div>
-                                        <div class="restaurant-search-container">
-                                            <div class="searchby-icon">
-                                                <div class="icon">
-                                                    <svg class="search-icon" focusable="false" viewBox="0 0 24 24" color="black" aria-hidden="true" role="presentation">
-                                                        <g transform="translate(2 1.5)">
-                                                            <path d="m9.738 3.7341c-1.6134 0-2.9214 1.3079-2.9214 2.9214s1.308 2.9215 2.9214 2.9215c1.6135 0 2.9214-1.308 2.9214-2.9215s-1.3079-2.9214-2.9214-2.9214"></path>
-                                                            <g transform="translate(11.06 8.7779)">
-                                                                <path d="m4.4895 6.141c-1.013 0-1.8351-0.82212-1.8351-1.8351 0-1.013 0.82212-1.8351 1.8351-1.8351s1.8351 0.82212 1.8351 1.8351c0 1.013-0.82212 1.8351-1.8351 1.8351m0-6.1171c-2.4293 0-4.3999 1.9705-4.3999 4.3998 0 2.6202 2.7739 6.2312 3.9167 7.6076 0.25115 0.3023 0.7153 0.3023 0.96645 0 1.1428-1.3764 3.9167-4.9874 3.9167-7.6076 0-2.4293-1.9706-4.3998-4.3999-4.3998"></path>
-                                                            </g>
-                                                            <path d="m10.043 13.202c0-0.85982 0.19843-1.6741 0.55143-2.3999-0.28055-0.012903-0.58599-0.019078-0.92516-0.019078-2.1851 0-3.0721 0.36645-4.4966 0.98055-0.38857 0.16737-0.74627 0.6682-1.0629 1.2972 1.1221 1.9471 3.2236 3.2617 5.6276 3.2617 0.35871 0 0.71051-0.029862 1.0535-0.086083-0.49613-1.132-0.74802-2.1484-0.74802-3.0344"></path>
-                                                            <g transform="translate(0 .02212)">
-                                                                <path d="m11.729 18.016l-0.0035945-0.0059908c-0.20184-0.33843-0.58461-0.52986-0.9753-0.47834-0.33143 0.043687-0.66931 0.066636-1.0125 0.066636-4.4365 0-8.0186-3.7276-7.779-8.2154 0.21954-4.1123 3.6668-7.3686 7.785-7.3654 3.505 0.0025806 6.4741 2.3324 7.4464 5.5242 0.076958 0.25263 0.2553 0.46332 0.49853 0.56627 0.66912 0.28304 1.2712 0.69438 1.7747 1.2039-0.25908-5.1641-4.541-9.2681-9.7754-9.2418-5.3699 0.026912-9.739 4.4632-9.6876 9.8328 0.050968 5.3345 4.3911 9.643 9.7375 9.643 0.94452 0 1.8574-0.13493 2.721-0.38581-0.24682-0.3647-0.49318-0.74765-0.72959-1.1441"></path>
-                                                            </g>
-                                                        </g>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <div class="restaurant-search-form">
-                                                <input class="restaurant-search-input" placeholder="Suche nach Restaurants" tabindex="1" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
-                                                <ng-template class="search-result-wrapper" #rt let-r="result" let-t="term" style="opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
-                                                    <div class="search-result-container">
-                                                        <ul class="result-list">
-                                                            <ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight>
-                                                        </ul>
-                                                    </div>
-                                                </ng-template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div></div>
-                                    <button class="restaurant-searchby-type" tabindex="0" type="button" role="button" style="max-width: 100%; min-height: 60px;">
-                                        <span class="restaurant-button-label"><a [routerLink]="['/restaurants']">Suche nach Kategorien</a></span>
-                                        <span class="restaurant-button-label-wrapper"></span>
-                                    </button>
-                                </div>
+            </section>
+
+            <section class="search-wrapper">
+                <div class="search-box">
+                    <div class="search-inner">
+
+                        <div class="icon-wrapper">
+                            <div class="icon">
+                                <svg focusable="false" viewBox="0 0 24 24" color="black" aria-hidden="true" role="presentation">
+                                    <g transform="translate(2 1.5)">
+                                        <path d="m9.738 3.7341c-1.6134 0-2.9214 1.3079-2.9214 2.9214s1.308 2.9215 2.9214 2.9215c1.6135 0 2.9214-1.308 2.9214-2.9215s-1.3079-2.9214-2.9214-2.9214"></path>
+                                        <g transform="translate(11.06 8.7779)">
+                                            <path d="m4.4895 6.141c-1.013 0-1.8351-0.82212-1.8351-1.8351 0-1.013 0.82212-1.8351 1.8351-1.8351s1.8351 0.82212 1.8351 1.8351c0 1.013-0.82212 1.8351-1.8351 1.8351m0-6.1171c-2.4293 0-4.3999 1.9705-4.3999 4.3998 0 2.6202 2.7739 6.2312 3.9167 7.6076 0.25115 0.3023 0.7153 0.3023 0.96645 0 1.1428-1.3764 3.9167-4.9874 3.9167-7.6076 0-2.4293-1.9706-4.3998-4.3999-4.3998"></path>
+                                        </g>
+                                        <path d="m10.043 13.202c0-0.85982 0.19843-1.6741 0.55143-2.3999-0.28055-0.012903-0.58599-0.019078-0.92516-0.019078-2.1851 0-3.0721 0.36645-4.4966 0.98055-0.38857 0.16737-0.74627 0.6682-1.0629 1.2972 1.1221 1.9471 3.2236 3.2617 5.6276 3.2617 0.35871 0 0.71051-0.029862 1.0535-0.086083-0.49613-1.132-0.74802-2.1484-0.74802-3.0344"></path>
+                                        <g transform="translate(0 .02212)">
+                                            <path d="m11.729 18.016l-0.0035945-0.0059908c-0.20184-0.33843-0.58461-0.52986-0.9753-0.47834-0.33143 0.043687-0.66931 0.066636-1.0125 0.066636-4.4365 0-8.0186-3.7276-7.779-8.2154 0.21954-4.1123 3.6668-7.3686 7.785-7.3654 3.505 0.0025806 6.4741 2.3324 7.4464 5.5242 0.076958 0.25263 0.2553 0.46332 0.49853 0.56627 0.66912 0.28304 1.2712 0.69438 1.7747 1.2039-0.25908-5.1641-4.541-9.2681-9.7754-9.2418-5.3699 0.026912-9.739 4.4632-9.6876 9.8328 0.050968 5.3345 4.3911 9.643 9.7375 9.643 0.94452 0 1.8574-0.13493 2.721-0.38581-0.24682-0.3647-0.49318-0.74765-0.72959-1.1441"></path>
+                                        </g>
+                                    </g>
+                                </svg>
                             </div>
                         </div>
+
+                        <section class="form-wrapper">
+                            <input class="form-input" placeholder="Suche nach Restaurants" tabindex="1" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
+
+                            <ng-template #rt let-r="result" let-t="term">
+                                <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                            </ng-template>
+                        </section>
+
                     </div>
+
+                    <button class="form-button" tabindex="0" type="button" role="button" style="max-width: 100%; min-height: 60px;">
+                        <span [routerLink]="['/restaurants']"><a [routerLink]="['/restaurants']">Suche nach Kategorien</a></span>
+                    </button>
+
                 </div>
-                <div class="footer-wrapper">
-                    <footer class="transparent-footer">
-                        <span class="copyright">Gastromio.de &copy; 2020 • Mit ❤ erstellt in <strong>Bocholt</strong></span>
-                        <div class="link-wrapper">
-                            <a class="link" [routerLink]="['/general-terms-and-conditions']">AGB</a>
-                            <a class="link" [routerLink]="['/imprint']">Impressum</a>
-                            <a class="link" [routerLink]="['/privacy-policy']">Datenschutz</a>
-                        </div>
-                    </footer>
-                </div>
-            </div>
+            </section>
+
         </div>
     </div>
 </main>
+
+<section class="overwiew">
+    <div class="wrapper">
+        <div class="inner">
+
+            <div class="item">
+                <div class="img-wrapper">
+                    <img src="" alt="" />
+                </div>
+                <div class="bottom">
+                    <div class="text-wrapper">
+                        <h2>Unsere Leitgedanken</h2>
+                        <h3>Melden Sie Ihr Restaurant kostenfrei an und provitieren Sie von ... </h3>
+                    </div>
+                    <button class="button-wrapper">
+                        <span>Mehr erfahren</span>
+                        <div class="spacer"></div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;"><path d="M12.2929 15.2929C11.9024 15.6834 11.9024 16.3166 12.2929 16.7071C12.6834 17.0976 13.3166 17.0976 13.7071 16.7071L17.7071 12.7071C18.0976 12.3166 18.0976 11.6834 17.7071 11.2929L13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289C11.9024 7.68342 11.9024 8.31658 12.2929 8.70711L14.5858 11L7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13L14.5858 13L12.2929 15.2929Z" fill="#52AE31"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="img-wrapper">
+                    <img src="" alt="" />
+                </div>
+                <div class="bottom">
+                    <div class="text-wrapper">
+                        <h2>Restaurant anmelden</h2>
+                        <h3>Melden Sie Ihr Restaurant kostenfrei an und provitieren Sie von ... </h3>
+                    </div>
+                    <button class="button-wrapper">
+                        <span>Registrieren</span>
+                        <div class="spacer"></div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;"><path d="M12.2929 15.2929C11.9024 15.6834 11.9024 16.3166 12.2929 16.7071C12.6834 17.0976 13.3166 17.0976 13.7071 16.7071L17.7071 12.7071C18.0976 12.3166 18.0976 11.6834 17.7071 11.2929L13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289C11.9024 7.68342 11.9024 8.31658 12.2929 8.70711L14.5858 11L7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13L14.5858 13L12.2929 15.2929Z" fill="#52AE31"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="img-wrapper">
+                    <img src="" alt="" />
+                </div>
+                <div class="bottom">
+                    <div class="text-wrapper">
+                        <h2>Jetzt Mitwirken</h2>
+                        <h3>Melden Sie Ihr Restaurant kostenfrei an und provitieren Sie von ... </h3>
+                    </div>
+                    <button class="button-wrapper">
+                        <span>Registrieren</span>
+                        <div class="spacer"></div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;"><path d="M12.2929 15.2929C11.9024 15.6834 11.9024 16.3166 12.2929 16.7071C12.6834 17.0976 13.3166 17.0976 13.7071 16.7071L17.7071 12.7071C18.0976 12.3166 18.0976 11.6834 17.7071 11.2929L13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289C11.9024 7.68342 11.9024 8.31658 12.2929 8.70711L14.5858 11L7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13L14.5858 13L12.2929 15.2929Z" fill="#52AE31"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

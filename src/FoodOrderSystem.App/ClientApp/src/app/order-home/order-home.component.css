@@ -1,154 +1,144 @@
 .order-home {
     display: flex;
-    flex: 1 1 0%;
+}
+
+.order-wrapper {
+    display: flex;
     flex-direction: column;
     height: 100%;
-}
-
-.order-home .order-content {
-    display: flex;
-    font-family: proxima-nova, sans-serif;
-    flex: 1 0 auto;
-    flex-direction: column;
+    min-height: 33vh;
     position: relative;
+    width: 100%;
     z-index: 2;
 }
 
-.order-home .order-content .order-inner {
-    position: relative;
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    z-index: 2;
-}
-
-.order-home .order-content .order-inner .inner-wrapper {
-    align-items: center;
-    background-color: rgb(30, 26, 52);
+/* START: Banner */
+.order-wrapper .content {
+    background-image: url("../../assets/img/header/order-home_desktop.jpg");
     background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
+	  background-repeat: no-repeat;
+	  background-position: center center;
+	  display: flex;
+	  flex-direction: column;
+	  height: 100%;
+    padding-top: 90px;
+    margin-top: -90px;
+	  padding: 16px 0px 192px;
     position: relative;
+    width: 100%;
+    z-index: 2;
+}
+
+@media screen and (max-width: 960px) {
+    .order-wrapper .content {
+        background-image: url("../../assets/img/header/order-home_mobile.jpg");
+        padding: 96px 0px;
+    }
+}
+/* ENDE: Banner*/
+
+/* START: Titel */
+.title-wrapper {
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    max-width: 100%;
+    padding: 12px 24px;
     width: 100%;
     -moz-box-align: center;
     -moz-box-pack: center;
 }
 
-/* START: Hintergrund */
-.order-home .order-content .order-inner .inner-wrapper .order-bg-mobile {
-    filter: blur(30px);
-    height: 100%;
-    left: 0px;
-    object-fit: cover;
-    overflow: hidden;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    z-index: 1;
+.title-wrapper .inner {
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 100%;
+    -moz-box-align: center;
 }
 
-.order-home .order-content .order-inner .inner-wrapper .order-bg-desktop {
-    background-size: cover;
-    height: 100%;
-    left: 0px;
-    object-fit: cover;
-    overflow: hidden;
-    opacity: 1;
-    position: absolute;
-    top: 0px;
-    transform: scale(1);
-    transform-origin: center center 0px;
-    transition: opacity 1s ease-in-out 0s;
-    width: 100%;
-    z-index: 2;
-}
-
-.order-home .order-content .order-inner .inner-wrapper .order-title {
-    margin-bottom: 20px;
-    pointer-events: none;
-    position: relative;
-    text-shadow: rgba(23, 32, 38, 0.2) 0px 2px 10px, rgba(23, 32, 38, 0.2) 0px 2px 4px;
-    z-index: 2;
-}
-
-.order-home .order-content .order-inner .inner-wrapper .order-title .ot3 {
-    font-size: 56px;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0.5px;
-    margin: 0;
-    margin-bottom: 0px;
+.title-wrapper .inner span {
+    color: rgb(255, 255, 255);
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 48px;
+    font-variant-ligatures: no-common-ligatures;
+    font-weight: 700;
+    letter-spacing: -0.04ch;
+    line-height: 44px;
+    margin: 0px;
+    margin-top: 16px;
+    max-width: 880px;
+    padding: 0px;
     text-align: center;
-    transition: none;
+    text-transform: none;
 }
 
-.order-home .order-content .order-inner .inner-wrapper .order-title .otp {
-    font-size: 25px;
-    text-align: center;
-    transition: none;
-    line-height: 1.3;
-    letter-spacing: 0.5px;
-    margin: 0;
-    margin-bottom: 0.35em;
-}
-
-@media (max-width: 960px) {
-    .order-home .order-content .order-inner .inner-wrapper .order-title .ot3 {
-        font-size: 50px;
-    }
-    .order-home .order-content .order-inner .inner-wrapper .order-title .otp {
-        font-size: 19px;
-    }
-}
-/* ENDE: Hintergrund */
-
-.order-home .order-content .order-inner .inner-wrapper .restaurants-wrapper {
-    flex: 0 0 auto;
-    position: relative;
-    width: 100%;
-    z-index: 3;
-}
-
-.order-home .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content {
-    background-position: center center;
-    flex: 1 1 auto;
-    position: relative;
-    width: 100%;
+.title-wrapper .inner p {
+    color: rgb(255, 255, 255);
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 22px;
+    font-variant-ligatures: no-common-ligatures;
+	  font-weight: 400;
+    letter-spacing: -0.04ch;
+	  line-height: 28px;
+    margin: 0px;
+    margin-top: 12px;
+    max-width: 880px;
+    padding: 0px;
+	  text-align: center;
+	  text-transform: none;
 }
 
 @media (min-width: 960px) {
-    .order-home .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content {
-        background-position: center center;
+    .title-wrapper .inner span {
+        font-size: 64px;
+        line-height: 76px;
+        margin-top: 96px;
+        max-width: 900px;
+    }
+    .title-wrapper .inner p {
+        font-size: 28px;
+        line-height: 30px;
+        margin-top: 2px;
+        max-width: 900px;
     }
 }
+/* ENDE: Titel */
 
-.order-home .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content .restaurants-inner {
-    margin: 0px auto;
-    max-width: 920px;
-    position: relative;
-    width: 100%;
-}
-
-.order-home .order-content .order-inner .inner-wrapper .restaurants-wrapper .restaurants-content .restaurants-inner .content {
-    overflow: visible;
-}
-
-/* START: Suche */
-.restaurant-search-box {
+/* START: Restaurant-Suche */
+.search-wrapper {
+	  display: flex;
+    justify-content: center;
+	  margin-top: 12px;
     padding: 0px 16px;
+	  -moz-box-pack: center;
 }
 
 @media (min-width: 960px) {
-    .restaurant-search-box {
+    .search-wrapper {
+        margin-top: 16px;
         padding: 0px;
     }
 }
 
-.restaurant-search-box .restaurant-search-container {
+.search-wrapper .search-box {
+    padding: 0px 16px;
+    width: 880px;
+}
+
+@media (min-width: 960px) {
+    .search-wrapper .search-box {
+        padding: 0px;
+        width: 720px;
+    }
+}
+
+.search-wrapper .search-box .search-inner {
     align-items: center;
-    background: #fff;
+    background: rgb(255, 255, 255);
     border-radius: 4px 4px 0px 0px;
     display: flex;
     height: 72px;
@@ -157,13 +147,13 @@
 }
 
 @media (max-width: 960px) {
-    .restaurant-search-container {
+    .search-wrapper .search-box .search-inner {
         background: rgb(255, 255, 255) none repeat scroll 0% 0%;
         height: 60px;
     }
 }
 
-.restaurant-search-box .restaurant-search-container .searchby-icon {
+.search-wrapper .search-box .search-inner .icon-wrapper {
     cursor: pointer;
     pointer-events: none;
     position: absolute;
@@ -176,267 +166,294 @@
     padding-right: 19px;
 }
 
-.restaurant-search-box .restaurant-search-container .searchby-icon .icon {
+.search-wrapper .search-box .search-inner .icon-wrapper .icon {
     height: 36px;
     width: 36px;
 }
 
-.restaurant-search-box .restaurant-search-container .searchby-icon .icon .search-icon {
-    color: #172026;
-    height: 36px;
-    width: 36px;
-    pointer-events: none;
-    fill: currentColor;
+.search-wrapper .search-box .search-inner .icon-wrapper .icon svg {
+    color: rgb(23, 32, 38);
     display: inline-block;
+    fill: currentColor;
     font-size: 1.5rem;
+    height: 36px;
+    pointer-events: none;
     transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    width: 36px;
     -moz-user-select: none;
 }
 
-.restaurant-search-form {
+/* START: Restaurant-Suche/Restaurants */
+.form-wrapper {
     flex: 1;
 }
 
-.restaurant-search-form .restaurant-search-input {
+.form-wrapper .form-input {
+    background: transparent;
+    border: 0px none;
+    color: rgb(23, 32, 38);
     font-weight: 500;
     font-size: 20px;
     line-height: 28px;
     letter-spacing: 0;
-    border: 0px none;
-    color: #172026;
-    overflow: hidden;
+    min-height: 72px;
     outline: 0;
+    overflow: hidden;
     padding: 0 100px 0 74px;
     text-overflow: ellipsis;
-    width: 100%;
-    background: transparent;
-    min-height: 72px;
+    width: 100%; 
 }
 
 @media (max-width: 960px) {
-    .restaurant-search-form .restaurant-search-input {
-        font-size: 16px;
-        padding: 0px 70px 0px 60px;
+    .form-wrapper .form-input {
         background: transparent none repeat scroll 0% 0%;
+        font-size: 16px;
         min-height: 60px;
+        padding: 0px 70px 0px 60px;
     }
 }
 
-.search-result-container {
-    width: 920px;
-}
-
-.restaurant-searchby-type {
+.form-button {
+    align-items: center;
+    background-color: rgb(82, 174, 49);
+    border: 0;
+    border-radius: 0px;
     border-style: none;
-    height: 60px;
-    text-align: center;
-    font-weight: 600;
-    line-height: 1.3;
-    padding-top: 0;
-    white-space: normal;
-    border-radius: 0;
-    letter-spacing: 1px;
-    padding-bottom: 0;
-    width: 100%;
-    padding: 15px 30px 14px;
-    font-size: 0.9375rem;
-    color: #fff;
     box-shadow: none;
-    min-width: 64px;
     box-sizing: border-box;
-    background-color: #52AE31;
-    text-transform: uppercase;
-    border: 0;
+    color: rgb(255, 255, 255);
     cursor: pointer;
-    margin: 0;
     display: inline-flex;
-    outline: 0;
-    position: relative;
-    align-items: center;
-    vertical-align: middle;
-    -moz-appearance: none;
-    justify-content: center;
-    text-decoration: none;
-    -moz-user-select: none;
-    -webkit-appearance: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-@media (max-width: 960px) {
-    .restaurant-searchby-type {
-        height: 60px;
-    }
-}
-
-.restaurant-searchby-type:hover {
-    background-color: #428b27
-}
-
-.restaurant-searchby-type .restaurant-button-label {
-    width: 100%;
-    display: inherit;
-    align-items: inherit;
-    justify-content: inherit;
-}
-
-.restaurant-searchby-type .restaurant-button-label a {
-    color: #fff;
-    background-color: transparent;
-}
-
-.restaurant-searchby-type .restaurant-button-label a:hover {
-    color: #fff;
-    text-decoration: none;
-}
-
-.restaurant-searchby-type restaurant-button-label-wrapper {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    overflow: hidden;
-    position: absolute;
-    border-radius: inherit;
-    pointer-events: none;
-}
-
-.restaurant-search-input .dropdown-menu {
-    background-color: #fff;
-    border-radius: 0 0 4px 4px;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08), 0 2px 4px 0 rgba(23,32,38,0.06);
-    border-top: 1px solid #E1E5E8;
-    overflow-y: visible;
-    z-index: 1;
-    position: absolute;
-    width: 100%;
-}
-
-.search-result-wrapper .search-result-container {
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: #fff;
-}
-
-.search-result-wrapper .search-result-container .result-list {
-    padding: 0px;
-    position: relative;
-    margin: 0;
-    list-style: none;
-}
-
-.search-result-wrapper .search-result-container .result-list .result {
-    padding: 0;
-    border-top: 1px solid transparent;
-    margin-top: -2px;
-    border-bottom: 1px solid transparent;
-    margin-bottom: -1px;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    transition-property: background-color;
-    transition-delay: 150ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: 0ms;
-    width: 100%;
-    display: flex;
-    position: relative;
-    box-sizing: border-box;
-    text-align: left;
-    align-items: center;
-    justify-content: flex-start;
-    text-decoration: none;
-    color: inherit;
-    border: 0;
-    cursor: pointer;
-    margin: 0;
-    outline: 0;
-    border-radius: 0;
-    -moz-user-select: none;
-    background-color: transparent;
-    -webkit-appearance: none;
-    -webkit-tap-highlight-color: transparent;
-}
-/* ENDE: Suche */
-
-/* START: Footer (Transparent) */
-.footer-wrapper {
-    display: flex;
-    flex-direction: row;
-    -moz-box-pack: start;
-    justify-content: flex-start;
-    -moz-box-align: center;
-    align-items: center;
-    min-height: 64px;
-    width: 100%;
-    font-family: proxima-nova, sans-serif;
-    position: fixed;
-    bottom: 0px;
-    margin-bottom: 0px;
-    z-index: 2;
-}
-
-.transparent-footer {
-    height: 32px;
-    display: flex;
-    flex-direction: row;
-    -moz-box-pack: justify;
-    justify-content: space-between;
-    padding: 0px 32px;
-    -moz-box-align: center;
-    align-items: center;
-    min-height: 64px;
-    -moz-box-flex: 1;
-    flex-grow: 1;
-    border: 0px none;
-    box-sizing: inherit;
+    font-size: 0.9375rem;
     font-weight: 600;
+    height: 60px;
+    justify-content: center;
+    letter-spacing: 1px;
+    line-height: 1.3;
     margin: 0px;
-    outline: currentcolor none 0px;
+    min-width: 64px;
+    outline: 0;
+    padding: 15px 30px 14px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    position: relative;
+    text-align: center;
     text-decoration: none;
-    text-rendering: optimizeLegibility;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: normal;
+    width: 100%;
     -moz-appearance: none;
-    z-index: 2;
-}
-
-.transparent-footer .copyright {
-    border: 0px solid black;
-    box-sizing: border-box;
-    display: inline;
-    color: rgb(121, 137, 160);
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    letter-spacing: 0.25px;
-    line-height: 16.8px;
-    padding: 0px;
+    -moz-user-select: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 @media (max-width: 960px) {
-    .transparent-footer .copyright {
-        visibility: hidden;
+    .form-button {
+        height: 40px;
     }
 }
 
-.transparent-footer .link-wrapper {
-    flex-direction: row;
-    -moz-box-pack: start;
-    justify-content: flex-start;
-    -moz-box-align: center;
-    align-items: center;
-    display: flex;
+.form-button:hover {
+    background-color: rgb(66, 139, 39);
 }
 
-.transparent-footer .link-wrapper .link {
-    text-decoration: none;
-    font-family: inherit;
-    padding-left: 24px;
-    color: rgb(121, 137, 160);
-    transition: color 0.18s ease-in 0s;
+.form-button span {
+    align-items: inherit;
+    display: inherit;
+    justify-content: inherit;
+    width: 100%;
 }
 
-.transparent-footer .link-wrapper .link:hover {
-    color: #fff;
+.form-button span a {
+    color: rgb(255, 255, 255);
     background-color: transparent;
+}
+
+.form-button span a:hover {
+    color: rgb(255, 255, 255);
     text-decoration: none;
 }
-/* ENDE: Footer (Transparent) */
+/* ENDE: Restaurant-Suche/Restaurants */
+/* START: Überblick (3 Infos) */
+.overwiew {
+    flex: 1 0 auto;
+    margin: 0px auto;
+    max-width: 1184px;
+    width: 100%;
+}
+
+.overwiew .wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 42px 0px;
+    max-width: 100%;
+    padding: 12px;
+    -moz-box-pack: center;
+}
+
+@media (max-width: 960px) {
+    .overwiew .wrapper {
+        flex-direction: column;
+        margin: 40px 0px;
+        padding: 8px;
+    }
+}
+
+.overwiew .wrapper .inner {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    -moz-box-pack: center;
+}
+
+@media (max-width: 960px) {
+    .overwiew .wrapper .inner {
+        flex-direction: column;
+    }
+}
+
+.overwiew .wrapper .inner .item {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+}
+
+@media (max-width: 960px) {
+    .overwiew .wrapper .inner .item {
+        flex-flow: row nowrap;
+    }
+}
+
+@media (min-width: 960px) {
+    .overwiew .wrapper .inner .item {
+        margin: 0px 17px;
+        max-width: 100%;
+        padding: 16px;
+    }
+}
+
+.overwiew .wrapper .inner .item .img-wrapper {
+    display: flex;
+    justify-content: center;
+    -moz-box-pack: center;
+}
+
+.overwiew .wrapper .inner .item .img-wrapper img {
+    height: 154px;
+    width: 154px;
+}
+
+@media (max-width: 960px) {
+    .overwiew .wrapper .inner .item .img-wrapper {
+        margin-right: 32px;
+    }
+    .overwiew .wrapper .inner .item .img-wrapper img {
+        height: 88px;
+        width: 88px;
+    }
+}
+
+.overwiew .wrapper .inner .item .bottom {
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 160px;
+    width: 100%;
+}
+
+.overwiew .wrapper .inner .item .bottom .text-wrapper {
+    max-width: 100%;
+}
+
+.overwiew .wrapper .inner .item .bottom .text-wrapper h2 {
+    color: rgb(25, 25, 25);
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 32px;
+    font-variant-ligatures: no-common-ligatures;
+    font-weight: 700;
+    letter-spacing: -0.04ch;
+    line-height: 40px;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+	  text-transform: none;
+}
+
+.overwiew .wrapper .inner .item .bottom .text-wrapper h3 {
+    color: rgb(25, 25, 25);
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px;
+    font-variant-ligatures: no-common-ligatures;
+    font-weight: 500;
+    letter-spacing: 0ch;
+    line-height: 24px;
+    margin: 0px;
+    margin-top: 8px;
+    padding: 0px;
+    text-align: center;
+	  text-transform: none;
+}
+
+@media (max-width: 960px) {
+    .overwiew .wrapper .inner .item .bottom .text-wrapper h2 {
+        font-size: 18px;
+        line-height: 24px;
+        text-align: left;
+    }
+    .overwiew .wrapper .inner .item .bottom .text-wrapper h3 {
+        font-size: 14px;
+        line-height: 20px;
+        text-align: left;
+        margin-top: 0px;
+    }
+}
+
+.overwiew .wrapper .inner .item .bottom .button-wrapper {
+    align-items: center;
+    background-color: transparent;
+    border: 0px none;
+    cursor: pointer;
+    display: flex;
+    margin: 12px 0px 0px;
+    outline: currentcolor none 0px;
+    -moz-box-align: center;
+}
+
+@media (min-width: 960px) {
+    .overwiew .wrapper .inner .item .bottom .button-wrapper {
+        justify-content: center;
+        padding: 0px;
+        -moz-box-pack: center;
+    }
+}
+
+.overwiew .wrapper .inner .item .bottom .button-wrapper span {
+    color: rgb(82, 174, 49);
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px;
+    font-variant-ligatures: no-common-ligatures;
+    font-weight: 700;
+    letter-spacing: -0.04ch;
+    line-height: 24px;
+    margin: 0px;
+    padding: 0px;
+    text-transform: none;
+}
+
+@media (max-width: 960px) {
+    .overwiew .wrapper .inner .item .bottom .button-wrapper span {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+.overwiew .wrapper .inner .item .bottom .button-wrapper .spacer {
+    width: 4px;
+}
+/* ENDE: Überblick (3 Infos) */
