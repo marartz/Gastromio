@@ -24,12 +24,19 @@
                 <div class="wrapper">
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Benutzername" id="name" formControlName="name" ngbAutofocus />
+                            <input class="input" type="text" placeholder="Benutzername" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="email" placeholder="E-Mail-Adresse" id="email" formControlName="email" />
+                            <input class="input" type="email" placeholder="E-Mail-Adresse" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">E-Mail wird benötigt.</div>
+                                <div *ngIf="f.email.errors.email">E-Mail muss eine valide E-Mail Adresse sein.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">

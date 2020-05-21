@@ -1,12 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmPasswordValidator } from '../validators/password.validator';
 
 @Component({
   selector: 'app-change-user-password',
@@ -19,6 +20,7 @@ export class ChangeUserPasswordComponent implements OnInit {
 
   changeUserPasswordForm: FormGroup;
   message: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -30,12 +32,18 @@ export class ChangeUserPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.changeUserPasswordForm = this.formBuilder.group({
-      password: "",
-      passwordRepeat: "",
-    });
+      password: ["", [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
+      passwordRepeat: [""]
+    }, { validators: ConfirmPasswordValidator('password', 'passwordRepeat') });
   }
 
+  get f() { return this.changeUserPasswordForm.controls; }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.changeUserPasswordForm.invalid) {
+      return;
+    }
     if (data.password === undefined || data.password === "") {
       this.message = "Bitte geben Sie ein Passwort ein";
       return;

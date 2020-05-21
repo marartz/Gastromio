@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
@@ -19,6 +19,7 @@ export class ChangeUserDetailsComponent implements OnInit {
 
   changeUserDetailsForm: FormGroup;
   message: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -30,13 +31,19 @@ export class ChangeUserDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.changeUserDetailsForm = this.formBuilder.group({
-      name: this.user.name,
-      role: this.user.role,
-      email: this.user.email
+      name: [this.user.name, Validators.required],
+      role: [this.user.role, Validators.required],
+      email: [this.user.email, [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]]
     });
   }
 
+  get f() { return this.changeUserDetailsForm.controls; }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.changeUserDetailsForm.invalid) {
+      return;
+    }
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
       .subscribe(() => {
