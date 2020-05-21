@@ -35,8 +35,10 @@ namespace FoodOrderSystem.Domain
             services.AddSingleton<IFailureMessageService>(failureMessageService);
 
             var deDeCultureInfo = new CultureInfo("de-DE");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Unauthorized, "Sie sind nicht angemeldet");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.SessionExpired, "Sie sind nicht angemeldet");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Forbidden, "Sie sind nicht berechtigt, diese Aktion auszuführen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RequiredFieldEmpty, "Nicht alle Pflichtfelder sind ausgefüllt");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Benutzername und/oder Passwort ist nicht korrekt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserAlreadyExists, "Benutzer existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CannotRemoveCurrentUser, "Sie können nicht den gerade angemeldeten Benutzer löschen");

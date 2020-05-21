@@ -3,6 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { AuthService } from '../auth/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +12,7 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./login.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class LoginComponent implements OnInit {
+  @BlockUI() blockUI: NgBlockUI;
   loginForm: FormGroup;
   message: string;
 
@@ -28,17 +31,19 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(loginData) {
-    this.authService.loginAsync(loginData.username, loginData.password)
+    this.blockUI.start("Verarbeite Daten...");
+    let subscription = this.authService.loginAsync(loginData.username, loginData.password)
       .subscribe(() => {
+        subscription.unsubscribe();
         this.message = undefined;
         this.loginForm.reset();
         this.activeModal.close('Close click');
-      }, (status: number) => {
+        this.blockUI.stop();
+      }, (error: HttpErrorResponse) => {
+          subscription.unsubscribe();
           this.loginForm.reset();
-          if (status === 401)
-            this.message = "Benutzername und/oder Passwort ist nicht korrekt.";
-          else
-            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
+          this.message = error.error;
+          this.blockUI.stop();
       });
   }
 }

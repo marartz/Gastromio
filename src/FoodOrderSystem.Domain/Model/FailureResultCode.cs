@@ -2,8 +2,10 @@
 {
     public enum FailureResultCode
     {
-        Unauthorized,
+        SessionExpired,
         Forbidden,
+        WrongCredentials,
+        RequiredFieldEmpty,
         UserDoesNotExist,
         UserAlreadyExists,
         CannotRemoveCurrentUser,
