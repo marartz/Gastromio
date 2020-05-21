@@ -3,6 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RestaurantSysAdminService } from '../restaurant-sys-admin/restaurant-sys-admin.service';
 import { RestaurantModel } from '../restaurant/restaurant.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-remove-restaurant',
@@ -18,6 +20,7 @@ export class RemoveRestaurantComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private restaurantAdminService: RestaurantSysAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -32,15 +35,10 @@ export class RemoveRestaurantComponent implements OnInit {
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }

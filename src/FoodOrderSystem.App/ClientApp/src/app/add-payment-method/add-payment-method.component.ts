@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { PaymentMethodAdminService } from '../payment-method/payment-method-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-payment-method',
@@ -20,6 +22,7 @@ export class AddPaymentMethodComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private paymentMethodAdminService: PaymentMethodAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addPaymentMethodForm = this.formBuilder.group({
       name: '',
@@ -39,16 +42,11 @@ export class AddPaymentMethodComponent implements OnInit {
         this.message = undefined;
         this.addPaymentMethodForm.reset();
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addPaymentMethodForm.reset();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }

@@ -4,6 +4,8 @@ using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace FoodOrderSystem.Domain.Model.Restaurant
@@ -66,14 +68,38 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             return DateTime.Now;
         }
 
-        public void ChangeName(string name)
+        public Result<bool> ChangeName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantHasToHaveAName);
             Name = name;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void ChangeImage(byte[] image)
+        public Result<bool> ChangeImage(byte[] image)
         {
-            Image = image;
+            if (image == null)
+            {
+                Image = null;
+                return SuccessResult<bool>.Create(true);
+            }
+
+            try
+            {
+                using (var ms = new MemoryStream(image))
+                {
+                    var imageObj = System.Drawing.Image.FromStream(ms);
+                    if (imageObj == null)
+                        return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
+                }
+            }
+            catch (Exception exc)
+            {
+                // TODO: Log error
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
+            }
+
+            return SuccessResult<bool>.Create(true);
         }
 
         public void ChangeAddress(Address address)

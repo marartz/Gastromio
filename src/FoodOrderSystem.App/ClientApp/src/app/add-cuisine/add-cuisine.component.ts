@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-cuisine',
@@ -20,6 +22,7 @@ export class AddCuisineComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private cuisineAdminService: CuisineAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addCuisineForm = this.formBuilder.group({
       name: ''
@@ -38,16 +41,11 @@ export class AddCuisineComponent implements OnInit {
         this.message = undefined;
         this.addCuisineForm.reset();
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
+        this.message = this.httpErrorHandlingService.handleError(response);
         this.addCuisineForm.reset();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
       });
   }
 }

@@ -6,6 +6,8 @@ import { DishModel } from '../dish-category/dish.model';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import { DishVariantModel } from '../dish-category/dish-variant.model';
 import { Guid } from "guid-typescript";
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-dish',
@@ -27,7 +29,8 @@ export class EditDishComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private restaurantAdminService: RestaurantRestAdminService
+    private restaurantAdminService: RestaurantRestAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -101,15 +104,10 @@ export class EditDishComponent implements OnInit {
         this.message = undefined;
         this.editDishForm.reset();
         this.activeModal.close(this.dish);
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }

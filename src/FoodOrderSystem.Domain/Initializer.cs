@@ -44,7 +44,9 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineAlreadyExists, "Cuisine existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodDoesNotExist, "Zahlungsmethode existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodAlreadyExists, "Zahlungsmethode existiert bereits");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantHasToHaveAName, "Für das Restaurant muss ein Name vergeben werden");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageNotValid, "Die angegebene Bilddatei ist nicht gültig");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishCategories, "Restaurant enthält noch Gerichtkategorien");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishes, "Restaurant enthält noch Gerichte");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotBelongToRestaurant, "Gerichtkategorie gehört nicht zum Restaurant");

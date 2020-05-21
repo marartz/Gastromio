@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-change-user-password',
@@ -22,6 +24,7 @@ export class ChangeUserPasswordComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private userAdminService: UserAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -56,15 +59,10 @@ export class ChangeUserPasswordComponent implements OnInit {
         this.message = undefined;
         this.changeUserPasswordForm.reset();
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }

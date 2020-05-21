@@ -11,6 +11,8 @@
         CuisineAlreadyExists,
         PaymentMethodDoesNotExist,
         PaymentMethodAlreadyExists,
+        RestaurantHasToHaveAName,
+        RestaurantImageNotValid,
         RestaurantDoesNotExist,
         RestaurantContainsDishCategories,
         RestaurantContainsDishes,

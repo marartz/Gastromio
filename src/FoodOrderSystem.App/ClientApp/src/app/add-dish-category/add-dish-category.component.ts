@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import { DishCategoryModel } from '../dish-category/dish-category.model';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-dish-category',
@@ -20,7 +22,8 @@ export class AddDishCategoryComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private restaurantAdminService: RestaurantRestAdminService
+    private restaurantAdminService: RestaurantRestAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addDishCategoryForm = this.formBuilder.group({
       name: ''
@@ -39,16 +42,11 @@ export class AddDishCategoryComponent implements OnInit {
         this.message = undefined;
         this.addDishCategoryForm.reset();
         this.activeModal.close(new DishCategoryModel({ id: id, name: data.name }));
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-          this.addDishCategoryForm.reset();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.addDishCategoryForm.reset();
+        this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }

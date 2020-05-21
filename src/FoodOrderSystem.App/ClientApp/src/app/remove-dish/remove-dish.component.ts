@@ -4,6 +4,8 @@ import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-
 import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DishModel } from '../dish-category/dish.model';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-remove-dish',
@@ -20,7 +22,8 @@ export class RemoveDishComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private restaurantAdminService: RestaurantRestAdminService
+    private restaurantAdminService: RestaurantRestAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -35,15 +38,10 @@ export class RemoveDishComponent implements OnInit {
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }

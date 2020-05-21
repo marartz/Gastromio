@@ -34,11 +34,13 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantImage
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.ChangeImage(command.Image);
+            var result = restaurant.ChangeImage(command.Image);
+            if (result is FailureResult<bool>)
+                return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<bool>.Create(true);
+            return result;
         }
     }
 }

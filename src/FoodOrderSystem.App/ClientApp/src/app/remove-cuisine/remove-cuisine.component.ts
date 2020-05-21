@@ -4,6 +4,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
 import { CuisineModel } from '../cuisine/cuisine.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-remove-cuisine',
@@ -19,6 +21,7 @@ export class RemoveCuisineComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private cuisineAdminService: CuisineAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -33,15 +36,10 @@ export class RemoveCuisineComponent implements OnInit {
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
-        this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+          this.blockUI.stop();
+          this.message = this.httpErrorHandlingService.handleError(response);
       });
   }
 }
