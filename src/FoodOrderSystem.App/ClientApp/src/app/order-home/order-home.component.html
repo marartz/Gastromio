@@ -5,7 +5,7 @@
             <section class="title-wrapper">
                 <div class="inner">
                     <span>Einfach. Lokal. Bestellen.</span>
-                    <p>100% des Geldes geht an den Gastronomen. So einfach ist das.</p>
+                    <p>100% des Geldes geht an den Gastronomen. <a href="" [routerLink]="['']">Mehr erfahren &raquo;</a></p>
                 </div>
             </section>
 
@@ -15,7 +15,7 @@
 
                         <div class="icon-wrapper">
                             <div class="icon">
-                                <svg focusable="false" viewBox="0 0 24 24" color="black" aria-hidden="true" role="presentation">
+                                <svg focusable="false" viewBox="0 0 24 24" color="black" role="presentation">
                                     <g transform="translate(2 1.5)">
                                         <path d="m9.738 3.7341c-1.6134 0-2.9214 1.3079-2.9214 2.9214s1.308 2.9215 2.9214 2.9215c1.6135 0 2.9214-1.308 2.9214-2.9215s-1.3079-2.9214-2.9214-2.9214"></path>
                                         <g transform="translate(11.06 8.7779)">
@@ -51,59 +51,44 @@
     </div>
 </main>
 
-<section class="overwiew">
-    <div class="wrapper">
-        <div class="inner">
+<!--section class="info-cta">
+    <div class="container">
+        <h2>Das macht Gastromio anders.</h2>
+        <a href="#"><p>Mehr erfahren</p></a>
+    </div>
+</section-->
 
-            <div class="item">
-                <div class="img-wrapper">
-                    <img src="" alt="" />
+<section class="process">
+    <div class="container">
+
+        <div class="row">
+            <h2 class="col">3 einfache Schritte, um loszulegen</h2>
+        </div>
+
+        <div class="row">
+
+            <div class="step col-md">
+                <div class="number">1</div>
+                <div class="icon">
+                    <img src="assets/img/icons/order-home/step-1.svg" alt="1" />
                 </div>
-                <div class="bottom">
-                    <div class="text-wrapper">
-                        <h2>Unsere Leitgedanken</h2>
-                        <h3>Melden Sie Ihr Restaurant kostenfrei an und provitieren Sie von ... </h3>
-                    </div>
-                    <button class="button-wrapper">
-                        <span>Mehr erfahren</span>
-                        <div class="spacer"></div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;"><path d="M12.2929 15.2929C11.9024 15.6834 11.9024 16.3166 12.2929 16.7071C12.6834 17.0976 13.3166 17.0976 13.7071 16.7071L17.7071 12.7071C18.0976 12.3166 18.0976 11.6834 17.7071 11.2929L13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289C11.9024 7.68342 11.9024 8.31658 12.2929 8.70711L14.5858 11L7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13L14.5858 13L12.2929 15.2929Z" fill="#52AE31"></path></svg>
-                    </button>
-                </div>
+                <div class="label">Suche dir ein Restaurant aus</div>
             </div>
 
-            <div class="item">
-                <div class="img-wrapper">
-                    <img src="" alt="" />
+            <div class="step col-md">
+                <div class="number">2</div>
+                <div class="icon">
+                    <img src="assets/img/icons/order-home/step-2.svg" alt="2" />
                 </div>
-                <div class="bottom">
-                    <div class="text-wrapper">
-                        <h2>Restaurant anmelden</h2>
-                        <h3>Melden Sie Ihr Restaurant kostenfrei an und provitieren Sie von ... </h3>
-                    </div>
-                    <button class="button-wrapper">
-                        <span>Registrieren</span>
-                        <div class="spacer"></div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;"><path d="M12.2929 15.2929C11.9024 15.6834 11.9024 16.3166 12.2929 16.7071C12.6834 17.0976 13.3166 17.0976 13.7071 16.7071L17.7071 12.7071C18.0976 12.3166 18.0976 11.6834 17.7071 11.2929L13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289C11.9024 7.68342 11.9024 8.31658 12.2929 8.70711L14.5858 11L7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13L14.5858 13L12.2929 15.2929Z" fill="#52AE31"></path></svg>
-                    </button>
-                </div>
+                <div class="label">Bestelle dein Lieblingsessen</div>
             </div>
 
-            <div class="item">
-                <div class="img-wrapper">
-                    <img src="" alt="" />
+            <div class="step col-md">
+                <div class="number">3</div>
+                <div class="icon">
+                    <img src="assets/img/icons/order-home/step-3.svg" alt="3" />
                 </div>
-                <div class="bottom">
-                    <div class="text-wrapper">
-                        <h2>Jetzt Mitwirken</h2>
-                        <h3>Melden Sie Ihr Restaurant kostenfrei an und provitieren Sie von ... </h3>
-                    </div>
-                    <button class="button-wrapper">
-                        <span>Registrieren</span>
-                        <div class="spacer"></div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;"><path d="M12.2929 15.2929C11.9024 15.6834 11.9024 16.3166 12.2929 16.7071C12.6834 17.0976 13.3166 17.0976 13.7071 16.7071L17.7071 12.7071C18.0976 12.3166 18.0976 11.6834 17.7071 11.2929L13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289C11.9024 7.68342 11.9024 8.31658 12.2929 8.70711L14.5858 11L7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13L14.5858 13L12.2929 15.2929Z" fill="#52AE31"></path></svg>
-                    </button>
-                </div>
+                <div class="label">Genieße dein leckeres Essen</div>
             </div>
 
         </div>
