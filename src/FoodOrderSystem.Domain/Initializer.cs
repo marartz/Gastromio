@@ -38,6 +38,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.SessionExpired, "Sie sind nicht angemeldet");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Forbidden, "Sie sind nicht berechtigt, diese Aktion auszuführen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RequiredFieldEmpty, "Nicht alle Pflichtfelder sind ausgefüllt");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ValueMustNotBeNegative, "Der Wert darf nicht negativ sein");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Benutzername und/oder Passwort ist nicht korrekt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserAlreadyExists, "Benutzer existiert bereits");
@@ -47,8 +48,13 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodDoesNotExist, "Zahlungsmethode existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodAlreadyExists, "Zahlungsmethode existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantHasToHaveAName, "Für das Restaurant muss ein Name vergeben werden");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageNotValid, "Die angegebene Bilddatei ist nicht gültig");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumOrderValueTooHigh, "Der Mindestbestellwert ist zu groß");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryCostsTooHigh, "Die Lieferkosten sind zu groß");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeIntersects, "Die Lierferzeit überschneidet sich mit einer bereits eingetragenen Lieferzeit");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeBeginTooEarly, "Die Lieferzeit darf nicht vor 4 Uhr morgens beginnen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeEndTooLate, "Die Lieferzeit darf nicht nach 4 Uhr morgens enden");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishCategories, "Restaurant enthält noch Gerichtkategorien");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishes, "Restaurant enthält noch Gerichte");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotBelongToRestaurant, "Gerichtkategorie gehört nicht zum Restaurant");

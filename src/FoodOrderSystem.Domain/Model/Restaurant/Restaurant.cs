@@ -4,7 +4,6 @@ using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -102,28 +101,64 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        public void ChangeAddress(Address address)
+        public Result<bool> ChangeAddress(Address address)
         {
+            if (address == null)
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address));
+
+            if (string.IsNullOrEmpty(address.Street))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address.Street));
+
+            if (string.IsNullOrEmpty(address.ZipCode))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address.ZipCode));
+
+            if (string.IsNullOrEmpty(address.City))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address.City));
+
             Address = address;
+
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void ChangeContactDetails(string phone, string webSite, string imprint, string orderEmailAddress)
+        public Result<bool> ChangeContactDetails(string phone, string webSite, string imprint, string orderEmailAddress)
         {
+            if (string.IsNullOrEmpty(phone))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(phone));
+            if (string.IsNullOrEmpty(imprint))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(imprint));
+            if (string.IsNullOrEmpty(orderEmailAddress))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(orderEmailAddress));
+
             Phone = phone;
             WebSite = webSite;
             Imprint = imprint;
             OrderEmailAddress = orderEmailAddress;
+
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void ChangeDeliveryData(decimal minimumOrderValue, decimal deliveryCosts)
+        public Result<bool> ChangeDeliveryData(decimal minimumOrderValue, decimal deliveryCosts)
         {
+            if (minimumOrderValue < 0)
+                return FailureResult<bool>.Create(FailureResultCode.ValueMustNotBeNegative, args: nameof(minimumOrderValue));
+            if (minimumOrderValue > 50)
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantMinimumOrderValueTooHigh);
+
+            if (deliveryCosts < 0)
+                return FailureResult<bool>.Create(FailureResultCode.ValueMustNotBeNegative, args: nameof(deliveryCosts));
+            if (deliveryCosts > 10)
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryCostsTooHigh);
+
             MinimumOrderValue = minimumOrderValue;
             DeliveryCosts = deliveryCosts;
+
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void AddDeliveryTime(int dayOfWeek, TimeSpan start, TimeSpan end)
+        public Result<bool> AddDeliveryTime(int dayOfWeek, TimeSpan start, TimeSpan end)
         {
             deliveryTimes.Add(new DeliveryTime(dayOfWeek, start, end));
+            return SuccessResult<bool>.Create(true);
         }
 
         public void RemoveDeliveryTime(int dayOfWeek, TimeSpan start)

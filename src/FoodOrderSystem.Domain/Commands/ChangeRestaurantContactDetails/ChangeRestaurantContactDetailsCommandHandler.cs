@@ -34,11 +34,13 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint, command.OrderEmailAddress);
+            var result = restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint, command.OrderEmailAddress);
+            if (result is FailureResult<bool>)
+                return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<bool>.Create(true);
+            return result;
         }
     }
 }
