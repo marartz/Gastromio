@@ -13,9 +13,13 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
     {
         private IList<DeliveryTime> deliveryTimes;
 
-        private Restaurant(RestaurantId id)
+        public Restaurant(RestaurantId id)
         {
             Id = id;
+            deliveryTimes = new List<DeliveryTime>();
+            Cuisines = new HashSet<CuisineId>();
+            PaymentMethods = new HashSet<PaymentMethodId>();
+            Administrators = new HashSet<UserId>();
         }
 
         public Restaurant(

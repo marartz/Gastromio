@@ -8,24 +8,11 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
 {
     public class RestaurantFactory : IRestaurantFactory
     {
-        public Restaurant CreateWithName(string name)
+        public Result<Restaurant> CreateWithName(string name)
         {
-            return new Restaurant(
-                new RestaurantId(Guid.NewGuid()),
-                name,
-                null,
-                new Address(null, null, null),
-                new List<DeliveryTime>(),
-                0,
-                0,
-                null,
-                null,
-                null,
-                null,
-                new HashSet<CuisineId>(),
-                new HashSet<PaymentMethodId>(),
-                new HashSet<UserId>()
-            );
+            var restaurant = new Restaurant(new RestaurantId(Guid.NewGuid()));
+            var tempResult = restaurant.ChangeName(name);
+            return tempResult.IsFailure ? tempResult.Cast<Restaurant>() : SuccessResult<Restaurant>.Create(restaurant);
         }
     }
 }
