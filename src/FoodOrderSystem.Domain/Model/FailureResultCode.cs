@@ -21,7 +21,7 @@
         RestaurantMinimumOrderValueTooHigh,
         RestaurantDeliveryCostsTooHigh,
         RestaurantDeliveryTimeBeginTooEarly,
-        RestaurantDeliveryTimeEndTooLate,
+        RestaurantDeliveryTimeEndBeforeStart,
         RestaurantDeliveryTimeIntersects,
         RestaurantDoesNotExist,
         RestaurantContainsDishCategories,

@@ -55,7 +55,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryCostsTooHigh, "Die Lieferkosten sind zu groß");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeIntersects, "Die Lierferzeit überschneidet sich mit einer bereits eingetragenen Lieferzeit");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeBeginTooEarly, "Die Lieferzeit darf nicht vor 4 Uhr morgens beginnen");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeEndTooLate, "Die Lieferzeit darf nicht nach 4 Uhr morgens enden");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeEndBeforeStart, "Das Ende der Lieferzeit muss nach dem Start liegen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishCategories, "Restaurant enthält noch Gerichtkategorien");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishes, "Restaurant enthält noch Gerichte");

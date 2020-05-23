@@ -183,6 +183,34 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
 
         public Result<bool> AddDeliveryTime(int dayOfWeek, TimeSpan start, TimeSpan end)
         {
+            var newStartHour = start.TotalHours;
+            var newEndHour = end.TotalHours;
+            if (newEndHour < 4)
+                newEndHour += 24;
+
+            if (newStartHour < 4)
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryTimeBeginTooEarly);
+            if (!(newEndHour > newStartHour))
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryTimeEndBeforeStart);
+
+            var curDeliveryTimes = deliveryTimes
+                .Where(en => en.DayOfWeek == dayOfWeek)
+                .OrderBy(en => en.Start.TotalHours)
+                .ToList();
+
+            foreach (var curDeliveryTime in curDeliveryTimes)
+            {
+                var curStartHour = curDeliveryTime.Start.TotalHours;
+                var curEndHour = curDeliveryTime.End.TotalHours;
+                if (curEndHour < 4)
+                    curEndHour += 24;
+
+                if (curStartHour < newStartHour && newStartHour < curEndHour) // either start is between current
+                    return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryTimeIntersects);
+                if (curStartHour < newEndHour && newEndHour < curEndHour) // or end is between current
+                    return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryTimeIntersects);
+            }
+            
             deliveryTimes.Add(new DeliveryTime(dayOfWeek, start, end));
             return SuccessResult<bool>.Create(true);
         }
