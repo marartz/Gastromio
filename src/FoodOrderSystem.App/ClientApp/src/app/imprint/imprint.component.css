@@ -2,7 +2,7 @@
     display: grid;
 }
 
-@media screen (min-width: 960px) {
+@media (min-width: 960px) {
     .impressum {
         grid-gap: 50px;
         grid-template-columns: 47% auto;
