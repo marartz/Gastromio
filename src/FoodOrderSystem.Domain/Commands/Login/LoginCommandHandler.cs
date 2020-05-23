@@ -27,7 +27,8 @@ namespace FoodOrderSystem.Domain.Commands.Login
             if (user == null)
                 return FailureResult<UserViewModel>.Unauthorized();
 
-            if ((user?.ValidatePassword(command.Password)) != true)
+            var validationResult = user.ValidatePassword(command.Password);
+            if (validationResult.IsFailure)
                 return FailureResult<UserViewModel>.Unauthorized();
 
             return SuccessResult<UserViewModel>.Create(UserViewModel.FromUser(user));

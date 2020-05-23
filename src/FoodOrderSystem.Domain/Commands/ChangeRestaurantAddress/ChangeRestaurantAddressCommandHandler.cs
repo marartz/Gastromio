@@ -35,7 +35,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress
                 return FailureResult<bool>.Forbidden();
 
             var result = restaurant.ChangeAddress(command.Address);
-            if (result is FailureResult<bool>)
+            if (result.IsFailure)
                 return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

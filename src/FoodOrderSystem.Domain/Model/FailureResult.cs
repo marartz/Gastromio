@@ -4,7 +4,7 @@ namespace FoodOrderSystem.Domain.Model
 {
     public class FailureResult<TResult> : Result<TResult>
     {
-        public FailureResult(FailureResultCode code, int statusCode, params object[] args)
+        private FailureResult(FailureResultCode code, int statusCode, params object[] args)
         {
             Code = code;
             StatusCode = statusCode;
@@ -16,6 +16,15 @@ namespace FoodOrderSystem.Domain.Model
         public int StatusCode { get; }
 
         public object[] Args { get; }
+
+        public override bool IsSuccess => false;
+
+        public override bool IsFailure => true;
+
+        public override Result<TDstResult> Cast<TDstResult>()
+        {
+            return new FailureResult<TDstResult>(Code, StatusCode, Args);
+        }
 
         public override string ToString()
         {
@@ -65,6 +74,5 @@ namespace FoodOrderSystem.Domain.Model
         {
             return new FailureResult<TResult>(code, statusCode, args);
         }
-
     }
 }

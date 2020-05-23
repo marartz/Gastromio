@@ -11,11 +11,17 @@ namespace FoodOrderSystem.Domain.Model.Dish
     {
         private IList<DishVariant> variants;
 
-        public Dish(DishId id, RestaurantId restaurantId, DishCategoryId categoryId, string name, string description, string productInfo, IList<DishVariant> variants)
+        public Dish(DishId id, RestaurantId restaurantId, DishCategoryId categoryId)
         {
             Id = id;
             RestaurantId = restaurantId;
             CategoryId = categoryId;
+        }
+
+        public Dish(DishId id, RestaurantId restaurantId, DishCategoryId categoryId, string name, string description,
+            string productInfo, IList<DishVariant> variants)
+            : this(id, restaurantId, categoryId)
+        {
             Name = name;
             Description = description;
             ProductInfo = productInfo;
@@ -30,39 +36,45 @@ namespace FoodOrderSystem.Domain.Model.Dish
         public string ProductInfo { get; private set; }
         public IReadOnlyList<DishVariant> Variants => new ReadOnlyCollection<DishVariant>(variants);
 
-        public void ChangeName(string name)
+        public Result<bool> ChangeName(string name)
         {
             Name = name;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void ChangeDescription(string description)
+        public Result<bool> ChangeDescription(string description)
         {
             Description = description;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void ChangeProductInfo(string productInfo)
+        public Result<bool> ChangeProductInfo(string productInfo)
         {
             ProductInfo = productInfo;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void AddVariant(Guid variantId, string name, decimal price)
+        public Result<bool> AddVariant(Guid variantId, string name, decimal price)
         {
             if (variants.Any(en => en.VariantId == variantId))
                 throw new InvalidOperationException("variant already exists");
             variants.Add(new DishVariant(variantId, name, price, new List<DishVariantExtra>()));
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void RemoveVariant(Guid variantId)
+        public Result<bool> RemoveVariant(Guid variantId)
         {
             var variant = variants.FirstOrDefault(en => en.VariantId == variantId);
             if (variant == null)
                 throw new InvalidOperationException("variant does not exist");
             variants.Remove(variant);
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void ReplaceVariants(IList<DishVariant> variants)
+        public Result<bool> ReplaceVariants(IList<DishVariant> variants)
         {
             this.variants = variants;
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

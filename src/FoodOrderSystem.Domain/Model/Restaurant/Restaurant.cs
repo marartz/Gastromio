@@ -13,6 +13,11 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
     {
         private IList<DeliveryTime> deliveryTimes;
 
+        private Restaurant(RestaurantId id)
+        {
+            Id = id;
+        }
+
         public Restaurant(
             RestaurantId id,
             string name,
@@ -29,8 +34,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             ISet<PaymentMethodId> paymentMethods,
             ISet<UserId> administrators
         )
+            : this(id)
         {
-            Id = id;
             Name = name;
             Image = image;
             Address = address;

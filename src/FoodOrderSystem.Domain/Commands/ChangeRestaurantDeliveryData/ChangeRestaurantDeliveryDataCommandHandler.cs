@@ -35,7 +35,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData
                 return FailureResult<bool>.Forbidden();
 
             var result = restaurant.ChangeDeliveryData(command.MinimumOrderValue, command.DeliveryCosts);
-            if (result is FailureResult<bool>)
+            if (result.IsFailure)
                 return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

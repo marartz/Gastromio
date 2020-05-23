@@ -35,7 +35,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
                 return FailureResult<bool>.Forbidden();
 
             var result = restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint, command.OrderEmailAddress);
-            if (result is FailureResult<bool>)
+            if (result.IsFailure)
                 return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

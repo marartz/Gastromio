@@ -2,9 +2,14 @@
 {
     public class PaymentMethod
     {
-        public PaymentMethod(PaymentMethodId id, string name, string description)
+        public PaymentMethod(PaymentMethodId id)
         {
             Id = id;
+        }
+        
+        public PaymentMethod(PaymentMethodId id, string name, string description)
+            : this(id)
+        {
             Name = name;
             Description = description;
         }
@@ -13,10 +18,11 @@
         public string Name { get; private set; }
         public string Description { get; private set; }
 
-        public void Change(string name, string description)
+        public Result<bool> Change(string name, string description)
         {
             Name = name;
             Description = description;
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

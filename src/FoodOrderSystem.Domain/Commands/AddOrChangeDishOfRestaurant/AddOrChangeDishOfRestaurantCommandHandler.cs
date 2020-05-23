@@ -17,15 +17,19 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IDishCategoryRepository dishCategoryRepository;
         private readonly IDishRepository dishRepository;
+        private readonly IDishFactory dishFactory;
 
-        public AddOrChangeDishOfRestaurantCommandHandler(IRestaurantRepository restaurantRepository, IDishCategoryRepository dishCategoryRepository, IDishRepository dishRepository)
+        public AddOrChangeDishOfRestaurantCommandHandler(IRestaurantRepository restaurantRepository,
+            IDishCategoryRepository dishCategoryRepository, IDishRepository dishRepository, IDishFactory dishFactory)
         {
             this.restaurantRepository = restaurantRepository;
             this.dishCategoryRepository = dishCategoryRepository;
             this.dishRepository = dishRepository;
+            this.dishFactory = dishFactory;
         }
 
-        public async Task<Result<Guid>> HandleAsync(AddOrChangeDishOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<Guid>> HandleAsync(AddOrChangeDishOfRestaurantCommand command, User currentUser,
+            CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -36,14 +40,16 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
             if (currentUser.Role < Role.RestaurantAdmin)
                 return FailureResult<Guid>.Forbidden();
 
-            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            var restaurant =
+                await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 return FailureResult<Guid>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<Guid>.Forbidden();
 
-            var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            var dishCategories =
+                await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             var dishCategory = dishCategories?.FirstOrDefault(en => en.Id == command.DishCategoryId);
             if (dishCategory == null)
                 return FailureResult<Guid>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
@@ -56,18 +62,36 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                 if (dish == null)
                     return FailureResult<Guid>.Create(FailureResultCode.DishDoesNotBelongToDishCategory);
 
-                if (!string.Equals(dish.Name,command.Dish.Name))
-                    dish.ChangeName(command.Dish.Name);
+                Result<bool> tempResult;
+
+                if (!string.Equals(dish.Name, command.Dish.Name))
+                {
+                    tempResult = dish.ChangeName(command.Dish.Name);
+                    if (tempResult.IsFailure)
+                        return tempResult.Cast<Guid>();
+                }
+
                 if (!string.Equals(dish.Description, command.Dish.Description))
-                    dish.ChangeDescription(command.Dish.Description);
-                if (!string.Equals(dish.ProductInfo,command.Dish.ProductInfo))
-                    dish.ChangeProductInfo(command.Dish.ProductInfo);
-                dish.ReplaceVariants(FromVariantViewModels(command.Dish.Variants));
+                {
+                    tempResult = dish.ChangeDescription(command.Dish.Description);
+                    if (tempResult.IsFailure)
+                        return tempResult.Cast<Guid>();
+                }
+
+                if (!string.Equals(dish.ProductInfo, command.Dish.ProductInfo))
+                {
+                    tempResult = dish.ChangeProductInfo(command.Dish.ProductInfo);
+                    if (tempResult.IsFailure)
+                        return tempResult.Cast<Guid>();
+                }
+
+                tempResult = dish.ReplaceVariants(FromVariantViewModels(command.Dish.Variants));
+                if (tempResult.IsFailure)
+                    return tempResult.Cast<Guid>();
             }
             else
             {
-                dish = new Dish(
-                    new DishId(Guid.NewGuid()),
+                var createResult = dishFactory.Create(
                     command.RestaurantId,
                     command.DishCategoryId,
                     command.Dish.Name,
@@ -75,6 +99,11 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                     command.Dish.ProductInfo,
                     FromVariantViewModels(command.Dish.Variants)
                 );
+
+                if (createResult.IsFailure)
+                    return createResult.Cast<Guid>();
+
+                dish = ((SuccessResult<Dish>) createResult).Value;
             }
 
             await dishRepository.StoreAsync(dish, cancellationToken);
@@ -84,15 +113,19 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
 
         IList<DishVariant> FromVariantViewModels(IList<DishVariantViewModel> variants)
         {
-            return variants != null ? variants.Select(variant =>
-                new DishVariant(
-                    variant.VariantId,
-                    variant.Name,
-                    variant.Price,
-                    variant.Extras != null ? variant.Extras.Select(extra =>
-                        new DishVariantExtra(extra.ExtraId, extra.Name, extra.ProductInfo, extra.Price)
-                    ).ToList() : new List<DishVariantExtra>()
-                )).ToList() : new List<DishVariant>();
+            return variants != null
+                ? variants.Select(variant =>
+                    new DishVariant(
+                        variant.VariantId,
+                        variant.Name,
+                        variant.Price,
+                        variant.Extras != null
+                            ? variant.Extras.Select(extra =>
+                                new DishVariantExtra(extra.ExtraId, extra.Name, extra.ProductInfo, extra.Price)
+                            ).ToList()
+                            : new List<DishVariantExtra>()
+                    )).ToList()
+                : new List<DishVariant>();
         }
     }
 }

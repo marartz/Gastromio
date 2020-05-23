@@ -4,9 +4,15 @@ namespace FoodOrderSystem.Domain.Model.PaymentMethod
 {
     public class PaymentMethodFactory : IPaymentMethodFactory
     {
-        public PaymentMethod Create(string name, string description)
+        public Result<PaymentMethod> Create(string name, string description)
         {
-            return new PaymentMethod(new PaymentMethodId(Guid.NewGuid()), name, description);
+            var paymentMethod = new PaymentMethod(new PaymentMethodId(Guid.NewGuid()));
+
+            var tempResult = paymentMethod.Change(name, description);
+            if (tempResult.IsFailure)
+                return tempResult.Cast<PaymentMethod>();
+
+            return SuccessResult<PaymentMethod>.Create(paymentMethod);
         }
     }
 }

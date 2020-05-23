@@ -2,6 +2,6 @@
 {
     public interface ICuisineFactory
     {
-        Cuisine Create(string name);
+        Result<Cuisine> Create(string name);
     }
 }

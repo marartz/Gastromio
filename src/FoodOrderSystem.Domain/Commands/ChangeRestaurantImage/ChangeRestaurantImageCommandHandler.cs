@@ -35,7 +35,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantImage
                 return FailureResult<bool>.Forbidden();
 
             var result = restaurant.ChangeImage(command.Image);
-            if (result is FailureResult<bool>)
+            if (result.IsFailure)
                 return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

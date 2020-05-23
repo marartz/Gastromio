@@ -8,9 +8,14 @@ namespace FoodOrderSystem.Domain.Model.User
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
 
-        public User(UserId id, string name, Role role, string email, byte[] passwordSalt, byte[] passwordHash)
+        public User(UserId id)
         {
             Id = id;
+        }
+
+        public User(UserId id, string name, Role role, string email, byte[] passwordSalt, byte[] passwordHash)
+            : this(id)
+        {
             Name = name;
             Role = role;
             Email = email;
@@ -25,20 +30,22 @@ namespace FoodOrderSystem.Domain.Model.User
         public byte[] PasswordSalt { get; private set; }
         public byte[] PasswordHash { get; private set; }
 
-        public void ChangeDetails(string name, Role role, string email)
+        public Result<bool> ChangeDetails(string name, Role role, string email)
         {
             Name = name;
             Role = role;
             Email = email;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public bool ValidatePassword(string password)
+        public Result<bool> ValidatePassword(string password)
         {
             byte[] testPasswordHash = PBKDF2(password, PasswordSalt, PBKDF2_ITERATIONS, HASH_BYTES);
-            return SlowEquals(PasswordHash, testPasswordHash);
+            var validationResult = SlowEquals(PasswordHash, testPasswordHash);
+            return SuccessResult<bool>.Create(validationResult);
         }
 
-        public void ChangePassword(string password)
+        public Result<bool> ChangePassword(string password)
         {
             var newPasswordSalt = new byte[SALT_BYTES];
             using (var csprng = new RNGCryptoServiceProvider())
@@ -50,6 +57,8 @@ namespace FoodOrderSystem.Domain.Model.User
 
             PasswordSalt = newPasswordSalt;
             PasswordHash = newPasswordHash;
+
+            return SuccessResult<bool>.Create(true);
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)

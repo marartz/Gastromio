@@ -34,7 +34,12 @@ namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
             if (paymentMethod != null)
                 return FailureResult<PaymentMethodViewModel>.Create(FailureResultCode.PaymentMethodAlreadyExists);
 
-            paymentMethod = paymentMethodFactory.Create(command.Name, command.Description);
+            var createResult = paymentMethodFactory.Create(command.Name, command.Description);
+            if (createResult.IsFailure)
+                return createResult.Cast<PaymentMethodViewModel>();
+
+            paymentMethod = ((SuccessResult<PaymentMethod>) createResult).Value;
+            
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 
             return SuccessResult<PaymentMethodViewModel>.Create(PaymentMethodViewModel.FromPaymentMethod(paymentMethod));

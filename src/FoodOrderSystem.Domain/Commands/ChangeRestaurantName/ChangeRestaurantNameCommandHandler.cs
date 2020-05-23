@@ -35,7 +35,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantName
                 return FailureResult<bool>.Forbidden();
 
             var result = restaurant.ChangeName(command.Name);
-            if (result is FailureResult<bool>)
+            if (result.IsFailure)
                 return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

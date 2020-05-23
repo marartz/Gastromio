@@ -4,13 +4,22 @@ namespace FoodOrderSystem.Domain.Model.User
 {
     public class UserFactory : IUserFactory
     {
-        public User Create(string name, Role role, string email, string password)
+        public Result<User> Create(string name, Role role, string email, string password)
         {
-            var userId = new UserId(Guid.NewGuid());
-            var user = new User(userId, name, role, email, null, null);
+            var user = new User(new UserId(Guid.NewGuid()));
+
+            var tempResult = user.ChangeDetails(name, role, email);
+            if (tempResult.IsFailure)
+                return tempResult.Cast<User>();
+
             if (!string.IsNullOrEmpty(password))
-                user.ChangePassword(password);
-            return user;
+            {
+                tempResult = user.ChangePassword(password);
+                if (tempResult.IsFailure)
+                    return tempResult.Cast<User>();
+            }
+
+            return SuccessResult<User>.Create(user);
         }
     }
 }

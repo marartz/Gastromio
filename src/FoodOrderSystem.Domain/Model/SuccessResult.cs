@@ -1,15 +1,25 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace FoodOrderSystem.Domain.Model
 {
     public class SuccessResult<TResult> : Result<TResult>
     {
-        public SuccessResult(TResult value)
+        private SuccessResult(TResult value)
         {
             Value = value;
         }
 
         public TResult Value { get; }
+
+        public override bool IsSuccess => true;
+
+        public override bool IsFailure => false;
+
+        public override Result<TDstResult> Cast<TDstResult>()
+        {
+            throw new InvalidOperationException("casting a success result is not allowed");
+        }
 
         public override string ToString()
         {

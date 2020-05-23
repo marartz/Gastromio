@@ -35,7 +35,7 @@ namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
                 return FailureResult<bool>.Forbidden();
 
             var result = restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
-            if (result is FailureResult<bool>)
+            if (result.IsFailure)
                 return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

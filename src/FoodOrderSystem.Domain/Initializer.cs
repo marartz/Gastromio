@@ -9,6 +9,8 @@ using FoodOrderSystem.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
+using FoodOrderSystem.Domain.Model.Dish;
+using FoodOrderSystem.Domain.Model.DishCategory;
 
 namespace FoodOrderSystem.Domain
 {
@@ -21,6 +23,8 @@ namespace FoodOrderSystem.Domain
             services.AddTransient<ICuisineFactory, CuisineFactory>();
             services.AddTransient<IPaymentMethodFactory, PaymentMethodFactory>();
             services.AddTransient<IRestaurantFactory, RestaurantFactory>();
+            services.AddTransient<IDishCategoryFactory, DishCategoryFactory>();
+            services.AddTransient<IDishFactory, DishFactory>();
 
             // Register command classes
             services.AddTransient<ICommandDispatcher, CommandDispatcher>();
