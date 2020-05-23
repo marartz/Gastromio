@@ -38,6 +38,8 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.SessionExpired, "Sie sind nicht angemeldet");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Forbidden, "Sie sind nicht berechtigt, diese Aktion auszuführen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RequiredFieldEmpty, "Nicht alle Pflichtfelder sind ausgefüllt");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueTooLong, "Feldwert zu lang");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueInvalid, "Feldwert hat einen ungültigen Wert");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ValueMustNotBeNegative, "Der Wert darf nicht negativ sein");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Benutzername und/oder Passwort ist nicht korrekt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
@@ -47,7 +49,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineAlreadyExists, "Cuisine existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodDoesNotExist, "Zahlungsmethode existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodAlreadyExists, "Zahlungsmethode existiert bereits");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantHasToHaveAName, "Für das Restaurant muss ein Name vergeben werden");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageDataTooBig, "Die Bilddatei ist zu groß (max. 1MB)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageNotValid, "Die angegebene Bilddatei ist nicht gültig");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumOrderValueTooHigh, "Der Mindestbestellwert ist zu groß");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryCostsTooHigh, "Die Lieferkosten sind zu groß");

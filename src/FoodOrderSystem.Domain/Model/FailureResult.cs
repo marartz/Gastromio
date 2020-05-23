@@ -56,9 +56,14 @@ namespace FoodOrderSystem.Domain.Model
             return new FailureResult<TResult>(code, 403, args);
         }
 
-        public static FailureResult<TResult> Create(FailureResultCode code, int statusCode = 400, params object[] args)
+        public static FailureResult<TResult> Create(FailureResultCode code, params object[] args)
         {
             return new FailureResult<TResult>(code, 400, args);
+        }
+
+        public static FailureResult<TResult> Create(FailureResultCode code, int statusCode, params object[] args)
+        {
+            return new FailureResult<TResult>(code, statusCode, args);
         }
 
     }

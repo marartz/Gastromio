@@ -70,8 +70,12 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public Result<bool> ChangeName(string name)
         {
             if (string.IsNullOrEmpty(name))
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantHasToHaveAName);
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
+            if (name.Length > 100)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
+
             Name = name;
+            
             return SuccessResult<bool>.Create(true);
         }
 
@@ -82,6 +86,9 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 Image = null;
                 return SuccessResult<bool>.Create(true);
             }
+
+            if (image.Length > 1024 * 1024) // 1 MB
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageDataTooBig);
 
             try
             {
@@ -104,16 +111,26 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public Result<bool> ChangeAddress(Address address)
         {
             if (address == null)
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address));
 
             if (string.IsNullOrEmpty(address.Street))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address.Street));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.Street));
+            if (address.Street.Length > 100)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(address.Street), 100);
+            if (!Validators.IsValidStreet(address.Street))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.Street));
 
             if (string.IsNullOrEmpty(address.ZipCode))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address.ZipCode));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.ZipCode));
+            if (address.ZipCode.Length != 5 || address.ZipCode.Any(en => !char.IsDigit(en)))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode));
+            if (!Validators.IsValidZipCode(address.ZipCode))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode));
 
             if (string.IsNullOrEmpty(address.City))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(address.City));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.City));
+            if (address.City.Length > 50)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(address.City), 50);
 
             Address = address;
 
@@ -123,11 +140,20 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public Result<bool> ChangeContactDetails(string phone, string webSite, string imprint, string orderEmailAddress)
         {
             if (string.IsNullOrEmpty(phone))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(phone));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(phone));
+            if (!Validators.IsValidPhoneNumber(phone))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(phone));
+            
+            if (!string.IsNullOrEmpty(webSite) && !Validators.IsValidWebsite(webSite))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(webSite));
+
             if (string.IsNullOrEmpty(imprint))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(imprint));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(imprint));
+
             if (string.IsNullOrEmpty(orderEmailAddress))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, args: nameof(orderEmailAddress));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(orderEmailAddress));
+            if (!Validators.IsValidEmailAddress(orderEmailAddress))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(orderEmailAddress));
 
             Phone = phone;
             WebSite = webSite;
