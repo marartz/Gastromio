@@ -401,3 +401,72 @@ ENDE: CTA */
     }
 }
 /* ENDE: Prozess */
+
+/* START: Liefergebiete */
+.area {
+    background-color: rgb(255, 255, 255);
+    height: auto;
+    pointer-events: auto;
+    position: relative;
+    width: 100%;
+}
+
+.area .wrapper {
+    flex: 1 1 auto;
+    background-position: center center;
+    position: relative;
+}
+
+@media screen (min-width: 960px) {
+    .area .wrapper {
+        background-position: center center;
+    }
+}
+
+.area .wrapper .inner {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0px auto;
+    max-width: 920px;
+    padding-top: 60px;
+    position: relative;
+    width: 100%;
+}
+
+@media screen (min-width: 960px) {
+    .area .wrapper .inner {
+        padding-bottom: 32px;
+    }
+}
+
+.area .wrapper .inner h4 {
+    color: rgb(23, 32, 38);
+    font-family: proxima-nova, sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0px;
+    max-width: 100%;
+    text-align: center;
+    text-shadow: 0px 2px 4px 0px rgba(23, 32, 38, 0.2);
+}
+
+.area .wrapper .inner .map {
+    display: flex;
+    flex: 1;
+    margin: 36px 0px;
+    width: 100%;
+}
+
+.area .wrapper .inner .map .city {
+    cursor: pointer;
+    display: inline-block;
+    fill: #25AE31;
+    transition: fill 0.1s linear;
+}
+
+.area .wrapper .inner .map .city:hover {
+    fill: #428B27;
+    transition: fill 0.1s linear;
+}
+/* ENDE: Liefergebiete */

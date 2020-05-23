@@ -2,9 +2,11 @@
     display: grid;
 }
 
-.impressum {
-    grid-gap: 50px;
-    grid-template-columns: 47% auto;
+@media screen (min-width: 960px) {
+    .impressum {
+        grid-gap: 50px;
+        grid-template-columns: 47% auto;
+    }
 }
 
 .impressum .block {
@@ -12,6 +14,12 @@
 }
 
 .impressum a {
+    color: rgb(0, 108, 187);
+    text-decoration: none;
+}
+
+.impressum .thank-link {
+    color: rgb(23, 32, 38);
     text-decoration: none;
 }
 
@@ -27,10 +35,10 @@
 }
 
 .impressum p {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 16px !important;
     margin: 0 0 20px 0;
-    color: rgb(102, 112, 147);
+    color: rgb(23, 32, 38)
 }
 
 .impressum b, strong {

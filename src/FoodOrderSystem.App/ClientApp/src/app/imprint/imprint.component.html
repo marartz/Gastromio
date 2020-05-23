@@ -1,108 +1,92 @@
-<div style="top: -49px; z-index: 5; position: static;">
-    <div class="no-top"></div>
-    <div class="legal-header">
-        <h1 class="header-title" style="max-width: 100%; color: rgb(255, 255, 255);">
-            <span class="title">Impressum</span>
-        </h1>
+<section>
+    <div class="title-wrapper">
+        <h1 class="title">Datebschutz</h1>
     </div>
-</div>
 
-<div style="top: 90px; z-index: 4; position: static;">
-    <div class="header-portal">
-        <header class="multi-tabs-wrapper">
-            <div class="multi-tabs-root">
-                <div class="multi-tabs-scroller" style="overflow: hidden;">
-                    <div class="multi-tabs-container" role="tablist">
-                        <a class="multi-tab" [routerLink]="['/general-terms-and-conditions']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">AGB</span>
-                        </a>
-                        <a class="multi-tab active" [routerLink]="['/imprint']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Impressum</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/privacy-policy']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Datenschutz</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/privacy-policy#cookies']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Verwendung von Cookies</span>
-                        </a>
-                    </div>
+    <div class="tabs-wrapper">
+        <div class="tabs-root">
+            <div class="scroller">
+                <div class="tab-container" role="tablist">
+                    <a class="tab" [routerLink]="['/datenschutz']" tabindex="0" role="tab">
+                        <span class="title">Datenschutz</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/datenschutz#cookies']" tabindex="0" role="tab">
+                        <span class="title">Cookie-Richtlinie</span>
+                    </a>
+                    <a class="tab active" [routerLink]="['/impressum']" tabindex="0" role="tab">
+                        <span class="title">Impressum</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/agb']" tabindex="0" role="tab">
+                        <span class="title">AGB</span>
+                    </a>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
 
-<main class="legal-wrapper">
-    <div class="legal-content">
-        <div class="legal-child">
-            <div class="wrapper">
-                <div class="inner">
-                    <div class="content-text">
-                        <div class="container">
-                            <div class="row impressum">
-                                <div class="column">
-                                    <h2 class="t4">Betreiber dieser Webseite</h2>
-                                    <p>
-                                        <strong class="block">Luca Wieczorek</strong>
-                                        Erich-Kästner-Straße 21<br />
-                                        46397 Bocholt
-                                    </p>
-                                    <p>
-                                        Inhaltlich verantwortlich: Luca Wieczorek<br />
-                                        Vertretungsberechtigte Personen: Anne Beckmann, Marco Artz und Luca Wieczorek
-                                    </p>
-                                    <p>
-                                        Telefon: +49 2871 29187 79<br />
-                                        E-Mail: <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;">&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;</a>
-                                    </p>
+    <main class="legal-wrapper">
+        <div class="content">
+            <div class="child">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="content-text">
+                            <div class="container">
+                                <div class="row impressum">
+                                    <div class="column">
+                                        <h2 class="t4">Betreiber dieser Webseite</h2>
+                                        <p>
+                                            <strong class="block">Luca Wieczorek</strong>
+                                            Erich-Kästner-Straße 21<br />
+                                            46397 Bocholt
+                                        </p>
+                                        <p>
+                                            Inhaltlich verantwortlich: Luca Wieczorek<br />
+                                            Vertretungsberechtigte Personen: Anne Beckmann, Marco Artz und Luca Wieczorek
+                                        </p>
+                                        <p>
+                                            Telefon: +49 2871 29187 79<br />
+                                            E-Mail: <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;">&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;</a>
+                                        </p>
 
-                                    <h2 class="t4">Technische Umsetzung</h2>
+                                        <h2 class="t4">Umsetzung des Projekts</h2>
+                                        <p>
+                                            <strong class="block">Vielen Dank für die Unterstützung an</strong>
+                                            Anne Beckmann (Organisation)<br />
+                                            Marco Artz (Orga, SW-Entwicklung)<br />
+                                            Luca Wieczorek (FE-Entwicklung)<br />
+                                            Aysen Burcu (Tester)<br />
+                                            Jens Steverding (Social-Media-Manager)<br />
+                                            Maren Korhammer (Design)<br />
+                                            Raphael Corneli (SW-Entwicklung)<br />
+                                            Christopher Peters (SW-Entwicklung)<br />
+                                            Jürgen Naber (Tester)<br />
+                                            ...
+                                        </p>
+                                    </div>
+                                    <div class="column">
+                                        <h2 class="t4">Raum für Feedback</h2>
+                                        <h3 class="t5">Direkt an Gastromio</h3>
+                                        <p>
+                                            <strong class="block">Gastromio.de</strong>
+                                            Zentrale Beschwerdestelle<br />
+                                            Erich-Kästner-Straße 21<br />
+                                            46397 Bocholt
+                                        </p>
+                                        <p>
+                                            Telefon: +49 2871 29187 79<br />
+                                            E-Mail: <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#098;&#101;&#115;&#099;&#104;&#119;&#101;&#114;&#100;&#101;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;">&#098;&#101;&#115;&#099;&#104;&#119;&#101;&#114;&#100;&#101;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;</a>
+                                        </p>
 
-                                    <!-- Hier ist Platz für dich! Tob dich aus :)-->
-                                    <!--p>
-                                        <strong class="block">Marco Artz</strong>
-                                        Wiesenstraße 23<br />
-                                        46395 Bocholt
-                                    </p>
-                                    <p>
-                                        Telefon: +49 173 6809397<br />
-                                        E-Mail: <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#109;&#097;&#114;&#099;&#111;&#064;&#099;&#111;&#108;&#116;&#112;&#108;&#097;&#121;&#046;&#100;&#101;">&#109;&#097;&#114;&#099;&#111;&#064;&#099;&#111;&#108;&#116;&#112;&#108;&#097;&#121;&#046;&#100;&#101;</a>
-                                    </p-->
-
-                                    <p>
-                                        <strong class="block">Luca Wieczorek</strong>
-                                        Erich-Kästner-Straße 21<br />
-                                        46397 Bocholt
-                                    </p>
-                                    <p>
-                                        Telefon: +49 176 8609 2852<br />
-                                        E-Mail: <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#105;&#110;&#102;&#111;&#064;&#108;&#117;&#099;&#097;&#119;&#105;&#101;&#099;&#122;&#111;&#114;&#101;&#107;&#046;&#100;&#101;">&#105;&#110;&#102;&#111;&#064;&#108;&#117;&#099;&#097;&#119;&#105;&#101;&#099;&#122;&#111;&#114;&#101;&#107;&#046;&#100;&#101;</a><br />
-                                        Web: <a href="https://www.lucawieczorek.de/?ref=Gastomio" target="_blank" rel="nofollow noreferrer">www.lucawieczorek.de</a>
-                                    </p>
-                                </div>
-                                <div class="column">
-                                    <h2 class="t4">Raum für Feedback</h2>
-                                    <h3 class="t5">Direkt an Gastromio</h3>
-                                    <p>
-                                        <strong class="block">Gastromio.de</strong>
-                                        Zentrale Beschwerdestelle<br />
-                                        Erich-Kästner-Straße 21<br />
-                                        46397 Bocholt
-                                    </p>
-                                    <p>
-                                        Telefon: +49 2871 29187 79<br />
-                                        E-Mail: <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#098;&#101;&#115;&#099;&#104;&#119;&#101;&#114;&#100;&#101;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;">&#098;&#101;&#115;&#099;&#104;&#119;&#101;&#114;&#100;&#101;&#064;&#103;&#097;&#115;&#116;&#114;&#111;&#109;&#105;&#111;&#046;&#100;&#101;</a>
-                                    </p>
-
-                                    <h2 class="t4">An eine neutrale Stelle:</h2>
-                                    <p>
-                                        <strong class="block">EU-Streitschlichtung</strong>
-                                        Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="nofollow noreferrer">https://ec.europa.eu/consumers/odr</a>. Unsere E-Mail-Adresse finden Sie oben im Impressum.
-                                    </p>
-                                    <p>
-                                        <strong class="block">Verbraucherstreitbeilegung/Universalschlichtungsstelle</strong>
-                                        Wir nehmen an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil. Zuständig ist die Universalschlichtungsstelle des Zentrums für Schlichtung e.V., Straßburger Straße 8, 77694 Kehl am Rhein (<a href="https://www.verbraucher-schlichter.de" target="_blank" rel="nofollow noreferrer">https://www.verbraucher-schlichter.de</a>).
-                                    </p>
+                                        <h2 class="t4">An eine neutrale Stelle:</h2>
+                                        <p>
+                                            <strong class="block">EU-Streitschlichtung</strong>
+                                            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="nofollow noreferrer">https://ec.europa.eu/consumers/odr</a>. Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                                        </p>
+                                        <p>
+                                            <strong class="block">Verbraucherstreitbeilegung/Universalschlichtungsstelle</strong>
+                                            Wir nehmen an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil. Zuständig ist die Universalschlichtungsstelle des Zentrums für Schlichtung e.V., Straßburger Straße 8, 77694 Kehl am Rhein (<a href="https://www.verbraucher-schlichter.de" target="_blank" rel="nofollow noreferrer">https://www.verbraucher-schlichter.de</a>).
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,5 +94,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+</section>
