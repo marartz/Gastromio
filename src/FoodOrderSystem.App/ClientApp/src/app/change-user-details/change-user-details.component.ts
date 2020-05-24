@@ -19,7 +19,6 @@ export class ChangeUserDetailsComponent implements OnInit {
 
   changeUserDetailsForm: FormGroup;
   message: string;
-  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -40,10 +39,10 @@ export class ChangeUserDetailsComponent implements OnInit {
   get f() { return this.changeUserDetailsForm.controls; }
 
   onSubmit(data) {
-    this.submitted = true;
     if (this.changeUserDetailsForm.invalid) {
       return;
     }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
       .subscribe(() => {

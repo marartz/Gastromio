@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DishModel } from '../dish-category/dish.model';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
@@ -23,6 +23,7 @@ export class EditDishComponent implements OnInit {
   isNew: boolean;
   editDishForm: FormGroup;
   message: string;
+  submitted = false;
 
   price: number;
 
@@ -43,9 +44,9 @@ export class EditDishComponent implements OnInit {
     this.isNew = this.dish.id === undefined;
 
     this.editDishForm = this.formBuilder.group({
-      name: this.dish !== undefined ? this.dish.name : '',
-      description: this.dish !== undefined ? this.dish.description : '',
-      productInfo: this.dish !== undefined ? this.dish.productInfo : '',
+      name: [this.dish !== undefined ? this.dish.name : '', Validators.required],
+      description: [this.dish !== undefined ? this.dish.description : '', Validators.required],
+      productInfo: [this.dish !== undefined ? this.dish.productInfo : '', Validators.required],
     });
 
     if (this.dish.variants.length === 0) {
@@ -74,7 +75,14 @@ export class EditDishComponent implements OnInit {
     }
   }
 
+  get f() { return this.editDishForm.controls; }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.editDishForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
 
     this.dish.name = data.name;

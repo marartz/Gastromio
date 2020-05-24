@@ -24,12 +24,18 @@
                 <div class="wrapper">
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Name" id="name" formControlName="name" ngbAutofocus />
+                            <input class="input" type="text" placeholder="Name" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Beschreibung" id="description" formControlName="description" />
+                            <input class="input" type="text" placeholder="Beschreibung" id="description" formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                <div *ngIf="f.description.errors.required">Beschreibung wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CuisineModel } from '../cuisine/cuisine.model';
 import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
@@ -30,11 +30,17 @@ export class ChangeCuisineComponent implements OnInit {
 
   ngOnInit() {
     this.changeCuisineForm = this.formBuilder.group({
-      name: this.cuisine.name
+      name: [this.cuisine.name, Validators.required]
     });
   }
 
+  get f() { return this.changeCuisineForm.controls; }
+
   onSubmit(data) {
+    if (this.changeCuisineForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
       .subscribe(() => {

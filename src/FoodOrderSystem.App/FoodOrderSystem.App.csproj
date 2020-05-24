@@ -33,10 +33,8 @@
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-    <None Remove="ClientApp\src\app\admin-my-restaurants\admin-my-restaurants.component.ts" />
     <None Remove="ClientApp\src\app\cart\cart.model.ts" />
     <None Remove="ClientApp\src\app\cart\ordered-dish.model.ts" />
-    <None Remove="ClientApp\src\app\change-dish-category\change-dish-category.component.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-category.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-variant-extra.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-variant.model.ts" />
@@ -54,23 +52,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\app\add-cuisine\add-cuisine.component.ts" />
-    <None Remove="ClientApp\src\app\add-payment-method\add-payment-method.component.ts" />
-    <None Remove="ClientApp\src\app\add-restaurant\add-restaurant.component.ts" />
     <None Remove="ClientApp\src\app\add-user\add-user.component.ts" />
-    <None Remove="ClientApp\src\app\admin-cuisines\admin-cuisines.component.ts" />
-    <None Remove="ClientApp\src\app\admin-payment-methods\admin-payment-methods.component.ts" />
-    <None Remove="ClientApp\src\app\admin-restaurant\admin-restaurant.component.ts" />
     <None Remove="ClientApp\src\app\admin-restaurants\admin-restaurants.component.ts" />
     <None Remove="ClientApp\src\app\admin-users\admin-users.component.ts" />
     <None Remove="ClientApp\src\app\auth.service.ts" />
     <None Remove="ClientApp\src\app\auth\customer-auth-guard.service.ts" />
     <None Remove="ClientApp\src\app\auth\restaurant-admin-auth-guard.service.ts" />
     <None Remove="ClientApp\src\app\bottom-bar\bottom-bar.component.ts" />
-    <None Remove="ClientApp\src\app\change-cuisine\change-cuisine.component.ts" />
-    <None Remove="ClientApp\src\app\change-payment-method\change-payment-method.component.ts" />
-    <None Remove="ClientApp\src\app\change-restaurant-name\change-restaurant-name.component.ts" />
-    <None Remove="ClientApp\src\app\change-user-password\change-user-password.component.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine-admin.service.ts" />
     <None Remove="ClientApp\src\app\cuisine\cuisine.model.ts" />
     <None Remove="ClientApp\src\app\login\login.component.ts" />
@@ -109,25 +97,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\restaurant-rest-admin\restaurant-rest-admin.service.ts" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Update="ClientApp\src\app\add-cuisine\add-cuisine.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\add-payment-method\add-payment-method.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\add-restaurant\add-restaurant.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\add-user\add-user.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\admin-cuisines\admin-cuisines.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\admin-my-restaurants\admin-my-restaurants.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\admin-payment-methods\admin-payment-methods.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\admin-restaurants\admin-restaurants.component.ts">
@@ -137,21 +107,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\bottom-bar\bottom-bar.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\change-cuisine\change-cuisine.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\change-dish-category\change-dish-category.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\change-payment-method\change-payment-method.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\change-restaurant-name\change-restaurant-name.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\change-user-password\change-user-password.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\cuisine\cuisine.model.ts">

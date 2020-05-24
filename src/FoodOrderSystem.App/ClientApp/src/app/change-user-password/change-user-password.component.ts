@@ -44,20 +44,6 @@ export class ChangeUserPasswordComponent implements OnInit {
     if (this.changeUserPasswordForm.invalid) {
       return;
     }
-    if (data.password === undefined || data.password === "") {
-      this.message = "Bitte geben Sie ein Passwort ein";
-      return;
-    }
-
-    if (data.passwordRepeat === undefined || data.passwordRepeat === "") {
-      this.message = "Bitte wiederholen Sie das eingegebene Passwort";
-      return;
-    }
-
-    if (data.password !== data.passwordRepeat) {
-      this.message = "Die eingegebenen Passwörter stimmen nicht überein";
-      return;
-    }
 
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.userAdminService.changeUserPasswordAsync(this.user.id, data.password)

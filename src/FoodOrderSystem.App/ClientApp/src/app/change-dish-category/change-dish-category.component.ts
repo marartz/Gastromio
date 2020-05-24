@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
@@ -31,11 +31,17 @@ export class ChangeDishCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.changeDishCategoryForm = this.formBuilder.group({
-      name: this.dishCategory.name
+      name: [this.dishCategory.name, Validators.required]
     });
   }
 
+  get f() { return this.changeDishCategoryForm.controls; }
+
   onSubmit(data) {
+    if (this.changeDishCategoryForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.restaurantAdminService.changeDishCategoryOfRestaurantAsync(this.restaurantId, this.dishCategory.id, data.name)
       .subscribe(() => {

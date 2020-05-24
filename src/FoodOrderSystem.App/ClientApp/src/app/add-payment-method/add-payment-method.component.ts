@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { PaymentMethodAdminService } from '../payment-method/payment-method-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -17,6 +17,7 @@ export class AddPaymentMethodComponent implements OnInit {
 
   addPaymentMethodForm: FormGroup;
   message: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -25,15 +26,22 @@ export class AddPaymentMethodComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addPaymentMethodForm = this.formBuilder.group({
-      name: '',
-      description: ''
+      name: ['', Validators.required],
+      description: ['', Validators.required]
     });
   }
 
   ngOnInit() {
   }
 
+  get f() { return this.addPaymentMethodForm.controls; }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.addPaymentMethodForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.paymentMethodAdminService.addPaymentMethodAsync(data.name, data.description)
       .subscribe(() => {
