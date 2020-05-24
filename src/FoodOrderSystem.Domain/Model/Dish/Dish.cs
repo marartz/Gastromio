@@ -38,28 +38,38 @@ namespace FoodOrderSystem.Domain.Model.Dish
 
         public Result<bool> ChangeName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
+            if (name.Length > 100)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
+        
             Name = name;
             return SuccessResult<bool>.Create(true);
         }
 
         public Result<bool> ChangeDescription(string description)
         {
+            if (string.IsNullOrEmpty(description))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(description));
+            if (description.Length > 100)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(description), 100);
+
             Description = description;
             return SuccessResult<bool>.Create(true);
         }
 
         public Result<bool> ChangeProductInfo(string productInfo)
         {
+            if (productInfo.Length > 200)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(productInfo), 200);
+
             ProductInfo = productInfo;
             return SuccessResult<bool>.Create(true);
         }
 
         public Result<bool> AddVariant(Guid variantId, string name, decimal price)
         {
-            if (variants.Any(en => en.VariantId == variantId))
-                throw new InvalidOperationException("variant already exists");
-            variants.Add(new DishVariant(variantId, name, price, new List<DishVariantExtra>()));
-            return SuccessResult<bool>.Create(true);
+            return AddVariant(variants, variantId, name, price);
         }
 
         public Result<bool> RemoveVariant(Guid variantId)
@@ -73,7 +83,46 @@ namespace FoodOrderSystem.Domain.Model.Dish
 
         public Result<bool> ReplaceVariants(IList<DishVariant> variants)
         {
-            this.variants = variants;
+            if (variants == null)
+            {
+                this.variants = new List<DishVariant>();
+                return SuccessResult<bool>.Create(true);
+            }
+            
+            var tempVariants = new List<DishVariant>();
+
+            foreach (var variant in variants)
+            {
+                var tempResult = AddVariant(tempVariants, variant.VariantId, variant.Name, variant.Price);
+                if (tempResult.IsFailure)
+                    return tempResult;
+            }
+
+            this.variants = tempVariants;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        private static Result<bool> AddVariant(IList<DishVariant> variants, Guid variantId, string name, decimal price)
+        {
+            if (variants == null)
+                throw new ArgumentNullException(nameof(variants));
+            
+            if (variantId == Guid.Empty)
+                throw new InvalidOperationException("variant has no id");
+            if (variants.Any(en => en.VariantId == variantId))
+                throw new InvalidOperationException("variant already exists");
+
+            if (string.IsNullOrEmpty(name))
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
+            if (name.Length > 20)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 20);
+            
+            if (!(price > 0))
+                return FailureResult<bool>.Create(FailureResultCode.DishVariantPriceIsNegativeOrZero);
+            if (price > 200)
+                return FailureResult<bool>.Create(FailureResultCode.DishVariantPriceIsTooBig);
+            
+            variants.Add(new DishVariant(variantId, name, price, new List<DishVariantExtra>()));
             return SuccessResult<bool>.Create(true);
         }
     }

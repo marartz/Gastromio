@@ -134,16 +134,7 @@ namespace FoodOrderSystem.Persistence
                     VariantId = variant.VariantId,
                     Name = variant.Name,
                     Price = variant.Price,
-                    Extras = variant.Extras
-                        .Select(extra => new DishVariantExtraRow()
-                        {
-                            DishId = obj.Id.Value,
-                            VariantId = variant.VariantId,
-                            ExtraId = extra.ExtraId,
-                            Name = extra.Name,
-                            ProductInfo = extra.ProductInfo,
-                            Price = extra.Price
-                        }).ToList()
+                    Extras = new List<DishVariantExtraRow>()
                 }).ToList();
         }
     }

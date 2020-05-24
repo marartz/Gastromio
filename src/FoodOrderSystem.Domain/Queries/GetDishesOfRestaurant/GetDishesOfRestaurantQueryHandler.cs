@@ -57,32 +57,11 @@ namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant
 
                             if (dish.Variants != null)
                             {
-                                foreach (var variant in dish.Variants)
+                                variantViewModels.AddRange(dish.Variants.Select(variant => new DishVariantViewModel
                                 {
-                                    var extraViewModels = new List<DishVariantExtraViewModel>();
-
-                                    if (variant.Extras != null)
-                                    {
-                                        foreach (var extra in variant.Extras)
-                                        {
-                                            extraViewModels.Add(new DishVariantExtraViewModel
-                                            {
-                                                ExtraId = extra.ExtraId,
-                                                Name = extra.Name,
-                                                ProductInfo = extra.ProductInfo,
-                                                Price = extra.Price
-                                            });
-                                        }
-                                    }
-
-                                    variantViewModels.Add(new DishVariantViewModel
-                                    {
-                                        VariantId = variant.VariantId,
-                                        Name = variant.Name,
-                                        Price = variant.Price,
-                                        Extras = extraViewModels
-                                    });
-                                }
+                                    VariantId = variant.VariantId, Name = variant.Name, Price = variant.Price,
+                                    Extras = new List<DishVariantExtraViewModel>()
+                                }));
                             }
 
                             dishViewModels.Add(new DishViewModel
