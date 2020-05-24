@@ -5,164 +5,145 @@
         </div>
     </div>
 
-    <main class="order-restaurant" *ngIf="generalError === undefined && initialized">
+    <main *ngIf="generalError === undefined && initialized">
 
-        <section class="order-section">
-
-            <div class="hero-banner-wrapper">
-
-                <div class="order-banner h-100 w-100" style='background-image: url("https://images.pexels.com/photos/2619967/pexels-photo-2619967.jpeg?crop=entropy&cs=srgb&dl=pizza-2619967.jpg&fit=crop&fm=jpg&h=853&w=1280");'>
-                    <div class="container h-100">
-                        <div class="row h-100">
-                            <div class="col-lg-7 col-xl-6 d-lg-flex flex-column">
-                                <div class="position-relative bg-white box-shadow w-100 p-7 p-lg-9 mb-3 text-center text-lg-left d-flex flex-column" style="margin-top: 120px; border-radius: 8px;">
-                                    <div class="mb-3 mb-lg-7 mt-lg-0 d-lg-flex" style="margin-top: -52px;">
-                                        <div>
-                                            <div class="order-logo mb-3 mb-lg-0 mr-lg-7 position-relative">
-                                                <img class="rounded-circle position-relative" alt="{{restaurant.name}} logo" [src]="restaurant.image" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h1 class="restaurant-name">{{restaurant.name}}</h1>
-                                            <span class="restaurant-address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <nav class="dish-menu-category-list" style="top: 1px;">
-                <div class="dish-control-holder">
-                    <div class="nav-holder">
-                        <ul style="transform: translateX(0px);">
-                            <li *ngFor="let dishCategory of dishCategories">
-                                <a class="" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}" title="{{dishCategory.name}}">{{dishCategory.name}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-            <section class="dish-menu-list">
-
-                <div class="dish-category-section" id="{{dishCategory.id}}" *ngFor="let dishCategory of dishCategories">
-                    <div class="dish-inner-wrapper">
-                        <h2 class="dish-category-title">{{dishCategory.name}}</h2>
-                        <ul class="dish-list">
-
-                            <li class="dish-card" *ngFor="let dish of dishCategory.dishes">
-                                <span class="dish-react-root">
-                                    <div class="dish-info-container">
-                                        <div class="dish-info">
-                                            <h3 class="dish-name"><span>{{dish.name}}</span></h3>
-                                            <p class="dish-description">{{dish.description}}</p>
-                                        </div>
-                                    </div>
-                                    <section class="action-bar">
-                                        <div class="action-bar-content">
-                                            <span class="dish-price">&euro;{{getFirstDishVariant(dish)}}</span>
-                                        </div>
-                                        <button class="add" (click)="onAddDishToCart(dish)"></button>
-                                    </section>
-                                </span>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-
-            </section>
-
+        <section class="store-header">
+            <img src="https://images.pexels.com/photos/2619967/pexels-photo-2619967.jpeg?crop=entropy&cs=srgb&dl=pizza-2619967.jpg&fit=crop&fm=jpg&h=853&w=1280" />
         </section>
 
-        <aside class="cart-column">
-            <div>
-                <div class="desktop-cart mobile-hidden">
+        <div class="container store-container">
+            <div class="cols">
 
-                    <div class="desktop-cart-container" style="position: fixed; max-height: 598px; width: 336px;">
+                <div class="col store-info">
+                    <div class="header-wrapper">
 
-                        <p class="delivery-time">
-                            <i class="icon-delivery fas fa-history"></i>
-                            <!-- TODO: Durchsch. ø Lieferzeit -->
-                            <span class="delivery-time">XY Min.</span>
-                        </p>
-
-                        <div class="cart-header">
-                            <h3 class="cart-title">Deine Bestellung bei <br /><span>{{restaurant.name}}</span></h3>
-                            <p class="cart-noitems" style="display: block;" *ngIf="isCartEmpty()">Du hast noch nichts in deinen Warenkorb gelegt! Füge ganz einfach deine Lieblingsgerichte hinzu.</p>
+                        <!-- Gastroinformationen -->
+                        <div class="store-information">
+                            <h1 class="name">{{restaurant.name}}</h1>
+                            <h2>
+                                <span class="address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span>
+                            </h2>
                         </div>
 
-                        <div class="desktop-cart-order" *ngIf="!isCartEmpty()">
-                            <div class="checkout-summary-wrapper" style="max-height: 307px;">
-                                <div class="checkout-summary">
-                                    <div class="cart-body">
-
-                                        <div class="cart-item" *ngFor="let orderedDish of getCart().orderedDishes">
-                                            <div class="item-row">
-
-                                                <div class="item-minus" (click)="onDecrementDishVariantCount(orderedDish)">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24"><defs><path id="cart-minus-a" d="M6 12h11v1H6z"></path></defs><g fill="none" fill-rule="evenodd"><mask id="cart-minus-b" fill="#fff"><use xlink:href="#cart-minus-a"></use></mask><use fill="#858585" xlink:href="#cart-minus-a"></use><g fill="#52AE31" mask="url(#cart-minus-b)"><path d="M0 0h24v24H0z"></path></g></g></svg>
-                                                </div>
-
-                                                <div class="item-quantity">{{orderedDish.count}}</div>
-
-                                                <div class="item-plus" (click)="onIncrementDishVariantCount(orderedDish)">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24"><defs><path id="cart-plus-a" d="M12 12V7h1v5h5v1h-5v5h-1v-5H7v-1h5z"></path></defs><g fill="none" fill-rule="evenodd"><mask id="cart-plus-b" fill="#fff"><use xlink:href="#cart-plus-a"></use></mask><use fill="#858585" xlink:href="#cart-plus-a"></use><g fill="#52AE31" mask="url(#cart-plus-b)"><path d="M0 0h24v24H0z"></path></g></g></svg>
-                                                </div>
-
-                                                <div class="item-name">{{orderedDish.dish.name}}</div>
-
-                                                <div class="item-price">&euro; {{orderedDish.getPriceText()}}</div>
-
-                                            </div>
-                                        </div>
-
+                        <!-- Gerichtkategorien -->
+                        <div class="store-categories">
+                            <span class="wrapper">
+                                <div class="categories">
+                                    <div class="category" *ngFor="let dishCategory of dishCategories">
+                                        <!-- class="category is-active" wenn angeklickt -->
+                                        <a href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="desktop-cart-footer">
-                            <div class="desktop-cart-order-subtotal-container">
-                                <div class="order-subtotal">
-                                    Zwischensumme
-                                    <span class="order-subtotal-price">&euro; {{getCart().getValueOfOrderText()}}</span>
-                                </div>
-                                <div class="order-min-order">
-                                    Mindestbestellwert
-                                    <span class="min-order-value">&euro; {{getCart().getMinimumOrderValueText()}}</span>
-                                </div>
-                                <div class="order-min-order-diff" *ngIf="!isCartEmpty()">
-                                    Differenz zu Min.
-                                    <span class="min-order-value">&euro; {{getCart().getMissingValueToMinimumText()}}</span>
-                                </div>
-                                <div class="order-delivery">
-                                    <div class="delivery-fee">Lieferkosten</div>
-                                    <span class="delivery-price" *ngIf="getCart().isDeliveryForFree()">Kostenlos</span>
-                                    <span class="delivery-price" *ngIf="!getCart().isDeliveryForFree()">&euro; {{getCart().getDeliveryCostsText()}}</span>
-                                </div>
-                                <div class="order-total">
-                                    Gesamt <em class="total-note">(inkl. MWSt)</em>
-                                    <div class="total-price">&euro; {{getCart().getTotalPriceText()}}</div>
-                                </div>
-                            </div>
-                            <div class="order-checkout">
-                                <button class="checkout-button">Fortfahren</button>
-                                <!-- class="active" wenn Mindestbestellwert erreicht -->
-
-                                <!--<button class="checkout-button">Geschlossen</button>-->
-                                <!-- Wenn Bestellung außerhalb Lieferzeit -->
-                            </div>
+                            </span>
                         </div>
 
                     </div>
+
+                    <!-- Gerichte -->
+                    <section class="store-section">
+                        <div class="wrapper">
+                            <div id="{{dishCategory.id}}" *ngFor="let dishCategory of dishCategories">
+                                <h3>{{dishCategory.name}}</h3>
+
+                                <div class="store-items items-desktop">
+                                    <div class="store-item" *ngFor="let dish of dishCategory.dishes">
+                                        <div class="item-content">
+                                            <div>
+                                                <h4 class="title">{{dish.name}}</h4>
+                                                <div class="description">
+                                                    <span>{{dish.description}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="price">{{getFirstDishVariant(dish)}} &euro;</div>
+                                                <img src="../../assets/img/icons/order-restaurant/plus.svg" alt="Icon" (click)="onAddDishToCart(dish)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="store-items items-mobile">
+                                    <div class="store-item" *ngFor="let dish of dishCategory.dishes">
+                                        <div class="item-content">
+                                            <div>
+                                                <h4 class="title">{{dish.name}}</h4>
+                                                <div class="description">{{dish.description}}</div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="price">{{getFirstDishVariant(dish)}} &euro;</div>
+                                                <img src="../../assets/img/icons/order-restaurant/plus.svg" alt="Icon" (click)="onAddDishToCart(dish)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
+
+                <!-- START: Warenkorb -->
+                <div class="col store-cart-container">
+                    <section class="store-cart">
+                        <section class="cart-products">
+                            <h1 class="cart-title">Warenkorb</h1>
+
+                            <!-- Bestellinforamationen -->
+                            <div class="cart-header">
+                                <div class="pair">
+                                    <img class="pair-icon" src="../../assets/img/icons/order-restaurant/lieferzeit.svg" alt="Icon" />
+                                    <div class="pair-text">25-35 Min.</div>
+                                </div>
+                                <div class="pair">
+                                    <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" />
+                                    <div class="pair-text">Min. {{getCart().getMinimumOrderValueText()}} &euro;</div>
+                                </div>
+                            </div>
+
+                            <!-- Produktliste -->
+                            <div class="products-list">
+
+                                <!-- Warenkorb leer -->
+                                <div class="cart-empty" *ngIf="isCartEmpty()">
+                                    <img src="../../assets/img/icons/order-restaurant/" alt="" />
+                                    <div class="cart-empty-text">LEER</div>
+                                </div>
+
+                                <!-- Warenkorb -->
+                                <div class="cart-body" *ngFor="let orderedDish of getCart().orderedDishes">
+                                    <section class="product">
+                                        <div class="top">
+                                            <span class="product-amount">{{orderedDish.count}}x</span>
+                                            <div class="info">
+                                                <span class="product-name">{{orderedDish.dish.name}}</span>
+                                                <span class="product-price">{{orderedDish.getPriceText()}} &euro;</span>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <img (click)="onDecrementDishVariantCount(orderedDish)" src="../../assets/img/icons/order-restaurant/minus.svg" alt="Icon" />
+                                            <div class="description"></div>
+                                            <img (click)="onIncrementDishVariantCount(orderedDish)" src="../../assets/img/icons/order-restaurant/plus.svg" alt="Icon" />
+                                        </div>
+                                    </section>
+                                </div>
+
+                            </div>
+
+                            <!-- Checkout -->
+                            <div class="cart-total" *ngIf="!isCartEmpty()">
+                                <span class="total-label">Gesamt</span>
+                                <div class="total-seperator"></div>
+                                <div class="total-price">{{getCart().getTotalPriceText()}} &euro;</div>
+                            </div>
+                            <a class="cart-button" *ngIf="!isCartEmpty()">Zum Checkout</a>
+
+                        </section>
+                    </section>
+                </div>
+
             </div>
-        </aside>
+        </div>
 
     </main>
 </block-ui>
