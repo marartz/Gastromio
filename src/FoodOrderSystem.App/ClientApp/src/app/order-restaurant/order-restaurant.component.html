@@ -96,8 +96,12 @@
                                     <div class="pair-text">25-35 Min.</div>
                                 </div>
                                 <div class="pair">
-                                    <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" />
-                                    <div class="pair-text">Min. {{getCart().getMinimumOrderValueText()}} &euro;</div>
+                                    <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" placement="bottom" ngbTooltip="Min. {{getCart().getMinimumOrderValueText()}} &euro;" />
+                                </div>
+                                <!-- Wenn Selbstabholung == true -->
+                                <div class="pair">
+                                    <!-- Anderes Icon -->
+                                    <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" placement="bottom" ngbTooltip="Selbstabholung möglich" />
                                 </div>
                             </div>
 

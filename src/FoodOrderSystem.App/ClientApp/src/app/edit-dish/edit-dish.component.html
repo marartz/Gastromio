@@ -27,23 +27,23 @@
                 <div class="wrapper">
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="z.B. Insalata Mio" id="name" formControlName="name" ngbAutofocus />
+                            <input class="input" type="text" placeholder="Gericht, z.B. Insalata Mio" id="name" formControlName="name" ngbAutofocus />
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="z.B. mit Tomaten und Gurken" id="description" formControlName="description" />
+                            <input class="input" type="text" placeholder="Beschreibung, z.B. mit Tomaten und Gurken" id="description" formControlName="description" />
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="z.B. mit Zusatzstoffen" id="productInfo" formControlName="productInfo" />
+                            <input class="input" type="text" placeholder="Zusatzstoffe" id="productInfo" formControlName="productInfo" />
                         </div>
                     </div>
                     <ng-container *ngIf="dish.variants.length <= 1">
                         <div class="admin-input">
                             <div class="input-underline">
-                                <input class="input" type="number" placeholder="z.B. 7,50" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}">
+                                <input class="input" type="number" placeholder="Preis, z.B. 7,50" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}">
                             </div>
                         </div>
 
