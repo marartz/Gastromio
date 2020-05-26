@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
           if (status === 401)
             this.message = "Benutzername und/oder Passwort ist nicht korrekt.";
           else
-            this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
+            this.message = "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
       });
   }
 }
