@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -17,6 +17,7 @@ export class AddCuisineComponent implements OnInit {
 
   addCuisineForm: FormGroup;
   message: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -25,14 +26,21 @@ export class AddCuisineComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addCuisineForm = this.formBuilder.group({
-      name: ''
+      name: ['', Validators.required]
     });
   }
 
   ngOnInit() {
   }
 
+  get f() { return this.addCuisineForm.controls; }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.addCuisineForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.cuisineAdminService.addCuisineAsync(data.name)
       .subscribe(() => {

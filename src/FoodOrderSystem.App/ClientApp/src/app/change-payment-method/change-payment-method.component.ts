@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentMethodModel } from '../payment-method/payment-method.model';
 import { PaymentMethodAdminService } from '../payment-method/payment-method-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -29,12 +29,18 @@ export class ChangePaymentMethodComponent implements OnInit {
 
   ngOnInit() {
     this.changePaymentMethodForm = this.formBuilder.group({
-      name: this.paymentMethod.name,
-      description: this.paymentMethod.description
+      name: [this.paymentMethod.name, Validators.required],
+      description: [this.paymentMethod.description, Validators.required]
     });
   }
 
+  get f() { return this.changePaymentMethodForm.controls; }
+
   onSubmit(data) {
+    if (this.changePaymentMethodForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
       .subscribe(() => {

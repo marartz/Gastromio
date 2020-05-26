@@ -29,6 +29,8 @@
         DishCategoryDoesNotBelongToRestaurant,
         DishCategoryContainsDishes,
         DishDoesNotBelongToDishCategory,
+        DishVariantPriceIsNegativeOrZero,
+        DishVariantPriceIsTooBig,
         CannotRemoveCurrentUserFromRestaurantAdmins
     }
 }

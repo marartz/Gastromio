@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import { DishCategoryModel } from '../dish-category/dish-category.model';
@@ -18,6 +18,7 @@ export class AddDishCategoryComponent implements OnInit {
 
   addDishCategoryForm: FormGroup;
   message: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -26,14 +27,21 @@ export class AddDishCategoryComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addDishCategoryForm = this.formBuilder.group({
-      name: ''
+      name: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
   }
 
+  get f() { return this.addDishCategoryForm.controls; }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.addDishCategoryForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurantId, data.name)
       .subscribe((id) => {

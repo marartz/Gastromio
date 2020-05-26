@@ -51,5 +51,9 @@ namespace FoodOrderSystem.Domain.Model
         private static readonly Regex WebsiteRegex =
             new Regex(
                 @"^(https?:\/\/){0,1}(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$");
+
+        private static readonly Regex PasswordRegex =
+            new Regex(
+                @"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}");
     }
 }

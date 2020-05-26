@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import { RestaurantModel } from '../restaurant/restaurant.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -29,11 +29,17 @@ export class ChangeRestaurantNameComponent implements OnInit {
 
   ngOnInit() {
     this.changeRestaurantNameForm = this.formBuilder.group({
-      name: this.restaurant.name
+      name: [this.restaurant.name, Validators.required]
     });
   }
 
+  get f() { return this.changeRestaurantNameForm.controls; }
+
   onSubmit(data) {
+    if (this.changeRestaurantNameForm.invalid) {
+      return;
+    }
+
     this.blockUI.start("Verarbeite Daten...");
     let subscription = this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
       .subscribe(() => {
