@@ -1,17 +1,18 @@
 <div class="modal-overlay">
-    <div class="modal-wrapper--window small">
-        <div class="modal--window">
-            <span class="close-button">
-                <img src="../../assets/img/icons/close-icon.svg" alt="" onclick="">
-            </span>
-            <div class="modal--window__body">
-                <div class="auth-wrapper">
-                    <div>
-                        <h2 class="title mt-0 mb-4">Anmelden oder Registrieren</h2>
-                        <!-- Social Logins wie Facebook o.ä. -->
-                        <div class="divider">&nbsp;</div>
+    <block-ui>
+        <div class="modal-wrapper--window small">
+            <div class="modal--window">
+                <span class="close-button">
+                    <img src="../../assets/img/icons/close-icon.svg" alt="" (click)="activeModal.dismiss('Cross click')">
+                </span>
+                <div class="modal--window__body">
+                    <div class="auth-wrapper">
+                        <div>
+                            <h2 class="title mt-0 mb-4">Anmelden oder Registrieren</h2>
+                            <!-- Social Logins wie Facebook o.ä. -->
+                            <div class="divider">&nbsp;</div>
 
-                        <block-ui>
+
                             <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
                                 <div class="form-item">
                                     <div class="form-item__content">
@@ -39,15 +40,16 @@
                                     </div>
                                 </div>
                             </form>
-                        </block-ui>
 
-                        <div class="register hidden-mobile">
-                            Noch nicht mit dabei? <a class="link" href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer">Registrieren</a>
+
+                            <div class="register hidden-mobile">
+                                Noch nicht mit dabei? <a class="link" href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer">Registrieren</a>
+                            </div>
+
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </block-ui>
 </div>
