@@ -9,11 +9,13 @@ using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
+using Microsoft.Extensions.Logging;
 
 namespace FoodOrderSystem.Domain.Commands.AddTestData
 {
     public class AddTestDataCommandHandler : ICommandHandler<AddTestDataCommand, bool>
     {
+        private readonly ILogger<AddTestDataCommandHandler> logger;
         private readonly IUserFactory userFactory;
         private readonly IUserRepository userRepository;
         private readonly ICuisineFactory cuisineFactory;
@@ -32,6 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
         private readonly List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
 
         public AddTestDataCommandHandler(
+            ILogger<AddTestDataCommandHandler> logger,
             IUserFactory userFactory,
             IUserRepository userRepository,
             ICuisineFactory cuisineFactory,
@@ -46,6 +49,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             IDishRepository dishRepository
         )
         {
+            this.logger = logger;
             this.userFactory = userFactory;
             this.userRepository = userRepository;
             this.cuisineFactory = cuisineFactory;
@@ -93,6 +97,8 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
         private async Task<Result<bool>> CreateUsersAsync(CancellationToken cancellationToken)
         {
+            logger.LogInformation("creating test users");
+            
             for (var i = 0; i < 100; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -106,6 +112,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 var user = ((SuccessResult<User>) tempResult).Value;
 
                 await userRepository.StoreAsync(user, cancellationToken);
+                logger.LogInformation("    sysadmin user {0} created", name);
             }
 
             for (var i = 0; i < 100; i++)
@@ -121,15 +128,19 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 var user = ((SuccessResult<User>) tempResult).Value;
 
                 await userRepository.StoreAsync(user, cancellationToken);
+                logger.LogInformation("    restadmin user {0} created", name);
 
                 restAdminDict.Add(name, user);
             }
 
+            logger.LogInformation("test users created");
             return SuccessResult<bool>.Create(true);
         }
 
         private async Task<Result<bool>> CreateCuisinesAsync(CancellationToken cancellationToken)
         {
+            logger.LogInformation("creating test cuisines");
+            
             var tempResult = cuisineFactory.Create("Chinesisch");
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
@@ -207,11 +218,14 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
+            logger.LogInformation("test cuisines created");
             return SuccessResult<bool>.Create(true);
         }
 
         private async Task<Result<bool>> CreatePaymentMethodsAsync(CancellationToken cancellationToken)
         {
+            logger.LogInformation("creating test payment methods");
+
             var tempResult = paymentMethodFactory.Create("Bar", "Barzahlung");
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
@@ -240,11 +254,14 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
             paymentMethods.Add(paymentMethod);
 
+            logger.LogInformation("test payment methods created");
             return SuccessResult<bool>.Create(true);
         }
 
         private async Task<Result<bool>> CreateRestaurantsAsync(CancellationToken cancellationToken)
         {
+            logger.LogInformation("creating test restaurants");
+
             for (var i = 0; i < restAdminDict.Count; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -254,6 +271,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     return tempResult;
             }
 
+            logger.LogInformation("test restaurants created");
             return SuccessResult<bool>.Create(true);
         }
 
@@ -262,6 +280,8 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             var restaurantName = $"Restaurant {(index + 1):D3}";
             var restAdminName = $"restadmin{(index + 1):D3}";
 
+            logger.LogInformation("    creating test restaurant {0}", restaurantName);
+            
             var restaurantResult = restaurantFactory.CreateWithName(restaurantName);
             if (restaurantResult.IsFailure)
                 return restaurantResult.Cast<bool>();
@@ -278,7 +298,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 return boolResult;
 
             boolResult =
-                restaurant.ChangeDeliveryData((decimal) 5 + (decimal) index / 10, (decimal) 4 + (decimal) index / 10);
+                restaurant.ChangeDeliveryData(5 + (decimal) index / 10, 4 + (decimal) index / 10);
             if (boolResult.IsFailure)
                 return boolResult;
 
@@ -301,19 +321,25 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            for (var catIndex = 0; catIndex < 20; catIndex++)
+            for (var catIndex = 0; catIndex < 10; catIndex++)
             {
-                var dishCategoryResult = dishCategoryFactory.Create(restaurant.Id, $"Kategorie{(catIndex + 1):D2}");
+                var dishCategoryName = $"Kategorie{(catIndex + 1):D2}";
+                logger.LogInformation("        creating dish category {0}", dishCategoryName);
+
+                var dishCategoryResult = dishCategoryFactory.Create(restaurant.Id, dishCategoryName);
                 if (dishCategoryResult.IsFailure)
                     return dishCategoryResult.Cast<bool>();
                 var dishCategory = ((SuccessResult<DishCategory>) dishCategoryResult).Value;
                 await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 
-                for (var dishIndex = 0; dishIndex < 50; dishIndex++)
+                for (var dishIndex = 0; dishIndex < 20; dishIndex++)
                 {
-                    var variant = new DishVariant(Guid.NewGuid(), $"Gericht{(dishIndex + 1):D2}",
-                        (decimal) 5 + (decimal) dishIndex / 10, null);
-                    var dishResult = dishFactory.Create(restaurant.Id, dishCategory.Id, $"Gericht{(dishIndex + 1):D2}",
+                    var dishName = $"Gericht{(dishIndex + 1):D2}";
+                    
+                    var variant = new DishVariant(Guid.NewGuid(), dishName,
+                        5 + (decimal) dishIndex / 10, null);
+
+                    var dishResult = dishFactory.Create(restaurant.Id, dishCategory.Id, dishName,
                         $"Beschreibung des Gerichts{(dishIndex + 1):D2}",
                         $"Produktinformation des Gerichts{(dishIndex + 1):D2}", new[] {variant});
                     if (dishResult.IsFailure)
@@ -321,8 +347,11 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     var dish = ((SuccessResult<Dish>) dishResult).Value;
                     await dishRepository.StoreAsync(dish, cancellationToken);
                 }
+                
+                logger.LogInformation("        dish category {0} created", dishCategoryName);
             }
 
+            logger.LogInformation("    test restaurant {0} created", restaurantName);
             return SuccessResult<bool>.Create(true);
         }
     }
