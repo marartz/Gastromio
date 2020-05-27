@@ -42,14 +42,14 @@ export class AddDishCategoryComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurantId, data.name)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurantId, data.name)
       .subscribe((id) => {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.addDishCategoryForm.reset();
-        this.activeModal.close(new DishCategoryModel({ id: id, name: data.name }));
+        this.activeModal.close(new DishCategoryModel({ id, name: data.name }));
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();

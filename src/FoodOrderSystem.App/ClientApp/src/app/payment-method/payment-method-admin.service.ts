@@ -6,7 +6,7 @@ import { PaymentMethodModel } from './payment-method.model';
 
 @Injectable()
 export class PaymentMethodAdminService {
-  private baseUrl: string = "api/v1/systemadmin";
+  private baseUrl = 'api/v1/systemadmin';
 
   constructor(
     private http: HttpClient,
@@ -14,44 +14,44 @@ export class PaymentMethodAdminService {
   ) { }
 
   public getAllPaymentMethodsAsync(): Observable<PaymentMethodModel[]> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.get<PaymentMethodModel[]>(this.baseUrl + '/paymentmethods', httpOptions);
   }
 
   public addPaymentMethodAsync(name: string, description: string): Observable<PaymentMethodModel> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<PaymentMethodModel>(this.baseUrl + '/paymentmethods', { name: name, description: description }, httpOptions);
+    return this.http.post<PaymentMethodModel>(this.baseUrl + '/paymentmethods', { name, description }, httpOptions);
   }
 
   public changePaymentMethodAsync(paymentMethodId: string, name: string, description: string): Observable<boolean> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/paymentmethods/' + paymentMethodId + '/change', { name: name, description: description }, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/paymentmethods/' + paymentMethodId + '/change', { name, description }, httpOptions);
   }
 
   public removePaymentMethodAsync(paymentMethodId: string): Observable<void> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.delete<void>(this.baseUrl + '/paymentmethods/' + paymentMethodId, httpOptions);

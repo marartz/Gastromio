@@ -28,8 +28,8 @@ export class RemoveRestaurantComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.restaurantAdminService.removeRestaurantAsync(this.restaurant.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantAdminService.removeRestaurantAsync(this.restaurant.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

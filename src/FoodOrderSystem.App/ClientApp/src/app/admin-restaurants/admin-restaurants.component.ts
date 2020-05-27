@@ -45,14 +45,14 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   openAddRestaurantForm(): void {
-    let modalRef = this.modalService.open(AddRestaurantComponent);
+    const modalRef = this.modalService.open(AddRestaurantComponent);
     modalRef.result.then(() => {
       this.updateSearch();
     }, () => { });
   }
 
   openRemoveRestaurantForm(restaurant: RestaurantModel): void {
-    let modalRef = this.modalService.open(RemoveRestaurantComponent);
+    const modalRef = this.modalService.open(RemoveRestaurantComponent);
     modalRef.componentInstance.restaurant = restaurant;
     modalRef.result.then(() => {
       this.updateSearch();
@@ -68,15 +68,15 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(): void {
-    if (this.updateSearchSubscription !== undefined)
+    if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
+    }
 
-    let observable = this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase);
+    const observable = this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase);
 
     this.updateSearchSubscription = observable.subscribe((result) => {
       this.restaurants = result;
-
-    }, (error) => {
+    }, () => {
     });
   }
 }

@@ -6,13 +6,12 @@ import { RestaurantModel } from '../restaurant/restaurant.model';
 import { DishCategoryModel } from '../dish-category/dish-category.model';
 import { CartModel } from '../cart/cart.model';
 import { OrderedDishModel } from '../cart/ordered-dish.model';
-import { Guid } from 'guid-typescript';
 import { DishVariantModel } from '../dish-category/dish-variant.model';
 import { DishModel } from '../dish-category/dish.model';
 
 @Injectable()
 export class OrderService {
-  private baseUrl: string = "api/v1/order";
+  private baseUrl = 'api/v1/order';
 
   private cart: CartModel;
 
@@ -23,33 +22,33 @@ export class OrderService {
 
 
   public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search), httpOptions);
   }
 
   public getRestaurantAsync(id: string): Observable<RestaurantModel> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions);
   }
 
   public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
@@ -79,16 +78,18 @@ export class OrderService {
   }
 
   public incrementDishVariantCount(itemId: string): void {
-    let index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0)
+    const index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
       return;
+    }
     this.cart.orderedDishes[index].count++;
   }
 
   public decrementDishVariantCount(itemId: string): void {
-    let index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0)
+    const index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
       return;
+    }
     this.cart.orderedDishes[index].count--;
     if (this.cart.orderedDishes[index].count === 0) {
       this.cart.orderedDishes.splice(index, 1);
@@ -96,9 +97,10 @@ export class OrderService {
   }
 
   public removeDishVariantFromCart(itemId: string): void {
-    let index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0)
+    const index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
       return;
+    }
     this.cart.orderedDishes.splice(index, 1);
   }
 

@@ -14,17 +14,18 @@ export class CartModel {
   public orderedDishes: OrderedDishModel[];
 
   public getValueOfOrder(): number {
-    if (this.orderedDishes === undefined || this.orderedDishes.length === 0)
+    if (this.orderedDishes === undefined || this.orderedDishes.length === 0) {
       return 0;
+    }
     let result = 0;
-    for (let orderedDish of this.orderedDishes) {
+    for (const orderedDish of this.orderedDishes) {
       result += orderedDish.count * orderedDish.variant.price;
     }
     return result;
   }
 
   public getValueOfOrderText(): string {
-    let val = this.getValueOfOrder();
+    const val = this.getValueOfOrder();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
@@ -33,19 +34,20 @@ export class CartModel {
   }
 
   public getMinimumOrderValueText(): string {
-    let val = this.getMinimumOrderValue();
+    const val = this.getMinimumOrderValue();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   public getMissingValueToMinimum(): number {
     let val = this.getMinimumOrderValue() - this.getValueOfOrder();
-    if (val < 0)
+    if (val < 0) {
       val = 0;
-      return val;
+    }
+    return val;
   }
 
   public getMissingValueToMinimumText(): string {
-    let val = this.getMissingValueToMinimum();
+    const val = this.getMissingValueToMinimum();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
@@ -58,7 +60,7 @@ export class CartModel {
   }
 
   public getDeliveryCostsText(): string {
-    let val = this.getDeliveryCosts();
+    const val = this.getDeliveryCosts();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
@@ -67,7 +69,7 @@ export class CartModel {
   }
 
   public getTotalPriceText(): string {
-    let val = this.getTotalPrice();
+    const val = this.getTotalPrice();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 }

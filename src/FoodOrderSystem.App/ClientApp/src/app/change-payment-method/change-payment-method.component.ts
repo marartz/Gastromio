@@ -41,8 +41,8 @@ export class ChangePaymentMethodComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

@@ -29,8 +29,8 @@ export class RemoveCuisineComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.cuisineAdminService.removeCuisineAsync(this.cuisine.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.cuisineAdminService.removeCuisineAsync(this.cuisine.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -38,8 +38,8 @@ export class RemoveCuisineComponent implements OnInit {
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
-          this.blockUI.stop();
-          this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.blockUI.stop();
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

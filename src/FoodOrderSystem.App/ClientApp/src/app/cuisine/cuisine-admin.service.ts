@@ -6,7 +6,7 @@ import { CuisineModel } from './cuisine.model';
 
 @Injectable()
 export class CuisineAdminService {
-  private baseUrl: string = "api/v1/systemadmin";
+  private baseUrl = 'api/v1/systemadmin';
 
   constructor(
     private http: HttpClient,
@@ -14,44 +14,44 @@ export class CuisineAdminService {
   ) { }
 
   public getAllCuisinesAsync(): Observable<CuisineModel[]> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions);
   }
 
   public addCuisineAsync(name: string): Observable<CuisineModel> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', { name: name }, httpOptions);
+    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', { name }, httpOptions);
   }
 
   public changeCuisineAsync(cuisineId: string, name: string): Observable<boolean> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', { name: name }, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', { name }, httpOptions);
   }
 
   public removeCuisineAsync(cuisineId: string): Observable<void> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.delete<void>(this.baseUrl + '/cuisines/' + cuisineId, httpOptions);

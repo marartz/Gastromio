@@ -32,8 +32,8 @@ export class ChangeUserPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.changeUserPasswordForm = this.formBuilder.group({
-      password: ["", [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
-      passwordRepeat: [""]
+      password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
+      passwordRepeat: ['']
     }, { validators: ConfirmPasswordValidator('password', 'passwordRepeat') });
   }
 
@@ -45,8 +45,8 @@ export class ChangeUserPasswordComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.userAdminService.changeUserPasswordAsync(this.user.id, data.password)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.userAdminService.changeUserPasswordAsync(this.user.id, data.password)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

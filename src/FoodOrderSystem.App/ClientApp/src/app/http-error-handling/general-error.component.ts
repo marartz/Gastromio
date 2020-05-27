@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core"
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: "general-error",
+  selector: 'app-general-error',
   template: '<p class="error" *ngIf="generalError">{{generalError}}</p>',
   styles: [`
     .error {

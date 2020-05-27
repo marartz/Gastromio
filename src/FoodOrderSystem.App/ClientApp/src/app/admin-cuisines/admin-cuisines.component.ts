@@ -25,14 +25,14 @@ export class AdminCuisinesComponent implements OnInit {
   }
 
   openAddCuisineForm(): void {
-    let modalRef = this.modalService.open(AddCuisineComponent);
+    const modalRef = this.modalService.open(AddCuisineComponent);
     modalRef.result.then(() => {
       this.updateSearch();
     }, () => { });
   }
 
   openChangeCuisineForm(cuisine: CuisineModel): void {
-    let modalRef = this.modalService.open(ChangeCuisineComponent);
+    const modalRef = this.modalService.open(ChangeCuisineComponent);
     modalRef.componentInstance.cuisine = cuisine;
     modalRef.result.then(() => {
       this.updateSearch();
@@ -40,7 +40,7 @@ export class AdminCuisinesComponent implements OnInit {
   }
 
   openRemoveCuisineForm(cuisine: CuisineModel): void {
-    let modalRef = this.modalService.open(RemoveCuisineComponent);
+    const modalRef = this.modalService.open(RemoveCuisineComponent);
     modalRef.componentInstance.cuisine = cuisine;
     modalRef.result.then(() => {
       this.updateSearch();

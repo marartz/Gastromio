@@ -37,23 +37,23 @@ export class AddUserComponent implements OnInit {
   }
 
   onSubmit(data) {
-    if (data.password === undefined || data.password === "") {
-      this.message = "Bitte geben Sie ein Passwort ein";
+    if (data.password === undefined || data.password === '') {
+      this.message = 'Bitte geben Sie ein Passwort ein';
       return;
     }
 
-    if (data.passwordRepeat === undefined || data.passwordRepeat === "") {
-      this.message = "Bitte wiederholen Sie das eingegebene Passwort";
+    if (data.passwordRepeat === undefined || data.passwordRepeat === '') {
+      this.message = 'Bitte wiederholen Sie das eingegebene Passwort';
       return;
     }
 
     if (data.password !== data.passwordRepeat) {
-      this.message = "Die eingegebenen Passwörter stimmen nicht überein";
+      this.message = 'Die eingegebenen Passwörter stimmen nicht überein';
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.userAdminService.addUserAsync(data.username, data.role, data.email, data.password)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.userAdminService.addUserAsync(data.username, data.role, data.email, data.password)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

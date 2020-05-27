@@ -43,8 +43,8 @@ export class ChangeUserDetailsComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

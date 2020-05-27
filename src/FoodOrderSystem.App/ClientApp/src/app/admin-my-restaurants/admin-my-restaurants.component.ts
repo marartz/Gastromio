@@ -24,7 +24,7 @@ export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
 
 
   updateSearch(): void {
-    let subscription = this.restaurantAdminService.getMyRestaurantsAsync().subscribe((result) => {
+    const subscription = this.restaurantAdminService.getMyRestaurantsAsync().subscribe((result) => {
       subscription.unsubscribe();
       this.restaurants = result;
     }, (error) => {

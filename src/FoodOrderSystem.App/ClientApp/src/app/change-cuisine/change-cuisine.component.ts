@@ -41,8 +41,8 @@ export class ChangeCuisineComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
