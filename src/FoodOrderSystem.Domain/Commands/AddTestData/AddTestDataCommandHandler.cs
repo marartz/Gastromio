@@ -99,7 +99,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
         {
             logger.LogInformation("creating test users");
             
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 35; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
@@ -115,7 +115,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 logger.LogInformation("    sysadmin user {0} created", name);
             }
 
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 35; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
@@ -321,7 +321,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            for (var catIndex = 0; catIndex < 10; catIndex++)
+            for (var catIndex = 0; catIndex < 8; catIndex++)
             {
                 var dishCategoryName = $"Kategorie{(catIndex + 1):D2}";
                 logger.LogInformation("        creating dish category {0}", dishCategoryName);
@@ -332,7 +332,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 var dishCategory = ((SuccessResult<DishCategory>) dishCategoryResult).Value;
                 await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 
-                for (var dishIndex = 0; dishIndex < 20; dishIndex++)
+                for (var dishIndex = 0; dishIndex < 10; dishIndex++)
                 {
                     var dishName = $"Gericht{(dishIndex + 1):D2}";
                     
