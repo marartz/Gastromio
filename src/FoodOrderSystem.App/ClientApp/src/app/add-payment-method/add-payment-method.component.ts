@@ -54,7 +54,7 @@ export class AddPaymentMethodComponent implements OnInit {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addPaymentMethodForm.reset();
-        this.message = this.httpErrorHandlingService.handleError(response);
+          this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

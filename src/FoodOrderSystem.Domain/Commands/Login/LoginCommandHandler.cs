@@ -25,11 +25,11 @@ namespace FoodOrderSystem.Domain.Commands.Login
 
             var user = await userRepository.FindByNameAsync(command.Username, cancellationToken);
             if (user == null)
-                return FailureResult<UserViewModel>.Unauthorized();
+                return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.UserDoesNotExist);
 
             var validationResult = user.ValidatePassword(command.Password);
             if (validationResult.IsFailure)
-                return FailureResult<UserViewModel>.Unauthorized();
+                return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.WrongCredentials);
 
             return SuccessResult<UserViewModel>.Create(UserViewModel.FromUser(user));
         }

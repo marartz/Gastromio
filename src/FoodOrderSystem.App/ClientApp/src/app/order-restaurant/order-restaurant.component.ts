@@ -81,7 +81,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
             (error: HttpErrorResponse) => {
               getDishesSubscription.unsubscribe();
               this.blockUI.stop();
-              this.generalError = this.httpErrorHandlingService.handleError(error);
+              this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
             }
           );
 
@@ -89,7 +89,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
         (error: HttpErrorResponse) => {
           getRestaurantSubscription.unsubscribe();
           this.blockUI.stop();
-          this.generalError = this.httpErrorHandlingService.handleError(error);
+          this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
         }
       );
     });

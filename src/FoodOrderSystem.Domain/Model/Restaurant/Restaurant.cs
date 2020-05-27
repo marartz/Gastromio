@@ -104,7 +104,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                         return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
                 }
             }
-            catch (Exception exc)
+            catch
             {
                 // TODO: Log error
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);

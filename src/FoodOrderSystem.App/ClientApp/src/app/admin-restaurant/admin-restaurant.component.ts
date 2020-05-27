@@ -203,14 +203,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
                     (error: HttpErrorResponse) => {
                       getPaymentMethodsSubscription.unsubscribe();
                       this.blockUI.stop();
-                      this.generalError = this.httpErrorHandlingService.handleError(error);
+                      this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
                     }
                   );
                 },
                 (error: HttpErrorResponse) => {
                   getCuisinesSubscription.unsubscribe();
                   this.blockUI.stop();
-                  this.generalError = this.httpErrorHandlingService.handleError(error);
+                  this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
                 }
               );
 
@@ -218,7 +218,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
             (error: HttpErrorResponse) => {
               getDishesSubscription.unsubscribe();
               this.blockUI.stop();
-              this.generalError = this.httpErrorHandlingService.handleError(error);
+              this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
             }
           );
 
@@ -226,7 +226,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         (error: HttpErrorResponse) => {
           getRestaurantSubscription.unsubscribe();
           this.blockUI.stop();
-          this.generalError = this.httpErrorHandlingService.handleError(error);
+          this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
         }
       );
     });
@@ -301,7 +301,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.changeImageError = this.httpErrorHandlingService.handleError(response);
+      this.changeImageError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -316,7 +316,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.changeAddressError = this.httpErrorHandlingService.handleError(response);
+      this.changeAddressError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -334,7 +334,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.changeContactDetailsError = this.httpErrorHandlingService.handleError(response);
+      this.changeContactDetailsError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -350,7 +350,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.changeDeliveryDataError = this.httpErrorHandlingService.handleError(response);
+      this.changeDeliveryDataError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -390,7 +390,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.addDeliveryTimeError = this.httpErrorHandlingService.handleError(response);
+      this.addDeliveryTimeError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -408,7 +408,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.removeDeliveryTimeError = this.httpErrorHandlingService.handleError(response);
+      this.removeDeliveryTimeError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -433,7 +433,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       console.log("Response: ", response);
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.addCuisineError = this.httpErrorHandlingService.handleError(response);
+      this.addCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -456,7 +456,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.removeCuisineError = this.httpErrorHandlingService.handleError(response);
+      this.removeCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -481,7 +481,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         console.log("Response: ", response);
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.addPaymentMethodError = this.httpErrorHandlingService.handleError(response);
+      this.addPaymentMethodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -504,7 +504,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.removePaymentMethodError = this.httpErrorHandlingService.handleError(response);
+      this.removePaymentMethodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -550,7 +550,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.addUserError = this.httpErrorHandlingService.handleError(response);
+      this.addUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
@@ -565,7 +565,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, (response: HttpErrorResponse) => {
       subscription.unsubscribe();
       this.blockUI.stop();
-      this.removeUserError = this.httpErrorHandlingService.handleError(response);
+      this.removeUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 

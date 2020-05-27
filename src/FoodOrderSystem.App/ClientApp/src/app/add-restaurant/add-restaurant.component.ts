@@ -53,7 +53,7 @@ export class AddRestaurantComponent implements OnInit {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addRestaurantForm.reset();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

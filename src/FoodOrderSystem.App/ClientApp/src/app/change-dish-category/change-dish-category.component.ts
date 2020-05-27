@@ -53,7 +53,7 @@ export class ChangeDishCategoryComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

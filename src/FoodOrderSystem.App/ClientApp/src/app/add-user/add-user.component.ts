@@ -64,7 +64,7 @@ export class AddUserComponent implements OnInit {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addUserForm.reset();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

@@ -23,18 +23,26 @@
             <div class="modal-body">
                 <div class="wrapper">
                     <div class="admin-input">
-                        <div class="input-underline">
-                            <input class="input" type="text" placeholder="Benutzername" id="username" formControlName="username" autocomplete="off" maxlength="50" ngbAutofocus />
+                      <div class="input-underline">
+                        <input class="input" type="text" placeholder="Benutzername" id="username" formControlName="Username" autocomplete="off" maxlength="50" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.Username.errors }" />
+                        <div *ngIf="submitted && f.Username.errors" class="invalid-feedback">
+                          <div *ngIf="f.Username.errors.backend">{{f.name.errors.backend}}</div>
+                          <div *ngIf="f.Username.errors.required">Benutzername wird benötigt.</div>
                         </div>
+                      </div>
                     </div>
                     <div class="admin-input">
-                        <div class="input-underline">
-                            <input class="input" type="password" placeholder="Passwort" id="password" formControlName="password" />
+                      <div class="input-underline">
+                        <input class="input" type="password" placeholder="Passwort" id="password" formControlName="Password" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.Password.errors }" />
+                        <div *ngIf="submitted && f.Password.errors" class="invalid-feedback">
+                          <div *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</div>
+                          <div *ngIf="f.Password.errors.required">Name wird benötigt.</div>
                         </div>
+                      </div>
                     </div>
                 </div>
                 <div class="wrapper">
-                    <p class="error" style="max-width: 100%;">{{message}}</p>
+                    <general-error [generalError]="generalError"></general-error>
                     <aside class="anmeldung" style="max-width: 100%;">Dein Restaurant/Imbiss ist noch nicht dabei? <span class="space"><a class="interner-link" href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer">Registrieren</a></span></aside>
                 </div>
             </div>

@@ -19,8 +19,8 @@ namespace FoodOrderSystem.App.Helper
             }
             if (result is FailureResult<TResult> failureResult)
             {
-                var message = failureMessageService.GetMessageFromResult(failureResult);
-                return new BadRequestObjectResult(message) { StatusCode = failureResult.StatusCode };
+                var errorDTO = new FailureResultDTO(failureMessageService.GetTranslatedMessages<TResult>(failureResult.Errors));
+                return new ObjectResult(errorDTO) { StatusCode = failureResult.StatusCode };
             }
             throw new InvalidOperationException("internal server error");
         }

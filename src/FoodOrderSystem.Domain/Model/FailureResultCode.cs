@@ -4,6 +4,7 @@
     {
         SessionExpired,
         Forbidden,
+        InternalServerError,
         WrongCredentials,
         RequiredFieldEmpty,
         FieldValueTooLong,

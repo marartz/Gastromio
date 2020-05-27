@@ -41,6 +41,7 @@ namespace FoodOrderSystem.Domain
             var deDeCultureInfo = new CultureInfo("de-DE");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.SessionExpired, "Sie sind nicht angemeldet");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Forbidden, "Sie sind nicht berechtigt, diese Aktion auszuführen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.InternalServerError, "Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RequiredFieldEmpty, "Nicht alle Pflichtfelder sind ausgefüllt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueTooLong, "Feldwert zu lang");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueInvalid, "Feldwert hat einen ungültigen Wert");
