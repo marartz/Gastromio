@@ -12,5 +12,5 @@ export function ConfirmPasswordValidator(controlName: string, matchingControlNam
     } else {
       matchingControl.setErrors(null);
     }
-  }
+  };
 }

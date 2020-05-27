@@ -3,45 +3,42 @@
     margin-right: auto;
     padding-left: 20px;
     padding-right: 20px;
+    color: rgb(23, 32, 38);
+    font-weight: 400;
 }
 
-@media (min-width: 1200px) {
+@media screen (min-width: 1200px) {
     .datenschutz {
         max-width: 980px;
     }
 }
 
 .datenschutz h3 {
-    margin: 24px 0 12px 0;
+    margin: 24px 0px 12px 0px;
 }
 
 .datenschutz p {
-    font-weight: 300;
-    color: rgb(102, 112, 147);
-    margin: 0 0 20px 0;
-    font-size: 16px !important;
+    font-size: 16px;
+    margin: 0px 0px 20px 0px;
 }
 
 .datenschutz strong {
-    color: #000;
+    color: rgb(0, 0, 0);
     font-weight: 600;
 }
 
 .datenschutz a {
+    color: rgb(0, 108, 187);
     text-decoration: none;
 }
 
 .datenschutz ul {
-    font-weight: 300;
-    color: rgb(102, 112, 147);
     padding: 0 0 0 20px;
     margin: 0 0 20px 0;
 }
 
 .datenschutz .t1, .t2, .t3, .t4, .t5, .t6 {
     display: block;
-    font-family: inherit;
-    line-height: 1.25;
 }
 
 .datenschutz h1, h2, h3, .t1, .t2, .t3 {
@@ -49,7 +46,7 @@
 }
 
 .datenschutz h4, h5, h6, .t4, .t5, .t6 {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .datenschutz .t3 {
@@ -62,13 +59,12 @@
 }
 
 .datenschutz  .dptable {
-    color: rgb(102, 112, 147);
-    margin: 24px 0;
+    margin: 24px 0px;
     display: grid;
     grid-gap: 4px 20px;
 }
 
-@media (min-width: 768px) {
+@media screen (min-width: 768px) {
     .datenschutz .dptable {
         grid-template-columns: 30% auto;
         grid-gap: 12px 20px;
@@ -76,7 +72,6 @@
 }
 
 .datenschutz .dptable div:nth-child(2n+1) {
-    color: rgb(102, 112, 147);
     font-weight: 600;
 }
 

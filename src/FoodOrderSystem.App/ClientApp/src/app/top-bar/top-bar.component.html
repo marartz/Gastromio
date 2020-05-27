@@ -1,5 +1,5 @@
 <header class="top-bar">
-    <div>
+
         <div class="top-section">
 
             <div class="logo-wrapper">
@@ -42,19 +42,19 @@
                                     <div ngbDropdownMenu aria-labelledby="userDropDown">
 
                                         <ng-container *ngIf="isSystemAdmin()">
-                                            <li><a class="header-account-dropdown-link" ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
-                                            <li><a class="header-account-dropdown-link" ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
-                                            <li><a class="header-account-dropdown-link" ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</a></li>
-                                            <li><a class="header-account-dropdown-link" ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
+                                            <li><a class="dropdown-link" ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
+                                            <li><a class="dropdown-link" ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
+                                            <li><a class="dropdown-link" ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</a></li>
+                                            <li><a class="dropdown-link" ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
                                         </ng-container>
 
                                         <ng-container *ngIf="isRestaurantAdmin()">
-                                            <li><a class="header-account-dropdown-link" ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a></li>
+                                            <li><a class="dropdown-link" ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a></li>
                                         </ng-container>
 
-                                        <hr class="header-account-dropdown-divider" />
+                                        <hr class="dropdown-divider" />
 
-                                        <li><a class="header-account-dropdown-link" ngbDropdownItem (click)="logout()">Abmelden</a></li>
+                                        <li><a class="dropdown-link" ngbDropdownItem (click)="logout()"> Abmelden</a></li>
 
                                     </div>
                                 </ul>
@@ -79,5 +79,5 @@
             </div>
 
         </div>
-    </div>
+
 </header>

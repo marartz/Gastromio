@@ -28,8 +28,8 @@ export class RemovePaymentMethodComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.paymentMethodAdminService.removePaymentMethodAsync(this.paymentMethod.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.paymentMethodAdminService.removePaymentMethodAsync(this.paymentMethod.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -38,7 +38,7 @@ export class RemovePaymentMethodComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

@@ -15,6 +15,7 @@
 </main>
 
 <div class="container no-header">
+
     <div class="row">
         <div class="col-12 col-md-8">
             <input class="form-control" type="search" placeholder="Nach Restaurants suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
@@ -23,31 +24,35 @@
             <button class="button-add" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
         </div>
     </div>
+
     <div class="row">
         <div class="col">
+            <div class="restaurants mt-3">
 
-        <div class="restaurants mt-3">
-            <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
-                <div class="restaurant-logo-wrapper">
-                    <div class="restaurant-logo">
-                        <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
+                <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
+                    <div class="restaurant-logo-wrapper">
+                        <div class="restaurant-logo">
+                            <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
+                        </div>
                     </div>
-                </div>
-                <div class="restaurant-info-wrapper">
-                    <h2 class="restaurantname">{{restaurant.name}}</h2>
-                    <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
-                    <div class="bottom-wrapper details">
-                        <div class="delivery">
-                            <a href="#" class="edit-restaurant-settings" [routerLink]="[restaurant.id]">Details ändern</a>
-                            &nbsp;&ndash;&nbsp;
-                            <a class="edit-restaurant-settings" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
+                    <div class="restaurant-info-wrapper">
+                        <h2 class="restaurantname">{{restaurant.name}}</h2>
+                        <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
+                        <div class="bottom-wrapper details">
+                            <div class="settings">
+                                <a class="edit" [routerLink]="[restaurant.id]">Details ändern</a>
+                                &nbsp;&ndash;&nbsp;
+                                <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
+                                &nbsp;&ndash;&nbsp;
+                                <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <pagination [items]="restaurants" (changePage)="onChangePage($event)"></pagination>
+            </div>
+
+            <app-pagination [items]="restaurants" (changePage)="onChangePage($event)"></app-pagination>
 
         </div>
     </div>

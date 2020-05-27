@@ -41,8 +41,8 @@ export class AddCuisineComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.cuisineAdminService.addCuisineAsync(data.name)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.cuisineAdminService.addCuisineAsync(data.name)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -52,7 +52,7 @@ export class AddCuisineComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.addCuisineForm.reset();
       });
   }

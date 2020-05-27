@@ -1,8 +1,7 @@
-import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OrderHomeComponent } from './order-home/order-home.component';
 import { Title } from '@angular/platform-browser';
-import { ControlContainer } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +15,7 @@ export class AppComponent {
   constructor(
     private titleService: Title
   ) {
-    titleService.setTitle("Gastromio.de | Einfach, Bestellen, Unterstützen");
+    titleService.setTitle('Gastromio.de | Einfach, Lokal, Bestellen');
   }
 
   onActivate(component: any): void {

@@ -37,7 +37,7 @@ namespace FoodOrderSystem.Domain.Commands.AddUser
             if (createResult.IsFailure)
                 return createResult.Cast<UserViewModel>();
 
-            user = ((SuccessResult<User>) createResult).Value;
+            user = createResult.Value;
 
             await userRepository.StoreAsync(user, cancellationToken);
 

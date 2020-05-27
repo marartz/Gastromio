@@ -39,6 +39,8 @@
     <None Remove="ClientApp\src\app\dish-category\dish-variant-extra.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish-variant.model.ts" />
     <None Remove="ClientApp\src\app\dish-category\dish.model.ts" />
+    <None Remove="ClientApp\src\app\http-error-handling\failure-result.model.ts" />
+    <None Remove="ClientApp\src\app\http-error-handling\general-error.component.ts" />
     <None Remove="ClientApp\src\app\order-restaurant-imprint\order-restaurant-imprint.component.ts" />
     <None Remove="ClientApp\src\app\order-restaurant-opening-hours\order-restaurant-opening-hours.component.ts" />
     <None Remove="ClientApp\src\app\order-restaurant\order-restaurant.component.ts" />
@@ -122,6 +124,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\http-error-handling\failure-result.model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\login\login.component.ts">

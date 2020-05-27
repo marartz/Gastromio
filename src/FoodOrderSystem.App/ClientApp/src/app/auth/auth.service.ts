@@ -5,8 +5,8 @@ import { UserModel } from '../user/user.model';
 
 @Injectable()
 export class AuthService {
-  private loginUrl: string = "api/v1/auth/login";
-  private pingUrl: string = "api/v1/auth/ping";
+  private loginUrl = 'api/v1/auth/login';
+  private pingUrl = 'api/v1/auth/ping';
 
   constructor(
     private http: HttpClient
@@ -17,29 +17,31 @@ export class AuthService {
   }
 
   public getToken(): string {
-    let token = localStorage.getItem('token');
-    if (token === null)
+    const token = localStorage.getItem('token');
+    if (token === null) {
       return undefined;
+    }
     return token;
   }
 
   public getUser(): UserModel {
-    let userJSON = localStorage.getItem('user');
-    if (userJSON === null)
+    const userJSON = localStorage.getItem('user');
+    if (userJSON === null) {
       return undefined;
+    }
     return JSON.parse(userJSON);
   }
 
   public loginAsync(username: string, password: string): Observable<{}> {
     return new Observable((observer: Observer<{}>) => {
-      let httpOptions = {
+      const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          Accept: 'application/json',
         })
       };
 
-      let subscription = this.http.post<LoginResultModel>(this.loginUrl, { username: username, password: password }, httpOptions).subscribe(
+      const subscription = this.http.post<LoginResultModel>(this.loginUrl, { username, password }, httpOptions).subscribe(
         (loginResult: LoginResultModel) => {
           localStorage.setItem('token', loginResult.token);
           localStorage.setItem('user', JSON.stringify(loginResult.user));
@@ -59,11 +61,11 @@ export class AuthService {
   }
 
   public pingAsync(): Observable<{}> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.getToken(),
       })
     };
 

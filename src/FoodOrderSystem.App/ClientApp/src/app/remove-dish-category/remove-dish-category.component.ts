@@ -29,8 +29,8 @@ export class RemoveDishCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.restaurantAdminService.removeDishCategoryFromRestaurantAsync(this.restaurantId, this.dishCategory.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantAdminService.removeDishCategoryFromRestaurantAsync(this.restaurantId, this.dishCategory.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -39,7 +39,7 @@ export class RemoveDishCategoryComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

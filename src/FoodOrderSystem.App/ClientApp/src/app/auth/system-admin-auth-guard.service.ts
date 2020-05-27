@@ -16,14 +16,14 @@ export class SystemAdminAuthGuardService implements CanActivate {
       return false;
     }
 
-    let currentUser = this.auth.getUser();
-    if (currentUser === undefined || currentUser.role !== "SystemAdmin") {
+    const currentUser = this.auth.getUser();
+    if (currentUser === undefined || currentUser.role !== 'SystemAdmin') {
       this.router.navigate(['']);
       return false;
     } else {
-      let subscription = this.auth.pingAsync().subscribe(() => {
+      const subscription = this.auth.pingAsync().subscribe(() => {
         subscription.unsubscribe();
-      }, (error) => {
+      }, () => {
         subscription.unsubscribe();
         this.auth.logout();
         this.router.navigate(['']);

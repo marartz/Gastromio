@@ -41,8 +41,8 @@ export class AddRestaurantComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.restaurantAdminService.addRestaurantAsync(data.name)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantAdminService.addRestaurantAsync(data.name)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -53,7 +53,7 @@ export class AddRestaurantComponent implements OnInit {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addRestaurantForm.reset();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

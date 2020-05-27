@@ -28,8 +28,8 @@ export class RemoveRestaurantComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.restaurantAdminService.removeRestaurantAsync(this.restaurant.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantAdminService.removeRestaurantAsync(this.restaurant.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -38,7 +38,7 @@ export class RemoveRestaurantComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

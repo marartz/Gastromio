@@ -1,49 +1,44 @@
-<div style="top: -49px; z-index: 5; position: static;">
-    <div class="no-top"></div>
-    <div class="legal-header">
-        <h1 class="header-title" style="max-width: 100%; color: rgb(255, 255, 255);">
-            <span class="title">AGB</span>
-        </h1>
+<section>
+    <div class="title-wrapper">
+        <h1 class="title">AGB</h1>
     </div>
-</div>
 
-<div style="top: 90px; z-index: 4; position: static;">
-    <div class="header-portal">
-        <header class="multi-tabs-wrapper">
-            <div class="multi-tabs-root">
-                <div class="multi-tabs-scroller" style="overflow: hidden;">
-                    <div class="multi-tabs-container" role="tablist">
-                        <a class="multi-tab active" [routerLink]="['/general-terms-and-conditions']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">AGB</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/imprint']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Impressum</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/privacy-policy']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Datenschutz</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/privacy-policy#cookies']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Verwendung von Cookies</span>
-                        </a>
-                    </div>
+    <div class="tabs-wrapper">
+        <div class="tabs-root">
+            <div class="scroller">
+                <div class="tab-container" role="tablist">
+                    <a class="tab" [routerLink]="['/datenschutz']" tabindex="0" role="tab">
+                        <span class="title">Datenschutz</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/datenschutz#cookies']" tabindex="0" role="tab">
+                        <span class="title">Cookie-Richtlinie</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/impressum']" tabindex="0" role="tab">
+                        <span class="title">Impressum</span>
+                    </a>
+                    <a class="tab active" [routerLink]="['/agb']" tabindex="0" role="tab">
+                        <span class="title">AGB</span>
+                    </a>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
 
-<main class="legal-wrapper">
-    <div class="legal-content">
-        <div class="legal-child">
-            <div class="wrapper">
-                <div class="inner">
-                    <div class="content-text">
-                        <div class="container agb">
-                            <p>Für sämtliche Bestellungen gelten nachstehende Lieferservice-Bedingungen. Die Lieferservice-Bedingungen gelten durch jede Form der Bestellung und spätestens mit Entgegennahme der Ware als anerkannt. Etwaig von diesen Geschäftsbedingungen abweichende Vertragsbedingungen des Bestellers haben auch dann keine Gültigkeit. Für Ihre Bestellung gelten die AGB in der jeweils zum Zeitpunkt der Bestellung gültigen Fassung.</p>
+    <main class="legal-wrapper">
+        <div class="content">
+            <div class="child">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="content-text">
+                            <div class="container agb">
+
+                                <p>Für sämtliche Bestellungen gelten nachstehende Lieferservice-Bedingungen. Die Lieferservice-Bedingungen gelten durch jede Form der Bestellung und spätestens mit Entgegennahme der Ware als anerkannt. Etwaig von diesen Geschäftsbedingungen abweichende Vertragsbedingungen des Bestellers haben auch dann keine Gültigkeit. Für Ihre Bestellung gelten die AGB in der jeweils zum Zeitpunkt der Bestellung gültigen Fassung.</p>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+</section>

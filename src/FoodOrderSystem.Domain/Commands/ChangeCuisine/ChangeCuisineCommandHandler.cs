@@ -31,7 +31,9 @@ namespace FoodOrderSystem.Domain.Commands.ChangeCuisine
             if (cuisine == null)
                 return FailureResult<bool>.Create(FailureResultCode.CuisineDoesNotExist);
 
-            cuisine.ChangeName(command.Name);
+            var result = cuisine.ChangeName(command.Name);
+            if (result.IsFailure)
+                return result;
 
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 

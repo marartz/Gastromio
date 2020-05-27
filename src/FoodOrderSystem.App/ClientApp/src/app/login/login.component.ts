@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 
 @Component({
   selector: 'app-login',
@@ -14,35 +15,50 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class LoginComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   loginForm: FormGroup;
-  message: string;
+  generalError: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.loginForm = this.formBuilder.group({
-      username: '',
-      password: ''
+      Username: ['', Validators.required],
+      Password: ['', Validators.required]
     });
   }
 
   ngOnInit() {
   }
 
+  get f() { return this.loginForm.controls; }
+
   onLogin(loginData) {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.authService.loginAsync(loginData.username, loginData.password)
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.authService.loginAsync(loginData.Username, loginData.Password)
       .subscribe(() => {
         subscription.unsubscribe();
-        this.message = undefined;
+        this.generalError = undefined;
         this.loginForm.reset();
         this.activeModal.close('Close click');
         this.blockUI.stop();
       }, (error: HttpErrorResponse) => {
           subscription.unsubscribe();
-          this.loginForm.reset();
-          this.message = error.error;
+          const errors = this.httpErrorHandlingService.handleError(error);
+          this.generalError = errors.getJoinedGeneralErrors();
+          errors.addComponentErrorsToFormControls(this.loginForm);
+          // don't reset form if there are componentErrors from backend, because
+          // otherwise they would also be reset.
+          if (!Object.keys(errors.componentErrors).length) {
+            this.loginForm.reset();
+          }
           this.blockUI.stop();
       });
   }

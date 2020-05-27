@@ -155,7 +155,7 @@
                     <td>{{deliveryTime.startTimeText}}</td>
                     <td>{{deliveryTime.endTimeText}}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm m-1" (click)="onRemoveDeliveryTime(deliveryTime)"><i class="fas fa-trash"></i></button>
+                      <button class="btn btn-danger btn-sm m-1" (click)="onRemoveDeliveryTime(deliveryTime)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -191,7 +191,7 @@
                         </div>
                       </td>
                       <td>
-                        <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
+                        <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
                       </td>
                     </tr>
                   </tbody>
@@ -217,7 +217,7 @@
                     <td>{{cuisine.name}}</td>
                     <td>{{cuisine.description}}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash" (click)="onRemoveCuisine(cuisine.id)"></i></button>
+                      <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="onRemoveCuisine(cuisine.id)"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -235,7 +235,7 @@
                     </select>
                   </div>
                   <div class="col col-sm-2">
-                    <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
                   </div>
                 </div>
               </form>
@@ -259,7 +259,7 @@
                     <td>{{paymentMethod.name}}</td>
                     <td>{{paymentMethod.description}}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash" (click)="onRemovePaymentMethod(paymentMethod.id)"></i></button>
+                      <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="onRemovePaymentMethod(paymentMethod.id)"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -277,7 +277,7 @@
                     </select>
                   </div>
                   <div class="col col-sm-2">
-                    <button class="btn btn-primary btn-sm m-1"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
                   </div>
                 </div>
               </form>
@@ -301,7 +301,7 @@
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm m-1"><i class="fas fa-trash" (click)="removeUser(user)"></i></button>
+                      <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="removeUser(user)"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -312,7 +312,7 @@
                   <input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' />
                 </div>
                 <div class="col-sm-2>">
-                  <button class="btn btn-primary btn-sm m-1" (click)="addSelectedUser()"><i class="fas fa-plus"></i></button>
+                  <button class="btn btn-primary btn-sm m-1" (click)="addSelectedUser()" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
                 </div>
               </div>
             </div>
@@ -330,8 +330,8 @@
                       <a ngbNavLink>
                         {{dishCategory.name}}
                         <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
-                          <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1"><i class="fas fa-edit"></i></span>
-                          <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1"><i class="fas fa-trash-alt"></i></span>
+                          <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></span>
+                          <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></span>
                         </ng-container>
                       </a>
                       <ng-template ngbNavContent>
@@ -342,7 +342,7 @@
                               <th>Beschreibung</th>
                               <th>
                                 <div class="float-right">
-                                  <button class="btn btn-primary btn-sm m-1" (click)="openEditDishForm(dishCategory, undefined)"><i class="fas fa-plus"></i></button>
+                                  <button class="btn btn-primary btn-sm m-1" (click)="openEditDishForm(dishCategory, undefined)" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
                                 </div>
                               </th>
                             </tr>
@@ -353,8 +353,8 @@
                               <td>{{dish.description}}</td>
                               <td>
                                 <div class="float-right">
-                                  <button class="btn btn-secondary btn-sm m-1" (click)="openEditDishForm(dishCategory, dish)"><i class="fas fa-edit"></i></button>
-                                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveDishForm(dishCategory, dish)"><i class="fas fa-trash-alt"></i></button>
+                                  <button class="btn btn-secondary btn-sm m-1" (click)="openEditDishForm(dishCategory, dish)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
+                                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveDishForm(dishCategory, dish)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
                                   <!--<button class="btn btn-secondary btn-sm m-1 ml-2"><i class="fas fa-arrow-up"></i></button>
                           <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-arrow-down"></i></button>
                           <button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
@@ -366,7 +366,7 @@
                       </ng-template>
                     </li>
                     <li>
-                      <button class="btn btn-primary btn-sm m-1" (click)="openAddDishCategoryForm()"><i class="fas fa-plus"></i></button>
+                      <button class="btn btn-primary btn-sm m-1" (click)="openAddDishCategoryForm()" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
                     </li>
                   </ul>
                   <div [ngbNavOutlet]="nav"></div>

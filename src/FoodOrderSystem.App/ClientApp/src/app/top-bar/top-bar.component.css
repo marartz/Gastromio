@@ -1,15 +1,14 @@
 .top-bar {
     align-items: stretch;
-    background-color: #52AE31;
+    background-color: rgb(82, 174, 49);
     box-shadow: none;
     box-sizing: border-box;
-    color: #fff;
+    color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     height: 100%;
     position: static;
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     width: 100%;
 }
 
@@ -40,7 +39,6 @@
     order: 5;
     position: relative;
     text-align: center;
-    transition: none;
     -ms-flex-order: 5;
     -webkit-box-flex: 1;
     -webkit-box-ordinal-group: 6;
@@ -50,26 +48,25 @@
 .logo-wrapper .logo {
     align-items: center;
     cursor: pointer;
-	  display: flex;
+    display: flex;
     display: -ms-flexbox;
-	  display: -webkit-box;
-	  display: -webkit-flex;
+    display: -webkit-box;
+    display: -webkit-flex;
     height: 62px;
     justify-content: center;
-    padding: 0;
-    transition: all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 0px;
     vertical-align: text-bottom;
     -ms-flex-align: center;
     -ms-flex-pack: center;
     -webkit-align-items: center;
-	  -webkit-box-align: center;
+    -webkit-box-align: center;
     -webkit-box-pack: center;
-	  -webkit-justify-content: center;
+    -webkit-justify-content: center;
 }
 
 @media screen and (min-width: 480px) {
     .logo-wrapper .logo {
-        padding: 0 24px;
+        padding: 0px 24px;
     }
 }
 
@@ -83,7 +80,7 @@
     .logo-wrapper .logo {
         align-items: flex-start;
         justify-content: flex-start;
-        padding: 16px 24px 0;
+        padding: 16px 24px 0px;
         -ms-flex-align: start;
         -ms-flex-pack: start;
         -webkit-align-items: flex-start;
@@ -98,31 +95,30 @@
 .user-wrapper {
     border-color: transparent;
     flex: 0 0 auto;
+    font-family:_ proxima-nova, sans-serif;
     order: -1;
     position: relative;
-    transition: none;
     -ms-flex: 0 0 auto;
     -ms-flex-order: -1;
-	  -webkit-box-flex: 0;
+    -webkit-box-flex: 0;
     -webkit-box-ordinal-group: 0;
-	  -webkit-flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
 }
 
 .user-wrapper .header-account {
     align-items: center;
     display: flex;
     display: -ms-flexbox;
-	  display: -webkit-box;
-	  display: -webkit-flex;
+    display: -webkit-box;
+    display: -webkit-flex;
     justify-content: center;
-	  text-transform: uppercase;
-    transition: background-color 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-	  -ms-flex-align: center;
+    text-transform: uppercase;
+    -ms-flex-align: center;
     -ms-flex-pack: center;
     -webkit-align-items: center;
-	  -webkit-box-align: center;
-	  -webkit-box-pack: center;
-	  -webkit-justify-content: center; 
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center; 
 }
 
 .user-wrapper .header-account .header-account-logged .header-account-dropdown {
@@ -132,7 +128,7 @@
 .user-wrapper .header-account .header-account-logged .header-account-dropdown .account-link {
     align-items: center;
     background: none;
-    color: #fff;
+    color: rgb(255, 255, 255);
     cursor: pointer;
     display: flex;
     display: -ms-flexbox;
@@ -145,7 +141,6 @@
     justify-content: center;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: color 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     width: 64px;
     white-space: nowrap;
     -ms-flex-align: center;
@@ -159,7 +154,7 @@
 }
 
 .user-wrapper .header-account .header-account-logged .header-account-dropdown .account-link .svg-stroke-container {
-    color: #fff;
+    color: rgb(255, 255, 255);
     display: inline-block;
     fill: currentColor;
     filter: drop-shadow(0px 2px 4px rgba(23, 32, 38, 0.2));
@@ -168,12 +163,11 @@
     height: 35px;
     overflow: hidden;
     pointer-events: none;
-    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     width: 35px;
     -moz-user-select: none;
     -ms-flex: 0 0 auto;
-	  -webkit-box-flex: 0;
-	  -webkit-flex: 0 0 auto;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
 }
 
 .user-wrapper .header-account .header-account-logged .header-account-dropdown .account-link .login-label {
@@ -188,7 +182,7 @@
     .user-wrapper {
         order: 10;
         -ms-flex-order: 10;
-	      -webkit-box-ordinal-group: 11;
+        -webkit-box-ordinal-group: 11;
     }
     .user-wrapper::before {
         background: transparent;
@@ -208,7 +202,6 @@
     }
     .user-wrapper .header-account .header-account-logged .header-account-dropdown .account-link .login-label {
 	      display: inline-block;
-	      max-width: 16ex;
 	      overflow: hidden;
 	      text-overflow: ellipsis;
 	      white-space: nowrap;
@@ -217,13 +210,16 @@
 
 @media screen and (min-width: 1265px) {
     .user-wrapper .header-account .header-account-logged .header-account-dropdown .account-link .login-label {
-	      display: inline-block;
+        display: inline-block;
     }
 }
 /* ENDE: Benutzer */
 
 /* START: Dropdown */
 .dropdown-menu {
+    border: none;
+    border-radius: 4px;
+    font-family: proxima-nova, sans-serif;
     font-size: 1.4rem;
     left: 0;
     width: 280px;
@@ -233,36 +229,35 @@
     list-style: none;
 }
 
-.dropdown-menu li .header-account-dropdown-link {
+.dropdown-menu li .dropdown-link {
     background-color: transparent;
     clear: both;
-    color: #333;
+    color: rgb(51, 51, 51);
     cursor: pointer;
     display: block;
-    font-family: proxima-nova, sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 50px;
     min-height: 50px;
-    padding: 0 16px;
+    padding: 0px 16px;
     text-decoration: none;
     text-transform: none;
     transition: color .1s linear;
     white-space: nowrap;
 }
 
-.dropdown-menu li .header-account-dropdown-link:hover {
-    background-color: #fafafa;
-    color: #52AE31;
+.dropdown-menu li .dropdown-link:hover {
+    background-color: rgb(250, 250, 250);
+    color: rgb(82, 174, 49);
     text-decoration: none;
 }
 
-.dropdown-menu li .header-account-dropdown-link:focus {
+.dropdown-menu li .dropdown-link:focus {
     text-decoration: none;
 }
 
-.dropdown-menu .header-account-dropdown-divider {
-    background-color: #ebebeb;
+.dropdown-menu .dropdown-divider {
+    background-color: rgb(235, 235, 235);
     border: none;
     box-sizing: content-box;
     height: 1px;
@@ -290,7 +285,6 @@
     flex: 0 0 64px;
     order: 10;
     position: relative;
-    transition: border-color 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 150ms;
     -ms-flex: 0 0 64px;
     -ms-flex-order: 10;
     -webkit-box-flex: 0;
@@ -319,7 +313,7 @@
 .cart .cart-wrapper .cart-icon {
     align-items: center;
     background-color: transparent;
-    color: #52AE31;
+    color: rgb(82, 174, 49);
     cursor: pointer;
     display: flex;
     display: -ms-flexbox;

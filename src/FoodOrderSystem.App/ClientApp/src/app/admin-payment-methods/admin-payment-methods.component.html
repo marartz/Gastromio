@@ -39,8 +39,8 @@
                             <td>{{paymentMethod.description}}</td>
                             <td>
                                 <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangePaymentMethodForm(paymentMethod)"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemovePaymentMethodForm(paymentMethod)"><i class="fas fa-trash-alt"></i></button>
+                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangePaymentMethodForm(paymentMethod)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemovePaymentMethodForm(paymentMethod)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </td>
                         </tr>

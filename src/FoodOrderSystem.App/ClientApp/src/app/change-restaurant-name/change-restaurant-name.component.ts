@@ -40,8 +40,8 @@ export class ChangeRestaurantNameComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -51,7 +51,7 @@ export class ChangeRestaurantNameComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

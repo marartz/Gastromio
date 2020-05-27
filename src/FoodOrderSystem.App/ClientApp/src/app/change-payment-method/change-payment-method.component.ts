@@ -41,8 +41,8 @@ export class ChangePaymentMethodComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.paymentMethodAdminService.changePaymentMethodAsync(this.paymentMethod.id, data.name, data.description)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -52,7 +52,7 @@ export class ChangePaymentMethodComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response);
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }
