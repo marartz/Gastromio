@@ -44,7 +44,7 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
             if (createResult.IsFailure)
                 return createResult.Cast<CuisineViewModel>();
 
-            cuisine = ((SuccessResult<Cuisine>)createResult).Value;
+            cuisine = createResult.Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             
             return SuccessResult<CuisineViewModel>.Create(CuisineViewModel.FromCuisine(cuisine));

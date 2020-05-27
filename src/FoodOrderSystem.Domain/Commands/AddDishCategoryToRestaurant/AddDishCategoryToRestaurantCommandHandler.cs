@@ -46,7 +46,7 @@ namespace FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant
             if (createResult.IsFailure)
                 return createResult.Cast<Guid>();
 
-            var dishCategory = ((SuccessResult<DishCategory>) createResult).Value;
+            var dishCategory = createResult.Value;
             
             await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 

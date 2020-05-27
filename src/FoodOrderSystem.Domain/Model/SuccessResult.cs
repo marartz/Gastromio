@@ -10,11 +10,11 @@ namespace FoodOrderSystem.Domain.Model
             Value = value;
         }
 
-        public TResult Value { get; }
-
         public override bool IsSuccess => true;
 
         public override bool IsFailure => false;
+        
+        public override TResult Value { get; }
 
         public override Result<TDstResult> Cast<TDstResult>()
         {

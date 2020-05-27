@@ -1,21 +1,18 @@
-﻿using FoodOrderSystem.Domain.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace FoodOrderSystem.Domain.Model
 {
     public class FailureResult<TResult> : Result<TResult>
-
     {
-        protected FailureResult(IDictionary<string, IList<InvariantError>> errors, int statusCode)
+        private FailureResult(IDictionary<string, IList<InvariantError>> errors, int statusCode)
         {
-            Errors = errors ?? (IDictionary<string, IList<InvariantError>>) new Dictionary<string, List<InvariantError>>();
+            Errors = errors ?? new Dictionary<string, IList<InvariantError>>();
             StatusCode = statusCode;
         }
 
-        protected FailureResult(InvariantError error, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+        private FailureResult(InvariantError error, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
             : this(new Dictionary<string, IList<InvariantError>>{ { "", new List<InvariantError> { error } } }, (int) statusCode) {}
 
         public IDictionary<string, IList<InvariantError>> Errors { get; }
@@ -24,6 +21,8 @@ namespace FoodOrderSystem.Domain.Model
         public override bool IsSuccess => false;
 
         public override bool IsFailure => true;
+
+        public override TResult Value => throw new InvalidOperationException("cannot obtain value from failure result");
 
         public override Result<TDstResult> Cast<TDstResult>()
         {

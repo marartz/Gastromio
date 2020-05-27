@@ -30,6 +30,8 @@ namespace FoodOrderSystem.Domain.Commands.Login
             var validationResult = user.ValidatePassword(command.Password);
             if (validationResult.IsFailure)
                 return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.WrongCredentials);
+            if (!validationResult.Value)
+                return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.WrongCredentials);
 
             return SuccessResult<UserViewModel>.Create(UserViewModel.FromUser(user));
         }

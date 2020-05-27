@@ -103,7 +103,7 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                 if (createResult.IsFailure)
                     return createResult.Cast<Guid>();
 
-                dish = ((SuccessResult<Dish>) createResult).Value;
+                dish = createResult.Value;
             }
 
             await dishRepository.StoreAsync(dish, cancellationToken);

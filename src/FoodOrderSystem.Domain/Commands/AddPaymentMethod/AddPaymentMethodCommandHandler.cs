@@ -38,7 +38,7 @@ namespace FoodOrderSystem.Domain.Commands.AddPaymentMethod
             if (createResult.IsFailure)
                 return createResult.Cast<PaymentMethodViewModel>();
 
-            paymentMethod = ((SuccessResult<PaymentMethod>) createResult).Value;
+            paymentMethod = createResult.Value;
             
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 
