@@ -1,47 +1,39 @@
-<div style="top: -49px; z-index: 5; position: static;">
-    <div class="no-top"></div>
-    <div class="legal-header">
-        <h1 class="header-title" style="max-width: 100%; color: rgb(255, 255, 255);">
-            <span class="title">Datenschutz</span>
-        </h1>
+<section>
+    <div class="title-wrapper">
+        <h1 class="title">Datenschutz</h1>
     </div>
-</div>
 
-<div style="top: 90px; z-index: 4; position: static;">
-    <div class="header-portal">
-        <header class="multi-tabs-wrapper">
-            <div class="multi-tabs-root">
-                <div class="multi-tabs-scroller" style="overflow: hidden;">
-                    <div class="multi-tabs-container" role="tablist">
-                        <a class="multi-tab" [routerLink]="['/general-terms-and-conditions']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">AGB</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/imprint']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Impressum</span>
-                        </a>
-                        <a class="multi-tab active" [routerLink]="['/privacy-policy']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Datenschutz</span>
-                        </a>
-                        <a class="multi-tab" [routerLink]="['/privacy-policy#cookies']" tabindex="0" role="tab">
-                            <span class="multi-tab-wrapper">Verwendung von Cookies</span>
-                        </a>
-                    </div>
+    <div class="tabs-wrapper">
+        <div class="tabs-root">
+            <div class="scroller">
+                <div class="tab-container" role="tablist">
+                    <a class="tab active" [routerLink]="['/datenschutz']" tabindex="0" role="tab">
+                        <span class="title">Datenschutz</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/datenschutz#cookies']" tabindex="0" role="tab">
+                        <span class="title">Cookie-Richtlinie</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/impressum']" tabindex="0" role="tab">
+                        <span class="title">Impressum</span>
+                    </a>
+                    <a class="tab" [routerLink]="['/agb']" tabindex="0" role="tab">
+                        <span class="title">AGB</span>
+                    </a>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
 
-<main class="legal-wrapper">
-    <div class="legal-content">
-        <div class="legal-child">
-            <div class="wrapper">
-                <div class="inner">
-                    <div class="content-text">
-                        <div class="container datenschutz">
-                                <!-- Einleitung -->
+    <main class="legal-wrapper">
+        <div class="content">
+            <div class="child">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="content-text">
+                            <div class="container datenschutz">
+
                                 <h2 class="t3" id="Einleitung">1. Einleitung und allgemeine Angaben</h2>
-                                <p>Der Schutz deiner Privatsphäre und deiner Persönlichkeitsrechte ist uns dabei besonders wichtig. Dem Vertrauen, das du uns entgegenbringst, möchten wir gerecht werden und an allen Stellen für Transparenz sorgen. Unabhängig von gesetzlichen Regelungen verpflichten wir uns daher, deine personenbezogenen Daten nur für festgelegte, eindeutige und rechtmäßige Zwecke zu erheben. Wir bewahren sie nicht länger als erforderlich personenbezogen auf und löschen unzutreffende oder unvollständige Daten.</p>
+                                <p>Der Schutz deiner Privatsphäre und deiner Persönlichkeitsrechte ist uns besonders wichtig. Dem Vertrauen, das du uns entgegenbringst, möchten wir gerecht werden und an allen Stellen für Transparenz sorgen. Unabhängig von gesetzlichen Regelungen verpflichten wir uns daher, deine personenbezogenen Daten nur für festgelegte, eindeutige und rechtmäßige Zwecke zu erheben. Wir bewahren sie nicht länger als erforderlich personenbezogen auf und löschen unzutreffende oder unvollständige Daten.</p>
 
                                 <h3 class="t4">Angaben zur verantwortlichen Stelle</h3>
                                 <div class="dptable">
@@ -56,8 +48,7 @@
                                 <p>Personenbezogene Daten werden nur erhoben, wenn du uns diese von dir aus mitteilst. Darüber hinaus werden keine personenbezogenen Daten erhoben. Eine über die Reichweite der gesetzlichen Erlaubnistatbestände hinausgehende Verarbeitung deiner personenbezogenen Daten erfolgt nur auf Grundlage deiner ausdrücklichen Einwilligung.</p>
 
                                 <!-- Datenschutzprinzipien -->
-                                <h2 class="t3" id="Cookies">2. Unsere Prinzipien für den Schutz deiner Daten</h2>
-                                <p>Die folgenden Prinzipien sollen für dich sicherstellen, dass wir Datenschutz- und Datensicherheitsbelange berücksichtigen.</p>
+                                <h2 class="t3" id="cookies">2. Unsere Prinzipien für den Schutz deiner Daten</h2>
                                 <p>
                                     <strong class="block">Wir machen transparent, welche personenbezogenen Daten wir von dir erheben und wie wir sie nutzen.</strong>
                                     Wenn du die Gastromio Webseite besuchst, werden auf dem Webserver zeitweise folgende Nutzungsdaten als Protokoll gespeichert:
@@ -145,12 +136,14 @@
                                 <p>Du kannst du dich jederzeit an unseren Datenschutzbeauftragten wenden, wenn du Fragen, Anregungen oder Beschwerden zu Datenschutzthemen hast, wenn du Widerspruch einlegen oder widerrufen willst. Den Datenschutzbeauftragten kannst du per E-Mail oder postalisch erreichen.</p>
                                 <p>
                                     <strong class="block">Auskunfts- und Korrekturrechte gespeicherter personenbezogener Daten</strong>
-                                    Nach der Datenschutz-Grundverordnung (DS-GVO) hast du das Recht auf kostenfreie Auskunft über deine durch uns gespeicherten Daten und deren Verwendung. Darüber hinaus kannst du jederzeit deine Ansprüche auf Berichtigung oder Löschung oder auf Einschränkung der Verarbeitung oder der Wahrnehmung deines Widerspruchsrechts gegen die Verarbeitung sowie das Recht auf Datenübertragbarkeit geltend machen. <a [routerLink]="['/imprint']" target="_self">Hier</a> findest du die Möglichkeit, uns per E-Mail oder Brief zu kontaktieren. Du hast ferner das Recht, sich bei Beschwerden an die Datenschutz-Aufsichtsbehörde zu wenden.
+                                    Nach der Datenschutz-Grundverordnung (DS-GVO) hast du das Recht auf kostenfreie Auskunft über deine durch uns gespeicherten Daten und deren Verwendung. Darüber hinaus kannst du jederzeit deine Ansprüche auf Berichtigung oder Löschung oder auf Einschränkung der Verarbeitung oder der Wahrnehmung deines Widerspruchsrechts gegen die Verarbeitung sowie das Recht auf Datenübertragbarkeit geltend machen. <a [routerLink]="['/impressum']">Hier</a> findest du die Möglichkeit, uns per E-Mail oder Brief zu kontaktieren. Du hast ferner das Recht, sich bei Beschwerden an die Datenschutz-Aufsichtsbehörde zu wenden.
                                 </p>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+</section>

@@ -10,17 +10,18 @@ export class HttpErrorHandlingService {
   constructor() { }
 
   handleError(httpError: HttpErrorResponse): FailureResult {
-    let errorObj = httpError.error;
+    const errorObj = httpError.error;
     let componentErrors = Object.assign({}, errorObj.errors || {});
 
     // fix type
-    if (typeof componentErrors !== "object") 
+    if (typeof componentErrors !== 'object') {
       componentErrors = {};
+    }
 
     // only return specific failure result if at least one message exists
     if (!!Object.keys(componentErrors).length) {
-      let generalErrors = componentErrors[""] || [];
-      delete componentErrors[""];
+      const generalErrors = componentErrors[''] || [];
+      delete componentErrors[''];
       return new FailureResult(generalErrors, componentErrors);
     }
 
@@ -28,6 +29,6 @@ export class HttpErrorHandlingService {
   }
 
   createDefaultResult(): FailureResult {
-    return FailureResult.createFromString("Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.");
+    return FailureResult.createFromString('Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.');
   }
 }

@@ -5,11 +5,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './imprint.component.html',
   styleUrls: ['./imprint.component.css', '../../assets/css/legal.min.css']
 })
-export class ImprintComponent implements OnInit {
 
+export class ImprintComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

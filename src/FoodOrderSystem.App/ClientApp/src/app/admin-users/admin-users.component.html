@@ -41,9 +41,9 @@
                             <td>{{user.email}}</td>
                             <td>
                                 <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)"><i class="fas fa-user-edit"></i></button>
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)"><i class="fas fa-key"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)"><i class="fas fa-trash-alt"></i></button>
+                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-user-edit"></i></button>
+                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)" placement="right" ngbTooltip="Passwort ändern"><i class="fas fa-key"></i></button>
+                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </td>
                         </tr>

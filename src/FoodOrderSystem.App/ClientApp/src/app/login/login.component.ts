@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.authService.loginAsync(loginData.username, loginData.password)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.authService.loginAsync(loginData.Username, loginData.Password)
       .subscribe(() => {
         subscription.unsubscribe();
         this.generalError = undefined;
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
         this.blockUI.stop();
       }, (error: HttpErrorResponse) => {
           subscription.unsubscribe();
-          let errors = this.httpErrorHandlingService.handleError(error);
+          const errors = this.httpErrorHandlingService.handleError(error);
           this.generalError = errors.getJoinedGeneralErrors();
           errors.addComponentErrorsToFormControls(this.loginForm);
           // don't reset form if there are componentErrors from backend, because
