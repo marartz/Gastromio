@@ -1,71 +1,238 @@
 .footer {
-    background-color: rgb(248, 248, 248);
-    color: rgb(51, 51, 51);
-    font-family: proxima-nova, sans-serif;
-    font-size: 12px;
-    position: relative;
+    border-top: 1px solid rgb(235, 234, 235);
+    padding: 0px;
     width: 100%;
+    text-rendering: optimizeLegibility;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.footer .logo-wrapper {
-    margin: 0px auto;
-    padding-top: 19px;
-    width: 94px;
+/* START: Rechtliches */
+.meta {
+    background-color: rgb(245, 245, 245);
+    clear: both;
+    text-align: center;
 }
 
-.footer .logo-wrapper .logo {
-    cursor: pointer;
-    fill: rgb(82, 174, 49);
-    height: 38px;
-    margin: 0px;
-    margin-right: 24px;
+.meta::after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+.meta .wrapper {
+    margin: 0px auto;
+    padding: 0px 74px;
+}
+
+.meta .wrapper .nav-list {
+    font-family: proxima-nova, sans-serif;
+    font-size: 0px;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 1.2;
+    list-style: none;
+    margin: 0px auto;
+    margin-bottom: 0px;
+    padding: 0px;
     width: 100%;
 }
 
-@media (min-width: 768px) {
-    .footer .logo-wrapper .logo {
-        height: 48px;
-        margin-right: 32px;
+.meta .wrapper .nav-list:last-child {
+    float: left;
+}
+
+.meta .wrapper .nav-list .list-item {
+    display: inline-block;
+    margin-right: 16px;
+    padding: 16px 0px;
+}
+
+.meta .wrapper .nav-list .list-item:last-child {
+    margin-right: 0px;
+}
+
+.meta .wrapper .nav-list .list-item.center {
+    display: block;
+	  margin-right: 0px;
+	  padding: 16px;
+}
+
+.meta .wrapper .nav-list .list-item.usercentrics {
+    display: block;
+    position: relative;
+	  width: 100%;
+}
+
+.meta .wrapper .nav-list .list-item a {
+    border: none;
+    color: rgb(69, 69, 69);
+    cursor: pointer;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 700;
+    letter-spacing: normal;
+    line-height: 1.2;
+    text-decoration: none;
+    vertical-align: middle;
+    word-break: break-word;
+}
+
+.meta .wrapper .nav-list .list-item a:hover {
+    color: #428B27;
+    transition: .2s;
+}
+
+
+.meta .wrapper .nav-list .social-item {
+    display: inline-block;
+    margin-left: 16px;
+    padding: 16px 0px;
+}
+
+.meta .wrapper .nav-list .social-item:first-child {
+    margin-left: 0px;
+}
+
+.meta .wrapper .nav-list .social-item a {
+    border: none;
+    color: rgb(69, 69, 69);
+    cursor: pointer;
+    padding-left: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    word-break: break-word;
+}
+
+.meta .wrapper .nav-list .social-item a:first-child {
+    padding-left: 0px;
+}
+
+.meta .wrapper .nav-list .social-item a svg {
+    fill: #454545;
+}
+
+.meta .wrapper .nav-list .social-item a svg:hover {
+    fill: #428B27;
+    transition: .2s;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+    .meta .wrapper {
+        padding: 0px 37px;
     }
 }
 
-.footer .logo-wrapper .logo:hover {
-    cursor: pointer;
-    fill: rgb(66, 139, 39);
-    outline: none;
-    text-decoration: none;
-    transition: all .2s ease;
+@media screen and (min-width: 400px) {
+    .meta .wrapper .nav-list {
+        font-size: calc(16px + (0 * (920px - 400px)/ 624));
+    }
+    .meta .wrapper .nav-list .list-item a {
+        font-size: calc(14px + (0 * (920px - 400px)/ 624));
+    }
 }
 
-.footer .link-wrapper {
+@media screen and (min-width: 768px) {
+    .meta {
+        text-align: left;
+    }
+    .meta .wrapper {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 37px;
+    }
+    .meta .wrapper .nav-list {
+        margin-left: 0px;
+        width: auto;
+    }
+    .meta .wrapper .nav-list:last-child {
+        float: right;
+        margin-top: 0px;
+        margin-right: 0px;
+    }
+    .meta .wrapper .nav-list .list-item {
+        margin-bottom: 0px;
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+    .meta .wrapper .nav-list .list-item.center {
+        display: inline-block;
+        padding: 32px 0px;
+        margin-right: 16px;
+    }
+    .meta .wrapper .nav-list .list-item.usercentrics {
+        border: none;
+	      display: inline-block;
+	      vertical-align: bottom;
+	      width: auto;
+    }
+    .meta .wrapper .nav-list .social-item {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .meta .wrapper .nav-list {
+        font-size: 16px;
+    }
+}
+
+@media screen and (min-width: 1358px) {
+    .meta .wrapper {
+        max-width: 1230px;
+        padding: 0px;
+    }
+}
+/* ENDE: Rechtliches */
+
+/* START: Copyright */
+.copyright {
+    background-color: rgb(235, 234, 235);
+}
+
+.copyright .wrapper {
+    align-items: center;
+    color: rgb(61, 61, 61);
     display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    margin: 0px auto;
-    -moz-box-pack: center;
-}
-
-.footer .link-wrapper .link {
-    background-color: transparent;
-    border: medium none;
-    color: rgb(69, 69, 69);
-    cursor: pointer;
-    display: inline;
-    font-size: .77rem;
-    margin: 11px 5px 10px;
-    overflow: visible;
-    text-decoration: none;
-    text-transform: none;
-    -webkit-appearance: button;
-}
-
-.footer .copyright {
-    background-color: transparent;
-    color: rgb(69, 69, 69);
-    font-size: .75rem;
+    font-family: proxima-nova, sans-serif;
     font-weight: 400;
+    height: 40px;
+    letter-spacing: normal;
     margin: 0px auto;
-    padding: 6px 0px 23px;
-    text-align: center;
+    padding: 0px 74px;
 }
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+    .copyright .wrapper {
+        height: 96px;
+        line-height: 1.25;
+        text-align: center;
+        padding: 0px 37px;
+    }
+}
+
+@media screen and (min-width: 400px) {
+    .copyright .wrapper {
+        font-size: calc(12px + (0 * (920px - 400px)/ 624));
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .copyright .wrapper {
+        padding: 0px 37px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .copyright .wrapper {
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 1358px) {
+    .copyright .wrapper {
+        max-width: 1230px;
+        padding: 0px;
+    }
+}
+/* ENDE: Copyright */
