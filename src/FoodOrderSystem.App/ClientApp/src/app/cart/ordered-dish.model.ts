@@ -22,7 +22,7 @@ export class OrderedDishModel {
   }
 
   public getPriceText(): string {
-    let val = this.getPrice();
+    const val = this.getPrice();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 

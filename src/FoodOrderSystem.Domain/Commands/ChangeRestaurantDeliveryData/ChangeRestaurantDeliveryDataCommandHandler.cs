@@ -34,11 +34,13 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.ChangeDeliveryData(command.MinimumOrderValue, command.DeliveryCosts);
+            var result = restaurant.ChangeDeliveryData(command.MinimumOrderValue, command.DeliveryCosts);
+            if (result.IsFailure)
+                return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<bool>.Create(true);
+            return result;
         }
     }
 }

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../auth/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 
 @Component({
   selector: 'app-login',
@@ -10,35 +13,53 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./login.component.css', '../../assets/css/admin-forms.min.css']
 })
 export class LoginComponent implements OnInit {
+  @BlockUI() blockUI: NgBlockUI;
   loginForm: FormGroup;
-  message: string;
+  generalError: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.loginForm = this.formBuilder.group({
-      username: '',
-      password: ''
+      Username: ['', Validators.required],
+      Password: ['', Validators.required]
     });
   }
 
   ngOnInit() {
   }
 
+  get f() { return this.loginForm.controls; }
+
   onLogin(loginData) {
-    this.authService.loginAsync(loginData.username, loginData.password)
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.authService.loginAsync(loginData.Username, loginData.Password)
       .subscribe(() => {
-        this.message = undefined;
+        subscription.unsubscribe();
+        this.generalError = undefined;
         this.loginForm.reset();
         this.activeModal.close('Close click');
-      }, (status: number) => {
-          this.loginForm.reset();
-          if (status === 401)
-            this.message = "Benutzername und/oder Passwort ist nicht korrekt.";
-          else
-            this.message = "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
+        this.blockUI.stop();
+      }, (error: HttpErrorResponse) => {
+          subscription.unsubscribe();
+          const errors = this.httpErrorHandlingService.handleError(error);
+          this.generalError = errors.getJoinedGeneralErrors();
+          errors.addComponentErrorsToFormControls(this.loginForm);
+          // don't reset form if there are componentErrors from backend, because
+          // otherwise they would also be reset.
+          if (!Object.keys(errors.componentErrors).length) {
+            this.loginForm.reset();
+          }
+          this.blockUI.stop();
       });
   }
 }

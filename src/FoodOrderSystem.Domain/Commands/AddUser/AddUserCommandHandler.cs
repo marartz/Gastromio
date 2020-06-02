@@ -33,7 +33,11 @@ namespace FoodOrderSystem.Domain.Commands.AddUser
             if (user != null)
                 return FailureResult<UserViewModel>.Create(FailureResultCode.UserAlreadyExists);
 
-            user = userFactory.Create(command.Name, command.Role, command.Email, command.Password);
+            var createResult = userFactory.Create(command.Name, command.Role, command.Email, command.Password);
+            if (createResult.IsFailure)
+                return createResult.Cast<UserViewModel>();
+
+            user = createResult.Value;
 
             await userRepository.StoreAsync(user, cancellationToken);
 

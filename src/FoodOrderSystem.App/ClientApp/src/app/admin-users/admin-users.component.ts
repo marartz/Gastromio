@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../add-user/add-user.component';
@@ -46,14 +46,14 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   openAddUserForm(): void {
-    let modalRef = this.modalService.open(AddUserComponent);
+    const modalRef = this.modalService.open(AddUserComponent);
     modalRef.result.then(() => {
       this.updateSearch();
     }, () => { });
   }
 
   openChangeUserDetailsForm(user: UserModel): void {
-    let modalRef = this.modalService.open(ChangeUserDetailsComponent);
+    const modalRef = this.modalService.open(ChangeUserDetailsComponent);
     modalRef.componentInstance.user = user;
     modalRef.result.then(() => {
       this.updateSearch();
@@ -61,12 +61,12 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   openChangeUserPasswordForm(user: UserModel): void {
-    let modalRef = this.modalService.open(ChangeUserPasswordComponent);
+    const modalRef = this.modalService.open(ChangeUserPasswordComponent);
     modalRef.componentInstance.user = user;
   }
 
   openRemoveUserForm(user: UserModel): void {
-    let modalRef = this.modalService.open(RemoveUserComponent);
+    const modalRef = this.modalService.open(RemoveUserComponent);
     modalRef.componentInstance.user = user;
     modalRef.result.then(() => {
       this.updateSearch();
@@ -82,28 +82,28 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(): void {
-    if (this.updateSearchSubscription !== undefined)
+    if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
+    }
 
-    let observable = this.userAdminService.searchForUsersAsync(this.searchPhrase);
+    const observable = this.userAdminService.searchForUsersAsync(this.searchPhrase);
 
     this.updateSearchSubscription = observable.subscribe((result) => {
       this.users = result;
-
-    }, (error) => {
+    }, () => {
     });
   }
 
   localizeRole(role: string): string {
     switch (role) {
-      case "SystemAdmin":
-        return "Systemadministrator";
-      case "RestaurantAdmin":
-        return "Restaurantadministrator";
-      case "Customer":
-        return "Kunde";
+      case 'SystemAdmin':
+        return 'Systemadministrator';
+      case 'RestaurantAdmin':
+        return 'Restaurantadministrator';
+      case 'Customer':
+        return 'Kunde';
       default:
-        return "Kunde";
+        return 'Kunde';
     }
   }
 }

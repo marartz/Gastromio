@@ -19,7 +19,8 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<Result<CuisineViewModel>> HandleAsync(AddCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<CuisineViewModel>> HandleAsync(AddCuisineCommand command, User currentUser,
+            CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -30,13 +31,22 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<CuisineViewModel>.Forbidden();
 
+            if (string.IsNullOrWhiteSpace(command.Name))
+            {
+                return FailureResult<CuisineViewModel>.Create(FailureResultCode.RequiredFieldEmpty);
+            }
+
             var cuisine = await cuisineRepository.FindByNameAsync(command.Name, cancellationToken);
             if (cuisine != null)
                 return FailureResult<CuisineViewModel>.Create(FailureResultCode.CuisineAlreadyExists);
 
-            cuisine = cuisineFactory.Create(command.Name);
-            await cuisineRepository.StoreAsync(cuisine, cancellationToken);
+            var createResult = cuisineFactory.Create(command.Name);
+            if (createResult.IsFailure)
+                return createResult.Cast<CuisineViewModel>();
 
+            cuisine = createResult.Value;
+            await cuisineRepository.StoreAsync(cuisine, cancellationToken);
+            
             return SuccessResult<CuisineViewModel>.Create(CuisineViewModel.FromCuisine(cuisine));
         }
     }

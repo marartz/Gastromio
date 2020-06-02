@@ -6,7 +6,7 @@ import { RestaurantModel } from '../restaurant/restaurant.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
-  private baseUrl: string = "api/v1/systemadmin";
+  private baseUrl = 'api/v1/systemadmin';
 
   constructor(
     private http: HttpClient,
@@ -14,33 +14,33 @@ export class RestaurantSysAdminService {
   ) { }
 
   public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search), httpOptions);
   }
 
   public addRestaurantAsync(name: string): Observable<RestaurantModel> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', { name: name }, httpOptions);
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', { name }, httpOptions);
   }
 
   public removeRestaurantAsync(restaurantId: string): Observable<void> {
-    let httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
     return this.http.delete<void>(this.baseUrl + '/restaurants/' + restaurantId, httpOptions);

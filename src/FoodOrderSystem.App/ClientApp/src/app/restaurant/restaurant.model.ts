@@ -1,6 +1,6 @@
-import { PaymentMethodModel } from "../payment-method/payment-method.model";
-import { UserModel } from "../user/user.model";
-import { CuisineModel } from "../cuisine/cuisine.model";
+import { PaymentMethodModel } from '../payment-method/payment-method.model';
+import { UserModel } from '../user/user.model';
+import { CuisineModel } from '../cuisine/cuisine.model';
 
 export class RestaurantModel {
   constructor() {

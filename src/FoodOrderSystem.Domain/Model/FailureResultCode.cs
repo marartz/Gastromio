@@ -2,8 +2,14 @@
 {
     public enum FailureResultCode
     {
-        Unauthorized,
+        SessionExpired,
         Forbidden,
+        InternalServerError,
+        WrongCredentials,
+        RequiredFieldEmpty,
+        FieldValueTooLong,
+        FieldValueInvalid,
+        ValueMustNotBeNegative,
         UserDoesNotExist,
         UserAlreadyExists,
         CannotRemoveCurrentUser,
@@ -11,12 +17,21 @@
         CuisineAlreadyExists,
         PaymentMethodDoesNotExist,
         PaymentMethodAlreadyExists,
+        RestaurantImageDataTooBig,
+        RestaurantImageNotValid,
+        RestaurantMinimumOrderValueTooHigh,
+        RestaurantDeliveryCostsTooHigh,
+        RestaurantDeliveryTimeBeginTooEarly,
+        RestaurantDeliveryTimeEndBeforeStart,
+        RestaurantDeliveryTimeIntersects,
         RestaurantDoesNotExist,
         RestaurantContainsDishCategories,
         RestaurantContainsDishes,
         DishCategoryDoesNotBelongToRestaurant,
         DishCategoryContainsDishes,
         DishDoesNotBelongToDishCategory,
+        DishVariantPriceIsNegativeOrZero,
+        DishVariantPriceIsTooBig,
         CannotRemoveCurrentUserFromRestaurantAdmins
     }
 }

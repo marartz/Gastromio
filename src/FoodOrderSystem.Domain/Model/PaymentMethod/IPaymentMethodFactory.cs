@@ -2,6 +2,6 @@
 {
     public interface IPaymentMethodFactory
     {
-        PaymentMethod Create(string name, string description);
+        Result<PaymentMethod> Create(string name, string description);
     }
 }

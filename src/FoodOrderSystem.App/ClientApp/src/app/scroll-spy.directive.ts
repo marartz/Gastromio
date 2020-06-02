@@ -17,7 +17,7 @@ export class ScrollSpyDirective {
         for (let i = 0; i < children.length; i++) {
             const element = children[i];
             if (this.spiedTags.some(spiedTag => spiedTag === element.tagName)) {
-                let rect = element.getBoundingClientRect();
+                const rect = element.getBoundingClientRect();
                 if (currentSection === undefined || rect.top <= 0) {
                     currentSection = element.id;
                 }
@@ -28,5 +28,4 @@ export class ScrollSpyDirective {
             this.sectionChange.emit(this.currentSection);
         }
     }
-
 }

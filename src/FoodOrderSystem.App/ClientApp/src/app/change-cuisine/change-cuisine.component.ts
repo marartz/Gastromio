@@ -1,10 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CuisineModel } from '../cuisine/cuisine.model';
 import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-change-cuisine',
@@ -22,33 +24,35 @@ export class ChangeCuisineComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private cuisineAdminService: CuisineAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
   ngOnInit() {
     this.changeCuisineForm = this.formBuilder.group({
-      name: this.cuisine.name
+      name: [this.cuisine.name, Validators.required]
     });
   }
 
+  get f() { return this.changeCuisineForm.controls; }
+
   onSubmit(data) {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
+    if (this.changeCuisineForm.invalid) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.changeCuisineForm.reset();
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

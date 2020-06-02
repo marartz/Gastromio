@@ -5,7 +5,6 @@ namespace FoodOrderSystem.App.Models
 {
     public class RemovePaymentMethodFromRestaurantModel
     {
-        [Required]
         public Guid PaymentMethodId { get; set; }
     }
 }

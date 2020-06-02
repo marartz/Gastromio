@@ -34,11 +34,13 @@ namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
+            var result = restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
+            if (result.IsFailure)
+                return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<bool>.Create(true);
+            return result;
         }
     }
 }

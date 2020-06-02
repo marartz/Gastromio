@@ -4,6 +4,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-remove-user',
@@ -19,6 +21,7 @@ export class RemoveUserComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private userAdminService: UserAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -26,22 +29,17 @@ export class RemoveUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.userAdminService.removeUserAsync(this.user.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.userAdminService.removeUserAsync(this.user.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

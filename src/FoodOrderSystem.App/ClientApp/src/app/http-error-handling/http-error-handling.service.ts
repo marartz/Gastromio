@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FailureResult } from './failure-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +9,26 @@ export class HttpErrorHandlingService {
 
   constructor() { }
 
-  handleError(error: HttpErrorResponse): string {
-    if (error.status === 401) {
-      return "Ihre Anmeldung ist abgelaufen! Bitte melden Sie sich erneut an.";
-    } else if (error.status === 403) {
-      return "Sie sind nicht berechtigt, diese Aktion auszuführen!";
-    } else {
-      if (typeof error.error === "string")
-        return error.error;
-      else
-        return "Huch, das hätte nicht passieren sollen! Bitte versuchen Sie es nochmals bzw. kontaktieren Sie uns, wenn das Problem anhält."
+  handleError(httpError: HttpErrorResponse): FailureResult {
+    const errorObj = httpError.error;
+    let componentErrors = Object.assign({}, errorObj.errors || {});
+
+    // fix type
+    if (typeof componentErrors !== 'object') {
+      componentErrors = {};
     }
+
+    // only return specific failure result if at least one message exists
+    if (!!Object.keys(componentErrors).length) {
+      const generalErrors = componentErrors[''] || [];
+      delete componentErrors[''];
+      return new FailureResult(generalErrors, componentErrors);
+    }
+
+    return this.createDefaultResult();
+  }
+
+  createDefaultResult(): FailureResult {
+    return FailureResult.createFromString('Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.');
   }
 }

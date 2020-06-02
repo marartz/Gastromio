@@ -23,23 +23,23 @@ export class TopBarComponent implements OnInit {
   }
 
   getUsername(): string {
-    let currentUser: UserModel = this.authService.getUser();
+    const currentUser: UserModel = this.authService.getUser();
     return currentUser !== undefined ? currentUser.name : undefined;
   }
 
   getUserrole(): string {
-    let currentUser: UserModel = this.authService.getUser();
+    const currentUser: UserModel = this.authService.getUser();
     return currentUser !== undefined ? currentUser.role : undefined;
   }
 
   isSystemAdmin(): boolean {
-    let currentUser: UserModel = this.authService.getUser();
-    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === "SystemAdmin";
+    const currentUser: UserModel = this.authService.getUser();
+    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === 'SystemAdmin';
   }
 
   isRestaurantAdmin(): boolean {
-    let currentUser: UserModel = this.authService.getUser();
-    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === "RestaurantAdmin";
+    const currentUser: UserModel = this.authService.getUser();
+    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === 'RestaurantAdmin';
   }
 
   openLoginForm(): void {

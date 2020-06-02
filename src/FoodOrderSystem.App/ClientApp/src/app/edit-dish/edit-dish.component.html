@@ -27,17 +27,26 @@
                 <div class="wrapper">
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Gericht, z.B. Insalata Mio" id="name" formControlName="name" ngbAutofocus />
+                            <input class="input" type="text" placeholder="Gericht, z.B. Insalata Mio" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Beschreibung, z.B. mit Tomaten und Gurken" id="description" formControlName="description" />
+                            <input class="input" type="text" placeholder="Beschreibung, z.B. mit Tomaten und Gurken" id="description" formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                <div *ngIf="f.description.errors.required">Beschreibung wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Zusatzstoffe" id="productInfo" formControlName="productInfo" />
+                            <input class="input" type="text" placeholder="Zusatzstoffe" id="productInfo" formControlName="productInfo" [ngClass]="{ 'is-invalid': submitted && f.productInfo.errors }" />
+                            <div *ngIf="submitted && f.productInfo.errors" class="invalid-feedback">
+                                <div *ngIf="f.productInfo.errors.required">Produkt Info wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                     <ng-container *ngIf="dish.variants.length <= 1">

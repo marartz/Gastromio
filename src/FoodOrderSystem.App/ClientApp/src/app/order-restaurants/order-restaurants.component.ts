@@ -48,20 +48,22 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(): void {
-    if (this.updateSearchSubscription !== undefined)
+    if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
+    }
 
-    let observable = this.orderService.searchForRestaurantsAsync(this.searchPhrase);
+    const observable = this.orderService.searchForRestaurantsAsync(this.searchPhrase);
 
     this.updateSearchSubscription = observable.subscribe((result) => {
       this.restaurants = result;
-    }, (error) => {
+    }, () => {
     });
   }
 
   getRestaurantSubText(restaurant: RestaurantModel): string {
-    if (restaurant === undefined || restaurant.cuisines === undefined || restaurant.cuisines.length === 0)
-      return "";
-    return restaurant.cuisines.map(en => en.name).join(", ");
+    if (restaurant === undefined || restaurant.cuisines === undefined || restaurant.cuisines.length === 0) {
+      return '';
+    }
+    return restaurant.cuisines.map(en => en.name).join(', ');
   }
 }

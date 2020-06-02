@@ -25,14 +25,14 @@ export class AdminPaymentMethodsComponent implements OnInit {
   }
 
   openAddPaymentMethodForm(): void {
-    let modalRef = this.modalService.open(AddPaymentMethodComponent);
+    const modalRef = this.modalService.open(AddPaymentMethodComponent);
     modalRef.result.then(() => {
       this.updateSearch();
     }, () => { });
   }
 
   openChangePaymentMethodForm(paymentMethod: PaymentMethodModel): void {
-    let modalRef = this.modalService.open(ChangePaymentMethodComponent);
+    const modalRef = this.modalService.open(ChangePaymentMethodComponent);
     modalRef.componentInstance.paymentMethod = paymentMethod;
     modalRef.result.then(() => {
       this.updateSearch();
@@ -40,7 +40,7 @@ export class AdminPaymentMethodsComponent implements OnInit {
   }
 
   openRemovePaymentMethodForm(paymentMethod: PaymentMethodModel): void {
-    let modalRef = this.modalService.open(RemovePaymentMethodComponent);
+    const modalRef = this.modalService.open(RemovePaymentMethodComponent);
     modalRef.componentInstance.paymentMethod = paymentMethod;
     modalRef.result.then(() => {
       this.updateSearch();

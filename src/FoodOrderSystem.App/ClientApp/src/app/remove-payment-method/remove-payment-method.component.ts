@@ -3,6 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentMethodModel } from '../payment-method/payment-method.model';
 import { PaymentMethodAdminService } from '../payment-method/payment-method-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-remove-payment-method',
@@ -18,6 +20,7 @@ export class RemovePaymentMethodComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private paymentMethodAdminService: PaymentMethodAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
@@ -25,22 +28,17 @@ export class RemovePaymentMethodComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start("Verarbeite Daten...");
-    let subscription = this.paymentMethodAdminService.removePaymentMethodAsync(this.paymentMethod.id)
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.paymentMethodAdminService.removePaymentMethodAsync(this.paymentMethod.id)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
-      }, (status: number) => {
+      }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        if (status === 401)
-          this.message = "Sie sind nicht angemdeldet.";
-        else if (status === 403)
-          this.message = "Sie sind nicht berechtigt, diese Aktion durchzuführen.";
-        else
-          this.message = "Ein unvorhergesehener Fehler ist aufgetreten. Bitte versuchen Sie es nochmals.";
+        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

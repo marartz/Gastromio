@@ -31,7 +31,9 @@ namespace FoodOrderSystem.Domain.Commands.ChangePaymentMethod
             if (paymentMethod == null)
                 return FailureResult<bool>.Create(FailureResultCode.PaymentMethodDoesNotExist);
 
-            paymentMethod.Change(command.Name, command.Description);
+            var tempResult = paymentMethod.Change(command.Name, command.Description);
+            if (tempResult.IsFailure)
+                return tempResult;
 
             await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
 

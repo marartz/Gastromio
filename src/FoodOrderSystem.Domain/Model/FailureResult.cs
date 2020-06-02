@@ -1,60 +1,79 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace FoodOrderSystem.Domain.Model
 {
     public class FailureResult<TResult> : Result<TResult>
     {
-        public FailureResult(FailureResultCode code, params object[] args)
+        private FailureResult(IDictionary<string, IList<InvariantError>> errors, int statusCode)
         {
-            Code = code;
-            Args = args;
+            Errors = errors ?? new Dictionary<string, IList<InvariantError>>();
+            StatusCode = statusCode;
         }
 
-        public FailureResultCode Code { get; }
+        private FailureResult(InvariantError error, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+            : this(new Dictionary<string, IList<InvariantError>>{ { "", new List<InvariantError> { error } } }, (int) statusCode) {}
 
-        public object[] Args { get; }
+        public IDictionary<string, IList<InvariantError>> Errors { get; }
+        public int StatusCode { get; }
 
-        public override string ToString()
+        public override bool IsSuccess => false;
+
+        public override bool IsFailure => true;
+
+        public override TResult Value => throw new InvalidOperationException("cannot obtain value from failure result");
+
+        public override Result<TDstResult> Cast<TDstResult>()
         {
-            var sb = new StringBuilder();
-            sb.Append("Failure(");
-            
-            sb.Append(Code);
-
-            if (Args != null && Args.Length != 0)
-            {
-                sb.Append(":[");
-                bool first = true;
-                foreach (var arg in Args)
-                {
-                    if (!first)
-                    {
-                        sb.Append(",");
-                    }
-                    sb.Append(arg != null ? arg.ToString() : "null");
-                    first = false;
-                }
-                sb.Append("]");
-            }
-            
-            sb.Append(")");
-            
-            return sb.ToString();
+            return new FailureResult<TDstResult>(Errors, StatusCode);
         }
 
-        public static FailureResult<TResult> Unauthorized(params object[] args)
+        public static FailureResult<TResult> Unauthorized(FailureResultCode code = FailureResultCode.SessionExpired, params object[] args)
         {
-            return new FailureResult<TResult>(FailureResultCode.Unauthorized, args);
+            return new FailureResult<TResult>(new InvariantError(code, args), HttpStatusCode.Unauthorized);
         }
 
-        public static FailureResult<TResult> Forbidden(params object[] args)
+        public static FailureResult<TResult> Forbidden(FailureResultCode code = FailureResultCode.Forbidden, params object[] args)
         {
-            return new FailureResult<TResult>(FailureResultCode.Forbidden, args);
+            return new FailureResult<TResult>(new InvariantError(code, args), HttpStatusCode.Forbidden);
         }
 
         public static FailureResult<TResult> Create(FailureResultCode code, params object[] args)
         {
-            return new FailureResult<TResult>(code, args);
+            return new FailureResult<TResult>(new InvariantError(code, args));
+        }
+
+        public static FailureResult<TResult> CreateStatusCode(FailureResultCode code, HttpStatusCode statusCode, params object[] args)
+        {
+            return new FailureResult<TResult>(new InvariantError(code, args), statusCode);
+        }
+
+        public void AddComponentError(string componentName, FailureResultCode code, params object[] args)
+        {
+            if (componentName == null)
+            {
+                throw new ArgumentNullException(nameof(componentName));
+            }
+            bool exists = Errors.TryGetValue(componentName, out var comErrs);
+            var msg = new InvariantError(code, args);
+            if (!exists)
+            {
+                Errors.Add(componentName, new List<InvariantError> { msg });
+            }
+            else
+            {
+                if (comErrs == null)
+                {
+                    comErrs = new List<InvariantError> { msg };
+                }
+                comErrs.Add(msg);
+            }
+        }
+
+        public void AddError(FailureResultCode code, params object[] args)
+        {
+            AddComponentError("", code, args);
         }
     }
 }
