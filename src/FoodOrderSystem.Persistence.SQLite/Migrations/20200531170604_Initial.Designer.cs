@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodOrderSystem.Persistence.SQLite.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20200515164142_Initial")]
+    [Migration("20200531170604_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,7 +281,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("DeliveryTimes")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -290,7 +290,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("Categories")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -299,13 +299,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.DishCategoryRow", "Category")
                         .WithMany("Dishes")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("Dishes")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -320,7 +320,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.DishVariantRow", "Variant")
                         .WithMany("Extras")
                         .HasForeignKey("DishId", "VariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -329,7 +329,7 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.DishRow", "Dish")
                         .WithMany("Variants")
                         .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -338,13 +338,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.CuisineRow", "Cuisine")
                         .WithMany("RestaurantCuisines")
                         .HasForeignKey("CuisineId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("RestaurantCuisines")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -353,13 +353,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.PaymentMethodRow", "PaymentMethod")
                         .WithMany("RestaurantPaymentMethods")
                         .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("RestaurantPaymentMethods")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -368,13 +368,13 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.HasOne("FoodOrderSystem.Persistence.RestaurantRow", "Restaurant")
                         .WithMany("RestaurantUsers")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FoodOrderSystem.Persistence.UserRow", "User")
                         .WithMany("RestaurantUsers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

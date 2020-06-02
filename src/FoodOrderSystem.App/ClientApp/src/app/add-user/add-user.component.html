@@ -24,12 +24,19 @@
                 <div class="wrapper">
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Benutzername" id="username" formControlName="username" ngbAutofocus />
+                            <input class="input" type="text" placeholder="Benutzername" id="username" formControlName="username" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                <div *ngIf="f.username.errors.required">Benutzername wird benötigt.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="email" placeholder="E-Mail-Adresse" id="email" formControlName="email" />
+                            <input class="input" type="email" placeholder="E-Mail-Adresse" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">E-Mail wird benötigt.</div>
+                                <div *ngIf="f.email.errors.pattern">E-Mail muss eine valide E-Mail Adresse sein.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
@@ -44,12 +51,19 @@
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="password" placeholder="Passwort" id="password" formControlName="password" />
+                            <input class="input" type="password" placeholder="Passwort" id="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                <div *ngIf="f.password.errors.required">Dies ist ein Pflichtfeld.</div>
+                                <div *ngIf="f.password.errors.pattern">Passwort nicht komplex genug.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="password" placeholder="Passwort wiederholen" id="passwordRepeat" formControlName="passwordRepeat" />
+                            <input class="input" type="password" placeholder="Passwort wiederholen" id="passwordRepeat" formControlName="passwordRepeat" [ngClass]="{ 'is-invalid': submitted && f.passwordRepeat.errors }" />
+                            <div *ngIf="submitted && f.passwordRepeat.errors" class="invalid-feedback">
+                                <div *ngIf="f.passwordRepeat.errors.confirmedValidator">Das Passwort stimmt nicht mit dem vorherigen überein.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
