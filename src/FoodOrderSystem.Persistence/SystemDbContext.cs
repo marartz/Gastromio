@@ -23,14 +23,16 @@ namespace FoodOrderSystem.Persistence
             modelBuilder.Entity<RestaurantUserRow>()
                 .HasOne(rpm => rpm.Restaurant)
                 .WithMany(r => r.RestaurantUsers)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(rpm => rpm.RestaurantId);
+                .HasForeignKey(rpm => rpm.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<RestaurantUserRow>()
                 .HasOne(rpm => rpm.User)
                 .WithMany(pm => pm.RestaurantUsers)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(rpm => rpm.UserId);
+                .HasForeignKey(rpm => rpm.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<DeliveryTimeRow>()
                 .HasKey(dt => new { dt.RestaurantId, dt.DayOfWeek, dt.StartTime });
@@ -38,8 +40,9 @@ namespace FoodOrderSystem.Persistence
             modelBuilder.Entity<DeliveryTimeRow>()
                 .HasOne(dt => dt.Restaurant)
                 .WithMany(r => r.DeliveryTimes)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(dt => dt.RestaurantId);
+                .HasForeignKey(dt => dt.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<RestaurantCuisineRow>()
                 .HasKey(rc => new { rc.RestaurantId, rc.CuisineId });
@@ -47,14 +50,16 @@ namespace FoodOrderSystem.Persistence
             modelBuilder.Entity<RestaurantCuisineRow>()
                 .HasOne(rc => rc.Restaurant)
                 .WithMany(r => r.RestaurantCuisines)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(rc => rc.RestaurantId);
+                .HasForeignKey(rc => rc.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<RestaurantCuisineRow>()
                 .HasOne(rc => rc.Cuisine)
                 .WithMany(c => c.RestaurantCuisines)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(rc => rc.CuisineId);
+                .HasForeignKey(rc => rc.CuisineId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<RestaurantPaymentMethodRow>()
                 .HasKey(rpm => new { rpm.RestaurantId, rpm.PaymentMethodId });
@@ -62,32 +67,37 @@ namespace FoodOrderSystem.Persistence
             modelBuilder.Entity<RestaurantPaymentMethodRow>()
                 .HasOne(rpm => rpm.Restaurant)
                 .WithMany(r => r.RestaurantPaymentMethods)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(rpm => rpm.RestaurantId);
+                .HasForeignKey(rpm => rpm.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<RestaurantPaymentMethodRow>()
                 .HasOne(rpm => rpm.PaymentMethod)
                 .WithMany(pm => pm.RestaurantPaymentMethods)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(rpm => rpm.PaymentMethodId);
+                .HasForeignKey(rpm => rpm.PaymentMethodId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<DishCategoryRow>()
                 .HasOne(dc => dc.Restaurant)
                 .WithMany(r => r.Categories)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(dc => dc.RestaurantId);
+                .HasForeignKey(dc => dc.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<DishRow>()
                 .HasOne(d => d.Restaurant)
                 .WithMany(r => r.Dishes)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(d => d.RestaurantId);
+                .HasForeignKey(d => d.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<DishRow>()
                 .HasOne(d => d.Category)
                 .WithMany(dc => dc.Dishes)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(d => d.CategoryId);
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<DishVariantRow>()
                 .HasKey(dv => new { dv.DishId, dv.VariantId });
@@ -95,8 +105,9 @@ namespace FoodOrderSystem.Persistence
             modelBuilder.Entity<DishVariantRow>()
                 .HasOne(dv => dv.Dish)
                 .WithMany(d => d.Variants)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(dv => dv.DishId);
+                .HasForeignKey(dv => dv.DishId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             modelBuilder.Entity<DishVariantExtraRow>()
                 .HasKey(dve => new { dve.DishId, dve.VariantId, dve.ExtraId });
@@ -104,8 +115,9 @@ namespace FoodOrderSystem.Persistence
             modelBuilder.Entity<DishVariantExtraRow>()
                 .HasOne(dve => dve.Variant)
                 .WithMany(dv => dv.Extras)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(dve => new { dve.DishId, dve.VariantId });
+                .HasForeignKey(dve => new { dve.DishId, dve.VariantId })
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }
