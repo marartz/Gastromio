@@ -246,7 +246,7 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeadmin', {userId}, httpOptions);
   }
 
-  public addDishCategoryToRestaurantAsync(id: string, name: string): Observable<string> {
+  public addDishCategoryToRestaurantAsync(id: string, name: string, afterCategoryId: string): Observable<string> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -254,7 +254,8 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddishcategory', {name}, httpOptions);
+    return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddishcategory',
+      {name, afterCategoryId}, httpOptions);
   }
 
   public changeDishCategoryOfRestaurantAsync(id: string, dishCategoryId: string, name: string): Observable<boolean> {
@@ -269,6 +270,30 @@ export class RestaurantRestAdminService {
       dishCategoryId,
       name
     }, httpOptions);
+  }
+
+  public incOrderOfDishCategoryAsync(id: string, dishCategoryId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/incorderofdishcategory',
+      {dishCategoryId}, httpOptions);
+  }
+
+  public decOrderOfDishCategoryAsync(id: string, dishCategoryId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/decorderofdishcategory',
+      {dishCategoryId}, httpOptions);
   }
 
   public removeDishCategoryFromRestaurantAsync(id: string, dishCategoryId: string): Observable<boolean> {

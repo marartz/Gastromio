@@ -103,6 +103,7 @@ namespace FoodOrderSystem.Persistence
                 row.Name,
                 row.Description,
                 row.ProductInfo,
+                row.OrderNo,
                 row.Variants != null ? row.Variants
                     .Select(variantRow => new DishVariant(
                         variantRow.VariantId,
@@ -127,6 +128,7 @@ namespace FoodOrderSystem.Persistence
             row.Name = obj.Name;
             row.Description = obj.Description;
             row.ProductInfo = obj.ProductInfo;
+            row.OrderNo = obj.OrderNo;
             row.Variants = obj.Variants
                 .Select(variant => new DishVariantRow()
                 {

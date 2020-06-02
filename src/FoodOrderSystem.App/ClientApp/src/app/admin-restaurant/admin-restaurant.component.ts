@@ -654,6 +654,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   openAddDishCategoryForm(): void {
     const modalRef = this.modalService.open(AddDishCategoryComponent);
     modalRef.componentInstance.restaurantId = this.restaurant.id;
+    if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
+      modalRef.componentInstance.afterCategoryId = this.dishCategories[this.dishCategories.length - 1].id;
+    }
     modalRef.result.then((result: DishCategoryModel) => {
       this.dishCategories.push(result);
       this.activeDishCategoryId = result.id;
@@ -670,6 +673,42 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       dishCategory.name = result.name;
     }, () => {
       // TODO
+    });
+  }
+
+  incOrderOfDishCategory(dishCategory: DishCategoryModel): void {
+    const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
+    if (pos >= this.dishCategories.length - 1) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.incOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id).subscribe(() => {
+      subscription.unsubscribe();
+      [this.dishCategories[pos], this.dishCategories[pos + 1]] = [this.dishCategories[pos + 1], this.dishCategories[pos]];
+      this.blockUI.stop();
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+    });
+  }
+
+  decOrderOfDishCategory(dishCategory: DishCategoryModel): void {
+    const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
+    if (pos < 1) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.decOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id).subscribe(() => {
+      subscription.unsubscribe();
+      [this.dishCategories[pos - 1], this.dishCategories[pos]] = [this.dishCategories[pos], this.dishCategories[pos - 1]];
+      this.blockUI.stop();
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 

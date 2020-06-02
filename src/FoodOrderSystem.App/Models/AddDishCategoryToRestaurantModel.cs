@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 
 namespace FoodOrderSystem.App.Models
 {
     public class AddDishCategoryToRestaurantModel
     {
-        [Required]
         public string Name { get; set; }
+        
+        public Guid AfterCategoryId { get; set; }
     }
 }

@@ -96,7 +96,8 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     RestaurantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    OrderNo = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -190,7 +191,8 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     CategoryId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    ProductInfo = table.Column<string>(nullable: true)
+                    ProductInfo = table.Column<string>(nullable: true),
+                    OrderNo = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

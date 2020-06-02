@@ -85,6 +85,13 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                         return tempResult.Cast<Guid>();
                 }
 
+                if (dish.OrderNo != command.Dish.OrderNo)
+                {
+                    tempResult = dish.ChangeOrderNo(command.Dish.OrderNo);
+                    if (tempResult.IsFailure)
+                        return tempResult.Cast<Guid>();
+                }
+
                 tempResult = dish.ReplaceVariants(FromVariantViewModels(command.Dish.Variants));
                 if (tempResult.IsFailure)
                     return tempResult.Cast<Guid>();
@@ -97,6 +104,7 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                     command.Dish.Name,
                     command.Dish.Description,
                     command.Dish.ProductInfo,
+                    command.Dish.OrderNo,
                     FromVariantViewModels(command.Dish.Variants)
                 );
 

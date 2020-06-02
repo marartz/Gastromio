@@ -332,6 +332,8 @@
                         <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
                           <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></span>
                           <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></span>
+                          <span (click)="decOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach links"><i class="fas fa-arrow-left"></i></span>
+                          <span (click)="incOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach rechts"><i class="fas fa-arrow-right"></i></span>
                         </ng-container>
                       </a>
                       <ng-template ngbNavContent>

@@ -10,15 +10,17 @@ namespace FoodOrderSystem.Domain.Model.DishCategory
             RestaurantId = restaurantId;
         }
         
-        public DishCategory(DishCategoryId id, RestaurantId restaurantId, string name)
+        public DishCategory(DishCategoryId id, RestaurantId restaurantId, string name, int orderNo)
             : this(id, restaurantId)
         {
             Name = name;
+            OrderNo = orderNo;
         }
 
         public DishCategoryId Id { get; }
         public RestaurantId RestaurantId { get; }
         public string Name { get; private set; }
+        public int OrderNo { get; private set; }
 
         public Result<bool> ChangeName(string name)
         {
@@ -28,6 +30,14 @@ namespace FoodOrderSystem.Domain.Model.DishCategory
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
 
             Name = name;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeOrderNo(int orderNo)
+        {
+            if (orderNo < 0)
+                return FailureResult<bool>.Create(FailureResultCode.DishCategoryInvalidOrderNo, nameof(orderNo));
+            OrderNo = orderNo;
             return SuccessResult<bool>.Create(true);
         }
     }
