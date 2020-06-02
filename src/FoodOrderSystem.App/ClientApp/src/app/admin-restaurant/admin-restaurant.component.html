@@ -332,8 +332,12 @@
                         <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
                           <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></span>
                           <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></span>
-                          <span (click)="decOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach links"><i class="fas fa-arrow-left"></i></span>
-                          <span (click)="incOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach rechts"><i class="fas fa-arrow-right"></i></span>
+                          <ng-container *ngIf="!isFirstDishCategory(dishCategory)">
+                            <span (click)="decOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach links"><i class="fas fa-arrow-left"></i></span>
+                          </ng-container>
+                          <ng-container *ngIf="!isLastDishCategory(dishCategory)">
+                            <span (click)="incOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach rechts"><i class="fas fa-arrow-right"></i></span>
+                          </ng-container>
                         </ng-container>
                       </a>
                       <ng-template ngbNavContent>
@@ -357,9 +361,9 @@
                                 <div class="float-right">
                                   <button class="btn btn-secondary btn-sm m-1" (click)="openEditDishForm(dishCategory, dish)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
                                   <button class="btn btn-danger btn-sm m-1" (click)="openRemoveDishForm(dishCategory, dish)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
-                                  <!--<button class="btn btn-secondary btn-sm m-1 ml-2"><i class="fas fa-arrow-up"></i></button>
-                          <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-arrow-down"></i></button>
-                          <button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
+                                  <button class="btn btn-secondary btn-sm m-1 ml-2" [disabled]="isFirstDish(dishCategory, dish)" (click)="decOrderOfDish(dishCategory, dish)" placement="right" ngbTooltip="Nach oben"><i class="fas fa-arrow-up"></i></button>
+                                  <button class="btn btn-secondary btn-sm m-1" [disabled]="isLastDish(dishCategory, dish)" (click)="incOrderOfDish(dishCategory, dish)" placement="right" ngbTooltip="Nach unten"><i class="fas fa-arrow-down"></i></button>
+                                  <!--<button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
                                 </div>
                               </td>
                             </tr>

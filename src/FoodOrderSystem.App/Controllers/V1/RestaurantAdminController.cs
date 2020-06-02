@@ -42,7 +42,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Commands.DecOrderOfDish;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDishCategory;
+using FoodOrderSystem.Domain.Commands.IncOrderOfDish;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDishCategory;
 
 namespace FoodOrderSystem.App.Controllers.V1
@@ -536,6 +538,46 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
+        [Route("restaurants/{restaurantId}/incorderofdish")]
+        [HttpPost]
+        public async Task<IActionResult> PostIncOrderOfDishAsync(Guid restaurantId, [FromBody] IncOrderOfDishModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<IncOrderOfDishCommand, bool>(
+                new IncOrderOfDishCommand(new DishId(model.DishId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/decorderofdish")]
+        [HttpPost]
+        public async Task<IActionResult> PostDecOrderOfDishAsync(Guid restaurantId, [FromBody] DecOrderOfDishModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<DecOrderOfDishCommand, bool>(
+                new DecOrderOfDishCommand(new DishId(model.DishId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
         [Route("restaurants/{restaurantId}/removedish")]
         [HttpPost]
         public async Task<IActionResult> PostRemoveDishAsync(Guid restaurantId, [FromBody] RemoveDishFromRestaurantModel model)

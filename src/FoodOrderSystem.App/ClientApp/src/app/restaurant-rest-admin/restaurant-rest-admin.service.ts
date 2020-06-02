@@ -322,6 +322,30 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
+  public incOrderOfDishAsync(id: string, dishId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/incorderofdish',
+      {dishId}, httpOptions);
+  }
+
+  public decOrderOfDishAsync(id: string, dishId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/decorderofdish',
+      {dishId}, httpOptions);
+  }
+
   public removeDishFromRestaurantAsync(id: string, dishCategoryId: string, dishId: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({

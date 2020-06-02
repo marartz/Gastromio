@@ -25,7 +25,8 @@ namespace FoodOrderSystem.Persistence
                 if (restaurantRow == null)
                     return null;
                 return (ICollection<Dish>)restaurantRow.Dishes
-                    .OrderBy(en => en.Name)
+                    .OrderBy(en => en.OrderNo)
+                    .ThenBy(en => en.Name)
                     .Select(en => FromRow(en))
                     .ToList();
             }, cancellationToken);

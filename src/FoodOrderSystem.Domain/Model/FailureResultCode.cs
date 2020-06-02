@@ -32,6 +32,7 @@
         DishCategoryContainsDishes,
         DishCategoryInvalidOrderNo,
         DishDoesNotBelongToDishCategory,
+        DishDoesNotExist,
         DishInvalidOrderNo,
         DishVariantPriceIsNegativeOrZero,
         DishVariantPriceIsTooBig,

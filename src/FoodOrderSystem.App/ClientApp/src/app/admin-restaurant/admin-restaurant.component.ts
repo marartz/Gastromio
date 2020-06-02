@@ -676,6 +676,16 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
+  isFirstDishCategory(dishCategory: DishCategoryModel): boolean {
+    const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
+    return pos === 0;
+  }
+
+  isLastDishCategory(dishCategory: DishCategoryModel): boolean {
+    const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
+    return pos === this.dishCategories.length - 1;
+  }
+
   incOrderOfDishCategory(dishCategory: DishCategoryModel): void {
     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
     if (pos >= this.dishCategories.length - 1) {
@@ -742,6 +752,52 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       }
     }, () => {
       // TODO
+    });
+  }
+
+  isFirstDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
+    const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
+    return pos === 0;
+  }
+
+  isLastDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
+    const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
+    return pos === dishCategory.dishes.length - 1;
+  }
+
+  incOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
+    const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
+    if (pos >= dishCategory.dishes.length - 1) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.incOrderOfDishAsync(this.restaurant.id, dish.id).subscribe(() => {
+      subscription.unsubscribe();
+      [dishCategory.dishes[pos], dishCategory.dishes[pos + 1]] = [dishCategory.dishes[pos + 1], dishCategory.dishes[pos]];
+      this.blockUI.stop();
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+    });
+  }
+
+  decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
+    const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
+    if (pos < 1) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.decOrderOfDishAsync(this.restaurant.id, dish.id).subscribe(() => {
+      subscription.unsubscribe();
+      [dishCategory.dishes[pos - 1], dishCategory.dishes[pos]] = [dishCategory.dishes[pos], dishCategory.dishes[pos - 1]];
+      this.blockUI.stop();
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
     });
   }
 
