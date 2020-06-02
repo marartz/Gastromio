@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { UserAdminService } from '../user/user-admin.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmPasswordValidator } from '../validators/password.validator';
 
 @Component({
   selector: 'app-add-user',
@@ -17,6 +18,7 @@ export class AddUserComponent implements OnInit {
 
   addUserForm: FormGroup;
   message: string;
+  submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -25,30 +27,22 @@ export class AddUserComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addUserForm = this.formBuilder.group({
-      username: '',
-      role: '',
-      email: '',
-      password: '',
-      passwordRepeat: ''
-    });
+      username: ['', Validators.required],
+      role: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
+      passwordRepeat: ['']
+    }, { validators: ConfirmPasswordValidator('password', 'passwordRepeat') });
   }
 
   ngOnInit() {
   }
 
+  get f() { return this.addUserForm.controls; }
+
   onSubmit(data) {
-    if (data.password === undefined || data.password === '') {
-      this.message = 'Bitte geben Sie ein Passwort ein';
-      return;
-    }
-
-    if (data.passwordRepeat === undefined || data.passwordRepeat === '') {
-      this.message = 'Bitte wiederholen Sie das eingegebene Passwort';
-      return;
-    }
-
-    if (data.password !== data.passwordRepeat) {
-      this.message = 'Die eingegebenen Passwörter stimmen nicht überein';
+    this.submitted = true;
+    if (this.addUserForm.invalid) {
       return;
     }
 
