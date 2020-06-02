@@ -76,7 +76,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<bool>.Forbidden();
 
-            var tempResult = await CreateUsersAsync(cancellationToken);
+            var tempResult = await CreateUsersAsync(command.UserCount, cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
 
@@ -88,18 +88,19 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             if (tempResult.IsFailure)
                 return tempResult;
 
-            tempResult = await CreateRestaurantsAsync(cancellationToken);
+            tempResult = await CreateRestaurantsAsync(command.RestCount, command.DishCatCount, command.DishCount,
+                cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
 
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateUsersAsync(CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateUsersAsync(int count, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test users");
             
-            for (var i = 0; i < 35; i++)
+            for (var i = 0; i < count; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
@@ -115,7 +116,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 logger.LogInformation("    sysadmin user {0} created", name);
             }
 
-            for (var i = 0; i < 35; i++)
+            for (var i = 0; i < count; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
@@ -258,15 +259,15 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateRestaurantsAsync(CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateRestaurantsAsync(int restCount, int dishCatCount, int dishCount, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test restaurants");
 
-            for (var i = 0; i < restAdminDict.Count; i++)
+            for (var i = 0; i < restCount; i++)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
-                var tempResult = await CreateRestaurantAsync(i, cancellationToken);
+                var tempResult = await CreateRestaurantAsync(i, dishCatCount, dishCount, cancellationToken);
                 if (tempResult.IsFailure)
                     return tempResult;
             }
@@ -275,10 +276,10 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateRestaurantAsync(int index, CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateRestaurantAsync(int index, int dishCatCount, int dishCount, CancellationToken cancellationToken)
         {
             var restaurantName = $"Restaurant {(index + 1):D3}";
-            var restAdminName = $"restadmin{(index + 1):D3}";
+            var restAdminName = $"restadmin{(index % restAdminDict.Count + 1):D3}";
 
             logger.LogInformation("    creating test restaurant {0}", restaurantName);
             
@@ -321,7 +322,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            for (var catIndex = 0; catIndex < 8; catIndex++)
+            for (var catIndex = 0; catIndex < dishCatCount; catIndex++)
             {
                 var dishCategoryName = $"Kategorie{(catIndex + 1):D2}";
                 logger.LogInformation("        creating dish category {0}", dishCategoryName);
@@ -332,7 +333,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 var dishCategory = ((SuccessResult<DishCategory>) dishCategoryResult).Value;
                 await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 
-                for (var dishIndex = 0; dishIndex < 10; dishIndex++)
+                for (var dishIndex = 0; dishIndex < dishCount; dishIndex++)
                 {
                     var dishName = $"Gericht{(dishIndex + 1):D2}";
                     
