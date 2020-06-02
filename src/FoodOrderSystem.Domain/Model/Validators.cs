@@ -39,6 +39,11 @@ namespace FoodOrderSystem.Domain.Model
             return WebsiteRegex.IsMatch(value);
         }
 
+        public static bool IsValidPassword(string value)
+        {
+            return PasswordRegex.IsMatch(value);
+        }
+
         private static readonly Regex StreetRegex = new Regex(@"^(([a-zA-ZäöüÄÖÜ]\D*)\s+\d+?\s*.*)$");
 
         private static readonly Regex ZipCodeRegex =

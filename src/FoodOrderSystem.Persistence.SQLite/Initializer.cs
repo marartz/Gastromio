@@ -9,7 +9,7 @@ namespace FoodOrderSystem.Persistence.SQLite
         {
             services.AddDbContext<SystemDbContext>(options =>
             {
-                options.EnableSensitiveDataLogging();
+                //options.EnableSensitiveDataLogging();
                 options.UseLazyLoadingProxies();
                 options.UseSqlite(connectionString, b =>
                 {

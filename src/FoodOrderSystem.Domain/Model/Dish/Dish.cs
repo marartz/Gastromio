@@ -16,6 +16,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
             Id = id;
             RestaurantId = restaurantId;
             CategoryId = categoryId;
+            variants = new List<DishVariant>();
         }
 
         public Dish(DishId id, RestaurantId restaurantId, DishCategoryId categoryId, string name, string description,

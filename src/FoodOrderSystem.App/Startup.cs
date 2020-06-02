@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Serilog;
 
 namespace FoodOrderSystem.App
 {
@@ -79,6 +80,8 @@ namespace FoodOrderSystem.App
                 app.UseSpaStaticFiles();
             }
 
+            app.UseSerilogRequestLogging();
+            
             app.UseRouting();
 
             app.UseAuthentication();

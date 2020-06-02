@@ -2,6 +2,6 @@
 {
     public interface IRestaurantFactory
     {
-        Restaurant CreateWithName(string name);
+        Result<Restaurant> CreateWithName(string name);
     }
 }
