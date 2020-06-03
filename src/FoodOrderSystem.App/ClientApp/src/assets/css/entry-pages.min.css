@@ -190,7 +190,7 @@
 /* ENDE: Passwort vergessen */
 
 /* START: Fehlermeldungen */
-#entry #error {
+#error {
     overflow: hidden;
     pointer-events: auto;
     position: fixed;
@@ -199,7 +199,7 @@
     z-index: 999999999;
 }
 
-#entry #error #message {
+#error #message {
     align-items: center;
     background-color: #b44448;
     color: #fff;
@@ -216,7 +216,7 @@
     width: 100%;
 }
 
-#entry #error #message span {
+#error #message span {
 	  margin: 0px auto;
 	  max-width: 600px;
 }
