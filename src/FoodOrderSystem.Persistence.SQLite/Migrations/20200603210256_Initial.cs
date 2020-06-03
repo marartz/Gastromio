@@ -59,7 +59,6 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
