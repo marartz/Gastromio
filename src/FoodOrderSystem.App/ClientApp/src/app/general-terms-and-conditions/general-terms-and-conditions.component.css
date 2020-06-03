@@ -3,8 +3,10 @@
     margin-right: auto;
     padding-left: 20px;
     padding-right: 20px;
-    color: rgb(23, 32, 38);
-    font-weight: 400;
+    font-family: proxima-nova, sans-serif;
+    color: #4c5b52;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 @media screen (min-width: 1200px) {
@@ -23,8 +25,7 @@
 }
 
 .agb strong {
-    color: rgb(0, 0, 0);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .agb a {
