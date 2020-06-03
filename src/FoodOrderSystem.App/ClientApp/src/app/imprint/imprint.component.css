@@ -1,5 +1,9 @@
 .impressum {
     display: grid;
+    font-family: proxima-nova, sans-serif;
+    color: #4c5b52;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 @media (min-width: 960px) {
@@ -14,13 +18,13 @@
 }
 
 .impressum a {
-    color: rgb(0, 108, 187);
+    color: #27625b;
     text-decoration: none;
 }
 
-.impressum .thank-link {
-    color: rgb(23, 32, 38);
-    text-decoration: none;
+.impressum a:hover {
+    color: #27625b;
+    text-decoration: underline;
 }
 
 .impressum h2 {
@@ -38,7 +42,6 @@
     font-weight: 400;
     font-size: 16px !important;
     margin: 0 0 20px 0;
-    color: rgb(23, 32, 38)
 }
 
 .impressum b, strong {
@@ -46,8 +49,7 @@
 }
 
 .impressum strong {
-    color: #000;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .impressum h4, h5, h6, .t4, .t5, .t6 {

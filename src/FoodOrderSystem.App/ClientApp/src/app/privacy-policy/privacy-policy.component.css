@@ -1,35 +1,28 @@
 .datenschutz {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: rgb(23, 32, 38);
-    font-weight: 400;
-}
-
-@media screen (min-width: 1200px) {
-    .datenschutz {
-        max-width: 980px;
-    }
-}
-
-.datenschutz h3 {
-    margin: 24px 0px 12px 0px;
+    font-family: proxima-nova, sans-serif;
+    color: #4c5b52;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 .datenschutz p {
     font-size: 16px;
+    font-weight: 400;
     margin: 0px 0px 20px 0px;
 }
 
 .datenschutz strong {
-    color: rgb(0, 0, 0);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .datenschutz a {
-    color: rgb(0, 108, 187);
+    color: #27625b;
     text-decoration: none;
+}
+
+.datenschutz a:hover {
+    color: #27625b;
+    text-decoration: underline;
 }
 
 .datenschutz ul {
@@ -50,22 +43,22 @@
 }
 
 .datenschutz .t3 {
-    font-size: 32px;
+    font-size: 28px;
     margin: 48px 0 24px 0;
 }
 
 .datenschutz .t4 {
-    font-size: 24px;
+    font-size: 20px;
 }
 
-.datenschutz  .dptable {
+.dptable {
     margin: 24px 0px;
     display: grid;
     grid-gap: 4px 20px;
 }
 
-@media screen (min-width: 768px) {
-    .datenschutz .dptable {
+@media screen and (min-width: 768px) {
+    .dptable {
         grid-template-columns: 30% auto;
         grid-gap: 12px 20px;
     }
