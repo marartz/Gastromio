@@ -1,5 +1,5 @@
-<section class="order-home" role="main">
-    <div class="focus-outlet">
+<section id="main" class="order-home" role="main">
+    <div class="focus-outlet" tabindex="-1" role="group">
 
         <div id="home" class="index-pickup-delivery">
             <div id="home-hero">
@@ -20,24 +20,19 @@
                             </div>
 
                             <div class="tab-bar" role="tablist">
-                                <button class="tab-item selected" role="tab">
-                                    <span class="tab-label">Lieferung</span>
-                                </button>
-                                <button class="tab-item" role="tab">
-                                    <span class="tab-label">Abholung</span>
-                                </button>
-                                <div class="tab-bar-slider">
-                                    <div class="bar" style="width: 50%; left: 0%"></div>
-                                </div>
+                                <button class="tab-item selected" role="tab"><span>Lieferung</span></button>
+                                <button class="tab-item" role="tab"><span>Abholung</span></button>
+                                <div class="tab-slider"><div class="bar" style="width: 50%; left: 0%"></div></div>
                             </div>
 
                             <!-- START: Lieferung-->
-                            <div class="tab-panel selected" role="tabpanel">
+                            <div class="tab selected" role="tabpanel">
                                 <div class="card-inner">
 
                                     <div class="card-content" tabindex="-1">
                                         <div class="search-wrap">
                                             <div class="search">
+
                                                 <input type="text" placeholder="Suche nach Restaurants" autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
 
                                                 <ng-template #rt let-r="result" let-t="term">
@@ -50,11 +45,12 @@
                                                         <path d="M9.281 9.3l5.4 5.4"></path>
                                                     </g>
                                                 </svg>
+
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="viewall-restaurants-container">
+                                    <div class="view-all">
                                         <a [routerLink]="['/restaurants']">Alle anzeigen &rang;</a>
                                     </div>
 
@@ -63,9 +59,7 @@
                             <!-- ENDE: Lieferung-->
 
                             <!-- START: Abholung-->
-                            <div class="tab-panel" role="tabpanel">
-
-                            </div>
+                            <div class="tab" role="tabpanel"></div>
                             <!-- ENDE: Abholung-->
                         </div>
                     </div>

@@ -87,6 +87,11 @@
     white-space: nowrap;
 }
 
+.navbar .nav-branding a:hover {
+    opacity: .75;
+    transition: opacity 150ms ease-out;
+}
+
 .navbar .nav-branding .nav-title {
     color: #1f4f46;
     font-family: proxima-nova, sans-serif;
