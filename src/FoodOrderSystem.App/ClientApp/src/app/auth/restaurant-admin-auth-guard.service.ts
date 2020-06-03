@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate } from '@angular/router';
+import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -10,15 +10,17 @@ export class RestaurantAdminAuthGuardService implements CanActivate {
     public router: Router
   ) { }
 
-  canActivate(): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const loginUrl = '/login?returnUrl=' + encodeURIComponent(state.url);
+
     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['']);
+      this.router.navigateByUrl(loginUrl);
       return false;
     }
 
     const currentUser = this.auth.getUser();
     if (currentUser === undefined || (currentUser.role !== 'SystemAdmin' && currentUser.role !== 'RestaurantAdmin')) {
-      this.router.navigate(['']);
+      this.router.navigateByUrl(loginUrl);
       return false;
     } else {
       const subscription = this.auth.pingAsync().subscribe(() => {
@@ -26,7 +28,7 @@ export class RestaurantAdminAuthGuardService implements CanActivate {
       }, () => {
         subscription.unsubscribe();
         this.auth.logout();
-        this.router.navigate(['']);
+        this.router.navigateByUrl(loginUrl);
       });
     }
 
