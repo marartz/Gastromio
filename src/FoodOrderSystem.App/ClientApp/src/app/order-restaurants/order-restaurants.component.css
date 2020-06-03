@@ -1,4 +1,133 @@
-.order-wrapper {
+.order-restaurants {
+    background-color: #f8f8f6;
+    height: 100%;
+    padding-top: 72px;
+    transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    width: 100%;
+}
+
+.order-restaurants .focus-outlet {
+    height: inherit;
+    width: initial;
+}
+
+#home {
+    height: 100%;
+}
+
+#home #home-hero {
+    width: 100%;
+    position: relative;
+}
+
+@media screen and (min-width: 930px) {
+    #home #home-hero {
+        min-height: calc(100vh - 4.5rem);
+    }
+}
+
+
+/* START: Banner */
+#home .image-wrapper {
+    height: calc(50vh - 4.5rem);
+    position: relative;
+    width: 100%;
+}
+
+#home .welcome-image {
+    background-position: center center;
+    background-size: cover;
+    height: calc(50vh - 4.5rem);
+    position: sticky;
+    top: 4.5rem; 
+}
+
+#home .background-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (min-width: 930px) {
+    #home .image-wrapper {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        height: 100%;
+        width: 58.33333%;
+        z-index: 0;
+    }
+    #home .welcome-image {
+        height: calc(100vh - 4.5rem);
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    #home .image-wrapper {
+	      width: 75%;
+    }
+}
+/* ENDE: Banner */
+#home #home-hero #left {
+    background-color: #f8f8f6;
+    width: 100%;
+}
+
+@media screen and (min-width: 930px) {
+    #home #home-hero #left {
+        min-height: calc(100vh - 4.5rem);
+        background-color: transparent;
+        height: inherit;
+        position: relative;
+        width: 41.66667%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    #home #home-hero #left {
+        width: 25%;
+    }
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+.clearfix::after,
+.clearfix::before {
+    content: ' ';
+    display: table;
+}
+
+@media screen and (min-width: 45.063em) {
+    #home .left-content {
+        padding: 6.25rem 2rem;
+    }
+}
+
+#home .left-content {
+    height: 100%;
+    padding: 2rem 1rem;
+}
+
+@media screen and (min-width: 120.063em) {
+    .clearfix {
+      padding-left: 1.665rem;
+      padding-right: 1.665rem;
+    }
+}
+
+.clearfix {
+    max-width: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* ENDE: Bestellen */
+
+/*.order-wrapper {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -452,4 +581,4 @@
   background: none;
   color: #0a3874;
   border: 1px solid #d7d7d7
-}
+}*/

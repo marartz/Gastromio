@@ -30,24 +30,26 @@
                                 <div class="card-inner">
 
                                     <div class="card-content" tabindex="-1">
-                                        <div class="search-wrap">
-                                            <div class="search">
+                                        <form>
+                                            <div class="search-wrap">
+                                                <div class="search">
 
-                                                <input type="text" placeholder="Suche nach Restaurants" autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
+                                                    <input type="text" placeholder="Suche nach Restaurants" autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
 
-                                                <ng-template #rt let-r="result" let-t="term">
-                                                    <ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight>
-                                                </ng-template>
+                                                    <ng-template #rt let-r="result" let-t="term">
+                                                        <ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight>
+                                                    </ng-template>
 
-                                                <svg height="17" width="17" viewBox="0 0 17 17">
-                                                    <g fill="none" fill-rule="evenodd" stroke="#1f4f46" stroke-width="2.016" transform="translate(1 1)">
-                                                        <circle cx="5.5" cy="5.5" r="5.5"></circle>
-                                                        <path d="M9.281 9.3l5.4 5.4"></path>
-                                                    </g>
-                                                </svg>
+                                                    <svg height="17" width="17" viewBox="0 0 17 17">
+                                                        <g fill="none" fill-rule="evenodd" stroke="#1f4f46" stroke-width="2.016" transform="translate(1 1)">
+                                                            <circle cx="5.5" cy="5.5" r="5.5"></circle>
+                                                            <path d="M9.281 9.3l5.4 5.4"></path>
+                                                        </g>
+                                                    </svg>
 
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
 
                                     <div class="view-all">
