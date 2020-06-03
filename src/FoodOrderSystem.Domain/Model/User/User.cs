@@ -13,10 +13,9 @@ namespace FoodOrderSystem.Domain.Model.User
             Id = id;
         }
 
-        public User(UserId id, string name, Role role, string email, byte[] passwordSalt, byte[] passwordHash)
+        public User(UserId id, Role role, string email, byte[] passwordSalt, byte[] passwordHash)
             : this(id)
         {
-            Name = name;
             Role = role;
             Email = email;
             PasswordSalt = passwordSalt;
@@ -24,15 +23,13 @@ namespace FoodOrderSystem.Domain.Model.User
         }
 
         public UserId Id { get; }
-        public string Name { get; private set; }
         public Role Role { get; private set; }
         public string Email { get; private set; }
         public byte[] PasswordSalt { get; private set; }
         public byte[] PasswordHash { get; private set; }
 
-        public Result<bool> ChangeDetails(string name, Role role, string email)
+        public Result<bool> ChangeDetails(Role role, string email)
         {
-            Name = name;
             Role = role;
             Email = email;
             return SuccessResult<bool>.Create(true);

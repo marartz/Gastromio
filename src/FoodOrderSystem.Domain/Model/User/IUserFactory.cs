@@ -2,6 +2,6 @@
 {
     public interface IUserFactory
     {
-        Result<User> Create(string name, Role role, string email, string password);
+        Result<User> Create(Role role, string email, string password);
     }
 }

@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.loginForm = this.formBuilder.group({
-      Username: ['', Validators.required],
+      Email: ['', Validators.required],
       Password: ['', Validators.required]
     });
   }
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.authService.loginAsync(loginData.Username, loginData.Password)
+    const subscription = this.authService.loginAsync(loginData.Email, loginData.Password)
       .subscribe(() => {
         subscription.unsubscribe();
         this.generalError = undefined;

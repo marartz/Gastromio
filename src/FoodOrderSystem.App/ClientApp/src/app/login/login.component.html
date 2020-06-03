@@ -21,11 +21,11 @@
                     <div id="login-email" class="text-field first">
                       <img class="text-field__icon" src="../../assets/img/icons/login/letter.svg"/>
                       <div class="text-field__input">
-                        <input class="input__inner" id="username" type="text" placeholder="Benutzername"
-                               formControlName="Username" autocomplete="off" ngbAutofocus/>
-                        <div *ngIf="submitted && f.Username.errors" class="invalid-feedback">
-                          <div *ngIf="f.Username.errors.backend">{{f.name.errors.backend}}</div>
-                          <div *ngIf="f.Username.errors.required">Benutzername wird benötigt.</div>
+                        <input class="input__inner" id="email" type="text" placeholder="Emailadresse"
+                               formControlName="Email" autocomplete="off" ngbAutofocus/>
+                        <div *ngIf="submitted && f.Email.errors" class="invalid-feedback">
+                          <div *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</div>
+                          <div *ngIf="f.Email.errors.required">Emailadresse wird benötigt.</div>
                         </div>
                       </div>
                     </div>
@@ -37,7 +37,7 @@
                                formControlName="Password" autocomplete="off"/>
                         <div *ngIf="submitted && f.Password.errors" class="invalid-feedback">
                           <div *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</div>
-                          <div *ngIf="f.Password.errors.required">Name wird benötigt.</div>
+                          <div *ngIf="f.Password.errors.required">Passwort wird benötigt.</div>
                         </div>
                       </div>
                     </div>

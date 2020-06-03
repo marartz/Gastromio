@@ -22,12 +22,12 @@ export class TopBarComponent implements OnInit {
   ngOnInit() {
   }
 
-  getUsername(): string {
+  getUserEmail(): string {
     const currentUser: UserModel = this.authService.getUser();
-    return currentUser !== undefined ? currentUser.name : undefined;
+    return currentUser !== undefined ? currentUser.email : undefined;
   }
 
-  getUserrole(): string {
+  getUserRole(): string {
     const currentUser: UserModel = this.authService.getUser();
     return currentUser !== undefined ? currentUser.role : undefined;
   }

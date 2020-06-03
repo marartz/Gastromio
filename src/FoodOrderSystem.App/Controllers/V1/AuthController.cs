@@ -45,7 +45,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Username, loginModel.Password), null);
+            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Email, loginModel.Password), null);
             if (commandResult is SuccessResult<UserViewModel> successResult)
             {
                 var tokenString = GenerateJSONWebToken(successResult.Value);

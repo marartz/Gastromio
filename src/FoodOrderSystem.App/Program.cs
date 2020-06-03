@@ -43,7 +43,7 @@ namespace FoodOrderSystem.App
                 {
                     var services = scope.ServiceProvider;
 
-                    var currentUser = new User(new UserId(Guid.Empty), "admin", Role.SystemAdmin, null, null, null);
+                    var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
 
                     var commandDispatcher = services.GetService<ICommandDispatcher>();
                     var result = commandDispatcher
@@ -72,7 +72,7 @@ namespace FoodOrderSystem.App
                         if (!Int32.TryParse(configuration["Seed:Params:DishCount"], out var dishCount))
                             dishCount = 8;
 
-                        var currentUser = new User(new UserId(Guid.Empty), "admin", Role.SystemAdmin, null, null, null);
+                        var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
 
                         var commandDispatcher = services.GetService<ICommandDispatcher>();
                         var result = commandDispatcher

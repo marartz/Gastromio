@@ -32,7 +32,7 @@ namespace FoodOrderSystem.Domain.Commands.EnsureAdminUser
             if (systemAdminUsers.Count != 0)
                 return SuccessResult<bool>.Create(true);
 
-            var adminUser = new User(new UserId(Guid.Parse("BDD00A34-F631-4BA1-94D9-C6C909475247")), "admin", Role.SystemAdmin, "info@gastromio.de", null, null);
+            var adminUser = new User(new UserId(Guid.Parse("BDD00A34-F631-4BA1-94D9-C6C909475247")), Role.SystemAdmin, "admin@gastromio.de", null, null);
             adminUser.ChangePassword("admin");
             
             await userRepository.StoreAsync(adminUser, cancellationToken);
