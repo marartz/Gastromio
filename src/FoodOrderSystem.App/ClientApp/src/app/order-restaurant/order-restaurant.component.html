@@ -5,41 +5,55 @@
         </div>
     </div>
 
-    <main *ngIf="generalError === undefined && initialized">
+    <section id="main" role="main" *ngIf="generalError === undefined && initialized">
+        <div class="focus-outlet" tabindex="-1" role="group">
 
-        <section class="store-header">
-            <img src="https://images.pexels.com/photos/2619967/pexels-photo-2619967.jpeg?crop=entropy&cs=srgb&dl=pizza-2619967.jpg&fit=crop&fm=jpg&h=853&w=1280" />
-        </section>
+            <div id="restaurants-menu">
+
+                <div id="menu-hero" class="hero">
+                    <div class="hero-image">
+                        <div class="background-image" style='background-image:url("https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?cs=srgb&dl=fries-with-leaves-dish-718742.jpg&fm=jpg")'></div>
+                    </div>
+                    <div class="hero-content clearfix">
+                        <div class="centered">
+
+                            <div class="restaurant-hero-card">
+                                <div class="hero-card-inner">
+                                    <h1>{{restaurant.name}}</h1>
+                                    <p>
+                                        {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
+                                        <br />{{restaurant.phone}}
+                                        <br />Öffnungszeiten
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="categories">
+                    <div class="bar">
+                        <div class="bar-inner">
+                            <ul class="category-links" role="navigation">
+                                <li class="category-link" *ngFor="let dishCategory of dishCategories">
+                                    <a class="text-link" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <div class="container store-container">
             <div class="cols">
 
                 <div class="col store-info">
-                    <div class="header-wrapper">
 
-                        <!-- Gastroinformationen -->
-                        <div class="store-information">
-                            <h1 class="name">{{restaurant.name}}</h1>
-                            <h2>
-                                <span class="address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span>
-                            </h2>
-                        </div>
 
-                        <!-- Gerichtkategorien -->
-                        <div class="store-categories">
-                            <span class="wrapper">
-                                <div class="categories">
-                                    <div class="category" *ngFor="let dishCategory of dishCategories">
-                                        <!-- class="category is-active" wenn angeklickt -->
-                                        <a href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
-                                    </div>
-                                </div>
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <!-- Gerichte -->
+                    
                     <section class="store-section">
                         <div class="wrapper">
                             <div id="{{dishCategory.id}}" *ngFor="let dishCategory of dishCategories">
@@ -83,13 +97,13 @@
 
                 </div>
 
-                <!-- START: Warenkorb -->
+                
                 <div class="col store-cart-container">
                     <section class="store-cart">
                         <section class="cart-products">
                             <h1 class="cart-title">Warenkorb</h1>
 
-                            <!-- Bestellinforamationen -->
+                            
                             <div class="cart-header">
                                 <div class="pair">
                                     <img class="pair-icon" src="../../assets/img/icons/order-restaurant/lieferzeit.svg" alt="Icon" />
@@ -98,23 +112,23 @@
                                 <div class="pair">
                                     <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" placement="bottom" ngbTooltip="Min. {{getCart().getMinimumOrderValueText()}} &euro;" />
                                 </div>
-                                <!-- Wenn Selbstabholung == true -->
+                                
                                 <div class="pair">
-                                    <!-- Anderes Icon -->
+                                    
                                     <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" placement="bottom" ngbTooltip="Selbstabholung möglich" />
                                 </div>
                             </div>
 
-                            <!-- Produktliste -->
+                            
                             <div class="products-list">
 
-                                <!-- Warenkorb leer -->
+                                
                                 <div class="cart-empty" *ngIf="isCartEmpty()">
                                     <img src="../../assets/img/icons/order-restaurant/" alt="" />
                                     <div class="cart-empty-text">LEER</div>
                                 </div>
 
-                                <!-- Warenkorb -->
+                                
                                 <div class="cart-body" *ngFor="let orderedDish of getCart().orderedDishes">
                                     <section class="product">
                                         <div class="top">
@@ -134,7 +148,7 @@
 
                             </div>
 
-                            <!-- Checkout -->
+                            
                             <div class="cart-total" *ngIf="!isCartEmpty()">
                                 <span class="total-label">Gesamt</span>
                                 <div class="total-seperator"></div>
@@ -149,5 +163,5 @@
             </div>
         </div>
 
-    </main>
+    </section>
 </block-ui>

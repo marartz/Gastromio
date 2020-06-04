@@ -92,14 +92,6 @@
     }
 }
 
-#home .background-image {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-}
-
 #home .left-content {
     height: 100%;
     max-width: none;
@@ -198,7 +190,172 @@
 }
 /* ENDE: #home > #restaurants */
 /* ENDE: #home */
+/* START: #restaurants-menu */
+#restaurants-menu {
+    background-color: #f8f8f6;
+}
+/* START: #restaurants-menu > .hero */
+#restaurants-menu .hero {
+    background-color: #dedede;
+    overflow: hidden;
+	  position: relative;
+}
 
+@media screen and (min-width: 768px) {
+    #restaurants-menu .hero {
+	      height: 100%;
+    }
+}
+
+#restaurants-menu .hero .hero-image {
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+	  top: 0px;
+	  left: 0px;
+	  bottom: 0px;
+	  z-index: 0;
+}
+
+#restaurants-menu .hero .hero-image .background-image {
+    background-position: 10% center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+
+@media screen and (min-width: 900px) {
+    #restaurants-menu .hero .hero-image .background-image {
+        background-position: 9% center;
+    }
+}
+
+#restaurants-menu .hero .hero-content {
+    padding: 18px;
+    position: relative;
+    z-index: 2;
+}
+
+@media screen and (min-width: 768px) {
+    #restaurants-menu .hero .hero-content {
+        padding: 80px 0px;
+    }
+}
+
+#restaurants-menu .hero .hero-content .centered {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 480px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+#restaurants-menu .restaurant-hero-card .hero-card-inner {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, .16);
+    padding: 32px 40px;
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+#restaurants-menu .restaurant-hero-card .hero-card-inner h1 {
+    color: #3b4245;
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#restaurants-menu .restaurant-hero-card .hero-card-inner p {
+    color: #6d6d6d;
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/* ENDE: #restaurants-menu > .hero */
+/* START: #restaurants-menu > .categories */
+#restaurants-menu .categories {
+     border-top: 1px solid #e5e5e5;
+     box-shadow: 0px 2px 4px rgba(0, 0, 0, .08);
+     height: 72px;
+     margin-top: 0px;
+     position: relative;
+     transition: all .3s cubic-bezier(.215, .61, .355, 1);
+     width: 100%;
+	   z-index: 18;
+}
+
+#restaurants-menu .categories .bar {
+    float: none;
+    padding: 0px;
+    z-index: 9;
+}
+
+#restaurants-menu .categories .bar-inner {
+    background: #fff;
+    height: 72px;
+    padding: 0px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+#restaurants-menu .categories ul.category-links {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    list-style: none;
+    padding-left: 0px;
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#restaurants-menu .categories category-link {
+    cursor: pointer;
+    display: block;
+    padding: 0px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%; 
+}
+
+#restaurants-menu .categories .text-link {
+    color: #6d6d6d;
+    display: block;
+    line-height: 72px;
+    transition: .3s all cubic-bezier(.215, .61, .355, 1);
+    white-space: nowrap;
+    width: 100%;
+}
+
+@media screen and (min-width: 900px) {
+    #restaurants-menu .categories .text-link {
+        padding: 0px 72px;
+    }
+}
+
+#restaurants-menu .categories .text-link:active,
+#restaurants-menu .categories .text-link:focus,
+#restaurants-menu .categories .text-link:hover {
+    color: #1f4f46;
+}
+/* ENDE: #restaurants-menu > .categories */
+/* ENDE: #restaurants-menu */
 /* START: Restaurant-Card */
 .restaurant-card {
     border-radius: 8px;
@@ -308,3 +465,11 @@
     margin-left: auto;
 }
 /* ENDE: Restaurant-Card */
+
+.background-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
