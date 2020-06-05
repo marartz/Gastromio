@@ -84,7 +84,7 @@
                 </div>
 
                 <!-- START: Warenkorb -->
-                <div class="col store-cart-container">
+                <div id="cart" class="col store-cart-container" [class.visible]="isCartVisible()">
                     <section class="store-cart">
                         <section class="cart-products">
                             <h1 class="cart-title">Warenkorb</h1>

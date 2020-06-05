@@ -13,12 +13,15 @@ import { DishModel } from '../dish-category/dish.model';
 export class OrderService {
   private baseUrl = 'api/v1/order';
 
+  private isCartVisibile: boolean;
   private cart: CartModel;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService
-  ) { }
+  ) {
+    this.isCartVisibile = false;
+  }
 
 
   public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
@@ -52,6 +55,18 @@ export class OrderService {
       })
     };
     return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
+  }
+
+  public isCartVisible(): boolean {
+    return this.isCartVisibile;
+  }
+
+  public showCart(): void {
+    this.isCartVisibile = true;
+  }
+
+  public hideCart(): void {
+    this.isCartVisibile = false;
   }
 
   public getCart(): CartModel {
