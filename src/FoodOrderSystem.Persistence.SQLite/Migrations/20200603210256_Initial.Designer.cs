@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodOrderSystem.Persistence.SQLite.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20200531170604_Initial")]
+    [Migration("20200603210256_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -257,9 +257,6 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("PasswordHash")

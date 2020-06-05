@@ -69,7 +69,7 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var role = (Role)Enum.Parse(typeof(Role), addUserModel.Role);
 
-            var commandResult = await commandDispatcher.PostAsync<AddUserCommand, UserViewModel>(new AddUserCommand(addUserModel.Name, role, addUserModel.Email, addUserModel.Password), currentUser);
+            var commandResult = await commandDispatcher.PostAsync<AddUserCommand, UserViewModel>(new AddUserCommand(role, addUserModel.Email, addUserModel.Password), currentUser);
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
@@ -88,7 +88,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var role = (Role)Enum.Parse(typeof(Role), changeUserDetailsModel.Role);
 
             var commandResult = await commandDispatcher.PostAsync<ChangeUserDetailsCommand, bool>(
-                new ChangeUserDetailsCommand(new UserId(userId), changeUserDetailsModel.Name, role, changeUserDetailsModel.Email),
+                new ChangeUserDetailsCommand(new UserId(userId), role, changeUserDetailsModel.Email),
                 currentUser
             );
 

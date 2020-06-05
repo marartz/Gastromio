@@ -20,10 +20,10 @@ namespace FoodOrderSystem.Domain.Commands.Login
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
-            if (string.IsNullOrWhiteSpace(command.Username) || string.IsNullOrWhiteSpace(command.Password))
+            if (string.IsNullOrWhiteSpace(command.Email) || string.IsNullOrWhiteSpace(command.Password))
                 return FailureResult<UserViewModel>.Create(FailureResultCode.RequiredFieldEmpty);
 
-            var user = await userRepository.FindByNameAsync(command.Username, cancellationToken);
+            var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user == null)
                 return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.UserDoesNotExist);
 

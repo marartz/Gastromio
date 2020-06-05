@@ -30,7 +30,6 @@ export class ChangeUserDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.changeUserDetailsForm = this.formBuilder.group({
-      name: [this.user.name, Validators.required],
       role: [this.user.role, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]]
     });
@@ -44,7 +43,7 @@ export class ChangeUserDetailsComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.name, data.role, data.email)
+    const subscription = this.userAdminService.changeUserDetailsAsync(this.user.id, data.role, data.email)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

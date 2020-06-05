@@ -7,8 +7,6 @@ namespace FoodOrderSystem.Domain.ViewModels
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
-
         public string Role { get; set; }
 
         public string Email { get; set; }
@@ -18,7 +16,6 @@ namespace FoodOrderSystem.Domain.ViewModels
             return new UserViewModel
             {
                 Id = user.Id.Value,
-                Name = user.Name,
                 Role = user.Role.ToString(),
                 Email = user.Email
             };

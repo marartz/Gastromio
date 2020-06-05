@@ -593,13 +593,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     )
 
   formatUser(user: UserModel): string {
-    let result = user.name;
-
-    if (user.email !== undefined && user.email !== null) {
-      result = result + ' (' + user.email + ')';
-    }
-
-    return result;
+    return user.email;
   }
 
   addSelectedUser(): void {
@@ -621,10 +615,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
         this.restaurant.administrators.push(this.userToBeAdded);
         this.restaurant.administrators.sort((a, b) => {
-          if (a.name < b.name) {
+          if (a.email < b.email) {
             return -1;
           }
-          if (a.name > b.name) {
+          if (a.email > b.email) {
             return 1;
           }
           return 0;

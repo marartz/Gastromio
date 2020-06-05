@@ -27,7 +27,6 @@ export class AddUserComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addUserForm = this.formBuilder.group({
-      username: ['', Validators.required],
       role: ['', Validators.required],
       email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
@@ -47,7 +46,7 @@ export class AddUserComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.userAdminService.addUserAsync(data.username, data.role, data.email, data.password)
+    const subscription = this.userAdminService.addUserAsync(data.role, data.email, data.password)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();

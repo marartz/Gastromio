@@ -21,7 +21,7 @@ namespace FoodOrderSystem.Persistence
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<User>)dbContext.Users.Select(FromRow).OrderBy(en => en.Name).ToList();
+                return (ICollection<User>)dbContext.Users.Select(FromRow).OrderBy(en => en.Email).ToList();
             }, cancellationToken);
         }
 
@@ -29,7 +29,7 @@ namespace FoodOrderSystem.Persistence
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<User>)dbContext.Users.Where(en => EF.Functions.Like(en.Name, $"%{searchPhrase}%")).OrderBy(en => en.Name).Select(FromRow).ToList();
+                return (ICollection<User>)dbContext.Users.Where(en => EF.Functions.Like(en.Email, $"%{searchPhrase}%")).OrderBy(en => en.Email).Select(FromRow).ToList();
             }, cancellationToken);
         }
 
@@ -38,15 +38,15 @@ namespace FoodOrderSystem.Persistence
             return Task.Factory.StartNew(() =>
             {
                 var dbRole = ToDbRole(role);
-                return (ICollection<User>)dbContext.Users.Where(en => en.Role == dbRole).OrderBy(en => en.Name).Select(FromRow).ToList();
+                return (ICollection<User>)dbContext.Users.Where(en => en.Role == dbRole).OrderBy(en => en.Email).Select(FromRow).ToList();
             }, cancellationToken);
         }
 
-        public Task<User> FindByNameAsync(string name, CancellationToken cancellationToken = default)
+        public Task<User> FindByEmailAsync(string email, CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
-                var row = dbContext.Users.FirstOrDefault(en => en.Name == name);
+                var row = dbContext.Users.FirstOrDefault(en => en.Email == email);
                 if (row == null)
                     return null;
                 return FromRow(row);
@@ -122,7 +122,6 @@ namespace FoodOrderSystem.Persistence
             var role = FromDbRole(row.Role);
 
             return new User(new UserId(row.Id),
-                row.Name,
                 role,
                 row.Email,
                 row.PasswordSalt,
@@ -148,7 +147,6 @@ namespace FoodOrderSystem.Persistence
         private static void ToRow(User obj, UserRow row)
         {
             row.Id = obj.Id.Value;
-            row.Name = obj.Name;
             row.Role = ToDbRole(obj.Role);
             row.Email = obj.Email;
             row.PasswordSalt = obj.PasswordSalt;
