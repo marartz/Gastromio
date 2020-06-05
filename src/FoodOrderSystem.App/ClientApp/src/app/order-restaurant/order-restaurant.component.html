@@ -123,8 +123,14 @@
                                             <span class="product-amount">{{orderedDish.count}}x</span>
                                             <div class="info">
                                                 <span class="product-name">{{orderedDish.dish.name}}</span>
+                                                <ng-container *ngIf="orderedDish.dish.variants.length > 1">
+                                                  <span class="product-variant">{{orderedDish.variant.name}}</span>
+                                                </ng-container>
                                                 <span class="product-price">{{orderedDish.getPriceText()}} &euro;</span>
                                             </div>
+                                        </div>
+                                        <div class="middle">
+                                            <span class="remarks">{{orderedDish.remarks}}</span>
                                         </div>
                                         <div class="bottom">
                                             <img (click)="onDecrementDishVariantCount(orderedDish)" src="../../assets/img/icons/order-restaurant/minus.svg" alt="Icon" />

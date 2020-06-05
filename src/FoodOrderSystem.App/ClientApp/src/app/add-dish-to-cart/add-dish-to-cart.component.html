@@ -1,0 +1,21 @@
+<div>
+  <h2 class="product-name">{{dish.name}}</h2>
+  <p class="product-description">{{dish.description}}</p>
+  <p class="product-info">{{dish.productInfo}}</p>
+
+  <ng-container *ngIf="dish.variants.length === 1">
+    <label class="product-price">Preis:
+      <input type="text" readonly value="{{getVariantPrice(dish.variants[0])}}" />
+    </label>
+  </ng-container>
+
+  <ng-container *ngIf="dish.variants.length > 1">
+    <label class="product-price">Variante:
+      <select [(ngModel)]="selectedVariant">
+        <option *ngFor="let variant of dish.variants" [ngValue]="variant">{{getVariantText(variant)}}</option>
+      </select>
+    </label>
+  </ng-container>
+</div>
+
+<button (click)="onSubmit()">Hinzufügen</button>

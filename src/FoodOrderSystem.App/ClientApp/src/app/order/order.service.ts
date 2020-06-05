@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { DishCategoryModel } from '../dish-category/dish-category.model';
-import { CartModel } from '../cart/cart.model';
-import { OrderedDishModel } from '../cart/ordered-dish.model';
-import { DishVariantModel } from '../dish-category/dish-variant.model';
-import { DishModel } from '../dish-category/dish.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../auth/auth.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {DishCategoryModel} from '../dish-category/dish-category.model';
+import {CartModel} from '../cart/cart.model';
+import {OrderedDishModel} from '../cart/ordered-dish.model';
+import {DishVariantModel} from '../dish-category/dish-variant.model';
+import {DishModel} from '../dish-category/dish.model';
 
 @Injectable()
 export class OrderService {
