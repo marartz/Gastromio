@@ -12,8 +12,6 @@ import {OrderedDishModel} from '../cart/ordered-dish.model';
 export class EditOrderedDishComponent implements OnInit {
   @Input() public orderedDish: OrderedDishModel;
 
-  selectedVariant: DishVariantModel;
-
   constructor(
     public activeModal: NgbActiveModal,
     private orderService: OrderService
@@ -29,5 +27,25 @@ export class EditOrderedDishComponent implements OnInit {
 
   getVariantText(variant: DishVariantModel): string {
     return variant.name + ' ' + this.getVariantPrice(variant);
+  }
+
+  incCount(): void {
+    this.orderService.incrementDishVariantCount(this.orderedDish.itemId);
+  }
+
+  decCount(): void {
+    if (this.orderedDish.count <= 1) {
+      return;
+    }
+    this.orderService.decrementDishVariantCount(this.orderedDish.itemId);
+  }
+
+  onClose(): void {
+    this.activeModal.close();
+  }
+
+  onRemove(): void {
+    this.orderService.removeDishVariantFromCart(this.orderedDish.itemId);
+    this.activeModal.close();
   }
 }
