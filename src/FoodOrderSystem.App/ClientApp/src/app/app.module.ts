@@ -31,6 +31,7 @@ import { CuisineAdminService } from './cuisine/cuisine-admin.service';
 import { CustomerInformationComponent } from './customer-information/customer-information.component';
 import { DishProductInfoComponent } from './dish-productinfo/dish-productinfo.component';
 import { EditDishComponent } from './edit-dish/edit-dish.component';
+import { EditOrderedDishComponent } from './edit-ordered-dish/edit-ordered-dish.component';
 import { GeneralErrorComponent } from './http-error-handling/general-error.component';
 import { GeneralTermsAndConditionsComponent } from './general-terms-and-conditions/general-terms-and-conditions.component';
 import { HttpErrorHandlingService } from './http-error-handling/http-error-handling.service';
@@ -110,6 +111,7 @@ import { UserAdminService } from './user/user-admin.service';
     CustomerInformationComponent,
     DishProductInfoComponent,
     EditDishComponent,
+    EditOrderedDishComponent,
     GeneralErrorComponent,
     GeneralTermsAndConditionsComponent,
     ImprintComponent,

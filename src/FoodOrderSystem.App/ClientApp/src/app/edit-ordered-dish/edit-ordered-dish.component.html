@@ -1,0 +1,15 @@
+<div>
+  <h2 class="product-name">{{orderedDish.dish.name}}</h2>
+  <p class="product-description">{{orderedDish.dish.description}}</p>
+  <p class="product-info">{{orderedDish.dish.productInfo}}</p>
+
+  <ng-container *ngIf="orderedDish.dish.variants.length > 1">
+    <label class="product-price">Variante:
+      <input type="text" readonly value="{{orderedDish.variant.name}}" />
+    </label>
+  </ng-container>
+
+  <label class="product-price">Preis:
+    <input type="text" readonly value="{{getVariantPrice(orderedDish.variant)}}" />
+  </label>
+</div>

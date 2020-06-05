@@ -81,6 +81,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\add-dish-to-cart" />
+    <Folder Include="ClientApp\src\app\edit-ordered-dish" />
     <Folder Include="Pages\Shared\" />
     <Folder Include="ClientApp\src\app\validators\" />
   </ItemGroup>

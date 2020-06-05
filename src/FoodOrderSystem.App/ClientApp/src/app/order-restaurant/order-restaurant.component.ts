@@ -16,6 +16,7 @@ import { CartModel } from '../cart/cart.model';
 import { OrderedDishModel } from '../cart/ordered-dish.model';
 import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.component';
 import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.component';
+import {EditOrderedDishComponent} from "../edit-ordered-dish/edit-ordered-dish.component";
 
 @Component({
   selector: 'app-order-restaurant',
@@ -166,6 +167,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     }
     const modalRef = this.modalService.open(AddDishToCartComponent);
     modalRef.componentInstance.dish = dish;
+    modalRef.result.then(() => {
+    }, () => { });
+  }
+
+  public onEditOrderedDish(orderedDish: OrderedDishModel): void {
+    const modalRef = this.modalService.open(EditOrderedDishComponent);
+    modalRef.componentInstance.orderedDish = orderedDish;
     modalRef.result.then(() => {
     }, () => { });
   }

@@ -118,7 +118,7 @@
                                     <div class="info-group-row"><h2 class="info-group-label product-name">{{orderedDish.dish.name}} <ng-container *ngIf="orderedDish.dish.variants.length > 1">({{orderedDish.variant.name}})</ng-container></h2></div>
                                     <div class="info-group-row"><p class="product-description">{{orderedDish.remarks}}</p></div>
                                     <div class="info-group-row card-actions-row">
-                                        <a class="text-link" role="button" tabindex="0">Bearbeiten</a>
+                                        <a class="text-link" role="button" tabindex="0" (click)="onEditOrderedDish(orderedDish)">Bearbeiten</a>
                                         <a class="text-link" role="button" tabindex="0" (click)="onRemoveDishVariantFromCart(orderedDish)">Entfernen</a>
                                     </div>
                                 </div>
