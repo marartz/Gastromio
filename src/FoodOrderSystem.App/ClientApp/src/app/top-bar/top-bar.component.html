@@ -12,7 +12,7 @@
             <div class="account-button">
 
                 <!-- Nicht angemeldet -->
-                <a class="nav-link nav-item" *ngIf="getUserEmail() === undefined" id="login" (click)="openLoginForm()">
+                <a class="nav-link nav-item" *ngIf="getUserEmail() === undefined" id="login" [routerLink]="['/login']">
                     <svg width="24" height="24" viewBox="0 0 24 24">
                         <g fill="none" fill-rule="evenodd">
                             <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#1F4F46" fill-rule="nonzero"></path>

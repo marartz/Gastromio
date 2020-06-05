@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-order-restaurants',
   templateUrl: './order-restaurants.component.html',
-  styleUrls: ['./order-restaurants.component.css']
+  styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend.min.css']
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   restaurants: RestaurantModel[];
