@@ -32,7 +32,7 @@ export class AuthService {
     return JSON.parse(userJSON);
   }
 
-  public loginAsync(username: string, password: string): Observable<{}> {
+  public loginAsync(email: string, password: string): Observable<{}> {
     return new Observable((observer: Observer<{}>) => {
       const httpOptions = {
         headers: new HttpHeaders({
@@ -41,7 +41,7 @@ export class AuthService {
         })
       };
 
-      const subscription = this.http.post<LoginResultModel>(this.loginUrl, { username, password }, httpOptions).subscribe(
+      const subscription = this.http.post<LoginResultModel>(this.loginUrl, { email, password }, httpOptions).subscribe(
         (loginResult: LoginResultModel) => {
           localStorage.setItem('token', loginResult.token);
           localStorage.setItem('user', JSON.stringify(loginResult.user));

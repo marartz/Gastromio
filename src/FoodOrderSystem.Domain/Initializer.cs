@@ -46,7 +46,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueTooLong, "Feldwert zu lang");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueInvalid, "Feldwert hat einen ungültigen Wert");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ValueMustNotBeNegative, "Der Wert darf nicht negativ sein");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Benutzername und/oder Passwort ist nicht korrekt");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Emailadresse und/oder Passwort ist nicht korrekt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserAlreadyExists, "Benutzer existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CannotRemoveCurrentUser, "Sie können nicht den gerade angemeldeten Benutzer löschen");

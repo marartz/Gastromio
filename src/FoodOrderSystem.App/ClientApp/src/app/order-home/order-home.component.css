@@ -1,163 +1,7 @@
-.order-home {
-    background-color: #f8f8f6;
-    height: 100%;
-    padding-top: 72px;
-    transition: all .4s cubic-bezier(.57, .06, .05, .95);
-    width: 100%;
-}
-
-.order-home .focus-outlet {
-    height: inherit;
-    width: initial;
-}
-
-.order-home #home.index-pickup-delivery {
-    height: 100%;
-}
-
-#home #home-hero {
-    width: 100%;
-}
-
-@media screen and (min-width: 930px) {
-    .order-home {
-        padding-top: 72px;
-    }
-    #home #home-hero {
-        min-height: calc(100vh - 4.5rem);
-    }
-}
-
-
-/* START: Banner */
-#home .image-wrapper {
-    height: calc(50vh - 4.5rem);
-    position: relative;
-    width: 100%;
-}
-
-#home .welcome-image {
-    background-position: center center;
-    background-size: cover;
-    height: calc(50vh - 4.5rem);
-    position: sticky;
-    top: 4.5rem; 
-}
-
-#home .background-image {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-}
-
-@media screen and (min-width: 930px) {
-    #home .image-wrapper {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        height: 100%;
-        width: 58.33333%;
-        z-index: 0;
-    }
-    #home .welcome-image {
-        height: calc(100vh - 4.5rem);
-    }
-}
-
-@media screen and (min-width: 1920px) {
-    #home .image-wrapper {
-	      width: 75%;
-    }
-}
-/* ENDE: Banner */
-
-/* START: Bestellen */
-#home #home-hero .left {
-    background-color: #f8f8f6;
-    width: 100%;
-}
-
-#home .left-content {
-    height: 100%;
-    max-width: none;
-    padding: 32px 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-#home .left-content::after {
-    clear: both;
-    content: " ";
-    display: table;
-}
-
-#home.index-pickup-delivery #order {
-    margin-bottom: 15px;
-}
-
-
-#home #order h1 {
-    color: #1f4f46;
-    font-family: proxima-nova, sans-serif;
-    font-size: 40px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 8px;
-    text-align: left;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    
-}
-
-#home #order h3 {
-    color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 19px;
-    margin-bottom: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-@media screen and (min-width: 720px) {
-    #home .left-content {
-	      padding: 100px 32px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
-
-@media screen and (min-width: 930px) {
-    #home #home-hero .left {
-        background-color: transparent;
-        height: inherit;
-        min-height: calc(100vh - 4.5rem);
-        position: relative;
-        width: 41.66667%;
-    }
-     #home #order {
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-}
-
-@media screen and (min-width: 1920px) {
-    #home #home-hero .left {
-	      width: 25%;
-    }
-    #home .left-content {
-	      padding-left: 27px;
-        padding-right: 27px;
-    }
-}
-
 /* START: Tab-Bar (Lieferung/Abholung) */
 .tab-bar {
     background-color: #fff;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
     display: flex;
     flex-direction: row;
     position: relative;
@@ -179,35 +23,15 @@
 
 .tab-bar .tab-item,
 .tab-bar .tab-item:hover {
-	  background: 0 0;
+	  background: transparent;
 }
 
-button {
-    background: #1f4f46;
-    border: 0 solid;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    font-family: proxima-nova, sans-serif;
-    font-size: .75rem;
-    font-weight: 600;
-    letter-spacing: .1667em;
-    line-height: 1.2;
-    padding: 1rem 1.125rem;
-    text-align: center;
-    text-decoration: none;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.tab-item .tab-label {
+.tab-item span {
     color: #6d6d6d;
     cursor: pointer;
     display: block;
     font-family: proxima-nova, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 2px;
     line-height: 64px;
     text-decoration: none;
@@ -216,37 +40,37 @@ button {
     white-space: nowrap;
 }
 
-.tab-item.selected .tab-label,
-.tab-item:focus .tab-label,
-.tab-item:hover .tab-label {
+.tab-item.selected span,
+.tab-item:focus span,
+.tab-item:hover span {
     color: #1f4f46;
 }
 
-.tab-bar .tab-bar-slider {
+.tab-bar .tab-slider {
     bottom: 0px;
     height: 4px;
     position: absolute;
     width: 100%;
 }
 
-.tab-bar-slider .bar {
+.tab-slider .bar {
     background-color: #1f4f46;
     height: 100%;
     position: absolute;
     transition: left 150ms cubic-bezier(.57, .06, .05, .95);
 }
 /* ENDE: Tab-Bar (Lieferung/Abholung) */
-/* START: Tabpanel (Lieferung/Abholung) */
-.tab-panel {
+/* START: Tab (Lieferung/Abholung) */
+.tab {
 	  display: none;
 }
 
-.tab-panel.selected {
+.tab.selected {
     display: block;
 }
 
-.tab-panel .card-inner {
-    border-radius: 0px 0px 8px 8px;
+.tab .card-inner {
+    border-radius: 0px 0px 10px 10px;
     box-shadow: 0px 0px 0px 2px transparent;
     margin-left: 0px;
     margin-right: 0px;
@@ -255,34 +79,30 @@ button {
     width: 100%;
 }
 
-.tab-panel .card-inner .card-content {
-    background: 0 0;
-    padding: 0px;
-}
-
-.tab-panel .card-inner .card-content form {
+.tab .card-inner .card-content {
     background: #fff;
-    padding: 16px;
 }
 
-.tab-panel .card-inner .card-content .search-wrap {
+.tab .card-inner .card-content form {
+    background: #fff;
+}
+
+.tab .card-inner .card-content .search-wrap {
     margin-top: 48px;
     margin-bottom: 20px;
 }
 
-.tab-panel .card-inner .card-content .search-wrap .search {
-    font-size: 0;
+.tab .card-inner .card-content .search-wrap .search {
     margin-bottom: 0px;
     margin-top: 32px;
     position: relative;
 }
 
-.tab-panel .card-inner .card-content .search-wrap .search input {
+.tab .card-inner .card-content .search-wrap .search input {
     background-color: transparent;
     border: 0px;
     border-bottom: 2px solid #ccc;
     box-shadow: none;
-    caret-color: #32b593;
     color: #3b4245;
     font-family: proxima-nova, sans-serif;
     font-size: 20px;
@@ -303,56 +123,54 @@ button {
     z-index: 1;
 }
 
-.tab-panel .card-inner .card-content .search-wrap .search input:last-of-type {
+.tab .card-inner .card-content .search-wrap .search input:last-of-type {
     margin: 0px;
     padding-left: 46px;
     padding-right: 20px;
 }
 
-.tab-panel .card-inner .card-content .search-wrap .search input::placeholder {
+.tab .card-inner .card-content .search-wrap .search input::placeholder {
+    opacity: 1;
 	  color: #6d6d6d;
-	  opacity: 1;
 	  -webkit-text-fill-color: #6d6d6d;
 }
 
-.tab-panel .card-inner .card-content .search-wrap .search input:hover,
-.tab-panel .card-inner .card-content .search-wrap .search input:focus {
-    border-bottom: 2px solid #a9a54c; /* Ori. am HGB */
-    box-shadow: none;
+.tab .card-inner .card-content .search-wrap .search input:hover,
+.tab .card-inner .card-content .search-wrap .search input:focus {
+    border-bottom: 2px solid #a9a54c;
 }
 
-.tab-panel .card-inner .card-content .search-wrap .search svg {
+.tab .card-inner .card-content .search-wrap .search svg {
     display: inherit;
     margin-left: 16px;
     position: absolute;
     top: 8px;
 }
 
-.tab-panel .card-inner .viewall-restaurants-container {
+.tab .card-inner .view-all {
     background-color: #fff;
-    border-radius: 0px 0px 8px 8px;
+    border-radius: 0px 0px 10px 10px;
     padding: 0px 16px 16px;
 }
 
-.tab-panel .card-inner .viewall-restaurants-container a {
+.tab .card-inner .view-all a {
     color: #1f4f46;
     cursor: pointer;
     display: inline-block;
     font-family: proxima-nova, sans-serif;
     font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: 1.6px;
     margin-top: 10px;
-    text-transform: uppercase;
     text-decoration: none;
+    text-transform: uppercase;
     transition: all .3s cubic-bezier(.57, .06, .05, .95);
 }
 
-.tab-panel .card-inner .viewall-restaurants-container a:hover {
+.tab .card-inner .view-all a:hover {
     color: #000;
     opacity: .85;
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
 }
-/* ENDE: Tabpanel (Lieferung/Abholung) */
+/* ENDE: Tab (Lieferung/Abholung) */
 /* ENDE: Bestellen */

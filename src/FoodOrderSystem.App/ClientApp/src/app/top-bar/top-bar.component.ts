@@ -5,11 +5,12 @@ import { AuthService } from '../auth/auth.service';
 import { LoginComponent } from '../login/login.component';
 import { UserModel } from '../user/user.model';
 import { Router } from '@angular/router';
+import {OrderService} from '../order/order.service';
 
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.css']
+  styleUrls: ['./top-bar.component.css', '../../assets/css/frontend.min.css']
 })
 export class TopBarComponent implements OnInit {
 
@@ -17,17 +18,18 @@ export class TopBarComponent implements OnInit {
     private modalService: NgbModal,
     private authService: AuthService,
     private router: Router,
+    private orderService: OrderService
   ) { }
 
   ngOnInit() {
   }
 
-  getUsername(): string {
+  getUserEmail(): string {
     const currentUser: UserModel = this.authService.getUser();
-    return currentUser !== undefined ? currentUser.name : undefined;
+    return currentUser !== undefined ? currentUser.email : undefined;
   }
 
-  getUserrole(): string {
+  getUserRole(): string {
     const currentUser: UserModel = this.authService.getUser();
     return currentUser !== undefined ? currentUser.role : undefined;
   }
@@ -49,5 +51,22 @@ export class TopBarComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['']);
+  }
+
+  getDishCountOfOrderText(): string {
+    const count = this.orderService.getCart()?.getDishCountOfOrder();
+    if (!count) {
+      return '0';
+    }
+    return count.toString();
+  }
+
+  toggleCartVisibility(): void {
+    console.log('toggle');
+    if (this.orderService.isCartVisible()) {
+      this.orderService.hideCart();
+    } else {
+      this.orderService.showCart();
+    }
   }
 }

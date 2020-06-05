@@ -29,14 +29,12 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name</th>
                             <th>Rolle</th>
                             <th>E-Mail</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let user of pageOfUsers" class="user">
-                            <td>{{user.name}}</td>
                             <td>{{localizeRole(user.role)}}</td>
                             <td>{{user.email}}</td>
                             <td>

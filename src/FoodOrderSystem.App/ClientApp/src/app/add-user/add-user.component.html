@@ -24,14 +24,6 @@
                 <div class="wrapper">
                     <div class="admin-input">
                         <div class="input-underline">
-                            <input class="input" type="text" placeholder="Benutzername" id="username" formControlName="username" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-                            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                                <div *ngIf="f.username.errors.required">Benutzername wird benötigt.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="admin-input">
-                        <div class="input-underline">
                             <input class="input" type="email" placeholder="E-Mail-Adresse" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
                             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                                 <div *ngIf="f.email.errors.required">E-Mail wird benötigt.</div>

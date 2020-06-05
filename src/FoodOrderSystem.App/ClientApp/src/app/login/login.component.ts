@@ -1,36 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./login.component.css', '../../assets/css/frontend.min.css']
 })
 export class LoginComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   loginForm: FormGroup;
   generalError: string;
   submitted = false;
+  returnUrl = '';
 
   constructor(
-    public activeModal: NgbActiveModal,
+    private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.loginForm = this.formBuilder.group({
-      Username: ['', Validators.required],
+      Email: ['', Validators.required],
       Password: ['', Validators.required]
     });
   }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe(params => {
+      const tempReturnUrl = params.get('returnUrl');
+      if (!this.isAbsoluteUrl(tempReturnUrl)) {
+        this.returnUrl = tempReturnUrl;
+      }
+    });
   }
 
   get f() { return this.loginForm.controls; }
@@ -42,13 +50,13 @@ export class LoginComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.authService.loginAsync(loginData.Username, loginData.Password)
+    const subscription = this.authService.loginAsync(loginData.Email, loginData.Password)
       .subscribe(() => {
         subscription.unsubscribe();
         this.generalError = undefined;
         this.loginForm.reset();
-        this.activeModal.close('Close click');
         this.blockUI.stop();
+        this.router.navigateByUrl(this.returnUrl);
       }, (error: HttpErrorResponse) => {
           subscription.unsubscribe();
           const errors = this.httpErrorHandlingService.handleError(error);
@@ -61,5 +69,10 @@ export class LoginComponent implements OnInit {
           }
           this.blockUI.stop();
       });
+  }
+
+  isAbsoluteUrl(url: string): boolean {
+    const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+    return r.test(url);
   }
 }

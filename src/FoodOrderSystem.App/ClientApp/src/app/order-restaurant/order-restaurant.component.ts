@@ -19,7 +19,7 @@ import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.c
 @Component({
   selector: 'app-order-restaurant',
   templateUrl: './order-restaurant.component.html',
-  styleUrls: ['./order-restaurant.component.css']
+  styleUrls: ['./order-restaurant.component.css', '../../assets/css/frontend.min.css']
 })
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
@@ -121,6 +121,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   isCartEmpty(): boolean {
     const cart = this.orderService.getCart();
     return cart === undefined || cart.orderedDishes === undefined || cart.orderedDishes.length === 0;
+  }
+
+  isCartVisible(): boolean {
+    return this.orderService.isCartVisible();
   }
 
   getCart(): CartModel {

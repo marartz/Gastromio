@@ -29,11 +29,11 @@ namespace FoodOrderSystem.Domain.Commands.AddUser
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<UserViewModel>.Forbidden();
 
-            var user = await userRepository.FindByNameAsync(command.Name, cancellationToken);
+            var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user != null)
                 return FailureResult<UserViewModel>.Create(FailureResultCode.UserAlreadyExists);
 
-            var createResult = userFactory.Create(command.Name, command.Role, command.Email, command.Password);
+            var createResult = userFactory.Create(command.Role, command.Email, command.Password);
             if (createResult.IsFailure)
                 return createResult.Cast<UserViewModel>();
 

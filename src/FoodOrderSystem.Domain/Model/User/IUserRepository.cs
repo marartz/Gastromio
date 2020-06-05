@@ -12,7 +12,7 @@ namespace FoodOrderSystem.Domain.Model.User
 
         Task<ICollection<User>> FindByRoleAsync(Role role, CancellationToken cancellationToken = default);
 
-        Task<User> FindByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<User> FindByEmailAsync(string email, CancellationToken cancellationToken = default);
 
         Task<User> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
 

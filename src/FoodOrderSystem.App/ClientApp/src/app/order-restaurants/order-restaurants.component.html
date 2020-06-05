@@ -1,29 +1,52 @@
-<div class="container" style="padding-top: 20px; padding-bottom: 20px;">
-  <div class="row">
-    <div class="col">
-      <div class="search">
-        <input class="form-control mr-sm-2" id="restaurant-search" type="search" maxlength="30" placeholder="Restaurant, z.B. Pizzeria La Piccola" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-      </div>
-      <div class="restaurants mt-3">
-        <div class="restaurant" *ngFor="let restaurant of restaurants">
-          <div class="restaurant-logo-wrapper">
-            <div class="restaurant-logo">
-              <img [src]="restaurant.image" alt="" border="0" />
+<section id="main" class="order-home" role="main">
+    <div class="focus-outlet" tabindex="-1" role="group">
+
+        <div id="home" class="locations">
+            <div id="home-hero">
+
+                <div class="image-wrapper">
+                    <div class="welcome-image">
+                        <div class="background-image" style='background-image:url("https://images.pexels.com/photos/842545/pexels-photo-842545.jpeg?crop=entropy&cs=srgb&dl=round-stainless-steel-bowl-with-cooked-meat-and-vegetables-842545.jpg&fit=crop&fm=jpg&h=1280&w=1920")'></div>
+                    </div>
+                </div>
+
+                <div id="left">
+                    <div class="clearfix left-content">
+                        <div id="restaurants" role="region" tabindex="-1">
+
+                            <div class="restaurant-card" *ngFor="let restaurant of restaurants">
+                                <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]">
+
+                                    <div class="card-content">
+                                        <div class="card-top">
+                                            <h4 class="restaurant-name">{{restaurant.name}}</h4>
+                                        </div>
+                                        <div class="restaurant-description">
+                                            <address>
+                                                {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
+                                                <div class="restaurant-phone" tabindex="0" role="button">
+                                                    <br />{{restaurant.phone}}
+                                                </div>
+                                                <div></div>
+                                                <br />{{getRestaurantSubText(restaurant)}}
+                                                <!-- Öffnungszeiten des Restaurants (bsp. M.o - So.: 10:00 - 18:00 Uhr -->
+                                            </address>
+                                        </div>
+
+                                        <div class="card-details">
+                                            <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]">Bestellen</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          <div class="restaurant-info-wrapper">
-            <h2 class="restaurantname"><a [routerLink]="['/restaurants', restaurant.id]">{{ restaurant.name }}</a></h2>
-            <div class="restaurantbeschreibung">{{getRestaurantSubText(restaurant)}}</div>
-            <div class="bottom-wrapper details">
-              <div class="delivery">
-                <div class="nextdeliverytime">Ab {{ restaurant.nextDeliveryTimeText }} Uhr</div>
-                <div class="delivery-cost">{{ restaurant.deliveryCostsText }} €</div>
-                <div class="min-order">Min. {{ restaurant.minimumOrderValueText }} €</div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+
     </div>
-  </div>
-</div>
+</section>
