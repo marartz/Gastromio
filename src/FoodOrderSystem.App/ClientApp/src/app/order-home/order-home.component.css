@@ -80,13 +80,11 @@
 }
 
 .tab .card-inner .card-content {
-    background: transparent;
-    padding: 0px;
+    background: #fff;
 }
 
 .tab .card-inner .card-content form {
     background: #fff;
-    padding: 16px;
 }
 
 .tab .card-inner .card-content .search-wrap {

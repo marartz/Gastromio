@@ -15,7 +15,7 @@
     <div *ngIf="submitted && f.Password.errors">
         <div *ngIf="f.Password.errors.required" id="error">
             <div id="message" tabindex="-1" role="alert">
-                <span>Bitte gebe eine gültige Emailadresse und ein Passwort an</span>
+                <span>Bitte gebe eine gültige E-Mail-Adresse und ein Passwort an</span>
             </div>
         </div>
         <div *ngIf="f.Password.errors.backend" id="error">
@@ -39,7 +39,7 @@
 
                 <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
                     <div class="form-input">
-                        <input id="email" placeholder="Emailadresse" class="form-field" type="text" formControlName="Email" autocomplete="off" ngbAutofocus />
+                        <input id="email" placeholder="Deine E-Mail-Adresse" class="form-field" type="text" formControlName="Email" autocomplete="off" ngbAutofocus />
                     </div>
                     <div class="form-input">
                         <input id="password" placeholder="Passwort" class="form-field" type="password" formControlName="Password" />

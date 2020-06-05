@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-order-home',
   templateUrl: './order-home.component.html',
-  styleUrls: ['./order-home.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./order-home.component.css', '../../assets/css/frontend.min.css'] 
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
   selectedRestaurant: RestaurantModel;
