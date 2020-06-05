@@ -1,63 +1,63 @@
 <header role="banner">
-    <nav id="navbar" role="navigation">
+  <nav id="navbar" role="navigation">
 
-        <div class="nav-left nav-item">
-            <div id="branding">
-                <a [routerLink]="['/']">Gastromio<span>.de</span></a>
-            </div>
-        </div>
+    <div class="nav-left nav-item">
+      <div id="branding">
+        <a [routerLink]="['/']">Gastromio<span>.de</span></a>
+      </div>
+    </div>
 
-        <div class="nav-right nav-item">
+    <div class="nav-right nav-item">
 
-            <div class="account-button">
+      <div class="account-button">
 
-                <!-- Nicht angemeldet -->
-                <a class="nav-link nav-item" *ngIf="getUserEmail() === undefined" id="login" (click)="openLoginForm()">
-                    <svg width="24" height="24" viewBox="0 0 24 24">
-                        <g fill="none" fill-rule="evenodd">
-                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#1F4F46" fill-rule="nonzero"></path>
-                            <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#1F4F46" fill-rule="nonzero"></path>
-                        </g>
-                    </svg>
-                    <span class="nav-icon-label">Anmelden</span>
-                </a>
+        <!-- Nicht angemeldet -->
+        <a class="nav-link nav-item" *ngIf="getUserEmail() === undefined" id="login" [routerLink]="['/login']">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <g fill="none" fill-rule="evenodd">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#1F4F46" fill-rule="nonzero"></path>
+              <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#1F4F46" fill-rule="nonzero"></path>
+            </g>
+          </svg>
+          <span class="nav-icon-label">Anmelden</span>
+        </a>
 
-                <!-- Angemeldet -->
-                <div class="nav-link nav-item" *ngIf="getUserEmail() !== undefined" ngbDropdown>
-                    <a class="nav-link nav-item" id="userDropDown" ngbDropdownToggle>
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <g fill="none" fill-rule="evenodd">
-                                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#1F4F46" fill-rule="nonzero"></path>
-                                <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#1F4F46" fill-rule="nonzero"></path>
-                            </g>
-                        </svg>
-                        <span class="nav-icon-label">{{getUserEmail()}}&nbsp;</span>
-                    </a>
+        <!-- Angemeldet -->
+        <div class="nav-link nav-item" *ngIf="getUserEmail() !== undefined" ngbDropdown>
+          <a class="nav-link nav-item" id="userDropDown" ngbDropdownToggle>
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <g fill="none" fill-rule="evenodd">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#1F4F46" fill-rule="nonzero"></path>
+                <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#1F4F46" fill-rule="nonzero"></path>
+              </g>
+            </svg>
+            <span class="nav-icon-label">{{getUserEmail()}}&nbsp;</span>
+          </a>
 
-                    <ul id="userDropDown" class="dropdown-menu settings" ngbDropdownMenu aria-labelledby="userDropDown" role="menu">
+          <ul id="userDropDown" class="dropdown-menu settings" ngbDropdownMenu aria-labelledby="userDropDown" role="menu">
 
-                        <ng-container *ngIf="isSystemAdmin()">
-                            <li ngbDropdownItem [routerLink]="['/admin/users']"><a [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
-                            <li ngbDropdownItem [routerLink]="['/admin/cuisines']"><a [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
-                            <li ngbDropdownItem [routerLink]="['/admin/paymentmethods']"><a [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</a></li>
-                            <li ngbDropdownItem [routerLink]="['/admin/restaurants']"><a [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
-                        </ng-container>
+            <ng-container *ngIf="isSystemAdmin()">
+              <li ngbDropdownItem [routerLink]="['/admin/users']"><a [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
+              <li ngbDropdownItem [routerLink]="['/admin/cuisines']"><a [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
+              <li ngbDropdownItem [routerLink]="['/admin/paymentmethods']"><a [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</a></li>
+              <li ngbDropdownItem [routerLink]="['/admin/restaurants']"><a [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
+            </ng-container>
 
-                        <ng-container *ngIf="isRestaurantAdmin()">
-                            <li ngbDropdownItem [routerLink]="['/admin/myrestaurants']"><a [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a></li>
-                        </ng-container>
+            <ng-container *ngIf="isRestaurantAdmin()">
+              <li ngbDropdownItem [routerLink]="['/admin/myrestaurants']"><a [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a></li>
+            </ng-container>
 
-                        <div class="dropdown-divider"></div>
+            <div class="dropdown-divider"></div>
 
                         <li ngbDropdownItem (click)="logout()"><a (click)="logout()">Abmelden</a></li>
 
                     </ul>
 
-                </div>
+        </div>
 
-            </div>
+      </div>
 
-            <div id="cart">
+      <div id="cart">
               <a class="nav-link nav-item" (click)="toggleCartVisibility()">
                     <span class="cart-count-wrap">
                         <svg width="20" height="24" viewBox="0 0 20 24" fill="#1F4F46">
@@ -65,10 +65,10 @@
                         </svg>
                         <span class="cart-count">{{getDishCountOfOrderText()}}</span>
                     </span>
-                    <span class="nav-icon-label">Warenkorb</span>
-                </a>
-            </div>
+          <span class="nav-icon-label">Warenkorb</span>
+        </a>
+      </div>
 
-        </div>
-    </nav>
+    </div>
+  </nav>
 </header>

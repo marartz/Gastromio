@@ -1,12 +1,12 @@
 <block-ui>
     <!-- START: Fehlermeldungen -->
-    <div *ngIf="submitted && f.Username.errors">
-        <div *ngIf="f.Username.errors.required" id="error">
+    <div *ngIf="submitted && f.Email.errors">
+        <div *ngIf="f.Email.errors.required" id="error">
             <div id="message" tabindex="-1" role="alert">
-                <span>Bitte gebe einen Benutzernamen an</span>
+                <span>Bitte gebe eine Emailadresse an</span>
             </div>
         </div>
-        <div *ngIf="f.Username.errors.backend" id="error">
+        <div *ngIf="f.Email.errors.backend" id="error">
             <div id="message" tabindex="-1" role="alert">
                 <span>{{f.name.errors.backend}}</span>
             </div>
@@ -15,7 +15,7 @@
     <div *ngIf="submitted && f.Password.errors">
         <div *ngIf="f.Password.errors.required" id="error">
             <div id="message" tabindex="-1" role="alert">
-                <span>Bitte gebe einen gültigen Benutzernamen und ein Passwort an</span>
+                <span>Bitte gebe eine gültige Emailadresse und ein Passwort an</span>
             </div>
         </div>
         <div *ngIf="f.Password.errors.backend" id="error">
@@ -39,7 +39,7 @@
 
                 <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
                     <div class="form-input">
-                        <input id="username" placeholder="Benutzername" class="form-field" type="text" formControlName="Username" autocomplete="off" ngbAutofocus />
+                        <input id="email" placeholder="Emailadresse" class="form-field" type="text" formControlName="Email" autocomplete="off" ngbAutofocus />
                     </div>
                     <div class="form-input">
                         <input id="password" placeholder="Passwort" class="form-field" type="password" formControlName="Password" />
