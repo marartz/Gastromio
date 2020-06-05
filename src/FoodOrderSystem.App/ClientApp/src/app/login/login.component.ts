@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css', '../../assets/css/entry-pages.min.css']
+  styleUrls: ['./login.component.css', '../../assets/css/frontend.min.css']
 })
 export class LoginComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
