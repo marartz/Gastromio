@@ -3,6 +3,7 @@ using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,10 +43,31 @@ namespace FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<Guid>.Forbidden();
 
-            var createResult = dishCategoryFactory.Create(command.RestaurantId, command.Name);
+            var curCategories =
+                (await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken))
+                .OrderBy(en => en.OrderNo).ToList();
+
+            var pos = curCategories.FindIndex(en => en.Id == command.AfterCategoryId);
+
+            for (var i = 0; i <= pos; i++)
+            {
+                var tempResult = curCategories[i].ChangeOrderNo(i);
+                if (tempResult.IsFailure)
+                    return tempResult.Cast<Guid>();
+                await dishCategoryRepository.StoreAsync(curCategories[i], cancellationToken);
+            }
+
+            for (var i = pos + 1; i < curCategories.Count; i++)
+            {
+                var tempResult = curCategories[i].ChangeOrderNo(i + 1);
+                if (tempResult.IsFailure)
+                    return tempResult.Cast<Guid>();
+                await dishCategoryRepository.StoreAsync(curCategories[i], cancellationToken);
+            }
+
+            var createResult = dishCategoryFactory.Create(command.RestaurantId, command.Name, pos + 1);
             if (createResult.IsFailure)
                 return createResult.Cast<Guid>();
-
             var dishCategory = createResult.Value;
             
             await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);

@@ -28,8 +28,12 @@
         RestaurantContainsDishCategories,
         RestaurantContainsDishes,
         DishCategoryDoesNotBelongToRestaurant,
+        DishCategoryDoesNotExist,
         DishCategoryContainsDishes,
+        DishCategoryInvalidOrderNo,
         DishDoesNotBelongToDishCategory,
+        DishDoesNotExist,
+        DishInvalidOrderNo,
         DishVariantPriceIsNegativeOrZero,
         DishVariantPriceIsTooBig,
         CannotRemoveCurrentUserFromRestaurantAdmins

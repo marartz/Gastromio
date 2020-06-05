@@ -45,13 +45,13 @@ namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant
 
             if (dishCategories != null)
             {
-                foreach (var dishCategory in dishCategories)
+                foreach (var dishCategory in dishCategories.OrderBy(en => en.OrderNo))
                 {
                     var dishViewModels = new List<DishViewModel>();
 
                     if (dishes != null)
                     {
-                        foreach (var dish in dishes.Where(en => en.CategoryId == dishCategory.Id))
+                        foreach (var dish in dishes.Where(en => en.CategoryId == dishCategory.Id).OrderBy(en => en.OrderNo))
                         {
                             var variantViewModels = new List<DishVariantViewModel>();
 

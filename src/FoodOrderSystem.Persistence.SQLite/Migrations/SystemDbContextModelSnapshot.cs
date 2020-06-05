@@ -58,6 +58,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderNo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
 
@@ -82,6 +85,9 @@ namespace FoodOrderSystem.Persistence.SQLite.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderNo")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ProductInfo")
                         .HasColumnType("TEXT");

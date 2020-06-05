@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AddDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;
+  @Input() public afterCategoryId: string;
   @BlockUI() blockUI: NgBlockUI;
 
   addDishCategoryForm: FormGroup;
@@ -43,7 +44,8 @@ export class AddDishCategoryComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurantId, data.name)
+    const subscription = this.restaurantAdminService
+      .addDishCategoryToRestaurantAsync(this.restaurantId, data.name, this.afterCategoryId)
       .subscribe((id) => {
         subscription.unsubscribe();
         this.blockUI.stop();

@@ -8,8 +8,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
     public class DishFactory : IDishFactory
     {
         public Result<Dish> Create(RestaurantId restaurantId, DishCategoryId categoryId, string name,
-            string description,
-            string productInfo, IEnumerable<DishVariant> variants)
+            string description, string productInfo, int orderNo, IEnumerable<DishVariant> variants)
         {
             if (restaurantId.Value == Guid.Empty)
                 return FailureResult<Dish>.Create(FailureResultCode.RequiredFieldEmpty, nameof(restaurantId));
@@ -27,6 +26,10 @@ namespace FoodOrderSystem.Domain.Model.Dish
                 return tempResult.Cast<Dish>();
 
             tempResult = dish.ChangeProductInfo(productInfo);
+            if (tempResult.IsFailure)
+                return tempResult.Cast<Dish>();
+
+            tempResult = dish.ChangeOrderNo(orderNo);
             if (tempResult.IsFailure)
                 return tempResult.Cast<Dish>();
 

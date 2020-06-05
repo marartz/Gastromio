@@ -7,9 +7,9 @@ namespace FoodOrderSystem.Domain.Model.DishCategory
 {
     public interface IDishCategoryRepository
     {
-        Task<ICollection<DishCategory>> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken);
+        Task<ICollection<DishCategory>> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
 
-        Task<DishCategory> FindByDishCategoryIdAsync(DishCategoryId dishCategoryId, CancellationToken cancellationToken);
+        Task<DishCategory> FindByDishCategoryIdAsync(DishCategoryId dishCategoryId, CancellationToken cancellationToken = default);
 
         Task StoreAsync(DishCategory dishCategory, CancellationToken cancellationToken = default);
 

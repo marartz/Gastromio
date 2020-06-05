@@ -327,7 +327,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 var dishCategoryName = $"Kategorie{(catIndex + 1):D2}";
                 logger.LogInformation("        creating dish category {0}", dishCategoryName);
 
-                var dishCategoryResult = dishCategoryFactory.Create(restaurant.Id, dishCategoryName);
+                var dishCategoryResult = dishCategoryFactory.Create(restaurant.Id, dishCategoryName, catIndex);
                 if (dishCategoryResult.IsFailure)
                     return dishCategoryResult.Cast<bool>();
                 var dishCategory = ((SuccessResult<DishCategory>) dishCategoryResult).Value;
@@ -342,7 +342,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
                     var dishResult = dishFactory.Create(restaurant.Id, dishCategory.Id, dishName,
                         $"Beschreibung des Gerichts{(dishIndex + 1):D2}",
-                        $"Produktinformation des Gerichts{(dishIndex + 1):D2}", new[] {variant});
+                        $"Produktinformation des Gerichts{(dishIndex + 1):D2}", dishIndex, new[] {variant});
                     if (dishResult.IsFailure)
                         return dishResult.Cast<bool>();
                     var dish = ((SuccessResult<Dish>) dishResult).Value;

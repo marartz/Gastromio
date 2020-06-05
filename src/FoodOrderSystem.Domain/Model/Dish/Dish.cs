@@ -20,12 +20,13 @@ namespace FoodOrderSystem.Domain.Model.Dish
         }
 
         public Dish(DishId id, RestaurantId restaurantId, DishCategoryId categoryId, string name, string description,
-            string productInfo, IList<DishVariant> variants)
+            string productInfo, int orderNo, IList<DishVariant> variants)
             : this(id, restaurantId, categoryId)
         {
             Name = name;
             Description = description;
             ProductInfo = productInfo;
+            OrderNo = orderNo;
             this.variants = variants;
         }
 
@@ -35,6 +36,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string ProductInfo { get; private set; }
+        public int OrderNo { get; private set; }
         public IReadOnlyList<DishVariant> Variants => new ReadOnlyCollection<DishVariant>(variants);
 
         public Result<bool> ChangeName(string name)
@@ -65,6 +67,14 @@ namespace FoodOrderSystem.Domain.Model.Dish
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(productInfo), 200);
 
             ProductInfo = productInfo;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeOrderNo(int orderNo)
+        {
+            if (orderNo < 0)
+                return FailureResult<bool>.Create(FailureResultCode.DishInvalidOrderNo, nameof(orderNo));
+            OrderNo = orderNo;
             return SuccessResult<bool>.Create(true);
         }
 

@@ -16,21 +16,24 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
-        public Task<ICollection<DishCategory>> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken)
+        public Task<ICollection<DishCategory>> FindByRestaurantIdAsync(RestaurantId restaurantId,
+            CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
                 var restaurantRow = dbContext.Restaurants.FirstOrDefault(en => en.Id == restaurantId.Value);
                 if (restaurantRow == null)
                     return null;
-                return (ICollection<DishCategory>)restaurantRow.Categories
-                    .OrderBy(en => en.Name)
+                return (ICollection<DishCategory>) restaurantRow.Categories
+                    .OrderBy(en => en.OrderNo)
+                    .ThenBy(en => en.Name)
                     .Select(en => FromRow(en))
                     .ToList();
             }, cancellationToken);
         }
 
-        public Task<DishCategory> FindByDishCategoryIdAsync(DishCategoryId dishCategoryId, CancellationToken cancellationToken)
+        public Task<DishCategory> FindByDishCategoryIdAsync(DishCategoryId dishCategoryId,
+            CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -83,7 +86,8 @@ namespace FoodOrderSystem.Persistence
         {
             return new DishCategory(new DishCategoryId(row.Id),
                 new RestaurantId(row.RestaurantId),
-                row.Name
+                row.Name,
+                row.OrderNo
             );
         }
 
@@ -92,6 +96,7 @@ namespace FoodOrderSystem.Persistence
             row.Id = obj.Id.Value;
             row.RestaurantId = obj.RestaurantId.Value;
             row.Name = obj.Name;
+            row.OrderNo = obj.OrderNo;
         }
     }
 }
