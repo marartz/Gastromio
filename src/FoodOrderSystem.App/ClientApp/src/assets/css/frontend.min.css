@@ -1,16 +1,130 @@
-.focus-outlet {
-    height: inherit;
-    width: initial;
+/*
+    Inhalt
+    1.  Generelles CSS
+    1.1 Zusätzliches CSS
+
+    2.  #home
+    2.1 #home > #home-hero
+    2.3 #home > #order
+
+    3.  #restaurants
+
+    4.  #restaurants-menu
+    4.1 #restaurants-menu > .categories
+    4.2 #restaurants-menu > #menu
+    4.3 #restaurants-menu > #menu > .dish-categories
+    4.4 #restaurants-menu > #menu > .dish-grid
+*/
+
+/* 1. GENERELLES CSS */
+html,
+body {
+    min-height: 100%;
+    min-width: 100%;
 }
 
-.clearfix::before,
-.clearfix::after {
-    content: " ";
-    display: table;
+body {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    line-height: 1;
 }
 
-.clearfix::after {
-    clear: both;
+body,
+#main {
+    background-color: #f8f8f6;
+}
+
+#main {
+	  width: 100%;
+	  padding-top: 72px;
+	  height: 100%
+}
+
+@media screen and (min-width: 900px) {
+	  #main {
+		    padding-top: 72px;
+	  }
+}
+
+h1,
+h2,
+h3,
+p {
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+    font-family: proxima-nova, sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+@media screen and (min-width: 900px) {
+    h1 {
+        font-size: 36px;
+	  }
+}
+
+@media screen and (min-width: 1425px) {
+    h1 {
+        font-size: 40px;
+    }
+}
+
+h2 {
+    font-size: 32px;
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+h4 {
+    font-size: 18px;
+    font-weight: 500;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+h5 {
+    font-size: 14px;
+    font-weight: 500
+}
+
+@media screen and (min-width: 768px) {
+    h5 {
+        font-size: 16px;
+    }
+}
+
+p {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media screen and (min-width: 768px) {
+    p {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+}
+
+p a {
+    border-bottom: 1px solid #1f4f46;
+    color: #1f4f46;
+    font-family: proxima-nova, sans-serif;
+    text-decoration: none;
+    transition: all .3s ease-out;
+}
+
+p a:hover {
+    border-color: #333;
+    color: #333;
+    transition: all 150ms ease-out;
 }
 
 [class*="text-link"] {
@@ -32,21 +146,340 @@
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
 }
 
-#main {
-    background-color: #f8f8f6;
-    height: 100%;
-    padding-top: 72px;
-    transition: all .4s cubic-bezier(.57, .06, .05, .95);
-    width: 100%;
+strong {
+    font-weight: 700;
 }
 
-@media screen and (min-width: 900px) {
-    #main {
-        padding-top: 72px;
+ul,
+li,
+ol {
+    list-style: none;
+}
+
+nav,
+section {
+    transition: all .4s cubic-bezier(.57, .06, .05, .95);
+}
+
+h6,
+button,
+label {
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #e5e5e5;
+}
+
+button {
+    background: #1f4f46;
+    border: 0px solid;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: proxima-nova, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .1667em;
+    line-height: 1.2;
+    padding: 16px 18px;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+@media screen and (min-width: 900px) and (max-width: 1424px) {
+    button {
+        padding: 16px 18px;
     }
 }
 
-/* START: #home */
+@media screen and (min-width: 768px) {
+    button {
+        transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+	  }
+    button.hovered,
+	  button:hover {
+        background: #27625b;
+        transition: all 150ms cubic-bezier(.57, .06, .05, .95), background 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+	  }
+}
+
+button.activated,
+button:active {
+    -ms-transform: scale(.98);
+    transform: scale(.98);
+}
+
+button[class*=text-link] {
+    background-color: transparent;
+}
+
+[role=button],
+[role=button] > span,
+[tabindex='0'],
+a,
+a > span,
+button,
+input[type=button] {
+    transition: all .8s ease-in-out;
+}
+
+[role=button]:hover,
+[role=button]>span:hover,
+[tabindex='0']:hover,
+a:hover,
+a > span:hover,
+button:hover,
+input[type=button]:hover {
+    outline: 0;
+    box-shadow: none;
+}
+
+input,
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week],
+textarea {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid #ccc;
+    box-shadow: none;
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 20px;
+    height: 36px;
+    line-height: 1;
+    margin: 0px 0px 20px;
+    outline: 0;
+    padding: 0px 0px 5px;
+    transition: all .4s cubic-bezier(.165, .84, .44, 1);
+    -webkit-border-radius: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+input:last-of-type,
+input[type=date]:last-of-type,
+input[type=datetime]:last-of-type,
+input[type=datetime-local]:last-of-type,
+input[type=email]:last-of-type,
+input[type=month]:last-of-type,
+input[type=number]:last-of-type,
+input[type=password]:last-of-type,
+input[type=search]:last-of-type,
+input[type=tel]:last-of-type,
+input[type=text]:last-of-type,
+input[type=time]:last-of-type,
+input[type=url]:last-of-type,
+input[type=week]:last-of-type,
+textarea:last-of-type {
+    margin: 0px;
+}
+
+input:focus,
+input:hover,
+input[type=date]:focus,
+input[type=date]:hover,
+input[type=datetime]:focus,
+input[type=datetime]:hover,
+input[type=datetime-local]:focus,
+input[type=datetime-local]:hover,
+input[type=email]:focus,
+input[type=email]:hover,
+input[type=month]:focus,
+input[type=month]:hover,
+input[type=number]:focus,
+input[type=number]:hover,
+input[type=password]:focus,
+input[type=password]:hover,
+input[type=search]:focus,
+input[type=search]:hover,
+input[type=tel]:focus,
+input[type=tel]:hover,
+input[type=text]:focus,
+input[type=text]:hover,
+input[type=time]:focus,
+input[type=time]:hover,
+input[type=url]:focus,
+input[type=url]:hover,
+input[type=week]:focus,
+input[type=week]:hover,
+textarea:focus,
+textarea:hover {
+    box-shadow: none;
+    border-bottom: 2px solid #32b593;
+}
+
+input::placeholder,
+input[type=date]::placeholder,
+input[type=datetime]::placeholder,
+input[type=datetime-local]::placeholder,
+input[type=email]::placeholder,
+input[type=month]::placeholder,
+input[type=number]::placeholder,
+input[type=password]::placeholder,
+input[type=search]::placeholder,
+input[type=tel]::placeholder,
+input[type=text]::placeholder,
+input[type=time]::placeholder,
+input[type=url]::placeholder,
+input[type=week]::placeholder,
+textarea::placeholder {
+    opacity: 1;
+    color: #6d6d6d;
+    -webkit-text-fill-color: #6d6d6d;
+}
+
+input::-ms-clear,
+input[type=date]::-ms-clear,
+input[type=datetime]::-ms-clear,
+input[type=datetime-local]::-ms-clear,
+input[type=email]::-ms-clear,
+input[type=month]::-ms-clear,
+input[type=number]::-ms-clear,
+input[type=password]::-ms-clear,
+input[type=search]::-ms-clear,
+input[type=tel]::-ms-clear,
+input[type=text]::-ms-clear,
+input[type=time]::-ms-clear,
+input[type=url]::-ms-clear,
+input[type=week]::-ms-clear,
+textarea::-ms-clear {
+    display: none;
+}
+
+form:focus {
+    outline: 0;
+}
+
+/* 1.1 ZUSÄTZLICHES CSS */
+.focusing-outlet {
+    height: inherit;
+    width: initial;
+}
+
+.clearfix {
+	  max-width: none;
+	  padding-left: 16px;
+	  padding-right: 16px;
+}
+
+.clearfix:before,
+.clearfix:after {
+	  content: " ";
+	  display: table;
+}
+
+.clearfix:after {
+	  clear: both;
+}
+
+@media screen and (min-width: 768px) {
+	  .clearfix {
+		    padding-left: 18px;
+		    padding-right: 18px;
+	  }
+}
+
+@media screen and (min-width: 1425px) and (max-width: 1920px) {
+	  .clearfix {
+		    padding-left: 26.5px;
+		    padding-right: 25.5px;
+	  }
+}
+
+@media screen and (min-width: 1920px) {
+	  .clearfix {
+		    padding-left: 26.6px;
+		    padding-right: 26.6px;
+	  }
+}
+
+.background-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.link-card {
+    border-radius: 8px;
+    display: block;
+    padding: 0px;
+	  text-decoration: none;
+}
+
+.link-card:not(.not-clickable):focus .card-inner,
+.link-card:not(.not-clickable):hover .card-inner {
+	  box-shadow: 0px 0px 0px 2px #a9a54c;
+}
+
+.link-card:not(.not-clickable):focus h1,
+.link-card:not(.not-clickable):focus h2,
+.link-card:not(.not-clickable):focus h3,
+.link-card:not(.not-clickable):focus h4,
+.link-card:not(.not-clickable):focus h5,
+.link-card:not(.not-clickable):focus h6 p,
+.link-card:not(.not-clickable):hover h1,
+.link-card:not(.not-clickable):hover h2,
+.link-card:not(.not-clickable):hover h3,
+.link-card:not(.not-clickable):hover h4,
+.link-card:not(.not-clickable):hover h5,
+.link-card:not(.not-clickable):hover h6 p {
+	  transition: color 150ms ease-out;
+}
+
+.link-card:not(:first-of-type) {
+	  margin-top: 16px;
+}
+
+.card-inner {
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 2px transparent;
+    margin-left: 0px;
+    margin-right: 0px;
+    transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    width: 100%;
+}
+
+.card-inner .card-content {
+	  background-color: #fff;
+	  padding: 16px;
+}
+
+.card-inner .background-image {
+    background-size: cover;
+	  padding-bottom: 66.666%;
+    width: 100%;
+}
+
+.card-details {
+    border-top: 1px solid #e5e5e5;
+	  display: flex;
+	  flex-direction: row;
+	  margin: 18px -16px -20px;
+	  padding: 20px 16px;
+}
+
+/* 2. #home */
 #home {
     height: 100%;
 }
@@ -115,7 +548,7 @@
     }
 }
 
-/* START: #home > #home-hero */
+/* 2.1 #home > #home-hero */
 #home #home-hero {
     position: relative;
     width: 100%;
@@ -147,8 +580,8 @@
         width: 25%;
     }
 }
-/* ENDE: #home > #home-hero */
-/* START: #home > #order */
+
+/* 2.1 #home > #order */
 #home.order-home #order {
     margin-bottom: 15px;
 }
@@ -182,19 +615,126 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-/* ENDE: #home > #order */
-/* START: #home > #restaurants */
+
+/* 3. #restaurants */
 #home #restaurants {
 	  opacity: 1;
 	  transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
 }
-/* ENDE: #home > #restaurants */
-/* ENDE: #home */
-/* START: #restaurants-menu */
+
+.restaurant-card {
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 24px;
+    padding: 0px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.restaurant-card:not(:first-of-type) {
+    margin-top: 16px;
+}
+
+.restaurant-card:not(.not-clickable) {
+    cursor: pointer;
+}
+
+.restaurant-card:not(.not-clickable):focus .card-inner,
+.restaurant-card:not(.not-clickable):hover .card-inner {
+    box-shadow: 0px 0px 0px 2px #a9a54c;
+}
+
+.restaurant-card.not-clickable,
+.restaurant-card.restaurant-disabled { /* Bspw. wenn Restaurant = geschlossen */
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.restaurant-card .card-inner {
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 2px transparent;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 16px;
+    position: relative;
+    transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    width: 100%;
+}
+
+.restaurant-card .card-inner::after { /* Alternative Clearfix */
+    clear: both;
+}
+
+.restaurant-card .card-inner::before,
+.restaurant-card .card-inner::after {
+    content: " ";
+    display: table;
+}
+
+.restaurant-card .card-content {
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 16px;
+    padding-top: 20px;
+}
+
+.restaurant-card .card-top {
+    display: flex;
+    flex-direction: row;
+}
+
+.restaurant-card .restaurant-name {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    width: 78%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.restaurant-card .restaurant-description {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: .625rem;
+}
+
+@media screen and (min-width: 768px) {
+    .restaurant-card .restaurant-description {
+        line-height: 1.8;
+    }
+}
+
+.restaurant-card .restaurant-description address {
+    line-height: 1.4 !important; 
+}
+
+.restaurant-card .restaurant-phone {
+    display: inline;
+}
+
+.restaurant-card .card-details {
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 18px -16px -20px;
+    padding: 20px 16px;
+}
+
+.restaurant-card .menu-link {
+    margin-left: auto;
+}
+
+/* 4. #restaurants-menu */
 #restaurants-menu {
     background-color: #f8f8f6;
 }
-/* START: #restaurants-menu > .hero */
+
 #restaurants-menu .hero {
     background-color: #dedede;
     overflow: hidden;
@@ -283,8 +823,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-/* ENDE: #restaurants-menu > .hero */
-/* START: #restaurants-menu > .categories */
+
+/* 4.1 #restaurants-menu > categories */
 #restaurants-menu .categories {
      border-top: 1px solid #e5e5e5;
      box-shadow: 0px 2px 4px rgba(0, 0, 0, .08);
@@ -354,122 +894,159 @@
 #restaurants-menu .categories .text-link:hover {
     color: #1f4f46;
 }
-/* ENDE: #restaurants-menu > .categories */
-/* ENDE: #restaurants-menu */
-/* START: Restaurant-Card */
-.restaurant-card {
-    border-radius: 8px;
-    display: block;
-    margin-bottom: 24px;
-    padding: 0px;
-    text-decoration: none;
-    width: 100%;
+
+/* 4.2 #restaurants-menu > #menu */
+#restaurants-menu #menu {
+    padding-top: 18px;
 }
 
-.restaurant-card:not(:first-of-type) {
-    margin-top: 16px;
+/* 4.3 #restaurants-menu > #menu > .dish-categories */
+#restaurants-menu #menu .dish-categories {
+    box-shadow: none;
+    margin: 32px 0px;
+    outline: 0;
+    text-align: center;
 }
 
-.restaurant-card:not(.not-clickable):focus .card-inner,
-.restaurant-card:not(.not-clickable):hover .card-inner {
-    box-shadow: 0px 0px 0px 2px #a9a54c;
+@media screen and (min-width: 768px) {
+    #restaurants-menu #menu .dish-categories {
+        margin: 64px 0px;
+    }
 }
 
-.restaurant-card:not(.not-clickable) {
-    cursor: pointer;
-}
-
-.restaurant-card.restaurant-not-clickable,
-.restaurant-card.restaurant-disabled {
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-.restaurant-card .card-inner {
-    border-radius: 8px;
-    box-shadow: 0px 0px 0px 2px transparent;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 16px;
-    position: relative;
-    transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
-    width: 100%;
-}
-
-.restaurant-card .card-inner::after { /* Alternative Clearfix */
-    clear: both;
-}
-
-.restaurant-card .card-inner::before,
-.restaurant-card .card-inner::after {
-    content: " ";
-    display: table;
-}
-
-.restaurant-card .card-content {
-    background-color: #fff;
-    border-bottom: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 16px;
-    padding-top: 20px;
-}
-
-.restaurant-card .card-top {
-    display: flex;
-    flex-direction: row;
-}
-
-.restaurant-card .restaurant-name {
-    color: #3b4245;
+#restaurants-menu #menu .dish-categories .menu-group-title {
+    color: #1f4f46;
     font-family: proxima-nova, sans-serif;
-    font-size: 18px;
     font-weight: 600;
-    line-height: 1.5;
-    width: 78%;
+    letter-spacing: .045em;
+    line-height: 1.2;
+    margin-bottom: 18px;
+    text-transform: uppercase;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.restaurant-card .restaurant-description {
-    color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    margin-top: .625rem;
-}
-
-@media screen and (min-width: 768px) {
-    .restaurant-card .restaurant-description {
-        line-height: 1.8;
+@media screen and (min-width: 900px) {
+    #restaurants-menu #menu .dish-categories .menu-group-title {
+        font-size: 36px;
     }
 }
 
-.restaurant-card .restaurant-description address {
-    line-height: 1.4 !important; 
+@media screen and (min-width: 1424px) {
+    #restaurants-menu #menu .dish-categories .menu-group-title {
+        font-size: 40px;
+    }
 }
 
-.restaurant-card .restaurant-phone {
-    display: inline;
+/* 4.4 #restaurants-menu > #menu > .dish-grid */
+#restaurants-menu #menu .dish-grid {
+    align-items: stretch;
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto;
+    padding: 0px;
+    width: 100%;
 }
 
-.restaurant-card .card-details {
-    border-top: 1px solid #e5e5e5;
+@media (min-width: 1440px) {
+    #restaurants-menu #menu .dish-grid {
+        max-width: 1392px;
+    }
+}
+
+#restaurants-menu #menu .dish-grid .product-card-wrap {
+    margin: 0px 12px;
+    display: flex;
+}
+
+@media (min-width: 1440px) {
+    #restaurants-menu #menu .dish-grid .product-card-wrap {
+        flex-basis: calc((100% / (12 / 3)) - 24px);
+    }
+}
+
+#restaurants-menu #menu .dish-grid .product-card {
+    border-radius: 8px;
+    box-shadow: 0px 1px 0px #e5e5e5;
+    cursor: pointer;
+    display: flex;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    #restaurants-menu #menu .dish-grid .product-card {
+        height: auto !important;
+    }
+}
+
+#restaurants-menu #menu .dish-grid .product-card .card-inner {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+}
+
+#restaurants-menu #menu .dish-grid .product-card .card-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+#restaurants-menu #menu .dish-grid .product-card .product-name {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#restaurants-menu #menu .dish-grid .product-card .product-name:focus {
+	  box-shadow: none;
+	  color: #1f4f46;
+	  outline: 0;
+}
+
+#restaurants-menu #menu .dish-grid .product-card .product-description {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+	  margin-top: 16px;
+	  position: relative;
+}
+
+@media screen and (min-width: 768px) {
+    #restaurants-menu #menu .dish-grid .product-card:hover .product-name {
+		    color: #1f4f46;
+	  }
+    #restaurants-menu #menu .dish-grid .product-card .product-description {
+        flex-grow: 1;
+    }
+}
+
+#restaurants-menu #menu .dish-grid .product-card .card-meta {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 18px -16px -20px;
-    padding: 20px 16px;
+    margin-top: 16px;
 }
 
-.restaurant-card .menu-link {
-    margin-left: auto;
+#restaurants-menu #menu .dish-grid .product-card .price {
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
 }
-/* ENDE: Restaurant-Card */
 
-.background-image {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
+#restaurants-menu #menu .dish-grid .product-card .price .product-cost {
+    color: #3b4245;
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 0px;
 }

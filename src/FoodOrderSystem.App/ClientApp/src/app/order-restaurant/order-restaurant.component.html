@@ -43,59 +43,57 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
+                <div id="menu">
+                    <div class="clearfix waypointable" *ngFor="let dishCategory of dishCategories">
 
-        <div class="container store-container">
-            <div class="cols">
+                            <div class="dish-categories" id="{{dishCategory.id}}" tabindex="-1">
+                                <h1 class="menu-group-title">{{dishCategory.name}}</h1>
+                            </div>
 
-                <div class="col store-info">
+                            <div class="dish-grid">
 
+                                <div class="product-card-wrap" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
+                                    <div class="product-card link-card">
 
-                    
-                    <section class="store-section">
-                        <div class="wrapper">
-                            <div id="{{dishCategory.id}}" *ngFor="let dishCategory of dishCategories">
-                                <h3>{{dishCategory.name}}</h3>
+                                        <div class="card-inner" role="link" tabindex="0">
+                                            <div class="card-content">
+                                                <h2 class="product-name">{{dish.name}}</h2>
+                                                <p class="product-description">{{dish.description}}</p>
 
-                                <div class="store-items items-desktop">
-                                    <div class="store-item" *ngFor="let dish of dishCategory.dishes">
-                                        <div class="item-content">
-                                            <div>
-                                                <h4 class="title">{{dish.name}}</h4>
-                                                <div class="description">
-                                                    <span>{{dish.description}}</span>
+                                                <div class="card-meta">
+                                                    <div class="price">
+                                                        <span class="product-cost">&euro; {{getFirstDishVariant(dish)}}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="bottom">
-                                                <div class="price">{{getFirstDishVariant(dish)}} &euro;</div>
-                                                <img src="../../assets/img/icons/order-restaurant/plus.svg" alt="Icon" (click)="onAddDishToCart(dish)"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="store-items items-mobile">
-                                    <div class="store-item" *ngFor="let dish of dishCategory.dishes">
-                                        <div class="item-content">
-                                            <div>
-                                                <h4 class="title">{{dish.name}}</h4>
-                                                <div class="description">{{dish.description}}</div>
-                                            </div>
-                                            <div class="bottom">
-                                                <div class="price">{{getFirstDishVariant(dish)}} &euro;</div>
-                                                <img src="../../assets/img/icons/order-restaurant/plus.svg" alt="Icon" (click)="onAddDishToCart(dish)" />
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
 
                             </div>
-                        </div>
-                    </section>
 
+                        
+
+                    </div>
                 </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="container store-container">
+            <div class="cols">
 
                 
                 <div class="col store-cart-container">
