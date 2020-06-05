@@ -1088,7 +1088,7 @@ form:focus {
     top: 0px;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     -webkit-overflow-scrolling: touch;
-    z-index: 1;
+    z-index: 2;
 }
 
 @media screen and (min-width: 768px) {
@@ -1328,6 +1328,45 @@ form:focus {
     font-size: 17px;
     font-weight: 500;
     margin-bottom: 0px;
+}
+
+#bag-main .bag-totals {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 3;
+}
+
+#bag-main .totals {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+}
+
+#bag-main .row-collapse {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#bag-main .row-collapse::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+#bag-main .row-collapse .label {
+    display: block;
+    float: right;
+    width: 50%;
+}
+
+#bag-main .row-collapse .price {
+    display: inline-block;
+    float: none !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: right;
+    width: 50%;
 }
 
 /* 5.3 #bag > #bag-footer */
