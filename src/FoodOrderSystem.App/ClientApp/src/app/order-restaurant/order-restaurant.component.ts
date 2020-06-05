@@ -128,6 +128,14 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     return this.orderService.isCartVisible();
   }
 
+  showCart() {
+    this.orderService.showCart();
+  }
+
+  hideCart() {
+    this.orderService.hideCart();
+  }
+
   getCart(): CartModel {
     return this.orderService.getCart();
   }

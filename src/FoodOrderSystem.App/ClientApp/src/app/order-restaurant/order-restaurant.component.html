@@ -90,7 +90,7 @@
                 <div id="bag-header">
                     <div class="info-group">
                         <div class="info-group-left">
-                            <button id="close-bag" class="info-group-icon">
+                            <button id="close-bag" class="info-group-icon" (click)="hideCart()">
                                 <svg viewBox="0 0 24 24" width="100%" height="100%">
                                     <path d="M15.5 7.1L12 10.6 8.5 7.1 7.1 8.5l3.5 3.5-3.5 3.5 1.4 1.4 3.5-3.5 3.5 3.5 1.4-1.4-3.5-3.5 3.5-3.5z"></path>
                                     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"></path>
@@ -119,7 +119,7 @@
                                     <div class="info-group-row"><p class="product-description">{{orderedDish.remarks}}</p></div>
                                     <div class="info-group-row card-actions-row">
                                         <a class="text-link" role="button" tabindex="0">Bearbeiten</a>
-                                        <a class="text-link" role="button" tabindex="0" (click)="onDecrementDishVariantCount(orderedDish)">Entfernen</a>
+                                        <a class="text-link" role="button" tabindex="0" (click)="onRemoveDishVariantFromCart(orderedDish)">Entfernen</a>
                                     </div>
                                 </div>
                                 <div class="info-group-right">
@@ -133,7 +133,7 @@
                 <div id="bag-footer">
                     <div class="info-section">
                         <div class="bag-btns">
-                            <div class="cta-wrap"><button class="button-cta menu">Zum Menü</button></div>
+                            <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
                             <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout">Checkout</button></div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
             </div>
         </div>
 
-        
+
 
 
 
@@ -160,7 +160,7 @@
                                     <div class="cart-empty-text">LEER</div>
                                 </div>
 
-                                
+
 
                             </div>
 

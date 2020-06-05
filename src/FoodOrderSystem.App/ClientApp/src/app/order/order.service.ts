@@ -90,6 +90,7 @@ export class OrderService {
       orderedDish.count = 1;
       this.cart.orderedDishes.push(orderedDish);
     }
+    this.isCartVisibile = true;
   }
 
   public incrementDishVariantCount(itemId: string): void {
