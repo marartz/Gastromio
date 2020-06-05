@@ -1,12 +1,12 @@
 <block-ui>
     <!-- START: Fehlermeldungen -->
-    <div *ngIf="submitted && f.Username.errors">
-        <div *ngIf="f.Username.errors.required" id="error">
+    <div *ngIf="submitted && f.Email.errors">
+        <div *ngIf="f.Email.errors.required" id="error">
             <div id="message" tabindex="-1" role="alert">
                 <span>Bitte gebe eine Emailadresse an</span>
             </div>
         </div>
-        <div *ngIf="f.Username.errors.backend" id="error">
+        <div *ngIf="f.Email.errors.backend" id="error">
             <div id="message" tabindex="-1" role="alert">
                 <span>{{f.name.errors.backend}}</span>
             </div>
