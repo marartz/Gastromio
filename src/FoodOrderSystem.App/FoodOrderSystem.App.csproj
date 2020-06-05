@@ -80,6 +80,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\add-dish-to-cart" />
     <Folder Include="Pages\Shared\" />
     <Folder Include="ClientApp\src\app\validators\" />
   </ItemGroup>

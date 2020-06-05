@@ -8,6 +8,7 @@ import { BlockUIModule } from 'ng-block-ui';
 
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { AddDishCategoryComponent } from './add-dish-category/add-dish-category.component';
+import { AddDishToCartComponent } from './add-dish-to-cart/add-dish-to-cart.component';
 import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
 import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
 import { AddUserComponent } from './add-user/add-user.component';
@@ -88,6 +89,7 @@ import { UserAdminService } from './user/user-admin.service';
   declarations: [
     AddCuisineComponent,
     AddDishCategoryComponent,
+    AddDishToCartComponent,
     AddPaymentMethodComponent,
     AddRestaurantComponent,
     AddUserComponent,

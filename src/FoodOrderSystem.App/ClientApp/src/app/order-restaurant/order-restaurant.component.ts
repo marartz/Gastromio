@@ -15,6 +15,7 @@ import { OrderRestaurantImprintComponent } from '../order-restaurant-imprint/ord
 import { CartModel } from '../cart/cart.model';
 import { OrderedDishModel } from '../cart/ordered-dish.model';
 import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.component';
+import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.component';
 
 @Component({
   selector: 'app-order-restaurant',
@@ -155,7 +156,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
       return;
     }
-    this.orderService.addDishVariantToCart(dish, dish.variants[0]);
+    const modalRef = this.modalService.open(AddDishToCartComponent);
+    modalRef.componentInstance.dish = dish;
+    modalRef.result.then(() => {
+    }, () => { });
   }
 
   public onIncrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
