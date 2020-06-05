@@ -1,68 +1,60 @@
-<div class="modal-overlay">
-  <block-ui>
-    <div class="modal-wrapper--window small">
-      <div class="modal--window">
-                <span class="close-button">
-                    <img src="../../assets/img/icons/close-icon.svg" alt=""
-                         (click)="activeModal.dismiss('Cross click')">
-                </span>
-        <div class="modal--window__body">
-          <div class="auth-wrapper">
-            <div>
-              <h2 class="title mt-0 mb-4">Anmelden oder Registrieren</h2>
-              <!-- Social Logins wie Facebook o.ä. -->
-              <div class="divider">&nbsp;</div>
+<block-ui>
+    <!-- START: Fehlermeldungen -->
+    <div *ngIf="submitted && f.Username.errors">
+        <div *ngIf="f.Username.errors.required" id="error">
+            <div id="message" tabindex="-1" role="alert">
+                <span>Bitte gebe einen Benutzernamen an</span>
+            </div>
+        </div>
+        <div *ngIf="f.Username.errors.backend" id="error">
+            <div id="message" tabindex="-1" role="alert">
+                <span>{{f.name.errors.backend}}</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="submitted && f.Password.errors">
+        <div *ngIf="f.Password.errors.required" id="error">
+            <div id="message" tabindex="-1" role="alert">
+                <span>Bitte gebe einen gültigen Benutzernamen und ein Passwort an</span>
+            </div>
+        </div>
+        <div *ngIf="f.Password.errors.backend" id="error">
+            <div id="message" tabindex="-1" role="alert">
+                <span>{{f.name.errors.backend}}</span>
+            </div>
+        </div>
+    </div>
+    <!-- ENDE: Fehlermeldungen -->
 
+    <section id="main" role="main">
+        <div class="focus-outlet" tabindex="-1" role="group">
 
-              <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                <div class="form-item">
-                  <div class="form-item__content">
+            <div id="entry" class="form-wrap">
 
-                    <div id="login-email" class="text-field first">
-                      <img class="text-field__icon" src="../../assets/img/icons/login/letter.svg"/>
-                      <div class="text-field__input">
-                        <input class="input__inner" id="email" type="text" placeholder="Emailadresse"
-                               formControlName="Email" autocomplete="off" ngbAutofocus/>
-                        <div *ngIf="submitted && f.Email.errors" class="invalid-feedback">
-                          <div *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</div>
-                          <div *ngIf="f.Email.errors.required">Emailadresse wird benötigt.</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div id="login-password" class="text-field">
-                      <img class="text-field__icon" src="../../assets/img/icons/login/lock.svg"/>
-                      <div class="text-field__input">
-                        <input class="input__inner" id="password" type="password" placeholder="Passwort"
-                               formControlName="Password" autocomplete="off"/>
-                        <div *ngIf="submitted && f.Password.errors" class="invalid-feedback">
-                          <div *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</div>
-                          <div *ngIf="f.Password.errors.required">Passwort wird benötigt.</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="password-forgotten"><a class="link" href="#!">Passwort vergessen?</a></div>
-
-                    <div class="error pt-2">
-                      <app-general-error [generalError]="generalError"></app-general-error>
-                    </div>
-
-                    <button class="button log-in button--log-in" type="submit">Anmelden</button>
-
-                  </div>
+                <h1>Bei Gastromio anmelden</h1>
+                <div class="link-wrap">
+                    <p>Du hast noch keinen Account?</p>
+                    <a href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer noopener">Registrieren</a>
                 </div>
-              </form>
 
-              <div class="register hidden-mobile">
-                Noch nicht mit dabei? <a class="link" href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank"
-                                         rel="nofollow noreferrer">Registrieren</a>
-              </div>
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+                    <div class="form-input">
+                        <input id="username" placeholder="Benutzername" class="form-field" type="text" formControlName="Username" autocomplete="off" ngbAutofocus />
+                    </div>
+                    <div class="form-input">
+                        <input id="password" placeholder="Passwort" class="form-field" type="password" formControlName="Password" />
+                    </div>
+
+                    <app-general-error [generalError]="generalError" style="text-align: center"></app-general-error>
+                    <button class="form-button-submit" type="submit">Anmelden</button>
+                </form>
+
+                <div class="password-forgotten">
+                    <a class="password-forgotten" href="#!">Passwort vergessen?</a>
+                </div>
 
             </div>
-          </div>
+
         </div>
-      </div>
-    </div>
-  </block-ui>
-</div>
+    </section>
+</block-ui>

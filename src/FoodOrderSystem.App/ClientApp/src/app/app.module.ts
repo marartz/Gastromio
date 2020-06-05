@@ -69,6 +69,7 @@ import { UserAdminService } from './user/user-admin.service';
       { path: 'general-terms-and-conditions', component: GeneralTermsAndConditionsComponent },
       { path: 'imprint', component: ImprintComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
+      { path: 'login', component: LoginComponent },
       { path: 'restaurants', component: OrderRestaurantsComponent },
       { path: 'restaurants/:restaurantId', component: OrderRestaurantComponent },
       { path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard] },

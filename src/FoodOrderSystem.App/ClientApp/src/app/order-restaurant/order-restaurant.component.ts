@@ -19,7 +19,7 @@ import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.c
 @Component({
   selector: 'app-order-restaurant',
   templateUrl: './order-restaurant.component.html',
-  styleUrls: ['./order-restaurant.component.css']
+  styleUrls: ['./order-restaurant.component.css', '../../assets/css/frontend.min.css']
 })
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;

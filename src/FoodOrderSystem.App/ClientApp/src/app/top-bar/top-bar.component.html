@@ -1,9 +1,9 @@
 <header role="banner">
-    <nav class="navbar" role="navigation">
+    <nav id="navbar" role="navigation">
 
         <div class="nav-left nav-item">
-            <div class="nav-branding nav-item">
-                <a class="nav-title" [routerLink]="['/']">Gastromio<span>.de</span></a>
+            <div id="branding">
+                <a [routerLink]="['/']">Gastromio<span>.de</span></a>
             </div>
         </div>
 
@@ -34,31 +34,31 @@
                         <span class="nav-icon-label">{{getUserEmail()}}&nbsp;</span>
                     </a>
 
-                    <ul class="dropdown-menu" id="userDropDown" role="menu">
-                        <div ngbDropdownMenu aria-labelledby="userDropDown">
-                            <ng-container *ngIf="isSystemAdmin()">
-                                <button ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</button>
-                                <button ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</button>
-                                <button ngbDropdownItem [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</button>
-                                <button ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</button>
-                            </ng-container>
+                    <ul id="userDropDown" class="dropdown-menu settings" ngbDropdownMenu aria-labelledby="userDropDown" role="menu">
 
-                            <ng-container *ngIf="isRestaurantAdmin()">
-                                <button ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Meine Restaurants</button>
-                            </ng-container>
+                        <ng-container *ngIf="isSystemAdmin()">
+                            <li ngbDropdownItem [routerLink]="['/admin/users']"><a [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
+                            <li ngbDropdownItem [routerLink]="['/admin/cuisines']"><a [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
+                            <li ngbDropdownItem [routerLink]="['/admin/paymentmethods']"><a [routerLink]="['/admin/paymentmethods']">Zahlungsmethoden verwalten</a></li>
+                            <li ngbDropdownItem [routerLink]="['/admin/restaurants']"><a [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
+                        </ng-container>
 
-                            <hr class="dropdown-divider" />
+                        <ng-container *ngIf="isRestaurantAdmin()">
+                            <li ngbDropdownItem [routerLink]="['/admin/myrestaurants']"><a [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a></li>
+                        </ng-container>
 
-                            <button ngbDropdownItem (click)="logout()"> Abmelden</button>
-                        </div>
+                        <div class="dropdown-divider"></div>
+
+                        <li ngbDropdownItem (click)="logout()"><a (click)="logout()">Abmelden</a></li>
+
                     </ul>
 
                 </div>
 
             </div>
 
-            <div class="cart-button">
-                <a class="nav-link nav-item" (click)="toggleCartVisibility()">
+            <div id="cart">
+              <a class="nav-link nav-item" (click)="toggleCartVisibility()">
                     <span class="cart-count-wrap">
                         <svg width="20" height="24" viewBox="0 0 20 24" fill="#1F4F46">
                             <path d="M19.9 4h-5c-.5-2.3-2.5-4-4.9-4S5.6 1.7 5.1 4h-5L0 24h20l-.1-20zM10 2c1.3 0 2.4.8 2.8 2H7.2c.4-1.2 1.5-2 2.8-2zM2 22l.1-16H5v2h2V6h6v2h2V6h2.9l.1 16H2z"></path>
