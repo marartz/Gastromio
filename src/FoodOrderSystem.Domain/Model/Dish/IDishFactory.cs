@@ -7,6 +7,6 @@ namespace FoodOrderSystem.Domain.Model.Dish
     public interface IDishFactory
     {
         Result<Dish> Create(RestaurantId restaurantId, DishCategoryId categoryId, string name, string description,
-            string productInfo, IEnumerable<DishVariant> variants);
+            string productInfo, int orderNo, IEnumerable<DishVariant> variants);
     }
 }

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\FoodOrderSystem.Persistence\FoodOrderSystem.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations" />
+  </ItemGroup>
+
 </Project>

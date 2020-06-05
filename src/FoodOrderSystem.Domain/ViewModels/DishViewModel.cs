@@ -9,6 +9,7 @@ namespace FoodOrderSystem.Domain.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public string ProductInfo { get; set; }
+        public int OrderNo { get; set; }
         public IList<DishVariantViewModel> Variants { get; set; }
     }
 }

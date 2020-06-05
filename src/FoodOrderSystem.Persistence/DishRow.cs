@@ -24,6 +24,8 @@ namespace FoodOrderSystem.Persistence
         public string Description { get; set; }
 
         public string ProductInfo { get; set; }
+        
+        public int OrderNo { get; set; }
 
         public virtual ICollection<DishVariantRow> Variants { get; set; }
     }
