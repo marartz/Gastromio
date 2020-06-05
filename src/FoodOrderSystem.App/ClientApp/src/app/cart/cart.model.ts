@@ -13,6 +13,14 @@ export class CartModel {
 
   public orderedDishes: OrderedDishModel[];
 
+  public getDishCountOfOrder(): number {
+    let result = 0;
+    for (const orderedDish of this.orderedDishes) {
+      result += orderedDish.count;
+    }
+    return result;
+  }
+
   public getValueOfOrder(): number {
     if (this.orderedDishes === undefined || this.orderedDishes.length === 0) {
       return 0;

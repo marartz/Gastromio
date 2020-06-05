@@ -75,7 +75,7 @@
 
                             </div>
 
-                        
+
 
                     </div>
                 </div>
@@ -84,24 +84,14 @@
 
         </div>
 
-
-
-
-
-
-
-
-
-        <div class="container store-container">
-            <div class="cols">
-
-                
-                <div class="col store-cart-container">
+      <div id="cart" class="col store-cart-container" [class.visible]="isCartVisible()">
+                  <div class="cols">
+                    <div class="col store-cart-container">
                     <section class="store-cart">
                         <section class="cart-products">
                             <h1 class="cart-title">Warenkorb</h1>
 
-                            
+
                             <div class="cart-header">
                                 <div class="pair">
                                     <img class="pair-icon" src="../../assets/img/icons/order-restaurant/lieferzeit.svg" alt="Icon" />
@@ -110,23 +100,23 @@
                                 <div class="pair">
                                     <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" placement="bottom" ngbTooltip="Min. {{getCart().getMinimumOrderValueText()}} &euro;" />
                                 </div>
-                                
+
                                 <div class="pair">
-                                    
+
                                     <img class="pair-icon" src="../../assets/img/icons/order-restaurant/mindestbestellwert.svg" alt="Icon" placement="bottom" ngbTooltip="Selbstabholung möglich" />
                                 </div>
                             </div>
 
-                            
+
                             <div class="products-list">
 
-                                
+
                                 <div class="cart-empty" *ngIf="isCartEmpty()">
                                     <img src="../../assets/img/icons/order-restaurant/" alt="" />
                                     <div class="cart-empty-text">LEER</div>
                                 </div>
 
-                                
+
                                 <div class="cart-body" *ngFor="let orderedDish of getCart().orderedDishes">
                                     <section class="product">
                                         <div class="top">
@@ -146,7 +136,7 @@
 
                             </div>
 
-                            
+
                             <div class="cart-total" *ngIf="!isCartEmpty()">
                                 <span class="total-label">Gesamt</span>
                                 <div class="total-seperator"></div>
