@@ -19,6 +19,12 @@
     5.1 #bag > #bag-header
     5.3 #bag > #bag-footer
 
+    6.    #dish-add, #dish-edit
+    6.1   #dish-add, #dish-edit > #options-panel
+    6.1.1 #dish-add, #dish-edit > #options-panel > #variant
+    6.1.2 #dish-add, #dish-edit > #options-panel > #quantity
+    6.2   #dish-add, #dish-edit > #confirm-or-add
+
     80.  #entry
     80.1 #entry > #error
 
@@ -1483,6 +1489,302 @@ form:focus {
 
 #bag-footer .bag-btns .cta-wrap .button-cta.checkout:hover {
     background: #27625b;
+}
+
+/* 6. #dish-add, #dish-edit */
+#dish-add,
+#dish-edit {
+    height: auto;
+    overflow-y: hidden;
+    padding: 16px;
+    padding-bottom: 0px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    transition: all .8s cubic-bezier(.57, .06, .05, .95);
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (min-width: 900px) {
+    #dish-add .info-inner,
+    #dish-edit .info-inner {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+}
+
+#dish-add .add-to-cart-panel,
+#dish-edit .add-to-cart-panel{
+    position: relative;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 21;
+}
+
+/* 6.1 #dish-add, #dish-edit > #options-panel */
+#options-panel {
+    background-color: #fff;
+    bottom: 100%;
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+#options-panel .options-title-bar {
+    background: #fff;
+    border-bottom: 1px solid #efefef;
+    border-radius: 4px 4px 0px 0px;
+    min-height: 76px;
+    position: relative;
+    padding: 24px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-right: 87px;
+}
+
+@media screen and (min-width: 900px) {
+    #options-panel .options-title-bar {
+        min-height: 104px;
+    }
+}
+
+#options-panel .options-bar::before {
+    box-shadow: inset 0 -20px 35px -15px rgba(0, 0, 0, .05);
+    content: "";
+    display: block;
+    left: 0px;
+    pointer-events: none;
+    position: absolute;
+    top: -72px;
+    height: 72px;
+    width: 100%;
+    z-index: 3;
+}
+
+#options-panel .dish-name {
+    font-family: proxima-nova, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+#options-panel .dish-info {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+#options-panel .options-title-bar .text-link {
+    background: transparent;
+    border-bottom: none;
+    border-left: 1px solid #efefef;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    padding: 20px;
+}
+
+#options-panel .options-list {
+	  border-bottom: 0px;
+}
+
+@media screen and (min-width: 900px) {
+    #options-panel .options-list {
+        max-height: calc(100vh - 305px);
+    }
+}
+
+#options-panel .options-list .option-item {
+    padding: 24px;
+}
+
+#options-panel .options-list .option-item.variant {
+    padding: 24px 0px;
+}
+
+#options-panel .options-list .option-item.remarks input {
+    font-size: 16px;
+}
+
+#options-panel .options-list .option-item:not(:last-of-type) {
+	  border-bottom: 1px solid #efefef;
+}
+
+#options-panel .options-list .flex-space-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#options-panel .options-list .option-item label {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 6.1.1 #dish-add, #dish-edit > #options-panel > #variant */
+#variant {
+    padding: 0px 24px;
+}
+
+#variant .form-field {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#variant .form-field label {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: auto;
+    margin: 0px;
+    padding-bottom: 0px;
+    position: initial;
+    text-transform: capitalize;
+    text-overflow: ellipsis;
+    top: 0px;
+    transform: none;
+    -ms-transform: none;
+	  transition: none;
+	  white-space: nowrap;
+	  width: auto;
+}
+
+#variant .form-field .select-field-wrap {
+    font-size: 16px;
+    margin: 0px;
+    min-width: 105px;
+    max-width: 145px;
+    width: 100%;
+}
+
+#variant .form-field .select-field-wrap select {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #e5e5e5;
+    border-radius: 4px;
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 16px;
+    overflow: hidden;
+    padding: 10px 20px 10px 10px;
+    text-transform: none;
+	  width: 100%;
+	  -webkit-appearance: none;
+	  -moz-appearance: none;
+}
+
+#variant .form-field .select-field-wrap svg {
+    position: absolute;
+    margin-top: -5.24992px;
+    right: 40px;
+    top: 54%;
+    width: 10.5px;
+    height: 10.5px;
+}
+
+#variant .form-field .select-field-wrap svg path {
+	  fill: #1f4f46;
+}
+
+/* 6.1.2 #dish-add, #dish-edit > #options-panel > #quantity */
+#quantity {
+    position: relative;
+    width: 112px;
+}
+
+#quantity .inner-wrap {
+    align-items: center;
+	  display: flex;
+	  justify-content: space-between;
+}
+
+#quantity .dish-quantity {
+    background-color: #1f4f46;
+    border-radius: 16px;
+    color: #fff;
+    font-family: proxima-nova, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 32px;
+    letter-spacing: 0.72px;
+    line-height: 1.2;
+	  min-width: 32px;
+	  padding: 8px 8px 4px;
+	  text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#quantity .quantity-btn {
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+	  width: 24px;
+	  height: 24px;
+	  padding: 0px;
+	  z-index: 0;
+}
+
+#quantity .quantity-btn path {
+    fill: #1f4f46;
+}
+
+/* 6.2 #dish-add/edit > #confirm-or-add */
+#confirm-or-add {
+    background-color: #fff;
+    border-top: 1px solid #efefef;
+    padding: 24px;
+    position: relative;
+    transition: box-shadow .4s cubic-bezier(.645, .045, .355, 1);
+    z-index: 8;
+}
+
+@media (min-width: 900px) {
+    #confirm-or-add {
+        margin-bottom: 1px;
+        border-radius: 0px 0px 4px 4px;
+    }
+}
+
+#confirm-or-add .inline-button-wrap {
+    display: flex;
+    flex-basis: 0;
+}
+
+#confirm-or-add .inline-button-wrap button {
+    flex: 1;
+    margin-right: 0px;
+    transition: margin-right 0s;
+}
+
+#confirm-or-add .inline-button-wrap button:last-child {
+	  margin-right: 0px;
+}
+
+#confirm-or-add .add-to-cart-button {
+    cursor: pointer;
+    padding-left: 12px;
+    padding-right: 12px;
+    white-space: nowrap;
+}
+
+#confirm-or-add .remove-link {
+    font-size: 12px;
+    display: table;
+    margin: 16px auto 0px;
 }
 
 /* 80. #entry */

@@ -1,30 +1,77 @@
-<div>
-  <span>{{orderedDish.count}} x</span>
-  <h2 class="product-name">{{orderedDish.dish.name}}</h2>
-  <p class="product-description">{{orderedDish.dish.description}}</p>
+<div id="dish-edit">
+    <div class="info-inner">
+        <div id="add-to-cart-panel" class="add-to-cart-panel">
 
-  <p class="product-info">{{orderedDish.dish.productInfo}}</p>
+            <div id="options-panel">
+                <div class="options-title-bar">
+                    <h3 class="dish-name" tabindex="-1">{{orderedDish.dish.name}}</h3>
+                    <div class="dish-info">
+                        {{orderedDish.dish.description}} - {{getVariantPrice(orderedDish.variant)}}
+                    </div>
+                    <button class="text-link">Zurück</button>
+                </div>
 
-  <ng-container *ngIf="orderedDish.dish.variants.length > 1">
-    <label class="product-price">Variante:
-      <input type="text" readonly value="{{orderedDish.variant.name}}" />
-    </label>
-  </ng-container>
+                <div class="options-list">
 
-  <label class="product-price">Preis:
-    <input type="text" readonly value="{{getVariantPrice(orderedDish.variant)}}" />
-  </label>
+                    <ng-container *ngIf="orderedDish.dish.variants.length > 1">
+                        <div class="option-item variant">
+                            <div id="variant">
+                                <div class="form-field">
+                                    <label>Variante</label>
+                                    <div class="select-field-wrap">
+                                        <select>
+                                            <option>{{orderedDish.variant.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
 
-  <label class="remarks">Anmerkungen zur Bestellung:
-    <input type="text" placeholder="Anmerkungen zur Bestellung" [(ngModel)]="orderedDish.remarks" />
-  </label>
+                    <div class="option-item quantity">
+                        <div class="flex-space-between">
+                            <label>Anzahl</label>
+                            <div id="quantity">
+                                <div class="inner-wrap">
+                                    <button class="quantity-btn" (click)="decCount()">
+                                        <svg viewBox="0 0 100 100">
+                                            <path fill="#FFF" d="M50 8.8c22.7 0 41.2 18.5 41.2 41.2S72.7 91.2 50 91.2 8.8 72.7 8.8 50 27.3 8.8 50 8.8m0-7.3C23.2 1.5 1.5 23.2 1.5 50S23.2 98.5 50 98.5 98.5 76.8 98.5 50 76.8 1.5 50 1.5z"></path>
+                                            <path fill="#FFF" d="M32 46.5h37v8H32z"></path>
+                                        </svg>
+                                    </button>
 
-  <button (click)="incCount()">+</button>
-  <button (click)="decCount()">-</button>
+                                    <div class="dish-quantity">{{orderedDish.count}}</div>
 
+                                    <button class="quantity-btn" (click)="incCount()">
+                                        <svg viewBox="0 0 100 100">
+                                            <path fill="#FFF" d="M50 8.3c22.7 0 41.2 18.5 41.2 41.2S72.7 90.8 50 90.8 8.8 72.3 8.8 49.6 27.3 8.3 50 8.3m0-7.2C23.2 1.1 1.5 22.8 1.5 49.6 1.5 76.3 23.2 98 50 98s48.5-21.7 48.5-48.5C98.5 22.8 76.8 1.1 50 1.1z"></path>
+                                            <path fill="#FFF" d="M31 46.5h38v8H31z"></path>
+                                            <path fill="#FFF" d="M46 31.5h8v38h-8z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="option-item remarks">
+                        <div class="flex-space-between">
+                            <label>Anmerkungen</label>
+                            <input type="text" [(ngModel)]="orderedDish.remarks" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="confirm-or-add">
+                <div class="inline-button-wrap">
+                    <button class="add-to-cart-button" (click)="onClose()">Ändern</button>
+                </div>
+                <a class="text-link remove-link" (click)="onRemove()">Aus Warenkorb entfernen</a>
+            </div>
+
+        </div>
+    </div>
 </div>
-
-
-
-<button (click)="onClose()">Schließen</button>
-<button (click)="onRemove()">Entfernen</button>
