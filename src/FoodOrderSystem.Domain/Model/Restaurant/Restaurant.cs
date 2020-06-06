@@ -114,6 +114,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
             }
 
+            Image = image;
+            
             return SuccessResult<bool>.Create(true);
         }
 
