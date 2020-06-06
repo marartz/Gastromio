@@ -1,0 +1,121 @@
+.add-to-cart-panel {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 21;
+    width: 100%;
+}
+
+@media screen and (min-width: 900px) {
+    .add-to-cart-panel {
+        position: relative;
+    }
+}
+
+/* > #options-panel */
+#options-panel {
+    background-color: #fff;
+    bottom: 100%;
+    display: block;
+    position: absolute;
+    width: 100%;
+}
+
+#options-panel .options-title-bar {
+    background: #fff;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    min-height: 76px;
+    position: relative;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-right: 87px;
+}
+
+@media screen and (min-width: 900px) {
+    #options-panel .options-title-bar {
+        border-radius: 4px 4px 0px 0px;
+        min-height: 104px;
+        padding: 24px;
+    }
+}
+
+#options-panel .options-bar::before {
+    box-shadow: inset 0 -20px 35px -15px rgba(0, 0, 0, .05);
+    content: "";
+    display: block;
+    left: 0px;
+    pointer-events: none;
+    position: absolute;
+    top: -72px;
+    height: 72px;
+    width: 100%;
+    z-index: 3;
+}
+
+#options-panel .product-title {
+    font-family: proxima-nova, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+#options-panel .product-info {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+#options-panel .options-title-bar .text-link {
+    background: transparent;
+    border-bottom: none;
+    border-left: 1px solid #efefef;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    padding: 20px;
+}
+
+/* > #confirm-or-add */
+#confirm-or-add {
+    background-color: #fff;
+    border-top: 1px solid #efefef;
+    box-shadow: 0px 1px 0px #e5e5e5;
+    padding: 24px;
+    position: relative;
+    transition: box-shadow .4s cubic-bezier(.645, .045, .355, 1);
+    z-index: 8;
+}
+
+@media (min-width: 900px) {
+    #confirm-or-add {
+        margin-bottom: 1px;
+        border-radius: 0px 0px 4px 4px;
+        box-shadow: 0px -4px 4px -2px rgba(0, 0, 0, .08), 0px 1px 0px #e5e5e5;
+    }
+}
+
+#confirm-or-add .inline-button-wrap {
+    display: flex;
+    flex-basis: 0;
+}
+
+#confirm-or-add .inline-button-wrap button {
+    flex: 1;
+    margin-right: 8px;
+    transition: margin-right 0s;
+}
+
+#confirm-or-add .inline-button-wrap button:last-child {
+	  margin-right: 0px;
+}
+
+#confirm-or-add .add-to-cart-button {
+    cursor: pointer;
+    padding-left: 12px;
+    padding-right: 12px;
+    white-space: nowrap;
+}

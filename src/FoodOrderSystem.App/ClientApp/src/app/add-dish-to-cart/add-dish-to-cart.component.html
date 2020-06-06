@@ -1,5 +1,4 @@
-<div>
-  <h2 class="product-name">{{dish.name}}</h2>
+
   <p class="product-description">{{dish.description}}</p>
   <p class="product-info">{{dish.productInfo}}</p>
 
@@ -16,6 +15,19 @@
       </select>
     </label>
   </ng-container>
-</div>
 
-<button (click)="onSubmit()">Hinzufügen</button>
+  <div id="add-to-cart-panel" class="add-to-cart-panel">
+      <div id="options-panel">
+          <div class="options-title-bar">
+              <h3 class="product-title" tabindex="-1">{{dish.name}}</h3>
+              <div class="product-info">{{dish.description}} - {{dish.productInfo}}</div>
+              <button class="text-link">Zurück</button>
+          </div>
+      </div>
+
+      <div id="confirm-or-add">
+          <div class="inline-button-wrap">
+              <button class="add-to-cart-button" (click)="onSubmit()">Hinzufügen</button>
+          </div>
+      </div>
+  </div>
