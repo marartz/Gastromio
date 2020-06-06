@@ -17,28 +17,28 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
-        public Task<ICollection<User>> FindAllAsync(CancellationToken cancellationToken = default)
+        public Task<IEnumerable<User>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<User>)dbContext.Users.Select(FromRow).OrderBy(en => en.Email).ToList();
+                return (IEnumerable<User>)dbContext.Users.Select(FromRow).OrderBy(en => en.Email);
             }, cancellationToken);
         }
 
-        public Task<ICollection<User>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<User>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<User>)dbContext.Users.Where(en => EF.Functions.Like(en.Email, $"%{searchPhrase}%")).OrderBy(en => en.Email).Select(FromRow).ToList();
+                return (IEnumerable<User>)dbContext.Users.Where(en => EF.Functions.Like(en.Email, $"%{searchPhrase}%")).OrderBy(en => en.Email).Select(FromRow);
             }, cancellationToken);
         }
 
-        public Task<ICollection<User>> FindByRoleAsync(Role role, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<User>> FindByRoleAsync(Role role, CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
                 var dbRole = ToDbRole(role);
-                return (ICollection<User>)dbContext.Users.Where(en => en.Role == dbRole).OrderBy(en => en.Email).Select(FromRow).ToList();
+                return (IEnumerable<User>)dbContext.Users.Where(en => en.Role == dbRole).OrderBy(en => en.Email).Select(FromRow);
             }, cancellationToken);
         }
 

@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using FoodOrderSystem.Domain.Commands.AddTestData;
+using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -32,34 +34,41 @@ namespace FoodOrderSystem.App
 
                 var host = CreateHostBuilder(args).Build();
 
-                using (var scope = host.Services.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    var dbContext = services.GetService<SystemDbContext>();
-                    dbContext.Database.Migrate();
-                }
-
-                using (var scope = host.Services.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-
-                    var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
-
-                    var commandDispatcher = services.GetService<ICommandDispatcher>();
-                    var result = commandDispatcher
-                        .PostAsync<EnsureAdminUserCommand, bool>(new EnsureAdminUserCommand(), currentUser).Result;
-                }
+                // using (var scope = host.Services.CreateScope())
+                // {
+                //     var services = scope.ServiceProvider;
+                //     var dbContext = services.GetService<SystemDbContext>();
+                //     dbContext.Database.Migrate();
+                // }
 
                 using (var scope = host.Services.CreateScope())
                 {
                     var services = scope.ServiceProvider;
 
                     var configuration = services.GetService<IConfiguration>();
+
+                    var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
+                    var commandDispatcher = services.GetService<ICommandDispatcher>();
+
+                    var failureMessageService = services.GetService<IFailureMessageService>();
+                    
                     var seed =
                         string.Equals(configuration["Seed"], "true", StringComparison.InvariantCultureIgnoreCase) ||
                         configuration.GetSection("Seed").GetChildren().Any();
                     if (seed)
                     {
+                        Persistence.MongoDB.Initializer.PurgeDatabase(services);
+                        Persistence.MongoDB.Initializer.PrepareDatabase(services);
+
+                        var result = commandDispatcher
+                            .PostAsync<EnsureAdminUserCommand, bool>(new EnsureAdminUserCommand(), currentUser).Result;
+                        if (result.IsFailure)
+                        {
+                            var failureResult = (FailureResult<bool>) result;
+                            Log.Logger.Error(string.Join("; ", failureResult.Errors));
+                            throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
+                        }
+                        
                         if (!Int32.TryParse(configuration["Seed:Params:UserCount"], out var userCount))
                             userCount = 20;
 
@@ -72,13 +81,29 @@ namespace FoodOrderSystem.App
                         if (!Int32.TryParse(configuration["Seed:Params:DishCount"], out var dishCount))
                             dishCount = 8;
 
-                        var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
-
-                        var commandDispatcher = services.GetService<ICommandDispatcher>();
-                        var result = commandDispatcher
+                        result = commandDispatcher
                             .PostAsync<AddTestDataCommand, bool>(
                                 new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount), currentUser)
                             .Result;
+                        if (result.IsFailure)
+                        {
+                            var failureResult = (FailureResult<bool>) result;
+                            Log.Logger.Error(string.Join("; ", failureResult.Errors.Values.SelectMany(en => en)));
+                            throw new InvalidOperationException("Error during command AddTestDataCommand");
+                        }
+                    }
+                    else
+                    {
+                        Persistence.MongoDB.Initializer.PrepareDatabase(services);
+
+                        var result = commandDispatcher
+                            .PostAsync<EnsureAdminUserCommand, bool>(new EnsureAdminUserCommand(), currentUser).Result;
+                        if (result.IsFailure)
+                        {
+                            var failureResult = (FailureResult<bool>) result;
+                            Log.Logger.Error(string.Join("; ", failureResult.Errors));
+                            throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
+                        }
                     }
                 }
 

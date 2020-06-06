@@ -42,13 +42,10 @@ namespace FoodOrderSystem.Domain.Commands.RemoveDishCategoryFromRestaurant
                 return FailureResult<bool>.Forbidden();
 
             var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            if (dishCategories == null || !dishCategories.Any(en => en.Id == command.DishCategoryId))
+            if (dishCategories == null || dishCategories.All(en => en.Id != command.DishCategoryId))
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
 
-            var dishes = await dishRepository.FindByDishCategoryIdAsync(command.DishCategoryId, cancellationToken);
-            if (dishes != null && dishes.Count > 0)
-                return FailureResult<bool>.Create(FailureResultCode.DishCategoryContainsDishes);
-
+            await dishRepository.RemoveByDishCategoryIdAsync(command.DishCategoryId, cancellationToken);
             await dishCategoryRepository.RemoveAsync(command.DishCategoryId, cancellationToken);
 
             return SuccessResult<bool>.Create(true);

@@ -16,7 +16,7 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
-        public Task<ICollection<DishCategory>> FindByRestaurantIdAsync(RestaurantId restaurantId,
+        public Task<IEnumerable<DishCategory>> FindByRestaurantIdAsync(RestaurantId restaurantId,
             CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
@@ -24,11 +24,10 @@ namespace FoodOrderSystem.Persistence
                 var restaurantRow = dbContext.Restaurants.FirstOrDefault(en => en.Id == restaurantId.Value);
                 if (restaurantRow == null)
                     return null;
-                return (ICollection<DishCategory>) restaurantRow.Categories
+                return (IEnumerable<DishCategory>) restaurantRow.Categories
                     .OrderBy(en => en.OrderNo)
                     .ThenBy(en => en.Name)
-                    .Select(en => FromRow(en))
-                    .ToList();
+                    .Select(en => FromRow(en));
             }, cancellationToken);
         }
 
@@ -63,6 +62,21 @@ namespace FoodOrderSystem.Persistence
                     dbSet.Add(row);
                 }
 
+                dbContext.SaveChanges();
+            }, cancellationToken);
+        }
+
+        public Task RemoveByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.DishCategories;
+
+                var rows = dbSet.Where(en => en.RestaurantId == restaurantId.Value);
+                foreach (var row in rows)
+                {
+                    dbSet.Remove(row);
+                }
                 dbContext.SaveChanges();
             }, cancellationToken);
         }

@@ -299,7 +299,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 return boolResult;
 
             boolResult =
-                restaurant.ChangeDeliveryData(5 + (decimal) index / 10, 4 + (decimal) index / 10);
+                restaurant.ChangeDeliveryData(5 + (decimal) index / 100, 4 + (decimal) index / 100);
             if (boolResult.IsFailure)
                 return boolResult;
 

@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant
 {
-    public class GetDishesOfRestaurantQueryHandler : IQueryHandler<GetDishesOfRestaurantQuery, ICollection<DishCategoryViewModel>>
+    public class GetDishesOfRestaurantQueryHandler
+        : IQueryHandler<GetDishesOfRestaurantQuery, ICollection<DishCategoryViewModel>>
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IDishCategoryRepository dishCategoryRepository;
@@ -29,59 +30,60 @@ namespace FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant
             this.dishRepository = dishRepository;
         }
 
-        public async Task<Result<ICollection<DishCategoryViewModel>>> HandleAsync(GetDishesOfRestaurantQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<ICollection<DishCategoryViewModel>>> HandleAsync(GetDishesOfRestaurantQuery query,
+            User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<ICollection<DishCategoryViewModel>>.Create(FailureResultCode.RestaurantDoesNotExist);
+                return FailureResult<ICollection<DishCategoryViewModel>>.Create(
+                    FailureResultCode.RestaurantDoesNotExist);
 
-            var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
+            var dishCategories =
+                await dishCategoryRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
+            var dishCategoryList = dishCategories != null ? dishCategories.ToList() : new List<DishCategory>();
+            
             var dishes = await dishRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
+            var dishList = dishes != null ? dishes.ToList() : new List<Dish>();
 
             var result = new List<DishCategoryViewModel>();
 
-            if (dishCategories != null)
+            foreach (var dishCategory in dishCategoryList.OrderBy(en => en.OrderNo))
             {
-                foreach (var dishCategory in dishCategories.OrderBy(en => en.OrderNo))
+                var dishViewModels = new List<DishViewModel>();
+
+                foreach (var dish in dishList.Where(en => en.CategoryId == dishCategory.Id)
+                    .OrderBy(en => en.OrderNo))
                 {
-                    var dishViewModels = new List<DishViewModel>();
+                    var variantViewModels = new List<DishVariantViewModel>();
 
-                    if (dishes != null)
+                    if (dish.Variants != null)
                     {
-                        foreach (var dish in dishes.Where(en => en.CategoryId == dishCategory.Id).OrderBy(en => en.OrderNo))
+                        variantViewModels.AddRange(dish.Variants.Select(variant => new DishVariantViewModel
                         {
-                            var variantViewModels = new List<DishVariantViewModel>();
-
-                            if (dish.Variants != null)
-                            {
-                                variantViewModels.AddRange(dish.Variants.Select(variant => new DishVariantViewModel
-                                {
-                                    VariantId = variant.VariantId, Name = variant.Name, Price = variant.Price,
-                                    Extras = new List<DishVariantExtraViewModel>()
-                                }));
-                            }
-
-                            dishViewModels.Add(new DishViewModel
-                            {
-                                Id = dish.Id.Value,
-                                Name = dish.Name,
-                                Description = dish.Description,
-                                ProductInfo = dish.ProductInfo,
-                                Variants = variantViewModels
-                            });
-                        }
+                            VariantId = variant.VariantId, Name = variant.Name, Price = variant.Price,
+                            Extras = new List<DishVariantExtraViewModel>()
+                        }));
                     }
 
-                    result.Add(new DishCategoryViewModel
+                    dishViewModels.Add(new DishViewModel
                     {
-                        Id = dishCategory.Id.Value,
-                        Name = dishCategory.Name,
-                        Dishes = dishViewModels
+                        Id = dish.Id.Value,
+                        Name = dish.Name,
+                        Description = dish.Description,
+                        ProductInfo = dish.ProductInfo,
+                        Variants = variantViewModels
                     });
                 }
+
+                result.Add(new DishCategoryViewModel
+                {
+                    Id = dishCategory.Id.Value,
+                    Name = dishCategory.Name,
+                    Dishes = dishViewModels
+                });
             }
 
             return SuccessResult<ICollection<DishCategoryViewModel>>.Create(result);

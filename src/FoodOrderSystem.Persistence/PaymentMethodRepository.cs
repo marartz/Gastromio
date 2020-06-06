@@ -15,11 +15,12 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
-        public Task<ICollection<PaymentMethod>> FindAllAsync(CancellationToken cancellationToken = default)
+        public Task<IEnumerable<PaymentMethod>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
-                return (ICollection<PaymentMethod>)dbContext.PaymentMethods.OrderBy(en => en.Name).Select(en => FromRow(en)).ToList();
+                return (IEnumerable<PaymentMethod>) dbContext.PaymentMethods.OrderBy(en => en.Name)
+                    .Select(en => FromRow(en));
             }, cancellationToken);
         }
 

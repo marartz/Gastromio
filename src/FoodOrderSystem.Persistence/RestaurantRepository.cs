@@ -20,21 +20,21 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
-        public Task<ICollection<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
                 var rows = dbContext.Restaurants.Where(en => EF.Functions.Like(en.Name, $"%{searchPhrase}%")).OrderBy(en => en.Name).ToList();
-                return (ICollection<Restaurant>)rows.Select(FromRow).ToList();
+                return rows.Select(FromRow);
             }, cancellationToken);
         }
 
-        public Task<ICollection<Restaurant>> FindAllAsync(CancellationToken cancellationToken = default)
+        public Task<IEnumerable<Restaurant>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
                 var rows = dbContext.Restaurants.OrderBy(en => en.Name).ToList();
-                return (ICollection<Restaurant>)rows.Select(FromRow).ToList();
+                return rows.Select(FromRow);
             }, cancellationToken);
         }
 
@@ -49,7 +49,31 @@ namespace FoodOrderSystem.Persistence
             }, cancellationToken);
         }
 
-        public Task<ICollection<Restaurant>> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var rows = dbContext.Restaurants
+                    .Where(rest => rest.RestaurantCuisines.Any(restcuisine => restcuisine.CuisineId == cuisineId.Value))
+                    .OrderBy(en => en.Name)
+                    .ToList();
+                return rows.Select(FromRow);
+            }, cancellationToken);
+        }
+
+        public Task<IEnumerable<Restaurant>> FindByPaymentMethodIdAsync(PaymentMethodId paymentMethodId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var rows = dbContext.Restaurants
+                    .Where(rest => rest.RestaurantPaymentMethods.Any(restpaymentmethod => restpaymentmethod.PaymentMethodId == paymentMethodId.Value))
+                    .OrderBy(en => en.Name)
+                    .ToList();
+                return rows.Select(FromRow);
+            }, cancellationToken);
+        }
+
+        public Task<IEnumerable<Restaurant>> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -57,7 +81,7 @@ namespace FoodOrderSystem.Persistence
                     .Where(rest => rest.RestaurantUsers.Any(restuser => restuser.UserId == userId.Value))
                     .OrderBy(en => en.Name)
                     .ToList();
-                return (ICollection<Restaurant>)rows.Select(FromRow).ToList(); ;
+                return rows.Select(FromRow);
             }, cancellationToken);
         }
 

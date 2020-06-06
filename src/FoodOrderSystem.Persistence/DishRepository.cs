@@ -17,32 +17,30 @@ namespace FoodOrderSystem.Persistence
             this.dbContext = dbContext;
         }
 
-        public Task<ICollection<Dish>> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken)
+        public Task<IEnumerable<Dish>> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken)
         {
             return Task.Factory.StartNew(() =>
             {
                 var restaurantRow = dbContext.Restaurants.FirstOrDefault(en => en.Id == restaurantId.Value);
                 if (restaurantRow == null)
                     return null;
-                return (ICollection<Dish>)restaurantRow.Dishes
+                return (IEnumerable<Dish>) restaurantRow.Dishes
                     .OrderBy(en => en.OrderNo)
                     .ThenBy(en => en.Name)
-                    .Select(en => FromRow(en))
-                    .ToList();
+                    .Select(en => FromRow(en));
             }, cancellationToken);
         }
 
-        public Task<ICollection<Dish>> FindByDishCategoryIdAsync(DishCategoryId dishCategoryId, CancellationToken cancellationToken)
+        public Task<IEnumerable<Dish>> FindByDishCategoryIdAsync(DishCategoryId dishCategoryId, CancellationToken cancellationToken)
         {
             return Task.Factory.StartNew(() =>
             {
                 var dishCategoryRow = dbContext.DishCategories.FirstOrDefault(en => en.Id == dishCategoryId.Value);
                 if (dishCategoryRow == null)
                     return null;
-                return (ICollection<Dish>)dishCategoryRow.Dishes
+                return (IEnumerable<Dish>) dishCategoryRow.Dishes
                     .OrderBy(en => en.Name)
-                    .Select(en => FromRow(en))
-                    .ToList();
+                    .Select(en => FromRow(en));
             }, cancellationToken);
         }
 
@@ -76,6 +74,36 @@ namespace FoodOrderSystem.Persistence
                     dbSet.Add(row);
                 }
 
+                dbContext.SaveChanges();
+            }, cancellationToken);
+        }
+
+        public Task RemoveByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.Dishes;
+
+                var rows = dbSet.Where(en => en.RestaurantId == restaurantId.Value);
+                foreach (var row in rows)
+                {
+                    dbSet.Remove(row);
+                }
+                dbContext.SaveChanges();
+            }, cancellationToken);
+        }
+
+        public Task RemoveByDishCategoryIdAsync(DishCategoryId dishCategoryId, CancellationToken cancellationToken = default)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var dbSet = dbContext.Dishes;
+
+                var rows = dbSet.Where(en => en.CategoryId == dishCategoryId.Value);
+                foreach (var row in rows)
+                {
+                    dbSet.Remove(row);
+                }
                 dbContext.SaveChanges();
             }, cancellationToken);
         }
