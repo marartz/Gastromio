@@ -12,6 +12,9 @@ import {OrderedDishModel} from '../cart/ordered-dish.model';
 export class EditOrderedDishComponent implements OnInit {
   @Input() public orderedDish: OrderedDishModel;
 
+  count: number;
+  remarks: string;
+
   constructor(
     public activeModal: NgbActiveModal,
     private orderService: OrderService
@@ -19,6 +22,8 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.count = this.orderedDish.count;
+    this.remarks = this.orderedDish.remarks;
   }
 
   getVariantPrice(variant: DishVariantModel): string {
@@ -30,22 +35,28 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   incCount(): void {
-    this.orderService.incrementDishVariantCount(this.orderedDish.itemId);
+    this.count++;
   }
 
   decCount(): void {
-    if (this.orderedDish.count <= 1) {
+    if (this.count <= 1) {
       return;
     }
-    this.orderService.decrementDishVariantCount(this.orderedDish.itemId);
+    this.count--;
   }
 
-  onClose(): void {
+  onSubmit(): void {
+    this.orderedDish.count = this.count;
+    this.orderedDish.remarks = this.remarks;
     this.activeModal.close();
   }
 
   onRemove(): void {
     this.orderService.removeDishVariantFromCart(this.orderedDish.itemId);
+    this.activeModal.close();
+  }
+
+  onCancel(): void {
     this.activeModal.close();
   }
 }

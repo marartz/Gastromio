@@ -79,15 +79,15 @@ export class OrderService {
     this.cart.orderedDishes = new Array<OrderedDishModel>();
   }
 
-  public addDishVariantToCart(dish: DishModel, variant: DishVariantModel): void {
+  public addDishVariantToCart(dish: DishModel, variant: DishVariantModel, count: number): void {
     let orderedDish = this.cart.orderedDishes.find(en => en.dish.id === dish.id && en.variant.variantId === variant.variantId);
     if (orderedDish !== undefined) {
-      orderedDish.count++;
+      orderedDish.count += count;
     } else {
       orderedDish = new OrderedDishModel();
       orderedDish.dish = dish;
       orderedDish.variant = variant;
-      orderedDish.count = 1;
+      orderedDish.count = count;
       this.cart.orderedDishes.push(orderedDish);
     }
     this.isCartVisibile = true;

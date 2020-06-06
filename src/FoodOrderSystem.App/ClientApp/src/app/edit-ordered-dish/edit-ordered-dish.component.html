@@ -8,7 +8,7 @@
                     <div class="dish-info">
                         {{orderedDish.dish.description}} - {{getVariantPrice(orderedDish.variant)}}
                     </div>
-                    <button class="text-link">Zurück</button>
+                    <button class="text-link" (click)="onCancel()">Zurück</button>
                 </div>
 
                 <div class="options-list">
@@ -40,7 +40,7 @@
                                         </svg>
                                     </button>
 
-                                    <div class="dish-quantity">{{orderedDish.count}}</div>
+                                    <div class="dish-quantity">{{count}}</div>
 
                                     <button class="quantity-btn" (click)="incCount()">
                                         <svg viewBox="0 0 100 100">
@@ -57,7 +57,7 @@
                     <div class="option-item remarks">
                         <div class="flex-space-between">
                             <label>Anmerkungen</label>
-                            <input type="text" [(ngModel)]="orderedDish.remarks" />
+                            <input type="text" [(ngModel)]="remarks" />
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
 
             <div id="confirm-or-add">
                 <div class="inline-button-wrap">
-                    <button class="add-to-cart-button" (click)="onClose()">Ändern</button>
+                    <button class="add-to-cart-button" (click)="onSubmit()">Ändern</button>
                 </div>
                 <a class="text-link remove-link" (click)="onRemove()">Aus Warenkorb entfernen</a>
             </div>

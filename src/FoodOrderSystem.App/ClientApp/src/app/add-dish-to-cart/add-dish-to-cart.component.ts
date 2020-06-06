@@ -13,11 +13,13 @@ export class AddDishToCartComponent implements OnInit {
   @Input() public dish: DishModel;
 
   selectedVariant: DishVariantModel;
+  count: number;
 
   constructor(
     public activeModal: NgbActiveModal,
     private orderService: OrderService
   ) {
+    this.count = 1;
   }
 
   ngOnInit() {
@@ -32,8 +34,23 @@ export class AddDishToCartComponent implements OnInit {
     return variant.name + ' ' + this.getVariantPrice(variant);
   }
 
+  incCount(): void {
+    this.count++;
+  }
+
+  decCount(): void {
+    if (this.count <= 1) {
+      return;
+    }
+    this.count--;
+  }
+
   onSubmit(): void {
-    this.orderService.addDishVariantToCart(this.dish, this.selectedVariant);
+    this.orderService.addDishVariantToCart(this.dish, this.selectedVariant, this.count);
+    this.activeModal.close();
+  }
+
+  onCancel(): void {
     this.activeModal.close();
   }
 }
