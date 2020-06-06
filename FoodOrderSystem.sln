@@ -5,15 +5,7 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Domain", "src\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj", "{7DD621AA-BEB4-478C-B066-8ED740D689FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence.InMemory", "src\FoodOrderSystem.Persistence.InMemory\FoodOrderSystem.Persistence.InMemory.csproj", "{1C233437-CB3E-4801-A2CD-300D8D7D6235}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence", "src\FoodOrderSystem.Persistence\FoodOrderSystem.Persistence.csproj", "{26466FB1-578D-4162-B14A-0AFDC487F5BE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.App", "src\FoodOrderSystem.App\FoodOrderSystem.App.csproj", "{00B578CE-7A6C-4212-823C-165A7693361E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Persistence.MSSQL", "src\FoodOrderSystem.Persistence.MSSQL\FoodOrderSystem.Persistence.MSSQL.csproj", "{88E31A82-7049-43F0-B573-CB38EEFAFB6E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.SQLite", "src\FoodOrderSystem.Persistence.SQLite\FoodOrderSystem.Persistence.SQLite.csproj", "{0FA095CC-1398-4891-B377-A9C3A8129E33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.MongoDB", "src\FoodOrderSystem.Persistence.MongoDB\FoodOrderSystem.Persistence.MongoDB.csproj", "{8B170172-1B90-4CDD-A769-77F5344DDE6F}"
 EndProject
@@ -29,26 +21,10 @@ Global
 		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C233437-CB3E-4801-A2CD-300D8D7D6235}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26466FB1-578D-4162-B14A-0AFDC487F5BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00B578CE-7A6C-4212-823C-165A7693361E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00B578CE-7A6C-4212-823C-165A7693361E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00B578CE-7A6C-4212-823C-165A7693361E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00B578CE-7A6C-4212-823C-165A7693361E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88E31A82-7049-43F0-B573-CB38EEFAFB6E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FA095CC-1398-4891-B377-A9C3A8129E33}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
