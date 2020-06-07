@@ -187,16 +187,16 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.PickupInfo != null
                     ? new PickupInfo(
                         TimeSpan.FromMinutes(document.PickupInfo.AverageTime),
-                        document.PickupInfo.MinimumOrderValue,
-                        document.PickupInfo.MaximumOrderValue,
+                        Converter.ToDecimal(document.PickupInfo.MinimumOrderValue),
+                        Converter.ToDecimal(document.PickupInfo.MaximumOrderValue),
                         document.PickupInfo.HygienicHandling
                     ) : null,
                 document.DeliveryInfo != null
                     ? new DeliveryInfo(
                         TimeSpan.FromMinutes(document.DeliveryInfo.AverageTime),
-                        document.DeliveryInfo.MinimumOrderValue,
-                        document.DeliveryInfo.MaximumOrderValue,
-                        document.DeliveryInfo.Costs,
+                        Converter.ToDecimal(document.DeliveryInfo.MinimumOrderValue),
+                        Converter.ToDecimal(document.DeliveryInfo.MaximumOrderValue),
+                        Converter.ToDecimal(document.DeliveryInfo.Costs),
                         document.DeliveryInfo.HygienicHandling
                     ) : null,
                 document.ReservationInfo != null
@@ -237,16 +237,16 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 PickupInfo = obj.PickupInfo != null ? new PickupInfoModel
                 {
                     AverageTime = (int)obj.PickupInfo.AverageTime.TotalMinutes,
-                    MinimumOrderValue = obj.PickupInfo.MinimumOrderValue,
-                    MaximumOrderValue = obj.PickupInfo.MaximumOrderValue,
+                    MinimumOrderValue = Converter.ToDouble(obj.PickupInfo.MinimumOrderValue),
+                    MaximumOrderValue = Converter.ToDouble(obj.PickupInfo.MaximumOrderValue),
                     HygienicHandling = obj.PickupInfo.HygienicHandling
                 } : null,
                 DeliveryInfo = obj.DeliveryInfo != null ? new DeliveryInfoModel
                 {
                     AverageTime = (int)obj.DeliveryInfo.AverageTime.TotalMinutes,
-                    MinimumOrderValue = obj.DeliveryInfo.MinimumOrderValue,
-                    MaximumOrderValue = obj.DeliveryInfo.MaximumOrderValue,
-                    Costs = obj.DeliveryInfo.Costs,
+                    MinimumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MinimumOrderValue),
+                    MaximumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MaximumOrderValue),
+                    Costs = Converter.ToDouble(obj.DeliveryInfo.Costs),
                     HygienicHandling = obj.DeliveryInfo.HygienicHandling
                 } : null,
                 ReservationInfo = obj.ReservationInfo != null ? new ReservationInfoModel

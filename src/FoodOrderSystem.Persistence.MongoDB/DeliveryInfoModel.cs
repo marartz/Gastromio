@@ -4,11 +4,11 @@
     {
         public int AverageTime { get; set; }
 
-        public decimal? MinimumOrderValue { get; set; }
+        public double? MinimumOrderValue { get; set; }
         
-        public decimal? MaximumOrderValue { get; set; }
+        public double? MaximumOrderValue { get; set; }
         
-        public decimal? Costs { get; set; }
+        public double? Costs { get; set; }
         
         public string HygienicHandling { get; set; }
     }
