@@ -8,6 +8,7 @@ import { BlockUIModule } from 'ng-block-ui';
 
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { AddDishCategoryComponent } from './add-dish-category/add-dish-category.component';
+import { AddDishToCartComponent } from './add-dish-to-cart/add-dish-to-cart.component';
 import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
 import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
 import { AddUserComponent } from './add-user/add-user.component';
@@ -30,6 +31,7 @@ import { CuisineAdminService } from './cuisine/cuisine-admin.service';
 import { CustomerInformationComponent } from './customer-information/customer-information.component';
 import { DishProductInfoComponent } from './dish-productinfo/dish-productinfo.component';
 import { EditDishComponent } from './edit-dish/edit-dish.component';
+import { EditOrderedDishComponent } from './edit-ordered-dish/edit-ordered-dish.component';
 import { GeneralErrorComponent } from './http-error-handling/general-error.component';
 import { GeneralTermsAndConditionsComponent } from './general-terms-and-conditions/general-terms-and-conditions.component';
 import { HttpErrorHandlingService } from './http-error-handling/http-error-handling.service';
@@ -88,6 +90,7 @@ import { UserAdminService } from './user/user-admin.service';
   declarations: [
     AddCuisineComponent,
     AddDishCategoryComponent,
+    AddDishToCartComponent,
     AddPaymentMethodComponent,
     AddRestaurantComponent,
     AddUserComponent,
@@ -108,6 +111,7 @@ import { UserAdminService } from './user/user-admin.service';
     CustomerInformationComponent,
     DishProductInfoComponent,
     EditDishComponent,
+    EditOrderedDishComponent,
     GeneralErrorComponent,
     GeneralTermsAndConditionsComponent,
     ImprintComponent,

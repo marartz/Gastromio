@@ -69,7 +69,11 @@ export class CartModel {
 
   public getDeliveryCostsText(): string {
     const val = this.getDeliveryCosts();
-    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+    if (val > 0) {
+      return val.toLocaleString('de', {minimumFractionDigits: 2});
+    } else {
+      return 'Gratis';
+    }
   }
 
   public getTotalPrice(): number {
