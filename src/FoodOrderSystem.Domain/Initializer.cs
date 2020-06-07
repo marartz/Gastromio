@@ -62,11 +62,8 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeBeginTooEarly, "Die Lieferzeit darf nicht vor 4 Uhr morgens beginnen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeEndBeforeStart, "Das Ende der Lieferzeit muss nach dem Start liegen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishCategories, "Restaurant enthält noch Gerichtkategorien");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantContainsDishes, "Restaurant enthält noch Gerichte");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotBelongToRestaurant, "Gerichtkategorie gehört nicht zum Restaurant");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotExist, "Dish category does not exists");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryContainsDishes, "Gerichtkategorie enthält noch Gerichte");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryInvalidOrderNo, "Gerichtkategorie hat eine ungültige Reihenfolgenkennzahl");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishDoesNotBelongToDishCategory, "Gericht gehört nicht zur Gerichtkategorie");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishDoesNotExist, "Dish does not exists");

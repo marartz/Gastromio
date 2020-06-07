@@ -100,8 +100,6 @@ export class EditDishComponent implements OnInit {
       this.dish.variants[0].price = this.price;
     }
 
-    console.log('Dish: ', this.dish);
-
     const subscription = this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish)
       .subscribe((newDishId) => {
         subscription.unsubscribe();

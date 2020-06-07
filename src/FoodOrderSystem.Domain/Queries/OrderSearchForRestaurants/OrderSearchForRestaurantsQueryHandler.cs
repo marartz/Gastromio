@@ -43,9 +43,9 @@ namespace FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
-            var restaurants = await restaurantRepository.SearchAsync(query.SearchPhrase, cancellationToken);
+            var (_, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, 0, 20, cancellationToken);
 
-            return SuccessResult<ICollection<RestaurantViewModel>>.Create(restaurants
+            return SuccessResult<ICollection<RestaurantViewModel>>.Create(items
                 .Select(en => RestaurantViewModel.FromRestaurant(en, cuisines, paymentMethods, userRepository)).ToList());
         }
     }

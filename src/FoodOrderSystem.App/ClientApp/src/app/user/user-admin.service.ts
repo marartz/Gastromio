@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { UserModel } from './user.model';
+import {PagingModel} from "../pagination/paging.model";
 
 @Injectable()
 export class UserAdminService {
@@ -13,7 +14,7 @@ export class UserAdminService {
     private authService: AuthService
   ) { }
 
-  public searchForUsersAsync(search: string): Observable<UserModel[]> {
+  public searchForUsersAsync(search: string, skip: number, take: number): Observable<PagingModel<UserModel>> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -21,7 +22,8 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<UserModel[]>(this.baseUrl + '/users?search=' + encodeURIComponent(search), httpOptions);
+    return this.http.get<PagingModel<UserModel>>(this.baseUrl + '/users?search=' + encodeURIComponent(search)
+      + '&skip=' + skip + '&take=' + take, httpOptions);
   }
 
   public addUserAsync(role: string, email: string, password: string): Observable<UserModel> {

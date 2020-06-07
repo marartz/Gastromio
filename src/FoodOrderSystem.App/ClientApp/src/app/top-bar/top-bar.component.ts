@@ -62,7 +62,6 @@ export class TopBarComponent implements OnInit {
   }
 
   toggleCartVisibility(): void {
-    console.log('toggle');
     if (this.orderService.isCartVisible()) {
       this.orderService.hideCart();
     } else {

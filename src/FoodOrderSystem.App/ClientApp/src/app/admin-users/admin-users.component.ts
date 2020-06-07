@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserAdminService } from '../user/user-admin.service';
 import { UserModel } from '../user/user.model';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../add-user/add-user.component';
 import { ChangeUserDetailsComponent } from '../change-user-details/change-user-details.component';
 import { ChangeUserPasswordComponent } from '../change-user-password/change-user-password.component';
 import { RemoveUserComponent } from '../remove-user/remove-user.component';
+import {ChangePageInfo} from '../pagination/server-pagination.component';
 
 @Component({
   selector: 'app-admin-users',
@@ -15,13 +16,11 @@ import { RemoveUserComponent } from '../remove-user/remove-user.component';
   styleUrls: ['./admin-users.component.css', '../../assets/css/admin.min.css']
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
-  users: UserModel[];
+  total: number;
   pageOfUsers: UserModel[];
 
   private searchPhrase: string;
   private searchPhraseUpdated: Subject<string> = new Subject<string>();
-
-  private updateSearchSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
@@ -40,9 +39,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.updateSearchSubscription !== undefined) {
-      this.updateSearchSubscription.unsubscribe();
-    }
   }
 
   openAddUserForm(): void {
@@ -77,20 +73,27 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.searchPhraseUpdated.next(value);
   }
 
-  onChangePage(pageOfUsers: UserModel[]) {
-    this.pageOfUsers = pageOfUsers;
+  onChangePage(changePageInfo: ChangePageInfo) {
+    const observable = this.userAdminService.searchForUsersAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take);
+
+    const subscription = observable.subscribe((result) => {
+      subscription.unsubscribe();
+      this.total = result.total;
+      this.pageOfUsers = result.items;
+    }, () => {
+      subscription.unsubscribe();
+    });
   }
 
   updateSearch(): void {
-    if (this.updateSearchSubscription !== undefined) {
-      this.updateSearchSubscription.unsubscribe();
-    }
+    const observable = this.userAdminService.searchForUsersAsync(this.searchPhrase, 0, 0);
 
-    const observable = this.userAdminService.searchForUsersAsync(this.searchPhrase);
-
-    this.updateSearchSubscription = observable.subscribe((result) => {
-      this.users = result;
+    const subscription = observable.subscribe((result) => {
+      subscription.unsubscribe();
+      this.total = result.total;
+      this.pageOfUsers = result.items;
     }, () => {
+      subscription.unsubscribe();
     });
   }
 

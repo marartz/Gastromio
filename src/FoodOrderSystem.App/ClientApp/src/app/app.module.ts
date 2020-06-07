@@ -27,6 +27,7 @@ import { ChangePaymentMethodComponent } from './change-payment-method/change-pay
 import { ChangeRestaurantNameComponent } from './change-restaurant-name/change-restaurant-name.component';
 import { ChangeUserDetailsComponent } from './change-user-details/change-user-details.component';
 import { ChangeUserPasswordComponent } from './change-user-password/change-user-password.component';
+import { ClientPaginationComponent } from './pagination/client-pagination.component';
 import { CuisineAdminService } from './cuisine/cuisine-admin.service';
 import { CustomerInformationComponent } from './customer-information/customer-information.component';
 import { DishProductInfoComponent } from './dish-productinfo/dish-productinfo.component';
@@ -43,7 +44,6 @@ import { OrderRestaurantImprintComponent } from './order-restaurant-imprint/orde
 import { OrderRestaurantOpeningHoursComponent } from './order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import { OrderRestaurantsComponent } from './order-restaurants/order-restaurants.component';
 import { OrderService } from './order/order.service';
-import { PaginationComponent } from './pagination/pagination.component';
 import { PaymentMethodAdminService } from './payment-method/payment-method-admin.service';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { RemoveCuisineComponent } from './remove-cuisine/remove-cuisine.component';
@@ -57,6 +57,7 @@ import { RestaurantInformationComponent } from './restaurant-information/restaur
 import { RestaurantRestAdminService } from './restaurant-rest-admin/restaurant-rest-admin.service';
 import { RestaurantSysAdminService } from './restaurant-sys-admin/restaurant-sys-admin.service';
 import { ScrollSpyDirective } from './scroll-spy.directive';
+import { ServerPaginationComponent } from './pagination/server-pagination.component';
 import { SystemAdminAuthGuardService as SystemAdminAuthGuard } from './auth/system-admin-auth-guard.service';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { UserAdminService } from './user/user-admin.service';
@@ -108,6 +109,7 @@ import { UserAdminService } from './user/user-admin.service';
     ChangeRestaurantNameComponent,
     ChangeUserDetailsComponent,
     ChangeUserPasswordComponent,
+    ClientPaginationComponent,
     CustomerInformationComponent,
     DishProductInfoComponent,
     EditDishComponent,
@@ -121,7 +123,6 @@ import { UserAdminService } from './user/user-admin.service';
     OrderRestaurantImprintComponent,
     OrderRestaurantOpeningHoursComponent,
     OrderRestaurantsComponent,
-    PaginationComponent,
     PrivacyPolicyComponent,
     RemoveCuisineComponent,
     RemoveDishCategoryComponent,
@@ -131,6 +132,7 @@ import { UserAdminService } from './user/user-admin.service';
     RemoveUserComponent,
     RestaurantInformationComponent,
     ScrollSpyDirective,
+    ServerPaginationComponent,
     TopBarComponent,
   ],
   providers: [

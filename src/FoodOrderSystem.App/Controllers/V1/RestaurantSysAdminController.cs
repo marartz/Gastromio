@@ -43,14 +43,20 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("restaurants")]
         [HttpGet]
-        public async Task<IActionResult> GetRestaurantsAsync(string search)
+        public async Task<IActionResult> GetRestaurantsAsync(string search, int skip = 0, int take = -1)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync<SysAdminSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(new SysAdminSearchForRestaurantsQuery(search), currentUser);
+            var query = new SysAdminSearchForRestaurantsQuery(search, skip, take);
+
+            var queryResult =
+                await queryDispatcher
+                    .PostAsync<SysAdminSearchForRestaurantsQuery, PagingViewModel<RestaurantViewModel>>(query,
+                        currentUser);
+            
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

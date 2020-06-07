@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Domain", "src\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj", "{7DD621AA-BEB4-478C-B066-8ED740D689FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.App", "src\FoodOrderSystem.App\FoodOrderSystem.App.csproj", "{00B578CE-7A6C-4212-823C-165A7693361E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.MongoDB", "src\FoodOrderSystem.Persistence.MongoDB\FoodOrderSystem.Persistence.MongoDB.csproj", "{8B170172-1B90-4CDD-A769-77F5344DDE6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Persistence.MongoDB.Tests", "test\FoodOrderSystem.Persistence.MongoDB.Tests\FoodOrderSystem.Persistence.MongoDB.Tests.csproj", "{3C5D72DE-A15B-4759-BD26-39C2852BCC8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD621AA-BEB4-478C-B066-8ED740D689FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00B578CE-7A6C-4212-823C-165A7693361E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B170172-1B90-4CDD-A769-77F5344DDE6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5D72DE-A15B-4759-BD26-39C2852BCC8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5D72DE-A15B-4759-BD26-39C2852BCC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5D72DE-A15B-4759-BD26-39C2852BCC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5D72DE-A15B-4759-BD26-39C2852BCC8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {030DBEE1-CBC0-479C-B6CF-9144419D2108}
+	EndGlobalSection
+EndGlobal

@@ -6,11 +6,14 @@ namespace FoodOrderSystem.Domain.Model.User
 {
     public interface IUserRepository
     {
-        Task<ICollection<User>> FindAllAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<User>> FindAllAsync(CancellationToken cancellationToken = default);
 
-        Task<ICollection<User>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
+        Task<IEnumerable<User>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
 
-        Task<ICollection<User>> FindByRoleAsync(Role role, CancellationToken cancellationToken = default);
+        Task<(long total, IEnumerable<User> items)> SearchPagedAsync(string searchPhrase, int skip = 0, int take = -1,
+            CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<User>> FindByRoleAsync(Role role, CancellationToken cancellationToken = default);
 
         Task<User> FindByEmailAsync(string email, CancellationToken cancellationToken = default);
 

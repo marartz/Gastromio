@@ -146,9 +146,17 @@ namespace FoodOrderSystem.App.Controllers.V1
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+            
+            var query = new SearchForUsersQuery(search, 0, 20);
 
-            var queryResult = await queryDispatcher.PostAsync<SearchForUsersQuery, ICollection<UserViewModel>>(new SearchForUsersQuery(search), currentUser);
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            var queryResult =
+                await queryDispatcher
+                    .PostAsync<SearchForUsersQuery, PagingViewModel<UserViewModel>>(query, currentUser);
+            
+            if (queryResult.IsFailure)
+                return ResultHelper.HandleResult(queryResult, failureMessageService);
+
+            return Ok(queryResult.Value.Items);
         }
 
         [Route("restaurants/{restaurantId}/changename")]

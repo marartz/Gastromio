@@ -2,18 +2,27 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 
 namespace FoodOrderSystem.Domain.Model.Restaurant
 {
     public interface IRestaurantRepository
     {
-        Task<ICollection<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
+
+        Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase, int skip = 0,
+            int take = -1, CancellationToken cancellationToken = default);
 
         Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
 
-        Task<ICollection<Restaurant>> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId, CancellationToken cancellationToken = default);
 
-        Task<ICollection<Restaurant>> FindAllAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Restaurant>> FindByPaymentMethodIdAsync(PaymentMethodId paymentMethodId, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Restaurant>> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Restaurant>> FindAllAsync(CancellationToken cancellationToken = default);
 
         Task StoreAsync(Restaurant restaurant, CancellationToken cancellationToken = default);
 

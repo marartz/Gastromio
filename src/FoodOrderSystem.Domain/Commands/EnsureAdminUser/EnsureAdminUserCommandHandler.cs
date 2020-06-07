@@ -1,6 +1,7 @@
 ﻿using FoodOrderSystem.Domain.Model;
 using FoodOrderSystem.Domain.Model.User;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace FoodOrderSystem.Domain.Commands.EnsureAdminUser
                 return FailureResult<bool>.Forbidden();
 
             var systemAdminUsers = await userRepository.FindByRoleAsync(Role.SystemAdmin);
-            if (systemAdminUsers.Count != 0)
+            if (systemAdminUsers.Any())
                 return SuccessResult<bool>.Create(true);
 
             var adminUser = new User(new UserId(Guid.Parse("BDD00A34-F631-4BA1-94D9-C6C909475247")), Role.SystemAdmin, "admin@gastromio.de", null, null);

@@ -5,14 +5,13 @@ using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
 {
-    public class SysAdminSearchForRestaurantsQueryHandler : IQueryHandler<SysAdminSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>
+    public class SysAdminSearchForRestaurantsQueryHandler : IQueryHandler<SysAdminSearchForRestaurantsQuery, PagingViewModel<RestaurantViewModel>>
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly ICuisineRepository cuisineRepository;
@@ -32,16 +31,16 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<ICollection<RestaurantViewModel>>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<PagingViewModel<RestaurantViewModel>>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return FailureResult<ICollection<RestaurantViewModel>>.Unauthorized();
+                return FailureResult<PagingViewModel<RestaurantViewModel>>.Unauthorized();
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<ICollection<RestaurantViewModel>>.Forbidden();
+                return FailureResult<PagingViewModel<RestaurantViewModel>>.Forbidden();
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, CuisineViewModel.FromCuisine);
@@ -49,10 +48,12 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
-            var restaurants = await restaurantRepository.SearchAsync(query.SearchPhrase, cancellationToken);
+            var (total, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, query.Skip, query.Take, cancellationToken);
 
-            return SuccessResult<ICollection<RestaurantViewModel>>.Create(restaurants
-                .Select(en => RestaurantViewModel.FromRestaurant(en, cuisines, paymentMethods, userRepository)).ToList());
+            var pagingViewModel = new PagingViewModel<RestaurantViewModel>((int) total, query.Skip, query.Take,
+                items.Select(en => RestaurantViewModel.FromRestaurant(en, cuisines, paymentMethods, userRepository)).ToList());
+
+            return SuccessResult<PagingViewModel<RestaurantViewModel>>.Create(pagingViewModel);
         }
     }
 }

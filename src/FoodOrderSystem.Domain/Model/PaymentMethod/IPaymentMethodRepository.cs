@@ -6,7 +6,7 @@ namespace FoodOrderSystem.Domain.Model.PaymentMethod
 {
     public interface IPaymentMethodRepository
     {
-        Task<ICollection<PaymentMethod>> FindAllAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<PaymentMethod>> FindAllAsync(CancellationToken cancellationToken = default);
 
         Task<PaymentMethod> FindByNameAsync(string name, CancellationToken cancellationToken = default);
 

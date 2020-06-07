@@ -4,6 +4,7 @@ using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,14 +34,8 @@ namespace FoodOrderSystem.Domain.Commands.RemoveRestaurant
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<bool>.Forbidden();
 
-            var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            if (dishCategories != null && dishCategories.Count > 0)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantContainsDishCategories);
-
-            var dishes = await dishRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            if (dishes != null && dishes.Count > 0)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantContainsDishes);
-
+            await dishRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            await dishCategoryRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             await restaurantRepository.RemoveAsync(command.RestaurantId, cancellationToken);
 
             return SuccessResult<bool>.Create(true);

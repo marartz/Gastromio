@@ -24,14 +24,10 @@ namespace FoodOrderSystem.App
         {
             Domain.Initializer.ConfigureServices(services);
 
-            Persistence.Initializer.ConfigureServices(services);
-
-            //Persistence.InMemory.Initializer.ConfigureServices(services);
-
-            var connectionString = ConfigurationExtensions.GetConnectionString(Configuration, "DefaultConnection");
-
-            //Persistence.MSSQL.Initializer.ConfigureServices(services, connectionString);
-            Persistence.SQLite.Initializer.ConfigureServices(services, connectionString);
+            var connectionString = Configuration.GetConnectionString("MongoDB");
+            Log.Logger.Information("Using connection string: {0}", connectionString);
+            
+            Persistence.MongoDB.Initializer.ConfigureServices(services, connectionString);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

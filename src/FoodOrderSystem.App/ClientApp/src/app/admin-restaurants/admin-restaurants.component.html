@@ -52,7 +52,7 @@
 
             </div>
 
-            <app-pagination [items]="restaurants" (changePage)="onChangePage($event)"></app-pagination>
+            <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
 
         </div>
     </div>

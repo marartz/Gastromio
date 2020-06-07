@@ -19,7 +19,6 @@ export class AppComponent {
   }
 
   onActivate(component: any): void {
-    console.log('component: ', event);
     this.showBottomBar = !(component instanceof OrderHomeComponent);
   }
 }
