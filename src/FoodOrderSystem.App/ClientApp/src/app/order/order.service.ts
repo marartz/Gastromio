@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { DishCategoryModel } from '../dish-category/dish-category.model';
-import { CartModel } from '../cart/cart.model';
-import { OrderedDishModel } from '../cart/ordered-dish.model';
-import { DishVariantModel } from '../dish-category/dish-variant.model';
-import { DishModel } from '../dish-category/dish.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../auth/auth.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {DishCategoryModel} from '../dish-category/dish-category.model';
+import {CartModel} from '../cart/cart.model';
+import {OrderedDishModel} from '../cart/ordered-dish.model';
+import {DishVariantModel} from '../dish-category/dish-variant.model';
+import {DishModel} from '../dish-category/dish.model';
 
 @Injectable()
 export class OrderService {
@@ -79,17 +79,18 @@ export class OrderService {
     this.cart.orderedDishes = new Array<OrderedDishModel>();
   }
 
-  public addDishVariantToCart(dish: DishModel, variant: DishVariantModel): void {
+  public addDishVariantToCart(dish: DishModel, variant: DishVariantModel, count: number): void {
     let orderedDish = this.cart.orderedDishes.find(en => en.dish.id === dish.id && en.variant.variantId === variant.variantId);
     if (orderedDish !== undefined) {
-      orderedDish.count++;
+      orderedDish.count += count;
     } else {
       orderedDish = new OrderedDishModel();
       orderedDish.dish = dish;
       orderedDish.variant = variant;
-      orderedDish.count = 1;
+      orderedDish.count = count;
       this.cart.orderedDishes.push(orderedDish);
     }
+    this.isCartVisibile = true;
   }
 
   public incrementDishVariantCount(itemId: string): void {
