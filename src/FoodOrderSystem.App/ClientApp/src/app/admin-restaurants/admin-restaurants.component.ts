@@ -7,6 +7,7 @@ import { RestaurantSysAdminService } from '../restaurant-sys-admin/restaurant-sy
 import { AddRestaurantComponent } from '../add-restaurant/add-restaurant.component';
 import { RemoveRestaurantComponent } from '../remove-restaurant/remove-restaurant.component';
 import { RestaurantModel } from '../restaurant/restaurant.model';
+import {ChangePageInfo} from '../pagination/server-pagination.component';
 
 @Component({
   selector: 'app-admin-restaurants',
@@ -14,7 +15,7 @@ import { RestaurantModel } from '../restaurant/restaurant.model';
   styleUrls: ['./admin-restaurants.component.css', '../../assets/css/admin.min.css']
 })
 export class AdminRestaurantsComponent implements OnInit, OnDestroy {
-  restaurants: RestaurantModel[];
+  total: number;
   pageOfRestaurants: RestaurantModel[];
 
   private searchPhrase: string;
@@ -63,8 +64,16 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
     this.searchPhraseUpdated.next(value);
   }
 
-  onChangePage(pageOfRestaurants: RestaurantModel[]) {
-    this.pageOfRestaurants = pageOfRestaurants;
+  onChangePage(changePageInfo: ChangePageInfo) {
+    const observable = this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take);
+
+    const subscription = observable.subscribe((result) => {
+      subscription.unsubscribe();
+      this.total = result.total;
+      this.pageOfRestaurants = result.items;
+    }, () => {
+      subscription.unsubscribe();
+    });
   }
 
   updateSearch(): void {
@@ -72,10 +81,11 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
       this.updateSearchSubscription.unsubscribe();
     }
 
-    const observable = this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase);
+    const observable = this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase, 0, 0);
 
     this.updateSearchSubscription = observable.subscribe((result) => {
-      this.restaurants = result;
+      this.total = result.total;
+      this.pageOfRestaurants = result.items;
     }, () => {
     });
   }

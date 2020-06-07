@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { RestaurantModel } from '../restaurant/restaurant.model';
+import { PagingModel } from '../pagination/paging.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
@@ -13,7 +14,7 @@ export class RestaurantSysAdminService {
     private authService: AuthService
   ) { }
 
-  public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
+  public searchForRestaurantsAsync(search: string, skip: number, take: number): Observable<PagingModel<RestaurantModel>> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -21,7 +22,8 @@ export class RestaurantSysAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search), httpOptions);
+    return this.http.get<PagingModel<RestaurantModel>>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search)
+      + '&skip=' + skip + '&take=' + take, httpOptions);
   }
 
   public addRestaurantAsync(name: string): Observable<RestaurantModel> {

@@ -47,6 +47,38 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return cursor.ToEnumerable().Select(FromDocument);
         }
 
+        public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase, int skip = 0, int take = -1, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+
+            FilterDefinition<RestaurantModel> filter;
+            if (!string.IsNullOrEmpty(searchPhrase))
+            {
+                var bsonRegEx = new BsonRegularExpression($".*{Regex.Escape(searchPhrase)}.*", "i");
+                filter = Builders<RestaurantModel>.Filter.Regex(en => en.Name, bsonRegEx);
+            }
+            else
+            {
+                filter = new BsonDocument();
+            }
+
+            var total = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+
+            if (take == 0)
+                return (total, Enumerable.Empty<Restaurant>());
+            
+            var findOptions = new FindOptions<RestaurantModel>
+            {
+                Sort = Builders<RestaurantModel>.Sort.Ascending(en => en.Name)
+            };            
+            if (skip > 0)
+                findOptions.Skip = skip;
+            if (take >= 0)
+                findOptions.Limit = take;
+
+            var cursor = await collection.FindAsync(filter, findOptions, cancellationToken);
+            return (total, cursor.ToEnumerable().Select(FromDocument));        }
+
         public async Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId,
             CancellationToken cancellationToken = default)
         {

@@ -11,6 +11,9 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
     {
         Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
 
+        Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase, int skip = 0,
+            int take = -1, CancellationToken cancellationToken = default);
+
         Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
 
         Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId, CancellationToken cancellationToken = default);
