@@ -25,6 +25,10 @@
     6.1.2 #dish-add, #dish-edit > #options-panel > #quantity
     6.2   #dish-add, #dish-edit > #confirm-or-add
 
+    20.  #sys-admin
+    20.3 #sys-admin > #payment-methods
+    20.4 #sys-admin > #cuisine-options
+
     30.  #rest-admin
     30.1 #rest-admin > #nav
     30.2 #rest-admin > #section-header
@@ -59,7 +63,7 @@ body {
 
 body,
 #main {
-    background-color: #f8f8f6;
+    background-color: #f8f8f6 !important;
 }
 
 #main {
@@ -172,6 +176,14 @@ p a:hover {
     color: #000;
     opacity: .85;
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
+}
+
+[class*="text-link"][class*="-small"] {
+    font-size: 12px;
+}
+
+[class*="text-link"][class*="-cta"] {
+	  color: #1f4f46;
 }
 
 strong {
@@ -1816,21 +1828,321 @@ form:focus {
     display: table;
     margin: 16px auto 0px;
 }
+/* 20 #sys-admin  */
+#admin-card {
+    margin-top: 48px;
+    margin-bottom: 18px;
+}
+
+#admin-card .add {
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0px 1px 0px #e5e5e5;
+    color: #3b4245;
+    cursor: pointer;
+    display: flex;
+    height: 116px;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+    padding: 22px 40px;
+    text-align: left;
+    width: 100%;
+    transition: none;
+}
+
+#admin-card .add:hover,
+#admin-card .add:hover {
+    border-color: #214f46;
+}
+
+#admin-card .add span {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 19px;
+    padding: 5px 20px 0px;
+    transition: all .8s ease-in-out;
+}
+
+@media screen and (min-width: 768px) {
+    #admin-card .add span {
+        padding: 5px 40px 0px;
+    }
+}
+/* 20.1 #sys-admin > #hero */
+#hero {
+    background-color: #1f4f46;
+    color: #fff;
+    padding-top: 54px;
+    padding-bottom: 54px;
+    text-align: center;
+}
+
+@media screen and (min-width: 1024px) {
+    #hero {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+}
+
+#hero .inner {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 100%;
+    width: 502px;
+}
+
+#hero .inner .page-title {
+    font-family: proxima-nova, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media screen and (min-width: 1024px) {
+    #hero .inner .page-title {
+        font-size: 44px;
+    }
+}
+
+#hero .inner .page-description {
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+	  line-height: 1.4;
+	  margin-top: .5rem;
+}
+
+/* 20.3 #sys-admin > #payment-methods */
+#payment-methods .no-methods {
+    text-align: center;
+}
+
+#payment-methods .no-methods span {
+    color: #6d6d6d;
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 24px 20px 40px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#payment-methods h2 {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#payment-methods .methods-inner {
+    margin-bottom: 20px;
+}
+
+#payment-methods .method {
+    background: #fff;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0px 1px 0px #e5e5e5;
+    color: #3b4245;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin-bottom: 16px;
+    overflow: hidden;
+    padding: 32px 27px;
+	  text-align: left;
+	  width: 100%;
+}
+
+#payment-methods .method:focus,
+#payment-methods .method:hover {
+    border-color: #32b593;
+}
+
+#payment-methods .method .cross-fade {
+    height: 35px;
+    position: relative;
+}
+
+#payment-methods .method .cross-fade > * {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+}
+
+#payment-methods .method .method-content {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#payment-methods .method .payment-icon {
+    margin-right: 24px;
+    width: 24px;
+}
+
+#payment-methods .method .payment-name {
+    font-family: proxima-nova, sans-serif;
+    line-height: 1;
+}
+
+#payment-methods .method .payment-description {
+    color: #3b4245;
+    font-size: 12px;
+}
+
+#payment-methods .method .actions {
+    margin-left: auto;
+}
+
+#payment-methods .method .actions .edit-link {
+    padding: 0px;
+}
+
+#payment-methods .add-option {
+    background: transparent;
+    border-bottom: none;
+    padding: 0px;
+    margin-top: 20px;
+}
+
+/* 20.3 #sys-admin > #cuisine-options */
+#cuisine-options .no-cuisines {
+    text-align: center;
+}
+
+#cuisine-options .no-cuisines span {
+    color: #6d6d6d;
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 24px 20px 40px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#cuisine-options h2 {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#cuisine-options .cuisine-inner {
+    margin-bottom: 20px;
+}
+
+#cuisine-options .cuisine {
+    background: #fff;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0px 1px 0px #e5e5e5;
+    color: #3b4245;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin-bottom: 16px;
+    overflow: hidden;
+    padding: 32px 27px;
+	  text-align: left;
+	  width: 100%;
+}
+
+#cuisine-options .cuisine:focus,
+#cuisine-options .cuisine:hover {
+    border-color: #32b593;
+}
+
+#cuisine-options .cuisine .cross-fade {
+    height: 35px;
+    position: relative;
+}
+
+#cuisine-options .cuisine .cross-fade > * {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+}
+
+#cuisine-options .cuisine .cuisine-content {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#cuisine-options .cuisine .cuisine-icon {
+    margin-right: 24px;
+    width: 24px;
+}
+
+#cuisine-options .cuisine .cuisine-name {
+    font-family: proxima-nova, sans-serif;
+    line-height: 1;
+}
+
+#cuisine-options .cuisine .cuisine-description {
+    color: #3b4245;
+    font-size: 12px;
+}
+
+#cuisine-options .cuisine .actions {
+    margin-left: auto;
+}
+
+#cuisine-options .cuisine .actions .edit-link {
+    padding: 0px;
+}
+
+#cuisine-options .add-cuisine {
+    background: transparent;
+    border-bottom: none;
+    padding: 0px;
+    margin-top: 20px;
+}
 
 /* 30. #rest-admin */
-#rest-admin {
+#rest-admin,
+#sys-admin {
     background-color: #f8f8f6;
 }
 
-#rest-admin .waypointable {
+#rest-admin .waypointable,
+#sys-admin .waypointable {
     outline: 0;
 }
 
-#rest-admin .waypointable:not(:first-of-type) {
+#rest-admin .waypointable:not(:first-of-type),
+#sys-admin .waypointable:not(:first-of-type) {
     padding-top: 80px;
 }
 
-#rest-admin .centered {
+#rest-admin .centered,
+#sys-admin .centered {
     margin-left: auto;
     margin-right: auto;
     max-width: 480px;
@@ -1915,12 +2227,20 @@ form:focus {
     margin-top: 5rem;
 }
 
+#section-header:first-of-type {
+    margin-top: 5rem;
+}
+
 #section-header .section-title {
     color: #214f46;
     font-size: 40px;
     font-family: proxima-nova, sans-serif;
     font-weight: 600;
     margin-bottom: 10px;
+}
+
+#sys-admin #section-header .section-title {
+    width: 100% !important;
 }
 
 #section-header .section-description {
@@ -1978,8 +2298,18 @@ form:focus {
 	  width: 100%;
 }
 
-#form .backend-input input:hover,
-#form .backend-input input:focus {
+#form .backend-input input.disabled {
+    border-bottom-style: dotted;
+    border-bottom: 2px dotted #1f4f46;
+    cursor: not-allowed;
+    pointer-events: auto;
+    color: #6d6d6d;
+    -webkit-text-fill-color: #6d6d6d;
+    opacity: 1;
+}
+
+#form .backend-input input:not(.disabled):hover,
+#form .backend-input input:not(.disabled):focus {
     border-bottom: 2px solid #1f4f46;
 }
 

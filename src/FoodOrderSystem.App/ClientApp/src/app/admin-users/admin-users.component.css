@@ -1,11 +1,6 @@
-.admin-users {
-    background-image: url(../../assets/img/header/admin-users-header.jpg);
-}
-
 .no-header {
     padding-top: 20px
 }
-
 
 .button-add {
     -moz-user-select: none;

@@ -10,7 +10,7 @@ import { RemoveCuisineComponent } from '../remove-cuisine/remove-cuisine.compone
 @Component({
   selector: 'app-admin-cuisines',
   templateUrl: './admin-cuisines.component.html',
-  styleUrls: ['./admin-cuisines.component.css', '../../assets/css/admin.min.css']
+  styleUrls: ['./admin-cuisines.component.css', '../../assets/css/frontend.min.css', '../../assets/css/admin.min.css']
 })
 export class AdminCuisinesComponent implements OnInit {
   cuisines: Observable<CuisineModel[]>;

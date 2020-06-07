@@ -13,7 +13,7 @@ import {ChangePageInfo} from '../pagination/server-pagination.component';
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
-  styleUrls: ['./admin-users.component.css', '../../assets/css/admin.min.css']
+  styleUrls: ['./admin-users.component.css', '../../assets/css/frontend.min.css', '../../assets/css/admin.min.css']
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
   total: number;
