@@ -25,6 +25,12 @@
     6.1.2 #dish-add, #dish-edit > #options-panel > #quantity
     6.2   #dish-add, #dish-edit > #confirm-or-add
 
+    30.  #rest-admin
+    30.1 #rest-admin > #nav
+    30.2 #rest-admin > #section-header
+    30.3 #rest-admin > #form
+    30.4 #rest-admin > #restaurant-address
+
     80.  #entry
     80.1 #entry > #error
 
@@ -241,6 +247,30 @@ button:active {
 
 button[class*=text-link] {
     background-color: transparent;
+}
+
+button[class*="button-small"] {
+    padding: 8px 16px;
+}
+
+button.hollow:hover,
+button[class*="hollow"] {
+    background: transparent;
+    border: 1px solid #214f46;
+    color: #1f4f46;
+    transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button.hollow:hover,
+button[class*="hollow"]:hover {
+    background: #27625b;
+    border-color: transparent;
+    color: #fff;
+    transition: all 150ms cubic-bezier(.215, .61,. 355, 1);
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
 }
 
 [role=button],
@@ -1785,6 +1815,230 @@ form:focus {
     font-size: 12px;
     display: table;
     margin: 16px auto 0px;
+}
+
+/* 30. #rest-admin */
+#rest-admin {
+    background-color: #f8f8f6;
+}
+
+#rest-admin .waypointable {
+    outline: 0;
+}
+
+#rest-admin .waypointable:not(:first-of-type) {
+    padding-top: 80px;
+}
+
+#rest-admin .centered {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 480px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* 30.1 #rest-admin > #nav */
+#nav {
+    border-top: 1px solid transparent;
+    margin-top: -1px;
+    height: 72px;
+    width: 100%;
+    transition: all .3s cubic-bezier(.215, .61, .355, 1);
+}
+
+#nav .bar {
+    float: none;
+    padding: 0px;
+    z-index: 9;
+}
+
+#nav .bar-inner {
+    background: #fff;
+    height: 72px;
+    padding: 0px;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+#nav ul.links {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    padding-left: 0px;
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#nav ul.links li {
+    cursor: pointer;
+    display: block;
+    padding: 0px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+#nav .text-link {
+    color: #6d6d6d;
+    display: block;
+    line-height: 72px;
+    white-space: nowrap;
+	  width: 100%;
+	  transition: .3s all cubic-bezier(.215, .61, .355, 1);
+}
+
+@media screen and (min-width: 900px) {
+    #nav .text-link {
+        padding: 0px 72px;
+    }
+}
+
+#nav .text-link.active,
+#nav .text-link:focus,
+#nav .text-link:hover {
+    color: #1f4f46;
+}
+
+/* 30.2 #rest-admin > #section-header */
+#section-header {
+    margin: 0px auto;
+    text-align: center;
+}
+
+#section-header.my-restaurant {
+    margin-top: 5rem;
+}
+
+#section-header .section-title {
+    color: #214f46;
+    font-size: 40px;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#section-header .section-description {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 27px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 256px;
+}
+
+/* 30.3 #rest-admin > #form */
+#form fieldset {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#form fieldset legend {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    height: auto;
+    margin-bottom: 16px;
+    opacity: 1;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#form form {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 20px;
+    transition: all .4s cubic-bezier(.57, .06, .05, .95);
+}
+
+#form.restaurant-info {
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+#form .backend-input {
+    margin-bottom: 20px;
+    position: relative;
+    transition: all .4s cubic-bezier(.57, .06, .05, .95);
+}
+
+#form .backend-input label {
+    color: #6d6d6d;
+}
+
+#form .backend-input input {
+	  margin-bottom: 0;
+	  width: 100%;
+}
+
+#form .backend-input input:hover,
+#form .backend-input input:focus {
+    border-bottom: 2px solid #1f4f46;
+}
+
+
+#form .inline-button-wrap {
+    display: flex;
+    flex-basis: 0;
+    margin-top: 24px;
+}
+
+#form .inline-button-wrap button {
+	  flex: 1;
+	  margin-right: 8px;
+	  transition: margin-right 0s;
+}
+
+/* 30.4 #rest-admin > #restaurant-address */
+#restaurant-address {
+    margin-top: 48px;
+    margin-bottom: 18px;
+}
+
+#restaurant-address .add-address {
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0px 1px 0px #e5e5e5;
+    color: #3b4245;
+    cursor: pointer;
+    display: flex;
+    height: 116px;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+    padding: 22px 40px;
+    text-align: left;
+    width: 100%;
+    transition: all .8s ease-in-out;
+}
+
+#restaurant-address .add-address:hover,
+#restaurant-address .add-address:hover {
+    border-color: #214f46;
+}
+
+#restaurant-address .add-address span {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 19px;
+    padding: 5px 20px 0px;
+    transition: all .8s ease-in-out;
+}
+
+@media screen and (min-width: 768px) {
+    #restaurant-address .add-address span {
+        padding: 5px 40px 0px;
+    }
 }
 
 /* 80. #entry */

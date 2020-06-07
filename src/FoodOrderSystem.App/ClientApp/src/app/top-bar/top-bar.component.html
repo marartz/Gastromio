@@ -31,7 +31,8 @@
                 <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#1F4F46" fill-rule="nonzero"></path>
               </g>
             </svg>
-            <span class="nav-icon-label">Einstellungen&nbsp;</span>
+            <ng-container *ngIf="isSystemAdmin()"><span class="nav-icon-label">Einstellungen&nbsp;</span></ng-container>
+            <ng-container *ngIf="isRestaurantAdmin()"><span class="nav-icon-label">Restaurant&nbsp;</span></ng-container>
           </a>
 
           <ul id="userDropDown" class="dropdown-menu settings" ngbDropdownMenu aria-labelledby="userDropDown" role="menu">
