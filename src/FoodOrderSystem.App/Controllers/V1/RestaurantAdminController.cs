@@ -140,14 +140,18 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("users")]
         [HttpGet]
-        public async Task<IActionResult> SearchForUsersAsync(string search)
+        public async Task<IActionResult> SearchForUsersAsync(string search, int skip = 0, int take = -1)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+            
+            var query = new SearchForUsersQuery(search, skip, take);
 
-            var queryResult = await queryDispatcher.PostAsync<SearchForUsersQuery, ICollection<UserViewModel>>(new SearchForUsersQuery(search), currentUser);
+            var queryResult =
+                await queryDispatcher
+                    .PostAsync<SearchForUsersQuery, PagingViewModel<UserViewModel>>(query, currentUser);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

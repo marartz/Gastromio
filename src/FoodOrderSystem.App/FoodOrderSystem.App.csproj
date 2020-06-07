@@ -86,11 +86,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj" />
-    <ProjectReference Include="..\FoodOrderSystem.Persistence.InMemory\FoodOrderSystem.Persistence.InMemory.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence.MongoDB\FoodOrderSystem.Persistence.MongoDB.csproj" />
-    <ProjectReference Include="..\FoodOrderSystem.Persistence.MSSQL\FoodOrderSystem.Persistence.MSSQL.csproj" />
-    <ProjectReference Include="..\FoodOrderSystem.Persistence.SQLite\FoodOrderSystem.Persistence.SQLite.csproj" />
-    <ProjectReference Include="..\FoodOrderSystem.Persistence\FoodOrderSystem.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -144,7 +140,13 @@
     <TypeScriptCompile Update="ClientApp\src\app\order-restaurant\order-restaurant.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\pagination\pagination.component.ts">
+    <TypeScriptCompile Update="ClientApp\src\app\pagination\client-pagination.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\pagination\paging.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\pagination\server-pagination.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\payment-method\payment-method.model.ts">

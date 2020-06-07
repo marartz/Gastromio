@@ -494,7 +494,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           return 0;
         });
       }, (response: HttpErrorResponse) => {
-        console.log('Response: ', response);
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
@@ -550,7 +549,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           return 0;
         });
       }, (response: HttpErrorResponse) => {
-        console.log('Response: ', response);
         subscription.unsubscribe();
         this.blockUI.stop();
         this.addPaymentMethodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();

@@ -22,16 +22,41 @@ namespace FoodOrderSystem.Persistence.MongoDB
         public async Task<IEnumerable<User>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
-            var cursor = await collection.FindAsync(new BsonDocument(),
-                new FindOptions<UserModel>
-                {
-                    Sort = Builders<UserModel>.Sort.Ascending(en => en.Email)
-                },
-                cancellationToken);
+            
+            var options = new FindOptions<UserModel>
+            {
+                Sort = Builders<UserModel>.Sort.Ascending(en => en.Email),
+            };
+
+            var cursor = await collection.FindAsync(new BsonDocument(), options, cancellationToken);
             return cursor.ToEnumerable().Select(FromDocument);
         }
 
-        public async Task<IEnumerable<User>> SearchAsync(string searchPhrase,
+        public async Task<IEnumerable<User>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+
+            FilterDefinition<UserModel> filter;
+            if (!string.IsNullOrEmpty(searchPhrase))
+            {
+                var bsonRegEx = new BsonRegularExpression($".*{Regex.Escape(searchPhrase)}.*", "i");
+                filter = Builders<UserModel>.Filter.Regex(en => en.Email, bsonRegEx);
+            }
+            else
+            {
+                filter = new BsonDocument();
+            }
+
+            var options = new FindOptions<UserModel>
+            {
+                Sort = Builders<UserModel>.Sort.Ascending(en => en.Email)
+            };            
+
+            var cursor = await collection.FindAsync(filter, options, cancellationToken);
+            return cursor.ToEnumerable().Select(FromDocument);
+        }
+
+        public async Task<(long total, IEnumerable<User> items)> SearchPagedAsync(string searchPhrase, int skip, int take, 
             CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
@@ -47,13 +72,22 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 filter = new BsonDocument();
             }
 
-            var cursor = await collection.FindAsync(filter, 
-                new FindOptions<UserModel>
-                {
-                    Sort = Builders<UserModel>.Sort.Ascending(en => en.Email)
-                },
-                cancellationToken);
-            return cursor.ToEnumerable().Select(FromDocument);
+            var total = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+
+            if (take == 0)
+                return (total, Enumerable.Empty<User>());
+            
+            var findOptions = new FindOptions<UserModel>
+            {
+                Sort = Builders<UserModel>.Sort.Ascending(en => en.Email)
+            };            
+            if (skip > 0)
+                findOptions.Skip = skip;
+            if (take >= 0)
+                findOptions.Limit = take;
+
+            var cursor = await collection.FindAsync(filter, findOptions, cancellationToken);
+            return (total, cursor.ToEnumerable().Select(FromDocument));
         }
 
         public async Task<IEnumerable<User>> FindByRoleAsync(Role role, CancellationToken cancellationToken = default)

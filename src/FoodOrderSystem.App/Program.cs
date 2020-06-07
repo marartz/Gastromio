@@ -1,16 +1,13 @@
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.EnsureAdminUser;
 using FoodOrderSystem.Domain.Model.User;
-using FoodOrderSystem.Persistence;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using FoodOrderSystem.Domain.Commands.AddTestData;
 using FoodOrderSystem.Domain.Model;
-using FoodOrderSystem.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -43,8 +40,6 @@ namespace FoodOrderSystem.App
                     var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
                     var commandDispatcher = services.GetService<ICommandDispatcher>();
 
-                    var failureMessageService = services.GetService<IFailureMessageService>();
-                    
                     var seed =
                         string.Equals(configuration["Seed"], "true", StringComparison.InvariantCultureIgnoreCase) ||
                         configuration.GetSection("Seed").GetChildren().Any();
