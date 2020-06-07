@@ -65,8 +65,8 @@
           <div class="card mb-4">
             <div class="card-header card-head">Weitere Daten</div>
             <div class="card-body">
-              <form class="setting-form" [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
-                <div class="form-notification" *ngIf="changeContactDetailsError !== undefined">{{changeContactDetailsError}}</div>
+              <form class="setting-form" [formGroup]="changeContactInfoForm" (ngSubmit)="onSaveContactInfo(changeContactInfoForm.value)">
+                <div class="form-notification" *ngIf="changeContactInfoError !== undefined">{{changeContactInfoError}}</div>
 
                 <div class="form-group row">
                   <label for="phone" class="col-sm-2 col-form-label">Telefon</label>
@@ -74,6 +74,15 @@
                     <div class="input">
                       <input type="text" id="phone" formControlName="phone">
                       <label for="phone">Telefon</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="fax" class="col-sm-2 col-form-label">Fax</label>
+                  <div class="col-sm-10">
+                    <div class="input">
+                      <input type="text" id="fax" formControlName="fax">
+                      <label for="fax">fax</label>
                     </div>
                   </div>
                 </div>
@@ -87,59 +96,139 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="imprint" class="col-sm-2 col-form-label">Impressum</label>
+                  <label for="responsiblePerson" class="col-sm-2 col-form-label">Verantw. Person</label>
                   <div class="col-sm-10">
                     <div class="input">
-                      <textarea style="height: 100%!important" id="imprint" rows="8" formControlName="imprint"></textarea>
-                      <label for="imprint">Impressum</label>
+                      <input type="text" id="responsiblePerson" formControlName="responsiblePerson">
+                      <label for="responsiblePerson">Verantw. Person</label>
                     </div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="orderEmailAddress" class="col-sm-2 col-form-label">E-Mail-Adresse (Bestellungen)</label>
+                  <label for="emailAddress" class="col-sm-2 col-form-label">E-Mail-Adresse (Bestellungen)</label>
                   <div class="col-sm-10">
                     <div class="input">
-                      <input type="text" id="orderEmailAddress" formControlName="orderEmailAddress">
-                      <label for="orderEmailAddress">E-Mail-Adresse (Bestellungen)</label>
+                      <input type="text" id="emailAddress" formControlName="emailAddress">
+                      <label for="emailAddress">E-Mail-Adresse (Bestellungen)</label>
                     </div>
                   </div>
                 </div>
 
-                <button class="button-form button" type="submit" *ngIf="changeContactDetailsForm.dirty">Daten speichern</button>
+                <button class="button-form button" type="submit" *ngIf="changeContactInfoForm.dirty">Daten speichern</button>
               </form>
             </div>
           </div>
 
           <div class="card mb-4">
-            <div class="card-header card-head">Lieferkosten</div>
+            <div class="card-header card-head">Abholung</div>
             <div class="card-body">
-              <form class="setting-form" [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
-                <div class="form-notification" *ngIf="changeDeliveryDataError !== undefined">{{changeDeliveryDataError}}</div>
+              <form class="setting-form" [formGroup]="changePickupInfoForm" (ngSubmit)="onSavePickupInfo(changePickupInfoForm.value)">
+                <div class="form-notification" *ngIf="changePickupInfoError !== undefined">{{changePickupInfoError}}</div>
 
                 <div class="form-group row">
                   <div class="col">
                     <div class="input">
-                      <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue">
-                      <label for="minimumOrderValue">Mindestbestellwert (in &euro;)</label>
+                      <input type="number" id="averageTimePickup" formControlName="averageTime">
+                      <label for="averageTimePickup">Durchschnittl. Zubereitungszeit</label>
                     </div>
                   </div>
                   <div class="col">
                     <div class="input">
-                      <input type="number" id="deliveryCosts" formControlName="deliveryCosts">
-                      <label for="deliveryCosts">Lieferkosten (in &euro;) </label>
+                      <input type="number" id="minimumOrderValuePickup" formControlName="minimumOrderValue">
+                      <label for="minimumOrderValuePickup">Mindestbestellwert (in &euro;)</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input">
+                      <input type="number" id="maximumOrderValuePickup" formControlName="maximumOrderValue">
+                      <label for="maximumOrderValuePickup">Höchstbestellwert (in &euro;)</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col">
+                    <div class="input">
+                      <textarea style="height: 100%!important" id="hygienicHandlingPickup" rows="8" formControlName="hygienicHandling"></textarea>
+                      <label for="hygienicHandlingPickup">Hygienische Abwicklung</label>
                     </div>
                   </div>
                 </div>
 
-                <button class="button-form button" type="submit" *ngIf="changeDeliveryDataForm.dirty">Daten speichern</button>
+                <button class="button-form button" type="submit" *ngIf="changePickupInfoForm.dirty">Daten speichern</button>
               </form>
             </div>
           </div>
 
           <div class="card mb-4">
-            <div class="card-header card-head">Lieferzeiten</div>
+            <div class="card-header card-head">Lieferung</div>
             <div class="card-body">
-              <div class="form-notification" *ngIf="removeDeliveryTimeError !== undefined">{{removeDeliveryTimeError}}</div>
+              <form class="setting-form" [formGroup]="changeDeliveryInfoForm" (ngSubmit)="onSaveDeliveryInfo(changeDeliveryInfoForm.value)">
+                <div class="form-notification" *ngIf="changeDeliveryInfoError !== undefined">{{changeDeliveryInfoError}}</div>
+
+                <div class="form-group row">
+                  <div class="col">
+                    <div class="input">
+                      <input type="number" id="averageTimeDelivery" formControlName="averageTime">
+                      <label for="averageTimeDelivery">Durchschnittl. Lieferzeit</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input">
+                      <input type="number" id="minimumOrderValueDelivery" formControlName="minimumOrderValue">
+                      <label for="minimumOrderValueDelivery">Mindestbestellwert (in &euro;)</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input">
+                      <input type="number" id="maximumOrderValueDelivery" formControlName="maximumOrderValue">
+                      <label for="maximumOrderValueDelivery">Höchstbestellwert (in &euro;)</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input">
+                      <input type="number" id="costsDelivery" formControlName="costs">
+                      <label for="costsDelivery">Lieferkosten (in &euro;) </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col">
+                    <div class="input">
+                      <textarea style="height: 100%!important" id="hygienicHandlingDelivery" rows="8" formControlName="hygienicHandling"></textarea>
+                      <label for="hygienicHandlingDelivery">Hygienische Abwicklung</label>
+                    </div>
+                  </div>
+                </div>
+
+                <button class="button-form button" type="submit" *ngIf="changeDeliveryInfoForm.dirty">Daten speichern</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header card-head">Reservierung</div>
+            <div class="card-body">
+              <form class="setting-form" [formGroup]="changeReservationInfoForm" (ngSubmit)="onSaveReservationInfo(changeReservationInfoForm.value)">
+                <div class="form-notification" *ngIf="changeReservationInfoError !== undefined">{{changeReservationInfoError}}</div>
+
+                <div class="form-group row">
+                  <div class="col">
+                    <div class="input">
+                      <textarea style="height: 100%!important" id="hygienicHandlingReservation" rows="8" formControlName="hygienicHandling"></textarea>
+                      <label for="hygienicHandlingReservation">Hygienische Abwicklung</label>
+                    </div>
+                  </div>
+                </div>
+
+                <button class="button-form button" type="submit" *ngIf="changeReservationInfoForm.dirty">Daten speichern</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header card-head">Öffnungszeiten</div>
+            <div class="card-body">
+              <div class="form-notification" *ngIf="removeOpeningPeriodError !== undefined">{{removeOpeningPeriodError}}</div>
               <table class="table col-sm-12">
                 <thead>
                   <tr>
@@ -150,18 +239,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
-                    <td>{{deliveryTime.dayOfWeekText}}</td>
-                    <td>{{deliveryTime.startTimeText}}</td>
-                    <td>{{deliveryTime.endTimeText}}</td>
+                  <tr *ngFor="let openingPeriod of getOpeningHours()">
+                    <td>{{openingPeriod.dayOfWeekText}}</td>
+                    <td>{{openingPeriod.startTimeText}}</td>
+                    <td>{{openingPeriod.endTimeText}}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm m-1" (click)="onRemoveDeliveryTime(deliveryTime)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash"></i></button>
+                      <button class="btn btn-danger btn-sm m-1" (click)="onRemoveOpeningPeriod(openingPeriod)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash"></i></button>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <form class="setting-form" [formGroup]="addDeliveryTimeForm" (ngSubmit)="onAddDeliveryTime(addDeliveryTimeForm.value)">
-                <div class="form-notification" *ngIf="addDeliveryTimeError !== undefined">{{addDeliveryTimeError}}</div>
+              <form class="setting-form" [formGroup]="addOpeningPeriodForm" (ngSubmit)="onAddOpeningPeriod(addOpeningPeriodForm.value)">
+                <div class="form-notification" *ngIf="addOpeningPeriodError !== undefined">{{addOpeningPeriodError}}</div>
 
                 <table class="table col-sm-12">
                   <tbody>
@@ -208,14 +297,12 @@
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Beschreibung</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let cuisine of restaurant.cuisines">
                     <td>{{cuisine.name}}</td>
-                    <td>{{cuisine.description}}</td>
                     <td>
                       <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="onRemoveCuisine(cuisine.id)"></i></button>
                     </td>
@@ -291,14 +378,12 @@
               <table class="table col-sm-12">
                 <thead>
                   <tr>
-                    <th>Name</th>
                     <th>Email</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let user of restaurant.administrators">
-                    <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>
                       <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="removeUser(user)"></i></button>

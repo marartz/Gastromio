@@ -3,19 +3,15 @@ using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddAdminToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddCuisineToRestaurant;
-using FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantImage;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Domain.Commands.RemoveAdminFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveCuisineFromRestaurant;
-using FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemovePaymentMethodFromRestaurant;
@@ -42,10 +38,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Commands.AddOpeningPeriodToRestaurant;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactInfo;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryInfo;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantPickupInfo;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantReservationInfo;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDish;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDish;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDishCategory;
+using FoodOrderSystem.Domain.Commands.RemoveOpeningPeriodFromRestaurant;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -215,9 +217,9 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/changecontactdetails")]
+        [Route("restaurants/{restaurantId}/changecontactinfo")]
         [HttpPost]
-        public async Task<IActionResult> PostChangeContactDetailsAsync(Guid restaurantId, [FromBody] ChangeRestaurantContactDetailsModel changeRestaurantContactDetailsModel)
+        public async Task<IActionResult> PostChangeContactInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantContactInfoModel changeRestaurantContactInfoModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -227,13 +229,16 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantContactDetailsCommand, bool>(
-                new ChangeRestaurantContactDetailsCommand(
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantContactInfoCommand, bool>(
+                new ChangeRestaurantContactInfoCommand(
                     new RestaurantId(restaurantId),
-                    changeRestaurantContactDetailsModel.Phone,
-                    changeRestaurantContactDetailsModel.Website,
-                    changeRestaurantContactDetailsModel.Imprint,
-                    changeRestaurantContactDetailsModel.OrderEmailAddress
+                    new ContactInfo(
+                        changeRestaurantContactInfoModel.Phone,
+                        changeRestaurantContactInfoModel.Fax,
+                        changeRestaurantContactInfoModel.WebSite,
+                        changeRestaurantContactInfoModel.ResponsiblePerson,
+                        changeRestaurantContactInfoModel.EmailAddress
+                    )
                 ),
                 currentUser
             );
@@ -241,9 +246,9 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/changedeliverydata")]
+        [Route("restaurants/{restaurantId}/changepickupinfo")]
         [HttpPost]
-        public async Task<IActionResult> PostChangeDeliveryDataAsync(Guid restaurantId, [FromBody] ChangeRestaurantDeliveryDataModel changeRestaurantDeliveryDataModel)
+        public async Task<IActionResult> PostChangePickupInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantPickupInfoModel changeRestaurantPickupInfoModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -253,17 +258,76 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantDeliveryDataCommand, bool>(
-                new ChangeRestaurantDeliveryDataCommand(new RestaurantId(restaurantId), changeRestaurantDeliveryDataModel.MinimumOrderValue, changeRestaurantDeliveryDataModel.DeliveryCosts),
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantPickupInfoCommand, bool>(
+                new ChangeRestaurantPickupInfoCommand(new RestaurantId(restaurantId),
+                    new PickupInfo(
+                        TimeSpan.FromMinutes(changeRestaurantPickupInfoModel.AverageTime),
+                        changeRestaurantPickupInfoModel.MinimumOrderValue,
+                        changeRestaurantPickupInfoModel.MaximumOrderValue,
+                        changeRestaurantPickupInfoModel.HygienicHandling
+                    )
+                ),
                 currentUser
             );
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/adddeliverytime")]
+        [Route("restaurants/{restaurantId}/changedeliveryinfo")]
         [HttpPost]
-        public async Task<IActionResult> PostAddDeliveryTimeAsync(Guid restaurantId, [FromBody] AddDeliveryTimeToRestaurantModel model)
+        public async Task<IActionResult> PostChangeDeliveryInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantDeliveryInfoModel changeRestaurantDeliveryInfoModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantDeliveryInfoCommand, bool>(
+                new ChangeRestaurantDeliveryInfoCommand(new RestaurantId(restaurantId),
+                    new DeliveryInfo(
+                        TimeSpan.FromMinutes(changeRestaurantDeliveryInfoModel.AverageTime),
+                        changeRestaurantDeliveryInfoModel.MinimumOrderValue,
+                        changeRestaurantDeliveryInfoModel.MaximumOrderValue,
+                        changeRestaurantDeliveryInfoModel.Costs,
+                        changeRestaurantDeliveryInfoModel.HygienicHandling
+                    )
+                ),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/changereservationinfo")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeReservationInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantReservationInfoModel changeRestaurantReservationInfoModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantReservationInfoCommand, bool>(
+                new ChangeRestaurantReservationInfoCommand(new RestaurantId(restaurantId),
+                    new ReservationInfo(
+                        changeRestaurantReservationInfoModel.HygienicHandling
+                    )
+                ),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/addopeningperiod")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddOpeningPeriodAsync(Guid restaurantId, [FromBody] AddOpeningPeriodToRestaurantModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -276,17 +340,16 @@ namespace FoodOrderSystem.App.Controllers.V1
             var start = TimeSpan.FromMinutes(model.Start);
             var end = TimeSpan.FromMinutes(model.End);
 
-            var commandResult = await commandDispatcher.PostAsync<AddDeliveryTimeToRestaurantCommand, bool>(
-                new AddDeliveryTimeToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
-                currentUser
-            );
+            var commandResult = await commandDispatcher.PostAsync<AddOpeningPeriodToRestaurantCommand, bool>(
+                new AddOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId),
+                    new OpeningPeriod(model.DayOfWeek, start, end)), currentUser);
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/removedeliverytime")]
+        [Route("restaurants/{restaurantId}/removeopeningperiod")]
         [HttpPost]
-        public async Task<IActionResult> PostRemoveDeliveryTimeAsync(Guid restaurantId, [FromBody] RemoveDeliveryTimeFromRestaurantModel model)
+        public async Task<IActionResult> PostRemoveOpeningPeriodAsync(Guid restaurantId, [FromBody] RemoveOpeningPeriodFromRestaurantModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -298,8 +361,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var start = TimeSpan.FromMinutes(model.Start);
 
-            var commandResult = await commandDispatcher.PostAsync<RemoveDeliveryTimeFromRestaurantCommand, bool>(
-                new RemoveDeliveryTimeFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
+            var commandResult = await commandDispatcher.PostAsync<RemoveOpeningPeriodFromRestaurantCommand, bool>(
+                new RemoveOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
                 currentUser
             );
 

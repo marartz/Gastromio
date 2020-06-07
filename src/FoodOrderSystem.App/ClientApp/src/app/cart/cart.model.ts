@@ -9,6 +9,8 @@ export class CartModel {
 
   public orderId: string;
 
+  public orderType: OrderType;
+
   public restaurant: RestaurantModel;
 
   public orderedDishes: OrderedDishModel[];
@@ -37,11 +39,45 @@ export class CartModel {
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
+  public getAverageTime(): number {
+    switch (this.orderType) {
+      case OrderType.Pickup:
+        return this.restaurant.pickupInfo.averageTime;
+      case OrderType.Delivery:
+        return this.restaurant.deliveryInfo.averageTime;
+      default:
+        return 0;
+    }
+  }
+
   public getMinimumOrderValue(): number {
-    return this.restaurant.minimumOrderValue;
+    switch (this.orderType) {
+      case OrderType.Pickup:
+        return this.restaurant.pickupInfo.minimumOrderValue;
+      case OrderType.Delivery:
+        return this.restaurant.deliveryInfo.minimumOrderValue;
+      default:
+        return 0;
+    }
   }
 
   public getMinimumOrderValueText(): string {
+    const val = this.getMinimumOrderValue();
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+  }
+
+  public getMaximumOrderValue(): number {
+    switch (this.orderType) {
+      case OrderType.Pickup:
+        return this.restaurant.pickupInfo.maximumOrderValue;
+      case OrderType.Delivery:
+        return this.restaurant.deliveryInfo.maximumOrderValue;
+      default:
+        return Number.MAX_VALUE;
+    }
+  }
+
+  public getMaximumOrderValueText(): string {
     const val = this.getMinimumOrderValue();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
@@ -60,11 +96,11 @@ export class CartModel {
   }
 
   public isDeliveryForFree(): boolean {
-    return this.restaurant.deliveryCosts === 0;
+    return this.restaurant.deliveryInfo.costs === 0;
   }
 
   public getDeliveryCosts(): number {
-    return this.restaurant.deliveryCosts;
+    return this.restaurant.deliveryInfo.costs;
   }
 
   public getDeliveryCostsText(): string {
@@ -84,4 +120,10 @@ export class CartModel {
     const val = this.getTotalPrice();
     return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
+}
+
+export enum OrderType {
+  Pickup,
+  Delivery,
+  Reservation
 }

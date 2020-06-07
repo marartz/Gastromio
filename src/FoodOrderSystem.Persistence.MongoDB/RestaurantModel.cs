@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoodOrderSystem.Domain.Model.Restaurant;
 
 namespace FoodOrderSystem.Persistence.MongoDB
 {
@@ -11,25 +12,17 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         public byte[] Image { get; set; }
 
-        public string AddressStreet { get; set; }
+        public AddressModel Address { get; set; }
+        
+        public ContactInfoModel ContactInfo { get; set; }
 
-        public string AddressZipCode { get; set; }
+        public List<OpeningPeriodModel> OpeningHours { get; set; }
 
-        public string AddressCity { get; set; }
-
-        public List<DeliveryTimeModel> DeliveryTimes { get; set; }
-
-        public decimal MinimumOrderValue { get; set; }
-
-        public decimal DeliveryCosts { get; set; }
-
-        public string Phone { get; set; }
-
-        public string WebSite { get; set; }
-
-        public string Imprint { get; set; }
-
-        public string OrderEmailAddress { get; set; }
+        public PickupInfoModel PickupInfo { get; set; }
+        
+        public DeliveryInfoModel DeliveryInfo { get; set; }
+        
+        public ReservationInfoModel ReservationInfo { get; set; }
         
         public List<Guid> Cuisines { get; set; }
         

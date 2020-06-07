@@ -5,18 +5,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
+namespace FoodOrderSystem.Domain.Commands.RemoveOpeningPeriodFromRestaurant
 {
-    public class ChangeRestaurantContactDetailsCommandHandler : ICommandHandler<ChangeRestaurantContactDetailsCommand, bool>
+    public class RemoveOpeningPeriodFromRestaurantCommandHandler : ICommandHandler<RemoveOpeningPeriodFromRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public ChangeRestaurantContactDetailsCommandHandler(IRestaurantRepository restaurantRepository)
+        public RemoveOpeningPeriodFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeRestaurantContactDetailsCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(RemoveOpeningPeriodFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -34,13 +34,11 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangeContactDetails(command.Phone, command.WebSite, command.Imprint, command.OrderEmailAddress);
-            if (result.IsFailure)
-                return result;
+            restaurant.RemoveOpeningPeriod(command.DayOfWeek, command.Start);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return result;
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

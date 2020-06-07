@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {DishCategoryModel} from '../dish-category/dish-category.model';
-import {CartModel} from '../cart/cart.model';
+import {CartModel, OrderType} from '../cart/cart.model';
 import {OrderedDishModel} from '../cart/ordered-dish.model';
 import {DishVariantModel} from '../dish-category/dish-variant.model';
 import {DishModel} from '../dish-category/dish.model';
@@ -76,6 +76,7 @@ export class OrderService {
   public startOrderAtRestaurant(restaurant: RestaurantModel): void {
     this.cart = new CartModel();
     this.cart.restaurant = restaurant;
+    this.cart.orderType = OrderType.Delivery;
     this.cart.orderedDishes = new Array<OrderedDishModel>();
   }
 

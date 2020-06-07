@@ -2,9 +2,9 @@
 
 namespace FoodOrderSystem.Domain.Model.Restaurant
 {
-    public class DeliveryTime
+    public class OpeningPeriod
     {
-        public DeliveryTime(int dayOfWeek, TimeSpan start, TimeSpan end)
+        public OpeningPeriod(int dayOfWeek, TimeSpan start, TimeSpan end)
         {
             DayOfWeek = dayOfWeek;
             Start = start;

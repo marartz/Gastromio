@@ -5,18 +5,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant
+namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantReservationInfo
 {
-    public class RemoveDeliveryTimeFromRestaurantCommandHandler : ICommandHandler<RemoveDeliveryTimeFromRestaurantCommand, bool>
+    public class ChangeRestaurantReservationInfoCommandHandler : ICommandHandler<ChangeRestaurantReservationInfoCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public RemoveDeliveryTimeFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRestaurantReservationInfoCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveDeliveryTimeFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangeRestaurantReservationInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -34,11 +34,13 @@ namespace FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.RemoveDeliveryTime(command.DayOfWeek, command.Start);
+            var result = restaurant.ChangeReservationInfo(command.ReservationInfo);
+            if (result.IsFailure)
+                return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<bool>.Create(true);
+            return result;
         }
     }
 }

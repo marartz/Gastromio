@@ -162,18 +162,45 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         private static Restaurant FromDocument(RestaurantModel document)
         {
-            return new Restaurant(new RestaurantId(document.Id),
+            return new Restaurant(
+                new RestaurantId(document.Id),
                 document.Name,
                 document.Image,
-                new Address(document.AddressStreet, document.AddressZipCode, document.AddressCity),
-                document.DeliveryTimes.Select(en => new DeliveryTime(en.DayOfWeek, TimeSpan.FromMinutes(en.StartTime),
+                document.Address != null 
+                    ? new Address(
+                        document.Address.Street,
+                        document.Address.ZipCode,
+                        document.Address.City
+                    ) : null,
+                document.ContactInfo != null
+                    ? new ContactInfo(
+                        document.ContactInfo.Phone,
+                        document.ContactInfo.Fax,
+                        document.ContactInfo.WebSite,
+                        document.ContactInfo.ResponsiblePerson,
+                        document.ContactInfo.EmailAddress
+                    ) : null,
+                document.OpeningHours?.Select(en => new OpeningPeriod(
+                    en.DayOfWeek,
+                    TimeSpan.FromMinutes(en.StartTime),
                     TimeSpan.FromMinutes(en.EndTime))).ToList(),
-                document.MinimumOrderValue,
-                document.DeliveryCosts,
-                document.Phone,
-                document.WebSite,
-                document.Imprint,
-                document.OrderEmailAddress,
+                document.PickupInfo != null
+                    ? new PickupInfo(
+                        TimeSpan.FromMinutes(document.PickupInfo.AverageTime),
+                        document.PickupInfo.MinimumOrderValue,
+                        document.PickupInfo.MaximumOrderValue,
+                        document.PickupInfo.HygienicHandling
+                    ) : null,
+                document.DeliveryInfo != null
+                    ? new DeliveryInfo(
+                        TimeSpan.FromMinutes(document.DeliveryInfo.AverageTime),
+                        document.DeliveryInfo.MinimumOrderValue,
+                        document.DeliveryInfo.MaximumOrderValue,
+                        document.DeliveryInfo.Costs,
+                        document.DeliveryInfo.HygienicHandling
+                    ) : null,
+                document.ReservationInfo != null
+                    ? new ReservationInfo(document.ReservationInfo.HygienicHandling) : null, 
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
                 new HashSet<PaymentMethodId>(document.PaymentMethods.Select(en => new PaymentMethodId(en))),
                 new HashSet<UserId>(document.Administrators.Select(en => new UserId(en)))
@@ -187,23 +214,45 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 Id = obj.Id.Value,
                 Name = obj.Name,
                 Image = obj.Image,
-                AddressStreet = obj.Address?.Street,
-                AddressZipCode = obj.Address?.ZipCode,
-                AddressCity = obj.Address?.City,
-                DeliveryTimes = obj.DeliveryTimes != null
-                    ? obj.DeliveryTimes.Select(en => new DeliveryTimeModel
-                    {
-                        DayOfWeek = en.DayOfWeek,
-                        StartTime = (int) en.Start.TotalMinutes,
-                        EndTime = (int) en.End.TotalMinutes
-                    }).ToList()
-                    : new List<DeliveryTimeModel>(),
-                MinimumOrderValue = obj.MinimumOrderValue,
-                DeliveryCosts = obj.DeliveryCosts,
-                Phone = obj.Phone,
-                WebSite = obj.WebSite,
-                Imprint = obj.Imprint,
-                OrderEmailAddress = obj.OrderEmailAddress,
+                Address = obj.Address != null ? new AddressModel
+                {
+                    Street = obj.Address.Street,
+                    ZipCode = obj.Address.ZipCode,
+                    City = obj.Address.City
+                } : null,
+                ContactInfo = obj.ContactInfo != null ? new ContactInfoModel
+                {
+                    Phone = obj.ContactInfo.Phone,
+                    Fax = obj.ContactInfo.Fax,
+                    WebSite = obj.ContactInfo.WebSite,
+                    ResponsiblePerson = obj.ContactInfo.ResponsiblePerson,
+                    EmailAddress = obj.ContactInfo.EmailAddress
+                } : null,
+                OpeningHours = obj.OpeningHours?.Select(en => new OpeningPeriodModel
+                {
+                    DayOfWeek = en.DayOfWeek,
+                    StartTime = (int)en.Start.TotalMinutes,
+                    EndTime = (int)en.End.TotalMinutes
+                }).ToList(),
+                PickupInfo = obj.PickupInfo != null ? new PickupInfoModel
+                {
+                    AverageTime = (int)obj.PickupInfo.AverageTime.TotalMinutes,
+                    MinimumOrderValue = obj.PickupInfo.MinimumOrderValue,
+                    MaximumOrderValue = obj.PickupInfo.MaximumOrderValue,
+                    HygienicHandling = obj.PickupInfo.HygienicHandling
+                } : null,
+                DeliveryInfo = obj.DeliveryInfo != null ? new DeliveryInfoModel
+                {
+                    AverageTime = (int)obj.DeliveryInfo.AverageTime.TotalMinutes,
+                    MinimumOrderValue = obj.DeliveryInfo.MinimumOrderValue,
+                    MaximumOrderValue = obj.DeliveryInfo.MaximumOrderValue,
+                    Costs = obj.DeliveryInfo.Costs,
+                    HygienicHandling = obj.DeliveryInfo.HygienicHandling
+                } : null,
+                ReservationInfo = obj.ReservationInfo != null ? new ReservationInfoModel
+                {
+                    HygienicHandling = obj.ReservationInfo.HygienicHandling
+                } : null,
                 Cuisines = obj.Cuisines != null ? obj.Cuisines.Select(en => en.Value).ToList() : new List<Guid>(),
                 PaymentMethods = obj.PaymentMethods != null
                     ? obj.PaymentMethods.Select(en => en.Value).ToList()

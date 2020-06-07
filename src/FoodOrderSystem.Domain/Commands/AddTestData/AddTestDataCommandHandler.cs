@@ -292,30 +292,60 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             if (boolResult.IsFailure)
                 return boolResult;
 
-            boolResult = restaurant.ChangeContactDetails($"02871/1234-{(index + 1):D3}",
-                $"http://www.restaurant{(index + 1):D3}.de", $"Impressum Restaurant {(index + 1):D3}",
-                $"order@restaurant{(index + 1):D3}.de");
+            boolResult = restaurant.ChangeContactInfo(new ContactInfo(
+                $"02871/1234-{(index + 1):D3}",
+                $"02871/1234-5{(index + 1):D3}",
+                $"http://www.restaurant{(index + 1):D3}.de",
+                $"Verantw. Person {(index + 1):D3}",
+                $"order@restaurant{(index + 1):D3}.de"
+            ));
             if (boolResult.IsFailure)
                 return boolResult;
 
-            boolResult =
-                restaurant.ChangeDeliveryData(5 + (decimal) index / 100, 4 + (decimal) index / 100);
+            for (var i = 0; i < 7; i++)
+            {
+                boolResult = restaurant.AddOpeningPeriod(new OpeningPeriod(i,
+                    TimeSpan.FromHours(10 + (index % 4) * 0.5), TimeSpan.FromHours(20 + (index % 4) * 0.5)));
+                if (boolResult.IsFailure)
+                    return boolResult;
+            }
+
+            boolResult = restaurant.EnablePickup(new PickupInfo(
+                TimeSpan.FromMinutes(15 + index / 100),
+                5 + (decimal) index / 100, 
+                100 + (decimal) index / 100,
+                $"Hygienische Abwicklung bei Abholung {index + 1:D2}"
+            ));
             if (boolResult.IsFailure)
                 return boolResult;
 
+            if (index % 2 == 0)
+            {
+                boolResult = restaurant.EnableDelivery(new DeliveryInfo(
+                    TimeSpan.FromMinutes(15 + index / 100),
+                    5 + (decimal) index / 100,
+                    100 + (decimal) index / 100,
+                    3 + (decimal) index / 100,
+                    $"Hygienische Abwicklung bei Lieferung {index + 1:D2}"
+                ));
+                if (boolResult.IsFailure)
+                    return boolResult;
+            }
+
+            if (index % 4 == 0)
+            {
+                boolResult = restaurant.EnableReservation(new ReservationInfo(
+                    $"Hygienische Abwicklung bei Besuch vor Ort {index + 1:D2}"
+                ));
+                if (boolResult.IsFailure)
+                    return boolResult;
+            }
+            
             restaurant.AddCuisine(cuisines[(index + 0) % cuisines.Count].Id);
             restaurant.AddCuisine(cuisines[(index + 1) % cuisines.Count].Id);
 
             restaurant.AddPaymentMethod(paymentMethods[(index + 0) % paymentMethods.Count].Id);
             restaurant.AddPaymentMethod(paymentMethods[(index + 1) % paymentMethods.Count].Id);
-
-            for (var i = 0; i < 7; i++)
-            {
-                boolResult = restaurant.AddDeliveryTime(i, TimeSpan.FromHours(10 + (index % 4) * 0.5),
-                    TimeSpan.FromHours(20 + (index % 4) * 0.5));
-                if (boolResult.IsFailure)
-                    return boolResult;
-            }
 
             var restAdmin = restAdminDict[restAdminName];
             restaurant.AddAdministrator(restAdmin.Id);
