@@ -26,6 +26,7 @@
         RestaurantDeliveryTimeIntersects,
         RestaurantDoesNotExist,
         DishCategoryDoesNotBelongToRestaurant,
+        DishCategoryAlreadyExists,
         DishCategoryDoesNotExist,
         DishCategoryInvalidOrderNo,
         DishDoesNotBelongToDishCategory,

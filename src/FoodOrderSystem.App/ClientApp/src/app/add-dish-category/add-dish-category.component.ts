@@ -55,7 +55,6 @@ export class AddDishCategoryComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.addDishCategoryForm.reset();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
