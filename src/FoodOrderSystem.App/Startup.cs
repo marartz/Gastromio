@@ -24,7 +24,10 @@ namespace FoodOrderSystem.App
         {
             Domain.Initializer.ConfigureServices(services);
 
-            Persistence.MongoDB.Initializer.ConfigureServices(services, "mongodb://localhost:27017");
+            var connectionString = Configuration.GetConnectionString("MongoDB");
+            Log.Logger.Information("Using connection string: {0}", connectionString);
+            
+            Persistence.MongoDB.Initializer.ConfigureServices(services, connectionString);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
