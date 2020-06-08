@@ -1,39 +1,30 @@
-<div class="admin-modal" style="opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;" role="document">
+<block-ui>
+    <div id="modal">
+        <div class="modal-content" role="dialog">
 
-    <div class="modal-header">
-        <div class="wrapper">
-            <h6 class="title" style="max-width: 100%;">Gericht löschen</h6>
-            <div class="iconwrapper" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-                <button class="iconbutton">
-                    <span class="iconlabel">
-                        <div class="icon-inner">
-                            <svg class="icon" focusable="false" viewBox="0 0 24 24" color="grey" role="presentation">
-                                <path d="M18.3,5.71L18.3,5.71c-0.39-0.39-1.02-0.39-1.41,0L12,10.59L7.11,5.7c-0.39-0.39-1.02-0.39-1.41,0l0,0c-0.39,0.39-0.39,1.02,0,1.41L10.59,12L5.7,16.89c-0.39,0.39-0.39,1.02,0,1.41h0c0.39,0.39,1.02,0.39,1.41,0L12,13.41l4.89,4.89c0.39,0.39,1.02,0.39,1.41,0l0,0c0.39-0.39,0.39-1.02,0-1.41L13.41,12l4.89-4.89C18.68,6.73,18.68,6.09,18.3,5.71z"></path>
-                            </svg>
-                        </div>
-                    </span>
-                    <span class="icon-root"></span>
+            <div id="modal-header">
+                <div class="modal-title">Gericht löschen</div>
+                <button class="modal-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+                    <svg width="24" viewBox="0 0 24 24" role="img">
+                        <path d="M15.5 7.1L12 10.6 8.5 7.1 7.1 8.5l3.5 3.5-3.5 3.5 1.4 1.4 3.5-3.5 3.5 3.5 1.4-1.4-3.5-3.5 3.5-3.5z"></path>
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"></path>
+                    </svg>
                 </button>
             </div>
-        </div>
-    </div>
 
-    <block-ui>
-        <div class="modal-body">
-            <div class="wrapper">
-                <div class="admin-input">
-                    <h5 class="delete-text">Bist du sicher, dass du das Gericht<br /><strong>{{dish.name}} löschen</strong><br />möchtest?</h5>
+            <div id="modal-body">
+                <p class="modal-message">
+                    Bist du sicher, dass du das Gericht<br /><strong>{{dish.name}} löschen</strong> möchtest?
+                    <span>(Dieser Vorgang kann nicht mehr rückgängig gemacht werden.)</span>
+                </p>
+            </div>
+
+            <div id="modal-footer">
+                <div class="inline-button-wrap">
+                    <button class="button-remove" type="submit" (click)="onSubmit()">Endgültig löschen</button>
                 </div>
             </div>
-        </div>
 
-        <div class="modal-submit">
-            <button class="button-submit delete" tabindex="0" type="submit" (click)="onSubmit()" role="button" style="max-width: 100%; min-height: 60px;">
-                <span class="buttonlabel">
-                    <div class="labelwrapper">Endgültig löschen</div>
-                </span>
-            </button>
         </div>
-    </block-ui>
-
-</div>
+    </div>
+</block-ui>

@@ -11,7 +11,7 @@ import { ConfirmPasswordValidator } from '../validators/password.validator';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./add-user.component.css', '../../assets/css/frontend.min.css']
 })
 export class AddUserComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

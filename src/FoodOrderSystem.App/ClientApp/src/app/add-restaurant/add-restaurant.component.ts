@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-add-restaurant',
   templateUrl: './add-restaurant.component.html',
-  styleUrls: ['./add-restaurant.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./add-restaurant.component.css', '../../assets/css/frontend.min.css']
 })
 export class AddRestaurantComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

@@ -1,50 +1,49 @@
-<main class="wrapper">
-    <div class="content">
-        <div class="childrenwrapper">
-            <div class="innerwrapper">
+<section id="main" role="main">
+    <div class="focusing-outlet" tabindex="-1" role="group">
 
-                <div class="header admin-cuisines">
-                    <div class="textwrapper">
-                        <h1 class="title" style="max-width: 100%; color: rgb(255, 255, 255);">Cuisineverwaltung</h1>
+        <div id="sys-admin">
+
+            <div id="hero">
+                <div class="inner">
+                    <h2 class="page-title" tabindex="-1">Cuisineverwaltung</h2>
+                    <div class="page-description">Bearbeite Cuisines und/oder füge neue hinzu</div>
+                </div>
+            </div>
+
+            <div class="container no-header">
+                <div class="row">
+                    <div class="col-12 col-md-8"></div>
+                    <div class="col-6 col-md-4">
+                        <button class="button-add" id="addCuisine" (click)="openAddCuisineForm()">Cuisine hinzufügen</button>
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col p-2">
+                        <div class="restaurants mt-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="SearchTableTitle">Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let cuisine of cuisines | async" class="cuisine">
+                                        <td>{{cuisine.name}}</td>
+                                        <td>
+                                            <div class="float-right">
+                                                <button class="btn btn-secondary btn-sm m-1" (click)="openChangeCuisineForm(cuisine)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-danger btn-sm m-1" (click)="openRemoveCuisineForm(cuisine)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</main>
 
-<div class="container no-header">
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <!--input class="form-control" type="search" placeholder="Nach Cuisines suchen" aria-label="Search"-->
-        </div>
-        <div class="col-6 col-md-4">
-            <button class="button-add" id="addCuisine" (click)="openAddCuisineForm()">Cuisine hinzufügen</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col p-2">
-            <div class="restaurants mt-3">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="SearchTableTitle">Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let cuisine of cuisines | async" class="cuisine">
-                            <td>{{cuisine.name}}</td>
-                            <td>
-                                <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeCuisineForm(cuisine)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveCuisineForm(cuisine)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+</section>

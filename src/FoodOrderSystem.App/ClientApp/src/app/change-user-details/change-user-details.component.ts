@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-change-user-details',
   templateUrl: './change-user-details.component.html',
-  styleUrls: ['./change-user-details.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./change-user-details.component.css', '../../assets/css/frontend.min.css']
 })
 export class ChangeUserDetailsComponent implements OnInit {
   @Input() public user: UserModel;

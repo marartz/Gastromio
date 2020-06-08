@@ -10,7 +10,7 @@ import { RemovePaymentMethodComponent } from '../remove-payment-method/remove-pa
 @Component({
   selector: 'app-admin-payment-methods',
   templateUrl: './admin-payment-methods.component.html',
-  styleUrls: ['./admin-payment-methods.component.css', '../../assets/css/admin.min.css']
+  styleUrls: ['./admin-payment-methods.component.css', '../../assets/css/frontend.min.css']
 })
 export class AdminPaymentMethodsComponent implements OnInit {
   paymentMethods: Observable<PaymentMethodModel[]>;

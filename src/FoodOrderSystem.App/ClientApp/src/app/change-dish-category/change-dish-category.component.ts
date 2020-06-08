@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-change-dish-category',
   templateUrl: './change-dish-category.component.html',
-  styleUrls: ['./change-dish-category.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./change-dish-category.component.css', '../../assets/css/frontend.min.css']
 })
 export class ChangeDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

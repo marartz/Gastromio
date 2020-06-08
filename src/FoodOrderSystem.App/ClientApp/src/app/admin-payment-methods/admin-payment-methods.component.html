@@ -1,52 +1,60 @@
-<main class="wrapper">
-    <div class="content">
-        <div class="childrenwrapper">
-            <div class="innerwrapper">
+<section id="main" role="main">
+    <div class="focusing-outlet" tabindex="-1" role="group">
+        <div id="sys-admin">
 
-                <div class="header admin-payment-methods">
-                    <div class="textwrapper">
-                        <h1 class="title" style="max-width: 100%; color: rgb(255, 255, 255);">Zahlungsmethodenverwaltung</h1>
+            <div id="hero">
+                <div class="inner">
+                    <h2 class="page-title" tabindex="-1">Zahlungsmethodenverwaltung</h2>
+                    <div class="page-description">Bearbeite Zahlungsmethoden oder füge welche hinzu</div>
+                </div>
+            </div>
+
+            <div class="centered">
+
+                <div class="waypointable" tabindex="-1">
+                    <div id="section-header">
+                        <h1 class="section-title">Zahlungsmethoden</h1>
+                        <p class="section-description">Bearbeite oder füge Zahlungsmethoden für Restaurantadministratoren hinzu</p>
+                    </div>
+
+                    <div id="payment-methods">
+                        <h2>Zahlungsmethoden</h2>
+                        <div class="methods-inner">
+                            <div class="method" tabindex="-1" *ngFor="let paymentMethod of paymentMethods | async">
+                                <div class="cross-fade">
+                                    <div class="method-content">
+                                        <div class="payment-icon">
+                                            <svg width="24" height="32" viewBox="0 0 62.211 62.211" role="img">
+                                                <path d="M5.217,45.562h39.517c1.773,0,3.217-1.461,3.217-3.256L47.134,36.2h13.738c0.741,0,1.339-0.598,1.339-1.339c0-0.738-0.598-1.339-1.339-1.339H46.775l-0.356-2.666h10.447c0.739,0,1.338-0.599,1.338-1.338s-0.599-1.339-1.338-1.339H46.062l-0.291-2.166h6.97c0.741,0,1.339-0.599,1.339-1.338c0-0.739-0.598-1.338-1.339-1.338h-7.328l-0.47-3.51c-0.039-1.76-1.467-3.179-3.217-3.179H3.212c-1.773,0-3.216,1.46-3.212,3.348l2,22.307C2,44.103,3.443,45.562,5.217,45.562zM3.212,18.734h38.515c0.626,0,1.134,0.526,1.134,1.172l0.459,3.433h-6.369c-0.741,0-1.339,0.599-1.339,1.338c0,0.74,0.598,1.339,1.339,1.339h6.728l0.29,2.165h-2.895c-0.738,0-1.338,0.6-1.338,1.339c0,0.74,0.6,1.339,1.338,1.339h3.254l0.331,2.482H3.285L2.079,19.906C2.079,19.26,2.589,18.734,3.212,18.734z M44.733,43.478H5.217c-0.625,0-1.134-0.525-1.138-1.265l-0.146-1.62h41.694l0.237,1.772C45.834,42.983,45.339,43.478,44.733,43.478z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="payment-name">{{paymentMethod.name}}</div>
+                                            <div class="payment-description">{{paymentMethod.description}}</div>
+                                        </div>
+                                        <div class="actions">
+                                            <button class="edit-link text-link-small" (click)="openChangePaymentMethodForm(paymentMethod)">Bearbeiten</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="admin-card">
+                        <div class="add" tabindex="0" role="button">
+                            <svg height="20" width="22" viewBox="0 0 22 21">
+                                <g stroke-width="2.7" stroke="#1f4f46" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 1.528v17.944M2 10.5h18"></path>
+                                </g>
+                            </svg>
+                            <span id="addPaymentMethod" (click)="openAddPaymentMethodForm()">Zahlungsmethode hinzufügen</span>
+                        </div>
                     </div>
                 </div>
 
             </div>
-        </div>
-    </div>
-</main>
 
-<div class="container no-header">
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <!--input class="form-control" type="search" placeholder="Nach Cuisines suchen" aria-label="Search"-->
-        </div>
-        <div class="col-6 col-md-4">
-            <button class="button-add" id="addPaymentMethod" (click)="openAddPaymentMethodForm()">Zahlungsmethode hinzufügen</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col p-2">
-            <div class="restaurants mt-3">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Beschreibung</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let paymentMethod of paymentMethods | async" class="payment-method">
-                            <td>{{paymentMethod.name}}</td>
-                            <td>{{paymentMethod.description}}</td>
-                            <td>
-                                <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangePaymentMethodForm(paymentMethod)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemovePaymentMethodForm(paymentMethod)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+</section>

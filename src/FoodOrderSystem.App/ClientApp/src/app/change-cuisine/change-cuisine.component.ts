@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-change-cuisine',
   templateUrl: './change-cuisine.component.html',
-  styleUrls: ['./change-cuisine.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./change-cuisine.component.css', '../../assets/css/frontend.min.css']
 })
 export class ChangeCuisineComponent implements OnInit {
   @Input() public cuisine: CuisineModel;

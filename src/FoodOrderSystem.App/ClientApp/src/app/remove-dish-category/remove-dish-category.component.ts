@@ -9,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-remove-dish-category',
   templateUrl: './remove-dish-category.component.html',
-  styleUrls: ['./remove-dish-category.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./remove-dish-category.component.css', '../../assets/css/frontend.min.css']
 })
 export class RemoveDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;
