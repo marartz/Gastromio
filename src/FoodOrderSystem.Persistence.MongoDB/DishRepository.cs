@@ -104,7 +104,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         .Select(variantDocument => new DishVariant(
                             variantDocument.VariantId,
                             variantDocument.Name,
-                            variantDocument.Price,
+                            (decimal)variantDocument.Price,
                             new List<DishVariantExtra>()
                         )).ToList()
                     : new List<DishVariant>()
@@ -127,7 +127,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     {
                         VariantId = variant.VariantId,
                         Name = variant.Name,
-                        Price = variant.Price
+                        Price = (double)variant.Price
                     }).ToList()
             };
         }

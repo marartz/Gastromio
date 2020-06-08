@@ -42,7 +42,7 @@
                         <ng-container *ngIf="dish.variants.length <= 1">
                             <div class="modal-input" role="combobox">
                                 <label>Preis des Gerichts</label>
-                                <input type="number" id="price" formControlName="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" placeholder="z.B. 5,99" />
+                                <input type="number" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" placeholder="z.B. 5,99" />
                             </div>
                         </ng-container>
                         <ng-container *ngIf="dish.variants.length >= 2">

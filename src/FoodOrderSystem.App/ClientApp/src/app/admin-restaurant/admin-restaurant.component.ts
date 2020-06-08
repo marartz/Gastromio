@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {RestaurantModel, DeliveryTimeModel} from '../restaurant/restaurant.model';
+import {OpeningPeriodModel, RestaurantModel} from '../restaurant/restaurant.model';
 import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ChangeRestaurantNameComponent} from '../change-restaurant-name/change-restaurant-name.component';
@@ -41,13 +41,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   changeAddressForm: FormGroup;
   changeAddressError: string;
 
-  changeContactDetailsForm: FormGroup;
-  changeContactDetailsError: string;
+  changeContactInfoForm: FormGroup;
+  changeContactInfoError: string;
 
-  changeDeliveryDataForm: FormGroup;
-  changeDeliveryDataError: string;
-
-  addDeliveryTimeForm: FormGroup;
+  addOpeningPeriodForm: FormGroup;
   daysOfMonth = [
     'Montag',
     'Dienstag',
@@ -59,8 +56,17 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   ];
   startTimeError: string;
   endTimeError: string;
-  addDeliveryTimeError: string;
-  removeDeliveryTimeError: string;
+  addOpeningPeriodError: string;
+  removeOpeningPeriodError: string;
+
+  changePickupInfoForm: FormGroup;
+  changePickupInfoError: string;
+
+  changeDeliveryInfoForm: FormGroup;
+  changeDeliveryInfoError: string;
+
+  changeReservationInfoForm: FormGroup;
+  changeReservationInfoError: string;
 
   availableCuisines: CuisineModel[];
   addCuisineForm: FormGroup;
@@ -95,25 +101,40 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     this.changeAddressForm = this.formBuilder.group({
       street: '',
       zipCode: '',
-      city: '',
+      city: ''
     });
 
-    this.changeContactDetailsForm = this.formBuilder.group({
+    this.changeContactInfoForm = this.formBuilder.group({
       phone: '',
+      fax: '',
       webSite: '',
-      imprint: '',
-      orderEmailAddress: '',
+      responsiblePerson: '',
+      emailAddress: ''
     });
 
-    this.changeDeliveryDataForm = this.formBuilder.group({
-      minimumOrderValue: 0,
-      deliveryCosts: 0,
-    });
-
-    this.addDeliveryTimeForm = this.formBuilder.group({
+    this.addOpeningPeriodForm = this.formBuilder.group({
       dayOfWeek: '',
       start: '',
       end: ''
+    });
+
+    this.changePickupInfoForm = this.formBuilder.group({
+      averageTime: '',
+      minimumOrderValue: '',
+      maximumOrderValue: '',
+      hygienicHandling: ''
+    });
+
+    this.changeDeliveryInfoForm = this.formBuilder.group({
+      averageTime: '',
+      minimumOrderValue: '',
+      maximumOrderValue: '',
+      costs: '',
+      hygienicHandling: ''
+    });
+
+    this.changeReservationInfoForm = this.formBuilder.group({
+      hygienicHandling: ''
     });
 
     this.addCuisineForm = this.formBuilder.group({
@@ -210,19 +231,36 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           });
           this.changeAddressForm.markAsPristine();
 
-          this.changeContactDetailsForm.patchValue({
-            phone: this.restaurant.phone,
-            webSite: this.restaurant.webSite,
-            imprint: this.restaurant.imprint,
-            orderEmailAddress: this.restaurant.orderEmailAddress,
+          this.changeContactInfoForm.patchValue({
+            phone: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.phone : '',
+            fax: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.fax : '',
+            webSite: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.webSite : '',
+            responsiblePerson: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.responsiblePerson : '',
+            emailAddress: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.emailAddress : '',
           });
-          this.changeContactDetailsForm.markAsPristine();
+          this.changeContactInfoForm.markAsPristine();
 
-          this.changeDeliveryDataForm.patchValue({
-            minimumOrderValue: this.restaurant.minimumOrderValue,
-            deliveryCosts: this.restaurant.deliveryCosts,
+          this.changePickupInfoForm.patchValue({
+            averageTime: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.averageTime : '',
+            minimumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.minimumOrderValue : '',
+            maximumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.maximumOrderValue : '',
+            hygienicHandling: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.hygienicHandling : ''
           });
-          this.changeDeliveryDataForm.markAsPristine();
+          this.changePickupInfoForm.markAsPristine();
+
+          this.changeDeliveryInfoForm.patchValue({
+            averageTime: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.averageTime : '',
+            minimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
+            maximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
+            costs: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
+            hygienicHandling: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.hygienicHandling : ''
+          });
+          this.changeDeliveryInfoForm.markAsPristine();
+
+          this.changeReservationInfoForm.patchValue({
+            hygienicHandling: this.restaurant.reservationInfo != null ? this.restaurant.reservationInfo.hygienicHandling : ''
+          });
+          this.changeReservationInfoForm.markAsPristine();
 
           const getDishesSubscription = this.restaurantRestAdminService.getDishesOfRestaurantAsync(this.restaurantId).subscribe(
             (dishCategories) => {
@@ -301,8 +339,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     };
   }
 
-  getDeliveryTimeViewModels(): Array<DeliveryTimeViewModel> {
-    const tempDeliveryTimes = this.restaurant.deliveryTimes.sort((a, b) => {
+  getOpeningHours(): Array<OpeningPeriodViewModel> {
+    const tempOpeningPeriods = this.restaurant.openingHours.sort((a, b) => {
       if (a.dayOfWeek < b.dayOfWeek) {
         return -1;
       } else if (a.dayOfWeek > b.dayOfWeek) {
@@ -316,15 +354,15 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       }
     });
 
-    const result = new Array<DeliveryTimeViewModel>();
-    for (const deliveryTime of tempDeliveryTimes) {
-      const viewModel = new DeliveryTimeViewModel();
-      viewModel.dayOfWeek = deliveryTime.dayOfWeek;
-      viewModel.dayOfWeekText = this.daysOfMonth[deliveryTime.dayOfWeek];
-      viewModel.startTime = deliveryTime.start;
-      viewModel.startTimeText = AdminRestaurantComponent.toTimeViewModel(deliveryTime.start);
-      viewModel.endTime = deliveryTime.end;
-      viewModel.endTimeText = AdminRestaurantComponent.toTimeViewModel(deliveryTime.end);
+    const result = new Array<OpeningPeriodViewModel>();
+    for (const openingPeriod of tempOpeningPeriods) {
+      const viewModel = new OpeningPeriodViewModel();
+      viewModel.dayOfWeek = openingPeriod.dayOfWeek;
+      viewModel.dayOfWeekText = this.daysOfMonth[openingPeriod.dayOfWeek];
+      viewModel.startTime = openingPeriod.start;
+      viewModel.startTimeText = AdminRestaurantComponent.toTimeViewModel(openingPeriod.start);
+      viewModel.endTime = openingPeriod.end;
+      viewModel.endTimeText = AdminRestaurantComponent.toTimeViewModel(openingPeriod.end);
       result.push(viewModel);
     }
 
@@ -371,45 +409,23 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSaveContactDetails(value): void {
+  onSaveContactInfo(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantContactDetailsAsync(this.restaurant.id,
-      value.phone, value.webSite, value.imprint, value.orderEmailAddress)
+    const subscription = this.restaurantRestAdminService.changeRestaurantContactInfoAsync(this.restaurant.id, value)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.changeContactDetailsError = undefined;
-        this.restaurant.phone = value.phone;
-        this.restaurant.webSite = value.webSite;
-        this.restaurant.imprint = value.imprint;
-        this.restaurant.orderEmailAddress = value.orderEmailAddress;
-        this.changeContactDetailsForm.markAsPristine();
+        this.changeContactInfoError = undefined;
+        this.restaurant.contactInfo = value;
+        this.changeContactInfoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.changeContactDetailsError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.changeContactInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
-  onSaveDeliveryData(value): void {
-    this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantDeliveryDataAsync(this.restaurant.id,
-      value.minimumOrderValue, value.deliveryCosts)
-      .subscribe(() => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.changeDeliveryDataError = undefined;
-        this.restaurant.minimumOrderValue = value.minimumOrderValue;
-        this.restaurant.deliveryCosts = value.deliveryCosts;
-        this.changeDeliveryDataForm.markAsPristine();
-      }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.changeDeliveryDataError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
-  }
-
-  onAddDeliveryTime(value): void {
+  onAddOpeningPeriod(value): void {
     const dayOfWeek: number = Number(value.dayOfWeek);
 
     const startParseResult: TimeParseResult = AdminRestaurantComponent.parseTimeValue(value.start);
@@ -429,46 +445,94 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.addDeliveryTimeToRestaurantAsync(this.restaurant.id,
+    const subscription = this.restaurantRestAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant.id,
       dayOfWeek, startParseResult.value, endParseResult.value)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
 
-        this.addDeliveryTimeError = undefined;
-        this.addDeliveryTimeForm.reset();
+        this.addOpeningPeriodError = undefined;
+        this.addOpeningPeriodForm.reset();
 
-        const model = new DeliveryTimeModel();
+        const model = new OpeningPeriodModel();
         model.dayOfWeek = dayOfWeek;
         model.start = startParseResult.value;
         model.end = endParseResult.value;
 
-        this.restaurant.deliveryTimes.push(model);
+        this.restaurant.openingHours.push(model);
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.addDeliveryTimeError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.addOpeningPeriodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
-  onRemoveDeliveryTime(deliveryTime: DeliveryTimeViewModel) {
+  onRemoveOpeningPeriod(openingPeriod: OpeningPeriodViewModel) {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.removeDeliveryTimeFromRestaurantAsync(this.restaurant.id,
-      deliveryTime.dayOfWeek, deliveryTime.startTime)
+    const subscription = this.restaurantRestAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant.id,
+      openingPeriod.dayOfWeek, openingPeriod.startTime)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.removeDeliveryTimeError = undefined;
+        this.removeOpeningPeriodError = undefined;
 
-        const index = this.restaurant.deliveryTimes.findIndex(elem => elem.dayOfWeek === deliveryTime.dayOfWeek
-          && elem.start === deliveryTime.startTime);
+        const index = this.restaurant.openingHours.findIndex(elem => elem.dayOfWeek === openingPeriod.dayOfWeek
+          && elem.start === openingPeriod.startTime);
         if (index > -1) {
-          this.restaurant.deliveryTimes.splice(index, 1);
+          this.restaurant.openingHours.splice(index, 1);
         }
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.removeDeliveryTimeError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.removeOpeningPeriodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
+  onSavePickupInfo(value): void {
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.changeRestaurantPickupInfoAsync(this.restaurant.id, value)
+      .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.changePickupInfoError = undefined;
+        this.restaurant.pickupInfo = value;
+        this.changePickupInfoForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.changePickupInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
+  onSaveDeliveryInfo(value): void {
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.changeRestaurantDeliveryInfoAsync(this.restaurant.id, value)
+      .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.changeDeliveryInfoError = undefined;
+        this.restaurant.deliveryInfo = value;
+        this.changeDeliveryInfoForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.changeDeliveryInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
+  onSaveReservationInfo(value): void {
+    this.blockUI.start('Verarbeite Daten...');
+    const subscription = this.restaurantRestAdminService.changeRestaurantReservationInfoAsync(this.restaurant.id, value)
+      .subscribe(() => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.changeReservationInfoError = undefined;
+        this.restaurant.reservationInfo = value;
+        this.changeReservationInfoForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        subscription.unsubscribe();
+        this.blockUI.stop();
+        this.changeReservationInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -809,7 +873,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 }
 
-export class DeliveryTimeViewModel {
+export class OpeningPeriodViewModel {
   dayOfWeek: number;
   dayOfWeekText: string;
   startTime: number;

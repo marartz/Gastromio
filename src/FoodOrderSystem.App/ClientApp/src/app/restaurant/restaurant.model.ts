@@ -5,7 +5,7 @@ import { CuisineModel } from '../cuisine/cuisine.model';
 export class RestaurantModel {
   constructor() {
     this.address = new AddressModel();
-    this.deliveryTimes = new Array<DeliveryTimeModel>();
+    this.openingHours = new Array<OpeningPeriodModel>();
   }
 
   public id: string;
@@ -16,27 +16,15 @@ export class RestaurantModel {
 
   public address: AddressModel;
 
-  public deliveryTimes: DeliveryTimeModel[];
+  public contactInfo: ContactInfoModel;
 
-  public nextDeliveryTime: string;
+  public openingHours: OpeningPeriodModel[];
 
-  public nextDeliveryTimeText: string;
+  public pickupInfo: PickupInfoModel;
 
-  public minimumOrderValue: number;
+  public deliveryInfo: DeliveryInfoModel;
 
-  public minimumOrderValueText: string;
-
-  public deliveryCosts: number;
-
-  public deliveryCostsText: string;
-
-  public phone: string;
-
-  public webSite: string;
-
-  public imprint: string;
-
-  public orderEmailAddress: string;
+  public reservationInfo: ReservationInfoModel;
 
   public cuisines: CuisineModel[];
 
@@ -55,7 +43,21 @@ export class AddressModel {
   public city: string;
 }
 
-export class DeliveryTimeModel {
+export class ContactInfoModel {
+  constructor() {  }
+
+  public phone: string;
+
+  public fax: string;
+
+  public webSite: string;
+
+  public responsiblePerson: string;
+
+  public emailAddress: string;
+}
+
+export class OpeningPeriodModel {
   constructor() { }
 
   public dayOfWeek: number;
@@ -63,4 +65,40 @@ export class DeliveryTimeModel {
   public start: number;
 
   public end: number;
+}
+
+export class PickupInfoModel {
+  public averageTime: number;
+
+  public minimumOrderValue: number;
+
+  public minimumOrderValueText: string;
+
+  public maximumOrderValue: number;
+
+  public maximumOrderValueText: string;
+
+  public hygienicHandling: string;
+}
+
+export class DeliveryInfoModel {
+  public averageTime: number;
+
+  public minimumOrderValue: number;
+
+  public minimumOrderValueText: string;
+
+  public maximumOrderValue: number;
+
+  public maximumOrderValueText: string;
+
+  public costs: number;
+
+  public costsText: string;
+
+  public hygienicHandling: string;
+}
+
+export class ReservationInfoModel {
+  public hygienicHandling: string;
 }

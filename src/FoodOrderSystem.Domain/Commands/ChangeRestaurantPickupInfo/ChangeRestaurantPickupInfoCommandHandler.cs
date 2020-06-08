@@ -5,18 +5,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData
+namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantPickupInfo
 {
-    public class ChangeRestaurantDeliveryDataCommandHandler : ICommandHandler<ChangeRestaurantDeliveryDataCommand, bool>
+    public class ChangeRestaurantPickupInfoCommandHandler : ICommandHandler<ChangeRestaurantPickupInfoCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public ChangeRestaurantDeliveryDataCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRestaurantPickupInfoCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeRestaurantDeliveryDataCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangeRestaurantPickupInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangeDeliveryData(command.MinimumOrderValue, command.DeliveryCosts);
+            var result = restaurant.ChangePickupInfo(command.PickupInfo);
             if (result.IsFailure)
                 return result;
 

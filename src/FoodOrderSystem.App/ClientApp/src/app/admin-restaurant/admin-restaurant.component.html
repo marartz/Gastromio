@@ -18,19 +18,19 @@
                     <span>{{changeImageError}}</span>
                 </div>
             </div>
-            <div *ngIf="changeContactDetailsError !== undefined" id="error">
+            <div *ngIf="changeContactInfoError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
-                    <span>{{changeContactDetailsError}}</span>
+                    <span>{{changeContactInfoError}}</span>
                 </div>
             </div>
-            <div *ngIf="changeDeliveryDataError !== undefined" id="error">
+            <div *ngIf="changeDeliveryInfoError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
-                    <span>{{changeDeliveryDataError}}</span>
+                    <span>{{changeDeliveryInfoError}}</span>
                 </div>
             </div>
-            <div *ngIf="removeDeliveryTimeError !== undefined" id="error">
+            <div *ngIf="removeOpeningPeriodError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
-                    <span>{{removeDeliveryTimeError}}</span>
+                    <span>{{removeOpeningPeriodError}}</span>
                 </div>
             </div>
             <div *ngIf="removePaymentMethodError !== undefined" id="error">
@@ -138,14 +138,18 @@
                             <div id="form" class="restaurant-info">
                                 <fieldset>
                                     <legend>Kontaktinformationen</legend>
-                                    <form [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
+                                    <form [formGroup]="changeContactInfoForm" (ngSubmit)="onSaveContactInfo(changeContactInfoForm.value)">
                                         <div class="backend-input">
                                             <label>Telefon</label>
                                             <input type="tel" id="phone" formControlName="phone" placeholder="Ihre Telefonnummer" />
                                         </div>
                                         <div class="backend-input">
+                                          <label>Fax</label>
+                                          <input type="tel" id="fax" formControlName="fax" placeholder="Ihre Faxnummer" />
+                                        </div>
+                                        <div class="backend-input">
                                             <label>E-Mail für Bestellungen</label>
-                                            <input type="email" id="orderEmailAddress" formControlName="orderEmailAddress" placeholder="Ihre E-Mail-Adresse" />
+                                            <input type="email" id="emailAddress" formControlName="emailAddress" placeholder="Ihre E-Mail-Adresse" />
                                         </div>
                                         <div class="backend-input">
                                             <label>Webseite</label>
@@ -153,12 +157,12 @@
                                         </div>
                                         <div class="backend-input">
                                             <label>Impressum</label>
-                                            <input type="text" id="imprint" formControlName="imprint" placeholder="Verantwortlicher für Webseite" />
+                                            <input type="text" id="responsiblePerson" formControlName="responsiblePerson" placeholder="Verantwortlicher für Webseite" />
                                         </div>
 
                                         <div class="inline-button-wrap">
                                             <button type="reset" class="hollow">Verwerfen</button>
-                                            <button type="submit" *ngIf="changeContactDetailsForm.dirty">Speichern</button>
+                                            <button type="submit" *ngIf="changeContactInfoForm.dirty">Speichern</button>
                                         </div>
                                     </form>
                                 </fieldset>
@@ -189,23 +193,23 @@
                             <div id="form" class="restaurant-info">
                                 <fieldset>
                                     <legend>Lieferinformationen</legend>
-                                    <form [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
+                                    <form [formGroup]="changeDeliveryInfoForm" (ngSubmit)="onSaveDeliveryInfo(changeDeliveryInfoForm.value)">
                                         <div class="backend-input">
                                             <label>Min. Bestellwert</label>
                                             <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue" placeholder="Mindestbestellwert" />
                                         </div>
                                         <div class="backend-input">
                                             <label>Max. Bestellwert</label>
-                                            <input type="number" placeholder="Maximalbestellwert" />
+                                            <input type="number" id="maximumOrderValue" formControlName="maximumOrderValue" placeholder="Maximalbestellwert" />
                                         </div>
                                         <div class="backend-input">
                                             <label>Lieferkosten</label>
-                                            <input type="number" id="deliveryCosts" formControlName="deliveryCosts" placeholder="Lieferkosten" />
+                                            <input type="number" id="costs" formControlName="costs" placeholder="Lieferkosten" />
                                         </div>
 
                                         <div class="inline-button-wrap">
                                             <button type="reset" class="hollow">Verwerfen</button>
-                                            <button type="submit" *ngIf="changeImageForm.dirty">Speichern</button>
+                                            <button type="submit" *ngIf="changeDeliveryInfoForm.dirty">Speichern</button>
                                         </div>
                                     </form>
                                 </fieldset>
@@ -277,7 +281,6 @@
                                                 </div>
                                                 <div>
                                                     <div class="cuisine-name">{{cuisine.name}}</div>
-                                                    <div class="cuisine-description">{{cuisine.description}}</div>
                                                 </div>
                                                 <div class="actions">
                                                     <button class="edit-link text-link-small" (click)="onRemoveCuisine(cuisine.id)">Entfernen</button>
@@ -323,17 +326,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
-                                            <td>{{deliveryTime.dayOfWeekText}}</td>
-                                            <td>{{deliveryTime.startTimeText}}</td>
-                                            <td>{{deliveryTime.endTimeText}}</td>
+                                        <tr *ngFor="let openingPeriod of getOpeningHours()">
+                                            <td>{{openingPeriod.dayOfWeekText}}</td>
+                                            <td>{{openingPeriod.startTimeText}}</td>
+                                            <td>{{openingPeriod.endTimeText}}</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm m-1" (click)="onRemoveDeliveryTime(deliveryTime)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash"></i></button>
+                                                <button class="btn btn-danger btn-sm m-1" (click)="onRemoveOpeningPeriod(openingPeriod)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <form [formGroup]="addDeliveryTimeForm" (ngSubmit)="onAddDeliveryTime(addDeliveryTimeForm.value)">
+                                <form [formGroup]="addOpeningPeriodForm" (ngSubmit)="onAddOpeningPeriod(addOpeningPeriodForm.value)">
                                     <table class="table col-sm-12">
                                         <tbody>
                                             <tr>
@@ -387,14 +390,12 @@
                                 <table class="table col-sm-12">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
                                             <th>Email</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let user of restaurant.administrators">
-                                            <td>{{user.name}}</td>
                                             <td>{{user.email}}</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="removeUser(user)"></i></button>

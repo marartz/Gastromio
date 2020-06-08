@@ -5,18 +5,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
+namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryInfo
 {
-    public class AddDeliveryTimeToRestaurantCommandHandler : ICommandHandler<AddDeliveryTimeToRestaurantCommand, bool>
+    public class ChangeRestaurantDeliveryInfoCommandHandler : ICommandHandler<ChangeRestaurantDeliveryInfoCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public AddDeliveryTimeToRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRestaurantDeliveryInfoCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(AddDeliveryTimeToRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangeRestaurantDeliveryInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.AddDeliveryTime(command.DayOfWeek, command.Start, command.End);
+            var result = restaurant.ChangeDeliveryInfo(command.DeliveryInfo);
             if (result.IsFailure)
                 return result;
 
