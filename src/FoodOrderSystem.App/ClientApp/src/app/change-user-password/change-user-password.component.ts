@@ -12,7 +12,7 @@ import { ConfirmPasswordValidator } from '../validators/password.validator';
 @Component({
   selector: 'app-change-user-password',
   templateUrl: './change-user-password.component.html',
-  styleUrls: ['./change-user-password.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./change-user-password.component.css', '../../assets/css/frontend.min.css']
 })
 export class ChangeUserPasswordComponent implements OnInit {
   @Input() public user: UserModel;

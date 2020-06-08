@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-payment-method',
   templateUrl: './add-payment-method.component.html',
-  styleUrls: ['./add-payment-method.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./add-payment-method.component.css', '../../assets/css/frontend.min.css']
 })
 export class AddPaymentMethodComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

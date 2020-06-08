@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-add-dish-category',
   templateUrl: './add-dish-category.component.html',
-  styleUrls: ['./add-dish-category.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./add-dish-category.component.css', '../../assets/css/frontend.min.css']
 })
 export class AddDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

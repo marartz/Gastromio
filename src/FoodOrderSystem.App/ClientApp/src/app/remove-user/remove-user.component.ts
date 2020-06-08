@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-remove-user',
   templateUrl: './remove-user.component.html',
-  styleUrls: ['./remove-user.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./remove-user.component.css', '../../assets/css/frontend.min.css']
 })
 export class RemoveUserComponent implements OnInit {
   @Input() public user: UserModel;

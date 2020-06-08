@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-change-restaurant-name',
   templateUrl: './change-restaurant-name.component.html',
-  styleUrls: ['./change-restaurant-name.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./change-restaurant-name.component.css', '../../assets/css/frontend.min.css']
 })
 export class ChangeRestaurantNameComponent implements OnInit {
   @Input() public restaurant: RestaurantModel;
