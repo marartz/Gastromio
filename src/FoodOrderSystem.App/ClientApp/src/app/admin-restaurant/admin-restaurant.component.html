@@ -326,7 +326,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let openingPeriod of getOpeningHours()">
+                                        <tr *ngFor="let openingPeriod of openingPeriodVMs">
                                             <td>{{openingPeriod.dayOfWeekText}}</td>
                                             <td>{{openingPeriod.startTimeText}}</td>
                                             <td>{{openingPeriod.endTimeText}}</td>

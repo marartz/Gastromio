@@ -44,16 +44,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   changeContactInfoForm: FormGroup;
   changeContactInfoError: string;
 
+  openingPeriodVMs: OpeningPeriodViewModel[];
   addOpeningPeriodForm: FormGroup;
-  daysOfMonth = [
-    'Montag',
-    'Dienstag',
-    'Mittwoch',
-    'Donnerstag',
-    'Freitag',
-    'Samstag',
-    'Sonntag'
-  ];
   startTimeError: string;
   endTimeError: string;
   addOpeningPeriodError: string;
@@ -146,12 +138,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
-  private static toTimeViewModel(totalMinutes: number): string {
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = Math.floor(totalMinutes % 60);
-    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
-  }
-
   private static parseTimeValue(text: string): TimeParseResult {
     text = text.trim();
 
@@ -216,6 +202,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
             }
             return 0;
           });
+
+          this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
 
           this.imgUrl = this.restaurant.image;
 
@@ -339,36 +327,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     };
   }
 
-  getOpeningHours(): Array<OpeningPeriodViewModel> {
-    const tempOpeningPeriods = this.restaurant.openingHours.sort((a, b) => {
-      if (a.dayOfWeek < b.dayOfWeek) {
-        return -1;
-      } else if (a.dayOfWeek > b.dayOfWeek) {
-        return +1;
-      }
-
-      if (a.start < b.start) {
-        return -1;
-      } else if (a.start > b.start) {
-        return +1;
-      }
-    });
-
-    const result = new Array<OpeningPeriodViewModel>();
-    for (const openingPeriod of tempOpeningPeriods) {
-      const viewModel = new OpeningPeriodViewModel();
-      viewModel.dayOfWeek = openingPeriod.dayOfWeek;
-      viewModel.dayOfWeekText = this.daysOfMonth[openingPeriod.dayOfWeek];
-      viewModel.startTime = openingPeriod.start;
-      viewModel.startTimeText = AdminRestaurantComponent.toTimeViewModel(openingPeriod.start);
-      viewModel.endTime = openingPeriod.end;
-      viewModel.endTimeText = AdminRestaurantComponent.toTimeViewModel(openingPeriod.end);
-      result.push(viewModel);
-    }
-
-    return result;
-  }
-
   openChangeRestaurantNameForm(): void {
     const modalRef = this.modalService.open(ChangeRestaurantNameComponent);
     modalRef.componentInstance.restaurant = this.restaurant;
@@ -460,6 +418,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         model.end = endParseResult.value;
 
         this.restaurant.openingHours.push(model);
+        this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
@@ -480,6 +439,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           && elem.start === openingPeriod.startTime);
         if (index > -1) {
           this.restaurant.openingHours.splice(index, 1);
+          this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
         }
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
@@ -880,6 +840,48 @@ export class OpeningPeriodViewModel {
   startTimeText: string;
   endTime: number;
   endTimeText: string;
+
+  public static daysOfMonth = [
+    'Montag',
+    'Dienstag',
+    'Mittwoch',
+    'Donnerstag',
+    'Freitag',
+    'Samstag',
+    'Sonntag'
+  ];
+
+  public static vmArrayFromModels(models: OpeningPeriodModel[]): OpeningPeriodViewModel[] {
+    return models.map(deliveryTime => {
+      const viewModel = new OpeningPeriodViewModel();
+      viewModel.dayOfWeek = deliveryTime.dayOfWeek;
+      viewModel.dayOfWeekText = this.daysOfMonth[deliveryTime.dayOfWeek];
+      viewModel.startTime = deliveryTime.start;
+      viewModel.startTimeText = this.totalMinutesToString(deliveryTime.start);
+      viewModel.endTime = deliveryTime.end;
+      viewModel.endTimeText = this.totalMinutesToString(deliveryTime.end);
+      return viewModel;
+    }).sort((a, b) => {
+      if (a.dayOfWeek < b.dayOfWeek) {
+        return -1;
+      } else if (a.dayOfWeek > b.dayOfWeek) {
+        return +1;
+      }
+
+      if (a.startTime < b.startTime) {
+        return -1;
+      } else if (a.startTime > b.startTime) {
+        return +1;
+      }
+      return 0;
+    });
+  }
+
+  public static totalMinutesToString(totalMinutes: number): string {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.floor(totalMinutes % 60);
+    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+  }
 }
 
 class TimeParseResult {
