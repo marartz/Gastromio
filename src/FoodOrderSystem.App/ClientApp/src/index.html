@@ -37,6 +37,28 @@
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
 
+    <script type="text/x-metomic" data-micropolicy="statistics">
+        window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '929536154183982',
+              cookie     : true,
+              xfbml      : true,
+              version    : 'v7.0'
+            });
+    
+            FB.AppEvents.logPageView();
+    
+          };
+  
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "https://connect.facebook.net/en_US/sdk.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+    </script>
+
     <meta name="referrer" content="origin-when-cross-origin" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="revisit-after" content="3 days" />

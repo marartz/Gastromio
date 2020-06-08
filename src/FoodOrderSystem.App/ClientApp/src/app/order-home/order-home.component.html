@@ -32,7 +32,7 @@
                                     <div class="card-content" tabindex="-1">
                                         <div class="search-wrap">
                                             <div class="search">
-                                                <form id="delivery"><!-- Bitte nicht entfernen! -->
+                                                <div style="background: #fff;"><!-- Bitte nicht entfernen! -->
                                                     <input type="text" placeholder="Suche nach Restaurants" autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
 
                                                     <ng-template #rt let-r="result" let-t="term">
@@ -45,7 +45,7 @@
                                                             <path d="M9.281 9.3l5.4 5.4"></path>
                                                         </g>
                                                     </svg>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
