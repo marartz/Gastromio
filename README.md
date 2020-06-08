@@ -21,6 +21,9 @@ Ein Admin-User-Interface kann hier heruntergeladen werden: https://docs.mongodb.
 Das System wird automatisiert mit GitHub Actions gebaut. GitHub Actions baut das Paket (in den Artefakten des Builds)
 und ein Dockerimage, welches bei Docker Hub veröffentlich wird: https://hub.docker.com/repository/docker/marartz/food_order_system
 
+Es werden unterschiedliche Versionen (Tags) veröffentlicht, abhängig vom Branch, der automatisch gebaut wurde. Im Folgenden ist der Platzhalter "<tag>" durch einen Branch-Namen ersetzt werden (bspw. develop). Für Branches mit Slash: Das Slash muss durch
+einen Unterstrich ersetzt werden (Beispiel: feature/abc => feature_abc)
+
 Zum Herunterladen des Images:
     
     docker pull marartz/food_order_system:<tag>
@@ -32,6 +35,3 @@ Zum Starten des Images:
 Wenn die Datenbank zurückgesetzt und Testdaten automatisiert angelegt werden sollen:
     
     docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 -e SEED=true marartz/food_order_system:<tag>
-
-*Wichtig*: <tag> muss durch einen Branch-Namen ersetzt werden (bspw. develop). Für Branches mit Slash: Das Slash muss durch
-einen Unterstrich ersetzt werden (Beispiel: feature/abc => feature_abc)
