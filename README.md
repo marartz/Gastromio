@@ -15,6 +15,8 @@ oder mit Hilfe von Docker:
     docker pull mongo:latest
     docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:latest
 
+Ein Admin-User-Interface kann hier heruntergeladen werden: https://docs.mongodb.com/compass/master/install/
+
 ## Testen des Systems
 Das System wird automatisiert mit GitHub Actions gebaut. GitHub Actions baut das Paket (in den Artefakten des Builds)
 und ein Dockerimage, welches bei Docker Hub veröffentlich wird: https://hub.docker.com/repository/docker/marartz/food_order_system
