@@ -42,9 +42,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostLoginAsync([FromBody]LoginModel loginModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Email, loginModel.Password), null);
             if (commandResult is SuccessResult<UserViewModel> successResult)
             {
