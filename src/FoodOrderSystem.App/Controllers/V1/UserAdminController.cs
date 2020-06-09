@@ -64,9 +64,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostUsersAsync([FromBody] AddUserModel addUserModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -82,9 +79,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeDetailsAsync(Guid userId, [FromBody] ChangeUserDetailsModel changeUserDetailsModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -104,9 +98,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangePasswordAsync(Guid userId, [FromBody] ChangeUserPasswordModel changeUserPasswordModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -120,9 +111,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpDelete]
         public async Task<IActionResult> DeleteUserAsync(Guid userId)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();

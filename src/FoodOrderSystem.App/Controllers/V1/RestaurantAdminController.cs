@@ -165,9 +165,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeNameAsync(Guid restaurantId, [FromBody] ChangeRestaurantNameModel changeRestaurantNameModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -181,9 +178,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeImageAsync(Guid restaurantId, [FromBody] ChangeRestaurantImageModel changeRestaurantImageModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -199,9 +193,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeAddressAsync(Guid restaurantId, [FromBody] ChangeRestaurantAddressModel changeRestaurantAddressModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -221,9 +212,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeContactInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantContactInfoModel changeRestaurantContactInfoModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -250,9 +238,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangePickupInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantPickupInfoModel changeRestaurantPickupInfoModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -277,9 +262,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeDeliveryInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantDeliveryInfoModel changeRestaurantDeliveryInfoModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -305,9 +287,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeReservationInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantReservationInfoModel changeRestaurantReservationInfoModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -329,9 +308,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddOpeningPeriodAsync(Guid restaurantId, [FromBody] AddOpeningPeriodToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -351,9 +327,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveOpeningPeriodAsync(Guid restaurantId, [FromBody] RemoveOpeningPeriodFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -373,9 +346,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddCuisineAsync(Guid restaurantId, [FromBody] AddCuisineToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -393,9 +363,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveCuisineAsync(Guid restaurantId, [FromBody] RemoveCuisineFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -413,9 +380,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddPaymentMethodAsync(Guid restaurantId, [FromBody] AddPaymentMethodToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -433,9 +397,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemovePaymentMethodAsync(Guid restaurantId, [FromBody] RemovePaymentMethodFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -453,9 +414,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddAdminAsync(Guid restaurantId, [FromBody] AddAdminToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -473,9 +431,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveAdminAsync(Guid restaurantId, [FromBody] RemoveAdminFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -493,9 +448,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddDishCategoryAsync(Guid restaurantId, [FromBody] AddDishCategoryToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -513,9 +465,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeDishCategoryAsync(Guid restaurantId, [FromBody] ChangeDishCategoryOfRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -533,9 +482,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostIncOrderOfDishCategoryAsync(Guid restaurantId, [FromBody] IncOrderOfDishCategoryModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -553,8 +499,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostDecOrderOfDishCategoryAsync(Guid restaurantId, [FromBody] DecOrderOfDishCategoryModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
 
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
@@ -573,9 +517,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveDishCategoryAsync(Guid restaurantId, [FromBody] RemoveDishCategoryFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -593,9 +534,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddOrEditDishAsync(Guid restaurantId, [FromBody] AddOrChangeDishOfRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -613,9 +551,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostIncOrderOfDishAsync(Guid restaurantId, [FromBody] IncOrderOfDishModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -633,9 +568,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostDecOrderOfDishAsync(Guid restaurantId, [FromBody] DecOrderOfDishModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -653,9 +585,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveDishAsync(Guid restaurantId, [FromBody] RemoveDishFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
