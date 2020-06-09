@@ -28,6 +28,9 @@
     20.  #sys-admin
     20.3 #sys-admin > #payment-methods
     20.4 #sys-admin > #cuisine-options
+    20.5 #sys-admin > #opening-period
+    20.6 #sys-admin > #restaurant-administrators
+    20.7 #sys-admin > #dish-menu
 
     30.  #rest-admin
     30.1 #rest-admin > #nav
@@ -2197,6 +2200,59 @@ form:focus {
     border-bottom: none;
     padding: 0px;
     margin-top: 20px;
+}
+
+/* 20.5 #sys-admin > #opening-period */
+#opening-period h2 {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#opening-period .add-period {
+    background: transparent;
+    border-bottom: none;
+    padding: 0px;
+    margin-top: 20px;
+}
+
+/* 20.6 #sys-admin > #restaurant-administrators */
+#restaurant-administrators h2 {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#restaurant-administrators .actions {
+    margin-left: auto;
+    text-align: right;
+}
+
+#restaurant-administrators .actions .edit-link {
+    padding: 0px;
+}
+
+#restaurant-administrators .add-administrator {
+    background: transparent;
+    border-bottom: none;
+    padding: 0px;
+    margin-top: 20px;
+}
+
+/* 20.7 #sys-admin > #dish-menu */
+#dish-menu h2 {
+    color: #6d6d6d;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* 30. #rest-admin */
