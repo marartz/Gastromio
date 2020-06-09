@@ -1,59 +1,55 @@
-<main class="wrapper">
-    <div class="content">
-        <div class="childrenwrapper">
-            <div class="innerwrapper">
+<section id="main" role="main">
+   <div class="focusing-outlet" tabindex="-1" role="group">
 
-                <div class="header admin-restaurants">
-                    <div class="textwrapper">
-                        <h1 class="title" style="max-width: 100%; color: rgb(255, 255, 255);">Restaurantverwaltung</h1>
-                    </div>
-                </div>
+      <div id="sys-admin">
 
+         <div id="hero">
+            <div class="inner">
+               <h2 class="page-title" tabindex="-1">Restaurantverwaltung</h2>
+               <div class="page-description">Hier findest du alle registrierten Restaurants. Lege neue an oder bearbeite bereits angelegte.</div>
             </div>
-        </div>
-    </div>
-</main>
+         </div>
 
-<div class="container no-header">
-
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <input class="form-control" type="search" placeholder="Nach Restaurants suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-        </div>
-        <div class="col-6 col-md-4">
-            <button class="button-add" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            <div class="restaurants mt-3">
-
-                <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
-                    <div class="restaurant-logo-wrapper">
-                        <div class="restaurant-logo">
-                            <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
+         <div class="waypointable" tabindex="-1">
+            <div class="container no-header">
+               <div class="row">
+                  <div class="col-12 col-md-8">
+                     <input class="form-control" type="search" placeholder="Nach Restaurants suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+                  </div>
+                  <div class="col-6 col-md-4">
+                     <button class="button-add" id="addRestaurant" (click)="openAddRestaurantForm()">Restaurant hinzufügen</button>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <div class="restaurants mt-3">
+                        <div class="restaurant" *ngFor="let restaurant of pageOfRestaurants">
+                           <div class="restaurant-logo-wrapper">
+                              <div class="restaurant-logo">
+                                 <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
+                              </div>
+                           </div>
+                           <div class="restaurant-info-wrapper">
+                              <h2 class="restaurantname">{{restaurant.name}}</h2>
+                              <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
+                              <div class="bottom-wrapper details">
+                                 <div class="settings">
+                                    <a class="edit" [routerLink]="[restaurant.id]">Details ändern</a>
+                                    &nbsp;&ndash;&nbsp;
+                                    <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
+                                    &nbsp;&ndash;&nbsp;
+                                    <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                    </div>
-                    <div class="restaurant-info-wrapper">
-                        <h2 class="restaurantname">{{restaurant.name}}</h2>
-                        <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
-                        <div class="bottom-wrapper details">
-                            <div class="settings">
-                                <a class="edit" [routerLink]="[restaurant.id]">Details ändern</a>
-                                &nbsp;&ndash;&nbsp;
-                                <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
-                                &nbsp;&ndash;&nbsp;
-                                <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                     </div>
+                     <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
+                  </div>
+               </div>
             </div>
+         </div>
 
-            <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
-
-        </div>
-    </div>
-</div>
+      </div>
+   </div>
+</section>

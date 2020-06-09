@@ -1,7 +1,7 @@
 .impressum {
     display: grid;
     font-family: proxima-nova, sans-serif;
-    color: #4c5b52;
+    color: #518f25;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -15,16 +15,6 @@
 
 .impressum .block {
     display: block;
-}
-
-.impressum a {
-    color: #27625b;
-    text-decoration: none;
-}
-
-.impressum a:hover {
-    color: #27625b;
-    text-decoration: underline;
 }
 
 .impressum h2 {
@@ -42,6 +32,14 @@
     font-weight: 400;
     font-size: 16px !important;
     margin: 0 0 20px 0;
+}
+
+.impressum a {
+    color: #518f25;
+}
+
+.impressum a:hover {
+    text-decoration: none;
 }
 
 .impressum b, strong {

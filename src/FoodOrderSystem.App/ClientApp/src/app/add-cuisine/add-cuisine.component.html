@@ -16,21 +16,20 @@
                 <div id="modal-body">
                     <fieldset>
                         <div class="modal-input" role="combobox">
+                            <label>Restaurantkategorie</label>
                             <input type="text" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="Name der Cuisine" />
+                            <div *ngIf="submitted && f.name.errors">
+                                <div *ngIf="f.name.errors.required">
+                                    <span style="color: red;">Name der Cuisne wird benötigt</span>
+                                </div>
+                            </div>
                         </div>
                     </fieldset>
                 </div>
 
                 <div id="modal-footer">
-
-                    <div *ngIf="submitted && f.name.errors">
-                        <div *ngIf="f.name.errors.required">
-                            <span style="color: red;">Name wird benötigt</span>
-                        </div>
-                    </div>
-
                     <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" type="reset">Verwerfen</button>
+                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                         <button class="button" type="submit">Speichern</button>
                     </div>
                 </div>

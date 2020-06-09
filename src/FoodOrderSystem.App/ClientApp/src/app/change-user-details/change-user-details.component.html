@@ -19,8 +19,8 @@
                             <label>E-Mail-Adresse</label>
                             <input type="email" id="email" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }" placeholder="E-Mail-Adresse" />
                             <div *ngIf="f.email.errors" class="invalid-feedback">
-                                <div *ngIf="f.email.errors.required">E-Mail wird benötigt.</div>
-                                <div *ngIf="f.email.errors.email">E-Mail muss eine valide E-Mail Adresse sein.</div>
+                                <div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div>
+                                <div *ngIf="f.email.errors.email">E-Mail-Adresse muss gültig sein</div>
                             </div>
                         </div>
                         <div class="modal-input" role="combobox">
@@ -36,7 +36,7 @@
 
                 <div id="modal-footer">
                     <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" type="reset">Verwerfen</button>
+                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                         <button class="button" type="submit">Speichern</button>
                     </div>
                 </div>

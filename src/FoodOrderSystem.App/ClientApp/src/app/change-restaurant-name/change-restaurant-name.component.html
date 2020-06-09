@@ -19,7 +19,7 @@
                             <label>Name des Restaurants</label>
                             <input type="text" id="name" formControlName="name" [ngClass]="{ 'is-invalid': f.name.errors }" placeholder="Name des Restaurants" />
                             <div *ngIf="f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
+                                <div *ngIf="f.name.errors.required">Name des Restaurants wird benötigt</div>
                             </div>
                         </div>
                     </fieldset>
@@ -27,7 +27,7 @@
 
                 <div id="modal-footer">
                     <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" type="reset">Verwerfen</button>
+                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                         <button class="button" type="submit">Speichern</button>
                     </div>
                 </div>

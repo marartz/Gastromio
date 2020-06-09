@@ -19,14 +19,14 @@
                             <label>Name der Zahlungsmethode</label>
                             <input type="text" id="name" formControlName="name" [ngClass]="{ 'is-invalid': f.name.errors }" placeholder="Name der Zahlungsmethode" />
                             <div *ngIf="f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
+                                <div *ngIf="f.name.errors.required">Name der Zahlungsmethode wird benötigt</div>
                             </div>
                         </div>
                         <div class="modal-input" role="combobox">
                             <label>Beschreibung</label>
                             <input type="text" id="description" formControlName="description" [ngClass]="{ 'is-invalid': f.description.errors }" placeholder="Beschreibung der Zahlungsmethode" />
                             <div *ngIf="f.description.errors" class="invalid-feedback">
-                                <div *ngIf="f.description.errors.required">Beschreibung wird benötigt.</div>
+                                <div *ngIf="f.description.errors.required">Beschreibung wird benötigt</div>
                             </div>
                         </div>
                     </fieldset>
@@ -34,7 +34,7 @@
 
                 <div id="modal-footer">
                     <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" type="reset">Verwerfen</button>
+                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                         <button class="button" type="submit">Speichern</button>
                     </div>
                 </div>

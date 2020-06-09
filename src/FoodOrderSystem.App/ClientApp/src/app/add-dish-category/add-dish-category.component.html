@@ -16,19 +16,18 @@
                 <div id="modal-body">
                     <fieldset>
                         <div class="modal-input" role="combobox">
+                            <label>Gerichtkategorie</label>
                             <input type="text" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="Name der Kategorie" />
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
+                            </div>
                         </div>
                     </fieldset>
                 </div>
 
                 <div id="modal-footer">
-
-                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                        <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
-                    </div>
-
                     <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" type="reset">Verwerfen</button>
+                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                         <button class="button" type="submit">Hinzufügen</button>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 .datenschutz {
     font-family: proxima-nova, sans-serif;
-    color: #4c5b52;
+    color: #518f25;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -16,13 +16,13 @@
 }
 
 .datenschutz a {
-    color: #27625b;
+    color: #518f25;
     text-decoration: none;
 }
 
 .datenschutz a:hover {
-    color: #27625b;
-    text-decoration: underline;
+    color: #518f25;
+    text-decoration: none;
 }
 
 .datenschutz ul {
@@ -52,6 +52,7 @@
 }
 
 .dptable {
+    color: #3b4245;
     margin: 24px 0px;
     display: grid;
     grid-gap: 4px 20px;
@@ -70,4 +71,10 @@
 
 .datenschutz .block {
     display: block;
+}
+
+.datenschutz ul,
+.datenschutz li {
+    color: #3b4245;
+    list-style: disc;
 }

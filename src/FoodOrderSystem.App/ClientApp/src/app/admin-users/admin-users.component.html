@@ -25,14 +25,14 @@
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th>E-Mail-Adresse</th>
                                         <th>Rolle</th>
-                                        <th>E-Mail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let user of pageOfUsers" class="user">
-                                        <td>{{localizeRole(user.role)}}</td>
                                         <td>{{user.email}}</td>
+                                        <td>{{localizeRole(user.role)}}</td>
                                         <td>
                                             <div class="float-right">
                                                 <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-user-edit"></i></button>

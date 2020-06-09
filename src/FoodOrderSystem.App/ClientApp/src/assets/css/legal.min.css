@@ -6,7 +6,7 @@ section {
 /* START: Hero/Titel */
 .title-wrapper {
     align-items: center;
-    background-color: #fff;
+    background-color: unset;
     display: flex;
     height: 80px;
     justify-content: center;
@@ -15,7 +15,7 @@ section {
 }
 
 .title-wrapper h1 {
-    color: #4c5b52;
+    color: #518f25;
     font-family: proxima-nova, sans-serif;
     font-size: 42px;
     font-weight: 700;
@@ -47,7 +47,7 @@ section {
 
 /* START: Seite */
 .legal-wrapper {
-    background-color: #fff;
+    background-color: unset;
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;

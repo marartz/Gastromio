@@ -12,7 +12,7 @@ import {ChangePageInfo} from '../pagination/server-pagination.component';
 @Component({
   selector: 'app-admin-restaurants',
   templateUrl: './admin-restaurants.component.html',
-  styleUrls: ['./admin-restaurants.component.css', '../../assets/css/admin.min.css']
+  styleUrls: ['./admin-restaurants.component.css', '../../assets/css/frontend.min.css', '../../assets/css/admin.min.css']
 })
 export class AdminRestaurantsComponent implements OnInit, OnDestroy {
   total: number;

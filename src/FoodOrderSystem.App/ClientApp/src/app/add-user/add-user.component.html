@@ -18,8 +18,8 @@
                         <div class="modal-input" role="combobox">
                             <input type="email" id="email" formControlName="email" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="E-Mail-Adresse" />
                             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                <div *ngIf="f.email.errors.required">E-Mail wird benötigt.</div>
-                                <div *ngIf="f.email.errors.pattern">E-Mail muss eine valide E-Mail Adresse sein.</div>
+                                <div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div>
+                                <div *ngIf="f.email.errors.pattern">E-Mail-Adresse muss gültig sein</div>
                             </div>
                         </div>
                         <div class="modal-input" role="combobox">
@@ -33,14 +33,14 @@
                         <div class="modal-input" role="combobox">
                             <input type="password" id="password" formControlName="password" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Passwort des Benutzers" />
                             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                <div *ngIf="f.password.errors.required">Dies ist ein Pflichtfeld.</div>
-                                <div *ngIf="f.password.errors.pattern">Passwort nicht komplex genug.</div>
+                                <div *ngIf="f.password.errors.required">Passwort wird benötigt</div>
+                                <div *ngIf="f.password.errors.pattern">Das Passwort ist nicht komplex genug</div>
                             </div>
                         </div>
                         <div class="modal-input" role="combobox">
                             <input type="password" id="passwordRepeat" formControlName="passwordRepeat" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.passwordRepeat.errors }" placeholder="Passwort wiederholen" />
                             <div *ngIf="submitted && f.passwordRepeat.errors" class="invalid-feedback">
-                                <div *ngIf="f.passwordRepeat.errors.confirmedValidator">Das Passwort stimmt nicht mit dem vorherigen überein.</div>
+                                <div *ngIf="f.passwordRepeat.errors.confirmedValidator">Das Passwort stimmt nicht mit dem vorherigen überein</div>
                             </div>
                         </div>
                     </fieldset>
@@ -48,7 +48,7 @@
 
                 <div id="modal-footer">
                     <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" type="reset">Verwerfen</button>
+                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                         <button class="button" type="submit">Hinzufügen</button>
                     </div>
                 </div>

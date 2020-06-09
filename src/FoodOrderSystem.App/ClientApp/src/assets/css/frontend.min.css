@@ -154,8 +154,8 @@ p {
 }
 
 p a {
-    border-bottom: 1px solid #1f4f46;
-    color: #1f4f46;
+    border-bottom: 1px solid #65b32e;
+    color: #65b32e;
     font-family: proxima-nova, sans-serif;
     text-decoration: none;
     transition: all .3s ease-out;
@@ -168,7 +168,7 @@ p a:hover {
 }
 
 [class*="text-link"] {
-    color: #1f4f46;
+    color: #65b32e;
     cursor: pointer;
     font-family: proxima-nova, sans-serif;
     font-size: 12px;
@@ -191,7 +191,7 @@ p a:hover {
 }
 
 [class*="text-link"][class*="-cta"] {
-	  color: #1f4f46;
+	  color: #65b32e;
 }
 
 strong {
@@ -229,7 +229,7 @@ fieldset {
 }
 
 button {
-    background: #1f4f46;
+    background: #65b32e;
     border: 0px solid;
     border-radius: 4px;
     color: #fff;
@@ -258,9 +258,8 @@ button {
     button {
         transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 	  }
-    button.hovered,
 	  button:hover {
-        background: #27625b;
+        background: #518f25;
         transition: all 150ms cubic-bezier(.57, .06, .05, .95), background 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 	  }
 }
@@ -282,8 +281,8 @@ button[class*="button-small"] {
 button.hollow:hover,
 button[class*="hollow"] {
     background: transparent;
-    border: 1px solid #214f46;
-    color: #1f4f46;
+    border: 1px solid #65b32e;
+    color: #65b32e;
     transition: all .3s cubic-bezier(.215, .61, .355, 1);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -291,7 +290,7 @@ button[class*="hollow"] {
 
 button.hollow:hover,
 button[class*="hollow"]:hover {
-    background: #27625b;
+    background: #65b32e;
     border-color: transparent;
     color: #fff;
     transition: all 150ms cubic-bezier(.215, .61,. 355, 1);
@@ -450,7 +449,7 @@ input[type=week]:hover,
 textarea:focus,
 textarea:hover {
     box-shadow: none;
-    border-bottom: 2px solid #32b593;
+    border-bottom: 2px solid #518f25;
 }
 
 input::placeholder,
@@ -735,7 +734,7 @@ form:focus {
 }
 
 #home #order h1 {
-    color: #1f4f46;
+    color: #65b32e;
     font-family: proxima-nova, sans-serif;
     font-size: 40px;
     font-weight: 700;
@@ -782,7 +781,7 @@ form:focus {
 
 .restaurant-card:not(.not-clickable):focus .card-inner,
 .restaurant-card:not(.not-clickable):hover .card-inner {
-    box-shadow: 0px 0px 0px 2px #a9a54c;
+    box-shadow: 0px 0px 0px 2px #518f25;
 }
 
 .restaurant-card.not-clickable,
@@ -943,7 +942,7 @@ form:focus {
 }
 
 #restaurants-menu .restaurant-hero-card .hero-card-inner h1 {
-    color: #3b4245;
+    color: #518f25;
     display: block;
     font-family: proxima-nova, sans-serif;
     font-size: 30px;
@@ -1033,7 +1032,7 @@ form:focus {
 #restaurants-menu .categories .text-link:active,
 #restaurants-menu .categories .text-link:focus,
 #restaurants-menu .categories .text-link:hover {
-    color: #1f4f46;
+    color: #65b32e;
 }
 
 /* 4.2 #restaurants-menu > #menu */
@@ -1056,7 +1055,7 @@ form:focus {
 }
 
 #restaurants-menu #menu .dish-categories .menu-group-title {
-    color: #1f4f46;
+    color: #518f25;
     font-family: proxima-nova, sans-serif;
     font-weight: 600;
     letter-spacing: .045em;
@@ -1830,7 +1829,7 @@ form:focus {
 }
 
 #quantity .dish-quantity {
-    background-color: #1f4f46;
+    background-color: #65b32e;
     border-radius: 16px;
     color: #fff;
     font-family: proxima-nova, sans-serif;
@@ -1858,7 +1857,7 @@ form:focus {
 }
 
 #quantity .quantity-btn path {
-    fill: #1f4f46;
+    fill: #65b32e;
 }
 
 /* 6.2 #dish-add/edit > #confirm-or-add */
@@ -1931,7 +1930,7 @@ form:focus {
 
 #admin-card .add:hover,
 #admin-card .add:hover {
-    border-color: #214f46;
+    border-color: #41721e;
 }
 
 #admin-card .add span {
@@ -1951,7 +1950,7 @@ form:focus {
 }
 /* 20.1 #sys-admin > #hero */
 #hero {
-    background-color: #1f4f46;
+    background-color: #65b32e;
     color: #fff;
     padding-top: 54px;
     padding-bottom: 54px;
@@ -2047,7 +2046,7 @@ form:focus {
 
 #payment-methods .method:focus,
 #payment-methods .method:hover {
-    border-color: #32b593;
+    border-color: #518f25;
 }
 
 #payment-methods .method .cross-fade {
@@ -2362,7 +2361,7 @@ form:focus {
 }
 
 #section-header .section-title {
-    color: #214f46;
+    color: #41721e;
     font-size: 40px;
     font-family: proxima-nova, sans-serif;
     font-weight: 600;
@@ -2440,7 +2439,7 @@ form:focus {
 
 #form .backend-input input:not(.disabled):hover,
 #form .backend-input input:not(.disabled):focus {
-    border-bottom: 2px solid #1f4f46;
+    border-bottom: 2px solid #518f25;
 }
 
 
@@ -2519,7 +2518,7 @@ form:focus {
     background-color: #fff;
     bottom: 0px;
     box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, .08), 0px 1px 0px 0px #e5e5e5;
-    color: #1f4f46;
+    color: #65b32e;
     position: relative;
     margin: 0px auto;
     max-height: 100vh;
@@ -2533,7 +2532,7 @@ form:focus {
     width: 100%;
 }
 
-@media screen and (min-width: 492px) {
+@media screen and (min-width: 350px) {
   #modal .modal-content {
         animation-delay: 50ms;
         animation-duration: .3s;
@@ -2590,7 +2589,7 @@ form:focus {
 }
 
 #modal #modal-header .modal-close svg {
-    fill: #1f4f46;
+    fill: #65b32e;
     margin-bottom: .5rem;
 }
 
@@ -2716,7 +2715,7 @@ form:focus {
 }
 
 #entry h1 {
-    color: #3b4245;
+    color: #518f25;
     font-family: proxima-nova, sans-serif;
     font-size: 27px;
     font-weight: 700;
@@ -2739,7 +2738,7 @@ form:focus {
 }
 
 #entry .link-wrap a {
-    color: #1f4f46;
+    color: #65b32e;
     cursor: pointer;
     font-family: proxima-nova, sans-serif;
     font-size: 12px;
@@ -2798,11 +2797,11 @@ form:focus {
 
 #entry .form-field:hover,
 #entry .form-field:focus {
-    border-bottom: 2px solid #a9a54c;
+    border-bottom: 2px solid #518f25;
 }
 
 #entry .form-button-submit {
-    background: #1f4f46;
+    background: #65b32e;
     border: 0px solid;
     border-radius: 4px;
     color: #fff;
@@ -2823,7 +2822,7 @@ form:focus {
 }
 
 #entry .form-button-submit:hover {
-	  background: #27625b;
+	  background: #518f25;
 	  transition: all 150ms cubic-bezier(.57, .06, .05, .95), background 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 }
 
@@ -2854,7 +2853,7 @@ form:focus {
 }
 
 #entry .password-forgotten a {
-    color: #1f4f46;
+    color: #65b32e;
     cursor: pointer;
     font-family: proxima-nova, sans-serif;
     font-size: 12px;
@@ -2931,7 +2930,7 @@ form:focus {
 }
 
 #navbar a {
-    color: #1f4f46;
+    color: #65b32e;
 }
 
 #navbar .nav-right > * {
@@ -2950,7 +2949,7 @@ form:focus {
 }
 
 #navbar .nav-link {
-    color: #1f4f46;
+    color: #65b32e;
     cursor: pointer;
     font-family: proxima-nova, sans-serif;
     font-size: 14px;
@@ -2986,7 +2985,7 @@ form:focus {
 }
 
 #navbar #branding a {
-    color: #1f4f46;
+    color: #65b32e;
     cursor: pointer;
     font-family: proxima-nova, sans-serif;
     font-size: 25px;
@@ -3012,7 +3011,7 @@ form:focus {
 } 
 
 #navbar #cart .cart-count-wrap .cart-count {
-    color: #1f4f46;
+    color: #65b32e;
     display: block;
     left: 0px;
     font-family: proxima-nova, sans-serif;
@@ -3047,7 +3046,7 @@ form:focus {
 }
 
 #navbar .settings li:hover {
-    background: #1a7a62;
+    background: #518f25;
 }
 
 #navbar .settings li:hover a {
@@ -3064,7 +3063,7 @@ form:focus {
 }
 
 #navbar .settings li a {
-    color: #1f4f46;
+    color: #65b32e;
     font-family: proxima-nova, sans-serif;
     text-transform: none !important;
     letter-spacing: normal;
@@ -3076,7 +3075,7 @@ form:focus {
 
 /* 91. #footer */
 #footer {
-    background: #1f4f46;
+    background: #65b32e;
     position: relative;
 }
 
