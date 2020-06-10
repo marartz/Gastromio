@@ -26,6 +26,8 @@ namespace FoodOrderSystem.Domain.ViewModels
         public DeliveryInfoViewModel DeliveryInfo { get; set; }
 
         public ReservationInfoViewModel ReservationInfo { get; set; }
+        
+        public string HygienicHandling { get; set; }
 
         public List<CuisineViewModel> Cuisines { get; set; }
 
@@ -71,6 +73,7 @@ namespace FoodOrderSystem.Domain.ViewModels
                 ReservationInfo = restaurant.ReservationInfo != null
                     ? ReservationInfoViewModel.FromReservationInfo(restaurant.ReservationInfo)
                     : new ReservationInfoViewModel(),
+                HygienicHandling = restaurant.HygienicHandling,
                 Cuisines = restaurant.Cuisines != null
                     ? restaurant.Cuisines.Select(en => RetrieveCuisineModel(allCuisines, en.Value)).ToList()
                     : new List<CuisineViewModel>(),

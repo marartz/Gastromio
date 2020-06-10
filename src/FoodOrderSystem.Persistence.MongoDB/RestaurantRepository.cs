@@ -186,21 +186,22 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     TimeSpan.FromMinutes(en.EndTime))).ToList(),
                 document.PickupInfo != null
                     ? new PickupInfo(
-                        TimeSpan.FromMinutes(document.PickupInfo.AverageTime),
+                        document.PickupInfo.Enabled,
+                        document.PickupInfo.AverageTime.HasValue ? TimeSpan.FromMinutes(document.PickupInfo.AverageTime.Value) : (TimeSpan?)null,
                         Converter.ToDecimal(document.PickupInfo.MinimumOrderValue),
-                        Converter.ToDecimal(document.PickupInfo.MaximumOrderValue),
-                        document.PickupInfo.HygienicHandling
+                        Converter.ToDecimal(document.PickupInfo.MaximumOrderValue)
                     ) : null,
                 document.DeliveryInfo != null
                     ? new DeliveryInfo(
-                        TimeSpan.FromMinutes(document.DeliveryInfo.AverageTime),
+                        document.DeliveryInfo.Enabled,
+                        document.DeliveryInfo.AverageTime.HasValue ? TimeSpan.FromMinutes(document.DeliveryInfo.AverageTime.Value) : (TimeSpan?)null,
                         Converter.ToDecimal(document.DeliveryInfo.MinimumOrderValue),
                         Converter.ToDecimal(document.DeliveryInfo.MaximumOrderValue),
-                        Converter.ToDecimal(document.DeliveryInfo.Costs),
-                        document.DeliveryInfo.HygienicHandling
+                        Converter.ToDecimal(document.DeliveryInfo.Costs)
                     ) : null,
                 document.ReservationInfo != null
-                    ? new ReservationInfo(document.ReservationInfo.HygienicHandling) : null, 
+                    ? new ReservationInfo(document.ReservationInfo.Enabled) : null,
+                document.HygienicHandling,
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
                 new HashSet<PaymentMethodId>(document.PaymentMethods.Select(en => new PaymentMethodId(en))),
                 new HashSet<UserId>(document.Administrators.Select(en => new UserId(en)))
@@ -236,23 +237,24 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 }).ToList(),
                 PickupInfo = obj.PickupInfo != null ? new PickupInfoModel
                 {
-                    AverageTime = (int)obj.PickupInfo.AverageTime.TotalMinutes,
+                    Enabled = obj.PickupInfo.Enabled,
+                    AverageTime = obj.PickupInfo.AverageTime.HasValue ? (int)obj.PickupInfo.AverageTime.Value.TotalMinutes : (int?)null,
                     MinimumOrderValue = Converter.ToDouble(obj.PickupInfo.MinimumOrderValue),
-                    MaximumOrderValue = Converter.ToDouble(obj.PickupInfo.MaximumOrderValue),
-                    HygienicHandling = obj.PickupInfo.HygienicHandling
+                    MaximumOrderValue = Converter.ToDouble(obj.PickupInfo.MaximumOrderValue)
                 } : null,
                 DeliveryInfo = obj.DeliveryInfo != null ? new DeliveryInfoModel
                 {
-                    AverageTime = (int)obj.DeliveryInfo.AverageTime.TotalMinutes,
+                    Enabled = obj.DeliveryInfo.Enabled,
+                    AverageTime = obj.DeliveryInfo.AverageTime.HasValue ? (int)obj.DeliveryInfo.AverageTime.Value.TotalMinutes : (int?)null,
                     MinimumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MinimumOrderValue),
                     MaximumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MaximumOrderValue),
-                    Costs = Converter.ToDouble(obj.DeliveryInfo.Costs),
-                    HygienicHandling = obj.DeliveryInfo.HygienicHandling
+                    Costs = Converter.ToDouble(obj.DeliveryInfo.Costs)
                 } : null,
                 ReservationInfo = obj.ReservationInfo != null ? new ReservationInfoModel
                 {
-                    HygienicHandling = obj.ReservationInfo.HygienicHandling
+                    Enabled = obj.ReservationInfo.Enabled
                 } : null,
+                HygienicHandling = obj.HygienicHandling,
                 Cuisines = obj.Cuisines != null ? obj.Cuisines.Select(en => en.Value).ToList() : new List<Guid>(),
                 PaymentMethods = obj.PaymentMethods != null
                     ? obj.PaymentMethods.Select(en => en.Value).ToList()

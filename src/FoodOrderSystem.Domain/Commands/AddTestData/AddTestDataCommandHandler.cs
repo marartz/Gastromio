@@ -271,23 +271,23 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     return boolResult;
             }
 
-            boolResult = restaurant.EnablePickup(new PickupInfo(
+            boolResult = restaurant.ChangePickupInfo(new PickupInfo(
+                true,
                 TimeSpan.FromMinutes(15 + index / 100),
                 5 + (decimal) index / 100, 
-                100 + (decimal) index / 100,
-                $"Hygienische Abwicklung bei Abholung {index + 1:D2}"
+                100 + (decimal) index / 100
             ));
             if (boolResult.IsFailure)
                 return boolResult;
 
             if (index % 2 == 0)
             {
-                boolResult = restaurant.EnableDelivery(new DeliveryInfo(
+                boolResult = restaurant.ChangeDeliveryInfo(new DeliveryInfo(
+                    true,
                     TimeSpan.FromMinutes(15 + index / 100),
                     5 + (decimal) index / 100,
                     100 + (decimal) index / 100,
-                    3 + (decimal) index / 100,
-                    $"Hygienische Abwicklung bei Lieferung {index + 1:D2}"
+                    3 + (decimal) index / 100
                 ));
                 if (boolResult.IsFailure)
                     return boolResult;
@@ -295,9 +295,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
             if (index % 4 == 0)
             {
-                boolResult = restaurant.EnableReservation(new ReservationInfo(
-                    $"Hygienische Abwicklung bei Besuch vor Ort {index + 1:D2}"
-                ));
+                boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(true));
                 if (boolResult.IsFailure)
                     return boolResult;
             }

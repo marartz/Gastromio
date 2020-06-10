@@ -23,9 +23,9 @@
                     <span>{{changeContactInfoError}}</span>
                 </div>
             </div>
-            <div *ngIf="changeDeliveryInfoError !== undefined" id="error">
+            <div *ngIf="changeServiceInfoError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
-                    <span>{{changeDeliveryInfoError}}</span>
+                    <span>{{changeServiceInfoError}}</span>
                 </div>
             </div>
             <div *ngIf="removeOpeningPeriodError !== undefined" id="error">
@@ -187,28 +187,60 @@
                         </div>
 
                         <div id="form" class="restaurant-info">
+                          <form [formGroup]="changeServiceInfoForm" (ngSubmit)="onSaveServiceInfo(changeServiceInfoForm.value)">
                             <fieldset>
-                                <legend>Lieferinformationen</legend>
-                                <form [formGroup]="changeDeliveryInfoForm" (ngSubmit)="onSaveDeliveryInfo(changeDeliveryInfoForm.value)">
-                                    <div class="backend-input">
-                                        <label>Min. Bestellwert</label>
-                                        <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue" placeholder="Mindestbestellwert" />
-                                    </div>
-                                    <div class="backend-input">
-                                        <label>Max. Bestellwert</label>
-                                        <input type="number" id="maximumOrderValue" formControlName="maximumOrderValue" placeholder="Maximalbestellwert" />
-                                    </div>
-                                    <div class="backend-input">
-                                        <label>Lieferkosten</label>
-                                        <input type="number" id="costs" formControlName="costs" placeholder="Lieferkosten" />
-                                    </div>
+                                <legend>Abholung</legend>
+                                <div class="backend-input">
+                                  <label>Aktiviert</label>
+                                  <input type="checkbox" id="pickupEnabled" formControlName="pickupEnabled" />
+                                </div>
+                                <div class="backend-input">
+                                  <label>Durchschnittl. Zubereitungszeit</label>
+                                  <input type="number" id="pickupAverageTime" formControlName="pickupAverageTime" placeholder="Durchschnittl. Zubereitungszeit" />
+                                </div>
+                                <div class="backend-input">
+                                  <label>Min. Bestellwert</label>
+                                  <input type="number" id="pickupMinimumOrderValue" formControlName="pickupMinimumOrderValue" placeholder="Mindestbestellwert" />
+                                </div>
+                                <div class="backend-input">
+                                  <label>Max. Bestellwert</label>
+                                  <input type="number" id="pickupMaximumOrderValue" formControlName="pickupMaximumOrderValue" placeholder="Maximalbestellwert" />
+                                </div>
 
-                                    <div class="inline-button-wrap">
-                                        <button type="reset" class="hollow">Verwerfen</button>
-                                        <button type="submit" *ngIf="changeDeliveryInfoForm.dirty">Speichern</button>
-                                    </div>
-                                </form>
+                                <legend>Lieferung</legend>
+                                <div class="backend-input">
+                                  <label>Aktiviert</label>
+                                  <input type="checkbox" id="deliveryEnabled" formControlName="deliveryEnabled" />
+                                </div>
+                                <div class="backend-input">
+                                  <label>Durchschnittl. Zubereitungszeit</label>
+                                  <input type="number" id="deliveryAverageTime" formControlName="deliveryAverageTime" placeholder="Durchschnittl. Zubereitungszeit" />
+                                </div>
+                                <div class="backend-input">
+                                    <label>Min. Bestellwert</label>
+                                    <input type="number" id="deliveryMinimumOrderValue" formControlName="deliveryMinimumOrderValue" placeholder="Mindestbestellwert" />
+                                </div>
+                                <div class="backend-input">
+                                    <label>Max. Bestellwert</label>
+                                    <input type="number" id="deliveryMaximumOrderValue" formControlName="deliveryMaximumOrderValue" placeholder="Maximalbestellwert" />
+                                </div>
+                                <div class="backend-input">
+                                    <label>Lieferkosten</label>
+                                    <input type="number" id="deliveryCosts" formControlName="deliveryCosts" placeholder="Lieferkosten" />
+                                </div>
+
+                                <legend>Tischreservierung</legend>
+                                <div class="backend-input">
+                                  <label>Aktiviert</label>
+                                  <input type="checkbox" id="reservationEnabled" formControlName="deliveryEnabled" />
+                                </div>
+
+                                <div class="inline-button-wrap">
+                                  <button type="reset" class="hollow">Verwerfen</button>
+                                  <button type="submit" *ngIf="changeServiceInfoForm.dirty">Speichern</button>
+                                </div>
                             </fieldset>
+                          </form>
                         </div>
                     </div>
 

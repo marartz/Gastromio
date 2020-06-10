@@ -2,11 +2,11 @@
 {
     public class ReservationInfo
     {
-        public string HygienicHandling { get; }
-
-        public ReservationInfo(string hygienicHandling)
+        public ReservationInfo(bool enabled)
         {
-            HygienicHandling = hygienicHandling;
+            Enabled = enabled;
         }
+        
+        public bool Enabled { get; }
     }
 }

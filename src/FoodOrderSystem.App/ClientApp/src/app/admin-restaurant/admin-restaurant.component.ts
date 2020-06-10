@@ -51,14 +51,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   addOpeningPeriodError: string;
   removeOpeningPeriodError: string;
 
-  changePickupInfoForm: FormGroup;
-  changePickupInfoError: string;
-
-  changeDeliveryInfoForm: FormGroup;
-  changeDeliveryInfoError: string;
-
-  changeReservationInfoForm: FormGroup;
-  changeReservationInfoError: string;
+  changeServiceInfoForm: FormGroup;
+  changeServiceInfoError: string;
 
   availableCuisines: CuisineModel[];
   addCuisineForm: FormGroup;
@@ -108,22 +102,17 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       end: ''
     });
 
-    this.changePickupInfoForm = this.formBuilder.group({
-      averageTime: '',
-      minimumOrderValue: '',
-      maximumOrderValue: '',
-      hygienicHandling: ''
-    });
-
-    this.changeDeliveryInfoForm = this.formBuilder.group({
-      averageTime: '',
-      minimumOrderValue: '',
-      maximumOrderValue: '',
-      costs: '',
-      hygienicHandling: ''
-    });
-
-    this.changeReservationInfoForm = this.formBuilder.group({
+    this.changeServiceInfoForm = this.formBuilder.group({
+      pickupEnabled: false,
+      pickupAverageTime: '',
+      pickupMinimumOrderValue: '',
+      pickupMaximumOrderValue: '',
+      deliveryEnabled: false,
+      deliveryAverageTime: '',
+      deliveryMinimumOrderValue: '',
+      deliveryMaximumOrderValue: '',
+      deliveryCosts: '',
+      reservationEnabled: false,
       hygienicHandling: ''
     });
 
@@ -212,27 +201,19 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           });
           this.changeContactInfoForm.markAsPristine();
 
-          this.changePickupInfoForm.patchValue({
-            averageTime: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.averageTime : '',
-            minimumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.minimumOrderValue : '',
-            maximumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.maximumOrderValue : '',
-            hygienicHandling: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.hygienicHandling : ''
+          this.changeServiceInfoForm.patchValue({
+            pickupEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false,
+            pickupAverageTime: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.averageTime : '',
+            pickupMinimumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.minimumOrderValue : '',
+            pickupMaximumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.maximumOrderValue : '',
+            deliveryEnabled: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.enabled : false,
+            deliveryAverageTime: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.averageTime : '',
+            deliveryMinimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
+            deliveryMaximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
+            deliveryCosts: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
+            reservationEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false
           });
-          this.changePickupInfoForm.markAsPristine();
-
-          this.changeDeliveryInfoForm.patchValue({
-            averageTime: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.averageTime : '',
-            minimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
-            maximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
-            costs: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
-            hygienicHandling: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.hygienicHandling : ''
-          });
-          this.changeDeliveryInfoForm.markAsPristine();
-
-          this.changeReservationInfoForm.patchValue({
-            hygienicHandling: this.restaurant.reservationInfo != null ? this.restaurant.reservationInfo.hygienicHandling : ''
-          });
-          this.changeReservationInfoForm.markAsPristine();
+          this.changeServiceInfoForm.markAsPristine();
 
           const getDishesSubscription = this.restaurantRestAdminService.getDishesOfRestaurantAsync(this.restaurantId).subscribe(
             (dishCategories) => {
@@ -446,51 +427,19 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       });
   }
 
-  onSavePickupInfo(value): void {
+  onSaveServiceInfo(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantPickupInfoAsync(this.restaurant.id, value)
+    const subscription = this.restaurantRestAdminService.changeRestaurantServiceInfoAsync(this.restaurant.id, value)
       .subscribe(() => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.changePickupInfoError = undefined;
+        this.changeServiceInfoError = undefined;
         this.restaurant.pickupInfo = value;
-        this.changePickupInfoForm.markAsPristine();
+        this.changeServiceInfoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         subscription.unsubscribe();
         this.blockUI.stop();
-        this.changePickupInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
-  }
-
-  onSaveDeliveryInfo(value): void {
-    this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantDeliveryInfoAsync(this.restaurant.id, value)
-      .subscribe(() => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.changeDeliveryInfoError = undefined;
-        this.restaurant.deliveryInfo = value;
-        this.changeDeliveryInfoForm.markAsPristine();
-      }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.changeDeliveryInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
-  }
-
-  onSaveReservationInfo(value): void {
-    this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantReservationInfoAsync(this.restaurant.id, value)
-      .subscribe(() => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.changeReservationInfoError = undefined;
-        this.restaurant.reservationInfo = value;
-        this.changeReservationInfoForm.markAsPristine();
-      }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.changeReservationInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.changeServiceInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 

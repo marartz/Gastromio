@@ -19,6 +19,15 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public Restaurant(RestaurantId id)
         {
             Id = id;
+            Address = new Address(null, null, null);
+            ContactInfo = new ContactInfo(null, null, null, null, null);
+            openingHours = new List<OpeningPeriod>();
+            PickupInfo = new PickupInfo(false, TimeSpan.Zero, null, null);
+            DeliveryInfo = new DeliveryInfo(false, TimeSpan.Zero, null, null, null);
+            ReservationInfo = new ReservationInfo(false);
+            cuisines = new HashSet<CuisineId>();
+            paymentMethods = new HashSet<PaymentMethodId>();
+            administrators = new HashSet<UserId>();
         }
 
         public Restaurant(
@@ -31,6 +40,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo,
             ReservationInfo reservationInfo,
+            string hygienicHandling,
             ISet<CuisineId> cuisines,
             ISet<PaymentMethodId> paymentMethods,
             ISet<UserId> administrators
@@ -39,15 +49,16 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             Id = id;
             Name = name;
             Image = image;
-            Address = address;
-            ContactInfo = contactInfo;
-            this.openingHours = openingHours;
-            PickupInfo = pickupInfo;
-            DeliveryInfo = deliveryInfo;
-            ReservationInfo = reservationInfo;
-            this.cuisines = cuisines;
-            this.paymentMethods = paymentMethods;
-            this.administrators = administrators;
+            Address = address ?? new Address(null, null, null);
+            ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
+            this.openingHours = openingHours ?? new List<OpeningPeriod>();
+            PickupInfo = pickupInfo ?? new PickupInfo(false, TimeSpan.Zero, null, null);
+            DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, TimeSpan.Zero, null, null, null);
+            ReservationInfo = reservationInfo ?? new ReservationInfo(false);
+            HygienicHandling = hygienicHandling;
+            this.cuisines = cuisines ?? new HashSet<CuisineId>();
+            this.paymentMethods = paymentMethods ?? new HashSet<PaymentMethodId>();
+            this.administrators = administrators ?? new HashSet<UserId>();
         }
 
         public RestaurantId Id { get; }
@@ -68,6 +79,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public DeliveryInfo DeliveryInfo { get; private set; }
         
         public ReservationInfo ReservationInfo { get; private set; }
+        
+        public string HygienicHandling { get; private set; }
         
         public IReadOnlyCollection<CuisineId> Cuisines =>
             cuisines != null ? new ReadOnlyCollection<CuisineId>(cuisines.ToList()) : null;
@@ -226,18 +239,17 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             openingHours = openingHours.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
         }
 
-        public Result<bool> EnablePickup(PickupInfo pickupInfo)
-        {
-            return pickupInfo == null
-                ? FailureResult<bool>.Create(FailureResultCode.NoRestaurantPickupInfosSpecified)
-                : ChangePickupInfo(pickupInfo);
-        }
-
         public Result<bool> ChangePickupInfo(PickupInfo pickupInfo)
         {
-            if (pickupInfo.AverageTime.TotalMinutes < 5)
+            if (!pickupInfo.Enabled)
+            {
+                PickupInfo = pickupInfo;
+                return SuccessResult<bool>.Create(true);
+            }
+
+            if (!pickupInfo.AverageTime.HasValue || pickupInfo.AverageTime.Value.TotalMinutes < 5)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAveragePickupTimeTooLow);
-            if (pickupInfo.AverageTime.TotalMinutes > 120)
+            if (pickupInfo.AverageTime.Value.TotalMinutes > 120)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAveragePickupTimeTooHigh);
             
             if (pickupInfo.MinimumOrderValue.HasValue && pickupInfo.MinimumOrderValue < 0)
@@ -253,24 +265,17 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> DisablePickup()
-        {
-            PickupInfo = null;
-            return SuccessResult<bool>.Create(true);
-        }
-
-        public Result<bool> EnableDelivery(DeliveryInfo deliveryInfo)
-        {
-            return deliveryInfo == null
-                ? FailureResult<bool>.Create(FailureResultCode.NoRestaurantDeliveryInfosSpecified)
-                : ChangeDeliveryInfo(deliveryInfo);
-        }
-
         public Result<bool> ChangeDeliveryInfo(DeliveryInfo deliveryInfo)
         {
-            if (deliveryInfo.AverageTime.TotalMinutes < 5)
+            if (!deliveryInfo.Enabled)
+            {
+                DeliveryInfo = deliveryInfo;
+                return SuccessResult<bool>.Create(true);
+            }
+
+            if (!deliveryInfo.AverageTime.HasValue || deliveryInfo.AverageTime.Value.TotalMinutes < 5)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAverageDeliveryTimeTooLow);
-            if (deliveryInfo.AverageTime.TotalMinutes > 120)
+            if (deliveryInfo.AverageTime.Value.TotalMinutes > 120)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAverageDeliveryTimeTooHigh);
             
             if (deliveryInfo.MinimumOrderValue.HasValue && deliveryInfo.MinimumOrderValue < 0)
@@ -291,28 +296,15 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> DisableDelivery()
-        {
-            DeliveryInfo = null;
-            return SuccessResult<bool>.Create(true);
-        }
-
-        public Result<bool> EnableReservation(ReservationInfo reservationInfo)
-        {
-            return reservationInfo == null
-                ? FailureResult<bool>.Create(FailureResultCode.NoRestaurantReservationInfosSpecified)
-                : ChangeReservationInfo(reservationInfo);
-        }
-
         public Result<bool> ChangeReservationInfo(ReservationInfo reservationInfo)
         {
             ReservationInfo = reservationInfo;
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> DisableReservation()
+        public Result<bool> ChangeHygienicHandling(string hygienicHandling)
         {
-            ReservationInfo = null;
+            HygienicHandling = hygienicHandling;
             return SuccessResult<bool>.Create(true);
         }
 

@@ -5,18 +5,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantReservationInfo
+namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantServiceInfo
 {
-    public class ChangeRestaurantReservationInfoCommandHandler : ICommandHandler<ChangeRestaurantReservationInfoCommand, bool>
+    public class ChangeRestaurantServiceInfoCommandHandler : ICommandHandler<ChangeRestaurantServiceInfoCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public ChangeRestaurantReservationInfoCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRestaurantServiceInfoCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeRestaurantReservationInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangeRestaurantServiceInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -34,7 +34,19 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantReservationInfo
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangeReservationInfo(command.ReservationInfo);
+            var result = restaurant.ChangePickupInfo(command.PickupInfo);
+            if (result.IsFailure)
+                return result;
+
+            result = restaurant.ChangeDeliveryInfo(command.DeliveryInfo);
+            if (result.IsFailure)
+                return result;
+
+            result = restaurant.ChangeReservationInfo(command.ReservationInfo);
+            if (result.IsFailure)
+                return result;
+
+            result = restaurant.ChangeHygienicHandling(command.HygienicHandling);
             if (result.IsFailure)
                 return result;
 

@@ -24,6 +24,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public ReservationInfoModel ReservationInfo { get; set; }
         
+        public string HygienicHandling { get; set; }
+        
         public List<Guid> Cuisines { get; set; }
         
         public List<Guid> PaymentMethods { get; set; }
