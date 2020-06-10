@@ -92,6 +92,15 @@
                             <h1 class="section-title">Mein Restaurant</h1>
                             <p class="section-description">Hier kannst du Restaurantinformationen hinzufügen oder aktualisieren.</p>
                             <button class="button-small hollow">Abmelden</button>
+                            <!--ng-container *ngIf="isRestaurantAdmin()">
+                                <h1 class="section-title">Mein Restaurant</h1>
+                                <p class="section-description">Hier kannst du Restaurantinformationen hinzufügen oder aktualisieren.</p>
+                                <button class="button-small hollow">Abmelden</button>
+                            </ng-container>
+                            <ng-container *ngIf="isSystemAdmin()">
+                                <h1 class="section-title">{{restaurant.name}}</h1>
+                                <p class="section-description">Bearbeite oder aktualisiere Restaurantinformationen.</p>
+                            </ng-container-->
                         </div>
 
                         <div id="form" class="restaurant-info">
