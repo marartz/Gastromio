@@ -3,6 +3,7 @@ using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Cuisine;
@@ -20,7 +21,6 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
         private readonly IUserRepository userRepository;
         private readonly ICuisineFactory cuisineFactory;
         private readonly ICuisineRepository cuisineRepository;
-        private readonly IPaymentMethodFactory paymentMethodFactory;
         private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly IRestaurantFactory restaurantFactory;
         private readonly IRestaurantRepository restaurantRepository;
@@ -31,7 +31,8 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
         private readonly Dictionary<string, User> restAdminDict = new Dictionary<string, User>();
         private readonly List<Cuisine> cuisines = new List<Cuisine>();
-        private readonly List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
+
+        private List<PaymentMethod> paymentMethods;
 
         public AddTestDataCommandHandler(
             ILogger<AddTestDataCommandHandler> logger,
@@ -39,7 +40,6 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             IUserRepository userRepository,
             ICuisineFactory cuisineFactory,
             ICuisineRepository cuisineRepository,
-            IPaymentMethodFactory paymentMethodFactory,
             IPaymentMethodRepository paymentMethodRepository,
             IRestaurantFactory restaurantFactory,
             IRestaurantRepository restaurantRepository,
@@ -54,7 +54,6 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             this.userRepository = userRepository;
             this.cuisineFactory = cuisineFactory;
             this.cuisineRepository = cuisineRepository;
-            this.paymentMethodFactory = paymentMethodFactory;
             this.paymentMethodRepository = paymentMethodRepository;
             this.restaurantFactory = restaurantFactory;
             this.restaurantRepository = restaurantRepository;
@@ -76,15 +75,13 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<bool>.Forbidden();
 
+            paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken)).ToList();
+
             var tempResult = await CreateUsersAsync(command.UserCount, cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
 
             tempResult = await CreateCuisinesAsync(cancellationToken);
-            if (tempResult.IsFailure)
-                return tempResult;
-
-            tempResult = await CreatePaymentMethodsAsync(cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
 
@@ -220,42 +217,6 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             cuisines.Add(cuisine);
 
             logger.LogInformation("test cuisines created");
-            return SuccessResult<bool>.Create(true);
-        }
-
-        private async Task<Result<bool>> CreatePaymentMethodsAsync(CancellationToken cancellationToken)
-        {
-            logger.LogInformation("creating test payment methods");
-
-            var tempResult = paymentMethodFactory.Create("Bar", "Barzahlung");
-            if (tempResult.IsFailure)
-                return tempResult.Cast<bool>();
-            var paymentMethod = ((SuccessResult<PaymentMethod>) tempResult).Value;
-            await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
-            paymentMethods.Add(paymentMethod);
-
-            tempResult = paymentMethodFactory.Create("Visa", "Visakarte");
-            if (tempResult.IsFailure)
-                return tempResult.Cast<bool>();
-            paymentMethod = ((SuccessResult<PaymentMethod>) tempResult).Value;
-            await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
-            paymentMethods.Add(paymentMethod);
-
-            tempResult = paymentMethodFactory.Create("Mastercard", "Mastercard");
-            if (tempResult.IsFailure)
-                return tempResult.Cast<bool>();
-            paymentMethod = ((SuccessResult<PaymentMethod>) tempResult).Value;
-            await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
-            paymentMethods.Add(paymentMethod);
-
-            tempResult = paymentMethodFactory.Create("Paypal", "Paypal");
-            if (tempResult.IsFailure)
-                return tempResult.Cast<bool>();
-            paymentMethod = ((SuccessResult<PaymentMethod>) tempResult).Value;
-            await paymentMethodRepository.StoreAsync(paymentMethod, cancellationToken);
-            paymentMethods.Add(paymentMethod);
-
-            logger.LogInformation("test payment methods created");
             return SuccessResult<bool>.Create(true);
         }
 

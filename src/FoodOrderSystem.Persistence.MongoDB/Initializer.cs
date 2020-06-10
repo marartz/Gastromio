@@ -23,7 +23,6 @@ namespace FoodOrderSystem.Persistence.MongoDB
             services.AddTransient<ICuisineRepository, CuisineRepository>();
             services.AddTransient<IDishCategoryRepository, DishCategoryRepository>();
             services.AddTransient<IDishRepository, DishRepository>();
-            services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
@@ -51,10 +50,6 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.RestaurantId)));
             dishCollection.Indexes.CreateOne(
                 new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.CategoryId)));
-
-            var paymentMethodCollection = database.GetCollection<PaymentMethodModel>(Constants.PaymentMethodCollectionName);
-            paymentMethodCollection.Indexes.CreateOne(
-                new CreateIndexModel<PaymentMethodModel>(Builders<PaymentMethodModel>.IndexKeys.Ascending(x => x.Name)));
 
             var restaurantCollection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
             restaurantCollection.Indexes.CreateOne(

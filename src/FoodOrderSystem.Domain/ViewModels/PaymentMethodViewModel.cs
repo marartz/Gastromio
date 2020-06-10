@@ -10,6 +10,8 @@ namespace FoodOrderSystem.Domain.ViewModels
         public string Name { get; set; }
 
         public string Description { get; set; }
+        
+        public string ImageName { get; set; }
 
         public static PaymentMethodViewModel FromPaymentMethod(PaymentMethod paymentMethod)
         {
@@ -17,7 +19,8 @@ namespace FoodOrderSystem.Domain.ViewModels
             {
                 Id = paymentMethod.Id.Value, 
                 Name = paymentMethod.Name,
-                Description = paymentMethod.Description
+                Description = paymentMethod.Description,
+                ImageName = paymentMethod.ImageName
             };
         }
     }

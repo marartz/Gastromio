@@ -21,7 +21,7 @@ namespace FoodOrderSystem.Domain
             // Register model classes
             services.AddTransient<IUserFactory, UserFactory>();
             services.AddTransient<ICuisineFactory, CuisineFactory>();
-            services.AddTransient<IPaymentMethodFactory, PaymentMethodFactory>();
+            services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
             services.AddTransient<IRestaurantFactory, RestaurantFactory>();
             services.AddTransient<IDishCategoryFactory, DishCategoryFactory>();
             services.AddTransient<IDishFactory, DishFactory>();

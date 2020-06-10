@@ -65,10 +65,8 @@
     <None Remove="ClientApp\src\app\order-home\order-home.component.ts" />
     <None Remove="ClientApp\src\app\order\order.service.ts" />
     <None Remove="ClientApp\src\app\pagination\pagination.component.ts" />
-    <None Remove="ClientApp\src\app\payment-method\payment-method-admin.service.ts" />
     <None Remove="ClientApp\src\app\payment-method\payment-method.model.ts" />
     <None Remove="ClientApp\src\app\remove-cuisine\remove-cuisine.component.ts" />
-    <None Remove="ClientApp\src\app\remove-payment-method\remove-payment-method.component.ts" />
     <None Remove="ClientApp\src\app\remove-restaurant\remove-restaurant.component.ts" />
     <None Remove="ClientApp\src\app\remove-user\remove-user.component.ts" />
     <None Remove="ClientApp\src\app\restaurant-sys-admin\restaurant-sys-admin.service.ts" />
@@ -154,9 +152,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\remove-cuisine\remove-cuisine.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\remove-payment-method\remove-payment-method.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\remove-restaurant\remove-restaurant.component.ts">
