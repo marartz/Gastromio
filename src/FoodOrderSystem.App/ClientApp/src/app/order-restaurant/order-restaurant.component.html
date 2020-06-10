@@ -1,39 +1,42 @@
 <block-ui>
-    <div class="row" *ngIf="generalError !== undefined">
-        <div class="col-12 setting-form">
-            <div class="form-notification">{{generalError}}</div>
-        </div>
-    </div>
-
-    <section id="main" role="main" *ngIf="generalError === undefined && initialized">
+    <section id="main" role="main">
         <div class="focus-outlet" tabindex="-1" role="group">
 
-            <div id="restaurants-menu">
+            <!-- START: Fehlermeldungen -->
+            <div *ngIf="generalError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{generalError}}</span>
+                </div>
+            </div>
+            <!-- ENDE: Fehlermeldungen -->
 
-                <div id="menu-hero" class="hero">
-                    <div class="hero-image">
+            <div id="restaurant" *ngIf="generalError === undefined && initialized">
+
+                <div id="menu-hero">
+                    <div id="hero-image">
                         <div class="background-image" style='background-image:url("https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?cs=srgb&dl=fries-with-leaves-dish-718742.jpg&fm=jpg")'></div>
                     </div>
-                    <div class="hero-content clearfix">
+
+                    <div id="hero-content" class="clearfix">
                         <div class="centered">
-
-                            <div class="restaurant-hero-card">
-                                <div class="hero-card-inner">
-                                    <h1>{{restaurant.name}}</h1>
-                                    <p>
-                                        {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
-                                        <br />{{restaurant.contactInfo.phone}}
-                                        <br />Öffnungszeiten
-                                    </p>
-                                </div>
+                            <div class="hero-card">
+                                <span>Bestelle bei</span>
+                                <h1>{{restaurant.name}}</h1>
+                                <p>
+                                    {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
+                                    <br />{{restaurant.contactInfo.phone}}
+                                    <br />Mo-Fr 16:00 - 22:00 Uhr
+                                </p>
                             </div>
-
+                            <div class="hero-message">
+                                <p>Um die Gesundheit unserer Kunden zu schützen, machen wir dies und das...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="categories">
-                    <div class="bar">
+                <div id="menu-categories">
+                    <div class="category-bar">
                         <div class="bar-inner">
                             <ul class="category-links" role="navigation">
                                 <li class="category-link" *ngFor="let dishCategory of dishCategories">
@@ -47,35 +50,27 @@
                 <div id="menu">
                     <div class="clearfix waypointable" *ngFor="let dishCategory of dishCategories">
 
-                            <div class="dish-categories" id="{{dishCategory.id}}" tabindex="-1">
-                                <h1 class="menu-group-title">{{dishCategory.name}}</h1>
-                            </div>
+                        <div class="category" id="{{dishCategory.id}}" tabindex="-1">
+                            <h1>{{dishCategory.name}}</h1>
+                        </div>
 
-                            <div class="dish-grid">
-
-                                <div class="product-card-wrap" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
-                                    <div class="product-card link-card">
-
-                                        <div class="card-inner" role="link" tabindex="0">
-                                            <div class="card-content">
-                                                <h2 class="product-name">{{dish.name}}</h2>
-                                                <p class="product-description">{{dish.description}}</p>
-
-                                                <div class="card-meta">
-                                                    <div class="price">
-                                                        <span class="product-cost">&euro; {{getFirstDishVariant(dish)}}</span>
-                                                    </div>
+                        <div id="dish">
+                            <div class="dish-wrap" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
+                                <div class="dish-card">
+                                    <div class="dish-inner" role="link" tabindex="0">
+                                        <div class="dish-content">
+                                            <h2 class="dish-name">{{dish.name}}</h2>
+                                            <p class="dish-description">{{dish.description}}</p>
+                                            <div class="dish-meta">
+                                                <div class="price">
+                                                    <span class="dish-cost">&euro; {{getFirstDishVariant(dish)}}</span>
                                                 </div>
-
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
-
-
+                        </div>
 
                     </div>
                 </div>
