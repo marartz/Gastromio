@@ -105,7 +105,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             {
                 using (var ms = new MemoryStream(image))
                 {
-                    var imageObj = System.Drawing.Image.FromStream(ms);
+                    var imageObj = SixLabors.ImageSharp.Image.Load(ms);
                     if (imageObj == null)
                         return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
                 }
