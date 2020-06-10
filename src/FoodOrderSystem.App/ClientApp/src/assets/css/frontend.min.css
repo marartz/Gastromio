@@ -26,6 +26,7 @@
     6.2   #dish-add, #dish-edit > #confirm-or-add
 
     20.  #sys-admin
+    20.1 #sys-admin > #user-management
     20.3 #sys-admin > #payment-methods
     20.4 #sys-admin > #cuisine-options
     20.5 #sys-admin > #opening-period
@@ -1948,10 +1949,10 @@ form:focus {
         padding: 5px 40px 0px;
     }
 }
-/* 20.1 #sys-admin > #hero */
+
 #hero {
-    background-color: #65b32e;
-    color: #fff;
+    background-color: #f8f8f6;
+    color: #41721e;
     padding-top: 54px;
     padding-bottom: 54px;
     text-align: center;
@@ -1988,11 +1989,136 @@ form:focus {
 }
 
 #hero .inner .page-description {
+    color: #6d6d6d;
     font-family: proxima-nova, sans-serif;
     font-size: 14px;
     font-weight: 400;
 	  line-height: 1.4;
 	  margin-top: .5rem;
+}
+
+/* 20.1 #sys-admin > #user-management */
+#user-management {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+#user-management .inner {
+    color: #3b4245;
+    display: block;
+    margin-bottom: 16px;
+    overflow: hidden;
+    width: 100%;
+}
+
+#user-management .inner .filter {
+    border-bottom: none;
+    float: left;
+    font-size: 14px;
+    text-align: left;
+}
+
+#user-management .inner .text-link {
+    float: right;
+    text-align: left;
+}
+
+#user-management .inner table th {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#user-management .inner table .actions {
+    text-align: right;
+}
+
+#user-management .inner table .actions a {
+    padding-left: 8px;
+}
+
+#user-management .inner table .actions a.edit {
+    color: #3b4245;
+    opacity: 1;
+}
+
+#user-management .inner table .actions a.edit:hover {
+    opacity: .75;
+}
+
+#user-management .inner table .actions a.delete {
+    color: #b44448;
+}
+
+#user-management .inner table .actions a.delete:hover {
+    color: #a53e42;
+}
+
+/* 20.1 #sys-admin > #cuisine-management */
+#cuisine-management {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+#cuisine-management .inner {
+    color: #3b4245;
+    display: block;
+    margin-bottom: 16px;
+    overflow: hidden;
+    width: 100%;
+}
+
+#cuisine-management .inner .filter {
+    border-bottom: none;
+    float: left;
+    font-size: 14px;
+    text-align: left;
+}
+
+#cuisine-management .inner .text-link {
+    float: right;
+    text-align: left;
+}
+
+#cuisine-management .inner table th {
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#cuisine-management .inner table .actions {
+    text-align: right;
+}
+
+#cuisine-management .inner table .actions a {
+    padding-left: 8px;
+}
+
+#cuisine-management .inner table .actions a.edit {
+    color: #3b4245;
+    opacity: 1;
+}
+
+#cuisine-management .inner table .actions a.edit:hover {
+    opacity: .75;
+}
+
+#cuisine-management .inner table .actions a.delete {
+    color: #b44448;
+}
+
+#cuisine-management .inner table .actions a.delete:hover {
+    color: #a53e42;
 }
 
 /* 20.3 #sys-admin > #payment-methods */
