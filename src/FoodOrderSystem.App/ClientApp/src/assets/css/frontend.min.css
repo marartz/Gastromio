@@ -569,6 +569,99 @@ form:focus {
     margin-right: 0px;
 }
 
+.toggle-switch {
+	  border-radius: 28px;
+	  cursor: pointer;
+	  height: 32px;
+	  position: relative;
+	  white-space: nowrap;
+	  width: 64px;
+}
+
+.toggle-switch::before {
+	  border-radius: 28px;
+	  box-shadow: inset 0px 1px 0px 0px rgba(0, 0, 0, .2);
+	  content: "";
+	  height: 100%;
+	  position: absolute;
+	  width: 100%;
+}
+
+.toggle-switch::before,
+.toggle-switch::after {
+	  content: " ";
+	  display: table;
+}
+
+.toggle-switch::after {
+	  clear: both;
+}
+
+.toggle-switch .toggle::before {
+    box-shadow: inset 0px -1px 0px 0px #dedede;
+	  content: '';
+	  display: block;
+	  position: absolute;
+	  top: 0;
+	  width: 1.75rem;
+	  height: 1.75rem;
+	  background: #fff;
+	  border-radius: 100%;
+	  z-index: 1;
+}
+
+.toggle-switch.true {
+	  background: #518f25;
+}
+
+.toggle-switch.true .toggle::before {
+	  left: 48px;
+	  margin-left: -16px;
+}
+
+.toggle-switch.true .icon-toggle-false {
+	  opacity: 0;
+}
+
+.toggle-switch.false {
+	  background: #b44448;
+}
+
+.toggle-switch.false .icon-toggle-true {
+	  opacity: 0;
+}
+
+.toggle-switch .toggle {
+	  color: transparent;
+	  display: inline-block;
+	  height: 32px;
+	  margin: 0px 2px;
+	  overflow: hidden;
+	  position: relative;
+	  text-indent: 120%;
+	  top: 2px;
+	  white-space: nowrap;
+	  width: 64px;
+}
+
+.toggle-switch .icon-toggle-false,
+.toggle-switch .icon-toggle-true {
+	  background-repeat: no-repeat;
+	  background-position: center center;
+	  position: absolute;
+	  top: 8px;
+}
+
+.toggle-switch .icon-toggle-true {
+	  left: 12px;
+	  height: 15px;
+}
+
+.toggle-switch .icon-toggle-false {
+	  right: 12px;
+	  height: 15px;
+}
+
 .link-card {
     border-radius: 8px;
     display: block;
@@ -2197,26 +2290,8 @@ form:focus {
     color: #a53e42;
 }
 
-/* 20.3 #sys-admin > #payment-methods */
-#payment-methods .no-methods {
-    text-align: center;
-}
-
-#payment-methods .no-methods span {
-    color: #6d6d6d;
-    display: block;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.8px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    padding: 24px 20px 40px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-#payment-methods h2 {
+/* 20.3 #sys-admin > #payment-method */
+#payment-method h2 {
     color: #6d6d6d;
     font-size: 14px;
     font-weight: 500;
@@ -2225,44 +2300,40 @@ form:focus {
     -moz-osx-font-smoothing: grayscale;
 }
 
-#payment-methods .methods-inner {
+#payment-method .methods-inner {
     margin-bottom: 20px;
 }
 
-#payment-methods .method {
+#payment-method .method {
     background: #fff;
     background-color: #fff;
     border: 1px solid transparent;
     border-radius: 4px;
     box-shadow: 0px 1px 0px #e5e5e5;
     color: #3b4245;
-    cursor: pointer;
     display: block;
     float: left;
     margin-bottom: 16px;
+    outline: none;
     overflow: hidden;
-    padding: 32px 27px;
-	  text-align: left;
-	  width: 100%;
+    padding: 22px 27px;
+    text-align: left;
+    transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
+    width: 100%;
 }
 
-#payment-methods .method:focus,
-#payment-methods .method:hover {
-    border-color: #518f25;
-}
-
-#payment-methods .method .cross-fade {
+#payment-method .method .cross-fade {
     height: 35px;
     position: relative;
 }
 
-#payment-methods .method .cross-fade > * {
+#payment-method .method .cross-fade > * {
     position: absolute;
     top: 0px;
     width: 100%;
 }
 
-#payment-methods .method .method-content {
+#payment-method .method .method-content {
     align-items: center;
     display: flex;
     justify-content: flex-start;
@@ -2270,36 +2341,40 @@ form:focus {
     pointer-events: auto;
 }
 
-#payment-methods .method .payment-icon {
+#payment-method .method .payment-icon {
+    font-size: 0px;
     margin-right: 24px;
     width: 24px;
 }
 
-#payment-methods .method .payment-name {
+#payment-method .method .payment-name {
     font-family: proxima-nova, sans-serif;
     line-height: 1;
 }
 
-#payment-methods .method .payment-description {
+/*
+#payment-method .method .payment-name .active {
+    color: #65b32e;
+}
+
+#payment-method .method .payment-name .inactive {
+    color: #b44448;
+}
+*/
+
+#payment-method .method .payment-description {
     color: #3b4245;
     font-size: 12px;
 }
 
-#payment-methods .method .actions {
+#payment-method .actions {
+    cursor: pointer;
     margin-left: auto;
+    right: -16px;
+    padding: 16px 18px;
+    position: absolute;
+    text-align: center;
 }
-
-#payment-methods .method .actions .edit-link {
-    padding: 0px;
-}
-
-#payment-methods .add-option {
-    background: transparent;
-    border-bottom: none;
-    padding: 0px;
-    margin-top: 20px;
-}
-
 /* 20.3 #sys-admin > #cuisine-options */
 #cuisine-options .no-cuisines {
     text-align: center;
