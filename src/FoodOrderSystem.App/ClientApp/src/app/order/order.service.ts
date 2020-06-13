@@ -12,6 +12,7 @@ import {DishModel} from '../dish-category/dish.model';
 import {DishVariantModel} from '../dish-category/dish-variant.model';
 import {OrderedDishModel} from '../cart/ordered-dish.model';
 import {Guid} from 'guid-typescript';
+import {CheckoutModel} from './checkout.model';
 
 @Injectable()
 export class OrderService {
@@ -34,7 +35,7 @@ export class OrderService {
 
   private cart: CartModel;
 
-  private static translateToOrderType(orderType: string): OrderType {
+  public static translateToOrderType(orderType: string): OrderType {
     switch (orderType) {
       case 'pickup':
         return OrderType.Pickup;
@@ -47,7 +48,7 @@ export class OrderService {
     }
   }
 
-  private static translateFromOrderType(orderType: OrderType): string {
+  public static translateFromOrderType(orderType: OrderType): string {
     switch (orderType) {
       case OrderType.Pickup:
         return 'pickup';
@@ -250,6 +251,16 @@ export class OrderService {
     }
     this.visible = false;
     this.generateCartModel();
+  }
+
+  public checkoutAsync(checkoutModel: CheckoutModel): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      })
+    };
+    return this.http.post<string>(this.baseUrl + '/checkout', checkoutModel, httpOptions);
   }
 
   private tryLoadCartFromStorage(): boolean {

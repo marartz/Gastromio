@@ -11,7 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using FoodOrderSystem.App.Models;
+using FoodOrderSystem.Domain.Commands.Checkout;
+using FoodOrderSystem.Domain.Model.Dish;
+using FoodOrderSystem.Domain.Model.Order;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -60,5 +65,48 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
+        [Route("checkout")]
+        [HttpPost]
+        public async Task<IActionResult> PostOrder([FromBody] CheckoutModel checkoutModel)
+        {
+            var command = new CheckoutCommand(
+                checkoutModel.GivenName,
+                checkoutModel.LastName,
+                checkoutModel.Street,
+                checkoutModel.AddAddressInfo,
+                checkoutModel.ZipCode,
+                checkoutModel.City,
+                checkoutModel.Phone,
+                checkoutModel.Email,
+                ConvertOrderType(checkoutModel.OrderType),
+                new RestaurantId(checkoutModel.RestaurantId),
+                checkoutModel.OrderedDishes?.Select(en => new Domain.Commands.Checkout.OrderedDishInfo(
+                    en.ItemId,
+                    new DishId(en.DishId),
+                    en.VariantId,
+                    en.Count,
+                    en.Remarks
+                )).ToList(),
+                checkoutModel.Comments
+            );
+           
+            var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderId>(command, null);
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        private static OrderType ConvertOrderType(string orderType)
+        {
+            switch (orderType)
+            {
+                case "pickup":
+                    return OrderType.Pickup;
+                case "delivery":
+                    return OrderType.Delivery;
+                case "reservation":
+                    return OrderType.Reservation;
+                default:
+                    throw new InvalidOperationException($"unknown order type: {orderType}");
+            }
+        }
     }
 }

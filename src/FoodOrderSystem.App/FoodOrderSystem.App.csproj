@@ -88,6 +88,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\user\user-admin.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\change-user-details\change-user-details.component.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\restaurant-rest-admin\restaurant-rest-admin.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\order\checkout.model.ts" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Update="ClientApp\src\app\admin-restaurants\admin-restaurants.component.ts">

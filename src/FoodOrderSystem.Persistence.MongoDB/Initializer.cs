@@ -2,7 +2,7 @@
 using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +25,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
             services.AddTransient<IDishRepository, DishRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
 
         public static void PurgeDatabase(IServiceProvider serviceProvider)
@@ -58,7 +59,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var userCollection = database.GetCollection<UserModel>(Constants.UserCollectionName);
             userCollection.Indexes.CreateOne(
                 new CreateIndexModel<UserModel>(Builders<UserModel>.IndexKeys.Ascending(x => x.Email)));
-            
+
+            var orderCollection = database.GetCollection<OrderModel>(Constants.OrderCollectionName);
+            orderCollection.Indexes.CreateOne(
+                new CreateIndexModel<OrderModel>(
+                    Builders<OrderModel>.IndexKeys.Ascending(x => x.CartInfo.RestaurantId)));
         }
     }
 }

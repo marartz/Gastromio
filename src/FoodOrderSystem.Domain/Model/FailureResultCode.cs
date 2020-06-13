@@ -46,6 +46,7 @@
         DishInvalidOrderNo,
         DishVariantPriceIsNegativeOrZero,
         DishVariantPriceIsTooBig,
-        CannotRemoveCurrentUserFromRestaurantAdmins
+        CannotRemoveCurrentUserFromRestaurantAdmins,
+        OrderIsInvalid
     }
 }

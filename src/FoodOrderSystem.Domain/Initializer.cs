@@ -84,6 +84,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantPriceIsNegativeOrZero, "Das Gericht / die Variante muss einen Preis > 0 besitzen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantPriceIsTooBig, "Das Gericht / die Variante muss einen Preis <= 200 besitzen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CannotRemoveCurrentUserFromRestaurantAdmins, "Sie können nicht den gerade angemeldeten Benutzer aus den Administratoren des Restaurants löschen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.OrderIsInvalid, "Die Bestelldaten sind nicht gültig");
 
             if (!failureMessageService.AreAllCodesRegisteredForCulture(deDeCultureInfo))
                 throw new InvalidOperationException($"Not all messages for culture {deDeCultureInfo} are registered");
