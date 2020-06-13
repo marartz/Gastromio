@@ -7,7 +7,7 @@ import {
   AddressModel,
   ContactInfoModel,
   DeliveryInfoModel,
-  ReservationInfoModel, PickupInfoModel
+  ReservationInfoModel, PickupInfoModel, ServiceInfoModel
 } from '../restaurant/restaurant.model';
 import {PaymentMethodModel} from '../payment-method/payment-method.model';
 import {UserModel} from '../user/user.model';
@@ -170,7 +170,7 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
-  public changeRestaurantPickupInfoAsync(id: string, pickupInfo: PickupInfoModel): Observable<boolean> {
+  public changeRestaurantServiceInfoAsync(id: string, serviceInfo: ServiceInfoModel): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -178,41 +178,18 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changepickupinfo', {
-      averageTime: pickupInfo.averageTime,
-      minimumOrderValue: pickupInfo.minimumOrderValue,
-      maximumOrderValue: pickupInfo.maximumOrderValue,
-      hygienicHandling: pickupInfo.hygienicHandling,
-    }, httpOptions);
-  }
-
-  public changeRestaurantDeliveryInfoAsync(id: string, deliveryInfo: DeliveryInfoModel): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changedeliveryinfo', {
-      averageTime: deliveryInfo.averageTime,
-      minimumOrderValue: deliveryInfo.minimumOrderValue,
-      maximumOrderValue: deliveryInfo.maximumOrderValue,
-      costs: deliveryInfo.costs,
-      hygienicHandling: deliveryInfo.hygienicHandling,
-    }, httpOptions);
-  }
-
-  public changeRestaurantReservationInfoAsync(id: string, reservationInfo: ReservationInfoModel): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changereservationinfo', {
-      hygienicHandling: reservationInfo.hygienicHandling,
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeserviceinfo', {
+      pickupEnabled: serviceInfo.pickupEnabled,
+      pickupAverageTime: serviceInfo.pickupAverageTime,
+      pickupMinimumOrderValue: serviceInfo.pickupMinimumOrderValue,
+      pickupMaximumOrderValue: serviceInfo.pickupMaximumOrderValue,
+      deliveryEnabled: serviceInfo.deliveryEnabled,
+      deliveryAverageTime: serviceInfo.deliveryAverageTime,
+      deliveryMinimumOrderValue: serviceInfo.deliveryMinimumOrderValue,
+      deliveryMaximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
+      deliveryCosts: serviceInfo.deliveryCosts,
+      reservationEnabled: serviceInfo.reservationEnabled,
+      hygienicHandling: serviceInfo.hygienicHandling
     }, httpOptions);
   }
 

@@ -26,6 +26,8 @@ export class RestaurantModel {
 
   public reservationInfo: ReservationInfoModel;
 
+  public hygienicHandling: string;
+
   public cuisines: CuisineModel[];
 
   public paymentMethods: PaymentMethodModel[];
@@ -68,6 +70,8 @@ export class OpeningPeriodModel {
 }
 
 export class PickupInfoModel {
+  public enabled: boolean;
+
   public averageTime: number;
 
   public minimumOrderValue: number;
@@ -77,11 +81,11 @@ export class PickupInfoModel {
   public maximumOrderValue: number;
 
   public maximumOrderValueText: string;
-
-  public hygienicHandling: string;
 }
 
 export class DeliveryInfoModel {
+  public enabled: boolean;
+
   public averageTime: number;
 
   public minimumOrderValue: number;
@@ -95,10 +99,32 @@ export class DeliveryInfoModel {
   public costs: number;
 
   public costsText: string;
-
-  public hygienicHandling: string;
 }
 
 export class ReservationInfoModel {
+  public enabled: boolean;
+}
+
+export class ServiceInfoModel {
+  public pickupEnabled: boolean;
+
+  public pickupAverageTime: number;
+
+  public pickupMinimumOrderValue: number;
+
+  public pickupMaximumOrderValue: number;
+
+  public deliveryEnabled: boolean;
+
+  public deliveryAverageTime: number;
+
+  public deliveryMinimumOrderValue: number;
+
+  public deliveryMaximumOrderValue: number;
+
+  public deliveryCosts: number;
+
+  public reservationEnabled: boolean;
+
   public hygienicHandling: string;
 }

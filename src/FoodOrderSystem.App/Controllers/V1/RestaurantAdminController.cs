@@ -40,9 +40,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactInfo;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryInfo;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantPickupInfo;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantReservationInfo;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantServiceInfo;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDish;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDish;
@@ -234,69 +232,34 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/changepickupinfo")]
+        [Route("restaurants/{restaurantId}/changeserviceinfo")]
         [HttpPost]
-        public async Task<IActionResult> PostChangePickupInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantPickupInfoModel changeRestaurantPickupInfoModel)
+        public async Task<IActionResult> PostChangePickupInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantServiceInfoModel changeRestaurantServiceInfoModel)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantPickupInfoCommand, bool>(
-                new ChangeRestaurantPickupInfoCommand(new RestaurantId(restaurantId),
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantServiceInfoCommand, bool>(
+                new ChangeRestaurantServiceInfoCommand(new RestaurantId(restaurantId),
                     new PickupInfo(
-                        TimeSpan.FromMinutes(changeRestaurantPickupInfoModel.AverageTime),
-                        changeRestaurantPickupInfoModel.MinimumOrderValue,
-                        changeRestaurantPickupInfoModel.MaximumOrderValue,
-                        changeRestaurantPickupInfoModel.HygienicHandling
-                    )
-                ),
-                currentUser
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/changedeliveryinfo")]
-        [HttpPost]
-        public async Task<IActionResult> PostChangeDeliveryInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantDeliveryInfoModel changeRestaurantDeliveryInfoModel)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
-
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantDeliveryInfoCommand, bool>(
-                new ChangeRestaurantDeliveryInfoCommand(new RestaurantId(restaurantId),
+                        changeRestaurantServiceInfoModel.PickupEnabled,
+                        changeRestaurantServiceInfoModel.PickupAverageTime.HasValue ? TimeSpan.FromMinutes(changeRestaurantServiceInfoModel.PickupAverageTime.Value) : (TimeSpan?)null,
+                        changeRestaurantServiceInfoModel.PickupMinimumOrderValue,
+                        changeRestaurantServiceInfoModel.PickupMaximumOrderValue
+                    ),
                     new DeliveryInfo(
-                        TimeSpan.FromMinutes(changeRestaurantDeliveryInfoModel.AverageTime),
-                        changeRestaurantDeliveryInfoModel.MinimumOrderValue,
-                        changeRestaurantDeliveryInfoModel.MaximumOrderValue,
-                        changeRestaurantDeliveryInfoModel.Costs,
-                        changeRestaurantDeliveryInfoModel.HygienicHandling
-                    )
-                ),
-                currentUser
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/changereservationinfo")]
-        [HttpPost]
-        public async Task<IActionResult> PostChangeReservationInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantReservationInfoModel changeRestaurantReservationInfoModel)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
-
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantReservationInfoCommand, bool>(
-                new ChangeRestaurantReservationInfoCommand(new RestaurantId(restaurantId),
+                        changeRestaurantServiceInfoModel.DeliveryEnabled,
+                        changeRestaurantServiceInfoModel.DeliveryAverageTime.HasValue ? TimeSpan.FromMinutes(changeRestaurantServiceInfoModel.DeliveryAverageTime.Value) :(TimeSpan?)null,
+                        changeRestaurantServiceInfoModel.DeliveryMinimumOrderValue,
+                        changeRestaurantServiceInfoModel.DeliveryMaximumOrderValue,
+                        changeRestaurantServiceInfoModel.DeliveryCosts
+                    ),
                     new ReservationInfo(
-                        changeRestaurantReservationInfoModel.HygienicHandling
-                    )
+                        changeRestaurantServiceInfoModel.ReservationEnabled
+                    ),
+                    changeRestaurantServiceInfoModel.HygienicHandling
                 ),
                 currentUser
             );

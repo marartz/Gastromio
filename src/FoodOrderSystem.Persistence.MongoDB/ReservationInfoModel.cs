@@ -2,6 +2,6 @@
 {
     public class ReservationInfoModel
     {
-        public string HygienicHandling { get; set; }
+        public bool Enabled { get; set; }
     }
 }
