@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, Input} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-change-restaurant-name',
@@ -33,7 +34,9 @@ export class ChangeRestaurantNameComponent implements OnInit {
     });
   }
 
-  get f() { return this.changeRestaurantNameForm.controls; }
+  get f() {
+    return this.changeRestaurantNameForm.controls;
+  }
 
   onSubmit(data) {
     if (this.changeRestaurantNameForm.invalid) {
@@ -41,15 +44,14 @@ export class ChangeRestaurantNameComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
+    this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.changeRestaurantNameForm.reset();
         this.activeModal.close(data.name);
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });

@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { RestaurantSysAdminService } from '../restaurant-sys-admin/restaurant-sys-admin.service';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {RestaurantSysAdminService} from '../restaurant-sys-admin/restaurant-sys-admin.service';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -33,7 +34,9 @@ export class AddRestaurantComponent implements OnInit {
   ngOnInit() {
   }
 
-  get f() { return this.addRestaurantForm.controls; }
+  get f() {
+    return this.addRestaurantForm.controls;
+  }
 
   onSubmit(data) {
     this.submitted = true;
@@ -42,15 +45,14 @@ export class AddRestaurantComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantAdminService.addRestaurantAsync(data.name)
+    this.restaurantAdminService.addRestaurantAsync(data.name)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.addRestaurantForm.reset();
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addRestaurantForm.reset();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();

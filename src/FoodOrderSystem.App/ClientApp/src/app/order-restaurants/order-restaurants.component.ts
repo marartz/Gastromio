@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { OrderService } from '../order/order.service';
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {OrderService} from '../order/order.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-restaurants',
@@ -52,12 +52,12 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       this.updateSearchSubscription.unsubscribe();
     }
 
-    const observable = this.orderService.searchForRestaurantsAsync(this.searchPhrase);
-
-    this.updateSearchSubscription = observable.subscribe((result) => {
-      this.restaurants = result;
-    }, () => {
-    });
+    this.orderService.searchForRestaurantsAsync(this.searchPhrase)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.restaurants = result;
+      }, () => {
+      });
   }
 
   getRestaurantSubText(restaurant: RestaurantModel): string {

@@ -1,6 +1,6 @@
-import { DishModel } from '../dish-category/dish.model';
-import { DishVariantModel } from '../dish-category/dish-variant.model';
-import { Guid } from 'guid-typescript';
+import {DishModel} from '../dish-category/dish.model';
+import {DishVariantModel} from '../dish-category/dish-variant.model';
+import {Guid} from 'guid-typescript';
 
 export class OrderedDishModel {
   constructor() {
@@ -23,7 +23,7 @@ export class OrderedDishModel {
 
   public getPriceText(): string {
     const val = this.getPrice();
-    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+    return val.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
   public hasMultipleVariants(): boolean {

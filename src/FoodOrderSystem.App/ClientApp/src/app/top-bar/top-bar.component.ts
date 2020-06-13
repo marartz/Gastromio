@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../auth/auth.service';
-import { LoginComponent } from '../login/login.component';
-import { UserModel } from '../user/user.model';
-import { Router } from '@angular/router';
+import {AuthService} from '../auth/auth.service';
+import {LoginComponent} from '../login/login.component';
+import {UserModel} from '../user/user.model';
+import {Router} from '@angular/router';
 import {OrderService} from '../order/order.service';
 
 @Component({
@@ -19,7 +19,8 @@ export class TopBarComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private orderService: OrderService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -62,10 +63,14 @@ export class TopBarComponent implements OnInit {
   }
 
   toggleCartVisibility(): void {
-    if (this.orderService.isCartVisible()) {
-      this.orderService.hideCart();
+    const cart = this.orderService.getCart();
+    if (!cart) {
+      return;
+    }
+    if (cart.isVisible()) {
+      cart.hide();
     } else {
-      this.orderService.showCart();
+      cart.show();
     }
   }
 }

@@ -1,5 +1,6 @@
 export class PaymentMethodModel {
-  constructor() { }
+  constructor() {
+  }
 
   public id: string;
 

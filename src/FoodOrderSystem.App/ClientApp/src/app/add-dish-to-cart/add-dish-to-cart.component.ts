@@ -27,7 +27,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   getVariantPrice(variant: DishVariantModel): string {
-    return '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 });
+    return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
   getVariantText(variant: DishVariantModel): string {
@@ -46,7 +46,11 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderService.addDishVariantToCart(this.dish, this.selectedVariant, this.count);
+    const cart = this.orderService.getCart();
+    if (!cart) {
+      return;
+    }
+    cart.addOrderedDish(this.dish, this.selectedVariant, this.count);
     this.activeModal.close();
   }
 

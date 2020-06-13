@@ -28,8 +28,8 @@
                                     <br />Mo-Fr 16:00 - 22:00 Uhr
                                 </p>
                             </div>
-                            <div class="hero-message">
-                                <p>Um die Gesundheit unserer Kunden zu schützen, machen wir dies und das...</p>
+                            <div class="hero-message" *ngIf="restaurant.hygienicHandling && restaurant.hygienicHandling.length > 0">
+                                <p>{{restaurant.hygienicHandling}}</p>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
 
         </div>
 
-        <div id="cart" role="complementary" [class.visible]="isCartVisible()">
+        <div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
             <div class="cart-panel">
 
                 <div id="cart-header">
@@ -110,7 +110,7 @@
 
                     <div class="info-section" *ngIf="!isCartEmpty()">
                         <h2 class="info-label">Deine Bestellung</h2>
-                        <div class="line-item-reduced" *ngFor="let orderedDish of getCart().orderedDishes">
+                        <div class="line-item-reduced" *ngFor="let orderedDish of getCart().getOrderedDishes()">
                             <div class="card-content">
                                 <div class="info-group-left">
                                     <div class="info-group-row">
@@ -139,8 +139,8 @@
                                 <div class="price">&euro; {{getCart().getValueOfOrderText()}}</div>
                             </div>
                             <div class="row-collapse dynamic-fees">
-                                <div class="label" *ngIf="!getCart().isDeliveryForFree">Lieferkosten</div>
-                                <div class="price" *ngIf="!getCart().isDeliveryForFree">&euro; {{getCart().getDeliveryCostsText()}}</div>
+                                <div class="label" *ngIf="getCart().getCosts()">Lieferkosten</div>
+                                <div class="price" *ngIf="getCart().getCosts()">&euro; {{getCart().getCostsText()}}</div>
                                 <!--div class="label">Mindestbestellwert</div>
                                 <div class="price"></div-->
                             </div>
@@ -156,7 +156,7 @@
                     <div class="info-section">
                         <div class="cart-btns">
                             <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
-                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout">Checkout</button></div>
+                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" [routerLink]="['/checkout']">Zur Bestellung</button></div>
                         </div>
                     </div>
                 </div>

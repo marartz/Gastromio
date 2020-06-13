@@ -1,5 +1,6 @@
 export class CuisineModel {
-  constructor() { }
+  constructor() {
+  }
 
   public id: string;
 

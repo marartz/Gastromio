@@ -160,128 +160,126 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       this.restaurantId = params.get('restaurantId');
 
-      const getRestaurantSubscription = this.restaurantRestAdminService.getRestaurantAsync(this.restaurantId).subscribe(
-        (data) => {
-          getRestaurantSubscription.unsubscribe();
+      this.restaurantRestAdminService.getRestaurantAsync(this.restaurantId)
+        .pipe(take(1))
+        .subscribe(
+          (data) => {
+            this.restaurant = data;
 
-          this.restaurant = data;
-
-          this.restaurant.cuisines.sort((a, b) => {
-            if (a.name < b.name) {
-              return -1;
-            }
-            if (a.name > b.name) {
-              return 1;
-            }
-            return 0;
-          });
-
-          this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
-
-          this.imgUrl = this.restaurant.image;
-
-          this.changeImageForm.patchValue({
-            image: this.restaurant.image
-          });
-          this.changeImageForm.markAsPristine();
-
-          this.changeAddressForm.patchValue({
-            street: this.restaurant.address != null ? this.restaurant.address.street : '',
-            zipCode: this.restaurant.address != null ? this.restaurant.address.zipCode : '',
-            city: this.restaurant.address != null ? this.restaurant.address.city : '',
-          });
-          this.changeAddressForm.markAsPristine();
-
-          this.changeContactInfoForm.patchValue({
-            phone: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.phone : '',
-            fax: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.fax : '',
-            webSite: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.webSite : '',
-            responsiblePerson: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.responsiblePerson : '',
-            emailAddress: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.emailAddress : '',
-          });
-          this.changeContactInfoForm.markAsPristine();
-
-          this.changeServiceInfoForm.patchValue({
-            pickupEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false,
-            pickupAverageTime: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.averageTime : '',
-            pickupMinimumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.minimumOrderValue : '',
-            pickupMaximumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.maximumOrderValue : '',
-            deliveryEnabled: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.enabled : false,
-            deliveryAverageTime: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.averageTime : '',
-            deliveryMinimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
-            deliveryMaximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
-            deliveryCosts: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
-            reservationEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false
-          });
-          this.changeServiceInfoForm.markAsPristine();
-
-          const getDishesSubscription = this.restaurantRestAdminService.getDishesOfRestaurantAsync(this.restaurantId).subscribe(
-            (dishCategories) => {
-              getDishesSubscription.unsubscribe();
-
-              this.dishCategories = dishCategories;
-
-              if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
-                this.activeDishCategoryId = this.dishCategories[0].id;
+            this.restaurant.cuisines.sort((a, b) => {
+              if (a.name < b.name) {
+                return -1;
               }
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            });
 
-              const getCuisinesSubscription = this.restaurantRestAdminService.getCuisinesAsync().subscribe(
-                (cuisines) => {
-                  getCuisinesSubscription.unsubscribe();
-                  this.availableCuisines = cuisines.filter(cuisine => this.restaurant.cuisines
-                    .findIndex(en => en.id === cuisine.id) === -1);
+            this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
 
-                  const getPaymentMethodsSubscription = this.restaurantRestAdminService
-                    .getPaymentMethodsAsync().subscribe(
-                      (paymentMethods) => {
-                        getPaymentMethodsSubscription.unsubscribe();
+            this.imgUrl = this.restaurant.image;
 
-                        this.paymentMethods = paymentMethods.sort((a, b) => {
-                          if (a.name < b.name) {
-                            return -1;
-                          }
-                          if (a.name > b.name) {
-                            return 1;
-                          }
-                          return 0;
-                        });
-                        this.paymentMethodStatus = new Array<boolean>(this.paymentMethods.length);
+            this.changeImageForm.patchValue({
+              image: this.restaurant.image
+            });
+            this.changeImageForm.markAsPristine();
 
-                        for (let i = 0; i < this.paymentMethods.length; i++) {
-                          this.paymentMethodStatus[i] = this.restaurant.paymentMethods.some(en => en.id === this.paymentMethods[i].id);
-                        }
+            this.changeAddressForm.patchValue({
+              street: this.restaurant.address != null ? this.restaurant.address.street : '',
+              zipCode: this.restaurant.address != null ? this.restaurant.address.zipCode : '',
+              city: this.restaurant.address != null ? this.restaurant.address.city : '',
+            });
+            this.changeAddressForm.markAsPristine();
 
-                        this.blockUI.stop();
+            this.changeContactInfoForm.patchValue({
+              phone: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.phone : '',
+              fax: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.fax : '',
+              webSite: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.webSite : '',
+              responsiblePerson: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.responsiblePerson : '',
+              emailAddress: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.emailAddress : '',
+            });
+            this.changeContactInfoForm.markAsPristine();
+
+            this.changeServiceInfoForm.patchValue({
+              pickupEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false,
+              pickupAverageTime: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.averageTime : '',
+              pickupMinimumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.minimumOrderValue : '',
+              pickupMaximumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.maximumOrderValue : '',
+              deliveryEnabled: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.enabled : false,
+              deliveryAverageTime: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.averageTime : '',
+              deliveryMinimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
+              deliveryMaximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
+              deliveryCosts: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
+              reservationEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false
+            });
+            this.changeServiceInfoForm.markAsPristine();
+
+            this.restaurantRestAdminService.getDishesOfRestaurantAsync(this.restaurantId)
+              .pipe(take(1))
+              .subscribe(
+                (dishCategories) => {
+
+                  this.dishCategories = dishCategories;
+
+                  if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
+                    this.activeDishCategoryId = this.dishCategories[0].id;
+                  }
+
+                  this.restaurantRestAdminService.getCuisinesAsync()
+                    .pipe(take(1))
+                    .subscribe(
+                      (cuisines) => {
+                        this.availableCuisines = cuisines.filter(cuisine => this.restaurant.cuisines
+                          .findIndex(en => en.id === cuisine.id) === -1);
+
+                        this.restaurantRestAdminService.getPaymentMethodsAsync()
+                          .pipe(take(1))
+                          .subscribe(
+                            (paymentMethods) => {
+                              this.paymentMethods = paymentMethods.sort((a, b) => {
+                                if (a.name < b.name) {
+                                  return -1;
+                                }
+                                if (a.name > b.name) {
+                                  return 1;
+                                }
+                                return 0;
+                              });
+                              this.paymentMethodStatus = new Array<boolean>(this.paymentMethods.length);
+
+                              for (let i = 0; i < this.paymentMethods.length; i++) {
+                                this.paymentMethodStatus[i] = this.restaurant.paymentMethods
+                                  .some(en => en.id === this.paymentMethods[i].id);
+                              }
+
+                              this.blockUI.stop();
+                            },
+                            (error: HttpErrorResponse) => {
+                              this.blockUI.stop();
+                              this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+                            }
+                          );
                       },
                       (error: HttpErrorResponse) => {
-                        getPaymentMethodsSubscription.unsubscribe();
                         this.blockUI.stop();
                         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
                       }
                     );
+
                 },
                 (error: HttpErrorResponse) => {
-                  getCuisinesSubscription.unsubscribe();
                   this.blockUI.stop();
                   this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
                 }
               );
 
-            },
-            (error: HttpErrorResponse) => {
-              getDishesSubscription.unsubscribe();
-              this.blockUI.stop();
-              this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-            }
-          );
-
-        },
-        (error: HttpErrorResponse) => {
-          getRestaurantSubscription.unsubscribe();
-          this.blockUI.stop();
-          this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-        }
-      );
+          },
+          (error: HttpErrorResponse) => {
+            this.blockUI.stop();
+            this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+          }
+        );
     });
   }
 
@@ -318,45 +316,44 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onSaveImage(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, value.image).subscribe(() => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.changeImageError = undefined;
-      this.restaurant.image = value.image;
-      this.changeImageForm.markAsPristine();
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.changeImageError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, value.image)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.changeImageError = undefined;
+        this.restaurant.image = value.image;
+        this.changeImageForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.changeImageError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   onSaveAddress(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantAddressAsync(this.restaurant.id, value).subscribe(() => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.changeAddressError = undefined;
-      this.restaurant.address = value;
-      this.changeAddressForm.markAsPristine();
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.changeAddressError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.changeRestaurantAddressAsync(this.restaurant.id, value)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.changeAddressError = undefined;
+        this.restaurant.address = value;
+        this.changeAddressForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.changeAddressError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   onSaveContactInfo(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantContactInfoAsync(this.restaurant.id, value)
+    this.restaurantRestAdminService.changeRestaurantContactInfoAsync(this.restaurant.id, value)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.changeContactInfoError = undefined;
         this.restaurant.contactInfo = value;
         this.changeContactInfoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.changeContactInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -382,10 +379,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant.id,
-      dayOfWeek, startParseResult.value, endParseResult.value)
+    this.restaurantRestAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant.id, dayOfWeek,
+      startParseResult.value, endParseResult.value)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
 
         this.addOpeningPeriodError = undefined;
@@ -399,7 +396,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         this.restaurant.openingHours.push(model);
         this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addOpeningPeriodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -407,10 +403,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onRemoveOpeningPeriod(openingPeriod: OpeningPeriodViewModel) {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant.id,
-      openingPeriod.dayOfWeek, openingPeriod.startTime)
+    this.restaurantRestAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant.id, openingPeriod.dayOfWeek,
+      openingPeriod.startTime)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.removeOpeningPeriodError = undefined;
 
@@ -421,7 +417,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
         }
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.removeOpeningPeriodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -429,15 +424,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onSaveServiceInfo(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.changeRestaurantServiceInfoAsync(this.restaurant.id, value)
+    this.restaurantRestAdminService.changeRestaurantServiceInfoAsync(this.restaurant.id, value)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.changeServiceInfoError = undefined;
         this.restaurant.pickupInfo = value;
         this.changeServiceInfoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.changeServiceInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -445,10 +439,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onAddCuisine(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.addCuisineToRestaurantAsync(this.restaurant.id,
-      value.cuisineId)
+    this.restaurantRestAdminService.addCuisineToRestaurantAsync(this.restaurant.id, value.cuisineId)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addCuisineError = undefined;
         this.addCuisineForm.reset();
@@ -465,7 +458,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           return 0;
         });
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -473,10 +465,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onRemoveCuisine(cuisineId: string) {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.removeCuisineFromRestaurantAsync(this.restaurant.id,
-      cuisineId)
+    this.restaurantRestAdminService.removeCuisineFromRestaurantAsync(this.restaurant.id, cuisineId)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.removeCuisineError = undefined;
         const index = this.restaurant.cuisines.findIndex(en => en.id === cuisineId);
@@ -492,7 +483,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           return 0;
         });
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.removeCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -521,16 +511,16 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       observable = this.restaurantRestAdminService.addPaymentMethodToRestaurantAsync(this.restaurant.id,
         paymentMethod.id);
     }
-    const subscription = observable.subscribe(() => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.generalError = undefined;
-      this.paymentMethodStatus[index] = !this.paymentMethodStatus[index];
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    observable
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.generalError = undefined;
+        this.paymentMethodStatus[index] = !this.paymentMethodStatus[index];
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   searchForUser = (text: Observable<string>) =>
@@ -551,10 +541,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.addAdminToRestaurantAsync(this.restaurant.id,
-      this.userToBeAdded.id)
+    this.restaurantRestAdminService.addAdminToRestaurantAsync(this.restaurant.id, this.userToBeAdded.id)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addUserError = undefined;
 
@@ -573,7 +562,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           return 0;
         });
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
@@ -581,17 +569,17 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   removeUser(user: UserModel): void {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.removeAdminFromRestaurantAsync(this.restaurant.id, user.id).subscribe(() => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.removeUserError = undefined;
-      const index = this.restaurant.administrators.findIndex(en => en.id === user.id);
-      this.restaurant.administrators.splice(index, 1);
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.removeUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.removeAdminFromRestaurantAsync(this.restaurant.id, user.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.removeUserError = undefined;
+        const index = this.restaurant.administrators.findIndex(en => en.id === user.id);
+        this.restaurant.administrators.splice(index, 1);
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.removeUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   openAddDishCategoryForm(): void {
@@ -636,15 +624,15 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.incOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id).subscribe(() => {
-      subscription.unsubscribe();
-      [this.dishCategories[pos], this.dishCategories[pos + 1]] = [this.dishCategories[pos + 1], this.dishCategories[pos]];
-      this.blockUI.stop();
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.incOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        [this.dishCategories[pos], this.dishCategories[pos + 1]] = [this.dishCategories[pos + 1], this.dishCategories[pos]];
+        this.blockUI.stop();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   decOrderOfDishCategory(dishCategory: DishCategoryModel): void {
@@ -654,15 +642,15 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.decOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id).subscribe(() => {
-      subscription.unsubscribe();
-      [this.dishCategories[pos - 1], this.dishCategories[pos]] = [this.dishCategories[pos], this.dishCategories[pos - 1]];
-      this.blockUI.stop();
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.decOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        [this.dishCategories[pos - 1], this.dishCategories[pos]] = [this.dishCategories[pos], this.dishCategories[pos - 1]];
+        this.blockUI.stop();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   openRemoveDishCategoryForm(dishCategory: DishCategoryModel): void {
@@ -715,15 +703,15 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.incOrderOfDishAsync(this.restaurant.id, dish.id).subscribe(() => {
-      subscription.unsubscribe();
-      [dishCategory.dishes[pos], dishCategory.dishes[pos + 1]] = [dishCategory.dishes[pos + 1], dishCategory.dishes[pos]];
-      this.blockUI.stop();
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.incOrderOfDishAsync(this.restaurant.id, dish.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        [dishCategory.dishes[pos], dishCategory.dishes[pos + 1]] = [dishCategory.dishes[pos + 1], dishCategory.dishes[pos]];
+        this.blockUI.stop();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
@@ -733,15 +721,15 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.decOrderOfDishAsync(this.restaurant.id, dish.id).subscribe(() => {
-      subscription.unsubscribe();
-      [dishCategory.dishes[pos - 1], dishCategory.dishes[pos]] = [dishCategory.dishes[pos], dishCategory.dishes[pos - 1]];
-      this.blockUI.stop();
-    }, (response: HttpErrorResponse) => {
-      subscription.unsubscribe();
-      this.blockUI.stop();
-      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-    });
+    this.restaurantRestAdminService.decOrderOfDishAsync(this.restaurant.id, dish.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        [dishCategory.dishes[pos - 1], dishCategory.dishes[pos]] = [dishCategory.dishes[pos], dishCategory.dishes[pos - 1]];
+        this.blockUI.stop();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {

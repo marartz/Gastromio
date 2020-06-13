@@ -1,5 +1,6 @@
 export class UserModel {
-  constructor() { }
+  constructor() {
+  }
 
   public id: string;
 

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { UserAdminService } from '../user/user-admin.service';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ConfirmPasswordValidator } from '../validators/password.validator';
+import {UserAdminService} from '../user/user-admin.service';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ConfirmPasswordValidator} from '../validators/password.validator';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-user',
@@ -31,13 +32,15 @@ export class AddUserComponent implements OnInit {
       email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
       passwordRepeat: ['']
-    }, { validators: ConfirmPasswordValidator('password', 'passwordRepeat') });
+    }, {validators: ConfirmPasswordValidator('password', 'passwordRepeat')});
   }
 
   ngOnInit() {
   }
 
-  get f() { return this.addUserForm.controls; }
+  get f() {
+    return this.addUserForm.controls;
+  }
 
   onSubmit(data) {
     this.submitted = true;
@@ -46,15 +49,14 @@ export class AddUserComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.userAdminService.addUserAsync(data.role, data.email, data.password)
+    this.userAdminService.addUserAsync(data.role, data.email, data.password)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.addUserForm.reset();
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.addUserForm.reset();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();

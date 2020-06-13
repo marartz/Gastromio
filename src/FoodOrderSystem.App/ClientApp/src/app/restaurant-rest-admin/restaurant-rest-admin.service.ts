@@ -6,8 +6,7 @@ import {
   RestaurantModel,
   AddressModel,
   ContactInfoModel,
-  DeliveryInfoModel,
-  ReservationInfoModel, PickupInfoModel, ServiceInfoModel
+  ServiceInfoModel
 } from '../restaurant/restaurant.model';
 import {PaymentMethodModel} from '../payment-method/payment-method.model';
 import {UserModel} from '../user/user.model';

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { OrderService } from '../order/order.service';
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, take } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {OrderService} from '../order/order.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {Observable, of} from 'rxjs';
+import {debounceTime, distinctUntilChanged, switchMap, take} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-order-home',

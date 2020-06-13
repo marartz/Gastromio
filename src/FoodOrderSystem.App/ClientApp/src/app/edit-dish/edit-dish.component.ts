@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DishModel } from '../dish-category/dish.model';
-import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import { DishVariantModel } from '../dish-category/dish-variant.model';
-import { Guid } from 'guid-typescript';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, Input} from '@angular/core';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {DishModel} from '../dish-category/dish.model';
+import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
+import {DishVariantModel} from '../dish-category/dish-variant.model';
+import {Guid} from 'guid-typescript';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-dish',
@@ -75,7 +76,9 @@ export class EditDishComponent implements OnInit {
     }
   }
 
-  get f() { return this.editDishForm.controls; }
+  get f() {
+    return this.editDishForm.controls;
+  }
 
   onSubmit(data) {
     this.submitted = true;
@@ -100,9 +103,9 @@ export class EditDishComponent implements OnInit {
       this.dish.variants[0].price = this.price;
     }
 
-    const subscription = this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish)
+    this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish)
+      .pipe(take(1))
       .subscribe((newDishId) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
 
         this.dish.id = newDishId;
@@ -111,7 +114,6 @@ export class EditDishComponent implements OnInit {
         this.editDishForm.reset();
         this.activeModal.close(this.dish);
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });

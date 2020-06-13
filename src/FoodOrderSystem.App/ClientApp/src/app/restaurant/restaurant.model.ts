@@ -1,6 +1,6 @@
-import { PaymentMethodModel } from '../payment-method/payment-method.model';
-import { UserModel } from '../user/user.model';
-import { CuisineModel } from '../cuisine/cuisine.model';
+import {PaymentMethodModel} from '../payment-method/payment-method.model';
+import {UserModel} from '../user/user.model';
+import {CuisineModel} from '../cuisine/cuisine.model';
 
 export class RestaurantModel {
   constructor() {
@@ -36,7 +36,8 @@ export class RestaurantModel {
 }
 
 export class AddressModel {
-  constructor() { }
+  constructor() {
+  }
 
   public street: string;
 
@@ -46,7 +47,8 @@ export class AddressModel {
 }
 
 export class ContactInfoModel {
-  constructor() {  }
+  constructor() {
+  }
 
   public phone: string;
 
@@ -60,7 +62,8 @@ export class ContactInfoModel {
 }
 
 export class OpeningPeriodModel {
-  constructor() { }
+  constructor() {
+  }
 
   public dayOfWeek: number;
 

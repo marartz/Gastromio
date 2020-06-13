@@ -47,10 +47,6 @@
     <None Remove="ClientApp\src\app\order-restaurants\order-restaurants.component.ts" />
     <None Remove="ClientApp\src\app\remove-dish\remove-dish.component.spec.ts" />
     <None Remove="ClientApp\src\app\remove-dish\remove-dish.component.ts" />
-    <None Remove="FoodOrderSystem.db-shm" />
-    <None Remove="FoodOrderSystem.db-wal" />
-    <None Remove="FoodOrderSystem.db-wal" />
-    <None Remove="FoodOrderSystem.db-shm" />
   </ItemGroup>
 
   <ItemGroup>

@@ -27,7 +27,7 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   getVariantPrice(variant: DishVariantModel): string {
-    return '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 });
+    return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
   getVariantText(variant: DishVariantModel): string {
@@ -52,7 +52,11 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   onRemove(): void {
-    this.orderService.removeDishVariantFromCart(this.orderedDish.itemId);
+    const cart = this.orderService.getCart();
+    if (!cart) {
+      return;
+    }
+    cart.removeOrderedDish(this.orderedDish.itemId);
     this.activeModal.close();
   }
 

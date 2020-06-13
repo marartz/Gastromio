@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { PagingModel } from '../pagination/paging.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../auth/auth.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {PagingModel} from '../pagination/paging.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
@@ -12,7 +12,8 @@ export class RestaurantSysAdminService {
   constructor(
     private http: HttpClient,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   public searchForRestaurantsAsync(search: string, skip: number, take: number): Observable<PagingModel<RestaurantModel>> {
     const httpOptions = {
@@ -34,7 +35,7 @@ export class RestaurantSysAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', { name }, httpOptions);
+    return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', {name}, httpOptions);
   }
 
   public removeRestaurantAsync(restaurantId: string): Observable<void> {

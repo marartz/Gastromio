@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { UserModel } from './user.model';
-import {PagingModel} from "../pagination/paging.model";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../auth/auth.service';
+import {UserModel} from './user.model';
+import {PagingModel} from '../pagination/paging.model';
 
 @Injectable()
 export class UserAdminService {
@@ -12,7 +12,8 @@ export class UserAdminService {
   constructor(
     private http: HttpClient,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   public searchForUsersAsync(search: string, skip: number, take: number): Observable<PagingModel<UserModel>> {
     const httpOptions = {
@@ -34,7 +35,7 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<UserModel>(this.baseUrl + '/users', { role, email, password }, httpOptions);
+    return this.http.post<UserModel>(this.baseUrl + '/users', {role, email, password}, httpOptions);
   }
 
   public changeUserDetailsAsync(userId: string, role: string, email: string): Observable<UserModel> {
@@ -45,7 +46,7 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<UserModel>(this.baseUrl + '/users/' + userId + '/changedetails', { role, email }, httpOptions);
+    return this.http.post<UserModel>(this.baseUrl + '/users/' + userId + '/changedetails', {role, email}, httpOptions);
   }
 
   public changeUserPasswordAsync(userId: string, password: string): Observable<UserModel> {
@@ -56,7 +57,7 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<UserModel>(this.baseUrl + '/users/' + userId + '/changepassword', { password }, httpOptions);
+    return this.http.post<UserModel>(this.baseUrl + '/users/' + userId + '/changepassword', {password}, httpOptions);
   }
 
   public removeUserAsync(userId: string): Observable<void> {

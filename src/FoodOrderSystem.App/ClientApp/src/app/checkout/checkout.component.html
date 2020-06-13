@@ -1,0 +1,73 @@
+<block-ui>
+  <section id="main" role="main">
+    <div class="focus-outlet" tabindex="-1" role="group">
+
+      <!-- START: Fehlermeldungen -->
+      <div *ngIf="generalError !== undefined" id="error">
+        <div id="message" tabindex="-1" role="alert">
+          <span>{{generalError}}</span>
+        </div>
+      </div>
+      <!-- ENDE: Fehlermeldungen -->
+
+    </div>
+
+    <div id="cart" class="visible" *ngIf="generalError === undefined && initialized">
+      <div class="cart-panel">
+
+        <div id="cart-header">
+          <div class="info-group">
+            <h2 class="title">
+              <span class="cart-name">Warenkorb</span>
+              <span class="restaurant-name">{{restaurant.name}}</span>
+            </h2>
+          </div>
+        </div>
+
+        <div id="cart-main">
+          <div class="info-section">
+            <h2 class="info-label">Deine Bestellung</h2>
+            <div class="line-item-reduced" *ngFor="let orderedDish of getCart().getOrderedDishes()">
+              <div class="card-content">
+                <div class="info-group-left">
+                  <div class="info-group-row">
+                    <span class="info-group-label product-quantity">{{orderedDish.count}}x</span>
+                  </div>
+                </div>
+                <div class="info-group-center">
+                  <div class="info-group-row"><h2 class="info-group-label product-name">{{orderedDish.dish.name}} <ng-container *ngIf="orderedDish.dish.variants.length > 1">({{orderedDish.variant.name}})</ng-container></h2></div>
+                  <div class="info-group-row"><p class="product-description">{{orderedDish.remarks}}</p></div>
+                </div>
+                <div class="info-group-right">
+                  <div class="product-cost info-group-row">&euro; {{orderedDish.getPriceText()}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-section cart-totals">
+            <div class="totals">
+              <div class="row-collapse subtotal">
+                <div class="label">Zwischensumme</div>
+                <div class="price">&euro; {{getCart().getValueOfOrderText()}}</div>
+              </div>
+              <div class="row-collapse dynamic-fees">
+                <div class="label" *ngIf="getCart().getCosts()">Lieferkosten</div>
+                <div class="price" *ngIf="getCart().getCosts()">&euro; {{getCart().getCostsText()}}</div>
+                <!--div class="label">Mindestbestellwert</div>
+                <div class="price"></div-->
+              </div>
+              <div class="row-collapse total">
+                <div class="label">Gesamt</div>
+                <div class="price">&euro; {{getCart().getTotalPriceText()}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+</block-ui>
