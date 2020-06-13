@@ -82,7 +82,11 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
         this.imgUrl = this.restaurant.image;
         this.openingHours = 'Mo. 10:00-14:00';
 
-        this.orderService.startOrder(orderType);
+        if (this.orderService.getCart().getOrderType() !== orderType) {
+          this.orderService.startOrder(orderType);
+        } else {
+          this.orderService.showCart();
+        }
 
         this.initialized = true;
       }, error => {

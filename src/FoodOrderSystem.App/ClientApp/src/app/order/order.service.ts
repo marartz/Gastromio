@@ -68,63 +68,22 @@ export class OrderService {
   }
 
   public initializeAsync(): Observable<unknown> {
-    console.log('initialize: start');
-    const observables = [];
-
     this.tryLoadCartFromStorage();
-
-    if (this.restaurantId && !this.restaurant) {
-      console.log('initialize: push getRestaurantAsync');
-      observables.push(this.getRestaurantAsync(this.restaurantId).pipe(tap(restaurant => {
-        console.log('loaded restaurant: ', restaurant);
-        this.restaurant = restaurant;
-      })));
-    }
-
-    if (this.restaurantId && !this.dishCategories) {
-      console.log('initialize: push getDishesOfRestaurantAsync');
-      observables.push(this.getDishesOfRestaurantAsync(this.restaurantId).pipe(tap(dishCategories => {
-        console.log('loaded dish categories: ', dishCategories);
-        this.dishCategories = dishCategories;
-        this.dishes = new Map<string, DishModel>();
-        for (const dishCategory of dishCategories) {
-          if (!dishCategory.dishes) {
-            continue;
-          }
-          for (const dish of dishCategory.dishes) {
-            this.dishes.set(dish.id, dish);
-          }
-        }
-        console.log('done');
-      })));
-    }
-
-    if (observables.length > 0) {
-      console.log('initialize: return combineLatest');
-      return combineLatest(observables);
-    } else {
-      console.log('initialize: return empty observable');
-      return new Observable<unknown>(observer => {
-        observer.next();
-        observer.complete();
-        return {
-          unsubscribe() {
-          }
-        };
-      });
-    }
+    return this.loadDataAsync();
   }
 
   public selectRestaurantAsync(restaurantId: string): Observable<unknown> {
+    this.tryLoadCartFromStorage();
     if (!this.storedCart || this.restaurantId !== restaurantId) {
+      console.log('reset order for new/other restaurant');
       this.restaurant = undefined;
       this.dishCategories = undefined;
       this.storedCart = undefined;
+      this.dishes = undefined;
+      this.visible = false;
     }
-
     this.restaurantId = restaurantId;
-
-    return this.initializeAsync();
+    return this.loadDataAsync();
   }
 
   public getRestaurant(): RestaurantModel {
@@ -345,6 +304,7 @@ export class OrderService {
   private tryLoadCartFromStorage(): boolean {
     const json = localStorage.getItem('cart');
     if (!json) {
+      console.log('found no cart json in local storage');
       return false;
     }
 
@@ -402,10 +362,50 @@ export class OrderService {
       this.restaurantId = storedCart.restaurantId;
       this.storedCart = storedCart;
 
+      console.log('stored cart: ', storedCart);
       return true;
     } catch (exc) {
       console.log('Exception in tryLoadCartFromStorage:', exc);
       return false;
+    }
+  }
+
+  private loadDataAsync(): Observable<unknown> {
+    const observables = [];
+
+    if (this.restaurantId && !this.restaurant) {
+      observables.push(this.getRestaurantAsync(this.restaurantId).pipe(tap(restaurant => {
+        console.log('loaded restaurant: ', restaurant);
+        this.restaurant = restaurant;
+      })));
+    }
+
+    if (this.restaurantId && !this.dishCategories) {
+      observables.push(this.getDishesOfRestaurantAsync(this.restaurantId).pipe(tap(dishCategories => {
+        this.dishCategories = dishCategories;
+        this.dishes = new Map<string, DishModel>();
+        for (const dishCategory of dishCategories) {
+          if (!dishCategory.dishes) {
+            continue;
+          }
+          for (const dish of dishCategory.dishes) {
+            this.dishes.set(dish.id, dish);
+          }
+        }
+      })));
+    }
+
+    if (observables.length > 0) {
+      return combineLatest(observables);
+    } else {
+      return new Observable<unknown>(observer => {
+        observer.next();
+        observer.complete();
+        return {
+          unsubscribe() {
+          }
+        };
+      });
     }
   }
 

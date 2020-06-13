@@ -12,62 +12,130 @@
 
     </div>
 
-    <div id="cart" class="visible" *ngIf="generalError === undefined && initialized">
-      <div class="cart-panel">
+    <div *ngIf="generalError === undefined && initialized">
 
-        <div id="cart-header">
-          <div class="info-group">
-            <h2 class="title">
-              <span class="cart-name">Warenkorb</span>
-              <span class="restaurant-name">{{restaurant.name}}</span>
-            </h2>
-          </div>
-        </div>
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
 
-        <div id="cart-main">
-          <div class="info-section">
-            <h2 class="info-label">Deine Bestellung</h2>
-            <div class="line-item-reduced" *ngFor="let orderedDish of getCart().getOrderedDishes()">
-              <div class="card-content">
-                <div class="info-group-left">
-                  <div class="info-group-row">
-                    <span class="info-group-label product-quantity">{{orderedDish.count}}x</span>
-                  </div>
-                </div>
-                <div class="info-group-center">
-                  <div class="info-group-row"><h2 class="info-group-label product-name">{{orderedDish.dish.name}} <ng-container *ngIf="orderedDish.dish.variants.length > 1">({{orderedDish.variant.name}})</ng-container></h2></div>
-                  <div class="info-group-row"><p class="product-description">{{orderedDish.remarks}}</p></div>
-                </div>
-                <div class="info-group-right">
-                  <div class="product-cost info-group-row">&euro; {{orderedDish.getPriceText()}}</div>
+        <h2 class="title">
+          <span class="customer-info">Ihre Informationen</span>
+        </h2>
+
+        <div>
+          <fieldset>
+            <div class="backend-input">
+              <label>Vorname</label>
+              <input type="text" id="givenName" formControlName="givenName"
+                     [ngClass]="{ 'is-invalid': submitted && f.givenName.errors }" placeholder="Vorname"/>
+              <div *ngIf="submitted && f.givenName.errors">
+                <div *ngIf="f.givenName.errors.required">
+                  <span style="color: red;">Bitte geben Sie Ihren Vornamen ein</span>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="info-section cart-totals">
-            <div class="totals">
-              <div class="row-collapse subtotal">
-                <div class="label">Zwischensumme</div>
-                <div class="price">&euro; {{getCart().getValueOfOrderText()}}</div>
-              </div>
-              <div class="row-collapse dynamic-fees">
-                <div class="label" *ngIf="getCart().getCosts()">Lieferkosten</div>
-                <div class="price" *ngIf="getCart().getCosts()">&euro; {{getCart().getCostsText()}}</div>
-                <!--div class="label">Mindestbestellwert</div>
-                <div class="price"></div-->
-              </div>
-              <div class="row-collapse total">
-                <div class="label">Gesamt</div>
-                <div class="price">&euro; {{getCart().getTotalPriceText()}}</div>
+            <div class="backend-input">
+              <label>Nachname</label>
+              <input type="text" id="lastName" formControlName="lastName"
+                     [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Nachname"/>
+              <div *ngIf="submitted && f.lastName.errors">
+                <div *ngIf="f.lastName.errors.required">
+                  <span style="color: red;">Bitte geben Sie Ihren Nachnamen ein</span>
+                </div>
               </div>
             </div>
-          </div>
+            <div class="backend-input">
+              <label>Adresse</label>
+              <input type="text" id="street" formControlName="street"
+                     [ngClass]="{ 'is-invalid': submitted && f.street.errors }" placeholder="Adresse"/>
+              <div *ngIf="submitted && f.street.errors">
+                <div *ngIf="f.street.errors.required">
+                  <span style="color: red;">Bitte geben Sie die Straße der Lieferadresse ein</span>
+                </div>
+              </div>
+            </div>
+            <div class="backend-input">
+              <label>Weitere Infos zur Lieferadresse</label>
+              <input type="text" id="addAddressInfo" formControlName="addAddressInfo"
+                     [ngClass]="{ 'is-invalid': submitted && f.addAddressInfo.errors }" placeholder="z.B. 4. Etage"/>
+            </div>
+            <div class="backend-input">
+              <label>Postleitzahl</label>
+              <input type="text" id="zipCode" formControlName="zipCode" maxlength="5"
+                     [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" placeholder="PLZ"/>
+              <div *ngIf="submitted && f.zipCode.errors">
+                <div *ngIf="f.zipCode.errors.required">
+                  <span style="color: red;">Bitte geben Sie die Postleitzahl der Lieferadresse ein</span>
+                </div>
+              </div>
+            </div>
+            <div class="backend-input">
+              <label>Stadt</label>
+              <input type="text" id="city" formControlName="city"
+                     [ngClass]="{ 'is-invalid': submitted && f.city.errors }" placeholder="Stadt"/>
+              <div *ngIf="submitted && f.city.errors">
+                <div *ngIf="f.city.errors.required">
+                  <span style="color: red;">Bitte geben die Stadt der Lieferadresse ein</span>
+                </div>
+              </div>
+            </div>
+            <div class="backend-input">
+              <label>Telefon</label>
+              <input type="text" id="phone" formControlName="phone"
+                     [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" placeholder="Telefon"/>
+              <div *ngIf="submitted && f.phone.errors">
+                <div *ngIf="f.phone.errors.required">
+                  <span style="color: red;">Bitte geben Sie Ihre Telefonnummer ein</span>
+                </div>
+              </div>
+            </div>
+            <div class="backend-input">
+              <label>Email</label>
+              <input type="email" id="email" formControlName="email"
+                     [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="E-Mail-Adresse"/>
+              <div *ngIf="submitted && f.email.errors">
+                <div *ngIf="f.email.errors.required">Bitte geben Sie Ihre E-Mail-Adresse ein</div>
+                <div *ngIf="f.email.errors.pattern">Bitte geben Sie eine gültige E-Mail-Adresse muss ein</div>
+              </div>
+            </div>
+          </fieldset>
         </div>
-      </div>
+
+        <h2 class="title">
+          <span class="cart-name">Warenkorb</span>
+        </h2>
+
+        <h2 class="info-label">Deine Bestellung</h2>
+        <span class="restaurant-name">{{restaurant.name}}</span>
+        <div *ngFor="let orderedDish of getCart().getOrderedDishes()">
+          <span class="info-group-label product-quantity">{{orderedDish.getCount()}}x</span>
+          <span>{{orderedDish.getDish().name}}</span>
+          <span *ngIf="orderedDish.getDish().variants.length > 1">({{orderedDish.getVariant().name}})</span>
+          <span>{{orderedDish.getRemarks()}}</span>
+          <span>{{orderedDish.getPriceText()}}</span>
+        </div>
+
+        <h3>Zwischensumme</h3>
+        <span>&euro; {{getCart().getValueOfOrderText()}}</span>
+        <span *ngIf="getCart().getCosts()">Lieferkosten</span>
+        <span class="price" *ngIf="getCart().getCosts()">&euro; {{getCart().getCostsText()}}</span>
+        <span class="label">Gesamt</span>
+        <div class="price">&euro; {{getCart().getTotalPriceText()}}</div>
+
+        <h3>Zusätzliche Wünsche / Anmerkungen zu Ihrer Bestellung</h3>
+
+        <div class="backend-input">
+          <label>Wünsche / Anmerkungen</label>
+          <input type="text" id="comments" formControlName="comments" maxlength="5" placeholder="TODO"/>
+        </div>
+
+        <h3>Bestellung abschließen</h3>
+
+        <div>
+          <button type="reset" class="hollow" (click)="onDiscard()">Verwerfen</button>
+          <button type="submit" [disabled]="!customerForm.dirty">Verbindlich bestellen</button>
+        </div>
+
+      </form>
+
     </div>
-
   </section>
-
-
 </block-ui>
