@@ -32,6 +32,8 @@ export class OrderService {
 
   private storedCart: StoredCartModel;
 
+  private cart: CartModel;
+
   private static translateToOrderType(orderType: string): OrderType {
     switch (orderType) {
       case 'pickup':
@@ -83,6 +85,7 @@ export class OrderService {
       this.visible = false;
     }
     this.restaurantId = restaurantId;
+    this.generateCartModel();
     return this.loadDataAsync();
   }
 
@@ -117,6 +120,7 @@ export class OrderService {
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
     this.storedCart.restaurantId = this.restaurant.id;
     this.storedCart.orderedDishes = new Array<StoredOrderedDishModel>();
+    this.generateCartModel();
   }
 
   public changeOrderType(orderType: OrderType) {
@@ -124,73 +128,11 @@ export class OrderService {
       return;
     }
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
+    this.generateCartModel();
   }
 
   public getCart(): CartModel {
-    if (!this.storedCart || !this.restaurant || !this.dishCategories) {
-      return undefined;
-    }
-
-    let averageTime: number;
-    let minimumOrderValue: number;
-    let maximumOrderValue: number;
-    let costs: number;
-
-    switch (this.storedCart.orderType) {
-      case 'pickup':
-        averageTime = this.restaurant.pickupInfo.averageTime;
-        minimumOrderValue = this.restaurant.pickupInfo.minimumOrderValue;
-        maximumOrderValue = this.restaurant.pickupInfo.maximumOrderValue;
-        costs = undefined;
-        break;
-      case 'delivery':
-        averageTime = this.restaurant.deliveryInfo.averageTime;
-        minimumOrderValue = this.restaurant.deliveryInfo.minimumOrderValue;
-        maximumOrderValue = this.restaurant.deliveryInfo.maximumOrderValue;
-        costs = this.restaurant.deliveryInfo.costs;
-        break;
-      case 'reservation':
-        averageTime = undefined;
-        minimumOrderValue = undefined;
-        maximumOrderValue = undefined;
-        costs = undefined;
-        break;
-    }
-
-    const orderedDishes = new Array<OrderedDishModel>();
-    for (const storedOrderedDish of this.storedCart.orderedDishes) {
-      const dish = this.dishes.get(storedOrderedDish.dishId);
-      if (!dish) {
-        throw new Error('dish with id ' + storedOrderedDish.dishId + ' not known');
-      }
-
-      const variant = dish.variants.find(en => en.variantId === storedOrderedDish.variantId);
-      if (!variant) {
-        throw new Error('variant with id ' + storedOrderedDish.variantId + ' not known');
-      }
-
-      const orderedDish = new OrderedDishModel(
-        storedOrderedDish.itemId,
-        dish,
-        variant,
-        storedOrderedDish.count,
-        storedOrderedDish.remarks
-      );
-
-      orderedDishes.push(orderedDish);
-    }
-
-    return new CartModel(
-      OrderService.translateToOrderType(this.storedCart.orderType),
-      this.restaurantId,
-      averageTime,
-      minimumOrderValue,
-      maximumOrderValue,
-      costs,
-      this.restaurant.hygienicHandling,
-      orderedDishes,
-      this.visible
-    );
+    return this.cart;
   }
 
   public addDishToCart(dish: DishModel, variant: DishVariantModel, count: number): void {
@@ -214,6 +156,7 @@ export class OrderService {
     }
     this.visible = true;
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public setCountOfOrderedDish(itemId: string, count: number): void {
@@ -229,6 +172,7 @@ export class OrderService {
       this.storedCart.orderedDishes.splice(index, 1);
     }
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public incrementCountOfOrderedDish(itemId: string): void {
@@ -241,6 +185,7 @@ export class OrderService {
     }
     this.storedCart.orderedDishes[index].count += 1;
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public decrementCountOfOrderedDish(itemId: string): void {
@@ -256,6 +201,7 @@ export class OrderService {
       this.storedCart.orderedDishes.splice(index, 1);
     }
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public changeRemarksOfOrderedDish(itemId: string, remarks: string): void {
@@ -268,6 +214,7 @@ export class OrderService {
     }
     this.storedCart.orderedDishes[index].remarks = remarks;
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public removeOrderedDishFromCart(itemId: string): void {
@@ -280,11 +227,13 @@ export class OrderService {
     }
     this.storedCart.orderedDishes.splice(index, 1);
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public discardCart(): void {
     this.storedCart = undefined;
     this.saveCartToStorage();
+    this.generateCartModel();
   }
 
   public showCart(): void {
@@ -292,6 +241,7 @@ export class OrderService {
       throw new Error('no cart defined');
     }
     this.visible = true;
+    this.generateCartModel();
   }
 
   public hideCart(): void {
@@ -299,6 +249,7 @@ export class OrderService {
       throw new Error('no cart defined');
     }
     this.visible = false;
+    this.generateCartModel();
   }
 
   private tryLoadCartFromStorage(): boolean {
@@ -361,8 +312,7 @@ export class OrderService {
 
       this.restaurantId = storedCart.restaurantId;
       this.storedCart = storedCart;
-
-      console.log('stored cart: ', storedCart);
+      this.generateCartModel();
       return true;
     } catch (exc) {
       console.log('Exception in tryLoadCartFromStorage:', exc);
@@ -396,9 +346,12 @@ export class OrderService {
     }
 
     if (observables.length > 0) {
-      return combineLatest(observables);
+      return combineLatest(observables).pipe(tap(() => {
+        this.generateCartModel();
+      }));
     } else {
       return new Observable<unknown>(observer => {
+        this.generateCartModel();
         observer.next();
         observer.complete();
         return {
@@ -416,6 +369,74 @@ export class OrderService {
     }
     const json = JSON.stringify(this.storedCart);
     localStorage.setItem('cart', json);
+  }
+
+  private generateCartModel(): void {
+    if (!this.storedCart || !this.restaurant || !this.dishCategories) {
+      this.cart = undefined;
+      return;
+    }
+
+    let averageTime: number;
+    let minimumOrderValue: number;
+    let maximumOrderValue: number;
+    let costs: number;
+
+    switch (this.storedCart.orderType) {
+      case 'pickup':
+        averageTime = this.restaurant.pickupInfo.averageTime;
+        minimumOrderValue = this.restaurant.pickupInfo.minimumOrderValue;
+        maximumOrderValue = this.restaurant.pickupInfo.maximumOrderValue;
+        costs = undefined;
+        break;
+      case 'delivery':
+        averageTime = this.restaurant.deliveryInfo.averageTime;
+        minimumOrderValue = this.restaurant.deliveryInfo.minimumOrderValue;
+        maximumOrderValue = this.restaurant.deliveryInfo.maximumOrderValue;
+        costs = this.restaurant.deliveryInfo.costs;
+        break;
+      case 'reservation':
+        averageTime = undefined;
+        minimumOrderValue = undefined;
+        maximumOrderValue = undefined;
+        costs = undefined;
+        break;
+    }
+
+    const orderedDishes = new Array<OrderedDishModel>();
+    for (const storedOrderedDish of this.storedCart.orderedDishes) {
+      const dish = this.dishes.get(storedOrderedDish.dishId);
+      if (!dish) {
+        throw new Error('dish with id ' + storedOrderedDish.dishId + ' not known');
+      }
+
+      const variant = dish.variants.find(en => en.variantId === storedOrderedDish.variantId);
+      if (!variant) {
+        throw new Error('variant with id ' + storedOrderedDish.variantId + ' not known');
+      }
+
+      const orderedDish = new OrderedDishModel(
+        storedOrderedDish.itemId,
+        dish,
+        variant,
+        storedOrderedDish.count,
+        storedOrderedDish.remarks
+      );
+
+      orderedDishes.push(orderedDish);
+    }
+
+    this.cart = new CartModel(
+      OrderService.translateToOrderType(this.storedCart.orderType),
+      this.restaurantId,
+      averageTime,
+      minimumOrderValue,
+      maximumOrderValue,
+      costs,
+      this.restaurant.hygienicHandling,
+      orderedDishes,
+      this.visible
+    );
   }
 
   private getRestaurantAsync(id: string): Observable<RestaurantModel> {
