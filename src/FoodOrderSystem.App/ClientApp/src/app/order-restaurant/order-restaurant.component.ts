@@ -126,13 +126,11 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   showCart() {
-    const cart = this.orderService.getCart();
-    cart.show();
+    this.orderService.showCart();
   }
 
   hideCart() {
-    const cart = this.orderService.getCart();
-    cart.hide();
+    this.orderService.hideCart();
   }
 
   getCart(): CartModel {
@@ -184,8 +182,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (orderedDishVariant === undefined) {
       return;
     }
-    const cart = this.orderService.getCart();
-    cart.incrementCountOfOrderedDish(orderedDishVariant.itemId);
+    this.orderService.incrementCountOfOrderedDish(orderedDishVariant.getItemId());
   }
 
   public onDecrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
@@ -193,7 +190,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return;
     }
     const cart = this.orderService.getCart();
-    cart.decrementCountOfOrderedDish(orderedDishVariant.itemId);
+    this.orderService.decrementCountOfOrderedDish(orderedDishVariant.getItemId());
   }
 
   public onRemoveDishVariantFromCart(orderedDishVariant: OrderedDishModel): void {
@@ -201,6 +198,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return;
     }
     const cart = this.orderService.getCart();
-    cart.removeOrderedDish(orderedDishVariant.itemId);
+    this.orderService.removeOrderedDishFromCart(orderedDishVariant.getItemId());
   }
 }

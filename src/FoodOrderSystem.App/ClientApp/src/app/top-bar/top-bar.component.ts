@@ -68,9 +68,9 @@ export class TopBarComponent implements OnInit {
       return;
     }
     if (cart.isVisible()) {
-      cart.hide();
+      this.orderService.hideCart();
     } else {
-      cart.show();
+      this.orderService.showCart();
     }
   }
 }

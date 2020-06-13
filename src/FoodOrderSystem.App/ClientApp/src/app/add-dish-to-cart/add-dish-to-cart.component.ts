@@ -46,11 +46,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const cart = this.orderService.getCart();
-    if (!cart) {
-      return;
-    }
-    cart.addOrderedDish(this.dish, this.selectedVariant, this.count);
+    this.orderService.addDishToCart(this.dish, this.selectedVariant, this.count);
     this.activeModal.close();
   }
 

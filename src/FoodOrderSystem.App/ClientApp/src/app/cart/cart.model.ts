@@ -1,13 +1,6 @@
 import {OrderedDishModel} from './ordered-dish.model';
-import {Guid} from 'guid-typescript';
-import {DishModel} from '../dish-category/dish.model';
-import {DishVariantModel} from '../dish-category/dish-variant.model';
 
 export class CartModel {
-  private readonly orderId: string;
-  private readonly orderedDishes: OrderedDishModel[];
-  private visible: boolean;
-
   constructor(
     private orderType: OrderType,
     private restaurantId: string,
@@ -15,14 +8,10 @@ export class CartModel {
     private minimumOrderValue: number,
     private maximumOrderValue: number,
     private costs: number,
-    private hygienicHandling: string
+    private hygienicHandling: string,
+    private orderedDishes: OrderedDishModel[],
+    private visible: boolean
   ) {
-    this.orderId = Guid.create().toString();
-    this.orderedDishes = new Array<OrderedDishModel>();
-  }
-
-  public getOrderId(): string {
-    return this.orderId;
   }
 
   public getOrderType(): OrderType {
@@ -83,7 +72,7 @@ export class CartModel {
   public getDishCountOfOrder(): number {
     let result = 0;
     for (const orderedDish of this.orderedDishes) {
-      result += orderedDish.count;
+      result += orderedDish.getCount();
     }
     return result;
   }
@@ -94,7 +83,7 @@ export class CartModel {
     }
     let result = 0;
     for (const orderedDish of this.orderedDishes) {
-      result += orderedDish.count * orderedDish.variant.price;
+      result += orderedDish.getCount() * orderedDish.getVariant().price;
     }
     return result;
   }
@@ -138,65 +127,6 @@ export class CartModel {
   public isVisible(): boolean {
     return this.visible;
   }
-
-  public changeOrderType(orderType: OrderType, averageTime: number, minimumOrderValue: number,
-                         maximumOrderValue: number, costs: number) {
-    this.orderType = orderType;
-    this.averageTime = averageTime;
-    this.minimumOrderValue = minimumOrderValue;
-    this.maximumOrderValue = maximumOrderValue;
-    this.costs = costs;
-  }
-
-  public addOrderedDish(dish: DishModel, variant: DishVariantModel, count: number): void {
-    let orderedDish = this.orderedDishes.find(en => en.dish.id === dish.id && en.variant.variantId === variant.variantId);
-    if (orderedDish !== undefined) {
-      orderedDish.count += count;
-    } else {
-      orderedDish = new OrderedDishModel();
-      orderedDish.dish = dish;
-      orderedDish.variant = variant;
-      orderedDish.count = count;
-      this.orderedDishes.push(orderedDish);
-    }
-    this.visible = true;
-  }
-
-  public incrementCountOfOrderedDish(itemId: string): void {
-    const index = this.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0) {
-      return;
-    }
-    this.orderedDishes[index].count++;
-  }
-
-  public decrementCountOfOrderedDish(itemId: string): void {
-    const index = this.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0) {
-      return;
-    }
-    this.orderedDishes[index].count--;
-    if (this.orderedDishes[index].count === 0) {
-      this.orderedDishes.splice(index, 1);
-    }
-  }
-
-  public removeOrderedDish(itemId: string): void {
-    const index = this.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0) {
-      return;
-    }
-    this.orderedDishes.splice(index, 1);
-  }
-
-  public show(): void {
-    this.visible = true;
-  }
-
-  public hide(): void {
-    this.visible = false;
-  }
-
 }
 
 export enum OrderType {

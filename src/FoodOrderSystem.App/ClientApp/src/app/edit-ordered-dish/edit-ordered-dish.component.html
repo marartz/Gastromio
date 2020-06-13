@@ -4,23 +4,23 @@
 
             <div id="options-panel">
                 <div class="options-title-bar">
-                    <h3 class="dish-name" tabindex="-1">{{orderedDish.dish.name}}</h3>
+                    <h3 class="dish-name" tabindex="-1">{{orderedDish.getDish().name}}</h3>
                     <div class="dish-info">
-                        {{orderedDish.dish.description}} - {{getVariantPrice(orderedDish.variant)}}
+                        {{orderedDish.getDish().description}} - {{getVariantPrice(orderedDish.getVariant())}}
                     </div>
                     <button class="text-link" (click)="onCancel()">Zurück</button>
                 </div>
 
                 <div class="options-list">
 
-                    <ng-container *ngIf="orderedDish.dish.variants.length > 1">
+                    <ng-container *ngIf="orderedDish.getDish().variants.length > 1">
                         <div class="option-item variant">
                             <div id="variant">
                                 <div class="form-field">
                                     <label>Variante</label>
                                     <div class="select-field-wrap">
                                         <select>
-                                            <option>{{orderedDish.variant.name}}</option>
+                                            <option>{{orderedDish.getVariant().name}}</option>
                                         </select>
                                     </div>
                                 </div>

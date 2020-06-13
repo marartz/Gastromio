@@ -22,8 +22,8 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.count = this.orderedDish.count;
-    this.remarks = this.orderedDish.remarks;
+    this.count = this.orderedDish.getCount();
+    this.remarks = this.orderedDish.getRemarks();
   }
 
   getVariantPrice(variant: DishVariantModel): string {
@@ -46,17 +46,13 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderedDish.count = this.count;
-    this.orderedDish.remarks = this.remarks;
+    this.orderService.setCountOfOrderedDish(this.orderedDish.getItemId(), this.count);
+    this.orderService.changeRemarksOfOrderedDish(this.orderedDish.getItemId(), this.remarks);
     this.activeModal.close();
   }
 
   onRemove(): void {
-    const cart = this.orderService.getCart();
-    if (!cart) {
-      return;
-    }
-    cart.removeOrderedDish(this.orderedDish.itemId);
+    this.orderService.removeOrderedDishFromCart(this.orderedDish.getItemId());
     this.activeModal.close();
   }
 
