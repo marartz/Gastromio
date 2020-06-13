@@ -130,8 +130,8 @@
         <h3>Bestellung abschließen</h3>
 
         <div>
-          <button type="reset" class="hollow" (click)="onDiscard()">Verwerfen</button>
-          <button type="submit" [disabled]="!customerForm.dirty">Verbindlich bestellen</button>
+          <button type="reset" class="hollow" [routerLink]="['/restaurants', restaurant.id]">Zurück zum Restaurant</button>
+          <button type="submit">Verbindlich bestellen</button>
         </div>
 
       </form>

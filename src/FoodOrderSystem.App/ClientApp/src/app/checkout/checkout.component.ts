@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 import {OrderService} from '../order/order.service';
-import {CartModel, OrderType} from '../cart/cart.model';
+import {CartModel} from '../cart/cart.model';
 import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {DishCategoryModel} from '../dish-category/dish-category.model';
 import {take} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-checkout',
@@ -29,7 +28,6 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private orderService: OrderService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
@@ -86,10 +84,5 @@ export class CheckoutComponent implements OnInit {
     if (this.customerForm.invalid) {
       return;
     }
-  }
-
-  onDiscard(): void {
-    this.orderService.discardCart();
-    this.router.navigateByUrl('/');
   }
 }
