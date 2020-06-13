@@ -6,4 +6,6 @@ export class PaymentMethodModel {
   public name: string;
 
   public description: string;
+
+  public imageName: string;
 }

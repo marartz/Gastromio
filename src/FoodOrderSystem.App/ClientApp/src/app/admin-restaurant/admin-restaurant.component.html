@@ -33,11 +33,6 @@
                     <span>{{removeOpeningPeriodError}}</span>
                 </div>
             </div>
-            <div *ngIf="removePaymentMethodError !== undefined" id="error">
-                <div id="message" tabindex="-1" role="alert">
-                    <span>{{removePaymentMethodError}}</span>
-                </div>
-            </div>
             <div *ngIf="startTimeError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
                     <span>{{startTimeError}}</span>
@@ -48,19 +43,9 @@
                     <span>{{removeCuisineError}}</span>
                 </div>
             </div>
-            <div *ngIf="removePaymentMethodError !== undefined" id="error">
-                <div id="message" tabindex="-1" role="alert">
-                    <span>{{removePaymentMethodError}}</span>
-                </div>
-            </div>
             <div *ngIf="removeUserError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
                     <span>{{removeUserError}}</span>
-                </div>
-            </div>
-            <div *ngIf="addPaymentMethodError !== undefined" id="error">
-                <div id="message" tabindex="-1" role="alert">
-                    <span>{{addPaymentMethodError}}</span>
                 </div>
             </div>
             <div *ngIf="addCuisineError !== undefined" id="error">
@@ -78,7 +63,7 @@
                     <span>{{endTimeError}}</span>
                 </div>
             </div>
-            <div *ngIf="addUserError !== undefined"> id="error">
+            <div *ngIf="addUserError !== undefined" id="error">
                 <div id="message" tabindex="-1" role="alert">
                     <span>{{addUserError}}</span>
                 </div>
@@ -91,10 +76,10 @@
                     <div class="bar">
                         <div class="bar-inner">
                             <ul class="links" role="navigation">
-                                <li><a class="text-link active" href="javascript:void(0)">Mein Restaurant</a></li>
+                                <li><a class="text-link active">Mein Restaurant</a></li>
                                 <li><a class="text-link">Lieferinformationen</a></li>
-                                <li><a class="text-link">Restaurantverwalter</a></li>
-                                <li><a class="text-link" [routerLink]="['/admin/restaurants', restaurant.id, '#dish-menu']">Speisekarte</a></li>
+                                <li><a class="text-link">Zahlungsmethoden</a></li>
+                                <li><a class="text-link">Speisekarte</a></li>
                             </ul>
                         </div>
                     </div>
@@ -107,6 +92,15 @@
                             <h1 class="section-title">Mein Restaurant</h1>
                             <p class="section-description">Hier kannst du Restaurantinformationen hinzufügen oder aktualisieren.</p>
                             <button class="button-small hollow">Abmelden</button>
+                            <!--ng-container *ngIf="isRestaurantAdmin()">
+                                <h1 class="section-title">Mein Restaurant</h1>
+                                <p class="section-description">Hier kannst du Restaurantinformationen hinzufügen oder aktualisieren.</p>
+                                <button class="button-small hollow">Abmelden</button>
+                            </ng-container>
+                            <ng-container *ngIf="isSystemAdmin()">
+                                <h1 class="section-title">{{restaurant.name}}</h1>
+                                <p class="section-description">Bearbeite oder aktualisiere Restaurantinformationen.</p>
+                            </ng-container-->
                         </div>
 
                         <div id="form" class="restaurant-info">
@@ -228,44 +222,106 @@
                     </div>
 
                     <div class="waypointable" tabindex="-1">
-                        <!--div id="section-header">
-                <h1 class="section-title">Zahlungsmethoden</h1>
-                <p class="section-description">Bearbeite oder füge Zahlungsmethoden für Lieferung und Abholung hinzu</p>
-            </div-->
-                        <div id="payment-methods">
+                        <div id="payment-method">
                             <h2>Zahlungsmethoden</h2>
                             <div class="methods-inner">
-                                <div class="method" tabindex="-1" *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                <div class="method" tabindex="-1" *ngFor="let paymentMethod of paymentMethods" (click)="onPaymentMethodStatusToggled(paymentMethod)">
                                     <div class="cross-fade">
                                         <div class="method-content">
                                             <div class="payment-icon">
-                                                <svg width="24" height="32" viewBox="0 0 62.211 62.211" role="img">
-                                                    <path d="M5.217,45.562h39.517c1.773,0,3.217-1.461,3.217-3.256L47.134,36.2h13.738c0.741,0,1.339-0.598,1.339-1.339c0-0.738-0.598-1.339-1.339-1.339H46.775l-0.356-2.666h10.447c0.739,0,1.338-0.599,1.338-1.338s-0.599-1.339-1.338-1.339H46.062l-0.291-2.166h6.97c0.741,0,1.339-0.599,1.339-1.338c0-0.739-0.598-1.338-1.339-1.338h-7.328l-0.47-3.51c-0.039-1.76-1.467-3.179-3.217-3.179H3.212c-1.773,0-3.216,1.46-3.212,3.348l2,22.307C2,44.103,3.443,45.562,5.217,45.562zM3.212,18.734h38.515c0.626,0,1.134,0.526,1.134,1.172l0.459,3.433h-6.369c-0.741,0-1.339,0.599-1.339,1.338c0,0.74,0.598,1.339,1.339,1.339h6.728l0.29,2.165h-2.895c-0.738,0-1.338,0.6-1.338,1.339c0,0.74,0.6,1.339,1.338,1.339h3.254l0.331,2.482H3.285L2.079,19.906C2.079,19.26,2.589,18.734,3.212,18.734z M44.733,43.478H5.217c-0.625,0-1.134-0.525-1.138-1.265l-0.146-1.62h41.694l0.237,1.772C45.834,42.983,45.339,43.478,44.733,43.478z" />
-                                                </svg>
+                                                <img src="assets/img/icons/payment-icons/{{paymentMethod.imageName}}.svg" alt="{{paymentMethod.imageName}}" style="width: 32px;" role="img">
                                             </div>
                                             <div>
-                                                <div class="payment-name">{{paymentMethod.name}}</div>
+                                                <div class="payment-name">
+                                                    {{paymentMethod.name}}
+                                                    <!--ng-container *ngIf="!isPaymentMethodEnabled(paymentMethod)">&bull; <span class="inactive">Inaktiv</span></ng-container>
+                                                    <ng-container *ngIf="isPaymentMethodEnabled(paymentMethod)">&bull; <span class="active">Aktiv</span></ng-container-->
+                                                </div>
                                                 <div class="payment-description">{{paymentMethod.description}}</div>
                                             </div>
                                             <div class="actions">
-                                                <button class="edit-link text-link-small" (click)="onRemovePaymentMethod(paymentMethod.id)">Entfernen</button>
+                                                <ng-container *ngIf="isPaymentMethodEnabled(paymentMethod)">
+                                                    <div class="toggle-switch true" tabindex="0" role="checkbox">
+                                                        <svg class="icon-toggle-true" width="15px" height="11px" viewBox="0 0 15 11">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_On" transform="translate(-11.000000, -11.000000)" fill="#FFFFFF">
+                                                                    <g id="Icon/Check/White" transform="translate(6.000000, 4.000000)">
+                                                                        <g id="Icon/Check">
+                                                                            <polygon id="Path-8" fill-rule="nonzero" points="6.41421356 11.2426407 5 12.6568542 9.94974747 17.6066017 19.1421356 8.41421356 17.7279221 7 9.94974747 14.7781746"></polygon>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        <div class="toggle"></div>
+                                                        <svg class="icon-toggle-false" width="10px" height="10px" viewBox="0 0 10 10">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_Off_Hover" transform="translate(-41.000000, -11.000000)">
+                                                                    <g id="Button/Toggle/Off_Hover">
+                                                                        <g id="Button/Toggle/Off-Copy">
+                                                                            <g id="Icon/X/White" transform="translate(34.000000, 4.000000)">
+                                                                                <rect id="Rectangle-2" x="0" y="0" width="24" height="24"></rect>
+                                                                                <g id="Group-3" stroke-width="1" fill-rule="evenodd" transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(6.000000, 6.000000)" fill="#FFFFFF">
+                                                                                    <g id="Group-2" transform="translate(5.000000, 5.000000)">
+                                                                                        <rect id="Rectangle-7" x="-8.8817842e-16" y="0" width="2" height="7"></rect>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                    <g id="Group-2-Copy" transform="translate(3.500000, 3.500000) rotate(-180.000000) translate(-3.500000, -3.500000) translate(-0.000000, -0.000000)">
+                                                                                        <polygon id="Rectangle-7" points="-1.18305366e-12 -1.18305366e-12 2 -1.18305366e-12 2 7 -1.18216548e-12 7"></polygon>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                </g>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="!isPaymentMethodEnabled(paymentMethod)">
+                                                    <div class="toggle-switch false" tabindex="0" role="checkbox">
+                                                        <svg class="icon-toggle-true" width="15px" height="11px" viewBox="0 0 15 11">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_On" transform="translate(-11.000000, -11.000000)" fill="#FFFFFF">
+                                                                    <g id="Icon/Check/White" transform="translate(6.000000, 4.000000)">
+                                                                        <g id="Icon/Check">
+                                                                            <polygon id="Path-8" fill-rule="nonzero" points="6.41421356 11.2426407 5 12.6568542 9.94974747 17.6066017 19.1421356 8.41421356 17.7279221 7 9.94974747 14.7781746"></polygon>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        <div class="toggle"></div>
+                                                        <svg class="icon-toggle-false" width="10px" height="10px" viewBox="0 0 10 10">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_Off_Hover" transform="translate(-41.000000, -11.000000)">
+                                                                    <g id="Button/Toggle/Off_Hover">
+                                                                        <g id="Button/Toggle/Off-Copy">
+                                                                            <g id="Icon/X/White" transform="translate(34.000000, 4.000000)">
+                                                                                <rect id="Rectangle-2" x="0" y="0" width="24" height="24"></rect>
+                                                                                <g id="Group-3" stroke-width="1" fill-rule="evenodd" transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(6.000000, 6.000000)" fill="#FFFFFF">
+                                                                                    <g id="Group-2" transform="translate(5.000000, 5.000000)">
+                                                                                        <rect id="Rectangle-7" x="-8.8817842e-16" y="0" width="2" height="7"></rect>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                    <g id="Group-2-Copy" transform="translate(3.500000, 3.500000) rotate(-180.000000) translate(-3.500000, -3.500000) translate(-0.000000, -0.000000)">
+                                                                                        <polygon id="Rectangle-7" points="-1.18305366e-12 -1.18305366e-12 2 -1.18305366e-12 2 7 -1.18216548e-12 7"></polygon>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                </g>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                </ng-container>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <form class="setting-form" [formGroup]="addPaymentMethodForm" (ngSubmit)="onAddPaymentMethod(addPaymentMethodForm.value)">
-                                    <button class="text-link-small-cta add-option" href="javascript:void(0);">+ Option hinzufügen</button>
-                                    <!-- + Option hinzufügen öffnet Select-Feld -->
-                                    <select id="paymentMethodId" class="form-control" formControlName="paymentMethodId">
-                                        <option *ngFor="let paymentMethod of availablePaymentMethods" value="{{paymentMethod.id}}">{{paymentMethod.name}}</option>
-                                    </select>
-                                    <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
-                                </form>
-                                <!-- Wenn Keine Zahlungsmethoden ausgewählt -->
-                                <!--div class="no-methods">
-                        <span>Keine gespeicherten Zahlungsoptionen</span>
-                        <a class="text-link-small-cta" href="javascript:void(0);">+ Option hinzufügen</a>
-                    </div-->
                             </div>
                         </div>
                     </div>

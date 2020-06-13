@@ -65,10 +65,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   addCuisineError: string;
   removeCuisineError: string;
 
-  availablePaymentMethods: PaymentMethodModel[];
-  addPaymentMethodForm: FormGroup;
-  addPaymentMethodError: string;
-  removePaymentMethodError: string;
+  paymentMethods: PaymentMethodModel[];
+  paymentMethodStatus: boolean[];
 
   public userToBeAdded: UserModel;
   addUserError: string;
@@ -132,10 +130,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     this.addCuisineForm = this.formBuilder.group({
       cuisineId: ''
     });
-
-    this.addPaymentMethodForm = this.formBuilder.group({
-      paymentMethodId: ''
-    });
   }
 
   private static parseTimeValue(text: string): TimeParseResult {
@@ -184,16 +178,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
           this.restaurant = data;
 
           this.restaurant.cuisines.sort((a, b) => {
-            if (a.name < b.name) {
-              return -1;
-            }
-            if (a.name > b.name) {
-              return 1;
-            }
-            return 0;
-          });
-
-          this.restaurant.paymentMethods.sort((a, b) => {
             if (a.name < b.name) {
               return -1;
             }
@@ -270,8 +254,22 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
                     .getPaymentMethodsAsync().subscribe(
                       (paymentMethods) => {
                         getPaymentMethodsSubscription.unsubscribe();
-                        this.availablePaymentMethods = paymentMethods.filter(paymentMethod => this.restaurant
-                          .paymentMethods.findIndex(en => en.id === paymentMethod.id) === -1);
+
+                        this.paymentMethods = paymentMethods.sort((a, b) => {
+                          if (a.name < b.name) {
+                            return -1;
+                          }
+                          if (a.name > b.name) {
+                            return 1;
+                          }
+                          return 0;
+                        });
+                        this.paymentMethodStatus = new Array<boolean>(this.paymentMethods.length);
+
+                        for (let i = 0; i < this.paymentMethods.length; i++) {
+                          this.paymentMethodStatus[i] = this.restaurant.paymentMethods.some(en => en.id === this.paymentMethods[i].id);
+                        }
+
                         this.blockUI.stop();
                       },
                       (error: HttpErrorResponse) => {
@@ -551,59 +549,39 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       });
   }
 
-  onAddPaymentMethod(value): void {
-    this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.addPaymentMethodToRestaurantAsync(this.restaurant.id,
-      value.paymentMethodId)
-      .subscribe(() => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.addPaymentMethodError = undefined;
-        this.addPaymentMethodForm.reset();
-        const index = this.availablePaymentMethods.findIndex(en => en.id === value.paymentMethodId);
-        this.restaurant.paymentMethods.push(this.availablePaymentMethods[index]);
-        this.availablePaymentMethods.splice(index, 1);
-        this.restaurant.paymentMethods.sort((a, b) => {
-          if (a.name < b.name) {
-            return -1;
-          }
-          if (a.name > b.name) {
-            return 1;
-          }
-          return 0;
-        });
-      }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.addPaymentMethodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
+  isPaymentMethodEnabled(paymentMethod: PaymentMethodModel): boolean {
+    const index = this.paymentMethods.findIndex(en => en.id === paymentMethod.id);
+    if (index < 0) {
+      return false;
+    }
+    return this.paymentMethodStatus[index];
   }
 
-  onRemovePaymentMethod(paymentMethodId: string) {
+  onPaymentMethodStatusToggled(paymentMethod: PaymentMethodModel): void {
+    const index = this.paymentMethods.findIndex(en => en.id === paymentMethod.id);
+    if (index < 0) {
+      return;
+    }
+    const currentStatus = this.paymentMethodStatus[index];
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantRestAdminService.removePaymentMethodFromRestaurantAsync(this.restaurant.id,
-      paymentMethodId)
-      .subscribe(() => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.removePaymentMethodError = undefined;
-        const index = this.restaurant.paymentMethods.findIndex(en => en.id === paymentMethodId);
-        this.availablePaymentMethods.push(this.restaurant.paymentMethods[index]);
-        this.restaurant.paymentMethods.splice(index, 1);
-        this.restaurant.paymentMethods.sort((a, b) => {
-          if (a.name < b.name) {
-            return -1;
-          }
-          if (a.name > b.name) {
-            return 1;
-          }
-          return 0;
-        });
-      }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
-        this.blockUI.stop();
-        this.removePaymentMethodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
+    let observable: Observable<boolean>;
+    if (currentStatus) {
+      observable = this.restaurantRestAdminService.removePaymentMethodFromRestaurantAsync(this.restaurant.id,
+        paymentMethod.id);
+    } else {
+      observable = this.restaurantRestAdminService.addPaymentMethodToRestaurantAsync(this.restaurant.id,
+        paymentMethod.id);
+    }
+    const subscription = observable.subscribe(() => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.generalError = undefined;
+      this.paymentMethodStatus[index] = !this.paymentMethodStatus[index];
+    }, (response: HttpErrorResponse) => {
+      subscription.unsubscribe();
+      this.blockUI.stop();
+      this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+    });
   }
 
   searchForUser = (text: Observable<string>) =>
@@ -834,12 +812,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 }
 
 export class OpeningPeriodViewModel {
-  dayOfWeek: number;
-  dayOfWeekText: string;
-  startTime: number;
-  startTimeText: string;
-  endTime: number;
-  endTimeText: string;
 
   public static daysOfMonth = [
     'Montag',
@@ -850,6 +822,13 @@ export class OpeningPeriodViewModel {
     'Samstag',
     'Sonntag'
   ];
+
+  dayOfWeek: number;
+  dayOfWeekText: string;
+  startTime: number;
+  startTimeText: string;
+  endTime: number;
+  endTimeText: string;
 
   public static vmArrayFromModels(models: OpeningPeriodModel[]): OpeningPeriodViewModel[] {
     return models.map(deliveryTime => {

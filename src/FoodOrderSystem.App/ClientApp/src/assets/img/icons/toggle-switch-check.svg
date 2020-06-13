@@ -1,0 +1,23 @@
+<svg width="10px" height="10px" viewBox="0 0 10 10">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Button/Toggle_Off_Hover" transform="translate(-41.000000, -11.000000)">
+            <g id="Button/Toggle/Off_Hover">
+                <g id="Button/Toggle/Off-Copy">
+                    <g id="Icon/X/White" transform="translate(34.000000, 4.000000)">
+                        <rect id="Rectangle-2" x="0" y="0" width="24" height="24"></rect>
+                        <g id="Group-3" stroke-width="1" fill-rule="evenodd" transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(6.000000, 6.000000)" fill="#FFFFFF">
+                            <g id="Group-2" transform="translate(5.000000, 5.000000)">
+                                <rect id="Rectangle-7" x="-8.8817842e-16" y="0" width="2" height="7"></rect>
+                                <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                            </g>
+                            <g id="Group-2-Copy" transform="translate(3.500000, 3.500000) rotate(-180.000000) translate(-3.500000, -3.500000) translate(-0.000000, -0.000000)">
+                                <polygon id="Rectangle-7" points="-1.18305366e-12 -1.18305366e-12 2 -1.18305366e-12 2 7 -1.18216548e-12 7"></polygon>
+                                <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
