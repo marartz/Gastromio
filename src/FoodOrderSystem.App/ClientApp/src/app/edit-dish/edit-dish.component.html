@@ -34,10 +34,7 @@
                         </div>
                         <div class="modal-input" role="combobox">
                             <label>Zusatzstoffe und Allergene (optional)</label>
-                            <input type="text" id="productInfo" formControlName="productInfo" [ngClass]="{ 'is-invalid': submitted && f.productInfo.errors }" placeholder="" />
-                            <div *ngIf="submitted && f.productInfo.errors" class="invalid-feedback">
-                                <div *ngIf="f.productInfo.errors.required">Produkt Info wird benötigt.</div>
-                            </div>
+                            <input type="text" id="productInfo" formControlName="productInfo" placeholder="" />
                         </div>
                         <ng-container *ngIf="dish.variants.length <= 1">
                             <div class="modal-input" role="combobox">
