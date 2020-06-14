@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.RemovePaymentMethodFromRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.RemovePaymentMethod(command.PaymentMethodId);
+            restaurant.RemovePaymentMethod(command.PaymentMethodId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

@@ -16,9 +16,19 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         private ISet<PaymentMethodId> paymentMethods;
         private ISet<UserId> administrators;
         
-        public Restaurant(RestaurantId id)
+        public Restaurant(
+            RestaurantId id,
+            DateTime createdOn,
+            UserId createdBy,
+            DateTime updatedOn,
+            UserId updatedBy
+        )
         {
             Id = id;
+            CreatedOn = createdOn;
+            CreatedBy = createdBy;
+            UpdatedOn = updatedOn;
+            UpdatedBy = updatedBy;
             Address = new Address(null, null, null);
             ContactInfo = new ContactInfo(null, null, null, null, null);
             openingHours = new List<OpeningPeriod>();
@@ -43,7 +53,11 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             string hygienicHandling,
             ISet<CuisineId> cuisines,
             ISet<PaymentMethodId> paymentMethods,
-            ISet<UserId> administrators
+            ISet<UserId> administrators,
+            DateTime createdOn,
+            UserId createdBy,
+            DateTime updatedOn,
+            UserId updatedBy
         )
         {
             Id = id;
@@ -56,6 +70,10 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, TimeSpan.Zero, null, null, null);
             ReservationInfo = reservationInfo ?? new ReservationInfo(false);
             HygienicHandling = hygienicHandling;
+            CreatedOn = createdOn;
+            CreatedBy = createdBy;
+            UpdatedOn = updatedOn;
+            UpdatedBy = updatedBy;
             this.cuisines = cuisines ?? new HashSet<CuisineId>();
             this.paymentMethods = paymentMethods ?? new HashSet<PaymentMethodId>();
             this.administrators = administrators ?? new HashSet<UserId>();
@@ -91,7 +109,15 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public IReadOnlyCollection<UserId> Administrators =>
             administrators != null ? new ReadOnlyCollection<UserId>(administrators.ToList()) : null;
 
-        public Result<bool> ChangeName(string name)
+        public DateTime CreatedOn { get; }
+        
+        public UserId CreatedBy { get; }
+        
+        public DateTime UpdatedOn { get; private set; }
+        
+        public UserId UpdatedBy { get; private set; }
+        
+        public Result<bool> ChangeName(string name, UserId changedBy)
         {
             if (string.IsNullOrEmpty(name))
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
@@ -99,11 +125,13 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
 
             Name = name;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ChangeImage(byte[] image)
+        public Result<bool> ChangeImage(byte[] image, UserId changedBy)
         {
             if (image == null)
             {
@@ -130,11 +158,13 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             }
 
             Image = image;
-            
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ChangeAddress(Address address)
+        public Result<bool> ChangeAddress(Address address, UserId changedBy)
         {
             if (address == null)
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address));
@@ -159,11 +189,13 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(address.City), 50);
 
             Address = address;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ChangeContactInfo(ContactInfo contactInfo)
+        public Result<bool> ChangeContactInfo(ContactInfo contactInfo, UserId changedBy)
         {
             if (string.IsNullOrEmpty(contactInfo.Phone))
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(contactInfo.Phone));
@@ -185,11 +217,13 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.EmailAddress));
 
             ContactInfo = contactInfo;
-            
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod)
+        public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
         {
             var newStartHour = openingPeriod.Start.TotalHours;
             var newEndHour = openingPeriod.End.TotalHours;
@@ -225,21 +259,27 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             }
             
             openingHours.Add(openingPeriod);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RemoveOpeningPeriod(int dayOfWeek, TimeSpan start, UserId changedBy)
+        {
+            if (openingHours == null)
+            {
+                return SuccessResult<bool>.Create(true);
+            }
+            
+            openingHours = openingHours.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             
             return SuccessResult<bool>.Create(true);
         }
 
-        public void RemoveOpeningPeriod(int dayOfWeek, TimeSpan start)
-        {
-            if (openingHours == null)
-            {
-                return;
-            }
-            
-            openingHours = openingHours.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
-        }
-
-        public Result<bool> ChangePickupInfo(PickupInfo pickupInfo)
+        public Result<bool> ChangePickupInfo(PickupInfo pickupInfo, UserId changedBy)
         {
             if (!pickupInfo.Enabled)
             {
@@ -261,11 +301,13 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMaximumPickupOrderValueTooLow);
 
             PickupInfo = pickupInfo;
-            
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ChangeDeliveryInfo(DeliveryInfo deliveryInfo)
+        public Result<bool> ChangeDeliveryInfo(DeliveryInfo deliveryInfo, UserId changedBy)
         {
             if (!deliveryInfo.Enabled)
             {
@@ -292,52 +334,70 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryCostsTooHigh);
 
             DeliveryInfo = deliveryInfo;
-            
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ChangeReservationInfo(ReservationInfo reservationInfo)
+        public Result<bool> ChangeReservationInfo(ReservationInfo reservationInfo, UserId changedBy)
         {
             ReservationInfo = reservationInfo;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ChangeHygienicHandling(string hygienicHandling)
+        public Result<bool> ChangeHygienicHandling(string hygienicHandling, UserId changedBy)
         {
             HygienicHandling = hygienicHandling;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
-        public void AddCuisine(CuisineId cuisineId)
+        public Result<bool> AddCuisine(CuisineId cuisineId, UserId changedBy)
         {
             if (cuisines != null && cuisines.Contains(cuisineId))
-                return;
+                return SuccessResult<bool>.Create(true);
             if (cuisines == null)
                 cuisines = new HashSet<CuisineId>();
             cuisines.Add(cuisineId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void RemoveCuisine(CuisineId cuisineId)
+        public Result<bool> RemoveCuisine(CuisineId cuisineId, UserId changedBy)
         {
             if (cuisines == null || !cuisines.Contains(cuisineId))
-                return;
+                return SuccessResult<bool>.Create(true);
             cuisines.Remove(cuisineId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void AddPaymentMethod(PaymentMethodId paymentMethodId)
+        public Result<bool> AddPaymentMethod(PaymentMethodId paymentMethodId, UserId changedBy)
         {
             if (paymentMethods != null && paymentMethods.Contains(paymentMethodId))
-                return;
+                return SuccessResult<bool>.Create(true);
             if (paymentMethods == null)
                 paymentMethods = new HashSet<PaymentMethodId>();
             paymentMethods.Add(paymentMethodId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void RemovePaymentMethod(PaymentMethodId paymentMethodId)
+        public Result<bool> RemovePaymentMethod(PaymentMethodId paymentMethodId, UserId changedBy)
         {
             if (paymentMethods == null || !paymentMethods.Contains(paymentMethodId))
-                return;
+                return SuccessResult<bool>.Create(true);
             paymentMethods.Remove(paymentMethodId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
         }
 
         public bool HasAdministrator(UserId userId)
@@ -345,20 +405,26 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             return administrators != null && administrators.Contains(userId);
         }
 
-        public void AddAdministrator(UserId userId)
+        public Result<bool> AddAdministrator(UserId userId, UserId changedBy)
         {
             if (administrators != null && administrators.Contains(userId))
-                return;
+                return SuccessResult<bool>.Create(true);
             if (administrators == null)
                 administrators = new HashSet<UserId>();
             administrators.Add(userId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
         }
 
-        public void RemoveAdministrator(UserId userId)
+        public Result<bool> RemoveAdministrator(UserId userId, UserId changedBy)
         {
             if (administrators == null || !administrators.Contains(userId))
-                return;
+                return SuccessResult<bool>.Create(true);
             administrators.Remove(userId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

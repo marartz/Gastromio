@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.AddPaymentMethod(command.PaymentMethodId);
+            restaurant.AddPaymentMethod(command.PaymentMethodId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

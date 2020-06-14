@@ -204,7 +204,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.HygienicHandling,
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
                 new HashSet<PaymentMethodId>(document.PaymentMethods.Select(en => new PaymentMethodId(en))),
-                new HashSet<UserId>(document.Administrators.Select(en => new UserId(en)))
+                new HashSet<UserId>(document.Administrators.Select(en => new UserId(en))),
+                document.CreatedOn,
+                new UserId(document.CreatedBy),
+                document.UpdatedOn,
+                new UserId(document.UpdatedBy)
             );
         }
 
@@ -261,7 +265,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     : new List<Guid>(),
                 Administrators = obj.Administrators != null
                     ? obj.Administrators.Select(en => en.Value).ToList()
-                    : new List<Guid>()
+                    : new List<Guid>(),
+                CreatedOn = obj.CreatedOn,
+                CreatedBy = obj.CreatedBy.Value,
+                UpdatedOn = obj.UpdatedOn,
+                UpdatedBy = obj.UpdatedBy.Value
             };
         }
     }

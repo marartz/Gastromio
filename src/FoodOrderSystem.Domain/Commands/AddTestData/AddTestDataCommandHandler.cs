@@ -77,15 +77,15 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
             paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken)).ToList();
 
-            var tempResult = await CreateUsersAsync(command.UserCount, cancellationToken);
+            var tempResult = await CreateUsersAsync(currentUser, command.UserCount, cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
 
-            tempResult = await CreateCuisinesAsync(cancellationToken);
+            tempResult = await CreateCuisinesAsync(currentUser, cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
 
-            tempResult = await CreateRestaurantsAsync(command.RestCount, command.DishCatCount, command.DishCount,
+            tempResult = await CreateRestaurantsAsync(currentUser, command.RestCount, command.DishCatCount, command.DishCount,
                 cancellationToken);
             if (tempResult.IsFailure)
                 return tempResult;
@@ -93,7 +93,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateUsersAsync(int count, CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateUsersAsync(User currentUser, int count, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test users");
             
@@ -103,7 +103,8 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     break;
 
                 var name = $"sysadmin{(i + 1):D3}";
-                var tempResult = userFactory.Create(Role.SystemAdmin, $"{name}@gastromio.de", "Start2020!");
+                var tempResult = userFactory.Create(Role.SystemAdmin, $"{name}@gastromio.de", "Start2020!",
+                    currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<bool>();
 
@@ -119,7 +120,8 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     break;
 
                 var name = $"restadmin{(i + 1):D3}";
-                var tempResult = userFactory.Create(Role.SystemAdmin, $"{name}@gastromio.de", "Start2020!");
+                var tempResult = userFactory.Create(Role.SystemAdmin, $"{name}@gastromio.de", "Start2020!",
+                    currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<bool>();
 
@@ -135,81 +137,81 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateCuisinesAsync(CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateCuisinesAsync(User currentUser, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test cuisines");
             
-            var tempResult = cuisineFactory.Create("Chinesisch");
+            var tempResult = cuisineFactory.Create("Chinesisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             var cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Griechisch");
+            tempResult = cuisineFactory.Create("Griechisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Italienisch");
+            tempResult = cuisineFactory.Create("Italienisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Amerikanisch");
+            tempResult = cuisineFactory.Create("Amerikanisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Mexikanisch");
+            tempResult = cuisineFactory.Create("Mexikanisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Französisch");
+            tempResult = cuisineFactory.Create("Französisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Indisch");
+            tempResult = cuisineFactory.Create("Indisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Mediterran");
+            tempResult = cuisineFactory.Create("Mediterran", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Japnisch");
+            tempResult = cuisineFactory.Create("Japnisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Regional");
+            tempResult = cuisineFactory.Create("Regional", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Deutsch (gut bürgerlich)");
+            tempResult = cuisineFactory.Create("Deutsch (gut bürgerlich)", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
@@ -220,7 +222,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateRestaurantsAsync(int restCount, int dishCatCount, int dishCount, CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateRestaurantsAsync(User currentUser, int restCount, int dishCatCount, int dishCount, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test restaurants");
 
@@ -228,7 +230,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
-                var tempResult = await CreateRestaurantAsync(i, dishCatCount, dishCount, cancellationToken);
+                var tempResult = await CreateRestaurantAsync(currentUser, i, dishCatCount, dishCount, cancellationToken);
                 if (tempResult.IsFailure)
                     return tempResult;
             }
@@ -237,19 +239,20 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateRestaurantAsync(int index, int dishCatCount, int dishCount, CancellationToken cancellationToken)
+        private async Task<Result<bool>> CreateRestaurantAsync(User currentUser, int index, int dishCatCount, int dishCount, CancellationToken cancellationToken)
         {
             var restaurantName = $"Restaurant {(index + 1):D3}";
             var restAdminName = $"restadmin{(index % restAdminDict.Count + 1):D3}";
 
             logger.LogInformation("    creating test restaurant {0}", restaurantName);
             
-            var restaurantResult = restaurantFactory.CreateWithName(restaurantName);
+            var restaurantResult = restaurantFactory.CreateWithName(restaurantName, currentUser.Id);
             if (restaurantResult.IsFailure)
                 return restaurantResult.Cast<bool>();
             var restaurant = ((SuccessResult<Restaurant>) restaurantResult).Value;
 
-            var boolResult = restaurant.ChangeAddress(new Address("Musterstraße 1", "12345", "Musterstadt"));
+            var boolResult =
+                restaurant.ChangeAddress(new Address("Musterstraße 1", "12345", "Musterstadt"), currentUser.Id);
             if (boolResult.IsFailure)
                 return boolResult;
 
@@ -259,14 +262,15 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 $"http://www.restaurant{(index + 1):D3}.de",
                 $"Verantw. Person {(index + 1):D3}",
                 $"order@restaurant{(index + 1):D3}.de"
-            ));
+            ), currentUser.Id);
             if (boolResult.IsFailure)
                 return boolResult;
 
             for (var i = 0; i < 7; i++)
             {
                 boolResult = restaurant.AddOpeningPeriod(new OpeningPeriod(i,
-                    TimeSpan.FromHours(10 + (index % 4) * 0.5), TimeSpan.FromHours(20 + (index % 4) * 0.5)));
+                        TimeSpan.FromHours(10 + (index % 4) * 0.5), TimeSpan.FromHours(20 + (index % 4) * 0.5)),
+                    currentUser.Id);
                 if (boolResult.IsFailure)
                     return boolResult;
             }
@@ -276,7 +280,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 TimeSpan.FromMinutes(15 + index / 100),
                 5 + (decimal) index / 100, 
                 100 + (decimal) index / 100
-            ));
+            ), currentUser.Id);
             if (boolResult.IsFailure)
                 return boolResult;
 
@@ -288,26 +292,26 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     5 + (decimal) index / 100,
                     100 + (decimal) index / 100,
                     3 + (decimal) index / 100
-                ));
+                ), currentUser.Id);
                 if (boolResult.IsFailure)
                     return boolResult;
             }
 
             if (index % 4 == 0)
             {
-                boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(true));
+                boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(true), currentUser.Id);
                 if (boolResult.IsFailure)
                     return boolResult;
             }
             
-            restaurant.AddCuisine(cuisines[(index + 0) % cuisines.Count].Id);
-            restaurant.AddCuisine(cuisines[(index + 1) % cuisines.Count].Id);
+            restaurant.AddCuisine(cuisines[(index + 0) % cuisines.Count].Id, currentUser.Id);
+            restaurant.AddCuisine(cuisines[(index + 1) % cuisines.Count].Id, currentUser.Id);
 
-            restaurant.AddPaymentMethod(paymentMethods[(index + 0) % paymentMethods.Count].Id);
-            restaurant.AddPaymentMethod(paymentMethods[(index + 1) % paymentMethods.Count].Id);
+            restaurant.AddPaymentMethod(paymentMethods[(index + 0) % paymentMethods.Count].Id, currentUser.Id);
+            restaurant.AddPaymentMethod(paymentMethods[(index + 1) % paymentMethods.Count].Id, currentUser.Id);
 
             var restAdmin = restAdminDict[restAdminName];
-            restaurant.AddAdministrator(restAdmin.Id);
+            restaurant.AddAdministrator(restAdmin.Id, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
@@ -316,9 +320,16 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                 var dishCategoryName = $"Kategorie{(catIndex + 1):D2}";
                 logger.LogInformation("        creating dish category {0}", dishCategoryName);
 
-                var dishCategoryResult = dishCategoryFactory.Create(restaurant.Id, dishCategoryName, catIndex);
+                var dishCategoryResult = dishCategoryFactory.Create(
+                    restaurant.Id,
+                    dishCategoryName,
+                    catIndex,
+                    currentUser.Id
+                );
+                
                 if (dishCategoryResult.IsFailure)
                     return dishCategoryResult.Cast<bool>();
+                
                 var dishCategory = ((SuccessResult<DishCategory>) dishCategoryResult).Value;
                 await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 
@@ -329,9 +340,16 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
                     var variant = new DishVariant(Guid.NewGuid(), dishName,
                         5 + (decimal) dishIndex / 10, null);
 
-                    var dishResult = dishFactory.Create(restaurant.Id, dishCategory.Id, dishName,
+                    var dishResult = dishFactory.Create(
+                        restaurant.Id,
+                        dishCategory.Id,
+                        dishName,
                         $"Beschreibung des Gerichts{(dishIndex + 1):D2}",
-                        $"Produktinformation des Gerichts{(dishIndex + 1):D2}", dishIndex, new[] {variant});
+                        $"Produktinformation des Gerichts{(dishIndex + 1):D2}",
+                        dishIndex, 
+                        new[] {variant},
+                        currentUser.Id
+                    );
                     if (dishResult.IsFailure)
                         return dishResult.Cast<bool>();
                     var dish = ((SuccessResult<Dish>) dishResult).Value;

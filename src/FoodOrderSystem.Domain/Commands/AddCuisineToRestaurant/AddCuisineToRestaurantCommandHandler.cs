@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisineToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.AddCuisine(command.CuisineId);
+            restaurant.AddCuisine(command.CuisineId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

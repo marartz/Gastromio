@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.AddOpeningPeriodToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.AddOpeningPeriod(command.OpeningPeriod);
+            var result = restaurant.AddOpeningPeriod(command.OpeningPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

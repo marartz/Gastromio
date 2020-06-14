@@ -95,7 +95,10 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                         en.Remarks
                     )).ToList()
                 ),
-                command.Comments
+                command.Comments,
+                DateTime.UtcNow,
+                null,
+                null
             );
 
             var result = order.Validate();

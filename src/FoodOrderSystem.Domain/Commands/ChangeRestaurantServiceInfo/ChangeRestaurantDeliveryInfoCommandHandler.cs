@@ -34,19 +34,19 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantServiceInfo
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangePickupInfo(command.PickupInfo);
+            var result = restaurant.ChangePickupInfo(command.PickupInfo, currentUser.Id);
             if (result.IsFailure)
                 return result;
 
-            result = restaurant.ChangeDeliveryInfo(command.DeliveryInfo);
+            result = restaurant.ChangeDeliveryInfo(command.DeliveryInfo, currentUser.Id);
             if (result.IsFailure)
                 return result;
 
-            result = restaurant.ChangeReservationInfo(command.ReservationInfo);
+            result = restaurant.ChangeReservationInfo(command.ReservationInfo, currentUser.Id);
             if (result.IsFailure)
                 return result;
 
-            result = restaurant.ChangeHygienicHandling(command.HygienicHandling);
+            result = restaurant.ChangeHygienicHandling(command.HygienicHandling, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

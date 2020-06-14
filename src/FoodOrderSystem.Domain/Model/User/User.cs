@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace FoodOrderSystem.Domain.Model.User
 {
@@ -8,30 +9,69 @@ namespace FoodOrderSystem.Domain.Model.User
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
 
-        public User(UserId id)
+        public User(
+            UserId id,
+            DateTime createdOn,
+            UserId createdBy,
+            DateTime updatedOn,
+            UserId updatedBy
+        )
         {
             Id = id;
+            CreatedOn = createdOn;
+            CreatedBy = createdBy;
+            UpdatedOn = updatedOn;
+            UpdatedBy = updatedBy;
         }
 
-        public User(UserId id, Role role, string email, byte[] passwordSalt, byte[] passwordHash)
-            : this(id)
+        public User(
+            UserId id,
+            Role role,
+            string email,
+            byte[] passwordSalt,
+            byte[] passwordHash,
+            DateTime createdOn,
+            UserId createdBy,
+            DateTime updatedOn,
+            UserId updatedBy
+        )
         {
+            Id = id;
             Role = role;
             Email = email;
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
+            CreatedOn = createdOn;
+            CreatedBy = createdBy;
+            UpdatedOn = updatedOn;
+            UpdatedBy = updatedBy;
         }
 
         public UserId Id { get; }
+
         public Role Role { get; private set; }
+
         public string Email { get; private set; }
+
         public byte[] PasswordSalt { get; private set; }
+
         public byte[] PasswordHash { get; private set; }
 
-        public Result<bool> ChangeDetails(Role role, string email)
+        public DateTime CreatedOn { get; }
+
+        public UserId CreatedBy { get; }
+
+        public DateTime UpdatedOn { get; private set; }
+
+        public UserId UpdatedBy { get; private set; }
+
+        public Result<bool> ChangeDetails(Role role, string email, UserId changedBy)
         {
             Role = role;
             Email = email;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -42,7 +82,7 @@ namespace FoodOrderSystem.Domain.Model.User
             return SuccessResult<bool>.Create(validationResult);
         }
 
-        public Result<bool> ChangePassword(string password)
+        public Result<bool> ChangePassword(string password, UserId changedBy)
         {
             var newPasswordSalt = new byte[SALT_BYTES];
             using (var csprng = new RNGCryptoServiceProvider())
@@ -54,17 +94,20 @@ namespace FoodOrderSystem.Domain.Model.User
 
             PasswordSalt = newPasswordSalt;
             PasswordHash = newPasswordHash;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)
         {
-            uint diff = (uint)a.Length ^ (uint)b.Length;
+            uint diff = (uint) a.Length ^ (uint) b.Length;
             for (int i = 0; i < a.Length && i < b.Length; i++)
             {
-                diff |= (uint)(a[i] ^ b[i]);
+                diff |= (uint) (a[i] ^ b[i]);
             }
+
             return diff == 0;
         }
 

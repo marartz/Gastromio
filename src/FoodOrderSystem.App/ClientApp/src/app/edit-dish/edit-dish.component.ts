@@ -47,7 +47,7 @@ export class EditDishComponent implements OnInit {
     this.editDishForm = this.formBuilder.group({
       name: [this.dish.name, Validators.required],
       description: [this.dish.description, Validators.required],
-      productInfo: [this.dish.productInfo, Validators.required],
+      productInfo: [this.dish.productInfo],
     });
 
     if (this.dish.variants.length === 0) {
