@@ -30,6 +30,8 @@
     6.1.2 #dish-add, #dish-edit > #options-panel > #quantity
     6.2   #dish-add, #dish-edit > #confirm-or-add
 
+    10.  #checkout
+
     20.  #sys-admin
     20.1 #sys-admin > #user-management
     20.3 #sys-admin > #payment-methods
@@ -139,7 +141,7 @@ h4 {
 
 h5 {
     font-size: 14px;
-    font-weight: 500
+    font-weight: 400;
 }
 
 @media screen and (min-width: 768px) {
@@ -2074,6 +2076,381 @@ form:focus {
     display: table;
     margin: 16px auto 0px;
 }
+
+/* 10. #checkout */
+#checkout {
+    background-color: #f8f8f6;
+    display: flex;
+    flex-direction: column;
+    font-family: proxima-nova, sans-serif;
+}
+
+#checkout .checkout-content-container {
+	  margin: 0px auto;
+	  max-width: 100%;
+	  padding-left: 0px;
+	  padding-right: 0px;
+	  padding-bottom: 40px;
+}
+
+#checkout .checkout-content-container .checkout-col {
+    padding-top: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#checkout .info-pane:not(:first-of-type) {
+    margin-top: 40px;
+}
+
+#checkout .info-card {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 1px 0px 0px #e5e5e5;
+    padding: 32px;
+}
+
+#checkout .info-card .info-group {
+    box-shadow: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#checkout .info-card .info-group-center {
+    flex-grow: 3;
+    min-width: 0px;
+}
+
+#checkout #ordered .info-section,
+#checkout #ordered .info-section p {
+    color: #6d6d6d;
+    font-size: 12px;
+    line-height: 1.42;
+}
+
+#checkout .info-section:not(:first-of-type) {
+    border-top: 1px solid #dedede;
+    margin-top: 24px;
+    padding-top: 32px;
+}
+
+#checkout #ordered h3,
+#checkout .checkout-content-container .info-pane > .info-label {
+    color: grey;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    margin-bottom: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-transform: capitalize;
+}
+
+@media screen and (min-width: 1024px) {
+    #checkout #ordered h3,
+    #checkout .checkout-content-container .info-pane > .info-label {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+
+#checkout #ordered .wrapper {
+	  background: #fff;
+	  box-shadow: 0px 1px 0px 0px #e5e5e5;
+	  border-radius: 4px;
+	  padding: 32px;
+}
+
+#checkout #ordered .info-group {
+    border-radius: 0px 0px 4px 4px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+#checkout .input-wrap {
+    margin-top: 20px;
+    position: relative;
+}
+
+#checkout .input-wrap label {
+    color: #6d6d6d;
+    display: block;
+    font-size: 12px;
+    height: 18px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    top: -20px;
+    width: auto;
+    transform: translateY(0);
+    -ms-transform: translateY(0);
+    z-index: 2;
+}
+
+#checkout .input-wrap input {
+    font-size: 20px;
+    height: 26px;
+    padding-bottom: 0px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+#checkout .checkout-message {
+    color: #3b4245;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-top: 20px;
+}
+
+#checkout .info-group .logo {
+    flex-shrink: 0;
+    text-align: center;
+	  padding-right: 16px;
+	  width: 40px;
+}
+
+#checkout .info-group .logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#checkout .info-group .logo-container > img {
+    max-width: 36px;
+    height: 36px;
+    padding: 0px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    vertical-align: baseline;
+}
+
+#checkout .info-group .restaurant {
+    flex-grow: 3;
+    min-width: 0px;
+    padding-right: 24px;
+}
+
+#checkout .info-group .restaurant-info {
+    width: 100%;
+}
+
+#checkout .info-group .restaurant-info .restaurant-name {
+    color: #3b4245;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#checkout .info-group .restaurant-info .restaurant-address {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#checkout .info-group .back {
+    color: #6d6d6d;
+	  font-size: 14px;
+	  min-width: 70px;
+}
+
+#checkout .info-group .back button {
+    justify-content: flex-end;
+    text-align: right;
+    display: flex;
+}
+
+/* 10.2.1 #checkout > #dish-content */
+#checkout #ordered .info-group.dish:not(:first-of-type) {
+    margin-top: 24px;
+}
+
+#checkout #ordered .dish-content {
+    display: flex;
+    flex: 0 0 100%;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+#checkout #ordered .dish-content .dish-count {
+    flex-shrink: 0;
+    padding-right: 16px;
+    text-align: center;
+    width: 40px;
+}
+
+#checkout #ordered .dish-content .dish-count span {
+    color: #3b4245;
+    font-size: 16px;
+    font-weight: 300;
+    text-transform: capitalize;
+    width: 100%;
+}
+
+#checkout #ordered .dish {
+    flex-grow: 3;
+    min-width: 0px;
+}
+
+#checkout #ordered .dish-name {
+    color: #3b4245;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-transform: capitalize;
+    width: 100%;
+}
+
+#checkout #ordered .dish-remarks {
+    color: #6d6d6d;
+    font-family: proxima-nova, sans-serif;
+    font-size: 13px;
+    line-height: 1.42;
+    margin-top: 8px;
+    width: 100%;
+}
+
+#checkout #ordered .dish-price {
+    color: #3b4245;
+    font-size: 16px;
+    min-width: 70px;
+}
+
+#checkout #ordered .dish-price span {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0px;
+    text-align: right;
+    width: 100%;
+}
+
+/* 10.2.2 #checkout > #totals-panel */
+#checkout .totals-panel {
+    color: #6d6d6d;
+    font-size: 16px;
+}
+
+#checkout .totals-panel .panel {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#checkout .totals-panel .panel:not(:first-of-type) {
+    margin-top: 16px;
+}
+
+#checkout .totals-panel .panel.total {
+    color: #3b4245;
+}
+
+#checkout .totals-panel .panel::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+#checkout .totals-panel .panel .name {
+    display: block;
+    float: left;
+    font-weight: 500;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 50%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#checkout .totals-panel .panel .cost {
+    display: inline-block;
+    float: none;
+    font-weight: 500;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: right;
+    width: 50%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 10.2.3 #checkout > #checkout-submit */
+#checkout .cancellation-policy p {
+    color: #6d6d6d;
+    font-size: 14px;
+    line-height: 1.45;
+    margin-top: 10px;
+}
+
+#checkout .checkout-submit {
+    background: #e5e5e5;
+    box-shadow: none;
+    color: #5d6164;
+    cursor: not-allowed;
+    margin-top: 8px;
+    pointer-events: auto;
+    transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    width: 100%;
+}
+
+#checkout .checkout-submit.active {
+    background: #65b32e;
+    cursor: pointer;
+    color: #fff;
+}
+
+#checkout .checkout-submit.active:focus,
+#checkout .checkout-submit.active:hover {
+    background-color: #518f25;
+}
+
+@media screen and (min-width: 1024px) {
+    #checkout .checkout-content-container {
+	      display: flex;
+	      flex-direction: row;
+	      justify-content: center;
+	      padding-left: 10px;
+	      padding-right: 10px;
+    }
+    #checkout .checkout-content-container .checkout-col {
+	      padding-left: 10px;
+	      padding-right: 10px;
+    }
+    #checkout .checkout-content-container .checkout-col.checkout-main-col {
+        flex-shrink: 2;
+	      width: 684px;
+    }
+    #checkout .checkout-content-container .checkout-col.checkout-aside-col {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
+        position: relative;
+        width: 448px;
+    }
+    #checkout .checkout-content-container #ordered {
+	      position: sticky;
+	      top: 92px;
+    }
+}
+
 /* 20 #sys-admin  */
 #admin-card {
     margin-top: 48px;
