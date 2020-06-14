@@ -18,6 +18,18 @@ export class CartModel {
     return this.orderType;
   }
 
+  public getOrderTypeText(): string {
+    switch (this.getOrderType()) {
+      case OrderType.Pickup:
+        return 'Abholung';
+      case OrderType.Delivery:
+        return 'Lieferung';
+      case OrderType.Reservation:
+        return 'Tischreservierung';
+
+    }
+  }
+
   public getRestaurantId(): string {
     return this.restaurantId;
   }
