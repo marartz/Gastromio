@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.User;
 using MongoDB.Driver;
 
 namespace FoodOrderSystem.Persistence.MongoDB
@@ -112,7 +113,10 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         en.Remarks
                     )).ToList()
                 ) : null,
-                row.Comments
+                row.Comments,
+                row.CreatedOn,
+                row.UpdatedOn,
+                row.UpdatedBy.HasValue ? new UserId(row.UpdatedBy.Value) : null 
             );
         }
 
@@ -168,7 +172,10 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         }).ToList()
                     }
                     : null,
-                Comments = obj.Comments
+                Comments = obj.Comments,
+                CreatedOn = obj.CreatedOn,
+                UpdatedOn = obj.UpdatedOn,
+                UpdatedBy = obj.UpdatedBy?.Value
             };
         }
     }

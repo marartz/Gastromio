@@ -51,7 +51,7 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
-            var createResult = restaurantFactory.CreateWithName(command.Name);
+            var createResult = restaurantFactory.CreateWithName(command.Name, currentUser.Id);
             if (createResult.IsFailure)
                 return createResult.Cast<RestaurantViewModel>();
 

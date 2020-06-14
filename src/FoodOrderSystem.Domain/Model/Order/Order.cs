@@ -1,20 +1,43 @@
+using System;
+using FoodOrderSystem.Domain.Model.User;
+
 namespace FoodOrderSystem.Domain.Model.Order
 {
     public class Order
     {
-        public Order(OrderId id, CustomerInfo customerInfo, CartInfo cartInfo, string comments)
+        public Order(
+            OrderId id,
+            CustomerInfo customerInfo,
+            CartInfo cartInfo,
+            string comments,
+            DateTime createdOn,
+            DateTime? updatedOn,
+            UserId updatedBy
+        )
         {
             Id = id;
             CustomerInfo = customerInfo;
             CartInfo = cartInfo;
+            CreatedOn = createdOn;
+            UpdatedOn = updatedOn;
+            UpdatedBy = updatedBy;
             Comments = comments?.Trim();
         }
         
         public OrderId Id { get; }
+        
         public CustomerInfo CustomerInfo { get; }
+        
         public CartInfo CartInfo { get; }
+        
         public string Comments { get; }
 
+        public DateTime CreatedOn { get; }
+        
+        public DateTime? UpdatedOn { get; private set; }
+        
+        public UserId UpdatedBy { get; private set; }
+        
         public Result<bool> Validate()
         {
             if (CustomerInfo == null)

@@ -164,7 +164,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 role,
                 model.Email,
                 model.PasswordSalt,
-                model.PasswordHash
+                model.PasswordHash,
+                model.CreatedOn,
+                new UserId(model.CreatedBy), 
+                model.UpdatedOn,
+                new UserId(model.UpdatedBy) 
             );
         }
 
@@ -191,7 +195,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 Role = ToDbRole(obj.Role),
                 Email = obj.Email,
                 PasswordSalt = obj.PasswordSalt,
-                PasswordHash = obj.PasswordHash
+                PasswordHash = obj.PasswordHash,
+                CreatedOn = obj.CreatedOn,
+                CreatedBy = obj.CreatedBy.Value,
+                UpdatedOn = obj.UpdatedOn,
+                UpdatedBy = obj.UpdatedBy.Value
             };
         }
     }

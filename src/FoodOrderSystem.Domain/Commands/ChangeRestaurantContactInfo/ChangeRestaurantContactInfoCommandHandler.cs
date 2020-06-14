@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantContactInfo
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangeContactInfo(command.ContactInfo);
+            var result = restaurant.ChangeContactInfo(command.ContactInfo, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

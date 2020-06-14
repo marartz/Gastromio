@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangeAddress(command.Address);
+            var result = restaurant.ChangeAddress(command.Address, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

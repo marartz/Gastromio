@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.User;
 using MongoDB.Driver;
 
 namespace FoodOrderSystem.Persistence.MongoDB
@@ -72,10 +73,15 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         private static DishCategory FromDocument(DishCategoryModel model)
         {
-            return new DishCategory(new DishCategoryId(model.Id),
+            return new DishCategory(
+                new DishCategoryId(model.Id),
                 new RestaurantId(model.RestaurantId),
                 model.Name,
-                model.OrderNo
+                model.OrderNo,
+                model.CreatedOn,
+                new UserId(model.CreatedBy),
+                model.UpdatedOn,
+                new UserId(model.UpdatedBy)
             );
         }
 
@@ -87,6 +93,10 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 RestaurantId = obj.RestaurantId.Value,
                 Name = obj.Name,
                 OrderNo = obj.OrderNo,
+                CreatedOn = obj.CreatedOn,
+                CreatedBy = obj.CreatedBy.Value,
+                UpdatedOn = obj.UpdatedOn,
+                UpdatedBy = obj.UpdatedBy.Value
             };
         }
     }

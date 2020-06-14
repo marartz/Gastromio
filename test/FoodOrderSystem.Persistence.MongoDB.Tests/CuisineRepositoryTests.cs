@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Xunit;
@@ -18,19 +19,19 @@ namespace FoodOrderSystem.Persistence.MongoDB.Tests
         {
             var client = new MongoClient();
             client.DropDatabase(Constants.DatabaseName);
-            
+
             database = client.GetDatabase(ConstantsExt.TestDatabaseName);
             database.DropCollection(Constants.CuisineCollectionName);
-            
+
             cuisineCollection = database.GetCollection<CuisineModel>(Constants.CuisineCollectionName);
         }
-        
+
         [Fact]
         public async Task FindAllAsync()
         {
             var cuisineDocuments = CreateTestData();
             await cuisineCollection.InsertManyAsync(cuisineDocuments);
-            
+
             var target = new CuisineRepository(database);
             var result = (await target.FindAllAsync()).ToList();
 
@@ -44,11 +45,20 @@ namespace FoodOrderSystem.Persistence.MongoDB.Tests
             var collection = database.GetCollection<CuisineModel>(Constants.CuisineCollectionName);
             var count = await collection.CountDocumentsAsync(new BsonDocument());
             Assert.Equal(0, count);
-            
+
+            var userId = new UserId(Guid.NewGuid());
+
             var target = new CuisineRepository(database);
             var cuisineId = Guid.NewGuid();
-            await target.StoreAsync(new Cuisine(new CuisineId(cuisineId), "test"));
-            
+            await target.StoreAsync(new Cuisine(
+                new CuisineId(cuisineId),
+                "test",
+                DateTime.UtcNow,
+                userId,
+                DateTime.UtcNow,
+                userId
+            ));
+
             count = await collection.CountDocumentsAsync(new BsonDocument());
             Assert.Equal(1, count);
 

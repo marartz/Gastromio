@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.RemoveCuisineFromRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.RemoveCuisine(command.CuisineId);
+            restaurant.RemoveCuisine(command.CuisineId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

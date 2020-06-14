@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.RemoveOpeningPeriodFromRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.RemoveOpeningPeriod(command.DayOfWeek, command.Start);
+            restaurant.RemoveOpeningPeriod(command.DayOfWeek, command.Start, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

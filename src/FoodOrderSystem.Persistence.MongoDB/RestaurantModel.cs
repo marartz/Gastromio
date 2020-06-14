@@ -31,5 +31,13 @@ namespace FoodOrderSystem.Persistence.MongoDB
         public List<Guid> PaymentMethods { get; set; }
         
         public List<Guid> Administrators { get; set; }
+        
+        public DateTime CreatedOn { get; set; }
+        
+        public Guid CreatedBy { get; set; }
+        
+        public DateTime UpdatedOn { get; set; }
+        
+        public Guid UpdatedBy { get; set; }
     }
 }

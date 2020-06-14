@@ -43,7 +43,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant
             if (dishCategory == null)
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
 
-            dishCategory.ChangeName(command.Name);
+            dishCategory.ChangeName(command.Name, currentUser.Id);
 
             await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 

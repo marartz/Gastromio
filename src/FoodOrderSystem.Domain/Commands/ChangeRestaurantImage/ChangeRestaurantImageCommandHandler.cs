@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantImage
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangeImage(command.Image);
+            var result = restaurant.ChangeImage(command.Image, currentUser.Id);
             if (result.IsFailure)
                 return result;
 
