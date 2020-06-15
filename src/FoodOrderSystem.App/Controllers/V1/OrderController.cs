@@ -41,9 +41,13 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("restaurants")]
         [HttpGet]
-        public async Task<IActionResult> SearchForRestaurantAsync(string search)
+        public async Task<IActionResult> SearchForRestaurantAsync(string search, string orderType)
         {
-            var queryResult = await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(new OrderSearchForRestaurantsQuery(search), null);
+            OrderType? orderTypeEnum = string.IsNullOrWhiteSpace(orderType) ? (OrderType?)null : ConvertOrderType(orderType); 
+            
+            var queryResult =
+                await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(
+                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

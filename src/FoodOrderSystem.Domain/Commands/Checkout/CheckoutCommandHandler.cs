@@ -46,6 +46,24 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
             var restaurantInfo =
                 $"{restaurant.Name} ({restaurant.Address?.Street}, {restaurant.Address?.ZipCode} {restaurant.Address?.City})";
 
+            switch (command.OrderType)
+            {
+                case OrderType.Pickup:
+                    if (restaurant.PickupInfo == null || !restaurant.PickupInfo.Enabled)
+                        return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+                    break;
+                case OrderType.Delivery:
+                    if (restaurant.DeliveryInfo == null || !restaurant.DeliveryInfo.Enabled)
+                        return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+                    break;
+                case OrderType.Reservation:
+                    if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
+                        return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             var dishDict = new Dictionary<Guid, Dish>();
             var variantDict = new Dictionary<Guid, DishVariant>();
             foreach (var cartDish in command.CartDishes)

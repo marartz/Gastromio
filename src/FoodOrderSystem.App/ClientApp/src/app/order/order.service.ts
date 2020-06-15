@@ -62,7 +62,7 @@ export class OrderService {
     }
   }
 
-  public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
+  public searchForRestaurantsAsync(search: string, orderType: OrderType): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -70,7 +70,22 @@ export class OrderService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search), httpOptions);
+
+    let orderTypeText: string;
+    switch (orderType)
+    {
+      case OrderType.Pickup:
+        orderTypeText = 'pickup';
+        break;
+      case OrderType.Delivery:
+        orderTypeText = 'delivery';
+        break;
+      case OrderType.Reservation:
+        orderTypeText = 'reservation';
+    }
+
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search)
+      + '&orderType=' + encodeURIComponent(orderTypeText), httpOptions);
   }
 
   public initializeAsync(): Observable<unknown> {
