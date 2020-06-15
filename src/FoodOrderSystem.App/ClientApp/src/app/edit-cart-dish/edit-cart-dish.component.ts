@@ -2,15 +2,15 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {OrderService} from '../order/order.service';
 import {DishVariantModel} from '../dish-category/dish-variant.model';
-import {OrderedDishModel} from '../cart/ordered-dish.model';
+import {CartDishModel} from '../cart/cart-dish.model';
 
 @Component({
-  selector: 'app-edit-ordered-dish',
-  templateUrl: './edit-ordered-dish.component.html',
-  styleUrls: ['./edit-ordered-dish.component.css', '../../assets/css/frontend.min.css']
+  selector: 'app-edit-cart-dish',
+  templateUrl: './edit-cart-dish.component.html',
+  styleUrls: ['./edit-cart-dish.component.css', '../../assets/css/frontend.min.css']
 })
-export class EditOrderedDishComponent implements OnInit {
-  @Input() public orderedDish: OrderedDishModel;
+export class EditCartDishComponent implements OnInit {
+  @Input() public cartDish: CartDishModel;
 
   count: number;
   remarks: string;
@@ -22,8 +22,8 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.count = this.orderedDish.getCount();
-    this.remarks = this.orderedDish.getRemarks();
+    this.count = this.cartDish.getCount();
+    this.remarks = this.cartDish.getRemarks();
   }
 
   getVariantPrice(variant: DishVariantModel): string {
@@ -46,13 +46,13 @@ export class EditOrderedDishComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderService.setCountOfOrderedDish(this.orderedDish.getItemId(), this.count);
-    this.orderService.changeRemarksOfOrderedDish(this.orderedDish.getItemId(), this.remarks);
+    this.orderService.setCountOfCartDish(this.cartDish.getItemId(), this.count);
+    this.orderService.changeRemarksOfCartDish(this.cartDish.getItemId(), this.remarks);
     this.activeModal.close();
   }
 
   onRemove(): void {
-    this.orderService.removeOrderedDishFromCart(this.orderedDish.getItemId());
+    this.orderService.removeCartDishFromCart(this.cartDish.getItemId());
     this.activeModal.close();
   }
 

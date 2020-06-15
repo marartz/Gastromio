@@ -1,4 +1,4 @@
-export class StoredOrderedDishModel {
+export class StoredCartDishModel {
   public itemId: string;
   public dishId: string;
   public variantId: string;

@@ -1,4 +1,5 @@
 using System;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Persistence.MongoDB
 {
@@ -11,6 +12,10 @@ namespace FoodOrderSystem.Persistence.MongoDB
         public CartInfoModel CartInfo { get; set; }
         
         public string Comments { get; set; }
+        
+        public Guid PaymentMethodId { get; set; }
+        
+        public double Costs { get; set; }
         
         public DateTime CreatedOn { get; set; }
         

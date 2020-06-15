@@ -7,8 +7,11 @@ import {RestaurantModel} from '../restaurant/restaurant.model';
 import {DishCategoryModel} from '../dish-category/dish-category.model';
 import {take} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CheckoutModel, OrderedDishInfoModel} from '../order/checkout.model';
+import {CheckoutModel} from '../order/checkout.model';
 import {HttpErrorResponse} from '@angular/common/http';
+import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
+import {Router} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
@@ -31,7 +34,9 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private orderService: OrderService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
+    private router: Router,
+    private location: Location
   ) {
   }
 
@@ -61,7 +66,8 @@ export class CheckoutComponent implements OnInit {
           city: ['', Validators.required],
           phone: ['', Validators.required],
           email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-          comments: ['']
+          comments: [''],
+          paymentMethodId: ['', Validators.required]
         });
 
         this.restaurant = this.orderService.getRestaurant();
@@ -79,6 +85,10 @@ export class CheckoutComponent implements OnInit {
 
   getCart(): CartModel {
     return this.orderService.getCart();
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 
   onSubmit(data): void {
@@ -100,19 +110,20 @@ export class CheckoutComponent implements OnInit {
     checkoutModel.email = data.email;
     checkoutModel.orderType = OrderService.translateFromOrderType(cart.getOrderType());
     checkoutModel.restaurantId = cart.getRestaurantId();
-    checkoutModel.orderedDishes = new Array<OrderedDishInfoModel>();
+    checkoutModel.cartDishes = new Array<StoredCartDishModel>();
 
-    for (const orderedDish of cart.getOrderedDishes()) {
-      const orderedDishInfo = new OrderedDishInfoModel();
-      orderedDishInfo.itemId = orderedDish.getItemId();
-      orderedDishInfo.dishId = orderedDish.getDish().id;
-      orderedDishInfo.variantId = orderedDish.getVariant().variantId;
-      orderedDishInfo.count = orderedDish.getCount();
-      orderedDishInfo.remarks = orderedDish.getRemarks();
-      checkoutModel.orderedDishes.push(orderedDishInfo);
+    for (const cartDish of cart.getCartDishes()) {
+      const storedCartDish = new StoredCartDishModel();
+      storedCartDish.itemId = cartDish.getItemId();
+      storedCartDish.dishId = cartDish.getDish().id;
+      storedCartDish.variantId = cartDish.getVariant().variantId;
+      storedCartDish.count = cartDish.getCount();
+      storedCartDish.remarks = cartDish.getRemarks();
+      checkoutModel.cartDishes.push(storedCartDish);
     }
 
     checkoutModel.comments = data.comments;
+    checkoutModel.paymentMethodId = data.paymentMethodId;
 
     console.log('Checkout Model: ', checkoutModel);
 
@@ -123,6 +134,7 @@ export class CheckoutComponent implements OnInit {
         this.blockUI.stop();
         this.generalError = undefined;
         this.customerForm.reset();
+        this.router.navigateByUrl('/order-summary');
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();

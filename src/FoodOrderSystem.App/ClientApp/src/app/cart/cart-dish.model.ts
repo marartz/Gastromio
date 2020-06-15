@@ -1,7 +1,7 @@
 import {DishModel} from '../dish-category/dish.model';
 import {DishVariantModel} from '../dish-category/dish-variant.model';
 
-export class OrderedDishModel {
+export class CartDishModel {
   constructor(
     private itemId: string,
     private dish: DishModel,

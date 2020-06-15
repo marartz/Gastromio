@@ -2,7 +2,7 @@ using System;
 
 namespace FoodOrderSystem.App.Models
 {
-    public class OrderedDishInfoModel
+    public class CartDishInfoModel
     {
         public Guid ItemId { get; set; }
         public Guid DishId { get; set; }

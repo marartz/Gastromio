@@ -1,4 +1,4 @@
-import {OrderedDishModel} from './ordered-dish.model';
+import {CartDishModel} from './cart-dish.model';
 
 export class CartModel {
   constructor(
@@ -9,7 +9,7 @@ export class CartModel {
     private maximumOrderValue: number,
     private costs: number,
     private hygienicHandling: string,
-    private orderedDishes: OrderedDishModel[],
+    private cartDishes: CartDishModel[],
     private visible: boolean
   ) {
   }
@@ -74,28 +74,28 @@ export class CartModel {
   }
 
   public hasOrders(): boolean {
-    return this.orderedDishes ? this.orderedDishes.length > 0 : false;
+    return this.cartDishes ? this.cartDishes.length > 0 : false;
   }
 
-  public getOrderedDishes(): OrderedDishModel[] {
-    return this.orderedDishes;
+  public getCartDishes(): CartDishModel[] {
+    return this.cartDishes;
   }
 
   public getDishCountOfOrder(): number {
     let result = 0;
-    for (const orderedDish of this.orderedDishes) {
-      result += orderedDish.getCount();
+    for (const cartDish of this.cartDishes) {
+      result += cartDish.getCount();
     }
     return result;
   }
 
   public getValueOfOrder(): number {
-    if (this.orderedDishes === undefined || this.orderedDishes.length === 0) {
+    if (this.cartDishes === undefined || this.cartDishes.length === 0) {
       return 0;
     }
     let result = 0;
-    for (const orderedDish of this.orderedDishes) {
-      result += orderedDish.getCount() * orderedDish.getVariant().price;
+    for (const cartDish of this.cartDishes) {
+      result += cartDish.getCount() * cartDish.getVariant().price;
     }
     return result;
   }

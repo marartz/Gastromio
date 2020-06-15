@@ -3,9 +3,9 @@ using FoodOrderSystem.Domain.Model.Dish;
 
 namespace FoodOrderSystem.Domain.Commands.Checkout
 {
-    public class OrderedDishInfo
+    public class CartDishInfo
     {
-        public OrderedDishInfo(
+        public CartDishInfo(
             Guid itemId,
             DishId dishId,
             Guid variantId,

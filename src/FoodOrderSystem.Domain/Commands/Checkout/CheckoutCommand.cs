@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using FoodOrderSystem.Domain.Model.Order;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.Checkout
 {
-    public class CheckoutCommand : ICommand<OrderId>
+    public class CheckoutCommand : ICommand<OrderViewModel>
     {
         public CheckoutCommand(
             string givenName,
@@ -17,8 +19,9 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
             string email,
             OrderType orderType,
             RestaurantId restaurantId,
-            IList<OrderedDishInfo> orderedDishes,
-            string comments
+            IList<CartDishInfo> cartDishes,
+            string comments,
+            PaymentMethodId paymentMethodId
         )
         {
             GivenName = givenName;
@@ -31,8 +34,9 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
             Email = email;
             OrderType = orderType;
             RestaurantId = restaurantId;
-            OrderedDishes = orderedDishes;
+            CartDishes = cartDishes;
             Comments = comments;
+            PaymentMethodId = paymentMethodId;
         }
         
         public string GivenName { get; }
@@ -45,7 +49,8 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
         public string Email { get; }
         public OrderType OrderType { get; }
         public RestaurantId RestaurantId { get; }
-        public IList<OrderedDishInfo> OrderedDishes { get; }
+        public IList<CartDishInfo> CartDishes { get; }
         public string Comments { get; }
+        public PaymentMethodId PaymentMethodId { get; }
     }
 }

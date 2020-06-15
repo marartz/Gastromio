@@ -12,10 +12,10 @@ import {DishModel} from '../dish-category/dish.model';
 import {OrderRestaurantOpeningHoursComponent} from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import {OrderRestaurantImprintComponent} from '../order-restaurant-imprint/order-restaurant-imprint.component';
 import {CartModel, OrderType} from '../cart/cart.model';
-import {OrderedDishModel} from '../cart/ordered-dish.model';
+import {CartDishModel} from '../cart/cart-dish.model';
 import {DishProductInfoComponent} from '../dish-productinfo/dish-productinfo.component';
 import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.component';
-import {EditOrderedDishComponent} from '../edit-ordered-dish/edit-ordered-dish.component';
+import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
 import {take} from 'rxjs/operators';
 
 @Component({
@@ -176,34 +176,34 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onEditOrderedDish(orderedDish: OrderedDishModel): void {
-    const modalRef = this.modalService.open(EditOrderedDishComponent);
-    modalRef.componentInstance.orderedDish = orderedDish;
+  public onEditCartDish(cartDish: CartDishModel): void {
+    const modalRef = this.modalService.open(EditCartDishComponent);
+    modalRef.componentInstance.cartDish = cartDish;
     modalRef.result.then(() => {
     }, () => {
     });
   }
 
-  public onIncrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
-    if (orderedDishVariant === undefined) {
+  public onIncrementDishVariantCount(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.incrementCountOfOrderedDish(orderedDishVariant.getItemId());
+    this.orderService.incrementCountOfCartDish(cartDishVariant.getItemId());
   }
 
-  public onDecrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
-    if (orderedDishVariant === undefined) {
+  public onDecrementDishVariantCount(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
       return;
     }
     const cart = this.orderService.getCart();
-    this.orderService.decrementCountOfOrderedDish(orderedDishVariant.getItemId());
+    this.orderService.decrementCountOfCartDish(cartDishVariant.getItemId());
   }
 
-  public onRemoveDishVariantFromCart(orderedDishVariant: OrderedDishModel): void {
-    if (orderedDishVariant === undefined) {
+  public onRemoveDishVariantFromCart(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
       return;
     }
     const cart = this.orderService.getCart();
-    this.orderService.removeOrderedDishFromCart(orderedDishVariant.getItemId());
+    this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
   }
 }

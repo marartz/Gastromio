@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace FoodOrderSystem.Persistence.MongoDB
+namespace FoodOrderSystem.Domain.ViewModels
 {
-    public class OrderedDishInfoModel
+    public class OrderedDishInfoViewModel
     {
         public Guid ItemId { get; set; }
         public Guid DishId { get; set; }
