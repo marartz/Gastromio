@@ -10,7 +10,7 @@
             </div>
             <!-- ENDE: Fehlermeldungen -->
 
-            <div id="checkout" *ngIf="generalError === undefined && initialized">
+            <div id="checkout" *ngIf="initialized">
                 <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
 
                     <div class="checkout-content-container">

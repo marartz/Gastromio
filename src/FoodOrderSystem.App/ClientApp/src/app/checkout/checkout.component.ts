@@ -60,7 +60,7 @@ export class CheckoutComponent implements OnInit {
           addAddressInfo: [''],
           city: ['', Validators.required],
           phone: ['', Validators.required],
-          email: ['', Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+          email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
           comments: ['']
         });
 
@@ -94,7 +94,7 @@ export class CheckoutComponent implements OnInit {
     checkoutModel.lastName = data.lastName;
     checkoutModel.street = data.street;
     checkoutModel.addAddressInfo = data.addAddressInfo;
-    checkoutModel.zipCode = data.zipCode;
+    checkoutModel.zipCode = data.zipCode.toString();
     checkoutModel.city = data.city;
     checkoutModel.phone = data.phone;
     checkoutModel.email = data.email;
@@ -113,6 +113,8 @@ export class CheckoutComponent implements OnInit {
     }
 
     checkoutModel.comments = data.comments;
+
+    console.log('Checkout Model: ', checkoutModel);
 
     this.blockUI.start('Verarbeite Daten...');
     this.orderService.checkoutAsync(checkoutModel)
