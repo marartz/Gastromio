@@ -8,6 +8,7 @@ namespace FoodOrderSystem.Domain.Model.User
             Role role,
             string email,
             string password,
+            bool checkPasswordPolicy,
             UserId createdBy
         )
         {
@@ -25,7 +26,7 @@ namespace FoodOrderSystem.Domain.Model.User
 
             if (!string.IsNullOrEmpty(password))
             {
-                tempResult = user.ChangePassword(password, createdBy);
+                tempResult = user.ChangePassword(password, checkPasswordPolicy, createdBy);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<User>();
             }

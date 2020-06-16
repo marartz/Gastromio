@@ -44,7 +44,7 @@ namespace FoodOrderSystem.Domain.Commands.EnsureAdminUser
                 DateTime.UtcNow,
                 currentUser.Id
             );
-            adminUser.ChangePassword("admin", currentUser.Id);
+            adminUser.ChangePassword("admin", false, currentUser.Id);
             
             await userRepository.StoreAsync(adminUser, cancellationToken);
 

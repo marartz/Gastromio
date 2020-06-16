@@ -12,6 +12,7 @@
         ValueMustNotBeNegative,
         UserDoesNotExist,
         UserAlreadyExists,
+        PasswordIsNotValid,
         CannotRemoveCurrentUser,
         CuisineDoesNotExist,
         CuisineAlreadyExists,

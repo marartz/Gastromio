@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace FoodOrderSystem.Domain.Model.User
 {
@@ -8,6 +9,8 @@ namespace FoodOrderSystem.Domain.Model.User
         private const int SALT_BYTES = 24;
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
+        
+        private static Regex passwordPolicyRegex = new Regex(@"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}");
 
         public User(
             UserId id,
@@ -82,8 +85,11 @@ namespace FoodOrderSystem.Domain.Model.User
             return SuccessResult<bool>.Create(validationResult);
         }
 
-        public Result<bool> ChangePassword(string password, UserId changedBy)
+        public Result<bool> ChangePassword(string password, bool checkPasswordPolicy, UserId changedBy)
         {
+            if (checkPasswordPolicy && !passwordPolicyRegex.IsMatch(password))
+                return FailureResult<bool>.Create(FailureResultCode.PasswordIsNotValid);
+            
             var newPasswordSalt = new byte[SALT_BYTES];
             using (var csprng = new RNGCryptoServiceProvider())
             {
