@@ -13,7 +13,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-edit-dish',
   templateUrl: './edit-dish.component.html',
-  styleUrls: ['./edit-dish.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./edit-dish.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class EditDishComponent implements OnInit {
   @Input() public restaurantId: string;

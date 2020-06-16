@@ -32,25 +32,6 @@
 
     10.  #checkout
 
-    20.  #sys-admin
-    20.1 #sys-admin > #user-management
-    20.3 #sys-admin > #payment-methods
-    20.4 #sys-admin > #cuisine-options
-    20.5 #sys-admin > #opening-period
-    20.6 #sys-admin > #restaurant-administrators
-    20.7 #sys-admin > #dish-menu
-
-    30.  #rest-admin
-    30.1 #rest-admin > #nav
-    30.2 #rest-admin > #section-header
-    30.3 #rest-admin > #form
-    30.4 #rest-admin > #restaurant-address
-
-    70.  #modal
-    70.1 #modal > #modal-header
-    70.2 #modal > #modal-body
-    70.3 #modal > #modal-footer
-
     80.  #entry
 
     90.  #navbar
@@ -357,6 +338,23 @@ button[class*="-hollow-remove"]:hover {
     transition: all 150ms cubic-bezier(.215, .61, .355, 1);
 }
 
+button.disabled {
+    background: #e5e5e5;
+    box-shadow: none;
+    color: #5d6164;
+    cursor: not-allowed;
+    pointer-events: auto;
+}
+
+button.disabled:hover {
+    background: #e5e5e5;
+}
+
+button.hollow.disabled,
+button[class*="-hollow"].disabled {
+    border-color: transparent;
+}
+
 [role=button],
 [role=button] > span,
 [tabindex='0'],
@@ -499,6 +497,22 @@ input[type=url]::-ms-clear,
 input[type=week]::-ms-clear,
 textarea::-ms-clear {
     display: none;
+}
+
+select {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #e5e5e5;
+    border-radius: 4px;
+    color: #3b4245;
+    font-family: proxima-nova, sans-serif;
+    font-size: 16px;
+    overflow: hidden;
+    padding: 10px 20px 10px 10px;
+    text-transform: none;
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 form:focus {
@@ -2451,907 +2465,6 @@ form:focus {
     }
 }
 
-/* 20 #sys-admin  */
-#admin-card {
-    margin-top: 48px;
-    margin-bottom: 18px;
-}
-
-#admin-card .add {
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: 0px 1px 0px #e5e5e5;
-    color: #3b4245;
-    cursor: pointer;
-    display: flex;
-    height: 116px;
-    justify-content: flex-start;
-    margin-bottom: 16px;
-    padding: 22px 40px;
-    text-align: left;
-    width: 100%;
-    transition: none;
-}
-
-#admin-card .add:hover,
-#admin-card .add:hover {
-    border-color: #41721e;
-}
-
-#admin-card .add span {
-    color: #3b4245;
-    font-family: proxima-nova, sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 19px;
-    padding: 5px 20px 0px;
-    transition: all .8s ease-in-out;
-}
-
-@media screen and (min-width: 768px) {
-    #admin-card .add span {
-        padding: 5px 40px 0px;
-    }
-}
-
-#hero {
-    background-color: #f8f8f6;
-    color: #41721e;
-    padding-top: 54px;
-    padding-bottom: 54px;
-    text-align: center;
-}
-
-@media screen and (min-width: 1024px) {
-    #hero {
-        padding-top: 80px;
-        padding-bottom: 80px;
-    }
-}
-
-#hero .inner {
-    text-align: center;
-    margin-right: auto;
-    margin-left: auto;
-    max-width: 100%;
-    width: 502px;
-}
-
-#hero .inner .page-title {
-    font-family: proxima-nova, sans-serif;
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 1.2;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-@media screen and (min-width: 1024px) {
-    #hero .inner .page-title {
-        font-size: 44px;
-    }
-}
-
-#hero .inner .page-description {
-    color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-	  line-height: 1.4;
-	  margin-top: .5rem;
-}
-
-/* 20.1 #sys-admin > #user-management */
-#user-management {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1200px;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-#user-management .inner {
-    color: #3b4245;
-    display: block;
-    margin-bottom: 16px;
-    overflow: hidden;
-    width: 100%;
-}
-
-#user-management .inner .filter {
-    border-bottom: none;
-    float: left;
-    font-size: 14px;
-    text-align: left;
-}
-
-#user-management .inner .text-link {
-    float: right;
-    text-align: left;
-}
-
-#user-management .inner table th {
-    color: #3b4245;
-    font-family: proxima-nova, sans-serif;
-    font-weight: 600;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#user-management .inner table .actions {
-    text-align: right;
-}
-
-#user-management .inner table .actions a {
-    padding-left: 8px;
-}
-
-#user-management .inner table .actions a.edit {
-    color: #3b4245;
-    opacity: 1;
-}
-
-#user-management .inner table .actions a.edit:hover {
-    opacity: .75;
-}
-
-#user-management .inner table .actions a.delete {
-    color: #b44448;
-}
-
-#user-management .inner table .actions a.delete:hover {
-    color: #a53e42;
-}
-
-/* 20.1 #sys-admin > #cuisine-management */
-#cuisine-management {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1200px;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-#cuisine-management .inner {
-    color: #3b4245;
-    display: block;
-    margin-bottom: 16px;
-    overflow: hidden;
-    width: 100%;
-}
-
-#cuisine-management .inner .filter {
-    border-bottom: none;
-    float: left;
-    font-size: 14px;
-    text-align: left;
-}
-
-#cuisine-management .inner .text-link {
-    float: right;
-    text-align: left;
-}
-
-#cuisine-management .inner table th {
-    color: #3b4245;
-    font-family: proxima-nova, sans-serif;
-    font-weight: 600;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#cuisine-management .inner table .actions {
-    text-align: right;
-}
-
-#cuisine-management .inner table .actions a {
-    padding-left: 8px;
-}
-
-#cuisine-management .inner table .actions a.edit {
-    color: #3b4245;
-    opacity: 1;
-}
-
-#cuisine-management .inner table .actions a.edit:hover {
-    opacity: .75;
-}
-
-#cuisine-management .inner table .actions a.delete {
-    color: #b44448;
-}
-
-#cuisine-management .inner table .actions a.delete:hover {
-    color: #a53e42;
-}
-
-/* 20.3 #sys-admin > #payment-method */
-#payment-method h2 {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#payment-method .methods-inner {
-    margin-bottom: 20px;
-}
-
-#payment-method .method {
-    background: #fff;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: 0px 1px 0px #e5e5e5;
-    color: #3b4245;
-    display: block;
-    float: left;
-    margin-bottom: 16px;
-    outline: none;
-    overflow: hidden;
-    padding: 22px 27px;
-    text-align: left;
-    transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
-    width: 100%;
-}
-
-#payment-method .method .cross-fade {
-    height: 35px;
-    position: relative;
-}
-
-#payment-method .method .cross-fade > * {
-    position: absolute;
-    top: 0px;
-    width: 100%;
-}
-
-#payment-method .method .method-content {
-    align-items: center;
-    display: flex;
-    justify-content: flex-start;
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#payment-method .method .payment-icon {
-    font-size: 0px;
-    margin-right: 24px;
-    width: 24px;
-}
-
-#payment-method .method .payment-name {
-    font-family: proxima-nova, sans-serif;
-    line-height: 1;
-}
-
-/*
-#payment-method .method .payment-name .active {
-    color: #65b32e;
-}
-
-#payment-method .method .payment-name .inactive {
-    color: #b44448;
-}
-*/
-
-#payment-method .method .payment-description {
-    color: #3b4245;
-    font-size: 12px;
-}
-
-#payment-method .actions {
-    cursor: pointer;
-    margin-left: auto;
-    right: -16px;
-    padding: 16px 18px;
-    position: absolute;
-    text-align: center;
-}
-/* 20.3 #sys-admin > #cuisine-options */
-#cuisine-options .no-cuisines {
-    text-align: center;
-}
-
-#cuisine-options .no-cuisines span {
-    color: #6d6d6d;
-    display: block;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.8px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    padding: 24px 20px 40px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-#cuisine-options h2 {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#cuisine-options .cuisine-inner {
-    margin-bottom: 20px;
-}
-
-#cuisine-options .cuisine {
-    background: #fff;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: 0px 1px 0px #e5e5e5;
-    color: #3b4245;
-    cursor: pointer;
-    display: block;
-    float: left;
-    margin-bottom: 16px;
-    overflow: hidden;
-    padding: 32px 27px;
-	  text-align: left;
-	  width: 100%;
-}
-
-#cuisine-options .cuisine:focus,
-#cuisine-options .cuisine:hover {
-    border-color: #32b593;
-}
-
-#cuisine-options .cuisine .cross-fade {
-    height: 35px;
-    position: relative;
-}
-
-#cuisine-options .cuisine .cross-fade > * {
-    position: absolute;
-    top: 0px;
-    width: 100%;
-}
-
-#cuisine-options .cuisine .cuisine-content {
-    align-items: center;
-    display: flex;
-    justify-content: flex-start;
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#cuisine-options .cuisine .cuisine-icon {
-    margin-right: 24px;
-    width: 24px;
-}
-
-#cuisine-options .cuisine .cuisine-name {
-    font-family: proxima-nova, sans-serif;
-    line-height: 1;
-}
-
-#cuisine-options .cuisine .cuisine-description {
-    color: #3b4245;
-    font-size: 12px;
-}
-
-#cuisine-options .cuisine .actions {
-    margin-left: auto;
-}
-
-#cuisine-options .cuisine .actions .edit-link {
-    padding: 0px;
-}
-
-#cuisine-options .add-cuisine {
-    background: transparent;
-    border-bottom: none;
-    padding: 0px;
-    margin-top: 20px;
-}
-
-/* 20.5 #sys-admin > #opening-period */
-#opening-period h2 {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#opening-period .add-period {
-    background: transparent;
-    border-bottom: none;
-    padding: 0px;
-    margin-top: 20px;
-}
-
-/* 20.6 #sys-admin > #restaurant-administrators */
-#restaurant-administrators h2 {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#restaurant-administrators .actions {
-    margin-left: auto;
-    text-align: right;
-}
-
-#restaurant-administrators .actions .edit-link {
-    padding: 0px;
-}
-
-#restaurant-administrators .add-administrator {
-    background: transparent;
-    border-bottom: none;
-    padding: 0px;
-    margin-top: 20px;
-}
-
-/* 20.7 #sys-admin > #dish-menu */
-#dish-menu h2 {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* 30. #rest-admin */
-#rest-admin,
-#sys-admin {
-    background-color: #f8f8f6;
-}
-
-#rest-admin .waypointable,
-#sys-admin .waypointable {
-    outline: 0;
-}
-
-#rest-admin .waypointable:not(:first-of-type),
-#sys-admin .waypointable:not(:first-of-type) {
-    padding-top: 80px;
-}
-
-#rest-admin .centered,
-#sys-admin .centered {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 480px;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-/* 30.1 #rest-admin > #nav */
-#nav {
-    border-top: 1px solid transparent;
-    margin-top: -1px;
-    height: 72px;
-    width: 100%;
-    transition: all .3s cubic-bezier(.215, .61, .355, 1);
-}
-
-#nav .bar {
-    float: none;
-    padding: 0px;
-    z-index: 9;
-}
-
-#nav .bar-inner {
-    background: #fff;
-    height: 72px;
-    padding: 0px;
-    position: relative;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-}
-
-#nav ul.links {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: stretch;
-    padding-left: 0px;
-    position: relative;
-    white-space: nowrap;
-    width: 100%;
-}
-
-#nav ul.links li {
-    cursor: pointer;
-    display: block;
-    padding: 0px;
-    text-align: center;
-    vertical-align: middle;
-    width: 100%;
-}
-
-#nav .text-link {
-    color: #6d6d6d;
-    display: block;
-    line-height: 72px;
-    white-space: nowrap;
-	  width: 100%;
-	  transition: .3s all cubic-bezier(.215, .61, .355, 1);
-}
-
-@media screen and (min-width: 900px) {
-    #nav .text-link {
-        padding: 0px 72px;
-    }
-}
-
-#nav .text-link.active,
-#nav .text-link:focus,
-#nav .text-link:hover {
-    color: #1f4f46;
-}
-
-/* 30.2 #rest-admin > #section-header */
-#section-header {
-    margin: 0px auto;
-    text-align: center;
-}
-
-#section-header.my-restaurant {
-    margin-top: 5rem;
-}
-
-#section-header:first-of-type {
-    margin-top: 5rem;
-}
-
-#section-header .section-title {
-    color: #41721e;
-    font-size: 40px;
-    font-family: proxima-nova, sans-serif;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-#sys-admin #section-header .section-title {
-    width: 100% !important;
-}
-
-#section-header .section-description {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 27px;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 256px;
-}
-
-/* 30.3 #rest-admin > #form */
-#form fieldset {
-    border: none;
-    margin: 0px;
-    padding: 0px;
-}
-
-#form fieldset legend {
-    color: #6d6d6d;
-    font-size: 14px;
-    font-weight: 500;
-    height: auto;
-    margin-bottom: 16px;
-    opacity: 1;
-    -webkit-font-smoothing: subpixel-antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#form form {
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 20px;
-    transition: all .4s cubic-bezier(.57, .06, .05, .95);
-}
-
-#form.restaurant-info {
-    margin-top: 48px;
-    margin-bottom: 48px;
-}
-
-#form .backend-input {
-    margin-bottom: 20px;
-    position: relative;
-    transition: all .4s cubic-bezier(.57, .06, .05, .95);
-}
-
-#form .backend-input label {
-    color: #6d6d6d;
-}
-
-#form .backend-input input {
-	  margin-bottom: 0;
-	  width: 100%;
-}
-
-#form .backend-input input.disabled {
-    border-bottom-style: dotted;
-    border-bottom: 2px dotted #1f4f46;
-    cursor: not-allowed;
-    pointer-events: auto;
-    color: #6d6d6d;
-    -webkit-text-fill-color: #6d6d6d;
-    opacity: 1;
-}
-
-#form .backend-input input:not(.disabled):hover,
-#form .backend-input input:not(.disabled):focus {
-    border-bottom: 2px solid #518f25;
-}
-
-
-#form .inline-button-wrap {
-    display: flex;
-    flex-basis: 0;
-    margin-top: 24px;
-}
-
-#form .inline-button-wrap button {
-	  flex: 1;
-	  margin-right: 8px;
-	  transition: margin-right 0s;
-}
-
-/* 30.4 #rest-admin > #restaurant-address */
-#restaurant-address {
-    margin-top: 48px;
-    margin-bottom: 18px;
-}
-
-#restaurant-address .add-address {
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: 0px 1px 0px #e5e5e5;
-    color: #3b4245;
-    cursor: pointer;
-    display: flex;
-    height: 116px;
-    justify-content: flex-start;
-    margin-bottom: 16px;
-    padding: 22px 40px;
-    text-align: left;
-    width: 100%;
-    transition: all .8s ease-in-out;
-}
-
-#restaurant-address .add-address:hover,
-#restaurant-address .add-address:hover {
-    border-color: #214f46;
-}
-
-#restaurant-address .add-address span {
-    color: #3b4245;
-    font-family: proxima-nova, sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 19px;
-    padding: 5px 20px 0px;
-    transition: all .8s ease-in-out;
-}
-
-@media screen and (min-width: 768px) {
-    #restaurant-address .add-address span {
-        padding: 5px 40px 0px;
-    }
-}
-
-/* 70. #modal */
-#modal {
-    background-color: rgba(248, 248, 246, .56);
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 50%;
-    left: 0px;
-    right: 0px;
-    transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    z-index: 999999 !important;
-}
-
-#modal .modal-content {
-    background-color: #fff;
-    bottom: 0px;
-    box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, .08), 0px 1px 0px 0px #e5e5e5;
-    color: #65b32e;
-    position: relative;
-    margin: 0px auto;
-    max-height: 100vh;
-    max-width: 498px;
-    outline: 0;
-    opacity: 0;
-    overflow-y: hidden;
-    padding: 72px 0px 0px;
-    transform: none;
-    -ms-transform: none;
-    width: 100%;
-}
-
-@media screen and (min-width: 350px) {
-  #modal .modal-content {
-        animation-delay: 50ms;
-        animation-duration: .3s;
-        animation-timing-function: ease;
-        animation-iteration-count: 1;
-        animation-name: fadeInUpModal;
-        animation-fill-mode: forwards;
-	      border-radius: 4px;
-        top: 50%;
-    }
-}
-
-@keyframes fadeInUpModal {
-    0% {
-        transform: translate3d(0, -43%, 0)
-    }
-    100% {
-        transform: translate3d(0, -50%, 0);
-        opacity: 1
-    }
-}
-
-/* 70.1 #modal > #modal-header */
-#modal #modal-header {
-    background-color: #fff;
-    box-shadow: 0px 2px 21px 0px rgba(204, 204, 204, .4);
-    height: 72px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    z-index: 21;
-}
-
-#modal #modal-header .modal-title {
-	  line-height: 4.5rem;
-	  padding: 0 1.5rem;
-    margin-bottom: .1875rem;
-    letter-spacing: .045em;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: proxima-nova, sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-#modal #modal-header .modal-close {
-    background: 0 0;
-    position: absolute;
-    top: .375rem;
-    right: .375rem;
-    cursor: pointer;
-    transition: background .3s cubic-bezier(.57,.06,.05,.95),opacity .3s ease-out;
-}
-
-#modal #modal-header .modal-close svg {
-    fill: #65b32e;
-    margin-bottom: .5rem;
-}
-
-/* 70.2 #modal > #modal-body */
-#modal #modal-body {
-    padding: 0px 24px;
-    max-height: calc(80vh - 72px);
-    overflow-y: auto;
-}
-
-#modal #modal-body > :last-child {
-    margin-bottom: 12px;
-}
-
-#modal #modal-body::before {
-    background: #fff;
-    content: " ";
-    display: block;
-    height: 21px;
-    margin-left: -24px;
-    margin-right: -24px;
-    position: relative;
-    z-index: 22;
-}
-
-#modal #modal-body .modal-message {
-    color: #5d6164;
-    font-family: proxima-nova, sans-serif;
-    font-size: 16px;
-    text-align: center;
-}
-
-#modal #modal-body .modal-message span {
-    display: block;
-    font-size: 12px;
-    margin-top: 16px;
-}
-
-#modal #modal-body .modal-input {
-    margin-top: 48px;
-    margin-bottom: 20px;
-    position: relative;
-}
-
-#modal #modal-body .modal-input:first-of-type {
-    margin-bottom: 0px;
-    margin-top: 25px;
-}
-
-#modal #modal-body .modal-input input {
-    margin-bottom: 0px;
-    position: relative;
-    width: 100%;
-    z-index: 1;
-}
-
-#modal #modal-body .modal-input select {
-    background-color: transparent;
-    border: 0;
-    border-bottom: 2px solid #ccc;
-    color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
-    font-size: 20px;
-    height: 36px;
-    line-height: 1;
-    margin: 0px;
-    outline: 0;
-    width: 100%;
-    -webkit-border-radius: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#modal #modal-body .modal-input label {
-    clip: initial;
-    color: #6d6d6d;
-    display: block;
-    font-size: 12px;
-    height: 18px;
-    margin: -1px;
-    opacity: 1;
-    overflow: hidden;
-    padding: 0px;
-    position: absolute;
-    top: -20px;
-    transform: translateY(0);
-    -ms-transform: translateY(0);
-    transition: all .4s cubic-bezier(.165, .84, .44, 1), opacity .4s cubic-bezier(.165, .84, .44, 1) .1s, z-index 0s linear .4s;
-    width: auto;
-	  z-index: 2;
-}
-
-/* 70.3 #modal > #modal-footer */
-#modal #modal-footer {
-    background: #fff;
-    border-top: 1px solid #eef0f0;
-    padding: 20px 24px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    z-index: 21;
-}
-
-#modal #modal-footer .inline-button-wrap {
-    margin: 0px;
-}
-
-
 /* 80. #entry */
 #entry.form-wrap {
     display: flex;
@@ -3654,7 +2767,7 @@ form:focus {
     position: absolute;
     text-align: left;
     transition: opacity .2s linear;
-    z-index: 10;
+    z-index: 9999;
 }
 
 #navbar .settings li {
@@ -3697,7 +2810,7 @@ form:focus {
 
 /* 91. #footer */
 #footer {
-    background: #65b32e;
+    background: #256d1b;
     position: relative;
 }
 
@@ -3784,22 +2897,73 @@ form:focus {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* 99. #error */
+/* 98. #error */
 #error {
+    height: calc(100vh - 72px);
+    padding: 0px 20px;
+    position: relative;
+    width: 100%;
+}
+
+#error #general h1 {
+    font-family: proxima-nova, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.72px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    margin-top: 26.5px;
+    text-align: center;
+}
+
+#error #general p {
+    font-weight: 500;
+    margin: 10px auto 40px;
+    max-width: 640px;
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+    #error .middle {
+        display: table;
+        height: 100%;
+        width: 100%;
+    }
+    #error #general {
+        display: table-cell;
+        height: 100%;
+        vertical-align: middle;
+    }
+    #error #general h1 {
+        margin-top: 0px;
+    }
+}
+
+/* 99. #alert */
+#alert {
+    height: auto;
     overflow: hidden;
     pointer-events: auto;
     position: fixed;
-    top: 4.5rem;
+    top: 72px;
     width: 100%;
-    z-index: 999999999;
+    z-index: 8888;
 }
 
-/* 99.1 #error > #message */
-#error #message {
-    align-items: center;
+#alert.error {
     background-color: #b44448;
+    pointer-events: auto;
+}
+
+#alert.notice {
+    background-color: #41721e;
+    pointer-events: auto;
+}
+
+/* 99.1 #alert > #message */
+#alert #message {
+    align-items: center;
     color: #fff;
-    cursor: not-allowed;
+    cursor: pointer;
     display: flex;
     font-family: proxima-nova, sans-serif;
     font-size: 16px;
@@ -3812,7 +2976,7 @@ form:focus {
     width: 100%;
 }
 
-#error #message span {
-	  margin: 0px auto;
-	  max-width: 600px;
+#alert #message > span {
+    margin: 0px auto;
+    max-width: 600px;
 }

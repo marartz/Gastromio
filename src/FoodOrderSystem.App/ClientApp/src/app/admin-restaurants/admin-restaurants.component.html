@@ -1,18 +1,6 @@
 <section id="main" role="main">
    <div class="focusing-outlet" tabindex="-1" role="group">
-       <div id="sys-admin">
-
-           <div id="nav">
-               <div class="bar">
-                   <div class="bar-inner">
-                       <ul class="links" role="navigation">
-                           <li><a class="text-link" [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
-                           <li><a class="text-link" [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
-                           <li><a class="text-link active" href="javascript:void(0)">Restaurants verwalten</a></li>
-                       </ul>
-                   </div>
-               </div>
-           </div>
+       <div id="backend">
 
            <div id="hero">
                <div class="inner">
@@ -21,49 +9,42 @@
                </div>
            </div>
 
-           <!--
-
-                                                            Wird noch redesigned
-
-           -->
-
            <div class="waypointable" tabindex="-1">
-               <div id="user-management">
+               <div id="management">
                    <div class="inner">
                        <div class="row">
                            <div class="col">
                                <input class="form-control filter" type="search" placeholder="Einträge durchsuchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
                            </div>
-                           <div class="col"></div>
-                           <div class="col"></div>
                            <div class="col">
                                <a class="text-link" id="addRestaurant" (click)="openAddRestaurantForm()">+ Restaurant hinzufügen</a>
                            </div>
                        </div>
                        <div class="row">
-                           <div class="col p-2">
-                               <div class="restaurants mt-3">
-                                   <div class="restaurant" [routerLink]="[restaurant.id]" *ngFor="let restaurant of pageOfRestaurants" style="cursor: pointer;">
-                                       <div class="restaurant-logo-wrapper">
-                                           <div class="restaurant-logo">
-                                               <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="" border="0" />
-                                           </div>
+                           <div class="col">
+                               
+                               <div id="restaurants" *ngFor="let restaurant of pageOfRestaurants">
+                                   <div id="logo">
+                                       <div class="restaurant-logo">
+                                           <img *ngIf="restaurant.image == null" src="../../assets/img/logo/fallback-logo.png" alt="{{restaurant.name}} Logo" />
+                                           <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="{{restaurant.name}} Logo" />
                                        </div>
-                                       <div class="restaurant-info-wrapper">
-                                           <h2 class="restaurantname">{{restaurant.name}}</h2>
-                                           <div class="restaurantbeschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
-                                           <div class="bottom-wrapper details">
-                                               <div class="settings">
-                                                   <a class="edit" [routerLink]="[restaurant.id]">Details ändern</a>
-                                                   &nbsp;&ndash;&nbsp;
-                                                   <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
-                                                   &nbsp;&ndash;&nbsp;
-                                                   <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
-                                               </div>
+                                   </div>
+                                   <div id="informations">
+                                       <h2 class="restaurant-name">{{restaurant.name}}</h2>
+                                       <div class="restaurant-beschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
+                                       <div id="actions">
+                                           <div class="settings">
+                                               <a class="edit" [routerLink]="[restaurant.id]">Details ändern</a>
+                                               &nbsp;&ndash;&nbsp;
+                                               <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
+                                               &nbsp;&ndash;&nbsp;
+                                               <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
                                            </div>
                                        </div>
                                    </div>
                                </div>
+                               
                                <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
                            </div>
                        </div>

@@ -13,7 +13,7 @@ import {take} from "rxjs/operators";
 @Component({
   selector: 'app-change-user-password',
   templateUrl: './change-user-password.component.html',
-  styleUrls: ['./change-user-password.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./change-user-password.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class ChangeUserPasswordComponent implements OnInit {
   @Input() public user: UserModel;

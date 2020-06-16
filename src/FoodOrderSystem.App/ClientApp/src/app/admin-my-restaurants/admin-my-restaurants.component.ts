@@ -10,7 +10,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-admin-my-restaurants',
   templateUrl: './admin-my-restaurants.component.html',
-  styleUrls: ['./admin-my-restaurants.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./admin-my-restaurants.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
   restaurants: RestaurantModel[];
