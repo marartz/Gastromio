@@ -56,7 +56,6 @@ export class AddDishCategoryComponent implements OnInit {
         this.activeModal.close(new DishCategoryModel({id, name: data.name}));
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.addDishCategoryForm.reset();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }

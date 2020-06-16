@@ -47,6 +47,9 @@ namespace FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant
                 (await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken))
                 .OrderBy(en => en.OrderNo).ToList();
 
+            if (curCategories.Any(en => string.Equals(en.Name, command.Name)))
+                return FailureResult<Guid>.Create(FailureResultCode.DishCategoryAlreadyExists);
+
             var pos = curCategories.FindIndex(en => en.Id == command.AfterCategoryId);
 
             for (var i = 0; i <= pos; i++)

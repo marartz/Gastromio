@@ -39,6 +39,7 @@
         RestaurantOpeningPeriodIntersects,
         RestaurantDoesNotExist,
         DishCategoryDoesNotBelongToRestaurant,
+        DishCategoryAlreadyExists,
         DishCategoryDoesNotExist,
         DishCategoryInvalidOrderNo,
         DishDoesNotBelongToDishCategory,

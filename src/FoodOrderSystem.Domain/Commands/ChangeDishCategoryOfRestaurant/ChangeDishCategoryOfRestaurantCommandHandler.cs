@@ -39,9 +39,13 @@ namespace FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant
                 return FailureResult<bool>.Forbidden();
 
             var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            var dishCategory = dishCategories?.FirstOrDefault(en => en.Id == command.DishCategoryId);
+            var dishCategoryList = dishCategories.ToList();
+            var dishCategory = dishCategoryList?.FirstOrDefault(en => en.Id == command.DishCategoryId);
             if (dishCategory == null)
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
+            
+            if (dishCategoryList.Any(en => en.Id != command.DishCategoryId && string.Equals(en.Name, command.Name)))
+                return FailureResult<bool>.Create(FailureResultCode.DishCategoryAlreadyExists);
 
             dishCategory.ChangeName(command.Name, currentUser.Id);
 

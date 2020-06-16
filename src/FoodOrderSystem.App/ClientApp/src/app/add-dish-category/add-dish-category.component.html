@@ -12,6 +12,12 @@
                 </button>
             </div>
 
+            <div *ngIf="message !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{message}}</span>
+                </div>
+            </div>
+
             <form [formGroup]="addDishCategoryForm" (ngSubmit)="onSubmit(addDishCategoryForm.value)">
                 <div id="modal-body">
                     <fieldset>
@@ -36,4 +42,3 @@
         </div>
     </div>
 </block-ui>
-
