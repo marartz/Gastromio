@@ -221,7 +221,6 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return new Restaurant(
                 new RestaurantId(document.Id),
                 document.Name,
-                document.Image,
                 document.Address != null
                     ? new Address(
                         document.Address.Street,
@@ -283,7 +282,6 @@ namespace FoodOrderSystem.Persistence.MongoDB
             {
                 Id = obj.Id.Value,
                 Name = obj.Name,
-                Image = obj.Image,
                 Address = obj.Address != null
                     ? new AddressModel
                     {

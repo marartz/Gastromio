@@ -35,7 +35,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   generalError: string;
 
   changeImageForm: FormGroup;
-  imgUrl: any;
   changeImageError: string;
 
   changeAddressForm: FormGroup;
@@ -178,10 +177,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
             this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
 
-            this.imgUrl = this.restaurant.image;
-
             this.changeImageForm.patchValue({
-              image: this.restaurant.image
+              image: '' // this.restaurant.image
             });
             this.changeImageForm.markAsPristine();
 
@@ -300,7 +297,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       });
       this.changeImageForm.markAsDirty();
 
-      this.imgUrl = reader.result;
+      // this.imgUrl = reader.result;
     };
   }
 
@@ -316,12 +313,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onSaveImage(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, value.image)
+    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, 'logo', value.image)
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
         this.changeImageError = undefined;
-        this.restaurant.image = value.image;
         this.changeImageForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();

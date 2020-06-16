@@ -10,8 +10,6 @@ export class RestaurantModel {
 
   public id: string;
 
-  public image: string;
-
   public name: string;
 
   public address: AddressModel;

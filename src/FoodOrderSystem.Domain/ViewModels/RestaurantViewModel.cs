@@ -13,8 +13,6 @@ namespace FoodOrderSystem.Domain.ViewModels
 
         public string Name { get; set; }
 
-        public string Image { get; set; }
-
         public AddressViewModel Address { get; set; }
 
         public ContactInfoViewModel ContactInfo { get; set; }
@@ -43,22 +41,12 @@ namespace FoodOrderSystem.Domain.ViewModels
             IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods,
             IUserRepository userRepository)
         {
-            string image = null;
-            if (restaurant.Image != null && restaurant.Image.Length != 0)
-            {
-                var sb = new StringBuilder();
-                sb.Append("data:image/png;base64,");
-                sb.Append(Convert.ToBase64String(restaurant.Image));
-                image = sb.ToString();
-            }
-
             var openingHoursText = GenerateOpeningHoursText(restaurant); 
 
             return new RestaurantViewModel
             {
                 Id = restaurant.Id.Value,
                 Name = restaurant.Name,
-                Image = image,
                 Address = restaurant.Address != null
                     ? AddressViewModel.FromAddress(restaurant.Address)
                     : new AddressViewModel(),

@@ -12,9 +12,9 @@
                         <div class="info-card">
                             <div class="info-section">
                                 <div class="info-group">
-                                    <div class="logo" *ngIf="restaurant.image !== null">
+                                    <div class="logo">
                                         <div class="logo-container">
-                                            <img [src]="restaurant.image" alt="{{restaurant.name}} Logo"/>
+                                            <img src="/restaurants/{{restaurant.id}}/images/logo" alt="{{restaurant.name}} Logo"/>
                                         </div>
                                     </div>
                                     <div class="restaurant">

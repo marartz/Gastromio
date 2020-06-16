@@ -7,6 +7,7 @@
         public static string DishCategoryCollectionName = "dish_categories";
         public static string DishCollectionName = "dishes";
         public static string RestaurantCollectionName = "restaurants";
+        public static string RestaurantImageCollectionName = "restaurant_images";
         public static string UserCollectionName = "users";
         public static string OrderCollectionName = "orders";
     }

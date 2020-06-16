@@ -10,8 +10,6 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         public string Name { get; set; }
 
-        public byte[] Image { get; set; }
-
         public AddressModel Address { get; set; }
         
         public ContactInfoModel ContactInfo { get; set; }

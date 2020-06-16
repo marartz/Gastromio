@@ -35,7 +35,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   restaurantId: string;
   restaurant: RestaurantModel;
-  imgUrl: any;
   openingHours: string;
   dishCategories: DishCategoryModel[];
 
@@ -91,7 +90,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
         this.restaurant = this.orderService.getRestaurant();
         this.dishCategories = this.orderService.getDishCategories();
-        this.imgUrl = this.restaurant.image;
         this.openingHours = 'Mo. 10:00-14:00';
 
         const cart = this.orderService.getCart();

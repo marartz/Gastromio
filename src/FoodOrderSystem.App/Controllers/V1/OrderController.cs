@@ -18,6 +18,7 @@ using FoodOrderSystem.Domain.Commands.Checkout;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Queries.GetRestaurantImage;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -57,6 +58,17 @@ namespace FoodOrderSystem.App.Controllers.V1
         {
             var queryResult = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/images/{type}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRestaurantImageAsync(Guid restaurantId, string type)
+        {
+            var query = new GetRestaurantImageQuery(new RestaurantId(restaurantId), type);
+            var queryResult = await queryDispatcher.PostAsync<GetRestaurantImageQuery, byte[]>(query, null);
+            if (queryResult.IsFailure)
+                return NotFound();
+            return File(queryResult.Value, "image/jpeg");
         }
 
         [Route("restaurants/{restaurantId}/dishes")]

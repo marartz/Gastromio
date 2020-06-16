@@ -4,7 +4,6 @@ using FoodOrderSystem.Domain.Model.User;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 
 namespace FoodOrderSystem.Domain.Model.Restaurant
@@ -43,7 +42,6 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public Restaurant(
             RestaurantId id,
             string name,
-            byte[] image,
             Address address,
             ContactInfo contactInfo,
             IList<OpeningPeriod> openingHours,
@@ -62,7 +60,6 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         {
             Id = id;
             Name = name;
-            Image = image;
             Address = address ?? new Address(null, null, null);
             ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
             this.openingHours = openingHours ?? new List<OpeningPeriod>();
@@ -82,8 +79,6 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public RestaurantId Id { get; }
 
         public string Name { get; private set; }
-        
-        public byte[] Image { get; private set; }
         
         public Address Address { get; private set; }
         
@@ -128,39 +123,6 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
             
-            return SuccessResult<bool>.Create(true);
-        }
-
-        public Result<bool> ChangeImage(byte[] image, UserId changedBy)
-        {
-            if (image == null)
-            {
-                Image = null;
-                return SuccessResult<bool>.Create(true);
-            }
-
-            if (image.Length > 1024 * 1024) // 1 MB
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageDataTooBig);
-
-            try
-            {
-                using (var ms = new MemoryStream(image))
-                {
-                    var imageObj = SixLabors.ImageSharp.Image.Load(ms);
-                    if (imageObj == null)
-                        return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
-                }
-            }
-            catch
-            {
-                // TODO: Log error
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
-            }
-
-            Image = image;
-            UpdatedOn = DateTime.UtcNow;
-            UpdatedBy = changedBy;
-
             return SuccessResult<bool>.Create(true);
         }
 

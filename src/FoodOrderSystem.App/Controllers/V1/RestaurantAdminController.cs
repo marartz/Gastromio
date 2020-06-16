@@ -182,8 +182,13 @@ namespace FoodOrderSystem.App.Controllers.V1
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
             var image = ImageHelper.ConvertFromImageUrl(changeRestaurantImageModel.Image);
+
+            var command = new ChangeRestaurantImageCommand(new RestaurantId(restaurantId),
+                changeRestaurantImageModel.Type, image);
+
+            var commandResult =
+                await commandDispatcher.PostAsync<ChangeRestaurantImageCommand, bool>(command, currentUser);
             
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantImageCommand, bool>(new ChangeRestaurantImageCommand(new RestaurantId(restaurantId), image), currentUser);
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 

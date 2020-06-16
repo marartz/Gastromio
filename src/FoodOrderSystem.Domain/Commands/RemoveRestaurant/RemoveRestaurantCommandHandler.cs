@@ -4,21 +4,28 @@ using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 
 namespace FoodOrderSystem.Domain.Commands.RemoveRestaurant
 {
     public class RemoveRestaurantCommandHandler : ICommandHandler<RemoveRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IRestaurantImageRepository restaurantImageRepository;
         private readonly IDishCategoryRepository dishCategoryRepository;
         private readonly IDishRepository dishRepository;
 
-        public RemoveRestaurantCommandHandler(IRestaurantRepository restaurantRepository, IDishCategoryRepository dishCategoryRepository, IDishRepository dishRepository)
+        public RemoveRestaurantCommandHandler(
+            IRestaurantRepository restaurantRepository,
+            IRestaurantImageRepository restaurantImageRepository,
+            IDishCategoryRepository dishCategoryRepository,
+            IDishRepository dishRepository
+        )
         {
             this.restaurantRepository = restaurantRepository;
+            this.restaurantImageRepository = restaurantImageRepository;
             this.dishCategoryRepository = dishCategoryRepository;
             this.dishRepository = dishRepository;
         }
@@ -36,6 +43,7 @@ namespace FoodOrderSystem.Domain.Commands.RemoveRestaurant
 
             await dishRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             await dishCategoryRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            await restaurantImageRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             await restaurantRepository.RemoveAsync(command.RestaurantId, cancellationToken);
 
             return SuccessResult<bool>.Create(true);

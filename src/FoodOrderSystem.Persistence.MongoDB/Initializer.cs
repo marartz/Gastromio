@@ -4,6 +4,7 @@ using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 using FoodOrderSystem.Domain.Model.User;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -24,6 +25,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
             services.AddTransient<IDishCategoryRepository, DishCategoryRepository>();
             services.AddTransient<IDishRepository, DishRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
+            services.AddTransient<IRestaurantImageRepository, RestaurantImageRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
         }
@@ -55,6 +57,16 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var restaurantCollection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
             restaurantCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.Name)));
+            restaurantCollection.Indexes.CreateOne(
+                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.PickupInfo.Enabled)));
+            restaurantCollection.Indexes.CreateOne(
+                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.DeliveryInfo.Enabled)));
+            restaurantCollection.Indexes.CreateOne(
+                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.ReservationInfo.Enabled)));
+            
+            var restaurantImageCollection = database.GetCollection<RestaurantImageModel>(Constants.RestaurantImageCollectionName);
+            restaurantImageCollection.Indexes.CreateOne(
+                new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.RestaurantId)));
             
             var userCollection = database.GetCollection<UserModel>(Constants.UserCollectionName);
             userCollection.Indexes.CreateOne(

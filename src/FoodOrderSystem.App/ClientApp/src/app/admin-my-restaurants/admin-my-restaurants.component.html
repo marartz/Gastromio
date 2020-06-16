@@ -18,8 +18,7 @@
                                 <div id="restaurants" *ngFor="let restaurant of restaurants">
                                     <div id="logo">
                                         <div class="restaurant-logo">
-                                            <img *ngIf="restaurant.image == null" src="../../assets/img/logo/fallback-logo.png" alt="{{restaurant.name}} Logo" />
-                                            <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="{{restaurant.name}} Logo" />
+                                            <img src="/restaurants/{{restaurant.id}}/images/logo" alt="{{restaurant.name}} Logo" />
                                         </div>
                                     </div>
                                     <div id="informations">

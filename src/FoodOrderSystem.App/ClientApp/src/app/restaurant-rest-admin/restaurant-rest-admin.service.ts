@@ -101,7 +101,7 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changename', {name}, httpOptions);
   }
 
-  public changeRestaurantImageAsync(id: string, image: string): Observable<boolean> {
+  public changeRestaurantImageAsync(id: string, type: string, image: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -109,7 +109,8 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeimage', {image}, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeimage',
+      {type, image}, httpOptions);
   }
 
   public changeRestaurantAddressAsync(id: string, address: AddressModel): Observable<boolean> {
