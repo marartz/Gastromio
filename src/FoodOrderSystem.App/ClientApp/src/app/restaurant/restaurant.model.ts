@@ -20,6 +20,8 @@ export class RestaurantModel {
 
   public openingHours: OpeningPeriodModel[];
 
+  public openingHoursText: string;
+
   public pickupInfo: PickupInfoModel;
 
   public deliveryInfo: DeliveryInfoModel;

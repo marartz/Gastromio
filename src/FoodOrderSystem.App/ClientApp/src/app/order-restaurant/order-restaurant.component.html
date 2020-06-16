@@ -27,7 +27,7 @@
                                 <p>
                                     {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
                                     <br />{{restaurant.contactInfo.phone}}
-                                    <br />Mo-Fr 16:00 - 22:00 Uhr
+                                    <br />{{restaurant.openingHoursText}}
                                 </p>
                             </div>
                             <div class="hero-message" *ngIf="restaurant.hygienicHandling && restaurant.hygienicHandling.length > 0">

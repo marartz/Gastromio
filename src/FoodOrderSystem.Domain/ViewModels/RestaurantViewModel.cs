@@ -20,6 +20,8 @@ namespace FoodOrderSystem.Domain.ViewModels
         public ContactInfoViewModel ContactInfo { get; set; }
 
         public List<OpeningPeriodViewModel> OpeningHours { get; set; }
+        
+        public string OpeningHoursText { get; set; }
 
         public PickupInfoViewModel PickupInfo { get; set; }
 
@@ -50,6 +52,8 @@ namespace FoodOrderSystem.Domain.ViewModels
                 image = sb.ToString();
             }
 
+            var openingHoursText = GenerateOpeningHoursText(restaurant); 
+
             return new RestaurantViewModel
             {
                 Id = restaurant.Id.Value,
@@ -64,6 +68,7 @@ namespace FoodOrderSystem.Domain.ViewModels
                 OpeningHours = restaurant.OpeningHours != null
                     ? restaurant.OpeningHours.Select(OpeningPeriodViewModel.FromOpeningPeriod).ToList()
                     : new List<OpeningPeriodViewModel>(),
+                OpeningHoursText = openingHoursText,
                 PickupInfo = restaurant.PickupInfo != null
                     ? PickupInfoViewModel.FromPickupInfo(restaurant.PickupInfo)
                     : new PickupInfoViewModel(),
@@ -87,24 +92,157 @@ namespace FoodOrderSystem.Domain.ViewModels
             };
         }
 
-        public static CuisineViewModel RetrieveCuisineModel(IDictionary<Guid, CuisineViewModel> allCuisines,
+        private static CuisineViewModel RetrieveCuisineModel(IDictionary<Guid, CuisineViewModel> allCuisines,
             Guid cuisineId)
         {
             return allCuisines.TryGetValue(cuisineId, out var model) ? model : null;
         }
 
-        public static PaymentMethodViewModel RetrievePaymentMethodModel(
+        private static PaymentMethodViewModel RetrievePaymentMethodModel(
             IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, Guid paymentMethodId)
         {
             return allPaymentMethods.TryGetValue(paymentMethodId, out var model) ? model : null;
         }
 
-        public static UserViewModel RetrieveUserModel(IUserRepository userRepository, UserId userId)
+        private static UserViewModel RetrieveUserModel(IUserRepository userRepository, UserId userId)
         {
             var user = userRepository.FindByUserIdAsync(userId).Result;
             if (user == null)
                 return null;
             return UserViewModel.FromUser(user);
+        }
+
+        private static string GenerateOpeningHoursText(Restaurant restaurant)
+        {
+            if (restaurant.OpeningHours == null)
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            var openingPeriodsPerDay = new List<List<OpeningPeriod>>();
+            for (var dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
+            {
+                openingPeriodsPerDay.Add(new List<OpeningPeriod>());
+            }
+            
+            foreach (var openingPeriod in restaurant.OpeningHours.OrderBy(en => en.DayOfWeek).ThenBy(en => en.Start))
+            {
+                openingPeriodsPerDay[openingPeriod.DayOfWeek].Add(openingPeriod);
+            }
+
+            var first = true;
+            var startDayOfWeek = 0;
+            var openingPeriods = openingPeriodsPerDay[startDayOfWeek];
+            
+            for (var dayOfWeek = 1; dayOfWeek < 7; dayOfWeek++)
+            {
+                if (!OpeningPeriodsEquals(openingPeriods, openingPeriodsPerDay[dayOfWeek]))
+                {
+                    if (openingPeriods.Count > 0)
+                    {
+                        if (!first)
+                            sb.Append("; ");
+                        WriteOpeningPeriods(sb, startDayOfWeek, dayOfWeek - 1, openingPeriods);
+                        first = false;
+                    }
+
+                    startDayOfWeek = dayOfWeek;
+                    openingPeriods = openingPeriodsPerDay[dayOfWeek];
+                }
+            }
+
+            if (openingPeriods.Count > 0)
+            {
+                if (!first)
+                    sb.Append("; ");
+                WriteOpeningPeriods(sb, startDayOfWeek, 6, openingPeriods);
+            }
+
+            return sb.ToString();
+        }
+
+        private static void WriteOpeningPeriods(StringBuilder sb, int startDayOfWeek, int endDayOfWeek,
+            IEnumerable<OpeningPeriod> openingPeriods)
+        {
+            if (endDayOfWeek > startDayOfWeek)
+            {
+                WriteDayOfWeekName(sb, startDayOfWeek);
+                sb.Append("-");
+                WriteDayOfWeekName(sb, endDayOfWeek);
+            }
+            else
+            {
+                WriteDayOfWeekName(sb, startDayOfWeek);
+            }
+
+            sb.Append(" ");
+
+            var first = true;
+            foreach (var openingPeriod in openingPeriods)
+            {
+                if (!first)
+                    sb.Append(" ");
+
+                WriteTime(sb, openingPeriod.Start);
+                sb.Append("-");
+                WriteTime(sb, openingPeriod.End);
+                
+                first = false;
+            }
+        }
+
+        private static void WriteDayOfWeekName(StringBuilder sb, int dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case 0:
+                    sb.Append("Mo");
+                    break;
+                case 1:
+                    sb.Append("Di");
+                    break;
+                case 2:
+                    sb.Append("Mi");
+                    break;
+                case 3:
+                    sb.Append("Do");
+                    break;
+                case 4:
+                    sb.Append("Fr");
+                    break;
+                case 5:
+                    sb.Append("Sa");
+                    break;
+                case 6:
+                    sb.Append("So");
+                    break;
+            }
+        }
+
+        private static void WriteTime(StringBuilder sb, TimeSpan time)
+        {
+            sb.Append(time.Hours.ToString("00"));
+            sb.Append(":");
+            sb.Append(time.Minutes.ToString("00"));
+        }
+
+        private static bool OpeningPeriodsEquals(List<OpeningPeriod> op1, List<OpeningPeriod> op2)
+        {
+            if (op1 == null && op2 == null)
+                return true;
+            if (op1 == null || op2 == null)
+                return false;
+            
+            if (op1.Count != op2.Count)
+                return false;
+            for (var i = 0; i < op1.Count; i++)
+            {
+                if (op1[i].Start != op2[i].Start)
+                    return false;
+                if (op1[i].End != op2[i].End)
+                    return false;
+            }
+            return true;
         }
     }
 }
