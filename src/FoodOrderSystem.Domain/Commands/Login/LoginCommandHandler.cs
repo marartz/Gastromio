@@ -25,7 +25,7 @@ namespace FoodOrderSystem.Domain.Commands.Login
 
             var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user == null)
-                return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.UserDoesNotExist);
+                return FailureResult<UserViewModel>.Unauthorized(FailureResultCode.WrongCredentials);
 
             var validationResult = user.ValidatePassword(command.Password);
             if (validationResult.IsFailure)
