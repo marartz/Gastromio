@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Serilog;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FoodOrderSystem.App
 {
@@ -46,6 +47,16 @@ namespace FoodOrderSystem.App
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // Errors caused by request body deserialization or data annonations on DTOs (e.g. '[Required]') are handled automatically.
+            // In this case controller endpoints are not reached and BadRequest is returned (client validation should catch these cases earlier).
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    return new BadRequestResult();
+                };
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

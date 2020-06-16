@@ -1,11 +1,11 @@
-import { PaymentMethodModel } from '../payment-method/payment-method.model';
-import { UserModel } from '../user/user.model';
-import { CuisineModel } from '../cuisine/cuisine.model';
+import {PaymentMethodModel} from '../payment-method/payment-method.model';
+import {UserModel} from '../user/user.model';
+import {CuisineModel} from '../cuisine/cuisine.model';
 
 export class RestaurantModel {
   constructor() {
     this.address = new AddressModel();
-    this.deliveryTimes = new Array<DeliveryTimeModel>();
+    this.openingHours = new Array<OpeningPeriodModel>();
   }
 
   public id: string;
@@ -16,27 +16,17 @@ export class RestaurantModel {
 
   public address: AddressModel;
 
-  public deliveryTimes: DeliveryTimeModel[];
+  public contactInfo: ContactInfoModel;
 
-  public nextDeliveryTime: string;
+  public openingHours: OpeningPeriodModel[];
 
-  public nextDeliveryTimeText: string;
+  public pickupInfo: PickupInfoModel;
 
-  public minimumOrderValue: number;
+  public deliveryInfo: DeliveryInfoModel;
 
-  public minimumOrderValueText: string;
+  public reservationInfo: ReservationInfoModel;
 
-  public deliveryCosts: number;
-
-  public deliveryCostsText: string;
-
-  public phone: string;
-
-  public webSite: string;
-
-  public imprint: string;
-
-  public orderEmailAddress: string;
+  public hygienicHandling: string;
 
   public cuisines: CuisineModel[];
 
@@ -46,7 +36,8 @@ export class RestaurantModel {
 }
 
 export class AddressModel {
-  constructor() { }
+  constructor() {
+  }
 
   public street: string;
 
@@ -55,12 +46,88 @@ export class AddressModel {
   public city: string;
 }
 
-export class DeliveryTimeModel {
-  constructor() { }
+export class ContactInfoModel {
+  constructor() {
+  }
+
+  public phone: string;
+
+  public fax: string;
+
+  public webSite: string;
+
+  public responsiblePerson: string;
+
+  public emailAddress: string;
+}
+
+export class OpeningPeriodModel {
+  constructor() {
+  }
 
   public dayOfWeek: number;
 
   public start: number;
 
   public end: number;
+}
+
+export class PickupInfoModel {
+  public enabled: boolean;
+
+  public averageTime: number;
+
+  public minimumOrderValue: number;
+
+  public minimumOrderValueText: string;
+
+  public maximumOrderValue: number;
+
+  public maximumOrderValueText: string;
+}
+
+export class DeliveryInfoModel {
+  public enabled: boolean;
+
+  public averageTime: number;
+
+  public minimumOrderValue: number;
+
+  public minimumOrderValueText: string;
+
+  public maximumOrderValue: number;
+
+  public maximumOrderValueText: string;
+
+  public costs: number;
+
+  public costsText: string;
+}
+
+export class ReservationInfoModel {
+  public enabled: boolean;
+}
+
+export class ServiceInfoModel {
+  public pickupEnabled: boolean;
+
+  public pickupAverageTime: number;
+
+  public pickupMinimumOrderValue: number;
+
+  public pickupMaximumOrderValue: number;
+
+  public deliveryEnabled: boolean;
+
+  public deliveryAverageTime: number;
+
+  public deliveryMinimumOrderValue: number;
+
+  public deliveryMaximumOrderValue: number;
+
+  public deliveryCosts: number;
+
+  public reservationEnabled: boolean;
+
+  public hygienicHandling: string;
 }

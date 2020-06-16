@@ -2,7 +2,7 @@
 using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,9 +23,9 @@ namespace FoodOrderSystem.Persistence.MongoDB
             services.AddTransient<ICuisineRepository, CuisineRepository>();
             services.AddTransient<IDishCategoryRepository, DishCategoryRepository>();
             services.AddTransient<IDishRepository, DishRepository>();
-            services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
 
         public static void PurgeDatabase(IServiceProvider serviceProvider)
@@ -52,10 +52,6 @@ namespace FoodOrderSystem.Persistence.MongoDB
             dishCollection.Indexes.CreateOne(
                 new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.CategoryId)));
 
-            var paymentMethodCollection = database.GetCollection<PaymentMethodModel>(Constants.PaymentMethodCollectionName);
-            paymentMethodCollection.Indexes.CreateOne(
-                new CreateIndexModel<PaymentMethodModel>(Builders<PaymentMethodModel>.IndexKeys.Ascending(x => x.Name)));
-
             var restaurantCollection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
             restaurantCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.Name)));
@@ -63,7 +59,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var userCollection = database.GetCollection<UserModel>(Constants.UserCollectionName);
             userCollection.Indexes.CreateOne(
                 new CreateIndexModel<UserModel>(Builders<UserModel>.IndexKeys.Ascending(x => x.Email)));
-            
+
+            var orderCollection = database.GetCollection<OrderModel>(Constants.OrderCollectionName);
+            orderCollection.Indexes.CreateOne(
+                new CreateIndexModel<OrderModel>(
+                    Builders<OrderModel>.IndexKeys.Ascending(x => x.CartInfo.RestaurantId)));
         }
     }
 }

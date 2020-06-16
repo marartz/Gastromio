@@ -21,7 +21,7 @@ namespace FoodOrderSystem.Domain
             // Register model classes
             services.AddTransient<IUserFactory, UserFactory>();
             services.AddTransient<ICuisineFactory, CuisineFactory>();
-            services.AddTransient<IPaymentMethodFactory, PaymentMethodFactory>();
+            services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
             services.AddTransient<IRestaurantFactory, RestaurantFactory>();
             services.AddTransient<IDishCategoryFactory, DishCategoryFactory>();
             services.AddTransient<IDishFactory, DishFactory>();
@@ -56,11 +56,24 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodAlreadyExists, "Zahlungsmethode existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageDataTooBig, "Die Bilddatei ist zu groß (max. 1MB)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageNotValid, "Die angegebene Bilddatei ist nicht gültig");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumOrderValueTooHigh, "Der Mindestbestellwert ist zu groß");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryCostsTooHigh, "Die Lieferkosten sind zu groß");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeIntersects, "Die Lierferzeit überschneidet sich mit einer bereits eingetragenen Lieferzeit");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeBeginTooEarly, "Die Lieferzeit darf nicht vor 4 Uhr morgens beginnen");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryTimeEndBeforeStart, "Das Ende der Lieferzeit muss nach dem Start liegen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.NoRestaurantPickupInfosSpecified, "Keine Informationen über die Abholung spezifiziert");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantAveragePickupTimeTooLow, "Die durchschnittliche Zeit bis zur Abholung ist zu klein (mind. 5 Minuten)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantAveragePickupTimeTooHigh, "Die durchschnittliche Zeit bis zur Abholung ist zu groß (max. 120 Minuten)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumPickupOrderValueTooLow, "Der Mindestbestellwert für Abholung ist negativ");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumPickupOrderValueTooHigh, "Der Mindestbestellwert für Abholung ist zu groß (max. 50€)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMaximumPickupOrderValueTooLow, "Der Höchstbestellwert für Abholung ist negativ");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.NoRestaurantDeliveryInfosSpecified, "Keine Informationen über die Lieferung spezifiziert");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantAverageDeliveryTimeTooLow, "Die durchschnittliche Zeit bis zur Lieferung ist zu klein (mind. 5 Minuten)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantAverageDeliveryTimeTooHigh, "Die durchschnittliche Zeit bis zur Lieferung ist zu groß (max. 120 Minuten)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumDeliveryOrderValueTooLow, "Der Mindestbestellwert für Lieferung ist negativ");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMinimumDeliveryOrderValueTooHigh, "Der Mindestbestellwert für Lieferung ist zu groß (max. 50€)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMaximumDeliveryOrderValueTooLow, "Der Höchstbestellwert für Lieferung ist negativ");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryCostsTooLow, "Die Lieferkosten sind negativ");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeliveryCostsTooHigh, "Die Lieferkosten sind zu groß (max. 10€)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.NoRestaurantReservationInfosSpecified, "Keine Informationen über die Reservierung spezifiziert");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodIntersects, "Die Öffnungsperiode überschneidet sich mit einer bereits eingetragenen Öffnungsperiode");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodBeginsTooEarly, "Die Öffnungsperiode darf nicht vor 4 Uhr morgens beginnen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodEndsBeforeStart, "Das Ende der Öffnungsperiode muss nach dem Start liegen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotBelongToRestaurant, "Gerichtkategorie gehört nicht zum Restaurant");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryAlreadyExists, "Es gibt bereits eine Gerichtskategorie mit gleichem Namen");
@@ -72,6 +85,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantPriceIsNegativeOrZero, "Das Gericht / die Variante muss einen Preis > 0 besitzen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantPriceIsTooBig, "Das Gericht / die Variante muss einen Preis <= 200 besitzen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CannotRemoveCurrentUserFromRestaurantAdmins, "Sie können nicht den gerade angemeldeten Benutzer aus den Administratoren des Restaurants löschen");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.OrderIsInvalid, "Die Bestelldaten sind nicht gültig");
 
             if (!failureMessageService.AreAllCodesRegisteredForCulture(deDeCultureInfo))
                 throw new InvalidOperationException($"Not all messages for culture {deDeCultureInfo} are registered");

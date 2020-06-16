@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
 
 namespace FoodOrderSystem.Domain.Model.Restaurant
 {
     public interface IRestaurantRepository
     {
-        Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
+            CancellationToken cancellationToken = default);
 
-        Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase, int skip = 0,
-            int take = -1, CancellationToken cancellationToken = default);
+        Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase, OrderType? orderType,
+            int skip = 0, int take = -1, CancellationToken cancellationToken = default);
 
         Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
 

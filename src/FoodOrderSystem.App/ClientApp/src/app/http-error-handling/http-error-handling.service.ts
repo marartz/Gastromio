@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FailureResult } from './failure-result.model';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {FailureResult} from './failure-result.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorHandlingService {
 
-  constructor() { }
+  constructor() {
+  }
 
   handleError(httpError: HttpErrorResponse): FailureResult {
     const errorObj = httpError.error;

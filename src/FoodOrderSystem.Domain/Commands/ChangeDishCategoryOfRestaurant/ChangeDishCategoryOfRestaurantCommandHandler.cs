@@ -47,7 +47,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant
             if (dishCategoryList.Any(en => en.Id != command.DishCategoryId && string.Equals(en.Name, command.Name)))
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryAlreadyExists);
 
-            dishCategory.ChangeName(command.Name);
+            dishCategory.ChangeName(command.Name, currentUser.Id);
 
             await dishCategoryRepository.StoreAsync(dishCategory, cancellationToken);
 

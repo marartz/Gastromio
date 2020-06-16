@@ -1,30 +1,68 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {DishCategoryModel} from '../dish-category/dish-category.model';
-import {CartModel} from '../cart/cart.model';
-import {OrderedDishModel} from '../cart/ordered-dish.model';
-import {DishVariantModel} from '../dish-category/dish-variant.model';
+import {CartModel, OrderType} from '../cart/cart.model';
+import {tap} from 'rxjs/operators';
+import {StoredCartModel} from '../cart/stored-cart.model';
 import {DishModel} from '../dish-category/dish.model';
+import {DishVariantModel} from '../dish-category/dish-variant.model';
+import {Guid} from 'guid-typescript';
+import {CheckoutModel} from './checkout.model';
+import {OrderModel} from './order.model';
+import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
+import {CartDishModel} from '../cart/cart-dish.model';
 
 @Injectable()
 export class OrderService {
-  private baseUrl = 'api/v1/order';
-
-  private isCartVisibile: boolean;
-  private cart: CartModel;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService
   ) {
-    this.isCartVisibile = false;
   }
 
+  private baseUrl = 'api/v1/order';
 
-  public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
+  private restaurantId: string;
+  private restaurant: RestaurantModel;
+  private dishCategories: DishCategoryModel[];
+  private dishes: Map<string, DishModel>;
+  private visible: boolean;
+
+  private storedCart: StoredCartModel;
+
+  private cart: CartModel;
+
+  private order: OrderModel;
+
+  public static translateToOrderType(orderType: string): OrderType {
+    switch (orderType) {
+      case 'pickup':
+        return OrderType.Pickup;
+      case 'delivery':
+        return OrderType.Delivery;
+      case 'reservation':
+        return OrderType.Reservation;
+      default:
+        throw new Error('unknown order type: ' + orderType);
+    }
+  }
+
+  public static translateFromOrderType(orderType: OrderType): string {
+    switch (orderType) {
+      case OrderType.Pickup:
+        return 'pickup';
+      case OrderType.Delivery:
+        return 'delivery';
+      case OrderType.Reservation:
+        return 'reservation';
+    }
+  }
+
+  public searchForRestaurantsAsync(search: string, orderType: OrderType): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -32,10 +70,410 @@ export class OrderService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search), httpOptions);
+
+    let orderTypeText: string;
+    switch (orderType)
+    {
+      case OrderType.Pickup:
+        orderTypeText = 'pickup';
+        break;
+      case OrderType.Delivery:
+        orderTypeText = 'delivery';
+        break;
+      case OrderType.Reservation:
+        orderTypeText = 'reservation';
+    }
+
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search)
+      + '&orderType=' + encodeURIComponent(orderTypeText), httpOptions);
   }
 
-  public getRestaurantAsync(id: string): Observable<RestaurantModel> {
+  public initializeAsync(): Observable<unknown> {
+    this.tryLoadCartFromStorage();
+    return this.loadDataAsync();
+  }
+
+  public selectRestaurantAsync(restaurantId: string): Observable<unknown> {
+    this.tryLoadCartFromStorage();
+    if (!this.storedCart || this.restaurantId !== restaurantId) {
+      console.log('reset order for new/other restaurant');
+      this.restaurant = undefined;
+      this.dishCategories = undefined;
+      this.storedCart = undefined;
+      this.dishes = undefined;
+      this.visible = false;
+    }
+    this.restaurantId = restaurantId;
+    this.generateCartModel();
+    return this.loadDataAsync();
+  }
+
+  public getRestaurant(): RestaurantModel {
+    return this.restaurant;
+  }
+
+  public getDishCategories(): DishCategoryModel[] {
+    return this.dishCategories;
+  }
+
+  public startOrder(orderType: OrderType): void {
+    switch (orderType) {
+      case OrderType.Pickup:
+        if (!this.restaurant.pickupInfo || !this.restaurant.pickupInfo.enabled) {
+          throw new Error('restaurant does not support pickup');
+        }
+        break;
+      case OrderType.Delivery:
+        if (!this.restaurant.deliveryInfo || !this.restaurant.deliveryInfo.enabled) {
+          throw new Error('restaurant does not support delivery');
+        }
+        break;
+      case OrderType.Reservation:
+        if (!this.restaurant.reservationInfo || !this.restaurant.reservationInfo.enabled) {
+          throw new Error('restaurant does not support reservation');
+        }
+        break;
+    }
+
+    this.storedCart = new StoredCartModel();
+    this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
+    this.storedCart.restaurantId = this.restaurant.id;
+    this.storedCart.cartDishes = new Array<StoredCartDishModel>();
+    this.generateCartModel();
+  }
+
+  public changeOrderType(orderType: OrderType) {
+    if (!this.storedCart) {
+      return;
+    }
+    this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
+    this.generateCartModel();
+  }
+
+  public getCart(): CartModel {
+    return this.cart;
+  }
+
+  public addDishToCart(dish: DishModel, variant: DishVariantModel, count: number, remarks: string): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    if (count <= 0) {
+      return;
+    }
+    let storedCartDish = this.storedCart.cartDishes.find(en => en.dishId === dish.id && en.variantId === variant.variantId);
+    if (storedCartDish !== undefined) {
+      storedCartDish.count += count;
+    } else {
+      storedCartDish = new StoredCartDishModel();
+      storedCartDish.itemId = Guid.create().toString();
+      storedCartDish.dishId = dish.id;
+      storedCartDish.variantId = variant.variantId;
+      storedCartDish.count = count;
+      storedCartDish.remarks = remarks;
+      this.storedCart.cartDishes.push(storedCartDish);
+    }
+    this.visible = true;
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public setCountOfCartDish(itemId: string, count: number): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
+      return;
+    }
+    this.storedCart.cartDishes[index].count = count;
+    if (this.storedCart.cartDishes[index].count <= 0) {
+      this.storedCart.cartDishes.splice(index, 1);
+    }
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public incrementCountOfCartDish(itemId: string): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
+      return;
+    }
+    this.storedCart.cartDishes[index].count += 1;
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public decrementCountOfCartDish(itemId: string): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
+      return;
+    }
+    this.storedCart.cartDishes[index].count -= 1;
+    if (this.storedCart.cartDishes[index].count <= 0) {
+      this.storedCart.cartDishes.splice(index, 1);
+    }
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public changeRemarksOfCartDish(itemId: string, remarks: string): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
+      return;
+    }
+    this.storedCart.cartDishes[index].remarks = remarks;
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public removeCartDishFromCart(itemId: string): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    if (index < 0) {
+      return;
+    }
+    this.storedCart.cartDishes.splice(index, 1);
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public discardCart(): void {
+    this.storedCart = undefined;
+    this.saveCartToStorage();
+    this.generateCartModel();
+  }
+
+  public showCart(): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    this.visible = true;
+    this.generateCartModel();
+  }
+
+  public hideCart(): void {
+    if (!this.storedCart) {
+      throw new Error('no cart defined');
+    }
+    this.visible = false;
+    this.generateCartModel();
+  }
+
+  public checkoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
+    return this.sendCheckoutAsync(checkoutModel)
+      .pipe(tap(o => {
+        this.order = o;
+        this.discardCart();
+      }));
+  }
+
+  public getOrder(): OrderModel {
+    return this.order;
+  }
+
+
+  /* private methods */
+
+  private tryLoadCartFromStorage(): boolean {
+    const json = localStorage.getItem('cart');
+    if (!json) {
+      console.log('found no cart json in local storage');
+      return false;
+    }
+
+    try {
+      const storedCart = new StoredCartModel();
+      const tempObj = JSON.parse(json);
+      Object.assign(storedCart, tempObj);
+
+      switch (storedCart.orderType) {
+        case 'pickup':
+          break;
+        case 'delivery':
+          break;
+        case 'reservation':
+          break;
+        default:
+          console.log('unknown order type: ', storedCart.orderType);
+          return false;
+      }
+
+      if (storedCart.restaurantId === undefined) {
+        console.log('restaurant id is not available');
+        return false;
+      }
+
+      if (!storedCart.cartDishes) {
+        console.log('no cart dishes available');
+        return false;
+      }
+
+      const knownItemIds = new Map<string, string>();
+      for (const storedCartDishModel of storedCart.cartDishes) {
+        if (!storedCartDishModel.itemId || storedCartDishModel.itemId.length === 0) {
+          console.log('item id is not valid:', storedCartDishModel.itemId);
+          return false;
+        }
+        if (knownItemIds.get(storedCartDishModel.itemId)) {
+          console.log('item id is not unique:', storedCartDishModel.itemId);
+          return false;
+        }
+        if (!storedCartDishModel.dishId || storedCartDishModel.dishId.length === 0) {
+          console.log('dish id is not valid:', storedCartDishModel.dishId);
+          return false;
+        }
+        if (!storedCartDishModel.variantId || storedCartDishModel.variantId.length === 0) {
+          console.log('dish id is not valid:', storedCartDishModel.variantId);
+          return false;
+        }
+        if (storedCartDishModel.count <= 0) {
+          console.log('invalid count: ', storedCartDishModel.count);
+          return false;
+        }
+      }
+
+      this.restaurantId = storedCart.restaurantId;
+      this.storedCart = storedCart;
+      this.generateCartModel();
+      return true;
+    } catch (exc) {
+      console.log('Exception in tryLoadCartFromStorage:', exc);
+      return false;
+    }
+  }
+
+  private loadDataAsync(): Observable<unknown> {
+    const observables = [];
+
+    if (this.restaurantId && !this.restaurant) {
+      observables.push(this.getRestaurantAsync(this.restaurantId).pipe(tap(restaurant => {
+        console.log('loaded restaurant: ', restaurant);
+        this.restaurant = restaurant;
+      })));
+    }
+
+    if (this.restaurantId && !this.dishCategories) {
+      observables.push(this.getDishesOfRestaurantAsync(this.restaurantId).pipe(tap(dishCategories => {
+        this.dishCategories = dishCategories;
+        this.dishes = new Map<string, DishModel>();
+        for (const dishCategory of dishCategories) {
+          if (!dishCategory.dishes) {
+            continue;
+          }
+          for (const dish of dishCategory.dishes) {
+            this.dishes.set(dish.id, dish);
+          }
+        }
+      })));
+    }
+
+    if (observables.length > 0) {
+      return combineLatest(observables).pipe(tap(() => {
+        this.generateCartModel();
+      }));
+    } else {
+      return new Observable<unknown>(observer => {
+        this.generateCartModel();
+        observer.next();
+        observer.complete();
+        return {
+          unsubscribe() {
+          }
+        };
+      });
+    }
+  }
+
+  private saveCartToStorage(): void {
+    if (!this.storedCart) {
+      localStorage.removeItem('cart');
+      return;
+    }
+    const json = JSON.stringify(this.storedCart);
+    localStorage.setItem('cart', json);
+  }
+
+  private generateCartModel(): void {
+    if (!this.storedCart || !this.restaurant || !this.dishCategories) {
+      this.cart = undefined;
+      return;
+    }
+
+    let averageTime: number;
+    let minimumOrderValue: number;
+    let maximumOrderValue: number;
+    let costs: number;
+
+    switch (this.storedCart.orderType) {
+      case 'pickup':
+        averageTime = this.restaurant.pickupInfo.averageTime;
+        minimumOrderValue = this.restaurant.pickupInfo.minimumOrderValue;
+        maximumOrderValue = this.restaurant.pickupInfo.maximumOrderValue;
+        costs = undefined;
+        break;
+      case 'delivery':
+        averageTime = this.restaurant.deliveryInfo.averageTime;
+        minimumOrderValue = this.restaurant.deliveryInfo.minimumOrderValue;
+        maximumOrderValue = this.restaurant.deliveryInfo.maximumOrderValue;
+        costs = this.restaurant.deliveryInfo.costs;
+        break;
+      case 'reservation':
+        averageTime = undefined;
+        minimumOrderValue = undefined;
+        maximumOrderValue = undefined;
+        costs = undefined;
+        break;
+    }
+
+    const cartDishes = new Array<CartDishModel>();
+    for (const storedCartDish of this.storedCart.cartDishes) {
+      const dish = this.dishes.get(storedCartDish.dishId);
+      if (!dish) {
+        throw new Error('dish with id ' + storedCartDish.dishId + ' not known');
+      }
+
+      const variant = dish.variants.find(en => en.variantId === storedCartDish.variantId);
+      if (!variant) {
+        throw new Error('variant with id ' + storedCartDish.variantId + ' not known');
+      }
+
+      const CartDish = new CartDishModel(
+        storedCartDish.itemId,
+        dish,
+        variant,
+        storedCartDish.count,
+        storedCartDish.remarks
+      );
+
+      cartDishes.push(CartDish);
+    }
+
+    this.cart = new CartModel(
+      OrderService.translateToOrderType(this.storedCart.orderType),
+      this.restaurantId,
+      averageTime,
+      minimumOrderValue,
+      maximumOrderValue,
+      costs,
+      this.restaurant.hygienicHandling,
+      cartDishes,
+      this.visible
+    );
+  }
+
+  private getRestaurantAsync(id: string): Observable<RestaurantModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -46,7 +484,7 @@ export class OrderService {
     return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions);
   }
 
-  public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
+  private getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -57,70 +495,13 @@ export class OrderService {
     return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
   }
 
-  public isCartVisible(): boolean {
-    return this.isCartVisibile;
-  }
-
-  public showCart(): void {
-    this.isCartVisibile = true;
-  }
-
-  public hideCart(): void {
-    this.isCartVisibile = false;
-  }
-
-  public getCart(): CartModel {
-    return this.cart;
-  }
-
-  public startOrderAtRestaurant(restaurant: RestaurantModel): void {
-    this.cart = new CartModel();
-    this.cart.restaurant = restaurant;
-    this.cart.orderedDishes = new Array<OrderedDishModel>();
-  }
-
-  public addDishVariantToCart(dish: DishModel, variant: DishVariantModel, count: number): void {
-    let orderedDish = this.cart.orderedDishes.find(en => en.dish.id === dish.id && en.variant.variantId === variant.variantId);
-    if (orderedDish !== undefined) {
-      orderedDish.count += count;
-    } else {
-      orderedDish = new OrderedDishModel();
-      orderedDish.dish = dish;
-      orderedDish.variant = variant;
-      orderedDish.count = count;
-      this.cart.orderedDishes.push(orderedDish);
-    }
-    this.isCartVisibile = true;
-  }
-
-  public incrementDishVariantCount(itemId: string): void {
-    const index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0) {
-      return;
-    }
-    this.cart.orderedDishes[index].count++;
-  }
-
-  public decrementDishVariantCount(itemId: string): void {
-    const index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0) {
-      return;
-    }
-    this.cart.orderedDishes[index].count--;
-    if (this.cart.orderedDishes[index].count === 0) {
-      this.cart.orderedDishes.splice(index, 1);
-    }
-  }
-
-  public removeDishVariantFromCart(itemId: string): void {
-    const index = this.cart.orderedDishes.findIndex(en => en.itemId === itemId);
-    if (index < 0) {
-      return;
-    }
-    this.cart.orderedDishes.splice(index, 1);
-  }
-
-  public discardCart(): void {
-    this.cart = undefined;
+  private sendCheckoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      })
+    };
+    return this.http.post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions);
   }
 }

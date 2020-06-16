@@ -1,4 +1,4 @@
-import { DishModel } from './dish.model';
+import {DishModel} from './dish.model';
 
 export class DishCategoryModel {
   constructor(init?: Partial<DishCategoryModel>) {

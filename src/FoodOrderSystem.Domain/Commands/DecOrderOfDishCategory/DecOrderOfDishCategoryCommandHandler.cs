@@ -43,11 +43,11 @@ namespace FoodOrderSystem.Domain.Commands.DecOrderOfDishCategory
             if (pos < 1)
                 return SuccessResult<bool>.Create(true);
             
-            var tempResult = curCategories[pos].ChangeOrderNo(pos - 1);
+            var tempResult = curCategories[pos].ChangeOrderNo(pos - 1, currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult;
 
-            tempResult = curCategories[pos - 1].ChangeOrderNo(pos);
+            tempResult = curCategories[pos - 1].ChangeOrderNo(pos, currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult;
 

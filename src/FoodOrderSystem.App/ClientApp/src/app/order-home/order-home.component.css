@@ -43,7 +43,7 @@
 .tab-item.selected span,
 .tab-item:focus span,
 .tab-item:hover span {
-    color: #1f4f46;
+    color: #65b32e;
 }
 
 .tab-bar .tab-slider {
@@ -54,7 +54,7 @@
 }
 
 .tab-slider .bar {
-    background-color: #1f4f46;
+    background-color: #65b32e;
     height: 100%;
     position: absolute;
     transition: left 150ms cubic-bezier(.57, .06, .05, .95);
@@ -137,7 +137,7 @@
 
 .tab .card-inner .card-content .search-wrap .search input:hover,
 .tab .card-inner .card-content .search-wrap .search input:focus {
-    border-bottom: 2px solid #a9a54c;
+    border-bottom: 2px solid #518f25;
 }
 
 .tab .card-inner .card-content .search-wrap .search svg {
@@ -154,7 +154,7 @@
 }
 
 .tab .card-inner .view-all a {
-    color: #1f4f46;
+    color: #65b32e;
     cursor: pointer;
     display: inline-block;
     font-family: proxima-nova, sans-serif;

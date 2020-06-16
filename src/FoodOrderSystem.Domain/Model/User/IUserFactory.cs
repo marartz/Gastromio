@@ -2,6 +2,11 @@
 {
     public interface IUserFactory
     {
-        Result<User> Create(Role role, string email, string password);
+        Result<User> Create(
+            Role role,
+            string email,
+            string password,
+            UserId createdBy
+        );
     }
 }

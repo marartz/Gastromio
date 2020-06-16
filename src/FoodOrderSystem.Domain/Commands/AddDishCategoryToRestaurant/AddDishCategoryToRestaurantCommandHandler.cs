@@ -54,7 +54,7 @@ namespace FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant
 
             for (var i = 0; i <= pos; i++)
             {
-                var tempResult = curCategories[i].ChangeOrderNo(i);
+                var tempResult = curCategories[i].ChangeOrderNo(i, currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<Guid>();
                 await dishCategoryRepository.StoreAsync(curCategories[i], cancellationToken);
@@ -62,13 +62,19 @@ namespace FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant
 
             for (var i = pos + 1; i < curCategories.Count; i++)
             {
-                var tempResult = curCategories[i].ChangeOrderNo(i + 1);
+                var tempResult = curCategories[i].ChangeOrderNo(i + 1, currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<Guid>();
                 await dishCategoryRepository.StoreAsync(curCategories[i], cancellationToken);
             }
 
-            var createResult = dishCategoryFactory.Create(command.RestaurantId, command.Name, pos + 1);
+            var createResult = dishCategoryFactory.Create(
+                command.RestaurantId,
+                command.Name,
+                pos + 1,
+                currentUser.Id
+            );
+            
             if (createResult.IsFailure)
                 return createResult.Cast<Guid>();
             var dishCategory = createResult.Value;

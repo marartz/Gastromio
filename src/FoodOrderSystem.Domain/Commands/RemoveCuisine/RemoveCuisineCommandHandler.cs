@@ -33,7 +33,7 @@ namespace FoodOrderSystem.Domain.Commands.RemoveCuisine
             var restaurants = await restaurantRepository.FindByCuisineIdAsync(command.CuisineId, cancellationToken);
             foreach (var restaurant in restaurants)
             {
-                restaurant.RemoveCuisine(command.CuisineId);
+                restaurant.RemoveCuisine(command.CuisineId, currentUser.Id);
                 await restaurantRepository.StoreAsync(restaurant, cancellationToken);
             }
             

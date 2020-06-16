@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { CuisineModel } from './cuisine.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../auth/auth.service';
+import {CuisineModel} from './cuisine.model';
 
 @Injectable()
 export class CuisineAdminService {
@@ -11,7 +11,8 @@ export class CuisineAdminService {
   constructor(
     private http: HttpClient,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 
   public getAllCuisinesAsync(): Observable<CuisineModel[]> {
     const httpOptions = {
@@ -32,7 +33,7 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', { name }, httpOptions);
+    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', {name}, httpOptions);
   }
 
   public changeCuisineAsync(cuisineId: string, name: string): Observable<boolean> {
@@ -43,7 +44,7 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', { name }, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', {name}, httpOptions);
   }
 
   public removeCuisineAsync(cuisineId: string): Observable<void> {

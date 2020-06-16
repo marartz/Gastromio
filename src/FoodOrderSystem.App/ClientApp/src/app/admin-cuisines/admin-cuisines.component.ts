@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
-import { AddCuisineComponent } from '../add-cuisine/add-cuisine.component';
-import { CuisineModel } from '../cuisine/cuisine.model';
-import { Observable } from 'rxjs';
-import { ChangeCuisineComponent } from '../change-cuisine/change-cuisine.component';
-import { RemoveCuisineComponent } from '../remove-cuisine/remove-cuisine.component';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CuisineAdminService} from '../cuisine/cuisine-admin.service';
+import {AddCuisineComponent} from '../add-cuisine/add-cuisine.component';
+import {CuisineModel} from '../cuisine/cuisine.model';
+import {Observable} from 'rxjs';
+import {ChangeCuisineComponent} from '../change-cuisine/change-cuisine.component';
+import {RemoveCuisineComponent} from '../remove-cuisine/remove-cuisine.component';
 
 @Component({
   selector: 'app-admin-cuisines',
   templateUrl: './admin-cuisines.component.html',
-  styleUrls: ['./admin-cuisines.component.css', '../../assets/css/admin.min.css']
+  styleUrls: ['./admin-cuisines.component.css', '../../assets/css/frontend.min.css', '../../assets/css/admin.min.css']
 })
 export class AdminCuisinesComponent implements OnInit {
   cuisines: Observable<CuisineModel[]>;
@@ -18,7 +18,8 @@ export class AdminCuisinesComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private cuisineAdminService: CuisineAdminService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.updateSearch();
@@ -28,7 +29,8 @@ export class AdminCuisinesComponent implements OnInit {
     const modalRef = this.modalService.open(AddCuisineComponent);
     modalRef.result.then(() => {
       this.updateSearch();
-    }, () => { });
+    }, () => {
+    });
   }
 
   openChangeCuisineForm(cuisine: CuisineModel): void {
@@ -36,7 +38,8 @@ export class AdminCuisinesComponent implements OnInit {
     modalRef.componentInstance.cuisine = cuisine;
     modalRef.result.then(() => {
       this.updateSearch();
-    }, () => { });
+    }, () => {
+    });
   }
 
   openRemoveCuisineForm(cuisine: CuisineModel): void {
@@ -44,7 +47,8 @@ export class AdminCuisinesComponent implements OnInit {
     modalRef.componentInstance.cuisine = cuisine;
     modalRef.result.then(() => {
       this.updateSearch();
-    }, () => { });
+    }, () => {
+    });
   }
 
   updateSearch(): void {

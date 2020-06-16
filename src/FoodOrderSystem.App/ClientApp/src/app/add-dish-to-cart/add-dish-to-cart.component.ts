@@ -14,6 +14,7 @@ export class AddDishToCartComponent implements OnInit {
 
   selectedVariant: DishVariantModel;
   count: number;
+  remarks: string;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -27,7 +28,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   getVariantPrice(variant: DishVariantModel): string {
-    return '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 });
+    return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
   getVariantText(variant: DishVariantModel): string {
@@ -46,7 +47,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderService.addDishVariantToCart(this.dish, this.selectedVariant, this.count);
+    this.orderService.addDishToCart(this.dish, this.selectedVariant, this.count, this.remarks);
     this.activeModal.close();
   }
 

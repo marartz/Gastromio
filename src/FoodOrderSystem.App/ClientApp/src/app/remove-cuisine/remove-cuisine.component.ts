@@ -1,16 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit, Input} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
-import { CuisineModel } from '../cuisine/cuisine.model';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {CuisineAdminService} from '../cuisine/cuisine-admin.service';
+import {CuisineModel} from '../cuisine/cuisine.model';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-remove-cuisine',
   templateUrl: './remove-cuisine.component.html',
-  styleUrls: ['./remove-cuisine.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./remove-cuisine.component.css', '../../assets/css/frontend.min.css']
 })
 export class RemoveCuisineComponent implements OnInit {
   @Input() public cuisine: CuisineModel;
@@ -30,14 +31,13 @@ export class RemoveCuisineComponent implements OnInit {
 
   onSubmit() {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.cuisineAdminService.removeCuisineAsync(this.cuisine.id)
+    this.cuisineAdminService.removeCuisineAsync(this.cuisine.id)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });

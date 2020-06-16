@@ -37,7 +37,18 @@ namespace FoodOrderSystem.App
 
                     var configuration = services.GetService<IConfiguration>();
 
-                    var currentUser = new User(new UserId(Guid.Empty), Role.SystemAdmin, "admin@gastromio.de", null, null);
+                    var currentUser = new User(
+                        new UserId(Guid.Empty),
+                        Role.SystemAdmin,
+                        "admin@gastromio.de",
+                        null,
+                        null,
+                        DateTime.UtcNow,
+                        new UserId(Guid.Empty),
+                        DateTime.UtcNow,
+                        new UserId(Guid.Empty)
+                    );
+
                     var commandDispatcher = services.GetService<ICommandDispatcher>();
 
                     var seed =

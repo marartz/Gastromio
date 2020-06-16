@@ -20,9 +20,14 @@
                             <br />
 
                             <div class="tab-bar" role="tablist">
-                                <button class="tab-item selected" role="tab"><span>Lieferung</span></button>
-                                <button class="tab-item" role="tab"><span>Abholung</span></button>
-                                <div class="tab-slider"><div class="bar" style="width: 50%; left: 0%"></div></div>
+                                <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab" (click)="onDeliverySelected()"><span>Lieferung</span></button>
+                                <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>
+                                <ng-container *ngIf="orderType === 'delivery'">
+                                    <div class="tab-slider"><div class="bar" style="width: 50%; left: 0%"></div></div>
+                                </ng-container>
+                                <ng-container *ngIf="orderType === 'pickup'">
+                                    <div class="tab-slider"><div class="bar" style="width: 50%; left: 50%"></div></div>
+                                </ng-container>
                             </div>
 
                             <!-- START: Lieferung-->
@@ -32,7 +37,7 @@
                                     <div class="card-content" tabindex="-1">
                                         <div class="search-wrap">
                                             <div class="search">
-                                                <form id="delivery"><!-- Bitte nicht entfernen! -->
+                                                <div style="background: #fff;"><!-- Bitte nicht entfernen! -->
                                                     <input type="text" placeholder="Suche nach Restaurants" autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
 
                                                     <ng-template #rt let-r="result" let-t="term">
@@ -45,7 +50,7 @@
                                                             <path d="M9.281 9.3l5.4 5.4"></path>
                                                         </g>
                                                     </svg>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

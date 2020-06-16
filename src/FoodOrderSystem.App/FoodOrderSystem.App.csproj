@@ -27,145 +27,22 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="DiscordRichPresence" Version="1.0.150" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-    <None Remove="ClientApp\src\app\cart\cart.model.ts" />
-    <None Remove="ClientApp\src\app\cart\ordered-dish.model.ts" />
-    <None Remove="ClientApp\src\app\dish-category\dish-category.model.ts" />
-    <None Remove="ClientApp\src\app\dish-category\dish-variant-extra.model.ts" />
-    <None Remove="ClientApp\src\app\dish-category\dish-variant.model.ts" />
-    <None Remove="ClientApp\src\app\dish-category\dish.model.ts" />
-    <None Remove="ClientApp\src\app\http-error-handling\failure-result.model.ts" />
-    <None Remove="ClientApp\src\app\http-error-handling\general-error.component.ts" />
-    <None Remove="ClientApp\src\app\order-restaurant-imprint\order-restaurant-imprint.component.ts" />
-    <None Remove="ClientApp\src\app\order-restaurant-opening-hours\order-restaurant-opening-hours.component.ts" />
-    <None Remove="ClientApp\src\app\order-restaurant\order-restaurant.component.ts" />
-    <None Remove="ClientApp\src\app\order-restaurants\order-restaurants.component.ts" />
-    <None Remove="ClientApp\src\app\remove-dish\remove-dish.component.spec.ts" />
-    <None Remove="ClientApp\src\app\remove-dish\remove-dish.component.ts" />
-    <None Remove="FoodOrderSystem.db-shm" />
-    <None Remove="FoodOrderSystem.db-wal" />
-    <None Remove="FoodOrderSystem.db-wal" />
-    <None Remove="FoodOrderSystem.db-shm" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="ClientApp\src\app\admin-restaurants\admin-restaurants.component.ts" />
-    <None Remove="ClientApp\src\app\auth.service.ts" />
-    <None Remove="ClientApp\src\app\auth\customer-auth-guard.service.ts" />
-    <None Remove="ClientApp\src\app\auth\restaurant-admin-auth-guard.service.ts" />
-    <None Remove="ClientApp\src\app\bottom-bar\bottom-bar.component.ts" />
-    <None Remove="ClientApp\src\app\cuisine\cuisine-admin.service.ts" />
-    <None Remove="ClientApp\src\app\cuisine\cuisine.model.ts" />
-    <None Remove="ClientApp\src\app\login\login.component.ts" />
-    <None Remove="ClientApp\src\app\order-home\order-home.component.ts" />
-    <None Remove="ClientApp\src\app\order\order.service.ts" />
-    <None Remove="ClientApp\src\app\pagination\pagination.component.ts" />
-    <None Remove="ClientApp\src\app\payment-method\payment-method-admin.service.ts" />
-    <None Remove="ClientApp\src\app\payment-method\payment-method.model.ts" />
-    <None Remove="ClientApp\src\app\remove-cuisine\remove-cuisine.component.ts" />
-    <None Remove="ClientApp\src\app\remove-payment-method\remove-payment-method.component.ts" />
-    <None Remove="ClientApp\src\app\remove-restaurant\remove-restaurant.component.ts" />
-    <None Remove="ClientApp\src\app\remove-user\remove-user.component.ts" />
-    <None Remove="ClientApp\src\app\restaurant-sys-admin\restaurant-sys-admin.service.ts" />
-    <None Remove="ClientApp\src\app\restaurant\restaurant.model.ts" />
-    <None Remove="ClientApp\src\app\systemadmin-auth-guard.service.ts" />
-    <None Remove="ClientApp\src\app\top-bar\top-bar.component.ts" />
-    <None Remove="ClientApp\src\app\user.model.ts" />
-  </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\add-dish-to-cart" />
-    <Folder Include="ClientApp\src\app\edit-ordered-dish" />
     <Folder Include="Pages\Shared\" />
-    <Folder Include="ClientApp\src\app\validators\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence.MongoDB\FoodOrderSystem.Persistence.MongoDB.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Remove="ClientApp\src\app\user\user-admin.service.ts" />
-    <TypeScriptCompile Remove="ClientApp\src\app\change-user-details\change-user-details.component.ts" />
-    <TypeScriptCompile Remove="ClientApp\src\app\restaurant-rest-admin\restaurant-rest-admin.service.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Update="ClientApp\src\app\admin-restaurants\admin-restaurants.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\admin-users\admin-users.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\bottom-bar\bottom-bar.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\cuisine\cuisine.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish-category.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish-variant-extra.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish-variant.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\dish-category\dish.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\http-error-handling\failure-result.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\login\login.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\order-home\order-home.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\order-restaurant-imprint\order-restaurant-imprint.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\order-restaurant-opening-hours\order-restaurant-opening-hours.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\order-restaurants\order-restaurants.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\order-restaurant\order-restaurant.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\pagination\client-pagination.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\pagination\paging.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\pagination\server-pagination.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\payment-method\payment-method.model.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\remove-cuisine\remove-cuisine.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\remove-payment-method\remove-payment-method.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\remove-restaurant\remove-restaurant.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Update="ClientApp\src\app\remove-user\remove-user.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,0 +1,246 @@
+<block-ui>
+    <section id="main" role="main">
+        <div class="focus-outlet" tabindex="-1" role="group">
+
+            <!-- START: Fehlermeldungen -->
+            <div *ngIf="generalError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{generalError}}</span>
+                </div>
+            </div>
+            <!-- ENDE: Fehlermeldungen -->
+
+            <div id="checkout" *ngIf="initialized">
+                <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
+
+                    <div class="checkout-content-container">
+
+                        <div class="checkout-main-col checkout-col">
+                            <div class="info-pane" role="group">
+                                <h3 class="info-label">Bestelldetails</h3>
+                                <div class="info-card">
+                                    <div class="info-section">
+                                        <div class="info-group">
+                                            <div class="logo" *ngIf="restaurant.image !== null">
+                                                <div class="logo-container">
+                                                    <img [src]="restaurant.image" alt="{{restaurant.name}} Logo" />
+                                                </div>
+                                            </div>
+                                            <div class="restaurant">
+                                                <div class="restaurant-info">
+                                                    <div class="restaurant-name">{{restaurant.name}}</div>
+                                                    <address>
+                                                        <div class="restaurant-address">{{restaurant.address.street}}</div>
+                                                        <div class="restaurant-address">{{restaurant.address.zipCode}}, {{restaurant.address.city}}</div>
+                                                    </address>
+                                                </div>
+                                            </div>
+                                            <div class="back">
+                                                <button class="hollow button-small" type="button" (click)="onBack()">Zurück</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-pane" role="group">
+                                <h3 class="info-label">Adressinformationen</h3>
+                                <div class="info-card">
+                                    <div class="info-group">
+                                        <div class="info-group-center">
+
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <div class="input-wrap">
+                                                        <label for="street">Straße/Nr.</label>
+                                                        <input type="text" id="street" formControlName="street" [ngClass]="{ 'is-invalid': submitted && f.street.errors }" placeholder="Ihre Adresse" />
+                                                        <div *ngIf="submitted && f.street.errors">
+                                                            <div *ngIf="f.street.errors.required">
+                                                                <span style="color: red;">Bitte geben Sie die Straße der Lieferadresse ein</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="input-wrap" style="margin-top: 20px !important;">
+                                                        <label for="addAddressInfo">Zusätzliche Informationen</label>
+                                                        <input type="text" id="addAddressInfo" formControlName="addAddressInfo" [ngClass]="{ 'is-invalid': submitted && f.addAddressInfo.errors }" placeholder="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 20px !important;">
+                                                <div class="col">
+                                                    <div class="input-wrap">
+                                                        <label for="zipCode">Postleitzahl</label>
+                                                        <input type="number" id="zipCode" formControlName="zipCode" maxlength="5" [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" placeholder="Postleitzahl" />
+                                                        <div *ngIf="submitted && f.zipCode.errors">
+                                                            <div *ngIf="f.zipCode.errors.required">
+                                                                <span style="color: red;">Bitte geben Sie die Postleitzahl der Lieferadresse ein</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="input-wrap">
+                                                        <label for="city">Stadt</label>
+                                                        <input type="text" id="city" formControlName="city" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" placeholder="Stadt" />
+                                                        <div *ngIf="submitted && f.city.errors">
+                                                            <div *ngIf="f.city.errors.required">
+                                                                <span style="color: red;">Bitte geben die Stadt der Lieferadresse ein</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-pane" role="group">
+                                <h3 class="info-label">Kontaktinformationen</h3>
+                                <div class="info-card">
+                                    <div class="info-group">
+                                        <div class="info-group-center">
+
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="input-wrap">
+                                                        <label for="givenName">Vorname</label>
+                                                        <input type="text" id="givenName" formControlName="givenName" [ngClass]="{ 'is-invalid': submitted && f.givenName.errors }" placeholder="Ihr Vorname" />
+                                                        <div *ngIf="submitted && f.givenName.errors">
+                                                            <div *ngIf="f.givenName.errors.required">
+                                                                <span style="color: red;">Bitte geben Sie Ihren Vornamen ein</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="input-wrap">
+                                                        <label for="lastName">Nachname</label>
+                                                        <input type="text" id="lastName" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Ihr Nachname" />
+                                                        <div *ngIf="submitted && f.lastName.errors">
+                                                            <div *ngIf="f.lastName.errors.required">
+                                                                <span style="color: red;">Bitte geben Sie Ihren Nachnamen ein</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" style="margin-top: 20px !important;">
+                                                <div class="col">
+                                                    <div class="input-wrap">
+                                                        <label for="phone">Telefon</label>
+                                                        <input type="tel" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" placeholder="Telefonnummer" />
+                                                        <div *ngIf="submitted && f.phone.errors">
+                                                            <div *ngIf="f.phone.errors.required">
+                                                                <span style="color: red;">Bitte geben Sie Ihre Telefonnummer ein</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="input-wrap">
+                                                        <label for="email">E-Mail</label>
+                                                        <input type="text" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="E-Mail-Adresse" />
+                                                        <div *ngIf="submitted && f.email.errors">
+                                                            <div *ngIf="f.email.errors.required" style="color: red;">Bitte geben Sie Ihre E-Mail-Adresse ein</div>
+                                                            <div *ngIf="f.email.errors.pattern" style="color: red;">Bitte geben Sie eine gültige E-Mail-Adresse muss ein</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--div class="input-wrap">
+                                                <label for="comments">Wünsche / Anmerkungen</label>
+                                                <input type="text" id="comments" formControlName="comments" placeholder="TODO" />
+                                            </div-->
+
+                                            <p class="checkout-message">Diese Informationen werden verwendet, um Ihre Bestellung zu identifizieren und um Sie bei Fragen zu kontakieren.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="checkout-aside-col checkout-col">
+                            <div id="ordered">
+                                <h3>Deine Bestellung</h3>
+                                <div class="wrapper">
+
+                                    <div class="info-section">
+                                        <div class="order-type-panel">
+                                            <div class="panel order-type" style="font-size:20px">
+                                                <span >Bestellart: </span>
+                                                <span><b>{{getCart().getOrderTypeText()}}</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-section">
+                                        <div class="info-group dish" *ngFor="let cartDish of getCart().getCartDishes()">
+                                            <div class="dish-content">
+                                                <div class="dish-count"><span>{{cartDish.getCount()}}</span></div>
+                                                <div class="dish">
+                                                    <h2 class="dish-name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></h2>
+                                                    <div class="dish-remarks">{{cartDish.getRemarks()}}</div>
+                                                </div>
+                                                <div class="dish-price"><span>&euro; {{cartDish.getPriceText()}}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-section">
+                                        <div class="totals-panel">
+                                            <div class="panel subtotal">
+                                                <div class="name">Zwischensumme</div>
+                                                <div class="cost">&euro; {{getCart().getValueOfOrderText()}}</div>
+                                            </div>
+                                            <div class="panel delivery-costs" *ngIf="getCart().getCosts()">
+                                                <div class="name">Lieferkosten</div>
+                                                <div class="cost">&euro; {{getCart().getCostsText()}}</div>
+                                            </div>
+                                            <div class="panel total">
+                                                <div class="name">Gesamt</div>
+                                                <div class="cost">&euro; {{getCart().getTotalPriceText()}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-section">
+                                        <fieldset>
+                                            <div *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                                <input  type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}">
+                                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}} - {{paymentMethod.description}}</label>
+                                            </div>
+                                        </fieldset>
+                                        <div *ngIf="submitted && f.paymentMethodId.errors">
+                                            <div *ngIf="f.paymentMethodId.errors.required">
+                                                <span style="color: red;">Bitte wählen Sie eine Zahlungsmethode aus</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-section">
+                                        <div class="cancellation-policy">
+                                            <h5>Stornierungsbedingungen</h5>
+                                            <p>Nach Klick auf "Verbindlich Bestellen" können keine weiteren Änderungen an der Bestellung vorgenommen werden.</p>
+                                        </div>
+                                        <button class="checkout-submit" type="submit">Verbindlich bestellen</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+  </section>
+</block-ui>

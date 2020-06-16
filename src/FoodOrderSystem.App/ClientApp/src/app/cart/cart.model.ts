@@ -1,87 +1,148 @@
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { OrderedDishModel } from './ordered-dish.model';
-import { Guid } from 'guid-typescript';
+import {CartDishModel} from './cart-dish.model';
 
 export class CartModel {
-  constructor() {
-    this.orderId = Guid.create().toString();
+  constructor(
+    private orderType: OrderType,
+    private restaurantId: string,
+    private averageTime: number,
+    private minimumOrderValue: number,
+    private maximumOrderValue: number,
+    private costs: number,
+    private hygienicHandling: string,
+    private cartDishes: CartDishModel[],
+    private visible: boolean
+  ) {
   }
 
-  public orderId: string;
-
-  public restaurant: RestaurantModel;
-
-  public orderedDishes: OrderedDishModel[];
-
-  public getDishCountOfOrder(): number {
-    let result = 0;
-    for (const orderedDish of this.orderedDishes) {
-      result += orderedDish.count;
-    }
-    return result;
+  public getOrderType(): OrderType {
+    return this.orderType;
   }
 
-  public getValueOfOrder(): number {
-    if (this.orderedDishes === undefined || this.orderedDishes.length === 0) {
-      return 0;
+  public getOrderTypeText(): string {
+    switch (this.getOrderType()) {
+      case OrderType.Pickup:
+        return 'Abholung';
+      case OrderType.Delivery:
+        return 'Lieferung';
+      case OrderType.Reservation:
+        return 'Tischreservierung';
+
     }
-    let result = 0;
-    for (const orderedDish of this.orderedDishes) {
-      result += orderedDish.count * orderedDish.variant.price;
-    }
-    return result;
   }
 
-  public getValueOfOrderText(): string {
-    const val = this.getValueOfOrder();
-    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+  public getRestaurantId(): string {
+    return this.restaurantId;
+  }
+
+  public getAverageTime(): number {
+    return this.averageTime;
   }
 
   public getMinimumOrderValue(): number {
-    return this.restaurant.minimumOrderValue;
+    return this.minimumOrderValue;
   }
 
   public getMinimumOrderValueText(): string {
-    const val = this.getMinimumOrderValue();
-    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+    return this.minimumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
-  public getMissingValueToMinimum(): number {
-    let val = this.getMinimumOrderValue() - this.getValueOfOrder();
-    if (val < 0) {
-      val = 0;
-    }
-    return val;
+  public getMaximumOrderValue(): number {
+    return this.maximumOrderValue;
   }
 
-  public getMissingValueToMinimumText(): string {
-    const val = this.getMissingValueToMinimum();
-    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+  public getMaximumOrderValueText(): string {
+    return this.maximumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
-  public isDeliveryForFree(): boolean {
-    return this.restaurant.deliveryCosts === 0;
+  public getCosts(): number {
+    return this.costs;
   }
 
-  public getDeliveryCosts(): number {
-    return this.restaurant.deliveryCosts;
-  }
-
-  public getDeliveryCostsText(): string {
-    const val = this.getDeliveryCosts();
-    if (val > 0) {
+  public getCostsText(): string {
+    const val = this.costs;
+    if (val === undefined) {
+      return undefined;
+    } else if (val > 0) {
       return val.toLocaleString('de', {minimumFractionDigits: 2});
     } else {
       return 'Gratis';
     }
   }
 
+  public getHygienicHandling(): string {
+    return this.hygienicHandling;
+  }
+
+  public hasOrders(): boolean {
+    return this.cartDishes ? this.cartDishes.length > 0 : false;
+  }
+
+  public getCartDishes(): CartDishModel[] {
+    return this.cartDishes;
+  }
+
+  public getDishCountOfOrder(): number {
+    let result = 0;
+    for (const cartDish of this.cartDishes) {
+      result += cartDish.getCount();
+    }
+    return result;
+  }
+
+  public getValueOfOrder(): number {
+    if (this.cartDishes === undefined || this.cartDishes.length === 0) {
+      return 0;
+    }
+    let result = 0;
+    for (const cartDish of this.cartDishes) {
+      result += cartDish.getCount() * cartDish.getVariant().price;
+    }
+    return result;
+  }
+
+  public getValueOfOrderText(): string {
+    const val = this.getValueOfOrder();
+    return val.toLocaleString('de', {minimumFractionDigits: 2});
+  }
+
+  public getMissingValueToMinimum(): number {
+    if (this.minimumOrderValue === undefined) {
+      return 0;
+    }
+
+    let val = this.minimumOrderValue - this.getValueOfOrder();
+    if (val < 0) {
+      val = 0;
+    }
+
+    return val;
+  }
+
+  public getMissingValueToMinimumText(): string {
+    const val = this.getMissingValueToMinimum();
+    return val.toLocaleString('de', {minimumFractionDigits: 2});
+  }
+
   public getTotalPrice(): number {
-    return this.getValueOfOrder() + this.getDeliveryCosts();
+    if (this.costs !== undefined) {
+      return this.getValueOfOrder() + this.costs;
+    } else {
+      return this.getValueOfOrder();
+    }
   }
 
   public getTotalPriceText(): string {
     const val = this.getTotalPrice();
-    return val.toLocaleString('de', { minimumFractionDigits: 2 });
+    return val.toLocaleString('de', {minimumFractionDigits: 2});
   }
+
+  public isVisible(): boolean {
+    return this.visible;
+  }
+}
+
+export enum OrderType {
+  Pickup,
+  Delivery,
+  Reservation
 }

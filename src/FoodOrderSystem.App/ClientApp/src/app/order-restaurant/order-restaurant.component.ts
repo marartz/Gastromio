@@ -1,22 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { RestaurantModel } from '../restaurant/restaurant.model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { DishCategoryModel } from '../dish-category/dish-category.model';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { OrderService } from '../order/order.service';
+import {RestaurantModel} from '../restaurant/restaurant.model';
+import {DishCategoryModel} from '../dish-category/dish-category.model';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {OrderService} from '../order/order.service';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DishModel } from '../dish-category/dish.model';
-import { OrderRestaurantOpeningHoursComponent } from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
-import { OrderRestaurantImprintComponent } from '../order-restaurant-imprint/order-restaurant-imprint.component';
-import { CartModel } from '../cart/cart.model';
-import { OrderedDishModel } from '../cart/ordered-dish.model';
-import { DishProductInfoComponent } from '../dish-productinfo/dish-productinfo.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {DishModel} from '../dish-category/dish.model';
+import {OrderRestaurantOpeningHoursComponent} from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
+import {OrderRestaurantImprintComponent} from '../order-restaurant-imprint/order-restaurant-imprint.component';
+import {CartModel, OrderType} from '../cart/cart.model';
+import {CartDishModel} from '../cart/cart-dish.model';
+import {DishProductInfoComponent} from '../dish-productinfo/dish-productinfo.component';
 import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.component';
-import {EditOrderedDishComponent} from "../edit-ordered-dish/edit-ordered-dish.component";
+import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
+import {take, tap} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
 
 @Component({
   selector: 'app-order-restaurant',
@@ -26,22 +27,23 @@ import {EditOrderedDishComponent} from "../edit-ordered-dish/edit-ordered-dish.c
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
 
-  initialized = false;
-
-  restaurantId: string;
-  restaurant: RestaurantModel;
-  dishCategories: DishCategoryModel[];
+  url: string;
 
   generalError: string;
 
-  imgUrl: any;
+  initialized: boolean;
 
+  restaurantId: string;
+  restaurant: RestaurantModel;
+  imgUrl: any;
   openingHours: string;
+  dishCategories: DishCategoryModel[];
 
   currentDishCategoryDivId: string;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private orderService: OrderService,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private modalService: NgbModal,
@@ -49,52 +51,62 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.url = this.router.url;
+    this.initialized = false;
+
     this.blockUI.start('Restaurant wird geladen ...');
-    this.route.paramMap.subscribe(params => {
-      this.restaurantId = params.get('restaurantId');
 
-      const getRestaurantSubscription = this.orderService.getRestaurantAsync(this.restaurantId).subscribe(
-        (data) => {
-          getRestaurantSubscription.unsubscribe();
+    let orderType: OrderType;
 
-          this.restaurant = data;
-
-          this.restaurant.paymentMethods.sort((a, b) => {
-            if (a.name < b.name) {
-              return -1;
-            }
-            if (a.name > b.name) {
-              return 1;
-            }
-            return 0;
-          });
-
-          this.imgUrl = this.restaurant.image;
-
-          this.openingHours = 'Mo. 10:00-14:00';
-
-          const getDishesSubscription = this.orderService.getDishesOfRestaurantAsync(this.restaurantId).subscribe(
-            (dishCategories) => {
-              getDishesSubscription.unsubscribe();
+    const observables = [
+      this.route.paramMap.pipe(tap(params => {
+        this.restaurantId = params.get('restaurantId');
+      })),
+      this.route.queryParams.pipe(tap(params => {
+        const orderTypeText = params.orderType?.toLocaleLowerCase();
+        if (!orderTypeText) {
+          orderType = OrderType.Pickup;
+        } else {
+          switch (orderTypeText) {
+            case 'pickup':
+              orderType = OrderType.Pickup;
+              break;
+            case 'delivery':
+              orderType = OrderType.Delivery;
+              break;
+            case 'reservation':
+              orderType = OrderType.Reservation;
+              break;
+            default:
               this.blockUI.stop();
-              this.dishCategories = dishCategories;
-              this.orderService.startOrderAtRestaurant(this.restaurant);
-              this.initialized = true;
-            },
-            (error: HttpErrorResponse) => {
-              getDishesSubscription.unsubscribe();
-              this.blockUI.stop();
-              this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-            }
-          );
-
-        },
-        (error: HttpErrorResponse) => {
-          getRestaurantSubscription.unsubscribe();
-          this.blockUI.stop();
-          this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+              this.generalError = 'Unbekannte Bestellart: ' + orderTypeText;
+          }
         }
-      );
+      }))
+    ];
+
+    combineLatest(observables).pipe(take(1)).subscribe(() => {
+      this.orderService.selectRestaurantAsync(this.restaurantId).pipe(take(1)).subscribe(() => {
+        this.blockUI.stop();
+
+        this.restaurant = this.orderService.getRestaurant();
+        this.dishCategories = this.orderService.getDishCategories();
+        this.imgUrl = this.restaurant.image;
+        this.openingHours = 'Mo. 10:00-14:00';
+
+        const cart = this.orderService.getCart();
+
+        if (!cart || cart.getOrderType() !== orderType) {
+          this.orderService.startOrder(orderType);
+        } else {
+          this.orderService.showCart();
+        }
+
+        this.initialized = true;
+      }, error => {
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+      });
     });
   }
 
@@ -114,19 +126,21 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   openProductInfoModal(dish: DishModel): void {
-    const modalRef = this.modalService.open(DishProductInfoComponent, { centered: true });
+    const modalRef = this.modalService.open(DishProductInfoComponent, {centered: true});
     modalRef.componentInstance.dish = dish;
     modalRef.result.then(() => {
-    }, () => { });
+    }, () => {
+    });
   }
 
   isCartEmpty(): boolean {
     const cart = this.orderService.getCart();
-    return cart === undefined || cart.orderedDishes === undefined || cart.orderedDishes.length === 0;
+    return cart ? !cart.hasOrders() : false;
   }
 
   isCartVisible(): boolean {
-    return this.orderService.isCartVisible();
+    const cart = this.orderService.getCart();
+    return cart ? cart.isVisible() : false;
   }
 
   showCart() {
@@ -144,13 +158,15 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   openOpeningHoursModal(): void {
     const modalRef = this.modalService.open(OrderRestaurantOpeningHoursComponent);
     modalRef.result.then(() => {
-    }, () => { });
+    }, () => {
+    });
   }
 
   openImprintModal(): void {
     const modalRef = this.modalService.open(OrderRestaurantImprintComponent);
     modalRef.result.then(() => {
-    }, () => { });
+    }, () => {
+    });
   }
 
   getFirstDishVariant(dish: DishModel): string {
@@ -158,7 +174,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return '0,00';
     }
 
-    return dish.variants[0].price.toLocaleString('de', { minimumFractionDigits: 2 });
+    return dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
   public onAddDishToCart(dish: DishModel): void {
@@ -168,34 +184,36 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(AddDishToCartComponent);
     modalRef.componentInstance.dish = dish;
     modalRef.result.then(() => {
-    }, () => { });
+    }, () => {
+    });
   }
 
-  public onEditOrderedDish(orderedDish: OrderedDishModel): void {
-    const modalRef = this.modalService.open(EditOrderedDishComponent);
-    modalRef.componentInstance.orderedDish = orderedDish;
+  public onEditCartDish(cartDish: CartDishModel): void {
+    const modalRef = this.modalService.open(EditCartDishComponent);
+    modalRef.componentInstance.cartDish = cartDish;
     modalRef.result.then(() => {
-    }, () => { });
+    }, () => {
+    });
   }
 
-  public onIncrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
-    if (orderedDishVariant === undefined) {
+  public onIncrementDishVariantCount(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.incrementDishVariantCount(orderedDishVariant.itemId);
+    this.orderService.incrementCountOfCartDish(cartDishVariant.getItemId());
   }
 
-  public onDecrementDishVariantCount(orderedDishVariant: OrderedDishModel): void {
-    if (orderedDishVariant === undefined) {
+  public onDecrementDishVariantCount(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.decrementDishVariantCount(orderedDishVariant.itemId);
+    this.orderService.decrementCountOfCartDish(cartDishVariant.getItemId());
   }
 
-  public onRemoveDishVariantFromCart(orderedDishVariant: OrderedDishModel): void {
-    if (orderedDishVariant === undefined) {
+  public onRemoveDishVariantFromCart(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.removeDishVariantFromCart(orderedDishVariant.itemId);
+    this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
   }
 }

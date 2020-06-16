@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FoodOrderSystem.App.Models
+﻿namespace FoodOrderSystem.App.Models
 {
     public class ChangeRestaurantAddressModel
     {

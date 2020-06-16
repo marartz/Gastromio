@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Cuisine;
+using FoodOrderSystem.Domain.Model.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -73,7 +74,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
         {
             return new Cuisine(
                 new CuisineId(row.Id),
-                row.Name
+                row.Name,
+                row.CreatedOn,
+                new UserId(row.CreatedBy),
+                row.UpdatedOn,
+                new UserId(row.UpdatedBy)
             );
         }
 
@@ -82,7 +87,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return new CuisineModel
             {
                 Id = obj.Id.Value,
-                Name = obj.Name
+                Name = obj.Name,
+                CreatedOn = obj.CreatedOn,
+                CreatedBy = obj.CreatedBy.Value,
+                UpdatedOn = obj.UpdatedOn,
+                UpdatedBy = obj.UpdatedBy.Value
             };
         }
     }

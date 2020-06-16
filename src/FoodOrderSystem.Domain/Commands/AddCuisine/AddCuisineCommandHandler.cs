@@ -40,7 +40,7 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
             if (cuisine != null)
                 return FailureResult<CuisineViewModel>.Create(FailureResultCode.CuisineAlreadyExists);
 
-            var createResult = cuisineFactory.Create(command.Name);
+            var createResult = cuisineFactory.Create(command.Name, currentUser.Id);
             if (createResult.IsFailure)
                 return createResult.Cast<CuisineViewModel>();
 

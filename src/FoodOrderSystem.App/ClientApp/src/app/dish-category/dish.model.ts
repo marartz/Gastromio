@@ -1,4 +1,4 @@
-import { DishVariantModel } from './dish-variant.model';
+import {DishVariantModel} from './dish-variant.model';
 
 export class DishModel {
   constructor(init?: Partial<DishModel>) {

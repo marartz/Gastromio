@@ -1,54 +1,70 @@
-<main class="wrapper">
-    <div class="content">
-        <div class="childrenwrapper">
-            <div class="innerwrapper">
+<section id="main" role="main">
+    <div class="focusing-outlet" tabindex="-1" role="group">
+        <div id="sys-admin">
 
-                <div class="header admin-users">
-                    <div class="textwrapper">
-                        <h1 class="title" style="max-width: 100%; color: rgb(255, 255, 255);">Benutzerverwaltung</h1>
+            <div id="nav">
+                <div class="bar">
+                    <div class="bar-inner">
+                        <ul class="links" role="navigation">
+                            <li><a class="text-link active" href="javascript:void(0)">Benutzer verwalten</a></li>
+                            <li><a class="text-link" [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
+                            <li><a class="text-link" [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
+                        </ul>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </div>
-</main>
 
-<div class="container no-header">
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <input class="form-control" type="search" placeholder="Nach Benutzern suchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
-        </div>
-        <div class="col-6 col-md-4">
-            <button class="button-add" id="addUser" (click)="openAddUserForm()">Benutzer hinzufügen</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col p-2">
-            <div class="restaurants mt-3">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Rolle</th>
-                            <th>E-Mail</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let user of pageOfUsers" class="user">
-                            <td>{{localizeRole(user.role)}}</td>
-                            <td>{{user.email}}</td>
-                            <td>
-                                <div class="float-right">
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserDetailsForm(user)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-user-edit"></i></button>
-                                    <button class="btn btn-secondary btn-sm m-1" (click)="openChangeUserPasswordForm(user)" placement="right" ngbTooltip="Passwort ändern"><i class="fas fa-key"></i></button>
-                                    <button class="btn btn-danger btn-sm m-1" (click)="openRemoveUserForm(user)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
+            <div id="hero">
+                <div class="inner">
+                    <h2 class="page-title">Benutzerverwaltung</h2>
+                    <div class="page-description">Verwalte Benutzer füge neue hinzu, oder ändere von denen das Passwort, die zu doof sind es sich zu merken</div>
+                </div>
+            </div>
+
+            <div class="waypointable" tabindex="-1">
+                <div id="user-management">
+                    <div class="inner">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control filter" type="search" placeholder="Einträge durchsuchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+                            </div>
+                            <div class="col"></div>
+                            <div class="col"></div>
+                            <div class="col">
+                                <a class="text-link" id="addUser" (click)="openAddUserForm()">+ Benutzer hinzufügen</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-2">
+                                <div class="restaurants mt-3">
+                                    <table class="table" role="grid">
+                                        <thead>
+                                            <tr role="row">
+                                                <th rowspan="1" colspan="1">E-Mail-Adresse</th>
+                                                <th rowspan="1" colspan="1">Rolle</th>
+                                                <th class="actions" rowspan="1" colspan="1">Aktionen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr role="row" *ngFor="let user of pageOfUsers" class="user">
+                                                <td>{{user.email}}</td>
+                                                <td>{{localizeRole(user.role)}}</td>
+                                                <td class="actions">
+                                                    <a class="edit"  (click)="openChangeUserDetailsForm(user)" placement="left" ngbTooltip="Bearbeiten"><i class="fas fa-user-edit"></i></a>
+                                                    <a class="edit" (click)="openChangeUserPasswordForm(user)" placement="left" ngbTooltip="Passwort ändern"><i class="fas fa-key"></i></a>
+                                                    <a class="delete" (click)="openRemoveUserForm(user)" placement="left" ngbTooltip="Löschen"><i class="far fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
                                 </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
-</div>
+</section>

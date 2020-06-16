@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DishModel } from '../dish-category/dish.model';
+import {Component, OnInit, Input} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {DishModel} from '../dish-category/dish.model';
 
 @Component({
   selector: 'app-dish-productinfo',

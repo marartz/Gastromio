@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, Observer } from 'rxjs';
-import { UserModel } from '../user/user.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
+import {Observable, Observer} from 'rxjs';
+import {UserModel} from '../user/user.model';
+import {take} from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +11,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   public isAuthenticated(): boolean {
     return this.getToken() !== undefined && this.getUser() !== undefined;
@@ -41,21 +43,22 @@ export class AuthService {
         })
       };
 
-      const subscription = this.http.post<LoginResultModel>(this.loginUrl, { email, password }, httpOptions).subscribe(
-        (loginResult: LoginResultModel) => {
-          localStorage.setItem('token', loginResult.token);
-          localStorage.setItem('user', JSON.stringify(loginResult.user));
-          observer.next({});
-        },
-        (err: HttpErrorResponse) => {
-          observer.error(err);
-        },
-        () => {
-          observer.complete();
-        });
+      this.http.post<LoginResultModel>(this.loginUrl, {email, password}, httpOptions)
+        .pipe(take(1))
+        .subscribe(
+          (loginResult: LoginResultModel) => {
+            localStorage.setItem('token', loginResult.token);
+            localStorage.setItem('user', JSON.stringify(loginResult.user));
+            observer.next({});
+          },
+          (err: HttpErrorResponse) => {
+            observer.error(err);
+          },
+          () => {
+            observer.complete();
+          });
 
       return () => {
-        subscription.unsubscribe();
       };
     });
   }

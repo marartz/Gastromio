@@ -37,7 +37,7 @@ namespace FoodOrderSystem.Domain.Commands.RemoveAdminFromRestaurant
             if (command.UserId == currentUser.Id)
                 return FailureResult<bool>.Create(FailureResultCode.CannotRemoveCurrentUserFromRestaurantAdmins);
 
-            restaurant.RemoveAdministrator(command.UserId);
+            restaurant.RemoveAdministrator(command.UserId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { CuisineAdminService } from '../cuisine/cuisine-admin.service';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {CuisineAdminService} from '../cuisine/cuisine-admin.service';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-cuisine',
   templateUrl: './add-cuisine.component.html',
-  styleUrls: ['./add-cuisine.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./add-cuisine.component.css', '../../assets/css/frontend.min.css']
 })
 export class AddCuisineComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -33,7 +34,9 @@ export class AddCuisineComponent implements OnInit {
   ngOnInit() {
   }
 
-  get f() { return this.addCuisineForm.controls; }
+  get f() {
+    return this.addCuisineForm.controls;
+  }
 
   onSubmit(data) {
     this.submitted = true;
@@ -42,15 +45,13 @@ export class AddCuisineComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.cuisineAdminService.addCuisineAsync(data.name)
+    this.cuisineAdminService.addCuisineAsync(data.name).pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.addCuisineForm.reset();
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.addCuisineForm.reset();

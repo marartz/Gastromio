@@ -66,33 +66,33 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
 
                 if (!string.Equals(dish.Name, command.Dish.Name))
                 {
-                    tempResult = dish.ChangeName(command.Dish.Name);
+                    tempResult = dish.ChangeName(command.Dish.Name, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
                 if (!string.Equals(dish.Description, command.Dish.Description))
                 {
-                    tempResult = dish.ChangeDescription(command.Dish.Description);
+                    tempResult = dish.ChangeDescription(command.Dish.Description, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
                 if (!string.Equals(dish.ProductInfo, command.Dish.ProductInfo))
                 {
-                    tempResult = dish.ChangeProductInfo(command.Dish.ProductInfo);
+                    tempResult = dish.ChangeProductInfo(command.Dish.ProductInfo, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
                 if (dish.OrderNo != command.Dish.OrderNo)
                 {
-                    tempResult = dish.ChangeOrderNo(command.Dish.OrderNo);
+                    tempResult = dish.ChangeOrderNo(command.Dish.OrderNo, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
-                tempResult = dish.ReplaceVariants(FromVariantViewModels(command.Dish.Variants));
+                tempResult = dish.ReplaceVariants(FromVariantViewModels(command.Dish.Variants), currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<Guid>();
             }
@@ -105,7 +105,8 @@ namespace FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant
                     command.Dish.Description,
                     command.Dish.ProductInfo,
                     command.Dish.OrderNo,
-                    FromVariantViewModels(command.Dish.Variants)
+                    FromVariantViewModels(command.Dish.Variants),
+                    currentUser.Id
                 );
 
                 if (createResult.IsFailure)

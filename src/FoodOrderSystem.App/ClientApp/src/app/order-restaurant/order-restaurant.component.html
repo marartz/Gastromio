@@ -1,43 +1,46 @@
 <block-ui>
-    <div class="row" *ngIf="generalError !== undefined">
-        <div class="col-12 setting-form">
-            <div class="form-notification">{{generalError}}</div>
-        </div>
-    </div>
-
-    <section id="main" role="main" *ngIf="generalError === undefined && initialized">
+    <section id="main" role="main">
         <div class="focus-outlet" tabindex="-1" role="group">
 
-            <div id="restaurants-menu">
+            <!-- START: Fehlermeldungen -->
+            <div *ngIf="generalError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{generalError}}</span>
+                </div>
+            </div>
+            <!-- ENDE: Fehlermeldungen -->
 
-                <div id="menu-hero" class="hero">
-                    <div class="hero-image">
+            <div id="restaurant" *ngIf="generalError === undefined && initialized">
+
+                <div id="menu-hero">
+                    <div id="hero-image">
                         <div class="background-image" style='background-image:url("https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?cs=srgb&dl=fries-with-leaves-dish-718742.jpg&fm=jpg")'></div>
                     </div>
-                    <div class="hero-content clearfix">
+
+                    <div id="hero-content" class="clearfix">
                         <div class="centered">
-
-                            <div class="restaurant-hero-card">
-                                <div class="hero-card-inner">
-                                    <h1>{{restaurant.name}}</h1>
-                                    <p>
-                                        {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
-                                        <br />{{restaurant.phone}}
-                                        <br />Öffnungszeiten
-                                    </p>
-                                </div>
+                            <div class="hero-card">
+                                <span>Bestelle bei</span>
+                                <h1>{{restaurant.name}}</h1>
+                                <p>
+                                    {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
+                                    <br />{{restaurant.contactInfo.phone}}
+                                    <br />Mo-Fr 16:00 - 22:00 Uhr
+                                </p>
                             </div>
-
+                            <div class="hero-message" *ngIf="restaurant.hygienicHandling && restaurant.hygienicHandling.length > 0">
+                                <p>{{restaurant.hygienicHandling}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="categories">
-                    <div class="bar">
+                <div id="menu-categories">
+                    <div class="category-bar">
                         <div class="bar-inner">
                             <ul class="category-links" role="navigation">
                                 <li class="category-link" *ngFor="let dishCategory of dishCategories">
-                                    <a class="text-link" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
+                                    <a class="text-link" href="{{url}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -47,35 +50,27 @@
                 <div id="menu">
                     <div class="clearfix waypointable" *ngFor="let dishCategory of dishCategories">
 
-                            <div class="dish-categories" id="{{dishCategory.id}}" tabindex="-1">
-                                <h1 class="menu-group-title">{{dishCategory.name}}</h1>
-                            </div>
+                        <div class="category" id="{{dishCategory.id}}" tabindex="-1">
+                            <h1>{{dishCategory.name}}</h1>
+                        </div>
 
-                            <div class="dish-grid">
-
-                                <div class="product-card-wrap" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
-                                    <div class="product-card link-card">
-
-                                        <div class="card-inner" role="link" tabindex="0">
-                                            <div class="card-content">
-                                                <h2 class="product-name">{{dish.name}}</h2>
-                                                <p class="product-description">{{dish.description}}</p>
-
-                                                <div class="card-meta">
-                                                    <div class="price">
-                                                        <span class="product-cost">&euro; {{getFirstDishVariant(dish)}}</span>
-                                                    </div>
+                        <div id="dish">
+                            <div class="dish-wrap" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
+                                <div class="dish-card">
+                                    <div class="dish-inner" role="link" tabindex="0">
+                                        <div class="dish-content">
+                                            <h2 class="dish-name">{{dish.name}}</h2>
+                                            <p class="dish-description">{{dish.description}}</p>
+                                            <div class="dish-meta">
+                                                <div class="price">
+                                                    <span class="dish-cost">&euro; {{getFirstDishVariant(dish)}}</span>
                                                 </div>
-
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
-
-
+                        </div>
 
                     </div>
                 </div>
@@ -84,13 +79,13 @@
 
         </div>
 
-        <div id="bag" role="complementary" [class.visible]="isCartVisible()">
-            <div class="bag-panel">
+        <div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
+            <div class="cart-panel">
 
-                <div id="bag-header">
+                <div id="cart-header">
                     <div class="info-group">
                         <div class="info-group-left">
-                            <button id="close-bag" class="info-group-icon" (click)="hideCart()">
+                            <button id="close-cart" class="info-group-icon" (click)="hideCart()">
                                 <svg viewBox="0 0 24 24" width="100%" height="100%">
                                     <path d="M15.5 7.1L12 10.6 8.5 7.1 7.1 8.5l3.5 3.5-3.5 3.5 1.4 1.4 3.5-3.5 3.5 3.5 1.4-1.4-3.5-3.5 3.5-3.5z"></path>
                                     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"></path>
@@ -98,67 +93,57 @@
                             </button>
                         </div>
                         <h2 class="title">
-                            <span class="cart">Warenkorb</span>
+                            <span class="cart-name">Warenkorb</span>
                             <span class="restaurant-name">{{restaurant.name}}</span>
+                            <span class="order-type">Bestellart: {{getCart().getOrderTypeText()}}</span>
                         </h2>
                     </div>
                 </div>
 
-                <div id="bag-main">
-
-                    <div id="bag-empty" class="info-section" *ngIf="isCartEmpty()">
+                <div id="cart-main">
+                    <div id="cart-empty" class="info-section" *ngIf="isCartEmpty()">
                         <div class="empty-container">
-                            <svg width="12" height="48" viewBox="0 0 12 48">
-                                <path d="M4.576 36.876a106.53 106.53 0 0 0-.967-2.511c-.666-1.67-3.965-.925-3.292.76a107.61 107.61 0 0 1 3.957 11.864c.394 1.46 2.51 1.237 3.228-.015 1.982-3.463 3.218-7.116 4.423-10.77.591-1.794-2.57-2.526-3.163-.728-.307.93-.616 1.861-.94 2.789-.014-2.092 1.014-3.76 1.902-4.937 1.186-1.572 1.504-3.147.971-4.816a12.77 12.77 0 0 0-.717-1.809 6.935 6.935 0 0 0-.786-1.255c-.69-.86-1.521-1.615-2.323-2.343a51.959 51.959 0 0 1-1.004-.93 2.735 2.735 0 0 0-.23-.188 2.672 2.672 0 0 1-.266-.22 1.661 1.661 0 0 1-.337-.435c-.13-.262-.183-.657.311-1.05l1.129-.903c.534-.429 1.069-.857 1.606-1.282.21-.168.426-.327.642-.486.422-.31.857-.631 1.233-1.005 1.386-1.379 1.705-2.594 1.035-3.937-.255-.514-.651-1.045-1.211-1.625-.935-.966-2.077-1.73-3.181-2.47-.551-.368-1.12-.75-1.661-1.154-.257-.19-.479-.436-.693-.672a10.967 10.967 0 0 0-.295-.317l-.106-.108.102-.111c.107-.117.209-.247.31-.375.238-.3.483-.61.798-.784.506-.277 1.063-.441 1.604-.6.152-.044.305-.09.457-.138a70.19 70.19 0 0 1 1.668-.493l.583-.166.103-.106c.148-.068.3-.132.45-.193.327-.136.664-.275.958-.47.536-.35.766-1.4.552-1.958a1.89 1.89 0 0 0-.065-.15c-.332-.666-1.017-.945-1.666-.68-.536.219-1.073.433-1.61.646-2.226.88-4.527 1.79-6.612 3.149C.394 4.596-.41 6.03.223 7.302c.152.304.382.582.682.827.848.69 1.72 1.38 2.561 2.047.351.28 1.917 1.522 1.917 1.522.508.402 1.017.804 1.523 1.21.152.124.266.258.337.401.181.363.088.766-.265 1.133-.452.475-.964 1.01-1.534 1.448-.322.247-.66.482-.985.708-1.123.782-2.183 1.52-2.858 2.832-.567 1.102-.625 2.119-.175 3.023.124.248.288.49.49.717.39.445.84.847 1.274 1.237.31.278.63.566.931.869.169.17.34.338.512.507.669.66 1.36 1.342 1.926 2.123.123.172.232.348.32.527.533 1.07.445 2.239-.263 3.475-.854 1.49-1.712 3.1-2.04 4.968z" fill="#32B593" fill-rule="evenodd"></path>
-                            </svg>
-                            <svg class="bowl" width="50" height="38" viewBox="0 0 50 38">
-                                <defs>
-                                    <path id="a" d="M49.884 37.463V0H0v37.463h49.884z"></path>
-                                </defs>
-                                <g transform="translate(0 .5)" fill="none" fill-rule="evenodd">
-                                    <mask id="b" fill="#fff">
-                                        <use xlink:href="#a"></use>
-                                    </mask>
-                                    <path d="M48.05 7.765L38.725.708l-.028-.021A3.483 3.483 0 0 0 36.64 0H13.244c-.732 0-1.444.238-2.087.708L1.862 7.746C.17 8.982-.482 11.673.38 13.872l2.631 5.627-.005.002.907 1.934c.016.038.035.076.055.118l3.866 8.245.047.097a14.278 14.278 0 0 0 12.615 7.568h8.89c5.289 0 10.122-2.9 12.615-7.568l3.882-8.277a2.15 2.15 0 0 0 .114-.24l.564-1.206.32-.683 2.573-5.495.052-.124c.86-2.198.209-4.889-1.456-6.105zM4.308 11.034l9.16-6.935h22.945l9.172 6.941c.133.135.306.75.12 1.29l-3.125 6.672-.127.272c-1.683.886-9.589 3.544-17.512 3.544-7.924 0-15.83-2.657-17.513-3.544l-3.251-6.945c-.187-.54-.013-1.154.13-1.295zm34.05 16.975a10.183 10.183 0 0 1-8.973 5.355h-8.89c-3.756 0-7.19-2.05-8.976-5.355l-1.613-3.441c.483.143 1.003.292 1.569.445 2.636.71 7.89 1.903 13.466 1.903 5.575 0 10.83-1.192 13.465-1.903.565-.153 1.083-.3 1.565-.445l-1.613 3.441z" fill="#1F4F46" mask="url(#b)"></path>
-                                </g>
-                            </svg>
-                            <p class="empty-bag">Huch. Hier sieht es aber noch leer aus...</p>
+                            <svg width="12" height="48" viewBox="0 0 12 48"><path d="M4.576 36.876a106.53 106.53 0 0 0-.967-2.511c-.666-1.67-3.965-.925-3.292.76a107.61 107.61 0 0 1 3.957 11.864c.394 1.46 2.51 1.237 3.228-.015 1.982-3.463 3.218-7.116 4.423-10.77.591-1.794-2.57-2.526-3.163-.728-.307.93-.616 1.861-.94 2.789-.014-2.092 1.014-3.76 1.902-4.937 1.186-1.572 1.504-3.147.971-4.816a12.77 12.77 0 0 0-.717-1.809 6.935 6.935 0 0 0-.786-1.255c-.69-.86-1.521-1.615-2.323-2.343a51.959 51.959 0 0 1-1.004-.93 2.735 2.735 0 0 0-.23-.188 2.672 2.672 0 0 1-.266-.22 1.661 1.661 0 0 1-.337-.435c-.13-.262-.183-.657.311-1.05l1.129-.903c.534-.429 1.069-.857 1.606-1.282.21-.168.426-.327.642-.486.422-.31.857-.631 1.233-1.005 1.386-1.379 1.705-2.594 1.035-3.937-.255-.514-.651-1.045-1.211-1.625-.935-.966-2.077-1.73-3.181-2.47-.551-.368-1.12-.75-1.661-1.154-.257-.19-.479-.436-.693-.672a10.967 10.967 0 0 0-.295-.317l-.106-.108.102-.111c.107-.117.209-.247.31-.375.238-.3.483-.61.798-.784.506-.277 1.063-.441 1.604-.6.152-.044.305-.09.457-.138a70.19 70.19 0 0 1 1.668-.493l.583-.166.103-.106c.148-.068.3-.132.45-.193.327-.136.664-.275.958-.47.536-.35.766-1.4.552-1.958a1.89 1.89 0 0 0-.065-.15c-.332-.666-1.017-.945-1.666-.68-.536.219-1.073.433-1.61.646-2.226.88-4.527 1.79-6.612 3.149C.394 4.596-.41 6.03.223 7.302c.152.304.382.582.682.827.848.69 1.72 1.38 2.561 2.047.351.28 1.917 1.522 1.917 1.522.508.402 1.017.804 1.523 1.21.152.124.266.258.337.401.181.363.088.766-.265 1.133-.452.475-.964 1.01-1.534 1.448-.322.247-.66.482-.985.708-1.123.782-2.183 1.52-2.858 2.832-.567 1.102-.625 2.119-.175 3.023.124.248.288.49.49.717.39.445.84.847 1.274 1.237.31.278.63.566.931.869.169.17.34.338.512.507.669.66 1.36 1.342 1.926 2.123.123.172.232.348.32.527.533 1.07.445 2.239-.263 3.475-.854 1.49-1.712 3.1-2.04 4.968z" fill="#65b32e" fill-rule="evenodd"></path></svg>
+                            <svg class="bowl" width="50" height="38" viewBox="0 0 50 38"><defs><path id="a" d="M49.884 37.463V0H0v37.463h49.884z"></path></defs><g transform="translate(0 .5)" fill="none" fill-rule="evenodd"><mask id="b" fill="#fff"><use xlink:href="#a"></use></mask><path d="M48.05 7.765L38.725.708l-.028-.021A3.483 3.483 0 0 0 36.64 0H13.244c-.732 0-1.444.238-2.087.708L1.862 7.746C.17 8.982-.482 11.673.38 13.872l2.631 5.627-.005.002.907 1.934c.016.038.035.076.055.118l3.866 8.245.047.097a14.278 14.278 0 0 0 12.615 7.568h8.89c5.289 0 10.122-2.9 12.615-7.568l3.882-8.277a2.15 2.15 0 0 0 .114-.24l.564-1.206.32-.683 2.573-5.495.052-.124c.86-2.198.209-4.889-1.456-6.105zM4.308 11.034l9.16-6.935h22.945l9.172 6.941c.133.135.306.75.12 1.29l-3.125 6.672-.127.272c-1.683.886-9.589 3.544-17.512 3.544-7.924 0-15.83-2.657-17.513-3.544l-3.251-6.945c-.187-.54-.013-1.154.13-1.295zm34.05 16.975a10.183 10.183 0 0 1-8.973 5.355h-8.89c-3.756 0-7.19-2.05-8.976-5.355l-1.613-3.441c.483.143 1.003.292 1.569.445 2.636.71 7.89 1.903 13.466 1.903 5.575 0 10.83-1.192 13.465-1.903.565-.153 1.083-.3 1.565-.445l-1.613 3.441z" fill="#41721e" mask="url(#b)"></path></g></svg>
+                            <p class="empty-cart">Hmmm. Hiervon wirst du sicherlich nicht satt...</p>
                         </div>
                     </div>
 
                     <div class="info-section" *ngIf="!isCartEmpty()">
                         <h2 class="info-label">Deine Bestellung</h2>
-                        <div class="line-item-reduced" *ngFor="let orderedDish of getCart().orderedDishes">
+                        <div class="line-item-reduced" *ngFor="let cartDish of getCart().getCartDishes()">
                             <div class="card-content">
                                 <div class="info-group-left">
                                     <div class="info-group-row">
-                                        <span class="info-group-label product-quantity">{{orderedDish.count}}x</span>
+                                        <span class="info-group-label product-quantity">{{cartDish.getCount()}}x</span>
                                     </div>
                                 </div>
                                 <div class="info-group-center">
-                                    <div class="info-group-row"><h2 class="info-group-label product-name">{{orderedDish.dish.name}} <ng-container *ngIf="orderedDish.dish.variants.length > 1">({{orderedDish.variant.name}})</ng-container></h2></div>
-                                    <div class="info-group-row"><p class="product-description">{{orderedDish.remarks}}</p></div>
+                                    <div class="info-group-row"><h2 class="info-group-label product-name">{{cartDish.getDish().name}} <ng-container *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</ng-container></h2></div>
+                                    <div class="info-group-row"><p class="product-description">{{cartDish.getRemarks()}}</p></div>
                                     <div class="info-group-row card-actions-row">
-                                        <a class="text-link" role="button" tabindex="0" (click)="onEditOrderedDish(orderedDish)">Bearbeiten</a>
-                                        <a class="text-link" role="button" tabindex="0" (click)="onRemoveDishVariantFromCart(orderedDish)">Entfernen</a>
+                                        <a class="text-link" role="button" tabindex="0" (click)="onEditCartDish(cartDish)">Bearbeiten</a>
+                                        <a class="text-link" role="button" tabindex="0" (click)="onRemoveDishVariantFromCart(cartDish)">Entfernen</a>
                                     </div>
                                 </div>
                                 <div class="info-group-right">
-                                    <div class="product-cost info-group-row">&euro; {{orderedDish.getPriceText()}}</div>
+                                    <div class="product-cost info-group-row">&euro; {{cartDish.getPriceText()}}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="info-section bag-totals" *ngIf="!isCartEmpty()">
+                    <div class="info-section cart-totals" *ngIf="!isCartEmpty()">
                         <div class="totals">
                             <div class="row-collapse subtotal">
                                 <div class="label">Zwischensumme</div>
                                 <div class="price">&euro; {{getCart().getValueOfOrderText()}}</div>
                             </div>
                             <div class="row-collapse dynamic-fees">
-                                <div class="label">Lieferkosten</div>
-                                <div class="price">&euro; {{getCart().getDeliveryCostsText()}}</div>
+                                <div class="label" *ngIf="getCart().getCosts()">Lieferkosten</div>
+                                <div class="price" *ngIf="getCart().getCosts()">&euro; {{getCart().getCostsText()}}</div>
+                                <!--div class="label">Mindestbestellwert</div>
+                                <div class="price"></div-->
                             </div>
                             <div class="row-collapse total">
                                 <div class="label">Gesamt</div>
@@ -168,11 +153,11 @@
                     </div>
                 </div>
 
-                <div id="bag-footer">
+                <div id="cart-footer">
                     <div class="info-section">
-                        <div class="bag-btns">
+                        <div class="cart-btns">
                             <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
-                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout">Checkout</button></div>
+                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" [routerLink]="['/checkout']">Zur Bestellung</button></div>
                         </div>
                     </div>
                 </div>

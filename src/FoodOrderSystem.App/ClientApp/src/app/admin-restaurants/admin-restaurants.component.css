@@ -1,15 +1,11 @@
-.admin-restaurants {
-    background-image: url(../../assets/img/header/admin-restaurants-header.jpg);
-}
-
 .no-header {
     padding-top: 20px
 }
 
 .restaurant {
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(235, 235, 235);
-    border-radius: 4px;
+    background-color: #fff;
+    border: 2px solid transparent;
+    border-radius: 8px;
     display: flex;
     flex-direction: row;
     margin: 10px;
@@ -18,8 +14,13 @@
     position: relative;
 }
 
+.restaurant:hover {
+    border: 2px solid #518f25;
+    transition: all .4s cubic-bezier(.165, .84, .44, 1);
+}
+
 .restaurant .restaurant-logo-wrapper {
-    border-right: 1px solid rgb(235, 235, 235);
+    border-right: 1px solid #ccc;
     display: flex;
     flex: 0 0 98px;
     flex-direction: column;
@@ -86,7 +87,7 @@
 }
 
 .restaurant .restaurant-info-wrapper .restaurantbeschreibung {
-    color: rgb(112, 112, 112);
+    color: #6d6d6d;
     font-size: 14px;
     font-weight: 300;
     line-height: 22px;
@@ -130,8 +131,6 @@
     }
 }
 
-
-
 .restaurant .restaurant-info-wrapper .details .settings {
     color: #666;
     display: flex;
@@ -161,9 +160,9 @@
 }
 
 .restaurant .restaurant-info-wrapper .details .settings .delete {
-    color: darkred;
-    cursor: pointer;
-    opacity: 0.7;
-    outline: 0;
-    text-decoration: none;
+  color: #b44448;
+  cursor: pointer;
+  opacity: 0.7;
+  outline: 0;
+  text-decoration: none;
 }

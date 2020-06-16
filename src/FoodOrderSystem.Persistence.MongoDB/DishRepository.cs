@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.User;
 using MongoDB.Driver;
 
 namespace FoodOrderSystem.Persistence.MongoDB
@@ -104,10 +105,14 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         .Select(variantDocument => new DishVariant(
                             variantDocument.VariantId,
                             variantDocument.Name,
-                            variantDocument.Price,
+                            (decimal)variantDocument.Price,
                             new List<DishVariantExtra>()
                         )).ToList()
-                    : new List<DishVariant>()
+                    : new List<DishVariant>(),
+                model.CreatedOn,
+                new UserId(model.CreatedBy),
+                model.UpdatedOn,
+                new UserId(model.UpdatedBy)
             );
         }
 
@@ -127,8 +132,12 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     {
                         VariantId = variant.VariantId,
                         Name = variant.Name,
-                        Price = variant.Price
-                    }).ToList()
+                        Price = (double)variant.Price
+                    }).ToList(),
+                CreatedOn = obj.CreatedOn,
+                CreatedBy = obj.CreatedBy.Value,
+                UpdatedOn = obj.UpdatedOn,
+                UpdatedBy = obj.UpdatedBy.Value
             };
         }
     }

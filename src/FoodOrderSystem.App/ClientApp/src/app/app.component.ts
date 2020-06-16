@@ -1,7 +1,7 @@
-import { Component} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { OrderHomeComponent } from './order-home/order-home.component';
-import { Title } from '@angular/platform-browser';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {OrderHomeComponent} from './order-home/order-home.component';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',

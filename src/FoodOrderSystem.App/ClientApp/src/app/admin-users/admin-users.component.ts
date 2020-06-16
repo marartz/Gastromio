@@ -1,19 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserAdminService } from '../user/user-admin.service';
-import { UserModel } from '../user/user.model';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddUserComponent } from '../add-user/add-user.component';
-import { ChangeUserDetailsComponent } from '../change-user-details/change-user-details.component';
-import { ChangeUserPasswordComponent } from '../change-user-password/change-user-password.component';
-import { RemoveUserComponent } from '../remove-user/remove-user.component';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {UserAdminService} from '../user/user-admin.service';
+import {UserModel} from '../user/user.model';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AddUserComponent} from '../add-user/add-user.component';
+import {ChangeUserDetailsComponent} from '../change-user-details/change-user-details.component';
+import {ChangeUserPasswordComponent} from '../change-user-password/change-user-password.component';
+import {RemoveUserComponent} from '../remove-user/remove-user.component';
 import {ChangePageInfo} from '../pagination/server-pagination.component';
 
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
-  styleUrls: ['./admin-users.component.css', '../../assets/css/admin.min.css']
+  styleUrls: ['./admin-users.component.css', '../../assets/css/frontend.min.css', '../../assets/css/admin.min.css']
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
   total: number;
@@ -45,7 +45,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(AddUserComponent);
     modalRef.result.then(() => {
       this.updateSearch();
-    }, () => { });
+    }, () => {
+    });
   }
 
   openChangeUserDetailsForm(user: UserModel): void {
@@ -53,7 +54,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.user = user;
     modalRef.result.then(() => {
       this.updateSearch();
-    }, () => {});
+    }, () => {
+    });
   }
 
   openChangeUserPasswordForm(user: UserModel): void {
@@ -66,7 +68,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.user = user;
     modalRef.result.then(() => {
       this.updateSearch();
-    }, () => { });
+    }, () => {
+    });
   }
 
   onSearchType(value: string) {
@@ -74,27 +77,23 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   onChangePage(changePageInfo: ChangePageInfo) {
-    const observable = this.userAdminService.searchForUsersAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take);
-
-    const subscription = observable.subscribe((result) => {
-      subscription.unsubscribe();
-      this.total = result.total;
-      this.pageOfUsers = result.items;
-    }, () => {
-      subscription.unsubscribe();
-    });
+    this.userAdminService.searchForUsersAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.total = result.total;
+        this.pageOfUsers = result.items;
+      }, () => {
+      });
   }
 
   updateSearch(): void {
-    const observable = this.userAdminService.searchForUsersAsync(this.searchPhrase, 0, 0);
-
-    const subscription = observable.subscribe((result) => {
-      subscription.unsubscribe();
-      this.total = result.total;
-      this.pageOfUsers = result.items;
-    }, () => {
-      subscription.unsubscribe();
-    });
+    this.userAdminService.searchForUsersAsync(this.searchPhrase, 0, 0)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.total = result.total;
+        this.pageOfUsers = result.items;
+      }, () => {
+      });
   }
 
   localizeRole(role: string): string {

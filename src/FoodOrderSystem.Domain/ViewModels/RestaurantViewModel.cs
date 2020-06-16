@@ -17,33 +17,23 @@ namespace FoodOrderSystem.Domain.ViewModels
 
         public AddressViewModel Address { get; set; }
 
-        public IList<DeliveryTimeViewModel> DeliveryTimes { get; set; }
+        public ContactInfoViewModel ContactInfo { get; set; }
 
-        public DateTime NextDeliveryTime { get; set; }
+        public List<OpeningPeriodViewModel> OpeningHours { get; set; }
 
-        public string NextDeliveryTimeText { get; set; }
+        public PickupInfoViewModel PickupInfo { get; set; }
 
-        public decimal MinimumOrderValue { get; set; }
+        public DeliveryInfoViewModel DeliveryInfo { get; set; }
 
-        public string MinimumOrderValueText { get; set; }
+        public ReservationInfoViewModel ReservationInfo { get; set; }
+        
+        public string HygienicHandling { get; set; }
 
-        public decimal DeliveryCosts { get; set; }
+        public List<CuisineViewModel> Cuisines { get; set; }
 
-        public string DeliveryCostsText { get; set; }
+        public List<PaymentMethodViewModel> PaymentMethods { get; set; }
 
-        public string Phone { get; set; }
-
-        public string WebSite { get; set; }
-
-        public string Imprint { get; set; }
-
-        public string OrderEmailAddress { get; set; }
-
-        public IList<CuisineViewModel> Cuisines { get; set; }
-
-        public IList<PaymentMethodViewModel> PaymentMethods { get; set; }
-
-        public IList<UserViewModel> Administrators { get; set; }
+        public List<UserViewModel> Administrators { get; set; }
 
         public static RestaurantViewModel FromRestaurant(
             Restaurant restaurant,
@@ -60,41 +50,51 @@ namespace FoodOrderSystem.Domain.ViewModels
                 image = sb.ToString();
             }
 
-            var nextDeliveryTime = restaurant.CalculateNextDeliveryTime();
-
             return new RestaurantViewModel
             {
                 Id = restaurant.Id.Value,
                 Name = restaurant.Name,
                 Image = image,
-                Address = restaurant.Address != null ? AddressViewModel.FromAddress(restaurant.Address) : null,
-                DeliveryTimes = restaurant.DeliveryTimes != null ? restaurant.DeliveryTimes
-                    .Select(en => DeliveryTimeViewModel.FromDeliveryTime(en)).ToList() : new List<DeliveryTimeViewModel>(),
-                NextDeliveryTime = nextDeliveryTime,
-                NextDeliveryTimeText = nextDeliveryTime.ToString("hh:mm"),
-                MinimumOrderValue = restaurant.MinimumOrderValue,
-                MinimumOrderValueText = restaurant.MinimumOrderValue.ToString("0.00"),
-                DeliveryCosts = restaurant.DeliveryCosts,
-                DeliveryCostsText = restaurant.DeliveryCosts.ToString("0.00"),
-                Phone = restaurant.Phone,
-                WebSite = restaurant.WebSite,
-                Imprint = restaurant.Imprint,
-                OrderEmailAddress = restaurant.OrderEmailAddress,
-                Cuisines = restaurant.Cuisines != null ? restaurant.Cuisines
-                    .Select(en => RetrieveCuisineModel(allCuisines, en.Value)).ToList() : new List<CuisineViewModel>(),
-                PaymentMethods = restaurant.PaymentMethods != null ? restaurant.PaymentMethods
-                    .Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value)).ToList() : new List<PaymentMethodViewModel>(),
-                Administrators = restaurant.Administrators != null ? restaurant.Administrators
-                    .Select(en => RetrieveUserModel(userRepository, en)).ToList() : new List<UserViewModel>()
+                Address = restaurant.Address != null
+                    ? AddressViewModel.FromAddress(restaurant.Address)
+                    : new AddressViewModel(),
+                ContactInfo = restaurant.ContactInfo != null
+                    ? ContactInfoViewModel.FromContactInfo(restaurant.ContactInfo)
+                    : new ContactInfoViewModel(),
+                OpeningHours = restaurant.OpeningHours != null
+                    ? restaurant.OpeningHours.Select(OpeningPeriodViewModel.FromOpeningPeriod).ToList()
+                    : new List<OpeningPeriodViewModel>(),
+                PickupInfo = restaurant.PickupInfo != null
+                    ? PickupInfoViewModel.FromPickupInfo(restaurant.PickupInfo)
+                    : new PickupInfoViewModel(),
+                DeliveryInfo = restaurant.DeliveryInfo != null
+                    ? DeliveryInfoViewModel.FromDeliveryInfo(restaurant.DeliveryInfo)
+                    : new DeliveryInfoViewModel(),
+                ReservationInfo = restaurant.ReservationInfo != null
+                    ? ReservationInfoViewModel.FromReservationInfo(restaurant.ReservationInfo)
+                    : new ReservationInfoViewModel(),
+                HygienicHandling = restaurant.HygienicHandling,
+                Cuisines = restaurant.Cuisines != null
+                    ? restaurant.Cuisines.Select(en => RetrieveCuisineModel(allCuisines, en.Value)).ToList()
+                    : new List<CuisineViewModel>(),
+                PaymentMethods = restaurant.PaymentMethods != null
+                    ? restaurant.PaymentMethods.Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value))
+                        .ToList()
+                    : new List<PaymentMethodViewModel>(),
+                Administrators = restaurant.Administrators != null
+                    ? restaurant.Administrators.Select(en => RetrieveUserModel(userRepository, en)).ToList()
+                    : new List<UserViewModel>()
             };
         }
 
-        public static CuisineViewModel RetrieveCuisineModel(IDictionary<Guid, CuisineViewModel> allCuisines, Guid cuisineId)
+        public static CuisineViewModel RetrieveCuisineModel(IDictionary<Guid, CuisineViewModel> allCuisines,
+            Guid cuisineId)
         {
             return allCuisines.TryGetValue(cuisineId, out var model) ? model : null;
         }
 
-        public static PaymentMethodViewModel RetrievePaymentMethodModel(IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, Guid paymentMethodId)
+        public static PaymentMethodViewModel RetrievePaymentMethodModel(
+            IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods, Guid paymentMethodId)
         {
             return allPaymentMethods.TryGetValue(paymentMethodId, out var model) ? model : null;
         }

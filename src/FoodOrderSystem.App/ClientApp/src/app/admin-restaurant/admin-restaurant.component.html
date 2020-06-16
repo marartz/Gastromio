@@ -1,389 +1,555 @@
 <block-ui>
-  <div class="setting-header">
-    {{restaurant.name}} <button style="background-color: transparent; border: 0; color: #fff" (click)="openChangeRestaurantNameForm()"><i class="fas fa-edit"></i></button>
-  </div>
-  <div class="container" style="margin-top: 20px">
-    <div class="row" *ngIf="generalError !== undefined">
-      <div class="col-12 setting-form">
-        <div class="form-notification">{{generalError}}</div>
-      </div>
-    </div>
+    <section id="main" role="main">
+        <div class="focusing-outlet" tabindex="-1" role="group">
 
-    <div class="row" *ngIf="generalError === undefined">
-      <div class="col p-2">
-        <div>
-          <div class="card mb-4">
-            <div class="card-header card-head">Logo</div>
-            <div class="card-body">
-              <form class="setting-form" [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
-                <div class="form-notification" *ngIf="changeImageError !== undefined">{{changeImageError}}</div>
-
-                <div class="input">
-                  <img class="input" [src]="imgUrl" *ngIf="imgUrl" style="vertical-align: middle; padding-top: 24px; width:200px;">
-                  <input type="file" id="image" accept="image/*" (change)="onImageChange($event)">
+            <!-- START: Fehlermeldungen -->
+            <div *ngIf="generalError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{generalError}}</span>
                 </div>
-
-                <button class="button-form button" type="submit" *ngIf="changeImageForm.dirty">Logo aktualisieren</button>
-              </form>
             </div>
-          </div>
-
-          <div class="card mb-4">
-            <div class="card-header card-head">Adresse</div>
-            <div class="card-body">
-              <form class="setting-form" [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
-                <div class="form-notification" *ngIf="changeAddressError !== undefined">{{changeAddressError}}</div>
-
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="input">
-                      <input type="text" id="street" formControlName="street" maxlength="100">
-                      <label for="street">Straße</label>
-                    </div>
-                  </div>
+            <div *ngIf="changeAddressError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{changeAddressError}}</span>
                 </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="input">
-                      <input type="text" id="zipCode" formControlName="zipCode" maxlength="5">
-                      <label for="zipCode">Postleitzahl</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="input">
-                      <input type="text" id="city" formControlName="city">
-                      <label for="city">Stadt</label>
-                    </div>
-                  </div>
-                </div>
-
-                <button class="button-form button" type="submit" *ngIf="changeAddressForm.dirty">Daten speichern</button>
-              </form>
             </div>
-          </div>
-
-          <div class="card mb-4">
-            <div class="card-header card-head">Weitere Daten</div>
-            <div class="card-body">
-              <form class="setting-form" [formGroup]="changeContactDetailsForm" (ngSubmit)="onSaveContactDetails(changeContactDetailsForm.value)">
-                <div class="form-notification" *ngIf="changeContactDetailsError !== undefined">{{changeContactDetailsError}}</div>
-
-                <div class="form-group row">
-                  <label for="phone" class="col-sm-2 col-form-label">Telefon</label>
-                  <div class="col-sm-10">
-                    <div class="input">
-                      <input type="text" id="phone" formControlName="phone">
-                      <label for="phone">Telefon</label>
-                    </div>
-                  </div>
+            <div *ngIf="changeImageError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{changeImageError}}</span>
                 </div>
-                <div class="form-group row">
-                  <label for="webSite" class="col-sm-2 col-form-label">Website</label>
-                  <div class="col-sm-10">
-                    <div class="input">
-                      <input type="text" id="webSite" formControlName="webSite">
-                      <label for="webSite">Webseite</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="imprint" class="col-sm-2 col-form-label">Impressum</label>
-                  <div class="col-sm-10">
-                    <div class="input">
-                      <textarea style="height: 100%!important" id="imprint" rows="8" formControlName="imprint"></textarea>
-                      <label for="imprint">Impressum</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="orderEmailAddress" class="col-sm-2 col-form-label">E-Mail-Adresse (Bestellungen)</label>
-                  <div class="col-sm-10">
-                    <div class="input">
-                      <input type="text" id="orderEmailAddress" formControlName="orderEmailAddress">
-                      <label for="orderEmailAddress">E-Mail-Adresse (Bestellungen)</label>
-                    </div>
-                  </div>
-                </div>
-
-                <button class="button-form button" type="submit" *ngIf="changeContactDetailsForm.dirty">Daten speichern</button>
-              </form>
             </div>
-          </div>
-
-          <div class="card mb-4">
-            <div class="card-header card-head">Lieferkosten</div>
-            <div class="card-body">
-              <form class="setting-form" [formGroup]="changeDeliveryDataForm" (ngSubmit)="onSaveDeliveryData(changeDeliveryDataForm.value)">
-                <div class="form-notification" *ngIf="changeDeliveryDataError !== undefined">{{changeDeliveryDataError}}</div>
-
-                <div class="form-group row">
-                  <div class="col">
-                    <div class="input">
-                      <input type="number" id="minimumOrderValue" formControlName="minimumOrderValue">
-                      <label for="minimumOrderValue">Mindestbestellwert (in &euro;)</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="input">
-                      <input type="number" id="deliveryCosts" formControlName="deliveryCosts">
-                      <label for="deliveryCosts">Lieferkosten (in &euro;) </label>
-                    </div>
-                  </div>
+            <div *ngIf="changeContactInfoError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{changeContactInfoError}}</span>
                 </div>
-
-                <button class="button-form button" type="submit" *ngIf="changeDeliveryDataForm.dirty">Daten speichern</button>
-              </form>
             </div>
-          </div>
+            <div *ngIf="changeServiceInfoError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{changeServiceInfoError}}</span>
+                </div>
+            </div>
+            <div *ngIf="removeOpeningPeriodError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{removeOpeningPeriodError}}</span>
+                </div>
+            </div>
+            <div *ngIf="startTimeError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{startTimeError}}</span>
+                </div>
+            </div>
+            <div *ngIf="removeCuisineError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{removeCuisineError}}</span>
+                </div>
+            </div>
+            <div *ngIf="removeUserError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{removeUserError}}</span>
+                </div>
+            </div>
+            <div *ngIf="addCuisineError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{addCuisineError}}</span>
+                </div>
+            </div>
+            <div *ngIf="startTimeError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{startTimeError}}</span>
+                </div>
+            </div>
+            <div *ngIf="endTimeError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{endTimeError}}</span>
+                </div>
+            </div>
+            <div *ngIf="addUserError !== undefined" id="error">
+                <div id="message" tabindex="-1" role="alert">
+                    <span>{{addUserError}}</span>
+                </div>
+            </div>
+            <!-- ENDE: Fehlermeldungen -->
 
-          <div class="card mb-4">
-            <div class="card-header card-head">Lieferzeiten</div>
-            <div class="card-body">
-              <div class="form-notification" *ngIf="removeDeliveryTimeError !== undefined">{{removeDeliveryTimeError}}</div>
-              <table class="table col-sm-12">
-                <thead>
-                  <tr>
-                    <th>Tag</th>
-                    <th>Beginn</th>
-                    <th>Ende</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let deliveryTime of getDeliveryTimeViewModels()">
-                    <td>{{deliveryTime.dayOfWeekText}}</td>
-                    <td>{{deliveryTime.startTimeText}}</td>
-                    <td>{{deliveryTime.endTimeText}}</td>
-                    <td>
-                      <button class="btn btn-danger btn-sm m-1" (click)="onRemoveDeliveryTime(deliveryTime)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <form class="setting-form" [formGroup]="addDeliveryTimeForm" (ngSubmit)="onAddDeliveryTime(addDeliveryTimeForm.value)">
-                <div class="form-notification" *ngIf="addDeliveryTimeError !== undefined">{{addDeliveryTimeError}}</div>
+            <div id="rest-admin" *ngIf="generalError === undefined">
 
-                <table class="table col-sm-12">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
-                          <option value="" selected disabled hidden>Bitte wählen Sie aus...</option>
-                          <option value="0">Montag</option>
-                          <option value="1">Dienstag</option>
-                          <option value="2">Mittwoch</option>
-                          <option value="3">Donnerstag</option>
-                          <option value="4">Freitag</option>
-                          <option value="5">Samstag</option>
-                          <option value="6">Sonntag</option>
-                        </select>
-                      </td>
-                      <td>
-                        <input type="text" placeholder="Startzeit, z.B. 15:00 Uhr" class="form-control" formControlName="start" />
-                        <div *ngIf="startTimeError !== undefined">
-                          <small id="startTimeError" class="text-danger">{{startTimeError}}</small>
+                <div id="nav">
+                    <div class="bar">
+                        <div class="bar-inner">
+                            <ul class="links" role="navigation">
+                                <li><a class="text-link active">Mein Restaurant</a></li>
+                                <li><a class="text-link">Lieferinformationen</a></li>
+                                <li><a class="text-link">Zahlungsmethoden</a></li>
+                                <li><a class="text-link">Speisekarte</a></li>
+                            </ul>
                         </div>
-                      </td>
-                      <td>
-                        <input type="text" placeholder="Endzeit, z.B. 22:00 Uhr" class="form-control" formControlName="end" />
-                        <div *ngIf="endTimeError !== undefined">
-                          <small id="endTimeError" class="text-danger">{{endTimeError}}</small>
+                    </div>
+                </div>
+
+                <div class="centered">
+
+                    <div class="waypointable" tabindex="-1">
+                        <div id="section-header" class="my-restaurant">
+                            <h1 class="section-title">Mein Restaurant</h1>
+                            <p class="section-description">Hier kannst du Restaurantinformationen hinzufügen oder aktualisieren.</p>
+                            <button class="button-small hollow">Abmelden</button>
+                            <!--ng-container *ngIf="isRestaurantAdmin()">
+                                <h1 class="section-title">Mein Restaurant</h1>
+                                <p class="section-description">Hier kannst du Restaurantinformationen hinzufügen oder aktualisieren.</p>
+                                <button class="button-small hollow">Abmelden</button>
+                            </ng-container>
+                            <ng-container *ngIf="isSystemAdmin()">
+                                <h1 class="section-title">{{restaurant.name}}</h1>
+                                <p class="section-description">Bearbeite oder aktualisiere Restaurantinformationen.</p>
+                            </ng-container-->
                         </div>
-                      </td>
-                      <td>
-                        <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-            </div>
-          </div>
 
-          <div class="card mb-4">
-            <div class="card-header card-head">Cuisines</div>
-            <div class="card-body">
-              <div class="form-notification" *ngIf="removeCuisineError !== undefined">{{removeCuisineError}}</div>
-              <table class="table col-sm-12">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Beschreibung</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let cuisine of restaurant.cuisines">
-                    <td>{{cuisine.name}}</td>
-                    <td>{{cuisine.description}}</td>
-                    <td>
-                      <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="onRemoveCuisine(cuisine.id)"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <form class="setting-form" [formGroup]="addCuisineForm" (ngSubmit)="onAddCuisine(addCuisineForm.value)">
-                <div class="row" *ngIf="addCuisineError !== undefined">
-                  <div class="col col-sm-12">
-                    <div class="form-notification">{{addCuisineError}}</div>
-                  </div>
-                </div>
-                <div class="row" *ngIf="availableCuisines !== undefined && availableCuisines.length > 0">
-                  <div class="col col-sm-4">
-                    <select id="cuisineId" class="form-control" formControlName="cuisineId">
-                      <option *ngFor="let cuisine of availableCuisines" value="{{cuisine.id}}">{{cuisine.name}}</option>
-                    </select>
-                  </div>
-                  <div class="col col-sm-2">
-                    <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+                        <div id="form" class="restaurant-info">
+                            <fieldset>
+                                <legend>Restaurantinformationen</legend>
+                                <form>
+                                    <div class="backend-input">
+                                        <label>Name des Restaurants</label>
+                                        <input type="text" placeholder="Name des Restaurants" value="{{restaurant.name}}" (click)="openChangeRestaurantNameForm()" />
+                                    </div>
+                                </form>
+                            </fieldset>
+                        </div>
 
-          <div class="card mb-4">
-            <div class="card-header card-head">Zahlungsmethoden</div>
-            <div class="card-body">
-              <div class="form-notification" *ngIf="removePaymentMethodError !== undefined">{{removePaymentMethodError}}</div>
-              <table class="table col-sm-12">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Beschreibung</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let paymentMethod of restaurant.paymentMethods">
-                    <td>{{paymentMethod.name}}</td>
-                    <td>{{paymentMethod.description}}</td>
-                    <td>
-                      <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="onRemovePaymentMethod(paymentMethod.id)"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <form class="setting-form" [formGroup]="addPaymentMethodForm" (ngSubmit)="onAddPaymentMethod(addPaymentMethodForm.value)">
-                <div class="row" *ngIf="addPaymentMethodError !== undefined">
-                  <div class="col col-sm-12">
-                    <div class="form-notification">{{addPaymentMethodError}}</div>
-                  </div>
-                </div>
-                <div class="row" *ngIf="availablePaymentMethods !== undefined && availablePaymentMethods.length > 0">
-                  <div class="col col-sm-4">
-                    <select id="paymentMethodId" class="form-control" formControlName="paymentMethodId">
-                      <option *ngFor="let paymentMethod of availablePaymentMethods" value="{{paymentMethod.id}}">{{paymentMethod.name}}</option>
-                    </select>
-                  </div>
-                  <div class="col col-sm-2">
-                    <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+                        <div id="form" class="restaurant-info">
+                            <fieldset>
+                                <legend>Adressinformationen</legend>
+                                <form [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
+                                    <div class="backend-input">
+                                        <label>Adresse</label>
+                                        <input type="text" id="street" formControlName="street" placeholder="Adresse" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Postleitzahl</label>
+                                        <input type="text" id="zipCode" formControlName="zipCode" maxlength="5" placeholder="PLZ" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Stadt</label>
+                                        <input type="text" id="city" formControlName="city" placeholder="Stadt" />
+                                    </div>
 
-          <div class="card mb-4">
-            <div class="card-header card-head">Restaurant-Verwalter</div>
-            <div class="card-body">
-              <div class="form-notification" *ngIf="removeUserError !== undefined">{{removeUserError}}</div>
-              <table class="table col-sm-12">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let user of restaurant.administrators">
-                    <td>{{user.name}}</td>
-                    <td>{{user.email}}</td>
-                    <td>
-                      <button class="btn btn-danger btn-sm m-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash" (click)="removeUser(user)"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="row">
-                <div class="form-notification" *ngIf="addUserError !== undefined">{{addUserError}}</div>
-                <div class="col-sm-6">
-                  <input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' />
-                </div>
-                <div class="col-sm-2>">
-                  <button class="btn btn-primary btn-sm m-1" (click)="addSelectedUser()" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
+                                    <div class="inline-button-wrap">
+                                        <button type="reset" class="hollow">Verwerfen</button>
+                                        <button type="submit" *ngIf="changeAddressForm.dirty">Speichern</button>
+                                    </div>
+                                </form>
+                            </fieldset>
+                        </div>
 
-          <div class="card mb-4">
-            <div class="card-header card-head">Gerichte</div>
-            <div class="card-body">
-              <div class="form-notification" *ngIf="false">TODO</div>
-              <div class="row">
-                <div class="col col-sm-12">
+                        <div id="form" class="restaurant-info">
+                            <fieldset>
+                                <legend>Kontaktinformationen</legend>
+                                <form [formGroup]="changeContactInfoForm" (ngSubmit)="onSaveContactInfo(changeContactInfoForm.value)">
+                                    <div class="backend-input">
+                                        <label>Telefon</label>
+                                        <input type="tel" id="phone" formControlName="phone" placeholder="Ihre Telefonnummer" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Fax</label>
+                                        <input type="tel" id="fax" formControlName="fax" placeholder="Ihre Faxnummer" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>E-Mail für Bestellungen</label>
+                                        <input type="email" id="emailAddress" formControlName="emailAddress" placeholder="Ihre E-Mail-Adresse" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Webseite</label>
+                                        <input type="text" id="webSite" formControlName="webSite" placeholder="Ihre Webseite" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Impressum</label>
+                                        <input type="text" id="responsiblePerson" formControlName="responsiblePerson" placeholder="Verantwortlicher für Webseite" />
+                                    </div>
 
-                  <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeDishCategoryId">
-                    <li [ngbNavItem]="dishCategory.id" *ngFor="let dishCategory of dishCategories">
-                      <a ngbNavLink>
-                        {{dishCategory.name}}
-                        <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
-                          <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></span>
-                          <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></span>
-                          <ng-container *ngIf="!isFirstDishCategory(dishCategory)">
-                            <span (click)="decOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach links"><i class="fas fa-arrow-left"></i></span>
-                          </ng-container>
-                          <ng-container *ngIf="!isLastDishCategory(dishCategory)">
-                            <span (click)="incOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach rechts"><i class="fas fa-arrow-right"></i></span>
-                          </ng-container>
-                        </ng-container>
-                      </a>
-                      <ng-template ngbNavContent>
-                        <table class="table table-sm">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Beschreibung</th>
-                              <th>
-                                <div class="float-right">
-                                  <button class="btn btn-primary btn-sm m-1" (click)="openEditDishForm(dishCategory, undefined)" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
+                                    <div class="inline-button-wrap">
+                                        <button type="reset" class="hollow">Verwerfen</button>
+                                        <button type="submit" *ngIf="changeContactInfoForm.dirty">Speichern</button>
+                                    </div>
+                                </form>
+                            </fieldset>
+                        </div>
+
+                        <div id="form" class="restaurant-info">
+                            <fieldset>
+                                <legend>Bilder (Logo &amp; Banner)</legend>
+                                <form [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
+                                    <div class="backend-input">
+                                        <label>Logo</label>
+                                        <input type="file" id="image" accept="image/*" (change)="onImageChange($event)" />
+                                        <img class="input" [src]="imgUrl" *ngIf="imgUrl" style="align-items: center; vertical-align: middle; padding-top: 24px; width:200px;">
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Banner</label>
+                                        <input type="file" id="orderEmailAddress" formControlName="orderEmailAddress" placeholder="Ihre E-Mail-Adresse" />
+                                    </div>
+
+                                    <div class="inline-button-wrap">
+                                        <button type="reset" class="hollow">Verwerfen</button>
+                                        <button type="submit" *ngIf="changeImageForm.dirty">Speichern</button>
+                                    </div>
+                                </form>
+                            </fieldset>
+                        </div>
+
+                        <div id="form" class="restaurant-info">
+                          <form [formGroup]="changeServiceInfoForm" (ngSubmit)="onSaveServiceInfo(changeServiceInfoForm.value)">
+                            <fieldset>
+                                <legend>Abholung</legend>
+                                <div class="backend-input">
+                                  <label>Aktiviert</label>
+                                  <input type="checkbox" id="pickupEnabled" formControlName="pickupEnabled" />
                                 </div>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let dish of dishCategory.dishes">
-                              <td>{{dish.name}}</td>
-                              <td>{{dish.description}}</td>
-                              <td>
-                                <div class="float-right">
-                                  <button class="btn btn-secondary btn-sm m-1" (click)="openEditDishForm(dishCategory, dish)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
-                                  <button class="btn btn-danger btn-sm m-1" (click)="openRemoveDishForm(dishCategory, dish)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
-                                  <button class="btn btn-secondary btn-sm m-1 ml-2" [disabled]="isFirstDish(dishCategory, dish)" (click)="decOrderOfDish(dishCategory, dish)" placement="right" ngbTooltip="Nach oben"><i class="fas fa-arrow-up"></i></button>
-                                  <button class="btn btn-secondary btn-sm m-1" [disabled]="isLastDish(dishCategory, dish)" (click)="incOrderOfDish(dishCategory, dish)" placement="right" ngbTooltip="Nach unten"><i class="fas fa-arrow-down"></i></button>
-                                  <!--<button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
+                                <div class="backend-input">
+                                  <label>Durchschnittl. Zubereitungszeit</label>
+                                  <input type="number" id="pickupAverageTime" formControlName="pickupAverageTime" placeholder="Durchschnittl. Zubereitungszeit" />
                                 </div>
-                              </td>
-                            </tr>
-                          </tbody>
+                                <div class="backend-input">
+                                  <label>Min. Bestellwert</label>
+                                  <input type="number" id="pickupMinimumOrderValue" formControlName="pickupMinimumOrderValue" placeholder="Mindestbestellwert" />
+                                </div>
+                                <div class="backend-input">
+                                  <label>Max. Bestellwert</label>
+                                  <input type="number" id="pickupMaximumOrderValue" formControlName="pickupMaximumOrderValue" placeholder="Maximalbestellwert" />
+                                </div>
+
+                                <legend>Lieferung</legend>
+                                <div class="backend-input">
+                                  <label>Aktiviert</label>
+                                  <input type="checkbox" id="deliveryEnabled" formControlName="deliveryEnabled" />
+                                </div>
+                                <div class="backend-input">
+                                  <label>Durchschnittl. Zubereitungszeit</label>
+                                  <input type="number" id="deliveryAverageTime" formControlName="deliveryAverageTime" placeholder="Durchschnittl. Zubereitungszeit" />
+                                </div>
+                                <div class="backend-input">
+                                    <label>Min. Bestellwert</label>
+                                    <input type="number" id="deliveryMinimumOrderValue" formControlName="deliveryMinimumOrderValue" placeholder="Mindestbestellwert" />
+                                </div>
+                                <div class="backend-input">
+                                    <label>Max. Bestellwert</label>
+                                    <input type="number" id="deliveryMaximumOrderValue" formControlName="deliveryMaximumOrderValue" placeholder="Maximalbestellwert" />
+                                </div>
+                                <div class="backend-input">
+                                    <label>Lieferkosten</label>
+                                    <input type="number" id="deliveryCosts" formControlName="deliveryCosts" placeholder="Lieferkosten" />
+                                </div>
+
+                                <legend>Tischreservierung</legend>
+                                <div class="backend-input">
+                                  <label>Aktiviert</label>
+                                  <input type="checkbox" id="reservationEnabled" formControlName="deliveryEnabled" />
+                                </div>
+
+                                <div class="inline-button-wrap">
+                                  <button type="reset" class="hollow">Verwerfen</button>
+                                  <button type="submit" *ngIf="changeServiceInfoForm.dirty">Speichern</button>
+                                </div>
+                            </fieldset>
+                          </form>
+                        </div>
+                    </div>
+
+                    <div class="waypointable" tabindex="-1">
+                        <div id="payment-method">
+                            <h2>Zahlungsmethoden</h2>
+                            <div class="methods-inner">
+                                <div class="method" tabindex="-1" *ngFor="let paymentMethod of paymentMethods" (click)="onPaymentMethodStatusToggled(paymentMethod)">
+                                    <div class="cross-fade">
+                                        <div class="method-content">
+                                            <div class="payment-icon">
+                                                <img src="assets/img/icons/payment-icons/{{paymentMethod.imageName}}.svg" alt="{{paymentMethod.imageName}}" style="width: 32px;" role="img">
+                                            </div>
+                                            <div>
+                                                <div class="payment-name">
+                                                    {{paymentMethod.name}}
+                                                    <!--ng-container *ngIf="!isPaymentMethodEnabled(paymentMethod)">&bull; <span class="inactive">Inaktiv</span></ng-container>
+                                                    <ng-container *ngIf="isPaymentMethodEnabled(paymentMethod)">&bull; <span class="active">Aktiv</span></ng-container-->
+                                                </div>
+                                                <div class="payment-description">{{paymentMethod.description}}</div>
+                                            </div>
+                                            <div class="actions">
+                                                <ng-container *ngIf="isPaymentMethodEnabled(paymentMethod)">
+                                                    <div class="toggle-switch true" tabindex="0" role="checkbox">
+                                                        <svg class="icon-toggle-true" width="15px" height="11px" viewBox="0 0 15 11">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_On" transform="translate(-11.000000, -11.000000)" fill="#FFFFFF">
+                                                                    <g id="Icon/Check/White" transform="translate(6.000000, 4.000000)">
+                                                                        <g id="Icon/Check">
+                                                                            <polygon id="Path-8" fill-rule="nonzero" points="6.41421356 11.2426407 5 12.6568542 9.94974747 17.6066017 19.1421356 8.41421356 17.7279221 7 9.94974747 14.7781746"></polygon>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        <div class="toggle"></div>
+                                                        <svg class="icon-toggle-false" width="10px" height="10px" viewBox="0 0 10 10">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_Off_Hover" transform="translate(-41.000000, -11.000000)">
+                                                                    <g id="Button/Toggle/Off_Hover">
+                                                                        <g id="Button/Toggle/Off-Copy">
+                                                                            <g id="Icon/X/White" transform="translate(34.000000, 4.000000)">
+                                                                                <rect id="Rectangle-2" x="0" y="0" width="24" height="24"></rect>
+                                                                                <g id="Group-3" stroke-width="1" fill-rule="evenodd" transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(6.000000, 6.000000)" fill="#FFFFFF">
+                                                                                    <g id="Group-2" transform="translate(5.000000, 5.000000)">
+                                                                                        <rect id="Rectangle-7" x="-8.8817842e-16" y="0" width="2" height="7"></rect>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                    <g id="Group-2-Copy" transform="translate(3.500000, 3.500000) rotate(-180.000000) translate(-3.500000, -3.500000) translate(-0.000000, -0.000000)">
+                                                                                        <polygon id="Rectangle-7" points="-1.18305366e-12 -1.18305366e-12 2 -1.18305366e-12 2 7 -1.18216548e-12 7"></polygon>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                </g>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="!isPaymentMethodEnabled(paymentMethod)">
+                                                    <div class="toggle-switch false" tabindex="0" role="checkbox">
+                                                        <svg class="icon-toggle-true" width="15px" height="11px" viewBox="0 0 15 11">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_On" transform="translate(-11.000000, -11.000000)" fill="#FFFFFF">
+                                                                    <g id="Icon/Check/White" transform="translate(6.000000, 4.000000)">
+                                                                        <g id="Icon/Check">
+                                                                            <polygon id="Path-8" fill-rule="nonzero" points="6.41421356 11.2426407 5 12.6568542 9.94974747 17.6066017 19.1421356 8.41421356 17.7279221 7 9.94974747 14.7781746"></polygon>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        <div class="toggle"></div>
+                                                        <svg class="icon-toggle-false" width="10px" height="10px" viewBox="0 0 10 10">
+                                                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g id="Button/Toggle_Off_Hover" transform="translate(-41.000000, -11.000000)">
+                                                                    <g id="Button/Toggle/Off_Hover">
+                                                                        <g id="Button/Toggle/Off-Copy">
+                                                                            <g id="Icon/X/White" transform="translate(34.000000, 4.000000)">
+                                                                                <rect id="Rectangle-2" x="0" y="0" width="24" height="24"></rect>
+                                                                                <g id="Group-3" stroke-width="1" fill-rule="evenodd" transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(6.000000, 6.000000)" fill="#FFFFFF">
+                                                                                    <g id="Group-2" transform="translate(5.000000, 5.000000)">
+                                                                                        <rect id="Rectangle-7" x="-8.8817842e-16" y="0" width="2" height="7"></rect>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                    <g id="Group-2-Copy" transform="translate(3.500000, 3.500000) rotate(-180.000000) translate(-3.500000, -3.500000) translate(-0.000000, -0.000000)">
+                                                                                        <polygon id="Rectangle-7" points="-1.18305366e-12 -1.18305366e-12 2 -1.18305366e-12 2 7 -1.18216548e-12 7"></polygon>
+                                                                                        <polygon id="Rectangle-7-Copy" transform="translate(3.500000, 1.000000) rotate(-90.000000) translate(-3.500000, -1.000000) " points="2.5 -2.5 4.5 -2.5 4.5 4.5 2.5 4.5"></polygon>
+                                                                                    </g>
+                                                                                </g>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="waypointable" tabindex="-1">
+                        <!--div id="section-header">
+                <h1 class="section-title">Cuisines</h1>
+                <p class="section-description">Bearbeite Cusines oder füge neue Cuisines zu deinem Restaurant hinzu</p>
+            </div-->
+                        <div id="cuisine-options">
+                            <h2>Restaurantkategorien</h2>
+                            <div class="cuisine-inner">
+                                <div class="cuisine" tabindex="-1" *ngFor="let cuisine of restaurant.cuisines">
+                                    <div class="cross-fade">
+                                        <div class="cuisine-content">
+                                            <div class="cuisine-icon">
+                                                <svg width="24" height="32" viewBox="0 0 512 512" role="img">
+                                                    <circle cx="409.014" cy="353.785" r="10" />
+                                                    <path d="m504.26 96.114c-4.96-11.721-12.05-22.242-21.09-31.281-9.03-9.029-19.561-16.126-31.28-21.081-12.13-5.135-25.01-7.738-38.3-7.738h-.021c-8.3 0-16.56 1.041-24.55 3.093-7.739 1.992-15.229 4.935-22.27 8.749-25.699-30.409-63.27-47.856-103.06-47.856-10.87 0-21.67 1.291-32.13 3.853-10.16 2.483-20.04 6.166-29.359 10.951-9.15 4.695-17.79 10.45-25.66 17.116-7.82 6.627-14.9 14.154-21.021 22.352-8.149-5.816-17.09-10.33-26.59-13.423-9.83-3.214-20.09-4.835-30.5-4.835h-.02c-13.29 0-26.17 2.603-38.301 7.738-11.72 4.955-22.25 12.052-31.279 21.081-9.04 9.039-16.141 19.559-21.09 31.281-5.13 12.131-7.739 25.024-7.739 38.317 0 25.505 9.729 49.698 27.37 68.097 8.59 8.958 18.63 16.126 29.85 21.301 11.561 5.335 23.9 8.328 36.68 8.909l19.341 269.964c.18 2.543 1.3 4.885 3.159 6.616 1.851 1.732 4.271 2.683 6.811 2.683h275.189c2.54 0 4.96-.951 6.811-2.683 1.859-1.732 2.979-4.074 3.16-6.616l7.399-103.281c.19-2.673-.67-5.245-2.42-7.267s-4.18-3.243-6.84-3.434c-.24-.02-.49-.03-.729-.03-5.211 0-9.58 4.084-9.961 9.289v.01l-3.794 52.994h-59.762l2.313-33.114c.386-5.515-3.769-10.298-9.278-10.684-5.507-.391-10.288 3.772-10.673 9.287l-2.411 34.511h-103.228l-2.411-34.511c-.385-5.514-5.157-9.676-10.673-9.287-5.51.386-9.664 5.169-9.278 10.684l2.313 33.114h-58.938c-.14 0-.277.015-.416.021l-15.724-219.52c10.093-1.785 20.378-5.263 29.773-10.134 4.904-2.543 6.821-8.583 4.281-13.492-2.54-4.907-8.571-6.827-13.479-4.285-10.12 5.247-21.416 8.487-31.832 9.139-1.442.067-2.847.107-4.193.107-20.94 0-40.63-8.158-55.45-22.962-14.8-14.826-22.96-34.506-22.96-55.426 0-20.931 8.16-40.62 22.96-55.434 14.82-14.804 34.51-22.962 55.45-22.962 16.795 0 33.003 5.37 46.414 15.231-3.602 6.506-6.39 12.566-8.424 18.342-1.835 5.214.899 10.931 6.108 12.768 1.099.388 2.221.572 3.323.572 4.123 0 7.983-2.572 9.432-6.686 2.355-6.691 11.68-23.217 11.863-23.629 21.331-32.977 57.282-52.613 96.562-52.613 36.549 0 70.003 16.763 91.957 46.019.094.143 12.744 19.904 16.154 29.34 1.472 4.074 5.312 6.608 9.404 6.608 1.129 0 2.277-.193 3.4-.6 5.193-1.88 7.881-7.619 6.002-12.818-2.905-8.04-6.947-16.175-12.026-24.29 10.817-5.409 22.744-8.244 35.009-8.244 20.94 0 40.63 8.158 55.45 22.962 14.8 14.814 22.95 34.503 22.96 55.434.02 41.661-32.55 76.044-74.141 78.277-.267.014-3.396 0-4.859 0-13.234 0-25.682-3.414-38.054-10.439-4.802-2.727-10.907-1.04-13.632 3.768s-1.039 10.918 3.765 13.645c13.602 7.723 27.903 12.039 42.583 12.882l-5.412 75.566c-.391 5.505 3.76 10.3 9.26 10.701.24.02.48.03.72.03h.011c5.21 0 9.59-4.084 9.96-9.299l5.569-77.746c23.181-3.343 44.48-14.945 59.96-32.682 7.67-8.769 13.65-18.708 17.801-29.549 4.289-11.211 6.47-23.043 6.47-35.154.001-13.293-2.609-26.186-7.739-38.317zm-113.668 374.887-1.502 20.979h-256.57l-1.503-20.979z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="cuisine-name">{{cuisine.name}}</div>
+                                            </div>
+                                            <div class="actions">
+                                                <button class="edit-link text-link-small" (click)="onRemoveCuisine(cuisine.id)">Entfernen</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="setting-form" [formGroup]="addCuisineForm" (ngSubmit)="onAddCuisine(addCuisineForm.value)">
+                                    <button class="text-link-small-cta add-cuisine" href="javascript:void(0);">+ Cuisine hinzufügen</button>
+                                    <!-- + Option hinzufügen öffnet Select-Feld -->
+                                    <select id="cuisineId" class="form-control" formControlName="cuisineId">
+                                        <option *ngFor="let cuisine of availableCuisines" value="{{cuisine.id}}">{{cuisine.name}}</option>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm m-1" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
+                                </form>
+                                <!-- Wenn Keine Cuisines ausgewählt -->
+                                <!--div class="no-cuisines">
+                        <span>Keine Cuisines ausgewählt</span>
+                        <a class="text-link-small-cta" href="javascript:void(0);">+ Cuisine hinzufügen</a>
+                    </div-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="waypointable" tabindex="-1">
+                        <!--div id="section-header">
+                <h1 class="section-title">Lieferzeiten</h1>
+                <p class="section-description">Wird auf andere Seite verschoben</p>
+            </div-->
+                        <div id="opening-period">
+                            <h2>Lieferzeiten</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Tag</th>
+                                        <th>Beginn</th>
+                                        <th>Ende</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let openingPeriod of openingPeriodVMs">
+                                        <td>{{openingPeriod.dayOfWeekText}}</td>
+                                        <td>{{openingPeriod.startTimeText}}</td>
+                                        <td>{{openingPeriod.endTimeText}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <form [formGroup]="addOpeningPeriodForm" (ngSubmit)="onAddOpeningPeriod(addOpeningPeriodForm.value)">
+                            <table class="table col-sm-12">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
+                                                <option value="" selected disabled hidden>---</option>
+                                                <option value="0">Montag</option>
+                                                <option value="1">Dienstag</option>
+                                                <option value="2">Mittwoch</option>
+                                                <option value="3">Donnerstag</option>
+                                                <option value="4">Freitag</option>
+                                                <option value="5">Samstag</option>
+                                                <option value="6">Sonntag</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="z.B. 15:00" class="form-control" formControlName="start" />
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="z.B. 22:00" class="form-control" formControlName="end" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="text-link-small-cta add-period">+ Zeit hinzufügen</button>
+                        </form>
+                    </div>
+
+                    <div class="waypointable" tabindex="-1">
+                        <!--div id="section-header">
+                <h1 class="section-title">Restaurantverwalter</h1>
+                <p class="section-description">Wird auf andere Seite verschoben</p>
+            </div-->
+                        <div id="restaurant-administrators">
+                            <h2>Restaurantverwalter</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let user of restaurant.administrators">
+                                        <td>{{user.email}}</td>
+                                        <td>
+                                            <div class="actions">
+                                                <button class="edit-link text-link-small" (click)="removeUser(user)">Entfernen</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' /></td>
+                                    <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">Hinzufügen</button></td>
+                                </tr>
+                            </tbody>
                         </table>
-                      </ng-template>
-                    </li>
-                    <li>
-                      <button class="btn btn-primary btn-sm m-1" (click)="openAddDishCategoryForm()" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
-                    </li>
-                  </ul>
-                  <div [ngbNavOutlet]="nav"></div>
+                    </div>
+
+                    <div class="waypointable" tabindex="-1">
+                        <div id="dish-menu">
+                            <h2>Speisekarte</h2>
+                        </div>
+                        <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeDishCategoryId">
+                            <li [ngbNavItem]="dishCategory.id" *ngFor="let dishCategory of dishCategories">
+                                <a ngbNavLink>
+                                    {{dishCategory.name}}
+                                    <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
+                                        <span (click)="openChangeDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></span>
+                                        <span (click)="openRemoveDishCategoryForm(dishCategory)" class="ml-1" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></span>
+                                        <ng-container *ngIf="!isFirstDishCategory(dishCategory)">
+                                            <span (click)="decOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach links"><i class="fas fa-arrow-left"></i></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="!isLastDishCategory(dishCategory)">
+                                            <span (click)="incOrderOfDishCategory(dishCategory)" class="ml-1" placement="right" ngbTooltip="Nach rechts"><i class="fas fa-arrow-right"></i></span>
+                                        </ng-container>
+                                    </ng-container>
+                                </a>
+                                <ng-template ngbNavContent>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Beschreibung</th>
+                                                <th>
+                                                    <div class="float-right">
+                                                        <button class="btn btn-primary btn-sm m-1" (click)="openEditDishForm(dishCategory, undefined)" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let dish of dishCategory.dishes">
+                                                <td>{{dish.name}}</td>
+                                                <td>{{dish.description}}</td>
+                                                <td>
+                                                    <div class="float-right">
+                                                        <button class="btn btn-secondary btn-sm m-1" (click)="openEditDishForm(dishCategory, dish)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn btn-danger btn-sm m-1" (click)="openRemoveDishForm(dishCategory, dish)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button>
+                                                        <button class="btn btn-secondary btn-sm m-1 ml-2" [disabled]="isFirstDish(dishCategory, dish)" (click)="decOrderOfDish(dishCategory, dish)" placement="right" ngbTooltip="Nach oben"><i class="fas fa-arrow-up"></i></button>
+                                                        <button class="btn btn-secondary btn-sm m-1" [disabled]="isLastDish(dishCategory, dish)" (click)="incOrderOfDish(dishCategory, dish)" placement="right" ngbTooltip="Nach unten"><i class="fas fa-arrow-down"></i></button>
+                                                        <!--<button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </li>
+                            <li>
+                                <button class="btn btn-primary btn-sm m-1" (click)="openAddDishCategoryForm()" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
+                            </li>
+                        </ul>
+                        <div [ngbNavOutlet]="nav"></div>
+
+                    </div>
 
                 </div>
-              </div>
             </div>
-          </div>
-
         </div>
-      </div>
-    </div>
-  </div>
+</section>
 </block-ui>

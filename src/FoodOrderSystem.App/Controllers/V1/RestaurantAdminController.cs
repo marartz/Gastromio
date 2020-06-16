@@ -3,19 +3,15 @@ using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Commands.AddAdminToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddCuisineToRestaurant;
-using FoodOrderSystem.Domain.Commands.AddDeliveryTimeToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Domain.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Domain.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantAddress;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactDetails;
-using FoodOrderSystem.Domain.Commands.ChangeRestaurantDeliveryData;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantImage;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Domain.Commands.RemoveAdminFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveCuisineFromRestaurant;
-using FoodOrderSystem.Domain.Commands.RemoveDeliveryTimeFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Domain.Commands.RemovePaymentMethodFromRestaurant;
@@ -42,10 +38,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Commands.AddOpeningPeriodToRestaurant;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactInfo;
+using FoodOrderSystem.Domain.Commands.ChangeRestaurantServiceInfo;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDish;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDish;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDishCategory;
+using FoodOrderSystem.Domain.Commands.RemoveOpeningPeriodFromRestaurant;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -163,9 +163,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeNameAsync(Guid restaurantId, [FromBody] ChangeRestaurantNameModel changeRestaurantNameModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -179,9 +176,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeImageAsync(Guid restaurantId, [FromBody] ChangeRestaurantImageModel changeRestaurantImageModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -197,9 +191,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeAddressAsync(Guid restaurantId, [FromBody] ChangeRestaurantAddressModel changeRestaurantAddressModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -215,25 +206,25 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/changecontactdetails")]
+        [Route("restaurants/{restaurantId}/changecontactinfo")]
         [HttpPost]
-        public async Task<IActionResult> PostChangeContactDetailsAsync(Guid restaurantId, [FromBody] ChangeRestaurantContactDetailsModel changeRestaurantContactDetailsModel)
+        public async Task<IActionResult> PostChangeContactInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantContactInfoModel changeRestaurantContactInfoModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantContactDetailsCommand, bool>(
-                new ChangeRestaurantContactDetailsCommand(
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantContactInfoCommand, bool>(
+                new ChangeRestaurantContactInfoCommand(
                     new RestaurantId(restaurantId),
-                    changeRestaurantContactDetailsModel.Phone,
-                    changeRestaurantContactDetailsModel.Website,
-                    changeRestaurantContactDetailsModel.Imprint,
-                    changeRestaurantContactDetailsModel.OrderEmailAddress
+                    new ContactInfo(
+                        changeRestaurantContactInfoModel.Phone,
+                        changeRestaurantContactInfoModel.Fax,
+                        changeRestaurantContactInfoModel.WebSite,
+                        changeRestaurantContactInfoModel.ResponsiblePerson,
+                        changeRestaurantContactInfoModel.EmailAddress
+                    )
                 ),
                 currentUser
             );
@@ -241,33 +232,45 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/changedeliverydata")]
+        [Route("restaurants/{restaurantId}/changeserviceinfo")]
         [HttpPost]
-        public async Task<IActionResult> PostChangeDeliveryDataAsync(Guid restaurantId, [FromBody] ChangeRestaurantDeliveryDataModel changeRestaurantDeliveryDataModel)
+        public async Task<IActionResult> PostChangePickupInfoAsync(Guid restaurantId, [FromBody] ChangeRestaurantServiceInfoModel changeRestaurantServiceInfoModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantDeliveryDataCommand, bool>(
-                new ChangeRestaurantDeliveryDataCommand(new RestaurantId(restaurantId), changeRestaurantDeliveryDataModel.MinimumOrderValue, changeRestaurantDeliveryDataModel.DeliveryCosts),
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantServiceInfoCommand, bool>(
+                new ChangeRestaurantServiceInfoCommand(new RestaurantId(restaurantId),
+                    new PickupInfo(
+                        changeRestaurantServiceInfoModel.PickupEnabled,
+                        changeRestaurantServiceInfoModel.PickupAverageTime.HasValue ? TimeSpan.FromMinutes(changeRestaurantServiceInfoModel.PickupAverageTime.Value) : (TimeSpan?)null,
+                        changeRestaurantServiceInfoModel.PickupMinimumOrderValue,
+                        changeRestaurantServiceInfoModel.PickupMaximumOrderValue
+                    ),
+                    new DeliveryInfo(
+                        changeRestaurantServiceInfoModel.DeliveryEnabled,
+                        changeRestaurantServiceInfoModel.DeliveryAverageTime.HasValue ? TimeSpan.FromMinutes(changeRestaurantServiceInfoModel.DeliveryAverageTime.Value) :(TimeSpan?)null,
+                        changeRestaurantServiceInfoModel.DeliveryMinimumOrderValue,
+                        changeRestaurantServiceInfoModel.DeliveryMaximumOrderValue,
+                        changeRestaurantServiceInfoModel.DeliveryCosts
+                    ),
+                    new ReservationInfo(
+                        changeRestaurantServiceInfoModel.ReservationEnabled
+                    ),
+                    changeRestaurantServiceInfoModel.HygienicHandling
+                ),
                 currentUser
             );
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/adddeliverytime")]
+        [Route("restaurants/{restaurantId}/addopeningperiod")]
         [HttpPost]
-        public async Task<IActionResult> PostAddDeliveryTimeAsync(Guid restaurantId, [FromBody] AddDeliveryTimeToRestaurantModel model)
+        public async Task<IActionResult> PostAddOpeningPeriodAsync(Guid restaurantId, [FromBody] AddOpeningPeriodToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -276,21 +279,17 @@ namespace FoodOrderSystem.App.Controllers.V1
             var start = TimeSpan.FromMinutes(model.Start);
             var end = TimeSpan.FromMinutes(model.End);
 
-            var commandResult = await commandDispatcher.PostAsync<AddDeliveryTimeToRestaurantCommand, bool>(
-                new AddDeliveryTimeToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
-                currentUser
-            );
+            var commandResult = await commandDispatcher.PostAsync<AddOpeningPeriodToRestaurantCommand, bool>(
+                new AddOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId),
+                    new OpeningPeriod(model.DayOfWeek, start, end)), currentUser);
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/removedeliverytime")]
+        [Route("restaurants/{restaurantId}/removeopeningperiod")]
         [HttpPost]
-        public async Task<IActionResult> PostRemoveDeliveryTimeAsync(Guid restaurantId, [FromBody] RemoveDeliveryTimeFromRestaurantModel model)
+        public async Task<IActionResult> PostRemoveOpeningPeriodAsync(Guid restaurantId, [FromBody] RemoveOpeningPeriodFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -298,8 +297,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var start = TimeSpan.FromMinutes(model.Start);
 
-            var commandResult = await commandDispatcher.PostAsync<RemoveDeliveryTimeFromRestaurantCommand, bool>(
-                new RemoveDeliveryTimeFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
+            var commandResult = await commandDispatcher.PostAsync<RemoveOpeningPeriodFromRestaurantCommand, bool>(
+                new RemoveOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
                 currentUser
             );
 
@@ -310,9 +309,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddCuisineAsync(Guid restaurantId, [FromBody] AddCuisineToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -330,9 +326,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveCuisineAsync(Guid restaurantId, [FromBody] RemoveCuisineFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -350,9 +343,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddPaymentMethodAsync(Guid restaurantId, [FromBody] AddPaymentMethodToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -370,9 +360,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemovePaymentMethodAsync(Guid restaurantId, [FromBody] RemovePaymentMethodFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -390,9 +377,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddAdminAsync(Guid restaurantId, [FromBody] AddAdminToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -410,9 +394,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveAdminAsync(Guid restaurantId, [FromBody] RemoveAdminFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -430,9 +411,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddDishCategoryAsync(Guid restaurantId, [FromBody] AddDishCategoryToRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -450,9 +428,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostChangeDishCategoryAsync(Guid restaurantId, [FromBody] ChangeDishCategoryOfRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -470,9 +445,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostIncOrderOfDishCategoryAsync(Guid restaurantId, [FromBody] IncOrderOfDishCategoryModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -490,8 +462,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostDecOrderOfDishCategoryAsync(Guid restaurantId, [FromBody] DecOrderOfDishCategoryModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
 
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
@@ -510,9 +480,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveDishCategoryAsync(Guid restaurantId, [FromBody] RemoveDishCategoryFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -530,9 +497,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostAddOrEditDishAsync(Guid restaurantId, [FromBody] AddOrChangeDishOfRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -550,9 +514,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostIncOrderOfDishAsync(Guid restaurantId, [FromBody] IncOrderOfDishModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -570,9 +531,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostDecOrderOfDishAsync(Guid restaurantId, [FromBody] DecOrderOfDishModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
@@ -590,9 +548,6 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostRemoveDishAsync(Guid restaurantId, [FromBody] RemoveDishFromRestaurantModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();

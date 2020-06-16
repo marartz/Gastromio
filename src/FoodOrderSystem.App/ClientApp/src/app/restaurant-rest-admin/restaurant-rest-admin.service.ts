@@ -2,7 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
-import {RestaurantModel, AddressModel} from '../restaurant/restaurant.model';
+import {
+  RestaurantModel,
+  AddressModel,
+  ContactInfoModel,
+  ServiceInfoModel
+} from '../restaurant/restaurant.model';
 import {PaymentMethodModel} from '../payment-method/payment-method.model';
 import {UserModel} from '../user/user.model';
 import {DishCategoryModel} from '../dish-category/dish-category.model';
@@ -118,8 +123,7 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeaddress', address, httpOptions);
   }
 
-  public changeRestaurantContactDetailsAsync(id: string, phone: string, webSite: string, imprint: string,
-                                             orderEmailAddress: string): Observable<boolean> {
+  public changeRestaurantContactInfoAsync(id: string, contactInfo: ContactInfoModel): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -127,15 +131,16 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changecontactdetails', {
-      phone,
-      webSite,
-      imprint,
-      orderEmailAddress
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changecontactinfo', {
+      phone: contactInfo.phone,
+      fax: contactInfo.fax,
+      webSite: contactInfo.webSite,
+      responsiblePerson: contactInfo.responsiblePerson,
+      emailAddress: contactInfo.emailAddress
     }, httpOptions);
   }
 
-  public changeRestaurantDeliveryDataAsync(id: string, minimumOrderValue: number, deliveryCosts: number): Observable<boolean> {
+  public addOpeningPeriodToRestaurantAsync(id: string, dayOfWeek: number, start: number, end: number): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -143,28 +148,14 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changedeliverydata', {
-      minimumOrderValue,
-      deliveryCosts
-    }, httpOptions);
-  }
-
-  public addDeliveryTimeToRestaurantAsync(id: string, dayOfWeek: number, start: number, end: number): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddeliverytime', {
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addopeningperiod', {
       dayOfWeek,
       start,
       end
     }, httpOptions);
   }
 
-  public removeDeliveryTimeFromRestaurantAsync(id: string, dayOfWeek: number, start: number): Observable<boolean> {
+  public removeOpeningPeriodFromRestaurantAsync(id: string, dayOfWeek: number, start: number): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -172,9 +163,32 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedeliverytime', {
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeopeningperiod', {
       dayOfWeek,
       start
+    }, httpOptions);
+  }
+
+  public changeRestaurantServiceInfoAsync(id: string, serviceInfo: ServiceInfoModel): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeserviceinfo', {
+      pickupEnabled: serviceInfo.pickupEnabled,
+      pickupAverageTime: serviceInfo.pickupAverageTime,
+      pickupMinimumOrderValue: serviceInfo.pickupMinimumOrderValue,
+      pickupMaximumOrderValue: serviceInfo.pickupMaximumOrderValue,
+      deliveryEnabled: serviceInfo.deliveryEnabled,
+      deliveryAverageTime: serviceInfo.deliveryAverageTime,
+      deliveryMinimumOrderValue: serviceInfo.deliveryMinimumOrderValue,
+      deliveryMaximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
+      deliveryCosts: serviceInfo.deliveryCosts,
+      reservationEnabled: serviceInfo.reservationEnabled,
+      hygienicHandling: serviceInfo.hygienicHandling
     }, httpOptions);
   }
 

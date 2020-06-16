@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.AddAdminToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.AddAdministrator(command.UserId);
+            restaurant.AddAdministrator(command.UserId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

@@ -1,15 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { RestaurantRestAdminService } from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DishModel } from '../dish-category/dish.model';
-import { HttpErrorHandlingService } from '../http-error-handling/http-error-handling.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, Input} from '@angular/core';
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {DishModel} from '../dish-category/dish.model';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-remove-dish',
   templateUrl: './remove-dish.component.html',
-  styleUrls: ['./remove-dish.component.css', '../../assets/css/admin-forms.min.css']
+  styleUrls: ['./remove-dish.component.css', '../../assets/css/frontend.min.css']
 })
 export class RemoveDishComponent implements OnInit {
   @Input() public restaurantId: string;
@@ -31,14 +32,13 @@ export class RemoveDishComponent implements OnInit {
 
   onSubmit() {
     this.blockUI.start('Verarbeite Daten...');
-    const subscription = this.restaurantAdminService.removeDishFromRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish.id)
+    this.restaurantAdminService.removeDishFromRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish.id)
+      .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = undefined;
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
-        subscription.unsubscribe();
         this.blockUI.stop();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });

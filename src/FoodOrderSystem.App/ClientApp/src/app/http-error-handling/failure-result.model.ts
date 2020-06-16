@@ -23,8 +23,7 @@ export class FailureResult {
       const joinedComponentErrors = this.componentErrors[key].join(separator);
       if (control?.errors) {
         control[FailureResult.backendKey] = joinedComponentErrors;
-      }
-      else {
+      } else {
         const tmpError = {};
         tmpError[FailureResult.backendKey] = joinedComponentErrors;
         control.setErrors(tmpError);
