@@ -21,14 +21,9 @@
                                 <div class="info-card">
                                     <div class="info-section">
                                         <div class="info-group">
-                                            <div class="logo" *ngIf="restaurant.image !== null">
-                                                <div class="logo-container">
-                                                    <img [src]="restaurant.image" alt="{{restaurant.name}} Logo" />
-                                                </div>
-                                            </div>
                                             <div class="restaurant">
                                                 <div class="restaurant-info">
-                                                    <div class="restaurant-name">{{restaurant.name}}</div>
+                                                    <div class="restaurant-name">{{restaurant.name}} ({{getCart().getOrderTypeText()}})</div>
                                                     <address>
                                                         <div class="restaurant-address">{{restaurant.address.street}}</div>
                                                         <div class="restaurant-address">{{restaurant.address.zipCode}}, {{restaurant.address.city}}</div>
@@ -173,15 +168,6 @@
                                 <div class="wrapper">
 
                                     <div class="info-section">
-                                        <div class="order-type-panel">
-                                            <div class="panel order-type" style="font-size:20px">
-                                                <span >Bestellart: </span>
-                                                <span><b>{{getCart().getOrderTypeText()}}</b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="info-section">
                                         <div class="info-group dish" *ngFor="let cartDish of getCart().getCartDishes()">
                                             <div class="dish-content">
                                                 <div class="dish-count"><span>{{cartDish.getCount()}}</span></div>
@@ -212,12 +198,14 @@
                                     </div>
 
                                     <div class="info-section">
-                                        <fieldset>
-                                            <div *ngFor="let paymentMethod of restaurant.paymentMethods">
-                                                <input  type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}">
-                                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}} - {{paymentMethod.description}}</label>
+                                        <div class="panel" *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                            <div class="payment-method">
+                                                <input type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}" style="height: auto;">
                                             </div>
-                                        </fieldset>
+                                            <div class="payment-description">
+                                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}} &bull; {{paymentMethod.description}}</label>
+                                            </div>
+                                        </div>
                                         <div *ngIf="submitted && f.paymentMethodId.errors">
                                             <div *ngIf="f.paymentMethodId.errors.required">
                                                 <span style="color: red;">Bitte wählen Sie eine Zahlungsmethode aus</span>

@@ -1,1 +1,62 @@
+/* START: Tab-Bar (Lieferung/Abholung) */
+.tab-bar {
+    background-color: #fff;
+    border-radius: 10px 10px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+}
 
+.tab-bar .tab-item {
+    border-bottom: 1px solid #e5e5e5;
+    border-radius: 0px;
+    padding: 0px;
+    text-align: center;
+    transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    width: 100%;
+}
+
+.tab-bar .tab-item:not(:first-child) {
+    border-left: 1px solid #e5e5e5;
+}
+
+.tab-bar .tab-item,
+.tab-bar .tab-item:hover {
+	  background: transparent;
+}
+
+.tab-item span {
+    color: #6d6d6d;
+    cursor: pointer;
+    display: block;
+    font-family: proxima-nova, sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    line-height: 64px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    white-space: nowrap;
+}
+
+.tab-item.selected span,
+.tab-item:focus span,
+.tab-item:hover span {
+    color: #65b32e;
+}
+
+.tab-bar .tab-slider {
+    bottom: 0px;
+    height: 4px;
+    position: absolute;
+    width: 100%;
+}
+
+.tab-slider .bar {
+    background-color: #65b32e;
+    height: 100%;
+    position: absolute;
+    transition: left 150ms cubic-bezier(.57, .06, .05, .95);
+}
+/* ENDE: Tab-Bar (Lieferung/Abholung) */

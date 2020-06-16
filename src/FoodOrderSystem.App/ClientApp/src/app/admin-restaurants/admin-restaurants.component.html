@@ -24,12 +24,6 @@
                            <div class="col">
                                
                                <div id="restaurants" *ngFor="let restaurant of pageOfRestaurants">
-                                   <div id="logo">
-                                       <div class="restaurant-logo">
-                                           <img *ngIf="restaurant.image == null" src="../../assets/img/logo/fallback-logo.png" alt="{{restaurant.name}} Logo" />
-                                           <img *ngIf="restaurant.image !== null" [src]="restaurant.image" alt="{{restaurant.name}} Logo" />
-                                       </div>
-                                   </div>
                                    <div id="informations">
                                        <h2 class="restaurant-name">{{restaurant.name}}</h2>
                                        <div class="restaurant-beschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>

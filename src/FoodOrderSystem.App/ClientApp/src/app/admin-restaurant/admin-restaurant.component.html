@@ -108,13 +108,8 @@
                     <div class="row">
                         <div class="left">
                             <div id="form">
-                                <h3>Bilder (Logo &amp; Banner)</h3>
+                                <h3>Grafiken</h3>
                                 <form [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
-                                    <div class="backend-input">
-                                        <label>Logo</label>
-                                        <input type="file" id="image" accept="image/*" (change)="onImageChange($event)" />
-                                        <!--img class="input" [src]="imgUrl" *ngIf="imgUrl" style="align-items: center; vertical-align: middle; padding-top: 24px; width:200px;"-->
-                                    </div>
                                     <div class="backend-input">
                                         <label>Banner</label>
                                         <input type="file" id="orderEmailAddress" formControlName="orderEmailAddress" placeholder="Ihre E-Mail-Adresse" />

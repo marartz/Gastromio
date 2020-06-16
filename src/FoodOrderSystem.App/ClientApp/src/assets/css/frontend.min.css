@@ -1413,7 +1413,6 @@ form:focus {
     display: flex;
     flex-direction: row;
 	  flex-shrink: 0;
-	  height: 100%;
 }
 
 #cart .info-group-left {
@@ -1459,6 +1458,7 @@ form:focus {
     margin-bottom: 8px;
     font-family: proxima-nova, sans-serif;
     font-weight: 500;
+    text-transform: none !important;
 }
 
 /* 5.1 #cart > #cart-header */
@@ -1568,10 +1568,20 @@ form:focus {
     }
 }
 
-#cart #cart-main .info-label {
+#cart #cart-main h2.restaurant-name {
     text-transform: capitalize;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #3b4245;
+    font-weight: 600;
 }
 
+#cart #cart-main span.time {
+    font-size: 16px;
+    line-height: 1.2;
+    color: #3b4245;
+    font-weight: 400;
+}
 
 #cart #cart-main .line-item-reduced {
     border-radius: 0px 0px 8px 8px;
@@ -2289,6 +2299,7 @@ form:focus {
     justify-content: flex-end;
     text-align: right;
     display: flex;
+    margin-top: 20px;
 }
 
 /* 10.2.1 #checkout > #dish-content */
@@ -2363,21 +2374,21 @@ form:focus {
     font-size: 16px;
 }
 
-#checkout .totals-panel .panel {
+#checkout .panel {
     display: block;
     margin-left: 0px;
     margin-right: 0px;
 }
 
-#checkout .totals-panel .panel:not(:first-of-type) {
+#checkout .panel:not(:first-of-type) {
     margin-top: 16px;
 }
 
-#checkout .totals-panel .panel.total {
+#checkout .panel.total {
     color: #3b4245;
 }
 
-#checkout .totals-panel .panel::after {
+#checkout .panel::after {
     clear: both;
     content: "";
     display: table;
@@ -2402,6 +2413,28 @@ form:focus {
     padding-right: 0px;
     text-align: right;
     width: 50%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#checkout .panel .payment-method {
+    display: block;
+    float: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 15%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#checkout .panel .payment-description {
+    display: inline-block;
+    float: none;
+    font-weight: 500;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: right;
+    width: 85%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
