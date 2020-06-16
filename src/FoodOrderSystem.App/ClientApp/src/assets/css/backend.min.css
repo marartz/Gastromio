@@ -363,38 +363,6 @@
     transition: none;
 }
 
-#backend #restaurants #logo {
-    border-right: 1px solid #ccc;
-    display: flex;
-    flex: 0 0 98px;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 120px;
-    position: relative;
-    text-align: center;
-}
-
-#backend #restaurants #logo .restaurant-logo {
-    font-size: 12px;
-    left: 0px;
-    margin: auto;
-    max-width: 120px;
-    position: absolute;
-    right: 0px;
-    text-align: left;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    z-index: 1;
-}
-
-#backend #restaurants #logo .restaurant-logo img {
-    height: auto;
-    max-height: 80px;
-    vertical-align: middle;
-    width: 100%;
-}
-
 #backend #restaurants #informations {
     display: flex;
     flex: 1;
