@@ -431,6 +431,7 @@
                                                     <tr>
                                                         <th>Name</th>
                                                         <th>Beschreibung</th>
+                                                        <th>Preis</th>
                                                         <th>
                                                             <div class="float-right">
                                                                 <button class="btn btn-primary btn-sm m-1" (click)="openEditDishForm(dishCategory, undefined)" placement="right" ngbTooltip="Hinzufügen"><i class="fas fa-plus"></i></button>
@@ -442,6 +443,7 @@
                                                     <tr *ngFor="let dish of dishCategory.dishes">
                                                         <td>{{dish.name}}</td>
                                                         <td>{{dish.description}}</td>
+                                                        <td>{{getPricesOfDish(dish)}}</td>
                                                         <td>
                                                             <div class="float-right">
                                                                 <button class="btn btn-secondary btn-sm m-1" (click)="openEditDishForm(dishCategory, dish)" placement="right" ngbTooltip="Bearbeiten"><i class="fas fa-edit"></i></button>

@@ -691,6 +691,26 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     return pos === 0;
   }
 
+  getPricesOfDish(dish: DishModel): string {
+    if (!dish.variants || dish.variants.length === 0) {
+      return '';
+    }
+
+    if (dish.variants.length === 1) {
+      return '€' + dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
+    }
+
+    let result = '';
+    for (const variant of dish.variants) {
+      if (result.length > 0) {
+        result += '; ';
+      }
+      result += variant.name + ' €' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
+    }
+
+    return result;
+  }
+
   isLastDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
     const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
     return pos === dishCategory.dishes.length - 1;
