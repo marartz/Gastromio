@@ -12,7 +12,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-change-user-details',
   templateUrl: './change-user-details.component.html',
-  styleUrls: ['./change-user-details.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./change-user-details.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class ChangeUserDetailsComponent implements OnInit {
   @Input() public user: UserModel;

@@ -11,7 +11,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-add-dish-category',
   templateUrl: './add-dish-category.component.html',
-  styleUrls: ['./add-dish-category.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./add-dish-category.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class AddDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

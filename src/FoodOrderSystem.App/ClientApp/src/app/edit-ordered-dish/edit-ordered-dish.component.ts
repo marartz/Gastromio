@@ -7,7 +7,7 @@ import {OrderedDishModel} from '../cart/ordered-dish.model';
 @Component({
   selector: 'app-edit-ordered-dish',
   templateUrl: './edit-ordered-dish.component.html',
-  styleUrls: ['./edit-ordered-dish.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./edit-ordered-dish.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class EditOrderedDishComponent implements OnInit {
   @Input() public orderedDish: OrderedDishModel;

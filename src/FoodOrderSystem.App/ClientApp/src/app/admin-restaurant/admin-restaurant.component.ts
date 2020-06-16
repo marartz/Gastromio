@@ -24,7 +24,7 @@ import {CuisineModel} from '../cuisine/cuisine.model';
 @Component({
   selector: 'app-admin-restaurant',
   templateUrl: './admin-restaurant.component.html',
-  styleUrls: ['./admin-restaurant.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./admin-restaurant.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;

@@ -11,7 +11,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-remove-cuisine',
   templateUrl: './remove-cuisine.component.html',
-  styleUrls: ['./remove-cuisine.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./remove-cuisine.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class RemoveCuisineComponent implements OnInit {
   @Input() public cuisine: CuisineModel;

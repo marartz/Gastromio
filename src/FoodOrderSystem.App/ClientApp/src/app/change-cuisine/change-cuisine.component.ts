@@ -12,7 +12,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-change-cuisine',
   templateUrl: './change-cuisine.component.html',
-  styleUrls: ['./change-cuisine.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./change-cuisine.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class ChangeCuisineComponent implements OnInit {
   @Input() public cuisine: CuisineModel;

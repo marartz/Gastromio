@@ -4,8 +4,10 @@
 
             <!-- START: Fehlermeldungen -->
             <div *ngIf="generalError !== undefined" id="error">
-                <div id="message" tabindex="-1" role="alert">
-                    <span>{{generalError}}</span>
+                <div class="fullpage-error">
+                    <div class="middle-error">
+                        <h1 role="alert">{{generalError}}</h1>
+                    </div>
                 </div>
             </div>
             <!-- ENDE: Fehlermeldungen -->
