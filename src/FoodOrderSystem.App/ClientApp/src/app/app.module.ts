@@ -30,7 +30,7 @@ import {CuisineAdminService} from './cuisine/cuisine-admin.service';
 import {CustomerInformationComponent} from './customer-information/customer-information.component';
 import {DishProductInfoComponent} from './dish-productinfo/dish-productinfo.component';
 import {EditDishComponent} from './edit-dish/edit-dish.component';
-import {EditOrderedDishComponent} from './edit-ordered-dish/edit-ordered-dish.component';
+import {EditCartDishComponent} from './edit-cart-dish/edit-cart-dish.component';
 import {GeneralErrorComponent} from './http-error-handling/general-error.component';
 import {GeneralTermsAndConditionsComponent} from './general-terms-and-conditions/general-terms-and-conditions.component';
 import {HttpErrorHandlingService} from './http-error-handling/http-error-handling.service';
@@ -42,6 +42,7 @@ import {OrderRestaurantImprintComponent} from './order-restaurant-imprint/order-
 import {OrderRestaurantOpeningHoursComponent} from './order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import {OrderRestaurantsComponent} from './order-restaurants/order-restaurants.component';
 import {OrderService} from './order/order.service';
+import {OrderSummaryComponent} from './order-summary/order-summary.component';
 import {PrivacyPolicyComponent} from './privacy-policy/privacy-policy.component';
 import {RemoveCuisineComponent} from './remove-cuisine/remove-cuisine.component';
 import {RemoveDishCategoryComponent} from './remove-dish-category/remove-dish-category.component';
@@ -72,6 +73,7 @@ import {UserAdminService} from './user/user-admin.service';
       {path: 'restaurants', component: OrderRestaurantsComponent},
       {path: 'restaurants/:restaurantId', component: OrderRestaurantComponent},
       {path: 'checkout', component: CheckoutComponent},
+      {path: 'order-summary', component: OrderSummaryComponent},
       {path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/restaurants', component: AdminRestaurantsComponent, canActivate: [SystemAdminAuthGuard]},
@@ -111,7 +113,7 @@ import {UserAdminService} from './user/user-admin.service';
     CustomerInformationComponent,
     DishProductInfoComponent,
     EditDishComponent,
-    EditOrderedDishComponent,
+    EditCartDishComponent,
     GeneralErrorComponent,
     GeneralTermsAndConditionsComponent,
     ImprintComponent,
@@ -121,6 +123,7 @@ import {UserAdminService} from './user/user-admin.service';
     OrderRestaurantImprintComponent,
     OrderRestaurantOpeningHoursComponent,
     OrderRestaurantsComponent,
+    OrderSummaryComponent,
     PrivacyPolicyComponent,
     RemoveCuisineComponent,
     RemoveDishCategoryComponent,

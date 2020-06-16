@@ -1,8 +1,7 @@
-import {StoredOrderedDishModel} from './stored-ordered-dish.model';
+import {StoredCartDishModel} from './stored-cart-dish.model';
 
-export class StoredCartModel
-{
+export class StoredCartModel {
   public orderType: string;
   public restaurantId: string;
-  public orderedDishes: StoredOrderedDishModel[];
+  public cartDishes: StoredCartDishModel[];
 }

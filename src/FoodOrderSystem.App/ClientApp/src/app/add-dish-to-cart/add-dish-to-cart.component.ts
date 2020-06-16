@@ -14,6 +14,7 @@ export class AddDishToCartComponent implements OnInit {
 
   selectedVariant: DishVariantModel;
   count: number;
+  remarks: string;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -46,7 +47,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderService.addDishToCart(this.dish, this.selectedVariant, this.count);
+    this.orderService.addDishToCart(this.dish, this.selectedVariant, this.count, this.remarks);
     this.activeModal.close();
   }
 

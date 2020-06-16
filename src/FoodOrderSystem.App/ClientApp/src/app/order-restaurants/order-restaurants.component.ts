@@ -1,8 +1,9 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderService} from '../order/order.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+import {OrderType} from '../cart/cart.model';
 
 @Component({
   selector: 'app-order-restaurants',
@@ -13,6 +14,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   restaurants: RestaurantModel[];
   pageOfRestaurants: RestaurantModel[];
 
+  orderType: string;
+
   private searchPhrase: string;
   private searchPhraseUpdated: Subject<string> = new Subject<string>();
 
@@ -21,6 +24,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   constructor(
     private orderService: OrderService
   ) {
+    this.orderType = OrderService.translateFromOrderType(OrderType.Delivery);
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value: string) => {
         this.searchPhrase = value;
@@ -39,6 +43,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onDeliverySelected(): void {
+    this.orderType = 'delivery';
+    this.updateSearch();
+  }
+
+  onPickupSelected(): void {
+    this.orderType = 'pickup';
+    this.updateSearch();
+  }
+
+  onReservationSelected(): void {
+    this.orderType = 'reservation';
+    this.updateSearch();
+  }
+
   onSearchType(value: string) {
     this.searchPhraseUpdated.next(value);
   }
@@ -52,7 +71,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       this.updateSearchSubscription.unsubscribe();
     }
 
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase)
+    this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType))
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = result;

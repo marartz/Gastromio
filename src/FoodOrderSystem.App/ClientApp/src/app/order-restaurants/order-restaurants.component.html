@@ -12,6 +12,17 @@
 
                 <div id="left">
                     <div class="clearfix left-content">
+                        <div class="tab-bar" role="tablist">
+                            <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab" (click)="onDeliverySelected()"><span>Lieferung</span></button>
+                            <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>
+                            <ng-container *ngIf="orderType === 'delivery'">
+                                <div class="tab-slider"><div class="bar" style="width: 50%; left: 0%"></div></div>
+                            </ng-container>
+                            <ng-container *ngIf="orderType === 'pickup'">
+                                <div class="tab-slider"><div class="bar" style="width: 50%; left: 50%"></div></div>
+                            </ng-container>
+                        </div>
+
                         <div id="restaurants" role="region" tabindex="-1">
 
                             <div class="restaurant-card" *ngFor="let restaurant of restaurants">
@@ -34,7 +45,7 @@
                                         </div>
 
                                         <div class="card-details">
-                                            <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]">Bestellen</span>
+                                            <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">Bestellen</span>
                                         </div>
                                     </div>
 

@@ -42,7 +42,7 @@
                         <div class="bar-inner">
                             <ul class="category-links" role="navigation">
                                 <li class="category-link" *ngFor="let dishCategory of dishCategories">
-                                    <a class="text-link" href="/restaurants/{{restaurant.id}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
+                                    <a class="text-link" href="{{url}}#{{dishCategory.id}}">{{dishCategory.name}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -97,6 +97,7 @@
                         <h2 class="title">
                             <span class="cart-name">Warenkorb</span>
                             <span class="restaurant-name">{{restaurant.name}}</span>
+                            <span class="order-type">Bestellart: {{getCart().getOrderTypeText()}}</span>
                         </h2>
                     </div>
                 </div>
@@ -112,23 +113,23 @@
 
                     <div class="info-section" *ngIf="!isCartEmpty()">
                         <h2 class="info-label">Deine Bestellung</h2>
-                        <div class="line-item-reduced" *ngFor="let orderedDish of getCart().getOrderedDishes()">
+                        <div class="line-item-reduced" *ngFor="let cartDish of getCart().getCartDishes()">
                             <div class="card-content">
                                 <div class="info-group-left">
                                     <div class="info-group-row">
-                                        <span class="info-group-label product-quantity">{{orderedDish.getCount()}}x</span>
+                                        <span class="info-group-label product-quantity">{{cartDish.getCount()}}x</span>
                                     </div>
                                 </div>
                                 <div class="info-group-center">
-                                    <div class="info-group-row"><h2 class="info-group-label product-name">{{orderedDish.getDish().name}} <ng-container *ngIf="orderedDish.getDish().variants.length > 1">({{orderedDish.getVariant().name}})</ng-container></h2></div>
-                                    <div class="info-group-row"><p class="product-description">{{orderedDish.getRemarks()}}</p></div>
+                                    <div class="info-group-row"><h2 class="info-group-label product-name">{{cartDish.getDish().name}} <ng-container *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</ng-container></h2></div>
+                                    <div class="info-group-row"><p class="product-description">{{cartDish.getRemarks()}}</p></div>
                                     <div class="info-group-row card-actions-row">
-                                        <a class="text-link" role="button" tabindex="0" (click)="onEditOrderedDish(orderedDish)">Bearbeiten</a>
-                                        <a class="text-link" role="button" tabindex="0" (click)="onRemoveDishVariantFromCart(orderedDish)">Entfernen</a>
+                                        <a class="text-link" role="button" tabindex="0" (click)="onEditCartDish(cartDish)">Bearbeiten</a>
+                                        <a class="text-link" role="button" tabindex="0" (click)="onRemoveDishVariantFromCart(cartDish)">Entfernen</a>
                                     </div>
                                 </div>
                                 <div class="info-group-right">
-                                    <div class="product-cost info-group-row">&euro; {{orderedDish.getPriceText()}}</div>
+                                    <div class="product-cost info-group-row">&euro; {{cartDish.getPriceText()}}</div>
                                 </div>
                             </div>
                         </div>

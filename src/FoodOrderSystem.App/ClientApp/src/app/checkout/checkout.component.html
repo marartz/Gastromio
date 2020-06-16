@@ -10,7 +10,7 @@
             </div>
             <!-- ENDE: Fehlermeldungen -->
 
-            <div id="checkout" *ngIf="generalError === undefined && initialized">
+            <div id="checkout" *ngIf="initialized">
                 <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
 
                     <div class="checkout-content-container">
@@ -36,7 +36,7 @@
                                                 </div>
                                             </div>
                                             <div class="back">
-                                                <button class="hollow button-small" type="button">Zurück</button>
+                                                <button class="hollow button-small" type="button" (click)="onBack()">Zurück</button>
                                             </div>
                                         </div>
                                     </div>
@@ -173,14 +173,23 @@
                                 <div class="wrapper">
 
                                     <div class="info-section">
-                                        <div class="info-group dish" *ngFor="let orderedDish of getCart().getOrderedDishes()">
+                                        <div class="order-type-panel">
+                                            <div class="panel order-type" style="font-size:20px">
+                                                <span >Bestellart: </span>
+                                                <span><b>{{getCart().getOrderTypeText()}}</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-section">
+                                        <div class="info-group dish" *ngFor="let cartDish of getCart().getCartDishes()">
                                             <div class="dish-content">
-                                                <div class="dish-count"><span>{{orderedDish.getCount()}}</span></div>
+                                                <div class="dish-count"><span>{{cartDish.getCount()}}</span></div>
                                                 <div class="dish">
-                                                    <h2 class="dish-name">{{orderedDish.getDish().name}} <span *ngIf="orderedDish.getDish().variants.length > 1">({{orderedDish.getVariant().name}})</span></h2>
-                                                    <div class="dish-remarks">{{orderedDish.getRemarks()}}</div>
+                                                    <h2 class="dish-name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></h2>
+                                                    <div class="dish-remarks">{{cartDish.getRemarks()}}</div>
                                                 </div>
-                                                <div class="dish-price"><span>&euro; {{orderedDish.getPriceText()}}</span></div>
+                                                <div class="dish-price"><span>&euro; {{cartDish.getPriceText()}}</span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -198,6 +207,20 @@
                                             <div class="panel total">
                                                 <div class="name">Gesamt</div>
                                                 <div class="cost">&euro; {{getCart().getTotalPriceText()}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-section">
+                                        <fieldset>
+                                            <div *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                                <input  type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}">
+                                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}} - {{paymentMethod.description}}</label>
+                                            </div>
+                                        </fieldset>
+                                        <div *ngIf="submitted && f.paymentMethodId.errors">
+                                            <div *ngIf="f.paymentMethodId.errors.required">
+                                                <span style="color: red;">Bitte wählen Sie eine Zahlungsmethode aus</span>
                                             </div>
                                         </div>
                                     </div>

@@ -2767,7 +2767,7 @@ form:focus {
     position: absolute;
     text-align: left;
     transition: opacity .2s linear;
-    z-index: 10;
+    z-index: 9999;
 }
 
 #navbar .settings li {
@@ -2946,7 +2946,7 @@ form:focus {
     position: fixed;
     top: 72px;
     width: 100%;
-    z-index: 999999999;
+    z-index: 8888;
 }
 
 #alert.error {

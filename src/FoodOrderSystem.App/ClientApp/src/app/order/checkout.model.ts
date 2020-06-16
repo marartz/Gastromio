@@ -1,3 +1,5 @@
+import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
+
 export class CheckoutModel {
   public givenName: string;
   public lastName: string;
@@ -9,14 +11,7 @@ export class CheckoutModel {
   public email: string;
   public orderType: string;
   public restaurantId: string;
-  public orderedDishes: OrderedDishInfoModel[];
+  public cartDishes: StoredCartDishModel[];
   public comments: string;
-}
-
-export class OrderedDishInfoModel {
-  public itemId: string;
-  public dishId: string;
-  public variantId: string;
-  public count: number;
-  public remarks: string;
+  public paymentMethodId: string;
 }

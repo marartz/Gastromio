@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.Order;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using MongoDB.Driver;
@@ -114,6 +115,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     )).ToList()
                 ) : null,
                 row.Comments,
+                new PaymentMethodId(row.PaymentMethodId),
+                (decimal)row.Costs,
                 row.CreatedOn,
                 row.UpdatedOn,
                 row.UpdatedBy.HasValue ? new UserId(row.UpdatedBy.Value) : null 
@@ -173,6 +176,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     }
                     : null,
                 Comments = obj.Comments,
+                PaymentMethodId = obj.PaymentMethodId.Value,
+                Costs = (double)obj.Costs,
                 CreatedOn = obj.CreatedOn,
                 UpdatedOn = obj.UpdatedOn,
                 UpdatedBy = obj.UpdatedBy?.Value

@@ -7,12 +7,13 @@ import {DishCategoryModel} from '../dish-category/dish-category.model';
 import {CartModel, OrderType} from '../cart/cart.model';
 import {tap} from 'rxjs/operators';
 import {StoredCartModel} from '../cart/stored-cart.model';
-import {StoredOrderedDishModel} from '../cart/stored-ordered-dish.model';
 import {DishModel} from '../dish-category/dish.model';
 import {DishVariantModel} from '../dish-category/dish-variant.model';
-import {OrderedDishModel} from '../cart/ordered-dish.model';
 import {Guid} from 'guid-typescript';
 import {CheckoutModel} from './checkout.model';
+import {OrderModel} from './order.model';
+import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
+import {CartDishModel} from '../cart/cart-dish.model';
 
 @Injectable()
 export class OrderService {
@@ -34,6 +35,8 @@ export class OrderService {
   private storedCart: StoredCartModel;
 
   private cart: CartModel;
+
+  private order: OrderModel;
 
   public static translateToOrderType(orderType: string): OrderType {
     switch (orderType) {
@@ -59,7 +62,7 @@ export class OrderService {
     }
   }
 
-  public searchForRestaurantsAsync(search: string): Observable<RestaurantModel[]> {
+  public searchForRestaurantsAsync(search: string, orderType: OrderType): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -67,7 +70,22 @@ export class OrderService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search), httpOptions);
+
+    let orderTypeText: string;
+    switch (orderType)
+    {
+      case OrderType.Pickup:
+        orderTypeText = 'pickup';
+        break;
+      case OrderType.Delivery:
+        orderTypeText = 'delivery';
+        break;
+      case OrderType.Reservation:
+        orderTypeText = 'reservation';
+    }
+
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search)
+      + '&orderType=' + encodeURIComponent(orderTypeText), httpOptions);
   }
 
   public initializeAsync(): Observable<unknown> {
@@ -120,7 +138,7 @@ export class OrderService {
     this.storedCart = new StoredCartModel();
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
     this.storedCart.restaurantId = this.restaurant.id;
-    this.storedCart.orderedDishes = new Array<StoredOrderedDishModel>();
+    this.storedCart.cartDishes = new Array<StoredCartDishModel>();
     this.generateCartModel();
   }
 
@@ -136,97 +154,97 @@ export class OrderService {
     return this.cart;
   }
 
-  public addDishToCart(dish: DishModel, variant: DishVariantModel, count: number): void {
+  public addDishToCart(dish: DishModel, variant: DishVariantModel, count: number, remarks: string): void {
     if (!this.storedCart) {
       throw new Error('no cart defined');
     }
     if (count <= 0) {
       return;
     }
-    let storedOrderedDish = this.storedCart.orderedDishes.find(en => en.dishId === dish.id && en.variantId === variant.variantId);
-    if (storedOrderedDish !== undefined) {
-      storedOrderedDish.count += count;
+    let storedCartDish = this.storedCart.cartDishes.find(en => en.dishId === dish.id && en.variantId === variant.variantId);
+    if (storedCartDish !== undefined) {
+      storedCartDish.count += count;
     } else {
-      storedOrderedDish = new StoredOrderedDishModel();
-      storedOrderedDish.itemId = Guid.create().toString();
-      storedOrderedDish.dishId = dish.id;
-      storedOrderedDish.variantId = variant.variantId;
-      storedOrderedDish.count = count;
-      storedOrderedDish.remarks = undefined;
-      this.storedCart.orderedDishes.push(storedOrderedDish);
+      storedCartDish = new StoredCartDishModel();
+      storedCartDish.itemId = Guid.create().toString();
+      storedCartDish.dishId = dish.id;
+      storedCartDish.variantId = variant.variantId;
+      storedCartDish.count = count;
+      storedCartDish.remarks = remarks;
+      this.storedCart.cartDishes.push(storedCartDish);
     }
     this.visible = true;
     this.saveCartToStorage();
     this.generateCartModel();
   }
 
-  public setCountOfOrderedDish(itemId: string, count: number): void {
+  public setCountOfCartDish(itemId: string, count: number): void {
     if (!this.storedCart) {
       throw new Error('no cart defined');
     }
-    const index = this.storedCart.orderedDishes.findIndex(en => en.itemId === itemId);
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
     if (index < 0) {
       return;
     }
-    this.storedCart.orderedDishes[index].count = count;
-    if (this.storedCart.orderedDishes[index].count <= 0) {
-      this.storedCart.orderedDishes.splice(index, 1);
+    this.storedCart.cartDishes[index].count = count;
+    if (this.storedCart.cartDishes[index].count <= 0) {
+      this.storedCart.cartDishes.splice(index, 1);
     }
     this.saveCartToStorage();
     this.generateCartModel();
   }
 
-  public incrementCountOfOrderedDish(itemId: string): void {
+  public incrementCountOfCartDish(itemId: string): void {
     if (!this.storedCart) {
       throw new Error('no cart defined');
     }
-    const index = this.storedCart.orderedDishes.findIndex(en => en.itemId === itemId);
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
     if (index < 0) {
       return;
     }
-    this.storedCart.orderedDishes[index].count += 1;
+    this.storedCart.cartDishes[index].count += 1;
     this.saveCartToStorage();
     this.generateCartModel();
   }
 
-  public decrementCountOfOrderedDish(itemId: string): void {
+  public decrementCountOfCartDish(itemId: string): void {
     if (!this.storedCart) {
       throw new Error('no cart defined');
     }
-    const index = this.storedCart.orderedDishes.findIndex(en => en.itemId === itemId);
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
     if (index < 0) {
       return;
     }
-    this.storedCart.orderedDishes[index].count -= 1;
-    if (this.storedCart.orderedDishes[index].count <= 0) {
-      this.storedCart.orderedDishes.splice(index, 1);
+    this.storedCart.cartDishes[index].count -= 1;
+    if (this.storedCart.cartDishes[index].count <= 0) {
+      this.storedCart.cartDishes.splice(index, 1);
     }
     this.saveCartToStorage();
     this.generateCartModel();
   }
 
-  public changeRemarksOfOrderedDish(itemId: string, remarks: string): void {
+  public changeRemarksOfCartDish(itemId: string, remarks: string): void {
     if (!this.storedCart) {
       throw new Error('no cart defined');
     }
-    const index = this.storedCart.orderedDishes.findIndex(en => en.itemId === itemId);
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
     if (index < 0) {
       return;
     }
-    this.storedCart.orderedDishes[index].remarks = remarks;
+    this.storedCart.cartDishes[index].remarks = remarks;
     this.saveCartToStorage();
     this.generateCartModel();
   }
 
-  public removeOrderedDishFromCart(itemId: string): void {
+  public removeCartDishFromCart(itemId: string): void {
     if (!this.storedCart) {
       throw new Error('no cart defined');
     }
-    const index = this.storedCart.orderedDishes.findIndex(en => en.itemId === itemId);
+    const index = this.storedCart.cartDishes.findIndex(en => en.itemId === itemId);
     if (index < 0) {
       return;
     }
-    this.storedCart.orderedDishes.splice(index, 1);
+    this.storedCart.cartDishes.splice(index, 1);
     this.saveCartToStorage();
     this.generateCartModel();
   }
@@ -253,15 +271,20 @@ export class OrderService {
     this.generateCartModel();
   }
 
-  public checkoutAsync(checkoutModel: CheckoutModel): Observable<string> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      })
-    };
-    return this.http.post<string>(this.baseUrl + '/checkout', checkoutModel, httpOptions);
+  public checkoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
+    return this.sendCheckoutAsync(checkoutModel)
+      .pipe(tap(o => {
+        this.order = o;
+        this.discardCart();
+      }));
   }
+
+  public getOrder(): OrderModel {
+    return this.order;
+  }
+
+
+  /* private methods */
 
   private tryLoadCartFromStorage(): boolean {
     const json = localStorage.getItem('cart');
@@ -292,31 +315,31 @@ export class OrderService {
         return false;
       }
 
-      if (!storedCart.orderedDishes) {
-        console.log('no ordered dishes available');
+      if (!storedCart.cartDishes) {
+        console.log('no cart dishes available');
         return false;
       }
 
       const knownItemIds = new Map<string, string>();
-      for (const storedOrderedDishModel of storedCart.orderedDishes) {
-        if (!storedOrderedDishModel.itemId || storedOrderedDishModel.itemId.length === 0) {
-          console.log('item id is not valid:', storedOrderedDishModel.itemId);
+      for (const storedCartDishModel of storedCart.cartDishes) {
+        if (!storedCartDishModel.itemId || storedCartDishModel.itemId.length === 0) {
+          console.log('item id is not valid:', storedCartDishModel.itemId);
           return false;
         }
-        if (knownItemIds.get(storedOrderedDishModel.itemId)) {
-          console.log('item id is not unique:', storedOrderedDishModel.itemId);
+        if (knownItemIds.get(storedCartDishModel.itemId)) {
+          console.log('item id is not unique:', storedCartDishModel.itemId);
           return false;
         }
-        if (!storedOrderedDishModel.dishId || storedOrderedDishModel.dishId.length === 0) {
-          console.log('dish id is not valid:', storedOrderedDishModel.dishId);
+        if (!storedCartDishModel.dishId || storedCartDishModel.dishId.length === 0) {
+          console.log('dish id is not valid:', storedCartDishModel.dishId);
           return false;
         }
-        if (!storedOrderedDishModel.variantId || storedOrderedDishModel.variantId.length === 0) {
-          console.log('dish id is not valid:', storedOrderedDishModel.variantId);
+        if (!storedCartDishModel.variantId || storedCartDishModel.variantId.length === 0) {
+          console.log('dish id is not valid:', storedCartDishModel.variantId);
           return false;
         }
-        if (storedOrderedDishModel.count <= 0) {
-          console.log('invalid count: ', storedOrderedDishModel.count);
+        if (storedCartDishModel.count <= 0) {
+          console.log('invalid count: ', storedCartDishModel.count);
           return false;
         }
       }
@@ -414,27 +437,27 @@ export class OrderService {
         break;
     }
 
-    const orderedDishes = new Array<OrderedDishModel>();
-    for (const storedOrderedDish of this.storedCart.orderedDishes) {
-      const dish = this.dishes.get(storedOrderedDish.dishId);
+    const cartDishes = new Array<CartDishModel>();
+    for (const storedCartDish of this.storedCart.cartDishes) {
+      const dish = this.dishes.get(storedCartDish.dishId);
       if (!dish) {
-        throw new Error('dish with id ' + storedOrderedDish.dishId + ' not known');
+        throw new Error('dish with id ' + storedCartDish.dishId + ' not known');
       }
 
-      const variant = dish.variants.find(en => en.variantId === storedOrderedDish.variantId);
+      const variant = dish.variants.find(en => en.variantId === storedCartDish.variantId);
       if (!variant) {
-        throw new Error('variant with id ' + storedOrderedDish.variantId + ' not known');
+        throw new Error('variant with id ' + storedCartDish.variantId + ' not known');
       }
 
-      const orderedDish = new OrderedDishModel(
-        storedOrderedDish.itemId,
+      const CartDish = new CartDishModel(
+        storedCartDish.itemId,
         dish,
         variant,
-        storedOrderedDish.count,
-        storedOrderedDish.remarks
+        storedCartDish.count,
+        storedCartDish.remarks
       );
 
-      orderedDishes.push(orderedDish);
+      cartDishes.push(CartDish);
     }
 
     this.cart = new CartModel(
@@ -445,7 +468,7 @@ export class OrderService {
       maximumOrderValue,
       costs,
       this.restaurant.hygienicHandling,
-      orderedDishes,
+      cartDishes,
       this.visible
     );
   }
@@ -470,5 +493,15 @@ export class OrderService {
       })
     };
     return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
+  }
+
+  private sendCheckoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      })
+    };
+    return this.http.post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions);
   }
 }

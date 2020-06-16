@@ -1,0 +1,178 @@
+<section id="main" role="main">
+    <div class="focus-outlet" tabindex="-1" role="group">
+
+        <div id="summary">
+            <div class="summary-content-container">
+
+                <h2>Die Bestellung war erfolgreich! TODO: Schönerer Text...</h2>
+
+                <div class="summary-main-col summary-col">
+                    <div class="info-pane" role="group">
+                        <h3 class="info-label">Bestelldetails</h3>
+                        <div class="info-card">
+                            <div class="info-section">
+                                <div class="info-group">
+                                    <div class="logo" *ngIf="restaurant.image !== null">
+                                        <div class="logo-container">
+                                            <img [src]="restaurant.image" alt="{{restaurant.name}} Logo"/>
+                                        </div>
+                                    </div>
+                                    <div class="restaurant">
+                                        <div class="restaurant-info">
+                                            <div class="restaurant-name">{{restaurant.name}}</div>
+                                            <address>
+                                                <div class="restaurant-address">{{restaurant.address.street}}</div>
+                                                <div class="restaurant-address">{{restaurant.address.zipCode}}
+                                                    , {{restaurant.address.city}}</div>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-pane" role="group">
+                        <h3 class="info-label">Adressinformationen</h3>
+                        <div class="info-card">
+                            <div class="info-group">
+                                <div class="info-group-center">
+
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="input-wrap">
+                                                <label for="street">Straße/Nr.</label>
+                                                <input type="text" id="street" readonly="readonly" value="{{order.customerInfo.street}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-wrap" style="margin-top: 20px !important;">
+                                                <label for="addAddressInfo">Zusätzliche Informationen</label>
+                                                <input type="text" id="addAddressInfo" readonly="readonly" value="{{order.customerInfo.addAddressInfo}}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 20px !important;">
+                                        <div class="col">
+                                            <div class="input-wrap">
+                                                <label for="zipCode">Postleitzahl</label>
+                                                <input type="number" id="zipCode" readonly="readonly" value="{{order.customerInfo.zipCode}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-wrap">
+                                                <label for="city">Stadt</label>
+                                                <input type="text" id="city" readonly="readonly" value="{{order.customerInfo.city}}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-pane" role="group">
+                        <h3 class="info-label">Kontaktinformationen</h3>
+                        <div class="info-card">
+                            <div class="info-group">
+                                <div class="info-group-center">
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-wrap">
+                                                <label for="givenName">Vorname</label>
+                                                <input type="text" id="givenName" readonly="readonly" value="{{order.customerInfo.givenName}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-wrap">
+                                                <label for="lastName">Nachname</label>
+                                                <input type="text" id="lastName" readonly="readonly" value="{{order.customerInfo.lastName}}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top: 20px !important;">
+                                        <div class="col">
+                                            <div class="input-wrap">
+                                                <label for="phone">Telefon</label>
+                                                <input type="tel" id="phone" readonly="readonly" value="{{order.customerInfo.phone}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-wrap">
+                                                <label for="email">E-Mail</label>
+                                                <input type="text" id="email" readonly="readonly" value="{{order.customerInfo.email}}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--div class="input-wrap">
+                                        <label for="comments">Wünsche / Anmerkungen</label>
+                                        <input type="text" id="comments" formControlName="comments" placeholder="TODO" />
+                                    </div-->
+
+                                    <p class="summary-message">Diese Informationen werden verwendet, um Ihre Bestellung
+                                        zu identifizieren und um Sie bei Fragen zu kontakieren.</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="summary-aside-col summary-col">
+                    <div id="ordered">
+                        <h3>Deine Bestellung</h3>
+                        <div class="wrapper">
+
+                            <div class="info-section">
+                                <div class="info-group dish" *ngFor="let orderedDish of order.cartInfo.orderedDishes">
+                                    <div class="dish-content">
+                                        <div class="dish-count"><span>{{orderedDish.count}}</span></div>
+                                        <div class="dish">
+                                            <h2 class="dish-name">{{orderedDish.dishName}} <span
+                                                *ngIf="orderedDish.variantName.length > 1">({{orderedDish.variantName}}
+                                                )</span></h2>
+                                            <div class="dish-remarks">{{orderedDish.remarks}}</div>
+                                        </div>
+                                        <div class="dish-price"><span>&euro; {{formatNumber(orderedDish.count * orderedDish.variantPrice)}}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section">
+                                <div class="totals-panel">
+                                    <div class="panel subtotal">
+                                        <div class="name">Zwischensumme</div>
+                                        <div class="cost">&euro; {{formatNumber(order.valueOfOrder)}}</div>
+                                    </div>
+                                    <div class="panel delivery-costs" *ngIf="order.costs">
+                                        <div class="name">Lieferkosten</div>
+                                        <div class="cost">&euro; {{formatNumber(order.costs)}}</div>
+                                    </div>
+                                    <div class="panel total">
+                                        <div class="name">Gesamt</div>
+                                        <div class="cost">&euro; {{formatNumber(order.totalPrice)}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section">
+                                <span>Zahlungsmethode: {{order.paymentMethod.name}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="back">
+                    <button type="button" [routerLink]="['/']">Zurück zur Haupseite</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

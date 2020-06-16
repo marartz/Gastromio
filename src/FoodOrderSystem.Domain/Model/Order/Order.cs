@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.User;
 
 namespace FoodOrderSystem.Domain.Model.Order
@@ -10,6 +12,8 @@ namespace FoodOrderSystem.Domain.Model.Order
             CustomerInfo customerInfo,
             CartInfo cartInfo,
             string comments,
+            PaymentMethodId paymentMethodId,
+            decimal costs,
             DateTime createdOn,
             DateTime? updatedOn,
             UserId updatedBy
@@ -18,6 +22,8 @@ namespace FoodOrderSystem.Domain.Model.Order
             Id = id;
             CustomerInfo = customerInfo;
             CartInfo = cartInfo;
+            PaymentMethodId = paymentMethodId;
+            Costs = costs;
             CreatedOn = createdOn;
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
@@ -29,9 +35,12 @@ namespace FoodOrderSystem.Domain.Model.Order
         public CustomerInfo CustomerInfo { get; }
         
         public CartInfo CartInfo { get; }
-        
         public string Comments { get; }
 
+        public PaymentMethodId PaymentMethodId { get; }
+
+        public decimal Costs { get; }
+        
         public DateTime CreatedOn { get; }
         
         public DateTime? UpdatedOn { get; private set; }
@@ -71,6 +80,16 @@ namespace FoodOrderSystem.Domain.Model.Order
                 return FailureResult<bool>.Create(FailureResultCode.OrderIsInvalid);
             
             return SuccessResult<bool>.Create(true);
+        }
+
+        public decimal GetValueOfOrder()
+        {
+            return CartInfo?.OrderedDishes?.Sum(orderedDish => orderedDish.Count * orderedDish.VariantPrice) ?? 0;
+        }
+
+        public decimal GetTotalPrice()
+        {
+            return GetValueOfOrder() + Costs;
         }
     }
 }
