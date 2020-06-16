@@ -37,6 +37,7 @@ namespace FoodOrderSystem.Domain.Commands.AddUser
                 command.Role,
                 command.Email,
                 command.Password,
+                true,
                 currentUser.Id
             );
             

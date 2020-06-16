@@ -6,6 +6,7 @@
             Role role,
             string email,
             string password,
+            bool checkPasswordPolicy,
             UserId createdBy
         );
     }

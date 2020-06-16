@@ -104,7 +104,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
                 var name = $"sysadmin{(i + 1):D3}";
                 var tempResult = userFactory.Create(Role.SystemAdmin, $"{name}@gastromio.de", "Start2020!",
-                    currentUser.Id);
+                    true, currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<bool>();
 
@@ -121,7 +121,7 @@ namespace FoodOrderSystem.Domain.Commands.AddTestData
 
                 var name = $"restadmin{(i + 1):D3}";
                 var tempResult = userFactory.Create(Role.SystemAdmin, $"{name}@gastromio.de", "Start2020!",
-                    currentUser.Id);
+                    true, currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<bool>();
 

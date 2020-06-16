@@ -30,7 +30,9 @@ namespace FoodOrderSystem.Domain.Commands.ChangeUserPassword
             if (user == null)
                 return FailureResult<bool>.Create(FailureResultCode.UserDoesNotExist);
 
-            user.ChangePassword(command.Password, currentUser.Id);
+            var result = user.ChangePassword(command.Password, true, currentUser.Id);
+            if (result.IsFailure)
+                return result;
 
             await userRepository.StoreAsync(user, cancellationToken);
 
