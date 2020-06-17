@@ -57,8 +57,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeAddressForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="hollow disabled" [disabled]="!changeAddressForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeAddressForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -93,8 +93,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeContactInfoForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="hollow disabled" [disabled]="!changeAddressForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeContactInfoForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -116,8 +116,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeImageForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="hollow disabled" [disabled]="!changeAddressForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeImageForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -175,8 +175,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeServiceInfoForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="hollow disabled" [disabled]="!changeAddressForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeServiceInfoForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -204,8 +204,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!addCuisineForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Hinzufügen</button>
+                                        <button class="hollow disabled" [disabled]="!changeAddressForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Hinzufügen</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="addCuisineForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
