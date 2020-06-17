@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>Gastromio</ShortName>
+    <Description>Dursuche Gastromio</Description>
+    <Url type="text/html" template="https://www.gastromio.de/suche?q={searchTerms}&amp;ref=opensearch" method="GET" />
+    <Url type="application/opensearchdescription+xml" rel="self" template="/assets/xml/osd.xml" />
+    <Image height="16" width="16" type="image/vnd.microsoft.icon">https://www.gastromio.de/favicon.ico</Image>
+    <OutputEncoding>UTF-8</OutputEncoding>
+    <InputEncoding>UTF-8</InputEncoding>
+    <moz:SearchForm>https://www.gastromio.de/</moz:SearchForm>
+</OpenSearchDescription>

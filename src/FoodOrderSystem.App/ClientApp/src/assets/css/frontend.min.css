@@ -173,7 +173,7 @@ p a:hover {
 }
 
 [class*="text-link"]:hover {
-    color: #000;
+    color: #256d1b;
     opacity: .85;
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
 }
@@ -678,6 +678,66 @@ form:focus {
 	  height: 15px;
 }
 
+.tab-bar {
+    background-color: #fff;
+    border-radius: 10px 10px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+}
+
+.tab-bar .tab-item {
+    border-bottom: 1px solid #e5e5e5;
+    border-radius: 0px;
+    padding: 0px;
+    text-align: center;
+    transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    width: 100%;
+}
+
+.tab-bar .tab-item:not(:first-child) {
+    border-left: 1px solid #e5e5e5;
+}
+
+.tab-bar .tab-item,
+.tab-bar .tab-item:hover {
+	  background: transparent;
+}
+
+.tab-item span {
+    color: #6d6d6d;
+    cursor: pointer;
+    display: block;
+    font-size: 13px;
+    letter-spacing: 2px;
+    line-height: 64px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    white-space: nowrap;
+}
+
+.tab-item.selected span,
+.tab-item:focus span,
+.tab-item:hover span {
+    color: #65b32e;
+}
+
+.tab-bar .tab-slider {
+    bottom: 0px;
+    height: 4px;
+    position: absolute;
+    width: 100%;
+}
+
+.tab-slider .bar {
+    background-color: #65b32e;
+    height: 100%;
+    position: absolute;
+    transition: left 150ms cubic-bezier(.57, .06, .05, .95);
+}
+
 .link-card {
     border-radius: 8px;
     display: block;
@@ -853,14 +913,25 @@ form:focus {
 
 #home #order h1 {
     color: #65b32e;
-    font-family: proxima-nova, sans-serif;
     font-size: 40px;
     font-weight: 700;
-    line-height: 1.2;
+    letter-spacing: -1.2px;
     margin-bottom: 8px;
     text-align: left;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@media screen and (max-width: 452px) {
+    #home #order h1 {
+        font-size: 33px;
+    }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1104px) {
+    #home #order h1 {
+        font-size: 32px;
+    }
 }
 
 #home #order h3 {
@@ -868,7 +939,6 @@ form:focus {
     font-family: proxima-nova, sans-serif;
     font-size: 14px;
     font-weight: 600;
-    line-height: 19px;
     margin-bottom: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -899,7 +969,7 @@ form:focus {
 
 .restaurant-card:not(.not-clickable):focus .card-inner,
 .restaurant-card:not(.not-clickable):hover .card-inner {
-    box-shadow: 0px 0px 0px 2px #518f25;
+    box-shadow: 0px 0px 0px 2px #65b32e;
 }
 
 .restaurant-card.not-clickable,
@@ -959,12 +1029,6 @@ form:focus {
     font-size: 14px;
     font-weight: 400;
     margin-top: .625rem;
-}
-
-@media screen and (min-width: 768px) {
-    .restaurant-card .restaurant-description {
-        line-height: 1.8;
-    }
 }
 
 .restaurant-card .restaurant-description address {
@@ -2515,7 +2579,7 @@ form:focus {
 }
 
 #entry h1 {
-    color: #518f25;
+    color: #65b32e;
     font-family: proxima-nova, sans-serif;
     font-size: 27px;
     font-weight: 700;
@@ -2551,7 +2615,7 @@ form:focus {
 }
 
 #entry .link-wrap a:hover {
-    color: #000;
+    color: #256d1b;
     opacity: .85;
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
 }
@@ -2622,7 +2686,7 @@ form:focus {
 }
 
 #entry .form-button-submit:hover {
-	  background: #518f25;
+	  background: #256d1b;
 	  transition: all 150ms cubic-bezier(.57, .06, .05, .95), background 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 }
 
@@ -2666,7 +2730,7 @@ form:focus {
 }
 
 #entry .password-forgotten a:hover {
-    color: #000;
+    color: #256d1b;
     opacity: .85;
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
 }
@@ -2764,13 +2828,15 @@ form:focus {
     white-space: nowrap;
 }
 
-#navbar #branding a:hover {
-    opacity: .75;
-    transition: opacity 150ms ease-out;
+#navbar #branding a:hover,
+#navbar #branding a:hover > span {
+    color: #256d1b;
+    transition: color 150ms ease-out;
 }
 
 #navbar #branding a > span {
-	  font-weight: 300;
+    font-weight: 300;
+    transition: none;
 }
 
 /* 90.2 #navbar > #cart */
@@ -2814,7 +2880,7 @@ form:focus {
 }
 
 #navbar .settings li:hover {
-    background: #518f25;
+    background: #65b32e;
 }
 
 #navbar .settings li:hover a {
