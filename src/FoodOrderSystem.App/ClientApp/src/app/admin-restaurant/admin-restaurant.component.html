@@ -5,7 +5,7 @@
             <!-- START: Fehlermeldungen -->
             <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
             <div id="alert" class="error" *ngIf="changeAddressError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeAddressError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="changeImageError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeImageError}}</span></div></div>
+            <div id="alert" class="error" *ngIf="changeBannerError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeBannerError}}</span></div></div>
             <div id="alert" class="error" *ngIf="changeContactInfoError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeContactInfoError}}</span></div></div>
             <div id="alert" class="error" *ngIf="changeServiceInfoError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeServiceInfoError}}</span></div></div>
             <div id="alert" class="error" *ngIf="removeOpeningPeriodError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{removeOpeningPeriodError}}</span></div></div>
@@ -80,7 +80,7 @@
                                         <input type="tel" id="fax" formControlName="fax" placeholder="Ihre Faxnummer" />
                                     </div>
                                     <div class="backend-input">
-                                        <label for="email">E-Mail für Bestellungen</label>
+                                        <label for="emailAddress">E-Mail für Bestellungen</label>
                                         <input type="email" id="emailAddress" formControlName="emailAddress" placeholder="Ihre E-Mail-Adresse" />
                                     </div>
                                     <div class="backend-input">
@@ -109,19 +109,18 @@
                         <div class="left">
                             <div id="form">
                                 <h3>Grafiken</h3>
-                                <form [formGroup]="changeImageForm" (ngSubmit)="onSaveImage(changeImageForm.value)">
+                                <img *ngIf="hasBanner()" [src]="bannerUrl" style="align-items: center; vertical-align: middle; padding-top: 24px; width:100%;">
+                                <form [formGroup]="changeBannerForm" (ngSubmit)="onSaveBanner(changeBannerForm.value)">
                                     <div class="backend-input">
-                                        <label>Banner</label>
-                                        <input type="file" id="orderEmailAddress" formControlName="orderEmailAddress" placeholder="Ihre E-Mail-Adresse" />
+                                        <label *ngIf="!hasBanner()">Banner hinzufügen</label>
+                                        <label *ngIf="hasBanner()">Banner ändern</label>
+                                        <input type="file" #banner accept="image/*" (change)="onBannerChange($event)" />
                                     </div>
 
-                                    <div class="inline-button-wrap" *ngIf="!changeImageForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
-                                    </div>
-                                    <div class="inline-button-wrap" *ngIf="changeImageForm.dirty">
-                                        <button type="reset" class="hollow">Verwerfen</button>
-                                        <button type="submit">Speichern</button>
+                                    <div class="inline-button-wrap">
+                                        <button *ngIf="hasBanner()" (click)="onRemoveBanner()" type="button">Entfernen</button>
+                                        <button *ngIf="!changeBannerForm.dirty" class="disabled">Speichern</button>
+                                        <button *ngIf="changeBannerForm.dirty" type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>
@@ -318,36 +317,34 @@
 
                             <div id="form">
                                 <h3>Restaurantverwalter</h3>
-                                <form>
-                                    <div class="backend-input">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>E-Mail</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let user of restaurant.administrators">
-                                                    <td>{{user.email}}</td>
-                                                    <td>
-                                                        <div class="actions">
-                                                            <button class="edit-link text-link-small" (click)="removeUser(user)">Entfernen</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="table">
-                                            <tbody>
-                                                <tr>
-                                                    <td><input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' /></td>
-                                                    <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">Hinzufügen</button></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </form>
+                                <div class="backend-input">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>E-Mail</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let user of restaurant.administrators">
+                                                <td>{{user.email}}</td>
+                                                <td>
+                                                    <div class="actions">
+                                                        <button class="edit-link text-link-small" (click)="removeUser(user)">Entfernen</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td><input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' /></td>
+                                                <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">Hinzufügen</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div id="form">

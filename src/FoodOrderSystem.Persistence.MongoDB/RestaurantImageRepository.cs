@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.RestaurantImage;
 using FoodOrderSystem.Domain.Model.User;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace FoodOrderSystem.Persistence.MongoDB
@@ -54,10 +55,25 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return cursor.ToEnumerable().Select(FromDocument);
         }
 
+        public async Task<IEnumerable<string>> FindTypesByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+            var cursor = await collection.FindAsync(
+                Builders<RestaurantImageModel>.Filter.Eq(en => en.RestaurantId, restaurantId.Value),
+                new FindOptions<RestaurantImageModel>
+                {
+                    Sort = Builders<RestaurantImageModel>.Sort.Ascending(en => en.Type),
+                    Projection = Builders<RestaurantImageModel>.Projection.Include(en => en.Type)
+                },
+                cancellationToken);
+            return cursor.ToEnumerable().Select(en => en.Type);
+        }
+
         public async Task StoreAsync(RestaurantImage restaurantImage, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
             var filter = Builders<RestaurantImageModel>.Filter.Eq(en => en.Id, restaurantImage.Id.Value);
+            filter &= Builders<RestaurantImageModel>.Filter.Eq(en => en.Type, restaurantImage.ToJson());
             var document = ToDocument(restaurantImage);
             var options = new ReplaceOptions {IsUpsert = true};
             await collection.ReplaceOneAsync(filter, document, options, cancellationToken);

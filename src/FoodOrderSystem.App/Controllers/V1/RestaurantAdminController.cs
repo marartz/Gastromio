@@ -181,7 +181,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var image = ImageHelper.ConvertFromImageUrl(changeRestaurantImageModel.Image);
+            var image = string.IsNullOrWhiteSpace(changeRestaurantImageModel.Image)
+                ? null : ImageHelper.ConvertFromImageUrl(changeRestaurantImageModel.Image);
 
             var command = new ChangeRestaurantImageCommand(new RestaurantId(restaurantId),
                 changeRestaurantImageModel.Type, image);

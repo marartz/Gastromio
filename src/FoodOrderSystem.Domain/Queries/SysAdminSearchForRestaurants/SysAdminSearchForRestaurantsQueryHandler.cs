@@ -8,24 +8,28 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 
 namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
 {
     public class SysAdminSearchForRestaurantsQueryHandler : IQueryHandler<SysAdminSearchForRestaurantsQuery, PagingViewModel<RestaurantViewModel>>
     {
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IRestaurantImageRepository restaurantImageRepository;
         private readonly ICuisineRepository cuisineRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly IUserRepository userRepository;
 
         public SysAdminSearchForRestaurantsQueryHandler(
             IRestaurantRepository restaurantRepository,
+            IRestaurantImageRepository restaurantImageRepository,
             ICuisineRepository cuisineRepository,
             IPaymentMethodRepository paymentMethodRepository,
             IUserRepository userRepository
         )
         {
             this.restaurantRepository = restaurantRepository;
+            this.restaurantImageRepository = restaurantImageRepository;
             this.cuisineRepository = cuisineRepository;
             this.paymentMethodRepository = paymentMethodRepository;
             this.userRepository = userRepository;
@@ -52,7 +56,9 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
                 query.Take, cancellationToken);
 
             var pagingViewModel = new PagingViewModel<RestaurantViewModel>((int) total, query.Skip, query.Take,
-                items.Select(en => RestaurantViewModel.FromRestaurant(en, cuisines, paymentMethods, userRepository)).ToList());
+                items.Select(en =>
+                    RestaurantViewModel.FromRestaurant(en, cuisines, paymentMethods, userRepository,
+                        restaurantImageRepository)).ToList());
 
             return SuccessResult<PagingViewModel<RestaurantViewModel>>.Create(pagingViewModel);
         }

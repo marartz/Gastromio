@@ -6,9 +6,9 @@ using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 
 namespace FoodOrderSystem.Domain.Commands.AddRestaurant
 {
@@ -16,6 +16,7 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
     {
         private readonly IRestaurantFactory restaurantFactory;
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IRestaurantImageRepository restaurantImageRepository;
         private readonly ICuisineRepository cuisineRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly IUserRepository userRepository;
@@ -23,12 +24,14 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
         public AddRestaurantCommandHandler(
             IRestaurantFactory restaurantFactory,
             IRestaurantRepository restaurantRepository,
+            IRestaurantImageRepository restaurantImageRepository,
             ICuisineRepository cuisineRepository,
             IPaymentMethodRepository paymentMethodRepository,
             IUserRepository userRepository)
         {
             this.restaurantFactory = restaurantFactory;
             this.restaurantRepository = restaurantRepository;
+            this.restaurantImageRepository = restaurantImageRepository;
             this.cuisineRepository = cuisineRepository;
             this.paymentMethodRepository = paymentMethodRepository;
             this.userRepository = userRepository;
@@ -59,7 +62,8 @@ namespace FoodOrderSystem.Domain.Commands.AddRestaurant
             
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, cuisines, paymentMethods, userRepository));
+            return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, cuisines,
+                paymentMethods, userRepository, restaurantImageRepository));
         }
     }
 }

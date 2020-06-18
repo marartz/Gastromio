@@ -18,7 +18,6 @@ using FoodOrderSystem.Domain.Commands.Checkout;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.Queries.GetRestaurantImage;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -60,17 +59,6 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/images/{type}")]
-        [HttpGet]
-        public async Task<IActionResult> GetRestaurantImageAsync(Guid restaurantId, string type)
-        {
-            var query = new GetRestaurantImageQuery(new RestaurantId(restaurantId), type);
-            var queryResult = await queryDispatcher.PostAsync<GetRestaurantImageQuery, byte[]>(query, null);
-            if (queryResult.IsFailure)
-                return NotFound();
-            return File(queryResult.Value, "image/jpeg");
-        }
-
         [Route("restaurants/{restaurantId}/dishes")]
         [HttpGet]
         public async Task<IActionResult> GetDishesOfRestaurantAsync(Guid restaurantId)
@@ -97,7 +85,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 checkoutModel.Email,
                 ConvertOrderType(checkoutModel.OrderType),
                 new RestaurantId(checkoutModel.RestaurantId),
-                checkoutModel.CartDishes?.Select(en => new Domain.Commands.Checkout.CartDishInfo(
+                checkoutModel.CartDishes?.Select(en => new CartDishInfo(
                     en.ItemId,
                     new DishId(en.DishId),
                     en.VariantId,

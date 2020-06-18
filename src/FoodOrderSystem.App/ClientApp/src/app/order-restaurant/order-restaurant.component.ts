@@ -111,6 +111,17 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  hasBanner(): boolean {
+    return this.restaurant?.imageTypes.some(en => en === 'banner');
+  }
+
+  getBannerStyle(): string {
+    if (!this.restaurant) {
+      return undefined;
+    }
+    return 'background-image:url("/api/v1/restaurants/' + this.restaurant.id + '/images/banner")';
+  }
+
   onDishCategoryChange(dishCategoryDivId: string): void {
     this.currentDishCategoryDivId = dishCategoryDivId;
   }

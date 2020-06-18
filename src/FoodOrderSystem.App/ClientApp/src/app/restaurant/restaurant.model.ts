@@ -16,6 +16,8 @@ export class RestaurantModel {
 
   public contactInfo: ContactInfoModel;
 
+  public imageTypes: string[];
+
   public openingHours: OpeningPeriodModel[];
 
   public openingHoursText: string;

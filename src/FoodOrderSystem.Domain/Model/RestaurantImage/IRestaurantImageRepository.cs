@@ -16,6 +16,9 @@ namespace FoodOrderSystem.Domain.Model.RestaurantImage
         Task<IEnumerable<RestaurantImage>> FindByRestaurantIdAsync(RestaurantId restaurantId,
             CancellationToken cancellationToken = default);
 
+        Task<IEnumerable<string>> FindTypesByRestaurantIdAsync(RestaurantId restaurantId,
+            CancellationToken cancellationToken = default);
+
         Task StoreAsync(RestaurantImage restaurantImage, CancellationToken cancellationToken = default);
 
         Task RemoveByRestaurantImageId(RestaurantImageId restaurantImageId, string type,

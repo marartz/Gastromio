@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {OpeningPeriodModel, RestaurantModel} from '../restaurant/restaurant.model';
 import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
@@ -34,8 +34,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   generalError: string;
 
-  changeImageForm: FormGroup;
-  changeImageError: string;
+  changeBannerForm: FormGroup;
+  changeBannerError: string;
+  bannerUrl: string;
+  @ViewChild('banner') bannerElement: ElementRef;
 
   changeAddressForm: FormGroup;
   changeAddressError: string;
@@ -77,8 +79,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   ) {
     this.restaurant = new RestaurantModel();
 
-    this.changeImageForm = this.formBuilder.group({
-      image: ''
+    this.changeBannerForm = this.formBuilder.group({
+      banner: ''
     });
 
     this.changeAddressForm = this.formBuilder.group({
@@ -175,12 +177,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
               return 0;
             });
 
-            this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
+            if (this.hasBanner()) {
+              this.updateBannerUrl();
+            }
 
-            this.changeImageForm.patchValue({
-              image: '' // this.restaurant.image
-            });
-            this.changeImageForm.markAsPristine();
+            this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
 
             this.changeAddressForm.patchValue({
               street: this.restaurant.address != null ? this.restaurant.address.street : '',
@@ -283,21 +284,37 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  onImageChange(event) {
+  hasBanner(): boolean {
+    if (!this.restaurant || !this.restaurant.imageTypes) {
+      return false;
+    }
+    return this.restaurant.imageTypes.some(en => en === 'banner');
+  }
+
+  updateBannerUrl(): void {
+    if (!this.hasBanner()) {
+      return undefined;
+    }
+    this.bannerUrl = '/api/v1/restaurants/' + this.restaurant?.id + '/images/banner?random=' + Math.random();
+  }
+
+  onBannerChange(event) {
     if (!event.target.files || !event.target.files.length) {
       return;
     }
+
+    console.log('event:', event);
+
     const reader = new FileReader();
     const [file] = event.target.files;
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      this.changeImageForm.patchValue({
-        image: reader.result
+      console.log('loaded:', reader);
+      this.changeBannerForm.patchValue({
+        banner: reader.result
       });
-      this.changeImageForm.markAsDirty();
-
-      // this.imgUrl = reader.result;
+      this.changeBannerForm.markAsDirty();
     };
   }
 
@@ -311,17 +328,46 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSaveImage(value): void {
+  onSaveBanner(value): void {
     this.blockUI.start('Verarbeite Daten...');
-    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, 'logo', value.image)
+    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, 'banner', value.banner)
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.changeImageError = undefined;
-        this.changeImageForm.markAsPristine();
+        this.bannerElement.nativeElement.value = null;
+        this.changeBannerError = undefined;
+        if (!this.restaurant.imageTypes) {
+          this.restaurant.imageTypes = new Array<string>();
+        }
+        if (!this.restaurant.imageTypes.some(en => en === 'banner')) {
+          this.restaurant.imageTypes.push('banner');
+        }
+        this.updateBannerUrl();
+        this.changeBannerForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeImageError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.changeBannerError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
+  onRemoveBanner(): void {
+    if (!confirm('Soll das Banner wirklich entfernt werden?')) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, 'banner', undefined)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.bannerElement.nativeElement.value = null;
+        this.restaurant.imageTypes = this.restaurant.imageTypes.filter(en => en !== 'banner');
+        this.updateBannerUrl();
+        this.changeBannerError = undefined;
+        this.changeBannerForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.changeBannerError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 

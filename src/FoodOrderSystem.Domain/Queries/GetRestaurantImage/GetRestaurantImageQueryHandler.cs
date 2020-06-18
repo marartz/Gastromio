@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model;
 using FoodOrderSystem.Domain.Model.RestaurantImage;
@@ -14,10 +15,21 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantImage
         {
             this.restaurantImageRepository = restaurantImageRepository;
         }
-        
-        public Task<Result<byte[]>> HandleAsync(GetRestaurantImageQuery query, User currentUser, CancellationToken cancellationToken = default)
+
+        public async Task<Result<byte[]>> HandleAsync(GetRestaurantImageQuery query, User currentUser,
+            CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
+
+            var restaurantImage =
+                await restaurantImageRepository.FindByRestaurantIdAndTypeAsync(query.RestaurantId, query.Type,
+                    cancellationToken);
+
+            if (restaurantImage?.Data == null || restaurantImage.Data.Length == 0)
+                return FailureResult<byte[]>.Create(FailureResultCode.RestaurantImageNotValid);
+            
+            return SuccessResult<byte[]>.Create(restaurantImage.Data);
         }
     }
 }

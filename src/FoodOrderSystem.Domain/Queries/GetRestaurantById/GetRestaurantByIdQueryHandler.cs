@@ -8,24 +8,28 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 
 namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
 {
     public class GetRestaurantByIdQueryHandler : IQueryHandler<GetRestaurantByIdQuery, RestaurantViewModel>
     {
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IRestaurantImageRepository restaurantImageRepository;
         private readonly ICuisineRepository cuisineRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly IUserRepository userRepository;
 
         public GetRestaurantByIdQueryHandler(
             IRestaurantRepository restaurantRepository,
+            IRestaurantImageRepository restaurantImageRepository,
             ICuisineRepository cuisineRepository,
             IPaymentMethodRepository paymentMethodRepository,
             IUserRepository userRepository
         )
         {
             this.restaurantRepository = restaurantRepository;
+            this.restaurantImageRepository = restaurantImageRepository;
             this.cuisineRepository = cuisineRepository;
             this.paymentMethodRepository = paymentMethodRepository;
             this.userRepository = userRepository;
@@ -46,7 +50,8 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
             if (restaurant == null)
                 return FailureResult<RestaurantViewModel>.Create(FailureResultCode.RestaurantDoesNotExist);
 
-            return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, cuisines, paymentMethods, userRepository));
+            return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, cuisines,
+                paymentMethods, userRepository, restaurantImageRepository));
         }
     }
 }

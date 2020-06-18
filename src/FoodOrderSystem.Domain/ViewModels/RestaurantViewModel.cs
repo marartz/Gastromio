@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 
 namespace FoodOrderSystem.Domain.ViewModels
 {
@@ -16,6 +17,8 @@ namespace FoodOrderSystem.Domain.ViewModels
         public AddressViewModel Address { get; set; }
 
         public ContactInfoViewModel ContactInfo { get; set; }
+        
+        public List<string> ImageTypes { get; set; }
 
         public List<OpeningPeriodViewModel> OpeningHours { get; set; }
         
@@ -39,7 +42,8 @@ namespace FoodOrderSystem.Domain.ViewModels
             Restaurant restaurant,
             IDictionary<Guid, CuisineViewModel> allCuisines,
             IDictionary<Guid, PaymentMethodViewModel> allPaymentMethods,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IRestaurantImageRepository restaurantImageRepository)
         {
             var openingHoursText = GenerateOpeningHoursText(restaurant); 
 
@@ -53,6 +57,7 @@ namespace FoodOrderSystem.Domain.ViewModels
                 ContactInfo = restaurant.ContactInfo != null
                     ? ContactInfoViewModel.FromContactInfo(restaurant.ContactInfo)
                     : new ContactInfoViewModel(),
+                ImageTypes = RetrieveImageTypes(restaurantImageRepository, restaurant.Id),
                 OpeningHours = restaurant.OpeningHours != null
                     ? restaurant.OpeningHours.Select(OpeningPeriodViewModel.FromOpeningPeriod).ToList()
                     : new List<OpeningPeriodViewModel>(),
@@ -94,10 +99,15 @@ namespace FoodOrderSystem.Domain.ViewModels
 
         private static UserViewModel RetrieveUserModel(IUserRepository userRepository, UserId userId)
         {
-            var user = userRepository.FindByUserIdAsync(userId).Result;
-            if (user == null)
-                return null;
-            return UserViewModel.FromUser(user);
+            var user = userRepository.FindByUserIdAsync(userId).GetAwaiter().GetResult();
+            return user != null ? UserViewModel.FromUser(user) : null;
+        }
+
+        private static List<string> RetrieveImageTypes(IRestaurantImageRepository restaurantImageRepository,
+            RestaurantId restaurantId)
+        {
+            return restaurantImageRepository.FindTypesByRestaurantIdAsync(restaurantId).GetAwaiter().GetResult()
+                .ToList(); 
         }
 
         private static string GenerateOpeningHoursText(Restaurant restaurant)

@@ -16,7 +16,12 @@
 
                 <div id="menu-hero">
                     <div id="hero-image">
-                        <div class="background-image" style='background-image:url("https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?cs=srgb&dl=fries-with-leaves-dish-718742.jpg&fm=jpg")'></div>
+                        <ng-container *ngIf="hasBanner()">
+                            <div class="background-image" [style]="getBannerStyle()"></div>
+                        </ng-container>
+                        <ng-container *ngIf="!hasBanner()">
+                            <div class="background-image" style='background-image:url("https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?cs=srgb&dl=fries-with-leaves-dish-718742.jpg&fm=jpg")'></div>
+                        </ng-container>
                     </div>
 
                     <div id="hero-content" class="clearfix">
