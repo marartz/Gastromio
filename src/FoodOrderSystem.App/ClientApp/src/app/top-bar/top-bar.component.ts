@@ -45,10 +45,6 @@ export class TopBarComponent implements OnInit {
     return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === 'RestaurantAdmin';
   }
 
-  openLoginForm(): void {
-    this.modalService.open(LoginComponent);
-  }
-
   logout(): void {
     this.authService.logout();
     this.router.navigate(['']);
@@ -60,6 +56,15 @@ export class TopBarComponent implements OnInit {
       return '0';
     }
     return count.toString();
+  }
+
+  isOnOrderPage(): boolean {
+    return this.router.url.startsWith('/restaurants/');
+  }
+
+  getCurRestaurantId(): string {
+    const cart = this.orderService.getCart();
+    return cart?.getRestaurantId();
   }
 
   toggleCartVisibility(): void {
