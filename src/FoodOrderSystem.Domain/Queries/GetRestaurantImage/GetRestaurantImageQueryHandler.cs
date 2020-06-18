@@ -7,7 +7,7 @@ using FoodOrderSystem.Domain.Model.User;
 
 namespace FoodOrderSystem.Domain.Queries.GetRestaurantImage
 {
-    public class GetRestaurantImageQueryHandler : IQueryHandler<GetRestaurantImageQuery, byte[]>
+    public class GetRestaurantImageQueryHandler : IQueryHandler<GetRestaurantImageQuery, RestaurantImage>
     {
         private readonly IRestaurantImageRepository restaurantImageRepository;
 
@@ -16,7 +16,7 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantImage
             this.restaurantImageRepository = restaurantImageRepository;
         }
 
-        public async Task<Result<byte[]>> HandleAsync(GetRestaurantImageQuery query, User currentUser,
+        public async Task<Result<RestaurantImage>> HandleAsync(GetRestaurantImageQuery query, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (query == null)
@@ -27,9 +27,9 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantImage
                     cancellationToken);
 
             if (restaurantImage?.Data == null || restaurantImage.Data.Length == 0)
-                return FailureResult<byte[]>.Create(FailureResultCode.RestaurantImageNotValid);
+                return FailureResult<RestaurantImage>.Create(FailureResultCode.RestaurantImageNotValid);
             
-            return SuccessResult<byte[]>.Create(restaurantImage.Data);
+            return SuccessResult<RestaurantImage>.Create(restaurantImage);
         }
     }
 }

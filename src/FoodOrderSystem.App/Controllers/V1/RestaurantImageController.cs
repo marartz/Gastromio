@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Commands;
 using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Domain.Model.RestaurantImage;
 using FoodOrderSystem.Domain.Queries;
 using FoodOrderSystem.Domain.Queries.GetRestaurantImage;
-using FoodOrderSystem.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,16 +15,11 @@ namespace FoodOrderSystem.App.Controllers.V1
     {
         private readonly ILogger logger;
         private readonly IQueryDispatcher queryDispatcher;
-        private readonly ICommandDispatcher commandDispatcher;
-        private readonly IFailureMessageService failureMessageService;
 
-        public RestaurantImageController(ILogger<OrderController> logger, IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher,
-            IFailureMessageService failureMessageService)
+        public RestaurantImageController(ILogger<OrderController> logger, IQueryDispatcher queryDispatcher)
         {
             this.logger = logger;
             this.queryDispatcher = queryDispatcher;
-            this.commandDispatcher = commandDispatcher;
-            this.failureMessageService = failureMessageService;
         }
         
         [Route("restaurants/{restaurantId}/images/{type}")]
@@ -33,10 +27,19 @@ namespace FoodOrderSystem.App.Controllers.V1
         public async Task<IActionResult> GetRestaurantImageAsync(Guid restaurantId, string type)
         {
             var query = new GetRestaurantImageQuery(new RestaurantId(restaurantId), type);
-            var queryResult = await queryDispatcher.PostAsync<GetRestaurantImageQuery, byte[]>(query, null);
+            var queryResult = await queryDispatcher.PostAsync<GetRestaurantImageQuery, RestaurantImage>(query, null);
             if (queryResult.IsFailure)
                 return NotFound();
-            return File(queryResult.Value, "image/jpeg");
+
+            var data = queryResult.Value.Data;
+            var updatedOn = queryResult.Value.UpdatedOn;
+
+            var fileContentResult = new FileContentResult(data, "image/jpeg")
+            {
+                LastModified = new DateTimeOffset(updatedOn),
+            };
+
+            return fileContentResult;
         }
     }
 }
