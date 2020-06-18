@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -28,13 +29,21 @@ namespace FoodOrderSystem.App.Controllers.V1
         private readonly IConfiguration config;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IFailureMessageService failureMessageService;
+        private readonly IMemoryCache memoryCache;
 
-        public AuthController(ILogger<AuthController> logger, IConfiguration config, ICommandDispatcher commandDispatcher, IFailureMessageService failureMessageService)
+        public AuthController(
+            ILogger<AuthController> logger,
+            IConfiguration config,
+            ICommandDispatcher commandDispatcher,
+            IFailureMessageService failureMessageService,
+            IMemoryCache memoryCache
+        )
         {
             this.logger = logger;
             this.config = config;
             this.commandDispatcher = commandDispatcher;
             this.failureMessageService = failureMessageService;
+            this.memoryCache = memoryCache;
         }
 
         [AllowAnonymous]
@@ -42,11 +51,37 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostLoginAsync([FromBody]LoginModel loginModel)
         {
+            var cacheKey = GetFailureCountCacheKey(Request.Host.Value);
+            if (memoryCache.TryGetValue<int>(cacheKey, out var delay))
+            {
+                logger.LogInformation($"Waiting {delay} ms");
+                await Task.Delay(delay);
+            }
+            
             var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Email, loginModel.Password), null);
             if (commandResult is SuccessResult<UserViewModel> successResult)
             {
+                memoryCache.Remove(cacheKey);
+                
                 var tokenString = GenerateJSONWebToken(successResult.Value);
                 return Ok(new { token = tokenString, user = successResult.Value });
+            }
+            else
+            {
+                if (delay == 0)
+                {
+                    delay = 100;
+                }
+                else
+                {
+                    delay = (int)(delay * 1.2);
+                    if (delay > 1000)
+                    {
+                        delay = 1000;
+                    }
+                }
+
+                memoryCache.Set(cacheKey, delay);
             }
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
@@ -59,6 +94,11 @@ namespace FoodOrderSystem.App.Controllers.V1
             return Ok("pong");
         }
 
+        private string GetFailureCountCacheKey(string userHostAddress)
+        {
+            return $"FailureCount:{userHostAddress}";
+        }
+        
         private string GenerateJSONWebToken(UserViewModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
