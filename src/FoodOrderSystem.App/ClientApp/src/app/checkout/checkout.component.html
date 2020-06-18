@@ -3,11 +3,7 @@
         <div class="focus-outlet" tabindex="-1" role="group">
 
             <!-- START: Fehlermeldungen -->
-            <div *ngIf="generalError !== undefined" id="error">
-                <div id="message" tabindex="-1" role="alert">
-                    <span>{{generalError}}</span>
-                </div>
-            </div>
+            <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><h1>{{generalError}}</h1></div></div></div>
             <!-- ENDE: Fehlermeldungen -->
 
             <div id="checkout" *ngIf="initialized">

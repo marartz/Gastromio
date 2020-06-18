@@ -1,0 +1,30 @@
+{
+    "name": "Gastromio",
+    "short_name": "Gastromio",
+    "dir": "ltr",
+    "lang": "de",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#65b32e",
+    "background_color": "#65b32e",
+    "icons": [
+        {
+            "src": "/assets/resources/manifest/manifest-icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/assets/resources/manifest/manifest-icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "prefer_related_applications": true,
+    "related_applications": [
+        {
+            "platform": "web",
+            "url": "https://www.gastromio.de"
+        },
+    ]
+}
