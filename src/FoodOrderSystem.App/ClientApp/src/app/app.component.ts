@@ -10,7 +10,6 @@ import {Title} from '@angular/platform-browser';
 })
 export class AppComponent {
   routerOutlet: RouterOutlet;
-  showBottomBar = true;
 
   constructor(
     private titleService: Title
@@ -19,6 +18,5 @@ export class AppComponent {
   }
 
   onActivate(component: any): void {
-    this.showBottomBar = !(component instanceof OrderHomeComponent);
   }
 }
