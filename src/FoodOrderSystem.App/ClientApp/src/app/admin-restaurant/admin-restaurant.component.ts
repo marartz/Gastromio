@@ -34,6 +34,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   generalError: string;
 
+  changeLogoForm: FormGroup;
+  changeLogoError: string;
+  logoUrl: string;
+  @ViewChild('logo') logoElement: ElementRef;
+
   changeBannerForm: FormGroup;
   changeBannerError: string;
   bannerUrl: string;
@@ -78,6 +83,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.restaurant = new RestaurantModel();
+
+    this.changeLogoForm = this.formBuilder.group({
+      logo: ''
+    });
 
     this.changeBannerForm = this.formBuilder.group({
       banner: ''
@@ -176,6 +185,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
               }
               return 0;
             });
+
+            if (this.hasLogo()) {
+              this.updateLogoUrl();
+            }
 
             if (this.hasBanner()) {
               this.updateBannerUrl();
@@ -284,6 +297,37 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  hasLogo(): boolean {
+    if (!this.restaurant || !this.restaurant.imageTypes) {
+      return false;
+    }
+    return this.restaurant.imageTypes.some(en => en === 'logo');
+  }
+
+  updateLogoUrl(): void {
+    if (!this.hasLogo()) {
+      return undefined;
+    }
+    this.logoUrl = '/api/v1/restaurants/' + this.restaurant?.id + '/images/logo?random=' + Math.random();
+  }
+
+  onLogoChange(event) {
+    if (!event.target.files || !event.target.files.length) {
+      return;
+    }
+
+    const reader = new FileReader();
+    const [file] = event.target.files;
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.changeLogoForm.patchValue({
+        logo: reader.result
+      });
+      this.changeLogoForm.markAsDirty();
+    };
+  }
+
   hasBanner(): boolean {
     if (!this.restaurant || !this.restaurant.imageTypes) {
       return false;
@@ -303,14 +347,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('event:', event);
-
     const reader = new FileReader();
     const [file] = event.target.files;
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      console.log('loaded:', reader);
       this.changeBannerForm.patchValue({
         banner: reader.result
       });
@@ -326,6 +367,49 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     }, () => {
       // TODO
     });
+  }
+
+  onSaveLogo(value): void {
+    this.blockUI.start('Verarbeite Daten...');
+    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, 'logo', value.logo)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.logoElement.nativeElement.value = null;
+        this.changeLogoError = undefined;
+        if (!this.restaurant.imageTypes) {
+          this.restaurant.imageTypes = new Array<string>();
+        }
+        if (!this.restaurant.imageTypes.some(en => en === 'logo')) {
+          this.restaurant.imageTypes.push('logo');
+        }
+        this.updateLogoUrl();
+        this.changeLogoForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.changeLogoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
+  onRemoveLogo(): void {
+    if (!confirm('Soll das Logo wirklich entfernt werden?')) {
+      return;
+    }
+
+    this.blockUI.start('Verarbeite Daten...');
+    this.restaurantRestAdminService.changeRestaurantImageAsync(this.restaurant.id, 'logo', undefined)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.logoElement.nativeElement.value = null;
+        this.restaurant.imageTypes = this.restaurant.imageTypes.filter(en => en !== 'logo');
+        this.updateLogoUrl();
+        this.changeLogoError = undefined;
+        this.changeLogoForm.markAsPristine();
+      }, (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.changeLogoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
   }
 
   onSaveBanner(value): void {
