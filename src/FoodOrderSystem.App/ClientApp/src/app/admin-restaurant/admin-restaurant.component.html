@@ -57,8 +57,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeAddressForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeAddressForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeAddressForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -93,8 +93,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeContactInfoForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="disabled" [disabled]="!changeContactInfoForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeContactInfoForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeContactInfoForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -119,7 +119,7 @@
 
                                     <div class="inline-button-wrap">
                                         <button *ngIf="hasBanner()" (click)="onRemoveBanner()" type="button">Entfernen</button>
-                                        <button *ngIf="!changeBannerForm.dirty" class="disabled">Speichern</button>
+                                        <button *ngIf="!changeBannerForm.dirty" [disabled]="!changeBannerForm.dirty" class="disabled">Speichern</button>
                                         <button *ngIf="changeBannerForm.dirty" type="submit">Speichern</button>
                                     </div>
                                 </form>
@@ -174,8 +174,8 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeServiceInfoForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Speichern</button>
+                                        <button class="disabled" [disabled]="!changeServiceInfoForm.dirty">Verwerfen</button>
+                                        <button class="disabled" [disabled]="!changeServiceInfoForm.dirty">Speichern</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="changeServiceInfoForm.dirty">
                                         <button type="reset" class="hollow">Verwerfen</button>
@@ -203,11 +203,9 @@
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!addCuisineForm.dirty">
-                                        <button class="hollow disabled">Verwerfen</button>
-                                        <button class="disabled">Hinzufügen</button>
+                                        <button class="disabled" [disabled]="!addCuisineForm.dirty">Hinzufügen</button>
                                     </div>
                                     <div class="inline-button-wrap" *ngIf="addCuisineForm.dirty">
-                                        <button type="reset" class="hollow">Verwerfen</button>
                                         <button type="submit">Hinzufügen</button>
                                     </div>
                                 </form>
