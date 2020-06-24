@@ -2,9 +2,11 @@
     <div class="focus-outlet" tabindex="-1" role="group">
 
         <div id="checkout">
-            <div class="checkout-content-container">
 
-                <h2>Die Bestellung war erfolgreich! TODO: Schönerer Text...</h2>
+            <h2 class="order-completed">Vielen Dank für Deine Bestellung!</h2>
+            <p class="order-completed-info">Eine E-Mail mit Informationen zu deiner Bestellung wurde an die Hinterlegte E-Mail-Adresse gesendet.</p>
+
+            <div class="checkout-content-container">
 
                 <div class="checkout-main-col checkout-col">
                     <div class="info-pane" role="group">
@@ -12,11 +14,6 @@
                         <div class="info-card">
                             <div class="info-section">
                                 <div class="info-group">
-                                    <div class="logo">
-                                        <div class="logo-container">
-                                            <img src="/api/v1/restaurants/{{restaurant.id}}/images/logo" alt="{{restaurant.name}} Logo"/>
-                                        </div>
-                                    </div>
                                     <div class="restaurant">
                                         <div class="restaurant-info">
                                             <div class="restaurant-name">{{restaurant.name}}</div>
@@ -113,9 +110,6 @@
                                         <input type="text" id="comments" formControlName="comments" placeholder="TODO" />
                                     </div-->
 
-                                    <p class="summary-message">Diese Informationen werden verwendet, um Ihre Bestellung
-                                        zu identifizieren und um Sie bei Fragen zu kontakieren.</p>
-
                                 </div>
                             </div>
                         </div>
@@ -123,7 +117,7 @@
 
                 </div>
 
-                <div class="summary-aside-col summary-col">
+                <div class="checkout-aside-col checkout-col">
                     <div id="ordered">
                         <h3>Deine Bestellung</h3>
                         <div class="wrapper">
@@ -164,13 +158,14 @@
                                 <span>Zahlungsmethode: {{order.paymentMethod.name}}</span>
                             </div>
 
+                            <div class="info-section">
+                                <button class="checkout-submit" type="submit">Zur Startseite</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-
-                <div class="back">
-                    <button type="button" [routerLink]="['/']">Zurück zur Haupseite</button>
-                </div>
+ 
             </div>
 
         </div>

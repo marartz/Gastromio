@@ -14,7 +14,7 @@ export class AppComponent {
   constructor(
     private titleService: Title
   ) {
-    titleService.setTitle('Gastromio.de | Einfach, Lokal, Bestellen');
+    titleService.setTitle('Gastromio - Einfach. Lokal. Bestellen.');
   }
 
   onActivate(component: any): void {

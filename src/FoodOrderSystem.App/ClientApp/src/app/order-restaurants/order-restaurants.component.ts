@@ -43,6 +43,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
   }
 
+  hasLogo(
+    restaurant: RestaurantModel
+  ): boolean {
+    return restaurant.imageTypes.some(en => en === 'logo');
+  }
+
+  getLogoUrl(
+    restaurant: RestaurantModel
+  ): string {
+    if (!restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + restaurant.id + '/images/logo';
+  }
+
   onDeliverySelected(): void {
     this.orderType = 'delivery';
     this.updateSearch();

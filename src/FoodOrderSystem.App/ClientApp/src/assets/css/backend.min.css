@@ -583,6 +583,18 @@
     z-index: 22;
 }
 
+#modal #modal-body .restaurant-imprint {
+    background-color: #f8f8f6;
+    border-radius: 8px;
+    color: #5d6164;
+    font-family: proxima-nova, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 #modal #modal-body .modal-message {
     color: #5d6164;
     font-family: proxima-nova, sans-serif;

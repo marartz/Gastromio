@@ -184,6 +184,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   openImprintModal(): void {
     const modalRef = this.modalService.open(OrderRestaurantImprintComponent);
+    modalRef.componentInstance.restaurant = this.restaurant;
     modalRef.result.then(() => {
     }, () => {
     });
