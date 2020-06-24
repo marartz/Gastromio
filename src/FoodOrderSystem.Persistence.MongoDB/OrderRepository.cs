@@ -143,9 +143,10 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     ? new CartInfo(
                         FromDbOrderType(row.CartInfo.OrderType),
                         new RestaurantId(row.CartInfo.RestaurantId),
+                        row.CartInfo.RestaurantName,
                         row.CartInfo.RestaurantInfo,
-                        row.CartInfo.RestaurantEmail,
                         row.CartInfo.RestaurantPhone,
+                        row.CartInfo.RestaurantEmail,
                         row.CartInfo.OrderedDishes?.Select(en => new OrderedDishInfo(
                             en.ItemId,
                             new DishId(en.DishId),
@@ -224,6 +225,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     {
                         OrderType = ToDbOrderType(obj.CartInfo.OrderType),
                         RestaurantId = obj.CartInfo.RestaurantId.Value,
+                        RestaurantName = obj.CartInfo.RestaurantName,
                         RestaurantInfo = obj.CartInfo.RestaurantInfo,
                         RestaurantEmail = obj.CartInfo.RestaurantEmail,
                         RestaurantPhone = obj.CartInfo.RestaurantPhone,

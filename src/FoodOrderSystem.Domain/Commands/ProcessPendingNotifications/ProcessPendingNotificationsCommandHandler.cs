@@ -6,8 +6,6 @@ using FoodOrderSystem.Domain.Adapters.Notification;
 using FoodOrderSystem.Domain.Adapters.Template;
 using FoodOrderSystem.Domain.Model;
 using FoodOrderSystem.Domain.Model.Order;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using Microsoft.Extensions.Logging;
 
@@ -17,24 +15,18 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
     {
         private readonly ILogger<ProcessPendingNotificationsCommandHandler> logger;
         private readonly IOrderRepository orderRepository;
-        private readonly IRestaurantRepository restaurantRepository;
-        private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly ITemplateService templateService;
         private readonly INotificationService notificationService;
 
         public ProcessPendingNotificationsCommandHandler(
             ILogger<ProcessPendingNotificationsCommandHandler> logger,
             IOrderRepository orderRepository,
-            IRestaurantRepository restaurantRepository,
-            IPaymentMethodRepository paymentMethodRepository,
             ITemplateService templateService,
             INotificationService notificationService
         )
         {
             this.logger = logger;
             this.orderRepository = orderRepository;
-            this.restaurantRepository = restaurantRepository;
-            this.paymentMethodRepository = paymentMethodRepository;
             this.templateService = templateService;
             this.notificationService = notificationService;
         }
@@ -42,6 +34,8 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
         public async Task<Result<bool>> HandleAsync(ProcessPendingNotificationsCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
+            logger.LogDebug("Starting check for pending notifications");
+            
             var pendingCustomerNotificationOrders =
                 await orderRepository.FindByPendingCustomerNotificationAsync(cancellationToken);
 
@@ -63,21 +57,30 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
                 await TriggerRestaurantNotificationAsync(order, cancellationToken);
             }
             
+            logger.LogDebug("Check for pending notifications ended");
             return SuccessResult<bool>.Create(true);
         }
 
         private async Task TriggerCustomerNotificationAsync(Order order,
             CancellationToken cancellationToken)
         {
-            var restaurant =
-                await restaurantRepository.FindByRestaurantIdAsync(order.CartInfo.RestaurantId, cancellationToken);
-
-            var paymentMethod =
-                await paymentMethodRepository.FindByPaymentMethodIdAsync(order.PaymentMethodId, cancellationToken);
-
+            if (order.CustomerNotificationInfo != null && order.CustomerNotificationInfo.Attempt > 0)
+            {
+                var delay = CalculateDelay(order.CustomerNotificationInfo);
+                var delta = DateTime.UtcNow - order.CustomerNotificationInfo.Timestamp;
+                if (delta < delay)
+                {
+                    logger.LogDebug("Delay sending customer email of order {0} by further {1} seconds", order.Id.Value, (delay - delta).TotalSeconds);
+                    return;
+                }
+            }
+            
             var emailData = templateService.GetCustomerEmail(order);
             if (emailData == null)
-                return;
+            {
+                logger.LogError("Could not retrieve email data for customer email");
+                throw new InvalidOperationException("could not retrieve email data for customer email");
+            }
 
             var notificationRequest = new NotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
@@ -100,21 +103,29 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
         private async Task TriggerRestaurantNotificationAsync(Order order,
             CancellationToken cancellationToken)
         {
-            var restaurant =
-                await restaurantRepository.FindByRestaurantIdAsync(order.CartInfo.RestaurantId, cancellationToken);
-
-            var paymentMethod =
-                await paymentMethodRepository.FindByPaymentMethodIdAsync(order.PaymentMethodId, cancellationToken);
-
+            if (order.RestaurantNotificationInfo != null && order.RestaurantNotificationInfo.Attempt > 0)
+            {
+                var delay = CalculateDelay(order.RestaurantNotificationInfo);
+                var delta = DateTime.UtcNow - order.RestaurantNotificationInfo.Timestamp;
+                if (delta < delay)
+                {
+                    logger.LogDebug("Delay sending restaurant email of order {0} by further {1} seconds", order.Id.Value, (delay - delta).TotalSeconds);
+                    return;
+                }
+            }
+            
             var emailData = templateService.GetRestaurantEmail(order);
             if (emailData == null)
-                return;
+            {
+                logger.LogError("Could not retrieve email data for restaurant email");
+                throw new InvalidOperationException("could not retrieve email data for restaurant email");
+            }
 
             var notificationRequest = new NotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
                 new List<EmailAddress>
                 {
-                    new EmailAddress($"{restaurant.Name}", restaurant.ContactInfo.EmailAddress)
+                    new EmailAddress($"{order.CartInfo.RestaurantName}", order.CartInfo.RestaurantEmail)
                 },
                 new List<EmailAddress>(),
                 new List<EmailAddress>(),
@@ -140,8 +151,17 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
             }
             catch (Exception e)
             {
+                logger.LogWarning(e, "exception while sending notification");
                 return (false, "Exception: " + e);
             }
+        }
+
+        private TimeSpan CalculateDelay(NotificationInfo notificationInfo)
+        {
+            var seconds = (int) Math.Pow(1.5, notificationInfo.Attempt);
+            if (seconds > 600) // 10 minutes
+                seconds = 600;
+            return TimeSpan.FromSeconds(seconds);
         }
     }
 }

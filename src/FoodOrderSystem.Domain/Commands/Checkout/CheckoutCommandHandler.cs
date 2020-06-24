@@ -123,6 +123,7 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                 new CartInfo(
                     command.OrderType,
                     command.RestaurantId,
+                    restaurant.Name,
                     restaurantInfo,
                     restaurant.ContactInfo.Phone,
                     restaurant.ContactInfo.EmailAddress,

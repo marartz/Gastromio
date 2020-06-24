@@ -8,6 +8,7 @@ namespace FoodOrderSystem.Domain.Model.Order
         public CartInfo(
             OrderType orderType,
             RestaurantId restaurantId,
+            string restaurantName,
             string restaurantInfo,
             string restaurantPhone,
             string restaurantEmail,
@@ -16,6 +17,7 @@ namespace FoodOrderSystem.Domain.Model.Order
         {
             OrderType = orderType;
             RestaurantId = restaurantId;
+            RestaurantName = restaurantName;
             RestaurantInfo = restaurantInfo;
             RestaurantPhone = restaurantPhone;
             RestaurantEmail = restaurantEmail;
@@ -24,6 +26,7 @@ namespace FoodOrderSystem.Domain.Model.Order
         
         public OrderType OrderType { get; }
         public RestaurantId RestaurantId { get; }
+        public string RestaurantName { get; }
         public string RestaurantInfo { get; }
         public string RestaurantPhone { get; }
         public string RestaurantEmail { get; }

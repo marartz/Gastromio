@@ -38,7 +38,31 @@ namespace FoodOrderSystem.Template.DotLiquid
 
         public EmailData GetRestaurantEmail(Order order)
         {
-            throw new NotImplementedException();
+            var assembly = typeof(TemplateService).Assembly;
+            var resourceStream = assembly.GetManifestResourceStream("FoodOrderSystem.Template.DotLiquid.Templates.RestaurantTemplate.html");
+            if (resourceStream == null)
+                throw new InvalidOperationException("cannot read template");
+
+            using (resourceStream)
+            using (var streamReader = new StreamReader(resourceStream))
+            {
+                var customerTemplate = streamReader.ReadToEnd();
+                
+                global::DotLiquid.Template.NamingConvention = new CSharpNamingConvention();
+                var template = global::DotLiquid.Template.Parse(customerTemplate);
+            
+                var renderResult = template.Render(Hash.FromAnonymousObject(GenerateOrderObject(order)));
+
+                var customerInfo =
+                    $"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
+            
+                return new EmailData
+                {
+                    Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
+                    TextPart = "",
+                    HtmlPart = renderResult
+                };
+            }
         }
 
         private object GenerateOrderObject(Order order)
@@ -60,6 +84,7 @@ namespace FoodOrderSystem.Template.DotLiquid
                 CartInfo = new
                 {
                     OrderType = ConvertOrderType(order.CartInfo.OrderType),
+                    order.CartInfo.RestaurantName,
                     order.CartInfo.RestaurantInfo,
                     order.CartInfo.RestaurantPhone,
                     order.CartInfo.RestaurantEmail,

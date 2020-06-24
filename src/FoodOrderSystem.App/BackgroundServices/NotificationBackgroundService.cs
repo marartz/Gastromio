@@ -32,7 +32,7 @@ namespace FoodOrderSystem.App.BackgroundServices
             {
                 logger.LogDebug($"Checking orders for pending notifications");
                 await CheckOrdersAsync(stoppingToken); 
-                await Task.Delay(60000, stoppingToken);
+                await Task.Delay(5000, stoppingToken);
             }
 
             logger.LogDebug($"NotificationBackgroundService is stopping.");
