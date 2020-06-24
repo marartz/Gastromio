@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FoodOrderSystem.App.BackgroundServices;
 using Serilog;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,18 @@ namespace FoodOrderSystem.App
             Log.Logger.Information("Using connection string: {0}", connectionString);
             
             Persistence.MongoDB.Initializer.ConfigureServices(services, connectionString);
+
+            var mailjetConfiguration = new Notification.Mailjet.MailjetConfiguration
+            {
+                ApiKey = Configuration.GetValue<string>("Mailjet:ApiKey"),
+                ApiSecret = Configuration.GetValue<string>("Mailjet:ApiSecret")
+            };
+            services.AddSingleton(mailjetConfiguration);
+            
+            Notification.Mailjet.Initializer.ConfigureServices(services);
+            Template.DotLiquid.Initializer.ConfigureServices(services);
+            
+            services.AddHostedService<NotificationBackgroundService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

@@ -10,6 +10,8 @@ namespace FoodOrderSystem.Domain.Services
 
         bool AreAllCodesRegisteredForCulture(CultureInfo cultureInfo);
 
+        string GetTranslatedMessage<TResult>(FailureResult<TResult> failureResult);
+
         IDictionary<string, IList<string>> GetTranslatedMessages<TResult>(IDictionary<string, IList<InvariantError>> errors, CultureInfo cultureInfo = default);
 
         // only this this for single messages (and not in loops), otherwise consistency of culture cannot be guaranteed.

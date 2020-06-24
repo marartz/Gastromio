@@ -64,6 +64,8 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                     throw new ArgumentOutOfRangeException();
             }
 
+            decimal totalPrice = 0;
+
             var dishDict = new Dictionary<Guid, Dish>();
             var variantDict = new Dictionary<Guid, DishVariant>();
             foreach (var cartDish in command.CartDishes)
@@ -89,6 +91,8 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                     return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
                 if (cartDish.Count > 100)
                     return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+
+                totalPrice += cartDish.Count * variant.Price;
             }
 
             var paymentMethod =
@@ -101,6 +105,8 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
             {
                 costs = restaurant.DeliveryInfo.Costs.Value;
             }
+
+            totalPrice += costs;
 
             var order = new Order(
                 new OrderId(Guid.NewGuid()),
@@ -118,6 +124,8 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                     command.OrderType,
                     command.RestaurantId,
                     restaurantInfo,
+                    restaurant.ContactInfo.Phone,
+                    restaurant.ContactInfo.EmailAddress,
                     command.CartDishes?.Select(en => new OrderedDishInfo(
                         en.ItemId,
                         en.DishId,
@@ -131,10 +139,10 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                 ),
                 command.Comments,
                 command.PaymentMethodId,
+                paymentMethod.Name,
+                paymentMethod.Description,
                 costs,
-                DateTime.UtcNow,
-                null,
-                null
+                totalPrice
             );
 
             var result = order.Validate();

@@ -15,8 +15,18 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public Guid PaymentMethodId { get; set; }
         
+        public string PaymentMethodName { get; set; }
+        
+        public string PaymentMethodDescription { get; set; }
+        
         public double Costs { get; set; }
         
+        public double TotalPrice { get; set; }
+        
+        public NotificationInfoModel CustomerNotificationInfo { get; set; }
+        
+        public NotificationInfoModel RestaurantNotificationInfo { get; set; }
+
         public DateTime CreatedOn { get; set; }
         
         public DateTime? UpdatedOn { get; set; }

@@ -1,6 +1,5 @@
 ﻿using FoodOrderSystem.Domain.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,8 +8,8 @@ namespace FoodOrderSystem.Domain.Services
 {
     public class FailureMessageService : IFailureMessageService
     {
-        private object lockObj = new object();
-        private IDictionary<CultureInfo, IDictionary<FailureResultCode, string>> messages = new Dictionary<CultureInfo, IDictionary<FailureResultCode, string>>();
+        private readonly object lockObj = new object();
+        private readonly IDictionary<CultureInfo, IDictionary<FailureResultCode, string>> messages = new Dictionary<CultureInfo, IDictionary<FailureResultCode, string>>();
 
         public void RegisterMessage(CultureInfo cultureInfo, FailureResultCode code, string message)
         {
@@ -44,12 +43,18 @@ namespace FoodOrderSystem.Domain.Services
                         continue;
 
                     var code = (FailureResultCode)field.GetValue(null);
-                    if (!messagesOfCulture.TryGetValue(code, out var message))
+                    if (!messagesOfCulture.TryGetValue(code, out _))
                         return false;
                 }
 
                 return true;
             }
+        }
+
+        public string GetTranslatedMessage<TResult>(FailureResult<TResult> failureResult)
+        {
+            var translatedMessages = GetTranslatedMessages<TResult>(failureResult.Errors);
+            return string.Join("; ", translatedMessages.Values);
         }
 
         private IDictionary<FailureResultCode, string> GetMessagesOfCulture(CultureInfo cultureInfo = default)

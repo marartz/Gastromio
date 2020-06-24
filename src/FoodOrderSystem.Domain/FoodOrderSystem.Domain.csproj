@@ -10,4 +10,8 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-rc0002" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\Notification" />
+  </ItemGroup>
+
 </Project>
