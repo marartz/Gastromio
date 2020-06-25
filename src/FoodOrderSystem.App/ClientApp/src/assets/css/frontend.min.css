@@ -946,14 +946,15 @@ form:focus {
 
 /* 3. #restaurants */
 #home #restaurants {
-	  opacity: 1;
+      opacity: 1;
+      outline: none;
 	  transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
 }
 
 .restaurant-card {
     border-radius: 8px;
     display: block;
-    margin-bottom: 24px;
+    outline: none;
     padding: 0px;
     text-decoration: none;
     width: 100%;
@@ -967,8 +968,8 @@ form:focus {
     cursor: pointer;
 }
 
-.restaurant-card:not(.not-clickable):focus .card-inner,
-.restaurant-card:not(.not-clickable):hover .card-inner {
+.restaurant-card:not(.not-clickable):focus .card-content,
+.restaurant-card:not(.not-clickable):hover .card-content {
     box-shadow: 0px 0px 0px 2px #65b32e;
 }
 
@@ -1004,7 +1005,12 @@ form:focus {
     border-bottom: 1px solid #e5e5e5;
     border-radius: 8px;
     padding: 16px;
-    padding-top: 20px;
+}
+
+.restaurant-card .card-left {
+    display: block;
+    float: left;
+    width: 78%;
 }
 
 .restaurant-card .card-top {
@@ -1014,13 +1020,28 @@ form:focus {
 
 .restaurant-card .restaurant-name {
     color: #3b4245;
+    float: left;
     font-family: proxima-nova, sans-serif;
     font-size: 18px;
     font-weight: 600;
+    height: 100%;
     line-height: 1.5;
-    width: 78%;
+    text-align: left;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.restaurant-card .card-right {
+    display: inline-block;
+    float: none;
+    text-align: right;
+    width: 22%;
+}
+
+.restaurant-card .card-right img {
+    border-radius: 16px;
+    height: 90px;
+    width: 90px;
 }
 
 .restaurant-card .restaurant-description {
@@ -1028,7 +1049,6 @@ form:focus {
     font-family: proxima-nova, sans-serif;
     font-size: 14px;
     font-weight: 400;
-    margin-top: .625rem;
 }
 
 .restaurant-card .restaurant-description address {
@@ -1040,21 +1060,23 @@ form:focus {
 }
 
 .restaurant-card .card-details {
-    border-top: 1px solid #e5e5e5;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 18px -16px -20px;
-    padding: 20px 16px;
+    display: none;
 }
 
-.restaurant-card .menu-link {
-    margin-left: auto;
+@media screen and (max-width: 900px) {
+    .restaurant-card .card-details {
+        border: none !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 8px -16px -20px;
+        padding: 16px;
+    }
+    
+    .restaurant-card .menu-link {
+        margin-left: auto;
+    }
 }
-
-
-
-
 
 /* 4. #restaurant */
 #restaurant {
@@ -1124,7 +1146,34 @@ form:focus {
     z-index: 2;
 }
 
-#restaurant #menu-hero #hero-content .hero-card span {
+#restaurant #menu-hero #hero-content .restaurant-logo {
+    position: relative;
+    z-index: 2;
+    width: 56px;
+    height: 56px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 16px;
+}
+
+@media screen and (min-width: 900px) {
+    #restaurant #menu-hero #hero-content .restaurant-logo {
+        top: -60px;
+        margin-bottom: -35px;
+    }
+}
+
+#restaurant #menu-hero #hero-content .restaurant-logo img {
+    border-radius: 50px;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .order-at {
     color: #41721e;
     font-family: proxima-nova, sans-serif;
     font-size: 12px;
@@ -1143,6 +1192,44 @@ form:focus {
     margin-bottom: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .imprint-icon {
+    margin-left: 3px;
+    transition: all .8s ease-in-out;
+    vertical-align: middle;
+	-webkit-animation-delay: 0s;
+	-webkit-animation-duration: .5s;
+	-webkit-animation-timing-function: ease-out;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-name: fade-in;
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-delay: 0s;
+	-moz-animation-duration: .5s;
+	-moz-animation-timing-function: ease-out;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-name: fade-in;
+	-moz-animation-fill-mode: forwards;
+	-o-animation-delay: 0s;
+	-o-animation-duration: .5s;
+	-o-animation-timing-function: ease-out;
+	-o-animation-iteration-count: 1;
+	-o-animation-name: fade-in;
+	-o-animation-fill-mode: forwards;
+	animation-delay: 0s;
+	animation-duration: .5s;
+	animation-timing-function: ease-out;
+	animation-iteration-count: 1;
+	animation-name: fade-in;
+	animation-fill-mode: forwards;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .imprint-icon svg {
+    display: inline-block;
+    margin-bottom: 5px;
+    height: 14px;
+    width: auto;
+	fill: #6d6d6d;
 }
 
 #restaurant #menu-hero #hero-content .hero-card p {
@@ -2171,6 +2258,20 @@ form:focus {
     display: flex;
     flex-direction: column;
     font-family: proxima-nova, sans-serif;
+}
+
+#checkout h2.order-completed {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 32px;
+}
+
+#checkout p.order-completed-info {
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    padding-bottom: 16px;
 }
 
 #checkout .checkout-content-container {

@@ -27,27 +27,38 @@
                         <div id="restaurants" role="region" tabindex="-1">
 
                             <div class="restaurant-card" *ngFor="let restaurant of restaurants">
-                                <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]">
+                                <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">
 
                                     <div class="card-content">
-                                        <div class="card-top">
-                                            <h4 class="restaurant-name">{{restaurant.name}}</h4>
-                                        </div>
-                                        <div class="restaurant-description">
-                                            <address>
-                                                {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
-                                                <div class="restaurant-phone" tabindex="0" role="button">
-                                                    <br />{{restaurant.phone}}
-                                                </div>
-                                                <div></div>
-                                                <br />{{getRestaurantSubText(restaurant)}}
-                                                <!-- Öffnungszeiten des Restaurants (bsp. M.o - So.: 10:00 - 18:00 Uhr -->
-                                            </address>
+                                        <div class="card-left">
+                                            <div class="card-top">
+                                                <h4 class="restaurant-name">{{restaurant.name}}</h4>
+                                            </div>
+                                            <div class="restaurant-description">
+                                                <address>
+                                                    {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
+                                                    <div class="restaurant-phone" tabindex="0" role="button">
+                                                        <br />{{restaurant.contactInfo.phone}}
+                                                        <br />{{getRestaurantSubText(restaurant)}}
+                                                    </div>
+                                                    <div></div>
+                                                </address>
+                                            </div>
                                         </div>
 
-                                        <div class="card-details">
-                                            <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">Bestellen</span>
+                                        <div class="card-right">
+                                            <ng-container *ngIf="!hasLogo(restaurant)">
+                                                <div style="height: 90px;"></div>
+                                                <!-- TODO (next Ver.) -->
+                                            </ng-container>
+                                            <ng-container *ngIf="hasLogo(restaurant)">
+                                                <img [src]="getLogoUrl(restaurant)" alt="{{restaurant.name}} Logo" />
+                                            </ng-container>
+                                            <div class="card-details">
+                                                <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">Bestellen</span>
+                                            </div>
                                         </div>
+
                                     </div>
 
                                 </div>

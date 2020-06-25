@@ -83,6 +83,17 @@ export class CheckoutComponent implements OnInit {
     return this.customerForm.controls;
   }
 
+  hasLogo(): boolean {
+    return this.restaurant?.imageTypes.some(en => en === 'logo');
+  }
+
+  getLogoUrl(): string {
+    if (!this.restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
+  }
+
   getCart(): CartModel {
     return this.orderService.getCart();
   }
