@@ -3,13 +3,7 @@
         <div class="focus-outlet" tabindex="-1" role="group">
 
             <!-- START: Fehlermeldungen -->
-            <div *ngIf="generalError !== undefined" id="error">
-                <div class="fullpage-error">
-                    <div class="middle-error">
-                        <h1 role="alert">{{generalError}}</h1>
-                    </div>
-                </div>
-            </div>
+            <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
             <!-- ENDE: Fehlermeldungen -->
 
             <div id="restaurant" *ngIf="generalError === undefined && initialized">
