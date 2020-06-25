@@ -187,44 +187,50 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
 
         public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
         {
-            var newStartHour = openingPeriod.Start.TotalHours;
-            var newEndHour = openingPeriod.End.TotalHours;
-            if (newEndHour < 4)
-                newEndHour += 24;
+            var earliestOpeningTime = 4d;
 
-            if (newStartHour < 4)
+            var newPeriod = GetDayOverflowCorrected(openingPeriod);
+
+            if (openingPeriod.Start.TotalHours < earliestOpeningTime)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodBeginsTooEarly);
-            if (!(newEndHour > newStartHour))
+            if (!(newPeriod.End.TotalHours > newPeriod.Start.TotalHours))
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodEndsBeforeStart);
 
-            var curOpeningPeriods = openingHours != null
-                ? openingHours.Where(en => en.DayOfWeek == openingPeriod.DayOfWeek).OrderBy(en => en.Start.TotalHours)
-                    .ToList()
-                : Enumerable.Empty<OpeningPeriod>();
+            var anyOverlapping = openingHours?
+                .Where(p => p.DayOfWeek == openingPeriod.DayOfWeek)
+                .Select(p => GetDayOverflowCorrected(p))
+                .Any(period => PeriodsOverlapping(newPeriod, period));
 
-            foreach (var curOpeningPeriod in curOpeningPeriods)
-            {
-                var curStartHour = curOpeningPeriod.Start.TotalHours;
-                var curEndHour = curOpeningPeriod.End.TotalHours;
-                if (curEndHour < 4)
-                    curEndHour += 24;
-
-                if (curStartHour < newStartHour && newStartHour < curEndHour) // either start is between current
-                    return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodIntersects);
-                if (curStartHour < newEndHour && newEndHour < curEndHour) // or end is between current
-                    return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodIntersects);
-            }
+            if (anyOverlapping == true)
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodIntersects);
 
             if (openingHours == null)
             {
                 openingHours = new List<OpeningPeriod>();
             }
-            
+
             openingHours.Add(openingPeriod);
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
+
+            bool PeriodsOverlapping(OpeningPeriod x, OpeningPeriod y)
+            {
+                if (x.Start.TotalHours <= y.End.TotalHours && y.Start.TotalHours <= x.End.TotalHours)
+                    return true;
+                return false;
+            }
+
+            OpeningPeriod GetDayOverflowCorrected(OpeningPeriod period)
+            {
+                if (period.End.TotalHours < earliestOpeningTime)
+                {
+                    return new OpeningPeriod(period.DayOfWeek, period.Start,
+                        TimeSpan.FromHours(period.End.TotalHours + 24d));
+                }
+                return period;
+            }
         }
 
         public Result<bool> RemoveOpeningPeriod(int dayOfWeek, TimeSpan start, UserId changedBy)

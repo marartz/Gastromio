@@ -25,4 +25,15 @@ export class OrderSummaryComponent implements OnInit {
   formatNumber(value: number): string {
     return value.toLocaleString('de', {minimumFractionDigits: 2});
   }
+
+  hasLogo(): boolean {
+    return this.restaurant?.imageTypes.some(en => en === 'logo');
+  }
+
+  getLogoUrl(): string {
+    if (!this.restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
+  }
 }

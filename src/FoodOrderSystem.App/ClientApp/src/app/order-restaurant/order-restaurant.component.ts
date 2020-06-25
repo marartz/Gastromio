@@ -111,6 +111,17 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  hasLogo(): boolean {
+    return this.restaurant?.imageTypes.some(en => en === 'logo');
+  }
+
+  getLogoUrl(): string {
+    if (!this.restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
+  }
+
   hasBanner(): boolean {
     return this.restaurant?.imageTypes.some(en => en === 'banner');
   }
@@ -173,6 +184,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   openImprintModal(): void {
     const modalRef = this.modalService.open(OrderRestaurantImprintComponent);
+    modalRef.componentInstance.restaurant = this.restaurant;
     modalRef.result.then(() => {
     }, () => {
     });

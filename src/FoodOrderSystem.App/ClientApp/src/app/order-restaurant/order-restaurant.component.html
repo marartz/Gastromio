@@ -3,13 +3,7 @@
         <div class="focus-outlet" tabindex="-1" role="group">
 
             <!-- START: Fehlermeldungen -->
-            <div *ngIf="generalError !== undefined" id="error">
-                <div class="fullpage-error">
-                    <div class="middle-error">
-                        <h1 role="alert">{{generalError}}</h1>
-                    </div>
-                </div>
-            </div>
+            <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
             <!-- ENDE: Fehlermeldungen -->
 
             <div id="restaurant" *ngIf="generalError === undefined && initialized">
@@ -27,8 +21,18 @@
                     <div id="hero-content" class="clearfix">
                         <div class="centered">
                             <div class="hero-card">
-                                <span>Bestelle bei</span>
-                                <h1>{{restaurant.name}}</h1>
+                                <ng-container *ngIf="hasLogo()">
+                                    <div class="restaurant-logo">
+                                        <img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo">
+                                    </div>
+                                </ng-container>
+                                <span class="order-at">Bestelle bei</span>
+                                <h1>
+                                    {{restaurant.name}}
+                                    <span class="imprint-icon" role="button" (click)="openImprintModal()">
+                                        <svg width="48" height="48" viewBox="0 0 48 48"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20zm0 4C10.745 48 0 37.255 0 24S10.745 0 24 0s24 10.745 24 24-10.745 24-24 24z"></path><path d="M26.2 18.572v17.343h-3.59V18.572h3.59zm.61-4.133c0 1.355-1.084 2.439-2.405 2.439-1.321 0-2.405-1.084-2.405-2.439S23.084 12 24.405 12c1.321 0 2.405 1.084 2.405 2.439z"></path></svg>
+                                    </span>
+                                </h1>
                                 <p>
                                     {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
                                     <br />{{restaurant.contactInfo.phone}}
@@ -175,7 +179,7 @@
                     <div class="info-section">
                         <div class="cart-btns">
                             <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
-                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" [routerLink]="['/checkout']">Zur Bestellung</button></div>
+                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" [routerLink]="['/checkout']">Fortfahren</button></div>
                         </div>
                     </div>
                 </div>
