@@ -42,7 +42,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj" />
+    <ProjectReference Include="..\FoodOrderSystem.Notification.Mailjet\FoodOrderSystem.Notification.Mailjet.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence.MongoDB\FoodOrderSystem.Persistence.MongoDB.csproj" />
+    <ProjectReference Include="..\FoodOrderSystem.Template.DotLiquid\FoodOrderSystem.Template.DotLiquid.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

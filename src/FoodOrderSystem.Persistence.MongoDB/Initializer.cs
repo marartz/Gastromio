@@ -76,6 +76,14 @@ namespace FoodOrderSystem.Persistence.MongoDB
             orderCollection.Indexes.CreateOne(
                 new CreateIndexModel<OrderModel>(
                     Builders<OrderModel>.IndexKeys.Ascending(x => x.CartInfo.RestaurantId)));
+            
+            orderCollection.Indexes.CreateOne(
+                new CreateIndexModel<OrderModel>(
+                    Builders<OrderModel>.IndexKeys.Ascending(x => x.CustomerNotificationInfo.Status)));
+            
+            orderCollection.Indexes.CreateOne(
+                new CreateIndexModel<OrderModel>(
+                    Builders<OrderModel>.IndexKeys.Ascending(x => x.RestaurantNotificationInfo.Status)));
         }
     }
 }
