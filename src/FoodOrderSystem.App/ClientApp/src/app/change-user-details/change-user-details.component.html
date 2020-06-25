@@ -23,7 +23,7 @@
                                 <div *ngIf="f.email.errors.email">E-Mail-Adresse muss gültig sein</div>
                             </div>
                         </div>
-                        <div class="modal-input" role="combobox">
+                        <div class="modal-input" role="combobox" *ngIf="f.role.value !== 'Customer'">
                             <label>Rolle des Benutzers</label>
                             <select id="role" formControlName="role">
                                 <option value="Customer">Kunde</option>
