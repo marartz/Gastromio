@@ -27,9 +27,11 @@
                     <div id="hero-content" class="clearfix">
                         <div class="centered">
                             <div class="hero-card">
-                                <div class="restaurant-logo">
-                                    <img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo">
-                                </div>
+                                <ng-container *ngIf="hasLogo(restaurant)">
+                                    <div class="restaurant-logo">
+                                        <img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo">
+                                    </div>
+                                </ng-container>
                                 <span class="order-at">Bestelle bei</span>
                                 <h1>
                                     {{restaurant.name}}
