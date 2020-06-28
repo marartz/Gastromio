@@ -12,6 +12,7 @@ import {AddDishToCartComponent} from './add-dish-to-cart/add-dish-to-cart.compon
 import {AddRestaurantComponent} from './add-restaurant/add-restaurant.component';
 import {AddUserComponent} from './add-user/add-user.component';
 import {AdminCuisinesComponent} from './admin-cuisines/admin-cuisines.component';
+import {AdminImportComponent} from './admin-import/admin-import.component';
 import {AdminMyRestaurantsComponent} from './admin-my-restaurants/admin-my-restaurants.component';
 import {AdminRestaurantComponent} from './admin-restaurant/admin-restaurant.component';
 import {AdminRestaurantsComponent} from './admin-restaurants/admin-restaurants.component';
@@ -77,6 +78,7 @@ import {UserAdminService} from './user/user-admin.service';
       {path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/restaurants', component: AdminRestaurantsComponent, canActivate: [SystemAdminAuthGuard]},
+      {path: 'admin/import', component: AdminImportComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/myrestaurants', component: AdminMyRestaurantsComponent, canActivate: [RestaurantAdminAuthGuard]},
       {
         path: 'admin/restaurants/:restaurantId',
@@ -97,6 +99,7 @@ import {UserAdminService} from './user/user-admin.service';
     AddRestaurantComponent,
     AddUserComponent,
     AdminCuisinesComponent,
+    AdminImportComponent,
     AdminMyRestaurantsComponent,
     AdminRestaurantComponent,
     AdminRestaurantsComponent,

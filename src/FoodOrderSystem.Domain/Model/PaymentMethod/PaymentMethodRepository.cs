@@ -29,6 +29,12 @@ namespace FoodOrderSystem.Domain.Model.PaymentMethod
             return Task.FromResult(paymentMethods.AsEnumerable());
         }
 
+        public Task<PaymentMethod> FindByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            var paymentMethod = paymentMethods.FirstOrDefault(pm => pm.Name == name);
+            return Task.FromResult(paymentMethod);
+        }
+
         public Task<PaymentMethod> FindByPaymentMethodIdAsync(PaymentMethodId paymentMethodId, CancellationToken cancellationToken = default)
         {
             var paymentMethod = paymentMethods.FirstOrDefault(pm => pm.Id == paymentMethodId);

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {PagingModel} from '../pagination/paging.model';
+import {RestaurantImportLogModel} from './restaurant-import-log.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
@@ -36,6 +37,22 @@ export class RestaurantSysAdminService {
       })
     };
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', {name}, httpOptions);
+  }
+
+  public importRestaurantsAsync(importFile: File, dryRun: boolean): Observable<RestaurantImportLogModel> {
+    const formData: FormData = new FormData();
+    formData.append('fileKey', importFile, importFile.name);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    let url = this.baseUrl + '/restaurants/import';
+    if (dryRun) {
+      url = url + '?dryrun=true';
+    }
+    return this.http.post<RestaurantImportLogModel>(url, formData, httpOptions);
   }
 
   public removeRestaurantAsync(restaurantId: string): Observable<void> {

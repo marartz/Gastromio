@@ -16,6 +16,7 @@ namespace FoodOrderSystem.Domain.Model
             : this(new Dictionary<string, IList<InvariantError>>{ { "", new List<InvariantError> { error } } }, (int) statusCode) {}
 
         public IDictionary<string, IList<InvariantError>> Errors { get; }
+        
         public int StatusCode { get; }
 
         public override bool IsSuccess => false;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace FoodOrderSystem.Domain.Services
 {
@@ -51,10 +52,28 @@ namespace FoodOrderSystem.Domain.Services
             }
         }
 
-        public string GetTranslatedMessage<TResult>(FailureResult<TResult> failureResult)
+        public string GetTranslatedMessage<TResult>(FailureResult<TResult> failureResult, CultureInfo cultureInfo = default)
         {
-            var translatedMessages = GetTranslatedMessages<TResult>(failureResult.Errors);
-            return string.Join("; ", translatedMessages.Values);
+            var messagesOfCulture = GetMessagesOfCulture(cultureInfo);
+
+            var sb = new StringBuilder();
+            var first = true;
+
+            foreach (var errorDictEn in failureResult.Errors)
+            {
+                foreach (var error in errorDictEn.Value)
+                {
+                    if (!first)
+                        sb.Append("; ");
+                    
+                    var errorText = GetFormattedTranslation(messagesOfCulture, error);
+                    sb.Append(errorText);
+                    
+                    first = false;
+                }
+            }
+                
+            return sb.ToString();
         }
 
         private IDictionary<FailureResultCode, string> GetMessagesOfCulture(CultureInfo cultureInfo = default)
