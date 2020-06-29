@@ -1,0 +1,73 @@
+<section id="main" role="main">
+    <div class="focusing-outlet" tabindex="-1" role="group">
+        <div id="alert" class="error" *ngIf="error !== undefined">
+            <div id="message" tabindex="-1" role="alert"><span>{{error}}</span></div>
+        </div>
+
+        <block-ui>
+
+            <div id="backend">
+
+                <div id="hero">
+                    <div class="inner">
+                        <h2 class="page-title" tabindex="-1">Restaurantimport</h2>
+                        <div class="page-description">Importiere Restaurants</div>
+                    </div>
+                </div>
+
+                <div class="waypointable" tabindex="-1">
+                    <div id="management">
+                        <div class="inner">
+                            <div class="row">
+                                <div class="col p-2">
+                                    <div id="form" style="margin-top: -12px;">
+                                        <form>
+                                            <div class="backend-input">
+                                                <label for="restaurant-import">Importdatei auswählen</label>
+                                                <input type="file" id="restaurant-import"
+                                                       (change)="handleRestaurantImportFileInput($event.target)">
+                                            </div>
+                                            <div class="inline-button-wrap">
+                                                <button (click)="onSimulateRestaurants()">Simulieren</button>
+                                                <button (click)="onImportRestaurants()">Importieren</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="logLines !== undefined">
+                                <div class="col p-2">
+                                    <div class="restaurants mt-3">
+                                        <table class="table" role="grid">
+                                            <thead>
+                                            <tr role="row">
+                                                <th rowspan="1" colspan="1">Zeit</th>
+                                                <th rowspan="1" colspan="1">Zeile</th>
+                                                <th rowspan="1" colspan="1">Meldung</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr role="row" *ngFor="let line of logLines"
+                                                [style.color]="getColorForLogLineType(line.type)">
+                                                <td>{{line.timestamp}}</td>
+                                                <td>{{line.rowIndex}}</td>
+                                                <td>{{line.message}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </block-ui>
+
+    </div>
+</section>

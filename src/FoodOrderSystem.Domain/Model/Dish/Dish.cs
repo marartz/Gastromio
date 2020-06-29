@@ -100,10 +100,8 @@ namespace FoodOrderSystem.Domain.Model.Dish
 
         public Result<bool> ChangeDescription(string description, UserId changedBy)
         {
-            if (string.IsNullOrEmpty(description))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(description));
-            if (description.Length > 100)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(description), 100);
+            if (description.Length > 200)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(description), 200);
 
             Description = description;
             UpdatedOn = DateTime.UtcNow;
@@ -114,7 +112,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
 
         public Result<bool> ChangeProductInfo(string productInfo, UserId changedBy)
         {
-            if (productInfo.Length > 200)
+            if (productInfo != null && productInfo.Length > 200)
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(productInfo), 200);
 
             ProductInfo = productInfo;
@@ -195,9 +193,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
             if (variants.Any(en => en.VariantId == variantId))
                 throw new InvalidOperationException("variant already exists");
 
-            if (string.IsNullOrEmpty(name))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
-            if (name.Length > 20)
+            if (name != null && name.Length > 20)
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 20);
 
             if (!(price > 0))

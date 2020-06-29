@@ -141,6 +141,17 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return document != null ? FromDocument(document) : null;
         }
 
+        public async Task<Restaurant> FindByImportIdAsync(string importId,
+            CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+            var cursor = await collection.FindAsync(
+                Builders<RestaurantModel>.Filter.Eq(en => en.ImportId, importId),
+                cancellationToken: cancellationToken);
+            var document = await cursor.FirstOrDefaultAsync(cancellationToken);
+            return document != null ? FromDocument(document) : null;
+        }
+
         public async Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId,
             CancellationToken cancellationToken = default)
         {
@@ -269,6 +280,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
                 new HashSet<PaymentMethodId>(document.PaymentMethods.Select(en => new PaymentMethodId(en))),
                 new HashSet<UserId>(document.Administrators.Select(en => new UserId(en))),
+                document.ImportId,
                 document.CreatedOn,
                 new UserId(document.CreatedBy),
                 document.UpdatedOn,
@@ -343,6 +355,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 Administrators = obj.Administrators != null
                     ? obj.Administrators.Select(en => en.Value).ToList()
                     : new List<Guid>(),
+                ImportId = obj.ImportId,
                 CreatedOn = obj.CreatedOn,
                 CreatedBy = obj.CreatedBy.Value,
                 UpdatedOn = obj.UpdatedOn,

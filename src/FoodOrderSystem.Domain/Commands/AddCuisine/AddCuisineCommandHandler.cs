@@ -33,7 +33,7 @@ namespace FoodOrderSystem.Domain.Commands.AddCuisine
 
             if (string.IsNullOrWhiteSpace(command.Name))
             {
-                return FailureResult<CuisineViewModel>.Create(FailureResultCode.RequiredFieldEmpty);
+                return FailureResult<CuisineViewModel>.Create(FailureResultCode.RequiredFieldEmpty, "Name");
             }
 
             var cuisine = await cuisineRepository.FindByNameAsync(command.Name, cancellationToken);

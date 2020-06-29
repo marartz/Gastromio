@@ -43,7 +43,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantImage
                 return FailureResult<bool>.Forbidden();
 
             if (string.IsNullOrWhiteSpace(command.Type))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty);
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, "Type");
 
             if (command.Image == null)
             {

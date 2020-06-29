@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {PagingModel} from '../pagination/paging.model';
+import {ImportLogModel} from './import-log.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
@@ -47,5 +48,37 @@ export class RestaurantSysAdminService {
       })
     };
     return this.http.delete<void>(this.baseUrl + '/restaurants/' + restaurantId, httpOptions);
+  }
+
+  public importRestaurantsAsync(importFile: File, dryRun: boolean): Observable<ImportLogModel> {
+    const formData: FormData = new FormData();
+    formData.append('fileKey', importFile, importFile.name);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    let url = this.baseUrl + '/restaurants/import';
+    if (dryRun) {
+      url = url + '?dryrun=true';
+    }
+    return this.http.post<ImportLogModel>(url, formData, httpOptions);
+  }
+
+  public importDishesAsync(importFile: File, dryRun: boolean): Observable<ImportLogModel> {
+    const formData: FormData = new FormData();
+    formData.append('fileKey', importFile, importFile.name);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    let url = this.baseUrl + '/dishes/import';
+    if (dryRun) {
+      url = url + '?dryrun=true';
+    }
+    return this.http.post<ImportLogModel>(url, formData, httpOptions);
   }
 }

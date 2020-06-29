@@ -9,7 +9,6 @@
         RequiredFieldEmpty,
         FieldValueTooLong,
         FieldValueInvalid,
-        ValueMustNotBeNegative,
         UserDoesNotExist,
         UserAlreadyExists,
         PasswordIsNotValid,
@@ -49,6 +48,9 @@
         DishVariantPriceIsNegativeOrZero,
         DishVariantPriceIsTooBig,
         CannotRemoveCurrentUserFromRestaurantAdmins,
-        OrderIsInvalid
+        OrderIsInvalid,
+        ImportOpeningPeriodIsInvalid,
+        ImportOrderTypeIsInvalid,
+        ImportPaymentMethodNotFound,
     }
 }

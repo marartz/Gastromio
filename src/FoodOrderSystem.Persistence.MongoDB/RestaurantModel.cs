@@ -30,6 +30,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public List<Guid> Administrators { get; set; }
         
+        public string ImportId { get; set; }
+        
         public DateTime CreatedOn { get; set; }
         
         public Guid CreatedBy { get; set; }
