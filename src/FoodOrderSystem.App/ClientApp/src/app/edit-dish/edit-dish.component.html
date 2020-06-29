@@ -24,6 +24,9 @@
                             <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                                 <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
                             </div>
+                            <div *ngIf="message !== undefined">
+                                <span>{{message}}</span>
+                            </div>
                         </div>
                         <div class="modal-input" role="combobox">
                             <label>Beschreibung des Gerichts</label>

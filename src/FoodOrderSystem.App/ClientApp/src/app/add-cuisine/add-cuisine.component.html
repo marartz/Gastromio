@@ -23,6 +23,9 @@
                                     <span style="color: red;">Name der Cuisne wird benötigt</span>
                                 </div>
                             </div>
+                            <div *ngIf="message !== undefined">
+                                <span>{{message}}</span>
+                            </div>
                         </div>
                     </fieldset>
                 </div>

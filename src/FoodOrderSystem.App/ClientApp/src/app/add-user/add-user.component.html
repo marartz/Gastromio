@@ -21,6 +21,9 @@
                                 <div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div>
                                 <div *ngIf="f.email.errors.pattern">E-Mail-Adresse muss gültig sein</div>
                             </div>
+                            <div *ngIf="message !== undefined">
+                                <span>{{message}}</span>
+                            </div>
                         </div>
                         <div class="modal-input" role="combobox">
                             <select id="role" formControlName="role">

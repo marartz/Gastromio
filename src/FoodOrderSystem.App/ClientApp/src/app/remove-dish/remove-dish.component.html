@@ -23,6 +23,9 @@
                 <div class="inline-button-wrap">
                     <button class="button-remove" type="submit" (click)="onSubmit()">Endgültig löschen</button>
                 </div>
+                <div *ngIf="message !== undefined">
+                    <span>{{message}}</span>
+                </div>
             </div>
 
         </div>
