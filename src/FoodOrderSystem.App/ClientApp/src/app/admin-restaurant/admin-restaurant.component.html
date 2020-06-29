@@ -188,6 +188,12 @@
                                         <input type="checkbox" id="reservationEnabled" formControlName="deliveryEnabled" />
                                     </div>
 
+                                    <h3>Hygienische Abwicklung</h3>
+                                    <div class="backend-input">
+                                        <label for="hygienicHandling">Beschreibung der hygienischen Abwicklung</label>
+                                        <input type="text" id="hygienicHandling" formControlName="hygienicHandling" />
+                                    </div>
+
                                     <div class="inline-button-wrap" *ngIf="!changeServiceInfoForm.dirty">
                                         <button class="disabled" [disabled]="!changeServiceInfoForm.dirty">Verwerfen</button>
                                         <button class="disabled" [disabled]="!changeServiceInfoForm.dirty">Speichern</button>

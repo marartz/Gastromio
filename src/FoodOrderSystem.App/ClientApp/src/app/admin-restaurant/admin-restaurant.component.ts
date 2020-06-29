@@ -222,7 +222,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
               deliveryMinimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
               deliveryMaximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
               deliveryCosts: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
-              reservationEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false
+              reservationEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false,
+              hygienicHandling: this.restaurant.hygienicHandling
             });
             this.changeServiceInfoForm.markAsPristine();
 
