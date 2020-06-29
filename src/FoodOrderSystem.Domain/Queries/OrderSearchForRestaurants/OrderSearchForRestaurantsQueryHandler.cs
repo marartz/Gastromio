@@ -48,7 +48,7 @@ namespace FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
             var (_, items) =
-                await restaurantRepository.SearchPagedAsync(query.SearchPhrase, query.OrderType, 0, 20,
+                await restaurantRepository.SearchPagedAsync(query.SearchPhrase, query.OrderType, 0, -1,
                     cancellationToken);
 
             return SuccessResult<ICollection<RestaurantViewModel>>.Create(items.Select(en =>
