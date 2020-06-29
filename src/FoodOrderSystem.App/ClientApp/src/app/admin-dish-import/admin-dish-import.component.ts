@@ -7,16 +7,16 @@ import {HttpErrorHandlingService} from '../http-error-handling/http-error-handli
 import {ImportLogLineModel} from '../restaurant-sys-admin/import-log-line.model';
 
 @Component({
-  selector: 'app-admin-restaurant-import',
-  templateUrl: './admin-restaurant-import.component.html',
-  styleUrls: ['./admin-restaurant-import.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  selector: 'app-admin-dish-import',
+  templateUrl: './admin-dish-import.component.html',
+  styleUrls: ['./admin-dish-import.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
-export class AdminRestaurantImportComponent implements OnInit {
+export class AdminDishImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   error: string;
 
-  restaurantImportFile: File;
+  dishImportFile: File;
 
   logLines: Array<ImportLogLineModel>;
 
@@ -29,18 +29,18 @@ export class AdminRestaurantImportComponent implements OnInit {
   ngOnInit() {
   }
 
-  handleRestaurantImportFileInput(target: any): void {
+  handleDishImportFileInput(target: any): void {
     const files = target.files;
     console.log('files: ', files);
-    this.restaurantImportFile = files.item(0);
+    this.dishImportFile = files.item(0);
   }
 
-  onSimulateRestaurants(): void {
+  onSimulateDishes(): void {
     this.error = undefined;
     this.logLines = undefined;
 
     this.blockUI.start('Verarbeite Daten...');
-    this.restaurantSysAdminService.importRestaurantsAsync(this.restaurantImportFile, true)
+    this.restaurantSysAdminService.importDishesAsync(this.dishImportFile, true)
       .pipe(take(1))
       .subscribe((log) => {
         this.blockUI.stop();
@@ -53,12 +53,12 @@ export class AdminRestaurantImportComponent implements OnInit {
       });
   }
 
-  onImportRestaurants(): void {
+  onImportDishes(): void {
     this.error = undefined;
     this.logLines = undefined;
 
     this.blockUI.start('Verarbeite Daten...');
-    this.restaurantSysAdminService.importRestaurantsAsync(this.restaurantImportFile, false)
+    this.restaurantSysAdminService.importDishesAsync(this.dishImportFile, false)
       .pipe(take(1))
       .subscribe((log) => {
         this.blockUI.stop();

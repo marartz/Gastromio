@@ -1,4 +1,4 @@
-export class RestaurantImportLogLineModel {
+export class ImportLogLineModel {
   public timestamp: Date;
   public type: number;
   public rowIndex: number;

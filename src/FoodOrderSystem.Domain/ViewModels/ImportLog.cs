@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
+namespace FoodOrderSystem.Domain.ViewModels
 {
-    public class RestaurantImportLog
+    public class ImportLog
     {
         private readonly object lockObj = new object();
-        private readonly List<RestaurantImportLogLine> lines = new List<RestaurantImportLogLine>();
+        private readonly List<ImportLogLine> lines = new List<ImportLogLine>();
         
-        public void AddLine(RestaurantImportLogLineType logLineType, int rowIndex, string message, params object[] args)
+        public void AddLine(ImportLogLineType logLineType, int rowIndex, string message, params object[] args)
         {
             lock (lockObj)
             {
-                lines.Add(new RestaurantImportLogLine
+                lines.Add(new ImportLogLine
                 {
                     Timestamp = DateTime.UtcNow,
                     Type = logLineType,
@@ -23,13 +23,13 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             }
         }
         
-        public IReadOnlyCollection<RestaurantImportLogLine> Lines
+        public IReadOnlyCollection<ImportLogLine> Lines
         {
             get
             {
                 lock (lockObj)
                 {
-                    return new ReadOnlyCollection<RestaurantImportLogLine>(lines);
+                    return new ReadOnlyCollection<ImportLogLine>(lines);
                 }
             }
         }

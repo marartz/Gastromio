@@ -9,6 +9,7 @@ using FoodOrderSystem.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
+using FoodOrderSystem.Domain.Commands.ImportDishData;
 using FoodOrderSystem.Domain.Commands.ImportRestaurantData;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.DishCategory;
@@ -44,7 +45,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.Forbidden, "Sie sind nicht berechtigt, diese Aktion auszuführen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.InternalServerError, "Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RequiredFieldEmpty, "Nicht alle Pflichtfelder sind ausgefüllt: {0}");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueTooLong, "Wert von Feld '{0}' zu lang (maximum {1] Zeichen)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueTooLong, "Wert von Feld '{0}' zu lang (maximum {1} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueInvalid, "Wert von Feld '{0}' hat einen ungültigen Wert: {1}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Emailadresse und/oder Passwort ist nicht korrekt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
@@ -94,8 +95,9 @@ namespace FoodOrderSystem.Domain
             if (!failureMessageService.AreAllCodesRegisteredForCulture(deDeCultureInfo))
                 throw new InvalidOperationException($"Not all messages for culture {deDeCultureInfo} are registered");
             
-            // Restaurant Import
+            // Import
             services.AddTransient<IRestaurantDataImporter, RestaurantDataImporter>();
+            services.AddTransient<IDishDataImporter, DishDataImporter>();
         }
     }
 }

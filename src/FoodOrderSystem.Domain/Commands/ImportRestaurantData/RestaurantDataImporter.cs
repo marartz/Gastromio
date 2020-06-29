@@ -7,6 +7,7 @@ using FoodOrderSystem.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Domain.Model.Restaurant;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.Services;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
 {
@@ -42,7 +43,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             this.userRepository = userRepository;
         }
 
-        public async Task ImportRestaurantAsync(RestaurantImportLog log, int rowIndex, RestaurantRow restaurantRow,
+        public async Task ImportRestaurantAsync(ImportLog log, int rowIndex, RestaurantRow restaurantRow,
             UserId curUserId, bool dryRun, CancellationToken cancellationToken = default)
         {
             Result<bool> boolResult;
@@ -195,7 +196,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
                 return;
             }
 
-            log.AddLine(RestaurantImportLogLineType.Information, rowIndex,
+            log.AddLine(ImportLogLineType.Information, rowIndex,
                 newRestaurant
                     ? "Lege ein neues Restaurant '{0}' an."
                     : "Aktualisiere das bereits existierende Restaurant '{0}'.", restaurant.Name);
@@ -330,7 +331,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> AddCuisinesAsync(RestaurantImportLog log, int rowIndex, Restaurant restaurant,
+        private async Task<Result<bool>> AddCuisinesAsync(ImportLog log, int rowIndex, Restaurant restaurant,
             string cuisinesText, bool dryRun, UserId curUserId)
         {
             if (string.IsNullOrWhiteSpace(cuisinesText))
@@ -348,7 +349,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> AddCuisineAsync(RestaurantImportLog log, int rowIndex, Restaurant restaurant,
+        private async Task<Result<bool>> AddCuisineAsync(ImportLog log, int rowIndex, Restaurant restaurant,
             string cuisineName, bool dryRun, UserId curUserId)
         {
             var cuisine = await cuisineRepository.FindByNameAsync(cuisineName);
@@ -364,13 +365,13 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             return restaurant.AddCuisine(cuisine.Id, curUserId);
         }
 
-        private async Task<Result<Cuisine>> CreateNewCuisineAsync(RestaurantImportLog log, int rowIndex,
+        private async Task<Result<Cuisine>> CreateNewCuisineAsync(ImportLog log, int rowIndex,
             string cuisineName, bool dryRun, UserId curUserId)
         {
             var createCuisineResult = cuisineFactory.Create(cuisineName, curUserId);
             if (createCuisineResult.IsFailure)
                 return createCuisineResult;
-            log.AddLine(RestaurantImportLogLineType.Information, rowIndex, "Lege eine neue Cuisine mit Namen '{0}' an.",
+            log.AddLine(ImportLogLineType.Information, rowIndex, "Lege eine neue Cuisine mit Namen '{0}' an.",
                 cuisineName);
             if (!dryRun)
                 await cuisineRepository.StoreAsync(createCuisineResult.Value);
@@ -404,7 +405,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
                 : FailureResult<bool>.Create(FailureResultCode.ImportPaymentMethodNotFound, paymentMethodNameTrimmed);
         }
 
-        private async Task<Result<bool>> AddAdministratorAsync(RestaurantImportLog log, int rowIndex,
+        private async Task<Result<bool>> AddAdministratorAsync(ImportLog log, int rowIndex,
             Restaurant restaurant, string administratorEmailAddress, bool dryRun, UserId curUserId)
         {
             if (string.IsNullOrWhiteSpace(administratorEmailAddress))
@@ -424,7 +425,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             return restaurant.AddAdministrator(user.Id, curUserId);
         }
 
-        private async Task<Result<User>> CreateNewUserAsync(RestaurantImportLog log, int rowIndex,
+        private async Task<Result<User>> CreateNewUserAsync(ImportLog log, int rowIndex,
             string userEmailAddress, bool dryRun, UserId curUserId)
         {
             var password = "Start2020!";
@@ -432,17 +433,17 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
                 userFactory.Create(Role.RestaurantAdmin, userEmailAddress, password, false, curUserId);
             if (createUserResult.IsFailure)
                 return createUserResult;
-            log.AddLine(RestaurantImportLogLineType.Information, rowIndex, "Lege einen neuen Benutzer mit Email-Adresse '{0}' und Passwort '{1}' an.",
+            log.AddLine(ImportLogLineType.Information, rowIndex, "Lege einen neuen Benutzer mit Email-Adresse '{0}' und Passwort '{1}' an.",
                 userEmailAddress, password);
             if (!dryRun)
                 await userRepository.StoreAsync(createUserResult.Value);
             return createUserResult;
         }
 
-        private void AddFailureMessageToLog<T>(RestaurantImportLog log, int rowIndex, Result<T> result)
+        private void AddFailureMessageToLog<T>(ImportLog log, int rowIndex, Result<T> result)
         {
             var message = failureMessageService.GetTranslatedMessage((FailureResult<T>) result);
-            log.AddLine(RestaurantImportLogLineType.Error, rowIndex, message);
+            log.AddLine(ImportLogLineType.Error, rowIndex, message);
         }
     }
 }

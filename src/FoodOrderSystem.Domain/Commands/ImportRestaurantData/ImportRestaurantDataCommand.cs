@@ -1,8 +1,9 @@
 ﻿using System.IO;
+using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
 {
-    public class ImportRestaurantDataCommand : ICommand<RestaurantImportLog>
+    public class ImportRestaurantDataCommand : ICommand<ImportLog>
     {
         public ImportRestaurantDataCommand(Stream restaurantDataStream, bool dryRun)
         {

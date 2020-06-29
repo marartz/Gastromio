@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {PagingModel} from '../pagination/paging.model';
-import {RestaurantImportLogModel} from './restaurant-import-log.model';
+import {ImportLogModel} from './import-log.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
@@ -39,7 +39,18 @@ export class RestaurantSysAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', {name}, httpOptions);
   }
 
-  public importRestaurantsAsync(importFile: File, dryRun: boolean): Observable<RestaurantImportLogModel> {
+  public removeRestaurantAsync(restaurantId: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.delete<void>(this.baseUrl + '/restaurants/' + restaurantId, httpOptions);
+  }
+
+  public importRestaurantsAsync(importFile: File, dryRun: boolean): Observable<ImportLogModel> {
     const formData: FormData = new FormData();
     formData.append('fileKey', importFile, importFile.name);
     const httpOptions = {
@@ -52,17 +63,22 @@ export class RestaurantSysAdminService {
     if (dryRun) {
       url = url + '?dryrun=true';
     }
-    return this.http.post<RestaurantImportLogModel>(url, formData, httpOptions);
+    return this.http.post<ImportLogModel>(url, formData, httpOptions);
   }
 
-  public removeRestaurantAsync(restaurantId: string): Observable<void> {
+  public importDishesAsync(importFile: File, dryRun: boolean): Observable<ImportLogModel> {
+    const formData: FormData = new FormData();
+    formData.append('fileKey', importFile, importFile.name);
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.delete<void>(this.baseUrl + '/restaurants/' + restaurantId, httpOptions);
+    let url = this.baseUrl + '/dishes/import';
+    if (dryRun) {
+      url = url + '?dryrun=true';
+    }
+    return this.http.post<ImportLogModel>(url, formData, httpOptions);
   }
 }

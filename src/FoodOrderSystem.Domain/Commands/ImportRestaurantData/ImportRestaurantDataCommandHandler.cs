@@ -5,11 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model;
 using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Domain.ViewModels;
 using NPOI.XSSF.UserModel;
 
 namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
 {
-    public class ImportRestaurantDataCommandHandler : ICommandHandler<ImportRestaurantDataCommand, RestaurantImportLog>
+    public class ImportRestaurantDataCommandHandler : ICommandHandler<ImportRestaurantDataCommand, ImportLog>
     {
         private readonly IRestaurantDataImporter restaurantDataImporter;
 
@@ -18,7 +19,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             this.restaurantDataImporter = restaurantDataImporter;
         }
 
-        public async Task<Result<RestaurantImportLog>> HandleAsync(ImportRestaurantDataCommand command,
+        public async Task<Result<ImportLog>> HandleAsync(ImportRestaurantDataCommand command,
             User currentUser,
             CancellationToken cancellationToken = default)
         {
@@ -26,17 +27,17 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<RestaurantImportLog>.Unauthorized().Cast<RestaurantImportLog>();
+                return FailureResult<ImportLog>.Unauthorized().Cast<ImportLog>();
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<RestaurantImportLog>.Forbidden().Cast<RestaurantImportLog>();
+                return FailureResult<ImportLog>.Forbidden().Cast<ImportLog>();
 
             return await ProcessFileAsync(command.RestaurantDataStream, currentUser.Id, command.DryRun);
         }
 
-        private async Task<Result<RestaurantImportLog>> ProcessFileAsync(Stream stream, UserId curUserId, bool dryRun)
+        private async Task<Result<ImportLog>> ProcessFileAsync(Stream stream, UserId curUserId, bool dryRun)
         {
-            var log = new RestaurantImportLog();
+            var log = new ImportLog();
 
             var xssWorkbook = new XSSFWorkbook(stream);
             var sheet = xssWorkbook.GetSheetAt(0);
@@ -50,10 +51,10 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
 
                 try
                 {
-                    var cell = row.GetCell(0);
-                    var timestamp = cell?.ToString();
-                    if (string.IsNullOrWhiteSpace(timestamp))
+                    var cell = row.GetCell(28);
+                    if (string.IsNullOrWhiteSpace(cell?.ToString()))
                         continue;
+                    restaurantRow.ImportId = cell.NumericCellValue.ToString(CultureInfo.InvariantCulture);
 
                     cell = row.GetCell(1);
                     restaurantRow.ResponsiblePerson = cell?.StringCellValue;
@@ -137,20 +138,17 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
 
                     cell = row.GetCell(27);
                     restaurantRow.Fax = cell?.StringCellValue;
-
-                    cell = row.GetCell(28);
-                    restaurantRow.ImportId = cell?.NumericCellValue.ToString(CultureInfo.InvariantCulture);
                 }
                 catch (Exception e)
                 {
-                    log.AddLine(RestaurantImportLogLineType.Error, rowIndex + 1, "Ausnahme: {0}", e.ToString());
+                    log.AddLine(ImportLogLineType.Error, rowIndex + 1, "Ausnahme: {0}", e.ToString());
                 }
 
                 await restaurantDataImporter.ImportRestaurantAsync(log, rowIndex + 1, restaurantRow, curUserId,
                     dryRun);
             }
 
-            return SuccessResult<RestaurantImportLog>.Create(log);
+            return SuccessResult<ImportLog>.Create(log);
         }
     }
 }

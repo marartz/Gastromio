@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using FoodOrderSystem.Domain.Model.User;
 using FoodOrderSystem.Domain.ViewModels;
 
-namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
+namespace FoodOrderSystem.Domain.Commands.ImportDishData
 {
-    public interface IRestaurantDataImporter
+    public interface IDishDataImporter
     {
-        Task ImportRestaurantAsync(ImportLog log, int rowIndex, RestaurantRow restaurantRow,
+        Task ImportDishAsync(ImportLog log, int rowIndex, DishRow dishRow,
             UserId curUserId, bool dryRun, CancellationToken cancellationToken = default);
     }
 }

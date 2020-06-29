@@ -12,9 +12,10 @@ import {AddDishToCartComponent} from './add-dish-to-cart/add-dish-to-cart.compon
 import {AddRestaurantComponent} from './add-restaurant/add-restaurant.component';
 import {AddUserComponent} from './add-user/add-user.component';
 import {AdminCuisinesComponent} from './admin-cuisines/admin-cuisines.component';
-import {AdminRestaurantImportComponent} from './admin-restaurant-import/admin-restaurant-import.component';
+import {AdminDishImportComponent} from './admin-dish-import/admin-dish-import.component';
 import {AdminMyRestaurantsComponent} from './admin-my-restaurants/admin-my-restaurants.component';
 import {AdminRestaurantComponent} from './admin-restaurant/admin-restaurant.component';
+import {AdminRestaurantImportComponent} from './admin-restaurant-import/admin-restaurant-import.component';
 import {AdminRestaurantsComponent} from './admin-restaurants/admin-restaurants.component';
 import {AdminUsersComponent} from './admin-users/admin-users.component';
 import {AppComponent} from './app.component';
@@ -79,6 +80,7 @@ import {UserAdminService} from './user/user-admin.service';
       {path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/restaurants', component: AdminRestaurantsComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/restaurantimport', component: AdminRestaurantImportComponent, canActivate: [SystemAdminAuthGuard]},
+      {path: 'admin/dishimport', component: AdminDishImportComponent, canActivate: [SystemAdminAuthGuard]},
       {path: 'admin/myrestaurants', component: AdminMyRestaurantsComponent, canActivate: [RestaurantAdminAuthGuard]},
       {
         path: 'admin/restaurants/:restaurantId',
@@ -99,9 +101,10 @@ import {UserAdminService} from './user/user-admin.service';
     AddRestaurantComponent,
     AddUserComponent,
     AdminCuisinesComponent,
-    AdminRestaurantImportComponent,
+    AdminDishImportComponent,
     AdminMyRestaurantsComponent,
     AdminRestaurantComponent,
+    AdminRestaurantImportComponent,
     AdminRestaurantsComponent,
     AdminUsersComponent,
     AppComponent,

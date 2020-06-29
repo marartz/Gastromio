@@ -27,10 +27,7 @@
                         </div>
                         <div class="modal-input" role="combobox">
                             <label>Beschreibung des Gerichts</label>
-                            <input type="text" id="description" formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" placeholder="z.B. mit Thunfisch und Schinken" />
-                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-                                <div *ngIf="f.description.errors.required">Beschreibung wird benötigt.</div>
-                            </div>
+                            <input type="text" id="description" formControlName="description" placeholder="z.B. mit Thunfisch und Schinken" />
                         </div>
                         <div class="modal-input" role="combobox">
                             <label>Zusatzstoffe und Allergene (optional)</label>

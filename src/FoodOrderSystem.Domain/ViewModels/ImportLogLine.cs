@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
+namespace FoodOrderSystem.Domain.ViewModels
 {
-    public class RestaurantImportLogLine
+    public class ImportLogLine
     {
         public DateTime Timestamp { get; set; }
         
-        public RestaurantImportLogLineType Type { get; set; }
+        public ImportLogLineType Type { get; set; }
         
         public int RowIndex { get; set; }
         
