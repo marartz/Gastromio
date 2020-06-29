@@ -54,7 +54,6 @@ export class AddCuisineComponent implements OnInit {
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-        this.addCuisineForm.reset();
       });
   }
 }

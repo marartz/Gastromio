@@ -54,7 +54,6 @@ export class AddRestaurantComponent implements OnInit {
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.addRestaurantForm.reset();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }

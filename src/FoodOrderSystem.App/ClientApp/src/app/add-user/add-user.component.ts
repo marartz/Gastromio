@@ -58,7 +58,6 @@ export class AddUserComponent implements OnInit {
         this.activeModal.close('Close click');
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.addUserForm.reset();
         this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
