@@ -147,7 +147,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
             
-            var query = new SearchForUsersQuery(search, 0, 20);
+            var query = new SearchForUsersQuery(search, Role.RestaurantAdmin, 0, 20);
 
             var queryResult =
                 await queryDispatcher

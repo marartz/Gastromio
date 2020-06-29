@@ -29,7 +29,8 @@ namespace FoodOrderSystem.Domain.Queries.SearchForUsers
             if (currentUser.Role < Role.RestaurantAdmin)
                 return FailureResult<PagingViewModel<UserViewModel>>.Forbidden();
 
-            var (total, items) = await userRepository.SearchPagedAsync(query.SearchPhrase, query.Skip, query.Take, cancellationToken);
+            var (total, items) = await userRepository.SearchPagedAsync(query.SearchPhrase, query.Role, query.Skip,
+                query.Take, cancellationToken);
 
             var pagingViewModel = new PagingViewModel<UserViewModel>((int) total, query.Skip, query.Take,
                 items.Select(UserViewModel.FromUser).ToList());

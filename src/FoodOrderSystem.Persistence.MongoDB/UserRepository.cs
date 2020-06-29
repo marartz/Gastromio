@@ -56,8 +56,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return cursor.ToEnumerable().Select(FromDocument);
         }
 
-        public async Task<(long total, IEnumerable<User> items)> SearchPagedAsync(string searchPhrase, int skip, int take, 
-            CancellationToken cancellationToken = default)
+        public async Task<(long total, IEnumerable<User> items)> SearchPagedAsync(string searchPhrase, Role? role,
+            int skip, int take, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
 
@@ -72,15 +72,20 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 filter = new BsonDocument();
             }
 
+            if (role.HasValue)
+            {
+                filter = filter & Builders<UserModel>.Filter.Eq(en => en.Role, ToDbRole(role.Value));
+            }
+
             var total = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 
             if (take == 0)
                 return (total, Enumerable.Empty<User>());
-            
+
             var findOptions = new FindOptions<UserModel>
             {
                 Sort = Builders<UserModel>.Sort.Ascending(en => en.Email)
-            };            
+            };
             if (skip > 0)
                 findOptions.Skip = skip;
             if (take >= 0)
