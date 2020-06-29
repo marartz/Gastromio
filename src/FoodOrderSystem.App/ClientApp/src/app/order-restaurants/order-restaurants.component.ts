@@ -24,7 +24,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   constructor(
     private orderService: OrderService
   ) {
-    this.orderType = OrderService.translateFromOrderType(OrderType.Delivery);
+    this.orderType = OrderService.translateFromOrderType(OrderType.Pickup);
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value: string) => {
         this.searchPhrase = value;
@@ -85,6 +85,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
     }
+
+    console.log('searching for order type: ' + OrderService.translateToOrderType(this.orderType));
 
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType))
       .pipe(take(1))

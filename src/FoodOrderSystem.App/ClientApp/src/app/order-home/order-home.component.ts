@@ -20,7 +20,7 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     public router: Router
   ) {
-    this.orderType = OrderService.translateFromOrderType(OrderType.Delivery);
+    this.orderType = OrderService.translateFromOrderType(OrderType.Pickup);
   }
 
   ngOnInit() {
