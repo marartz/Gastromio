@@ -179,8 +179,9 @@
                     <div class="info-section">
                         <div class="cart-btns">
                             <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
-                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" [routerLink]="['/checkout']">Fortfahren</button></div>
+                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" (click)="proceedToCheckout()">Fortfahren</button></div>
                         </div>
+                        <div role="alert" *ngIf="proceedError"><span style="color: red;">{{proceedError}}</span></div>
                     </div>
                 </div>
 

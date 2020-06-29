@@ -95,6 +95,49 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                 totalPrice += cartDish.Count * variant.Price;
             }
 
+            if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MinimumOrderValue.HasValue &&
+                totalPrice < restaurant.PickupInfo.MinimumOrderValue.Value)
+            {
+                return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+            }
+            
+            if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MaximumOrderValue.HasValue &&
+                totalPrice > restaurant.PickupInfo.MaximumOrderValue.Value)
+            {
+                return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+            }
+            
+            if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MinimumOrderValue.HasValue &&
+                totalPrice < restaurant.DeliveryInfo.MinimumOrderValue.Value)
+            {
+                return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+            }
+            
+            if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MaximumOrderValue.HasValue &&
+                totalPrice > restaurant.DeliveryInfo.MaximumOrderValue.Value)
+            {
+                return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+            }
+            
+            switch (command.OrderType)
+            {
+                case OrderType.Pickup:
+                    if (restaurant.PickupInfo == null || !restaurant.PickupInfo.Enabled)
+                        return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+                    break;
+                case OrderType.Delivery:
+                    if (restaurant.DeliveryInfo == null || !restaurant.DeliveryInfo.Enabled)
+                        return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+                    break;
+                case OrderType.Reservation:
+                    if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
+                        return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
             var paymentMethod =
                 await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId, cancellationToken);
             if (paymentMethod == null)

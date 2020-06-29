@@ -40,6 +40,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   currentDishCategoryDivId: string;
 
+  proceedError: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -205,6 +207,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(AddDishToCartComponent);
     modalRef.componentInstance.dish = dish;
     modalRef.result.then(() => {
+      this.proceedError = undefined;
     }, () => {
     });
   }
@@ -213,6 +216,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(EditCartDishComponent);
     modalRef.componentInstance.cartDish = cartDish;
     modalRef.result.then(() => {
+      this.proceedError = undefined;
     }, () => {
     });
   }
@@ -222,6 +226,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return;
     }
     this.orderService.incrementCountOfCartDish(cartDishVariant.getItemId());
+    this.proceedError = undefined;
   }
 
   public onDecrementDishVariantCount(cartDishVariant: CartDishModel): void {
@@ -229,6 +234,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return;
     }
     this.orderService.decrementCountOfCartDish(cartDishVariant.getItemId());
+    this.proceedError = undefined;
   }
 
   public onRemoveDishVariantFromCart(cartDishVariant: CartDishModel): void {
@@ -236,5 +242,15 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return;
     }
     this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
+    this.proceedError = undefined;
+  }
+
+  public proceedToCheckout(): void {
+    if (!this.getCart().isValid()) {
+      this.proceedError = this.getCart().getValidationError();
+      return;
+    }
+    this.proceedError = undefined;
+    this.router.navigateByUrl('/checkout');
   }
 }

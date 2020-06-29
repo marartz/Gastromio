@@ -139,6 +139,24 @@ export class CartModel {
   public isVisible(): boolean {
     return this.visible;
   }
+
+  public isValid(): boolean {
+    return !this.getValidationError();
+  }
+
+  public getValidationError(): string {
+    const valueOfOrder = this.getValueOfOrder();
+
+    if (this.minimumOrderValue && valueOfOrder < this.minimumOrderValue) {
+      return 'Der Mindestbestellwert von € ' + this.getMinimumOrderValueText() + ' ist nicht erreicht.';
+    }
+
+    if (this.maximumOrderValue && valueOfOrder > this.maximumOrderValue) {
+      return 'Der Maximalbestellwert von € ' + this.getMaximumOrderValueText() + '  ist überschritten';
+    }
+
+    return undefined;
+  }
 }
 
 export enum OrderType {
