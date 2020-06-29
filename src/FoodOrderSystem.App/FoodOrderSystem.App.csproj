@@ -37,7 +37,6 @@
 
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\admin-import" />
     <Folder Include="Pages\Shared\" />
   </ItemGroup>
 

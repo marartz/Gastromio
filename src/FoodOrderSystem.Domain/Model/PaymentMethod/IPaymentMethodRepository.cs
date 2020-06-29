@@ -8,7 +8,7 @@ namespace FoodOrderSystem.Domain.Model.PaymentMethod
     {
         Task<IEnumerable<PaymentMethod>> FindAllAsync(CancellationToken cancellationToken = default);
 
-        Task<PaymentMethod> FindByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<PaymentMethod> FindByNameAsync(string name, bool ignoreCase, CancellationToken cancellationToken = default);
 
         Task<PaymentMethod> FindByPaymentMethodIdAsync(PaymentMethodId paymentMethodId, CancellationToken cancellationToken = default);
     }

@@ -50,7 +50,12 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
 
                 try
                 {
-                    var cell = row.GetCell(1);
+                    var cell = row.GetCell(0);
+                    var timestamp = cell?.ToString();
+                    if (string.IsNullOrWhiteSpace(timestamp))
+                        continue;
+
+                    cell = row.GetCell(1);
                     restaurantRow.ResponsiblePerson = cell?.StringCellValue;
 
                     cell = row.GetCell(2);

@@ -7,11 +7,11 @@ import {HttpErrorHandlingService} from '../http-error-handling/http-error-handli
 import {RestaurantImportLogLineModel} from '../restaurant-sys-admin/restaurant-import-log-line.model';
 
 @Component({
-  selector: 'app-admin-import',
-  templateUrl: './admin-import.component.html',
-  styleUrls: ['./admin-import.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  selector: 'app-admin-restaurant-import',
+  templateUrl: './admin-restaurant-import.component.html',
+  styleUrls: ['./admin-restaurant-import.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
-export class AdminImportComponent implements OnInit {
+export class AdminRestaurantImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   error: string;
@@ -36,6 +36,9 @@ export class AdminImportComponent implements OnInit {
   }
 
   onSimulateRestaurants(): void {
+    this.error = undefined;
+    this.logLines = undefined;
+
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantSysAdminService.importRestaurantsAsync(this.restaurantImportFile, true)
       .pipe(take(1))
@@ -51,6 +54,9 @@ export class AdminImportComponent implements OnInit {
   }
 
   onImportRestaurants(): void {
+    this.error = undefined;
+    this.logLines = undefined;
+
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantSysAdminService.importRestaurantsAsync(this.restaurantImportFile, false)
       .pipe(take(1))

@@ -44,7 +44,7 @@ namespace FoodOrderSystem.Domain.Model
             return PasswordRegex.IsMatch(value);
         }
 
-        private static readonly Regex StreetRegex = new Regex(@"^(([a-zA-ZäöüÄÖÜ]\D*)\s+\d+?\s*.*)$");
+        private static readonly Regex StreetRegex = new Regex(@"^(([a-zA-ZäöüÄÖÜß]\D*)\s+\d+?\s*.*)$");
 
         private static readonly Regex ZipCodeRegex =
             new Regex(@"^((0(1\d\d[1-9])|([2-9]\d\d\d))|(?(?=^(^9{5}))|[1-9]\d{4}))$");
@@ -55,7 +55,7 @@ namespace FoodOrderSystem.Domain.Model
 
         private static readonly Regex WebsiteRegex =
             new Regex(
-                @"^(https?:\/\/){0,1}(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$");
+                @"^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$");
 
         private static readonly Regex PasswordRegex =
             new Regex(

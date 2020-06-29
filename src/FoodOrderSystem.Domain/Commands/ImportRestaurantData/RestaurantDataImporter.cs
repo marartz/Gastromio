@@ -213,6 +213,8 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             if (openingHoursText.Trim() == "-")
                 return SuccessResult<bool>.Create(true);
 
+            openingHoursText = openingHoursText.Replace(",", ";");
+
             var openingPeriodTexts = openingHoursText.Split(';');
             foreach (var openingPeriodText in openingPeriodTexts)
             {
@@ -396,7 +398,7 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
             UserId curUserId)
         {
             var paymentMethodNameTrimmed = paymentMethodName.Trim();
-            var paymentMethod = await paymentMethodRepository.FindByNameAsync(paymentMethodNameTrimmed);
+            var paymentMethod = await paymentMethodRepository.FindByNameAsync(paymentMethodNameTrimmed, true);
             return paymentMethod != null
                 ? restaurant.AddPaymentMethod(paymentMethod.Id, curUserId)
                 : FailureResult<bool>.Create(FailureResultCode.ImportPaymentMethodNotFound, paymentMethodNameTrimmed);
