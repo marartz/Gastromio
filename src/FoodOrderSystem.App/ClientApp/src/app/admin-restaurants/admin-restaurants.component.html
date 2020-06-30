@@ -36,8 +36,11 @@
                                                &nbsp;&ndash;&nbsp;
                                                <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
                                                &nbsp;&ndash;&nbsp;
-                                               <a *ngIf="restaurant.isActive" class="delete" (click)="onDeactivate(restaurant)">Deaktivieren</a>
-                                               <a *ngIf="!restaurant.isActive" class="edit" (click)="onActivate(restaurant)">Aktivieren</a>
+                                               <a *ngIf="restaurant.needsSupport" class="edit" (click)="onDisableSupport(restaurant)">Unterstützung ausschalten</a>
+                                               <a *ngIf="!restaurant.needsSupport" class="edit" (click)="onEnableSupport(restaurant)">Unterstützung einschalten</a>
+                                               &nbsp;&ndash;&nbsp;
+                                               <a *ngIf="restaurant.isActive" class="delete" (click)="onDeactivate(restaurant)">Restaurant deaktivieren</a>
+                                               <a *ngIf="!restaurant.isActive" class="edit" (click)="onActivate(restaurant)">Restaurant aktivieren</a>
                                                &nbsp;&ndash;&nbsp;
                                                <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
                                            </div>

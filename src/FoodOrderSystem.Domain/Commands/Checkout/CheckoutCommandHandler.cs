@@ -172,6 +172,7 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                     restaurantInfo,
                     restaurant.ContactInfo.Phone,
                     restaurant.ContactInfo.EmailAddress,
+                    restaurant.NeedsSupport,
                     command.CartDishes?.Select(en => new OrderedDishInfo(
                         en.ItemId,
                         en.DishId,

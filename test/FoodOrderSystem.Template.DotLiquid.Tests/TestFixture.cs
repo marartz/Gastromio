@@ -30,6 +30,7 @@ namespace FoodOrderSystem.Template.DotLiquid.Tests
                     "Pizzeria Parma (Pizzastr. 1, 12345 Musterstadt)",
                     "012345/67890",
                     "bestellung@pizzeria-parma.de",
+                    false,
                     new List<OrderedDishInfo>
                     {
                         new OrderedDishInfo(

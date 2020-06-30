@@ -34,6 +34,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public bool IsActive { get; set; }
         
+        public bool NeedsSupport { get; set; }
+        
         public DateTime CreatedOn { get; set; }
         
         public Guid CreatedBy { get; set; }

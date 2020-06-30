@@ -120,6 +120,12 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
                 logger.LogError("Could not retrieve email data for restaurant email");
                 throw new InvalidOperationException("could not retrieve email data for restaurant email");
             }
+            
+            var recipientsCc = new List<EmailAddress>();
+            if (order.CartInfo.RestaurantNeedsSupport)
+            {
+                recipientsCc.Add(new EmailAddress("Gastromio-Bestellungen", "bestellungen@gastromio.de"));
+            }
 
             var notificationRequest = new NotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
@@ -127,7 +133,7 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
                 {
                     new EmailAddress($"{order.CartInfo.RestaurantName}", order.CartInfo.RestaurantEmail)
                 },
-                new List<EmailAddress>(),
+                recipientsCc,
                 new List<EmailAddress>(),
                 emailData.Subject,
                 emailData.TextPart,

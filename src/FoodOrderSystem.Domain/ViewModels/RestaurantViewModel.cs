@@ -39,6 +39,8 @@ namespace FoodOrderSystem.Domain.ViewModels
         public List<UserViewModel> Administrators { get; set; }
         
         public bool IsActive { get; set; }
+        
+        public bool NeedsSupport { get; set; }
 
         public static RestaurantViewModel FromRestaurant(
             Restaurant restaurant,
@@ -84,7 +86,8 @@ namespace FoodOrderSystem.Domain.ViewModels
                 Administrators = restaurant.Administrators != null
                     ? restaurant.Administrators.Select(en => RetrieveUserModel(userRepository, en)).ToList()
                     : new List<UserViewModel>(),
-                IsActive = restaurant.IsActive
+                IsActive = restaurant.IsActive,
+                NeedsSupport = restaurant.NeedsSupport
             };
         }
 

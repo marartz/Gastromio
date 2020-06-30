@@ -54,6 +54,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             ISet<UserId> administrators,
             string importId,
             bool isActive,
+            bool needsSupport,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -71,6 +72,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             HygienicHandling = hygienicHandling;
             ImportId = importId;
             IsActive = isActive;
+            NeedsSupport = needsSupport;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -111,6 +113,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
         public string ImportId { get; private set; }
         
         public bool IsActive { get; private set; }
+
+        public bool NeedsSupport { get; private set; }
 
         public DateTime CreatedOn { get; }
         
@@ -431,6 +435,22 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             if (IsActive)
                 return SuccessResult<bool>.Create(true);
             IsActive = true;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> DisableSupport(UserId changedBy)
+        {
+            if (!NeedsSupport)
+                return SuccessResult<bool>.Create(true);
+            NeedsSupport = false;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> EnableSupport(UserId changedBy)
+        {
+            if (NeedsSupport)
+                return SuccessResult<bool>.Create(true);
+            NeedsSupport = true;
             return SuccessResult<bool>.Create(true);
         }
     }

@@ -39,6 +39,30 @@ export class RestaurantSysAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', {name}, httpOptions);
   }
 
+  public enableSupportForRestaurantAsync(restaurantId: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    const url = this.baseUrl + '/restaurants/' + encodeURIComponent(restaurantId) + '/enablesupport';
+    return this.http.post<void>(url, {}, httpOptions);
+  }
+
+  public disableSupportForRestaurantAsync(restaurantId: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    const url = this.baseUrl + '/restaurants/' + encodeURIComponent(restaurantId) + '/disablesupport';
+    return this.http.post<void>(url, {}, httpOptions);
+  }
+
   public removeRestaurantAsync(restaurantId: string): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({

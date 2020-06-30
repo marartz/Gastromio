@@ -16,6 +16,8 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Commands.DisableSupportForRestaurant;
+using FoodOrderSystem.Domain.Commands.EnableSupportForRestaurant;
 using FoodOrderSystem.Domain.Commands.ImportDishData;
 using FoodOrderSystem.Domain.Commands.ImportRestaurantData;
 
@@ -74,6 +76,38 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
+        [Route("restaurants/{restaurantId}/enablesupport")]
+        [HttpPost]
+        public async Task<IActionResult> PostEnableSupportAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+            
+            var commandResult =
+                await commandDispatcher.PostAsync<EnableSupportForRestaurantCommand, bool>(
+                    new EnableSupportForRestaurantCommand(new RestaurantId(restaurantId)), currentUser);
+            
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
+        [Route("restaurants/{restaurantId}/disablesupport")]
+        [HttpPost]
+        public async Task<IActionResult> PostDisableSupportAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+            
+            var commandResult =
+                await commandDispatcher.PostAsync<DisableSupportForRestaurantCommand, bool>(
+                    new DisableSupportForRestaurantCommand(new RestaurantId(restaurantId)), currentUser);
+            
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
         [Route("restaurants/{restaurantId}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteRestaurantAsync(Guid restaurantId)

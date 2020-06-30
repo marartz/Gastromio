@@ -37,6 +37,8 @@ export class RestaurantModel {
   public administrators: UserModel[];
 
   public isActive: boolean;
+
+  public needsSupport: boolean;
 }
 
 export class AddressModel {

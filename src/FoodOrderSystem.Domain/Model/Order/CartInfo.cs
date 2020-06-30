@@ -12,6 +12,7 @@ namespace FoodOrderSystem.Domain.Model.Order
             string restaurantInfo,
             string restaurantPhone,
             string restaurantEmail,
+            bool restaurantNeedsSupport,
             IList<OrderedDishInfo> orderedDishes
         )
         {
@@ -21,6 +22,7 @@ namespace FoodOrderSystem.Domain.Model.Order
             RestaurantInfo = restaurantInfo;
             RestaurantPhone = restaurantPhone;
             RestaurantEmail = restaurantEmail;
+            RestaurantNeedsSupport = restaurantNeedsSupport;
             OrderedDishes = orderedDishes;
         }
         
@@ -30,6 +32,7 @@ namespace FoodOrderSystem.Domain.Model.Order
         public string RestaurantInfo { get; }
         public string RestaurantPhone { get; }
         public string RestaurantEmail { get; }
+        public bool RestaurantNeedsSupport { get; }
         public IList<OrderedDishInfo> OrderedDishes { get; }
     }
 }

@@ -105,4 +105,24 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
       });
   }
 
+  onEnableSupport(restaurant: RestaurantModel): void {
+    this.restaurantSysAdminService.enableSupportForRestaurantAsync(restaurant.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        restaurant.needsSupport = true;
+      }, response => {
+        alert(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  onDisableSupport(restaurant: RestaurantModel): void {
+    this.restaurantSysAdminService.disableSupportForRestaurantAsync(restaurant.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        restaurant.needsSupport = false;
+      }, response => {
+        alert(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
 }
