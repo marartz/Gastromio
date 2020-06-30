@@ -10,11 +10,11 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
 {
     public interface IRestaurantRepository
     {
-        Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
+        Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType, CuisineId cuisineId,
             CancellationToken cancellationToken = default);
 
         Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase, OrderType? orderType,
-            int skip = 0, int take = -1, CancellationToken cancellationToken = default);
+            CuisineId cuisineId, int skip = 0, int take = -1, CancellationToken cancellationToken = default);
 
         Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
 

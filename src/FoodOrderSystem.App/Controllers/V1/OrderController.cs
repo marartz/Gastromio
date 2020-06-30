@@ -15,9 +15,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Domain.Commands.Checkout;
+using FoodOrderSystem.Domain.Model.Cuisine;
 using FoodOrderSystem.Domain.Model.Dish;
 using FoodOrderSystem.Domain.Model.Order;
 using FoodOrderSystem.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Domain.Queries.GetAllCuisines;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -39,15 +41,27 @@ namespace FoodOrderSystem.App.Controllers.V1
             this.failureMessageService = failureMessageService;
         }
 
+        [Route("cuisines")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCuisines()
+        {
+            var queryResult =
+                await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineViewModel>>(
+                    new GetAllCuisinesQuery(), null);
+            return ResultHelper.HandleResult(queryResult, failureMessageService);
+        }
+
         [Route("restaurants")]
         [HttpGet]
-        public async Task<IActionResult> SearchForRestaurantAsync(string search, string orderType)
+        public async Task<IActionResult> SearchForRestaurantAsync(string search, string orderType, Guid cuisineId)
         {
-            OrderType? orderTypeEnum = string.IsNullOrWhiteSpace(orderType) ? (OrderType?)null : ConvertOrderType(orderType); 
+            OrderType? orderTypeEnum = string.IsNullOrWhiteSpace(orderType) ? (OrderType?)null : ConvertOrderType(orderType);
+
+            var tempCuisineId = cuisineId != Guid.Empty ? new CuisineId(cuisineId) : null;
             
             var queryResult =
                 await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(
-                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum), null);
+                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

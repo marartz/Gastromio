@@ -14,6 +14,7 @@ import {CheckoutModel} from './checkout.model';
 import {OrderModel} from './order.model';
 import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
 import {CartDishModel} from '../cart/cart-dish.model';
+import {CuisineModel} from '../cuisine/cuisine.model';
 
 @Injectable()
 export class OrderService {
@@ -62,7 +63,20 @@ export class OrderService {
     }
   }
 
-  public searchForRestaurantsAsync(search: string, orderType: OrderType): Observable<RestaurantModel[]> {
+  public getAllCuisinesAsync(): Observable<CuisineModel[]>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/cuisines', httpOptions);
+  }
+
+  public searchForRestaurantsAsync(search: string, orderType: OrderType, cuisineId: string): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -84,8 +98,19 @@ export class OrderService {
         orderTypeText = 'reservation';
     }
 
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search)
-      + '&orderType=' + encodeURIComponent(orderTypeText), httpOptions);
+    let url = this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
+
+    if (orderType) {
+      url += '&orderType=' + encodeURIComponent(orderTypeText);
+    }
+
+    if (cuisineId) {
+      url += '&cuisineId=' + encodeURIComponent(cuisineId);
+    }
+
+    console.log('url: ', url);
+
+    return this.http.get<RestaurantModel[]>(url, httpOptions);
   }
 
   public initializeAsync(): Observable<unknown> {

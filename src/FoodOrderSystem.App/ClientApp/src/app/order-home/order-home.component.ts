@@ -47,7 +47,7 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       switchMap(term => term.length < 2
         ? of([])
-        : this.orderService.searchForRestaurantsAsync(term, OrderService.translateToOrderType(this.orderType))),
+        : this.orderService.searchForRestaurantsAsync(term, OrderService.translateToOrderType(this.orderType), undefined)),
       take(10)
     )
 

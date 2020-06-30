@@ -4,6 +4,7 @@ import {RestaurantModel} from '../restaurant/restaurant.model';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 import {OrderType} from '../cart/cart.model';
+import {CuisineModel} from '../cuisine/cuisine.model';
 
 @Component({
   selector: 'app-order-restaurants',
@@ -11,6 +12,9 @@ import {OrderType} from '../cart/cart.model';
   styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend.min.css']
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
+  cuisines: CuisineModel[];
+  selectedCuisineFilter: string;
+
   restaurants: RestaurantModel[];
   pageOfRestaurants: RestaurantModel[];
 
@@ -33,6 +37,13 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.selectedCuisineFilter = '';
+    this.orderService.getAllCuisinesAsync()
+      .pipe(take(1))
+      .subscribe((cuisines) => {
+        this.cuisines = cuisines;
+      });
+
     this.searchPhrase = '';
     this.updateSearch();
   }
@@ -81,14 +92,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.pageOfRestaurants = pageOfRestaurants;
   }
 
+  onSelectedCuisineFilterChanged(): void {
+    console.log('cuisine: ', this.selectedCuisineFilter);
+    this.updateSearch();
+  }
+
   updateSearch(): void {
     if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
     }
 
-    console.log('searching for order type: ' + OrderService.translateToOrderType(this.orderType));
+    console.log('searching for order type ' + OrderService.translateToOrderType(this.orderType) +
+      ' and cuisine ' + this.selectedCuisineFilter);
 
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType))
+    this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
+      this.selectedCuisineFilter)
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = result;

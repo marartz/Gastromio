@@ -12,6 +12,12 @@
 
                 <div id="left">
                     <div class="clearfix left-content">
+                        <div class="cuisine-filter">
+                            <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
+                                <option value="">*Alle*</option>
+                                <option *ngFor="let cuisine of cuisines" [value]="cuisine.id">{{cuisine.name}}</option>
+                            </select>
+                        </div>
 
                         <div class="tab-bar" role="tablist">
                             <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>

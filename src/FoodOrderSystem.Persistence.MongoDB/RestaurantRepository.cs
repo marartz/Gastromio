@@ -24,6 +24,61 @@ namespace FoodOrderSystem.Persistence.MongoDB
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
+            CuisineId cuisineId, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+
+            FilterDefinition<RestaurantModel> filter;
+            if (!string.IsNullOrEmpty(searchPhrase))
+            {
+                var bsonRegEx = new BsonRegularExpression($".*{Regex.Escape(searchPhrase)}.*", "i");
+                filter = Builders<RestaurantModel>.Filter.Regex(en => en.Name, bsonRegEx);
+            }
+            else
+            {
+                filter = new BsonDocument();
+            }
+
+            if (orderType.HasValue)
+            {
+                switch (orderType.Value)
+                {
+                    case OrderType.Pickup:
+                    {
+                        filter &= Builders<RestaurantModel>.Filter.Eq(en => en.PickupInfo.Enabled, true);
+                        break;
+                    }
+                    case OrderType.Delivery:
+                    {
+                        filter &= Builders<RestaurantModel>.Filter.Eq(en => en.DeliveryInfo.Enabled, true);
+                        break;
+                    }
+                    case OrderType.Reservation:
+                    {
+                        filter &= Builders<RestaurantModel>.Filter.Eq(en => en.ReservationInfo.Enabled, true);
+                        break;
+                    }
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            if (cuisineId != null)
+            {
+                filter &= Builders<RestaurantModel>.Filter.AnyEq(en => en.Cuisines, cuisineId.Value);
+            }
+
+            var cursor = await collection.FindAsync(filter,
+                new FindOptions<RestaurantModel>
+                {
+                    Sort = Builders<RestaurantModel>.Sort.Ascending(en => en.Name)
+                },
+                cancellationToken);
+            return cursor.ToEnumerable().Select(FromDocument);
+        }
+
+        public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase,
+            OrderType? orderType, CuisineId cuisineId, int skip = 0, int take = -1,
             CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
@@ -63,53 +118,9 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 }
             }
 
-            var cursor = await collection.FindAsync(filter,
-                new FindOptions<RestaurantModel>
-                {
-                    Sort = Builders<RestaurantModel>.Sort.Ascending(en => en.Name)
-                },
-                cancellationToken);
-            return cursor.ToEnumerable().Select(FromDocument);
-        }
-
-        public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase,
-            OrderType? orderType, int skip = 0, int take = -1, CancellationToken cancellationToken = default)
-        {
-            var collection = GetCollection();
-
-            FilterDefinition<RestaurantModel> filter;
-            if (!string.IsNullOrEmpty(searchPhrase))
+            if (cuisineId != null)
             {
-                var bsonRegEx = new BsonRegularExpression($".*{Regex.Escape(searchPhrase)}.*", "i");
-                filter = Builders<RestaurantModel>.Filter.Regex(en => en.Name, bsonRegEx);
-            }
-            else
-            {
-                filter = new BsonDocument();
-            }
-
-            if (orderType.HasValue)
-            {
-                switch (orderType.Value)
-                {
-                    case OrderType.Pickup:
-                    {
-                        filter &= Builders<RestaurantModel>.Filter.Eq(en => en.PickupInfo.Enabled, true);
-                        break;
-                    }
-                    case OrderType.Delivery:
-                    {
-                        filter &= Builders<RestaurantModel>.Filter.Eq(en => en.DeliveryInfo.Enabled, true);
-                        break;
-                    }
-                    case OrderType.Reservation:
-                    {
-                        filter &= Builders<RestaurantModel>.Filter.Eq(en => en.ReservationInfo.Enabled, true);
-                        break;
-                    }
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                filter &= Builders<RestaurantModel>.Filter.AnyEq(en => en.Cuisines, cuisineId.Value);
             }
 
             var total = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
