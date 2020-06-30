@@ -101,7 +101,7 @@ namespace FoodOrderSystem.Notification.Mailjet
             if (string.IsNullOrEmpty(configuration.ApiKey) || string.IsNullOrEmpty(configuration.ApiSecret))
             {
                 logger.LogWarning("Skipped sending mail due to missing Mailjet configuration");
-                return new NotificationResponse(false, "skipped due to missing Mailjet configuration");
+                return new NotificationResponse(true, "skipped due to missing Mailjet configuration");
             }
 
             var client = new MailjetClient(configuration.ApiKey, configuration.ApiSecret)

@@ -24,7 +24,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
-            CuisineId cuisineId, CancellationToken cancellationToken = default)
+            CuisineId cuisineId, bool? isActive, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
 
@@ -68,6 +68,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 filter &= Builders<RestaurantModel>.Filter.AnyEq(en => en.Cuisines, cuisineId.Value);
             }
 
+            if (isActive.HasValue)
+            {
+                filter &= Builders<RestaurantModel>.Filter.Eq(en => en.IsActive, isActive.Value);
+            }
+
             var cursor = await collection.FindAsync(filter,
                 new FindOptions<RestaurantModel>
                 {
@@ -78,7 +83,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
         }
 
         public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase,
-            OrderType? orderType, CuisineId cuisineId, int skip = 0, int take = -1,
+            OrderType? orderType, CuisineId cuisineId, bool? isActive, int skip = 0, int take = -1,
             CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
@@ -121,6 +126,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             if (cuisineId != null)
             {
                 filter &= Builders<RestaurantModel>.Filter.AnyEq(en => en.Cuisines, cuisineId.Value);
+            }
+
+            if (isActive.HasValue)
+            {
+                filter &= Builders<RestaurantModel>.Filter.Eq(en => en.IsActive, isActive.Value);
             }
 
             var total = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
@@ -292,6 +302,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 new HashSet<PaymentMethodId>(document.PaymentMethods.Select(en => new PaymentMethodId(en))),
                 new HashSet<UserId>(document.Administrators.Select(en => new UserId(en))),
                 document.ImportId,
+                document.IsActive,
                 document.CreatedOn,
                 new UserId(document.CreatedBy),
                 document.UpdatedOn,
@@ -367,6 +378,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     ? obj.Administrators.Select(en => en.Value).ToList()
                     : new List<Guid>(),
                 ImportId = obj.ImportId,
+                IsActive = obj.IsActive,
                 CreatedOn = obj.CreatedOn,
                 CreatedBy = obj.CreatedBy.Value,
                 UpdatedOn = obj.UpdatedOn,

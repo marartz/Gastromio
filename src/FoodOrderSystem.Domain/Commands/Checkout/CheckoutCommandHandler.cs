@@ -43,6 +43,8 @@ namespace FoodOrderSystem.Domain.Commands.Checkout
                 await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
+            if (!restaurant.IsActive)
+                return FailureResult<OrderViewModel>.Create(FailureResultCode.OrderIsInvalid);
             var restaurantInfo =
                 $"{restaurant.Name} ({restaurant.Address?.Street}, {restaurant.Address?.ZipCode} {restaurant.Address?.City})";
 

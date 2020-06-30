@@ -33,44 +33,33 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   restaurant: RestaurantModel;
 
   generalError: string;
+  formError: string;
 
   changeLogoForm: FormGroup;
-  changeLogoError: string;
   logoUrl: string;
   @ViewChild('logo') logoElement: ElementRef;
 
   changeBannerForm: FormGroup;
-  changeBannerError: string;
   bannerUrl: string;
   @ViewChild('banner') bannerElement: ElementRef;
 
   changeAddressForm: FormGroup;
-  changeAddressError: string;
 
   changeContactInfoForm: FormGroup;
-  changeContactInfoError: string;
 
   openingPeriodVMs: OpeningPeriodViewModel[];
   addOpeningPeriodForm: FormGroup;
-  startTimeError: string;
-  endTimeError: string;
   addOpeningPeriodError: string;
-  removeOpeningPeriodError: string;
 
   changeServiceInfoForm: FormGroup;
-  changeServiceInfoError: string;
 
   availableCuisines: CuisineModel[];
   addCuisineForm: FormGroup;
-  addCuisineError: string;
-  removeCuisineError: string;
 
   paymentMethods: PaymentMethodModel[];
   paymentMethodStatus: boolean[];
 
   public userToBeAdded: UserModel;
-  addUserError: string;
-  removeUserError: string;
 
   dishCategories: DishCategoryModel[];
   activeDishCategoryId: string;
@@ -298,6 +287,41 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  getRestaurantStatusText(): string {
+    if (!this.restaurant) {
+      return '';
+    }
+    return this.restaurant.isActive ? 'Aktiv' : 'Nicht aktiv';
+  }
+
+  onActivate(): void {
+    this.blockUI.start('Aktiviere Restaurant...');
+    this.restaurantRestAdminService.activateRestaurantAsync(this.restaurant.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.formError = undefined;
+        this.restaurant.isActive = true;
+      }, response => {
+        this.blockUI.stop();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
+  onDeactivate(): void {
+    this.blockUI.start('Deaktiviere Restaurant...');
+    this.restaurantRestAdminService.deactivateRestaurantAsync(this.restaurant.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.blockUI.stop();
+        this.formError = undefined;
+        this.restaurant.isActive = false;
+      }, response => {
+        this.blockUI.stop();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+      });
+  }
+
   hasLogo(): boolean {
     if (!this.restaurant || !this.restaurant.imageTypes) {
       return false;
@@ -377,7 +401,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.blockUI.stop();
         this.logoElement.nativeElement.value = null;
-        this.changeLogoError = undefined;
+        this.formError = undefined;
         if (!this.restaurant.imageTypes) {
           this.restaurant.imageTypes = new Array<string>();
         }
@@ -388,7 +412,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         this.changeLogoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeLogoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -405,11 +429,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         this.logoElement.nativeElement.value = null;
         this.restaurant.imageTypes = this.restaurant.imageTypes.filter(en => en !== 'logo');
         this.updateLogoUrl();
-        this.changeLogoError = undefined;
+        this.formError = undefined;
         this.changeLogoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeLogoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -420,7 +444,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.blockUI.stop();
         this.bannerElement.nativeElement.value = null;
-        this.changeBannerError = undefined;
+        this.formError = undefined;
         if (!this.restaurant.imageTypes) {
           this.restaurant.imageTypes = new Array<string>();
         }
@@ -431,7 +455,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         this.changeBannerForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeBannerError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -448,11 +472,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         this.bannerElement.nativeElement.value = null;
         this.restaurant.imageTypes = this.restaurant.imageTypes.filter(en => en !== 'banner');
         this.updateBannerUrl();
-        this.changeBannerError = undefined;
+        this.formError = undefined;
         this.changeBannerForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeBannerError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -462,12 +486,12 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.changeAddressError = undefined;
+        this.formError = undefined;
         this.restaurant.address = value;
         this.changeAddressForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeAddressError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -477,12 +501,12 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.changeContactInfoError = undefined;
+        this.formError = undefined;
         this.restaurant.contactInfo = value;
         this.changeContactInfoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeContactInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -491,18 +515,18 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
     const startParseResult: TimeParseResult = AdminRestaurantComponent.parseTimeValue(value.start);
     if (!startParseResult.isValid) {
-      this.startTimeError = 'Geben Sie eine gültige Zeit ein';
+      this.formError = 'Geben Sie eine gültige Zeit ein';
       return;
     } else {
-      this.startTimeError = undefined;
+      this.formError = undefined;
     }
 
     const endParseResult: TimeParseResult = AdminRestaurantComponent.parseTimeValue(value.end);
     if (!endParseResult.isValid) {
-      this.endTimeError = 'Geben Sie eine gültige Zeit ein';
+      this.formError = 'Geben Sie eine gültige Zeit ein';
       return;
     } else {
-      this.endTimeError = undefined;
+      this.formError = undefined;
     }
 
     this.blockUI.start('Verarbeite Daten...');
@@ -535,7 +559,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.removeOpeningPeriodError = undefined;
+        this.formError = undefined;
 
         const index = this.restaurant.openingHours.findIndex(elem => elem.dayOfWeek === openingPeriod.dayOfWeek
           && elem.start === openingPeriod.startTime);
@@ -545,7 +569,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         }
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.removeOpeningPeriodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -555,12 +579,12 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.changeServiceInfoError = undefined;
+        this.formError = undefined;
         this.restaurant.pickupInfo = value;
         this.changeServiceInfoForm.markAsPristine();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.changeServiceInfoError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -570,7 +594,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.addCuisineError = undefined;
+        this.formError = undefined;
         this.addCuisineForm.reset();
         const index = this.availableCuisines.findIndex(en => en.id === value.cuisineId);
         this.restaurant.cuisines.push(this.availableCuisines[index]);
@@ -586,7 +610,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         });
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.addCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -596,7 +620,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.removeCuisineError = undefined;
+        this.formError = undefined;
         const index = this.restaurant.cuisines.findIndex(en => en.id === cuisineId);
         this.availableCuisines.push(this.restaurant.cuisines[index]);
         this.restaurant.cuisines.splice(index, 1);
@@ -611,7 +635,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         });
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.removeCuisineError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -672,7 +696,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.addUserError = undefined;
+        this.formError = undefined;
 
         if (this.restaurant.administrators.findIndex(en => en.id === this.userToBeAdded.id) > -1) {
           return;
@@ -690,7 +714,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         });
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.addUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 
@@ -700,12 +724,12 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.removeUserError = undefined;
+        this.formError = undefined;
         const index = this.restaurant.administrators.findIndex(en => en.id === user.id);
         this.restaurant.administrators.splice(index, 1);
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.removeUserError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 

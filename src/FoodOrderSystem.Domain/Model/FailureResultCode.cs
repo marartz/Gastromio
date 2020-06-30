@@ -38,6 +38,7 @@
         RestaurantOpeningPeriodEndsBeforeStart,
         RestaurantOpeningPeriodIntersects,
         RestaurantDoesNotExist,
+        RestaurantNotActive,
         DishCategoryDoesNotBelongToRestaurant,
         DishCategoryAlreadyExists,
         DishCategoryDoesNotExist,

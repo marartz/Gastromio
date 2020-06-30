@@ -31,7 +31,6 @@ export class AdminDishImportComponent implements OnInit {
 
   handleDishImportFileInput(target: any): void {
     const files = target.files;
-    console.log('files: ', files);
     this.dishImportFile = files.item(0);
   }
 

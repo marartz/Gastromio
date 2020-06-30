@@ -69,7 +69,10 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetRestaurantAsync(Guid restaurantId)
         {
-            var queryResult = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), null);
+            var queryResult =
+                await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(
+                    new GetRestaurantByIdQuery(new RestaurantId(restaurantId), true), null);
+            
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

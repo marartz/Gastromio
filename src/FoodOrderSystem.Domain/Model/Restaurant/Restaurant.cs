@@ -53,6 +53,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             ISet<PaymentMethodId> paymentMethods,
             ISet<UserId> administrators,
             string importId,
+            bool isActive,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -69,6 +70,7 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             ReservationInfo = reservationInfo ?? new ReservationInfo(false);
             HygienicHandling = hygienicHandling;
             ImportId = importId;
+            IsActive = isActive;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -107,6 +109,8 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             administrators != null ? new ReadOnlyCollection<UserId>(administrators.ToList()) : null;
 
         public string ImportId { get; private set; }
+        
+        public bool IsActive { get; private set; }
 
         public DateTime CreatedOn { get; }
         
@@ -411,6 +415,22 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
             ImportId = importId;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> Deactivate(UserId changedBy)
+        {
+            if (!IsActive)
+                return SuccessResult<bool>.Create(true);
+            IsActive = false;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> Activate(UserId changedBy)
+        {
+            if (IsActive)
+                return SuccessResult<bool>.Create(true);
+            IsActive = true;
             return SuccessResult<bool>.Create(true);
         }
     }

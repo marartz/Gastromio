@@ -31,7 +31,6 @@ export class AdminRestaurantImportComponent implements OnInit {
 
   handleRestaurantImportFileInput(target: any): void {
     const files = target.files;
-    console.log('files: ', files);
     this.restaurantImportFile = files.item(0);
   }
 

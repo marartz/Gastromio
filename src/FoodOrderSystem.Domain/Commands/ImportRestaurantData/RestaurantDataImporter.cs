@@ -196,11 +196,18 @@ namespace FoodOrderSystem.Domain.Commands.ImportRestaurantData
                 return;
             }
 
+            boolResult = restaurant.Activate(curUserId);
+            if (boolResult.IsFailure)
+            {
+                AddFailureMessageToLog(log, rowIndex, boolResult);
+                return;
+            }
+
             log.AddLine(ImportLogLineType.Information, rowIndex,
                 newRestaurant
                     ? "Lege ein neues Restaurant '{0}' an."
                     : "Aktualisiere das bereits existierende Restaurant '{0}'.", restaurant.Name);
-
+            
             if (!dryRun)
                 await restaurantRepository.StoreAsync(restaurant, cancellationToken);
         }

@@ -50,6 +50,9 @@ namespace FoodOrderSystem.Domain.Queries.GetRestaurantById
             if (restaurant == null)
                 return FailureResult<RestaurantViewModel>.Create(FailureResultCode.RestaurantDoesNotExist);
 
+            if (query.OnlyActiveRestaurants && !restaurant.IsActive)
+                return FailureResult<RestaurantViewModel>.Create(FailureResultCode.RestaurantDoesNotExist);
+
             return SuccessResult<RestaurantViewModel>.Create(RestaurantViewModel.FromRestaurant(restaurant, cuisines,
                 paymentMethods, userRepository, restaurantImageRepository));
         }

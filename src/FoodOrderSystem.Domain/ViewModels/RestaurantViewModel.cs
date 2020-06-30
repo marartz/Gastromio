@@ -37,6 +37,8 @@ namespace FoodOrderSystem.Domain.ViewModels
         public List<PaymentMethodViewModel> PaymentMethods { get; set; }
 
         public List<UserViewModel> Administrators { get; set; }
+        
+        public bool IsActive { get; set; }
 
         public static RestaurantViewModel FromRestaurant(
             Restaurant restaurant,
@@ -81,7 +83,8 @@ namespace FoodOrderSystem.Domain.ViewModels
                     : new List<PaymentMethodViewModel>(),
                 Administrators = restaurant.Administrators != null
                     ? restaurant.Administrators.Select(en => RetrieveUserModel(userRepository, en)).ToList()
-                    : new List<UserViewModel>()
+                    : new List<UserViewModel>(),
+                IsActive = restaurant.IsActive
             };
         }
 

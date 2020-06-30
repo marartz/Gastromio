@@ -22,10 +22,13 @@
                        </div>
                        <div class="row">
                            <div class="col">
-                               
+
                                <div id="restaurants" *ngFor="let restaurant of pageOfRestaurants">
                                    <div id="informations">
-                                       <h2 class="restaurant-name">{{restaurant.name}}</h2>
+                                       <h2 class="restaurant-name" [style.color]="restaurant.isActive ? undefined : 'grey'">
+                                           <span>{{restaurant.name}}</span>
+                                           <span *ngIf="!restaurant.isActive"> (inaktiv)</span>
+                                       </h2>
                                        <div class="restaurant-beschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
                                        <div id="actions">
                                            <div class="settings">
@@ -33,12 +36,15 @@
                                                &nbsp;&ndash;&nbsp;
                                                <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
                                                &nbsp;&ndash;&nbsp;
+                                               <a *ngIf="restaurant.isActive" class="delete" (click)="onDeactivate(restaurant)">Deaktivieren</a>
+                                               <a *ngIf="!restaurant.isActive" class="edit" (click)="onActivate(restaurant)">Aktivieren</a>
+                                               &nbsp;&ndash;&nbsp;
                                                <a class="delete" (click)="openRemoveRestaurantForm(restaurant)">Restaurant löschen</a>
                                            </div>
                                        </div>
                                    </div>
                                </div>
-                               
+
                                <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
                            </div>
                        </div>

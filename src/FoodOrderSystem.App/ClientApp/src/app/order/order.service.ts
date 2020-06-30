@@ -108,8 +108,6 @@ export class OrderService {
       url += '&cuisineId=' + encodeURIComponent(cuisineId);
     }
 
-    console.log('url: ', url);
-
     return this.http.get<RestaurantModel[]>(url, httpOptions);
   }
 
@@ -127,6 +125,7 @@ export class OrderService {
       this.storedCart = undefined;
       this.dishes = undefined;
       this.visible = false;
+      this.saveCartToStorage();
     }
     this.restaurantId = restaurantId;
     this.generateCartModel();
@@ -317,6 +316,7 @@ export class OrderService {
       console.log('found no cart json in local storage');
       return false;
     }
+    console.log('loaded cart from storage: ', json);
 
     try {
       const storedCart = new StoredCartModel();
@@ -427,6 +427,7 @@ export class OrderService {
       return;
     }
     const json = JSON.stringify(this.storedCart);
+    console.log('stored cart to storage: ', json);
     localStorage.setItem('cart', json);
   }
 

@@ -4,19 +4,7 @@
 
             <!-- START: Fehlermeldungen -->
             <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
-            <div id="alert" class="error" *ngIf="changeAddressError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeAddressError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="changeLogoError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeLogoError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="changeBannerError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeBannerError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="changeContactInfoError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeContactInfoError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="changeServiceInfoError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{changeServiceInfoError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="removeOpeningPeriodError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{removeOpeningPeriodError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="startTimeError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{startTimeError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="removeCuisineError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{removeCuisineError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="removeUserError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{removeUserError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="addCuisineError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{addCuisineError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="startTimeError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{startTimeError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="endTimeError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{endTimeError}}</span></div></div>
-            <div id="alert" class="error" *ngIf="addUserError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{addUserError}}</span></div></div>
+            <div id="alert" class="error" *ngIf="formError !== undefined"><div id="message" tabindex="-1" role="alert"><span>{{formError}}</span></div></div>
             <!-- ENDE: Fehlermeldungen -->
 
             <div id="backend" *ngIf="generalError === undefined">
@@ -38,6 +26,14 @@
                                     <div class="backend-input">
                                         <label>Name des Restaurants</label>
                                         <input readonly type="text" placeholder="Name des Restaurants" value="{{restaurant.name}}" (click)="openChangeRestaurantNameForm()" />
+                                    </div>
+                                    <div class="backend-input">
+                                        <label>Restaurant aktiv?</label>
+                                        <input readonly type="checkbox" checked="{{restaurant.isActive ? 'checked' : ''}}">
+                                    </div>
+                                    <div class="inline-button-wrap">
+                                        <button *ngIf="!restaurant.isActive" type="submit" (click)="onActivate()">Aktivieren</button>
+                                        <button *ngIf="restaurant.isActive" type="submit" (click)="onDeactivate()">Deaktivieren</button>
                                     </div>
                                 </form>
                             </div>

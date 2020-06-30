@@ -8,6 +8,8 @@ import {AddRestaurantComponent} from '../add-restaurant/add-restaurant.component
 import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.component';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {ChangePageInfo} from '../pagination/server-pagination.component';
+import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
+import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
 
 @Component({
   selector: 'app-admin-restaurants',
@@ -23,7 +25,9 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private restaurantAdminService: RestaurantSysAdminService
+    private restaurantSysAdminService: RestaurantSysAdminService,
+    private restaurantRestAdminService: RestaurantRestAdminService,
+    private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value: string) => {
@@ -62,7 +66,7 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   onChangePage(changePageInfo: ChangePageInfo) {
-    this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take)
+    this.restaurantSysAdminService.searchForRestaurantsAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take)
       .pipe(take(1))
       .subscribe((result) => {
         this.total = result.total;
@@ -72,7 +76,7 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(): void {
-    this.restaurantAdminService.searchForRestaurantsAsync(this.searchPhrase, 0, 0)
+    this.restaurantSysAdminService.searchForRestaurantsAsync(this.searchPhrase, 0, 0)
       .pipe(take(1))
       .subscribe((result) => {
         this.total = result.total;
@@ -80,4 +84,25 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
       }, () => {
       });
   }
+
+  onActivate(restaurant: RestaurantModel): void {
+    this.restaurantRestAdminService.activateRestaurantAsync(restaurant.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        restaurant.isActive = true;
+      }, response => {
+        alert(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  onDeactivate(restaurant: RestaurantModel): void {
+    this.restaurantRestAdminService.deactivateRestaurantAsync(restaurant.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        restaurant.isActive = false;
+      }, response => {
+        alert(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
 }

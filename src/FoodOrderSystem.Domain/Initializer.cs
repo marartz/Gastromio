@@ -77,6 +77,7 @@ namespace FoodOrderSystem.Domain
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodBeginsTooEarly, "Die Öffnungsperiode darf nicht vor 4 Uhr morgens beginnen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodEndsBeforeStart, "Das Ende der Öffnungsperiode muss nach dem Start liegen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantNotActive, "Restaurant ist nicht aktiv");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotBelongToRestaurant, "Gerichtkategorie gehört nicht zum Restaurant");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryAlreadyExists, "Es gibt bereits eine Gerichtkategorie mit gleichem Namen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishCategoryDoesNotExist, "Die Gerichtkategorie ist nicht vorhanden");

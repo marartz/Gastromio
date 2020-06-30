@@ -38,9 +38,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FoodOrderSystem.Domain.Commands.ActivateRestaurant;
 using FoodOrderSystem.Domain.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantContactInfo;
 using FoodOrderSystem.Domain.Commands.ChangeRestaurantServiceInfo;
+using FoodOrderSystem.Domain.Commands.DeactivateRestaurant;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDish;
 using FoodOrderSystem.Domain.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Domain.Commands.IncOrderOfDish;
@@ -92,7 +94,10 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
             var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
 
-            var queryResult = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(new GetRestaurantByIdQuery(new RestaurantId(restaurantId)), currentUser);
+            var queryResult =
+                await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(
+                    new GetRestaurantByIdQuery(new RestaurantId(restaurantId), false), currentUser);
+
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
@@ -561,6 +566,40 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<RemoveDishFromRestaurantCommand, bool>(
                 new RemoveDishFromRestaurantCommand(new RestaurantId(restaurantId), new DishCategoryId(model.DishCategoryId), new DishId(model.DishId)),
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/activate")]
+        [HttpPost]
+        public async Task<IActionResult> PostActivateAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<ActivateRestaurantCommand, bool>(
+                new ActivateRestaurantCommand(new RestaurantId(restaurantId)), 
+                currentUser
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/deactivate")]
+        [HttpPost]
+        public async Task<IActionResult> PostDeactivateAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+            var currentUser = await userRepository.FindByUserIdAsync(new UserId(currentUserId));
+
+            var commandResult = await commandDispatcher.PostAsync<DeactivateRestaurantCommand, bool>(
+                new DeactivateRestaurantCommand(new RestaurantId(restaurantId)), 
                 currentUser
             );
 

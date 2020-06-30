@@ -35,6 +35,8 @@ export class RestaurantModel {
   public paymentMethods: PaymentMethodModel[];
 
   public administrators: UserModel[];
+
+  public isActive: boolean;
 }
 
 export class AddressModel {

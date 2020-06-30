@@ -93,7 +93,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   onSelectedCuisineFilterChanged(): void {
-    console.log('cuisine: ', this.selectedCuisineFilter);
     this.updateSearch();
   }
 
@@ -101,9 +100,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
     }
-
-    console.log('searching for order type ' + OrderService.translateToOrderType(this.orderType) +
-      ' and cuisine ' + this.selectedCuisineFilter);
 
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
       this.selectedCuisineFilter)
