@@ -4,7 +4,7 @@ import {OpeningPeriodModel, RestaurantModel} from '../restaurant/restaurant.mode
 import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ChangeRestaurantNameComponent} from '../change-restaurant-name/change-restaurant-name.component';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PaymentMethodModel} from '../payment-method/payment-method.model';
 import {Observable, of} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap, take} from 'rxjs/operators';
@@ -82,17 +82,17 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
 
     this.changeAddressForm = this.formBuilder.group({
-      street: '',
-      zipCode: '',
-      city: ''
+      street: ['', [Validators.required, Validators.pattern(/^(([a-zA-ZäöüÄÖÜß]\D*)\s+\d+?\s*.*)$/)]],
+      zipCode: ['', [Validators.required, Validators.pattern(/^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$/)]],
+      city: ['', Validators.required]
     });
 
     this.changeContactInfoForm = this.formBuilder.group({
-      phone: '',
-      fax: '',
-      webSite: '',
-      responsiblePerson: '',
-      emailAddress: ''
+      phone: ['', [Validators.required, Validators.pattern(/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/)]],
+      fax: ['', Validators.pattern(/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/)],
+      webSite: ['', Validators.pattern(/^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/)],
+      responsiblePerson: ['', Validators.required],
+      emailAddress: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]]
     });
 
     this.addOpeningPeriodForm = this.formBuilder.group({
@@ -118,6 +118,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     this.addCuisineForm = this.formBuilder.group({
       cuisineId: ''
     });
+  }
+
+  get af() {
+    return this.changeAddressForm.controls;
+  }
+
+  get cif() {
+    return this.changeContactInfoForm.controls;
   }
 
   private static parseTimeValue(text: string): TimeParseResult {
@@ -481,6 +489,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   onSaveAddress(value): void {
+    if (this.changeAddressForm.invalid) {
+      return;
+    }
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantRestAdminService.changeRestaurantAddressAsync(this.restaurant.id, value)
       .pipe(take(1))
@@ -496,6 +507,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   onSaveContactInfo(value): void {
+    if (this.changeContactInfoForm.invalid) {
+      return;
+    }
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantRestAdminService.changeRestaurantContactInfoAsync(this.restaurant.id, value)
       .pipe(take(1))

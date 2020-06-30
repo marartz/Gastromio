@@ -39,18 +39,29 @@
                             </div>
                             <div id="form" style="margin-top: -12px;">
                                 <h3>Adressinformationen</h3>
-                                <form [formGroup]="changeAddressForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
+                                <form [formGroup]="changeAddressForm" #aiForm="ngForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
                                     <div class="backend-input">
-                                        <label for="street">Adresse</label>
-                                        <input type="text" id="street" formControlName="street" placeholder="Adresse" />
+                                        <label for="street">Straße</label>
+                                        <input type="text" id="street" formControlName="street" placeholder="Straße" [ngClass]="{ 'is-invalid': aiForm.submitted && af.street.errors }" />
+                                        <div *ngIf="aiForm.submitted && af.street.errors" class="invalid-feedback">
+                                            <div *ngIf="af.street.errors.required">Straße des Restaurants wird benötigt.</div>
+                                            <div *ngIf="af.street.errors.pattern">Kein gültiger Straßenname.</div>
+                                        </div>
                                     </div>
                                     <div class="backend-input">
                                         <label for="zipCode">Postleitzahl</label>
-                                        <input type="text" id="zipCode" formControlName="zipCode" maxlength="5" placeholder="PLZ" />
+                                        <input type="text" id="zipCode" formControlName="zipCode" maxlength="5" placeholder="PLZ" [ngClass]="{ 'is-invalid': aiForm.submitted && af.zipCode.errors }"/>
+                                        <div *ngIf="aiForm.submitted && af.zipCode.errors" class="invalid-feedback">
+                                            <div *ngIf="af.zipCode.errors.required">Postleitzahl des Restaurants wird benötigt.</div>
+                                            <div *ngIf="af.zipCode.errors.pattern">Keine gültige Postleitzahl.</div>
+                                        </div>
                                     </div>
                                     <div class="backend-input">
                                         <label for="city">Stadt</label>
-                                        <input type="text" id="city" formControlName="city" placeholder="Stadt" />
+                                        <input type="text" id="city" formControlName="city" placeholder="Stadt" [ngClass]="{ 'is-invalid': aiForm.submitted && af.city.errors }"/>
+                                        <div *ngIf="aiForm.submitted && af.city.errors" class="invalid-feedback">
+                                            <div *ngIf="af.city.errors.required">Stadt des Restaurants wird benötigt.</div>
+                                        </div>
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeAddressForm.dirty">
@@ -67,26 +78,43 @@
                         <div class="right">
                             <div id="form">
                                 <h3>Kontaktinformationen</h3>
-                                <form [formGroup]="changeContactInfoForm" (ngSubmit)="onSaveContactInfo(changeContactInfoForm.value)">
+                                <form [formGroup]="changeContactInfoForm" #ciForm="ngForm" (ngSubmit)="onSaveContactInfo(changeContactInfoForm.value)">
                                     <div class="backend-input">
                                         <label for="phone">Telefon</label>
-                                        <input type="tel" id="phone" formControlName="phone" placeholder="Ihre Telefonnummer" />
+                                        <input type="tel" id="phone" formControlName="phone" placeholder="Ihre Telefonnummer" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.phone.errors }" />
+                                        <div *ngIf="ciForm.submitted && cif.phone.errors" class="invalid-feedback">
+                                            <div *ngIf="cif.phone.errors.required">Telefonnummer des Restaurants wird benötigt.</div>
+                                            <div *ngIf="cif.phone.errors.pattern">Ungültige Telefonnummer.</div>
+                                        </div>
                                     </div>
                                     <div class="backend-input">
                                         <label for="fax">Fax</label>
-                                        <input type="tel" id="fax" formControlName="fax" placeholder="Ihre Faxnummer" />
+                                        <input type="tel" id="fax" formControlName="fax" placeholder="Ihre Faxnummer" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.fax.errors }" />
+                                        <div *ngIf="ciForm.submitted && cif.fax.errors" class="invalid-feedback">
+                                            <div *ngIf="cif.fax.errors.pattern">Ungültige Faxnummer.</div>
+                                        </div>
                                     </div>
                                     <div class="backend-input">
                                         <label for="emailAddress">E-Mail für Bestellungen</label>
-                                        <input type="email" id="emailAddress" formControlName="emailAddress" placeholder="Ihre E-Mail-Adresse" />
+                                        <input type="email" id="emailAddress" formControlName="emailAddress" placeholder="Ihre E-Mail-Adresse" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.emailAddress.errors }" />
+                                        <div *ngIf="ciForm.submitted && cif.emailAddress.errors" class="invalid-feedback">
+                                            <div *ngIf="cif.emailAddress.errors.required">E-Mail für Bestellungen wird benötigt.</div>
+                                            <div *ngIf="cif.emailAddress.errors.pattern">Ungültige E-Mail Adresse.</div>
+                                        </div>
                                     </div>
                                     <div class="backend-input">
                                         <label for="webSite">Webseite</label>
-                                        <input type="text" id="webSite" formControlName="webSite" placeholder="Ihre Webseite" />
+                                        <input type="text" id="webSite" formControlName="webSite" placeholder="Ihre Webseite" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.webSite.errors }" />
+                                        <div *ngIf="ciForm.submitted && cif.webSite.errors" class="invalid-feedback">
+                                            <div *ngIf="cif.webSite.errors.pattern">Ungültige Webseite.</div>
+                                        </div>
                                     </div>
                                     <div class="backend-input">
                                         <label for="responsiblePerson">Verantwortliche Person</label>
-                                        <input type="text" id="responsiblePerson" formControlName="responsiblePerson" placeholder="Verantwortlicher für Webseite" />
+                                        <input type="text" id="responsiblePerson" formControlName="responsiblePerson" placeholder="Verantwortlicher für Webseite" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.responsiblePerson.errors }" />
+                                        <div *ngIf="ciForm.submitted && cif.responsiblePerson.errors" class="invalid-feedback">
+                                            <div *ngIf="cif.responsiblePerson.errors.required">Verantwortliche Person wird benötigt.</div>
+                                        </div>
                                     </div>
 
                                     <div class="inline-button-wrap" *ngIf="!changeContactInfoForm.dirty">

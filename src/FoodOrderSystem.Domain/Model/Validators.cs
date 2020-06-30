@@ -47,7 +47,7 @@ namespace FoodOrderSystem.Domain.Model
         private static readonly Regex StreetRegex = new Regex(@"^(([a-zA-ZäöüÄÖÜß]\D*)\s+\d+?\s*.*)$");
 
         private static readonly Regex ZipCodeRegex =
-            new Regex(@"^((0(1\d\d[1-9])|([2-9]\d\d\d))|(?(?=^(^9{5}))|[1-9]\d{4}))$");
+            new Regex(@"^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$");
 
         private static readonly Regex PhoneNumberRegex =
             new Regex(
