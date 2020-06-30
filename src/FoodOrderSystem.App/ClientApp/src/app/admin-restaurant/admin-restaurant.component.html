@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="backend-input">
                                         <label>Restaurant aktiv?</label>
-                                        <input readonly type="checkbox" checked="{{restaurant.isActive ? 'checked' : ''}}">
+                                        <input readonly type="checkbox" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">
                                     </div>
                                     <div class="inline-button-wrap">
                                         <button *ngIf="!restaurant.isActive" type="submit" (click)="onActivate()">Aktivieren</button>
