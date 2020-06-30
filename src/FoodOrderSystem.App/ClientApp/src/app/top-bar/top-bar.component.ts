@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {AuthService} from '../auth/auth.service';
-import {LoginComponent} from '../login/login.component';
 import {UserModel} from '../user/user.model';
 import {Router} from '@angular/router';
 import {OrderService} from '../order/order.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-top-bar',
@@ -23,6 +23,12 @@ export class TopBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.orderService.initializeAsync()
+      .pipe(take(1))
+      .subscribe(() => {
+      }, response => {
+        console.log('initialize error: ', response);
+      });
   }
 
   getUserEmail(): string {
