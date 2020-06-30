@@ -951,6 +951,18 @@ form:focus {
 	  transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
 }
 
+.cuisine-filter {
+    position: relative;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+@media screen and (min-width: 900px) {
+    .cuisine-filter {
+        margin-top: -50px;
+    }
+}
+
 .restaurant-card {
     border-radius: 8px;
     display: block;
