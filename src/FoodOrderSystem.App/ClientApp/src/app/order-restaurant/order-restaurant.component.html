@@ -161,11 +161,11 @@
                                 <div class="label">Zwischensumme</div>
                                 <div class="price">&euro; {{getCart().getValueOfOrderText()}}</div>
                             </div>
-                            <div class="row-collapse dynamic-fees" *ngIf="getCart().getCosts()">
-                                <div class="label">Lieferkosten</div>
-                                <div class="price">&euro; {{getCart().getCostsText()}}</div>
-                                <!--div class="label">Mindestbestellwert</div>
-                                <div class="price"></div-->
+                            <div class="row-collapse dynamic-fees">
+                                <div class="label" *ngIf="getCart().getCosts()">Lieferkosten</div>
+                                <div class="price" *ngIf="getCart().getCosts()">&euro; {{getCart().getCostsText()}}</div>
+                                <div class="label" *ngIf="getCart().getMinimumOrderValue() !== 0">Mindestbestellwert</div>
+                                <div class="price" *ngIf="getCart().getMinimumOrderValue() !== 0">&euro; {{getCart().getMinimumOrderValueText()}}</div>
                             </div>
                             <div class="row-collapse total">
                                 <div class="label">Gesamt</div>
@@ -177,11 +177,16 @@
 
                 <div id="cart-footer">
                     <div class="info-section">
-                        <div class="cart-btns">
-                            <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
-                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" (click)="proceedToCheckout()">Fortfahren</button></div>
+                        <!-- Wenn Mindst. nicht erreicht -->
+                        <div class="cart-btns" *ngIf="proceedError">
+                            <div class="cta-wrap"><button class="button-cta" (click)="hideCart()">Zum Menü</button></div>
+                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta disabled">Checkout</button></div>
                         </div>
-                        <div role="alert" *ngIf="proceedError"><span style="color: red;">{{proceedError}}</span></div>
+                        <!-- Wenn Mindst. erreicht -->
+                        <div class="cart-btns" *ngIf="!proceedError">
+                            <div class="cta-wrap"><button class="button-cta menu" (click)="hideCart()">Zum Menü</button></div>
+                            <div class="cta-wrap" *ngIf="!isCartEmpty()"><button class="button-cta checkout" (click)="proceedToCheckout()">Checkout</button></div>
+                        </div>
                     </div>
                 </div>
 
