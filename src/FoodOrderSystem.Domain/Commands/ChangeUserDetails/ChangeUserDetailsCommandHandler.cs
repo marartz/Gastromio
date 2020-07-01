@@ -30,9 +30,6 @@ namespace FoodOrderSystem.Domain.Commands.ChangeUserDetails
             if (user == null)
                 return FailureResult<bool>.Create(FailureResultCode.UserDoesNotExist);
 
-            if (user.Role == Role.Customer && user.Role != command.Role)
-                throw new InvalidOperationException("User role cannot be changed.");
-
             user.ChangeDetails(command.Role, command.Email, currentUser.Id);
 
             await userRepository.StoreAsync(user, cancellationToken);
