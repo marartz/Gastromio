@@ -13,6 +13,7 @@
         UserAlreadyExists,
         PasswordIsNotValid,
         CannotRemoveCurrentUser,
+        UserIsRestaurantAdmin,
         CuisineDoesNotExist,
         CuisineAlreadyExists,
         PaymentMethodDoesNotExist,
