@@ -15,7 +15,7 @@ namespace FoodOrderSystem.App.Helper
             using (var image = Image.Load(binData))
             using (var memStream = new MemoryStream())
             {
-                image.SaveAsPng(memStream);
+                image.SaveAsJpeg(memStream);
                 return memStream.ToArray();
             }
         }
