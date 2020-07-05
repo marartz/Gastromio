@@ -52,7 +52,7 @@ namespace FoodOrderSystem.Domain.Commands.ChangeRestaurantImage
                 return SuccessResult<bool>.Create(true);
             }
 
-            if (command.Image.Length > 1024 * 1024) // 1 MB
+            if (command.Image.Length > 2024 * 2024) // 4 MB
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantImageDataTooBig);
 
             try
