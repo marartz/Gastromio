@@ -100,7 +100,7 @@ namespace FoodOrderSystem.Domain.Model.Dish
 
         public Result<bool> ChangeDescription(string description, UserId changedBy)
         {
-            if (description.Length > 200)
+            if (description != null && description.Length > 200)
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(description), 200);
 
             Description = description;
