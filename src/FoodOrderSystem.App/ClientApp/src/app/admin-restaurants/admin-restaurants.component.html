@@ -24,7 +24,6 @@
                        </div>
                        <div class="row">
                            <div class="col">
-                               
                                <div id="restaurants" *ngFor="let restaurant of pageOfRestaurants">
                                    <div id="informations">
                                        <h2 class="restaurant-name" [style.color]="restaurant.isActive ? undefined : 'grey'">
@@ -49,7 +48,6 @@
                                        </div>
                                    </div>
                                </div>
-                               
                                <app-server-pagination (fetchPage)="onFetchPage($event)"></app-server-pagination>
                            </div>
                        </div>

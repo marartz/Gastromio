@@ -86,7 +86,7 @@ export class ServerPaginationComponent {
       currentPage = totalPages;
     }
 
-     // tslint:disable-next-line:one-variable-per-declaration
+    // tslint:disable-next-line:one-variable-per-declaration
     let startPage: number, endPage: number;
     if (totalPages <= maxPages) {
       // total pages less than max so show all pages
