@@ -14,7 +14,9 @@
                    <div class="inner">
                        <div class="row">
                            <div class="col">
-                               <input class="form-control filter" type="search" placeholder="Einträge durchsuchen" aria-label="Search" (keyup)="onSearchType($event.target.value)">
+                               <input class="form-control filter" type="search" placeholder="Einträge durchsuchen" aria-label="Search"
+                                    (keyup)="onUpdateSearch($event.target.value)"
+                                    (search)="onUpdateSearch($event?.target?.value)">
                            </div>
                            <div class="col">
                                <a class="text-link" id="addRestaurant" (click)="openAddRestaurantForm()">+ Restaurant hinzufügen</a>
@@ -22,7 +24,7 @@
                        </div>
                        <div class="row">
                            <div class="col">
-
+                               
                                <div id="restaurants" *ngFor="let restaurant of pageOfRestaurants">
                                    <div id="informations">
                                        <h2 class="restaurant-name" [style.color]="restaurant.isActive ? undefined : 'grey'">
@@ -47,8 +49,8 @@
                                        </div>
                                    </div>
                                </div>
-
-                               <app-server-pagination [total]="total" (changePage)="onChangePage($event)"></app-server-pagination>
+                               
+                               <app-server-pagination (fetchPage)="onFetchPage($event)"></app-server-pagination>
                            </div>
                        </div>
                    </div>
