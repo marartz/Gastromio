@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
@@ -7,7 +7,7 @@ import {RestaurantSysAdminService} from '../restaurant-sys-admin/restaurant-sys-
 import {AddRestaurantComponent} from '../add-restaurant/add-restaurant.component';
 import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.component';
 import {RestaurantModel} from '../restaurant/restaurant.model';
-import {ChangePageInfo} from '../pagination/server-pagination.component';
+import {ServerPaginationComponent, FetchPageInfo} from '../pagination/server-pagination.component';
 import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
 import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
 
@@ -16,8 +16,8 @@ import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-re
   templateUrl: './admin-restaurants.component.html',
   styleUrls: ['./admin-restaurants.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
-export class AdminRestaurantsComponent implements OnInit, OnDestroy {
-  total: number;
+export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(ServerPaginationComponent) pagingComponent: ServerPaginationComponent;
   pageOfRestaurants: RestaurantModel[];
 
   private searchPhrase: string;
@@ -32,22 +32,41 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value: string) => {
         this.searchPhrase = value;
-        this.updateSearch();
+        this.pagingComponent.triggerFetchPage(1);
       });
   }
 
   ngOnInit() {
     this.searchPhrase = '';
-    this.updateSearch();
+  }
+
+  ngAfterViewInit() {
+    // ViewChild has to be rendered before it can be accessed
+    this.pagingComponent.triggerFetchPage(1);
   }
 
   ngOnDestroy() {
+    this.searchPhraseUpdated?.unsubscribe();
+  }
+
+  onUpdateSearch(value: string) {
+    this.searchPhraseUpdated.next(value);
+  }
+
+  onFetchPage(info: FetchPageInfo) {
+    this.restaurantSysAdminService.searchForRestaurantsAsync(this.searchPhrase, info.skip, info.take)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.pageOfRestaurants = result.items;
+        this.pagingComponent.updatePaging(result.total, result.items.length);
+      }, () => {
+      });
   }
 
   openAddRestaurantForm(): void {
     const modalRef = this.modalService.open(AddRestaurantComponent);
     modalRef.result.then(() => {
-      this.updateSearch();
+      this.pagingComponent.triggerFetchPage();
     }, () => {
     });
   }
@@ -56,33 +75,9 @@ export class AdminRestaurantsComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(RemoveRestaurantComponent);
     modalRef.componentInstance.restaurant = restaurant;
     modalRef.result.then(() => {
-      this.updateSearch();
+      this.pagingComponent.triggerFetchPage();
     }, () => {
     });
-  }
-
-  onSearchType(value: string) {
-    this.searchPhraseUpdated.next(value);
-  }
-
-  onChangePage(changePageInfo: ChangePageInfo) {
-    this.restaurantSysAdminService.searchForRestaurantsAsync(this.searchPhrase, changePageInfo.skip, changePageInfo.take)
-      .pipe(take(1))
-      .subscribe((result) => {
-        this.total = result.total;
-        this.pageOfRestaurants = result.items;
-      }, () => {
-      });
-  }
-
-  updateSearch(): void {
-    this.restaurantSysAdminService.searchForRestaurantsAsync(this.searchPhrase, 0, 0)
-      .pipe(take(1))
-      .subscribe((result) => {
-        this.total = result.total;
-        this.pageOfRestaurants = result.items;
-      }, () => {
-      });
   }
 
   onActivate(restaurant: RestaurantModel): void {
