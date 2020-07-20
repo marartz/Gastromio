@@ -383,7 +383,7 @@
                                         <tbody>
                                             <tr>
                                                 <td><input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' /></td>
-                                                <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">Hinzufügen</button></td>
+                                                <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">+ Hinzufügen</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -400,6 +400,7 @@
                                                     <th>Tag</th>
                                                     <th>Beginn</th>
                                                     <th>Ende</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -407,6 +408,7 @@
                                                     <td>{{openingPeriod.dayOfWeekText}}</td>
                                                     <td>{{openingPeriod.startTimeText}}</td>
                                                     <td>{{openingPeriod.endTimeText}}</td>
+                                                    <td class="py-1 text-center"><button class="btn btn-danger btn" (click)="onRemoveOpeningPeriod(openingPeriod)" placement="right" ngbTooltip="Löschen"><i class="fas fa-trash-alt"></i></button></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -427,10 +429,10 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="text" placeholder="z.B. 15:00" class="form-control" formControlName="start" />
+                                                        <input type="time" placeholder="z.B. 15:00" class="form-control" formControlName="start" />
                                                     </td>
                                                     <td>
-                                                        <input type="text" placeholder="z.B. 22:00" class="form-control" formControlName="end" />
+                                                        <input type="time" placeholder="z.B. 22:00" class="form-control" formControlName="end" />
                                                     </td>
                                                 </tr>
                                             </tbody>
