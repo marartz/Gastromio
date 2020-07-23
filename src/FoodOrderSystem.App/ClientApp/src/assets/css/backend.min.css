@@ -594,6 +594,11 @@
     -webkit-font-smoothing: antialiased;
 }
 
+#modal #modal-header .modal-title::selection {
+    background-color: #f8f8f6;
+    color: #65b32e;
+}
+
 #modal #modal-header .modal-close {
     background-color: transparent;
     cursor: pointer;

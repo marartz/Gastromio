@@ -18,12 +18,8 @@
                         <div class="modal-input" role="combobox">
                             <label>Name des Restaurants</label>
                             <input type="text" id="name" formControlName="name" [ngClass]="{ 'is-invalid': f.name.errors }" placeholder="Name des Restaurants" />
-                            <div *ngIf="f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required">Name des Restaurants wird benötigt</div>
-                            </div>
-                            <div *ngIf="message !== undefined">
-                                <span>{{message}}</span>
-                            </div>
+                            <div *ngIf="f.name.errors" class="invalid-feedback"><div *ngIf="f.name.errors.required">Name des Restaurants wird benötigt</div></div>
+                            <div *ngIf="message !== undefined"><span>{{message}}</span></div>
                         </div>
                     </fieldset>
                 </div>

@@ -1,11 +1,11 @@
 <section id="main" role="main">
     <div class="focusing-outlet" tabindex="-1" role="group">
+
         <div id="alert" class="error" *ngIf="error !== undefined">
             <div id="message" tabindex="-1" role="alert"><span>{{error}}</span></div>
         </div>
 
         <block-ui>
-
             <div id="backend">
 
                 <div id="hero">
@@ -24,8 +24,7 @@
                                         <form>
                                             <div class="backend-input">
                                                 <label for="dish-import">Importdatei auswählen</label>
-                                                <input type="file" id="dish-import"
-                                                       (change)="handleDishImportFileInput($event.target)">
+                                                <input type="file" id="dish-import" (change)="handleDishImportFileInput($event.target)">
                                             </div>
                                             <div class="inline-button-wrap">
                                                 <button (click)="onSimulateDishes()">Simulieren</button>
@@ -41,25 +40,24 @@
                                     <div class="restaurants mt-3">
                                         <table class="table" role="grid">
                                             <thead>
-                                            <tr role="row">
-                                                <th rowspan="1" colspan="1">Zeit</th>
-                                                <th rowspan="1" colspan="1">Zeile</th>
-                                                <th rowspan="1" colspan="1">Meldung</th>
-                                            </tr>
+                                                <tr role="row">
+                                                    <th rowspan="1" colspan="1">Zeit</th>
+                                                    <th rowspan="1" colspan="1">Zeile</th>
+                                                    <th rowspan="1" colspan="1">Meldung</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <tr role="row" *ngFor="let line of logLines"
-                                                [style.color]="getColorForLogLineType(line.type)">
-                                                <td>{{line.timestamp}}</td>
-                                                <td>{{line.rowIndex}}</td>
-                                                <td>{{line.message}}</td>
-                                            </tr>
+                                                <tr role="row" *ngFor="let line of logLines"
+                                                    [style.color]="getColorForLogLineType(line.type)">
+                                                    <td>{{line.timestamp}}</td>
+                                                    <td>{{line.rowIndex}}</td>
+                                                    <td>{{line.message}}</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 

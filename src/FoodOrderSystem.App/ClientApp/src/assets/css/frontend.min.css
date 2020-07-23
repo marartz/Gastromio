@@ -1426,25 +1426,29 @@ form:focus {
 }
 
 #restaurant #menu #dish .dish-card .dish-inner {
-    border-radius: 8px;
+    border-radius: 24px;
     box-shadow: 0px 0px 0px 2px transparent;
     display: flex;
     flex-direction: column-reverse;
     margin-left: 0px;
-	  margin-right: 0px;
+	margin-right: 0px;
     position: relative;
     transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
-	  width: 100%;
+    -ms-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -moz-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -o-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -webkit-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+	width: 100%;
 }
 
 #restaurant #menu #dish .dish-card:hover .dish-inner {
-    box-shadow: 0px 0px 0px 2px #41721e;
+    box-shadow: 0px 0px 0px 2px #65b32e;
     outline: 0;
 }
 
 #restaurant #menu #dish .dish-card .dish-content {
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -1464,12 +1468,6 @@ form:focus {
     transition: none;
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-#restaurant #menu #dish .dish-card .dish-name:focus {
-	box-shadow: none;
-	color: #41721e;
-	outline: 0;
 }
 
 #restaurant #menu #dish .dish-card .dish-description {
@@ -1526,7 +1524,7 @@ form:focus {
     }
 }
 
-@media (min-width: 1440px) {
+@media screen and (min-width: 1440px) {
     #restaurant #menu #dish {
         max-width: 1392px;
     }
@@ -1974,25 +1972,103 @@ form:focus {
 }
 
 /* 6. #dish-add, #dish-edit */
+.add-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: proxima-nova, sans-serif;
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    right: 0px;
+    top: 50%;
+    width: 100%;
+    transition: opacity .4s ease,visibility .4s ease;
+    transform: translateY(-50%);
+
+    -ms-transition: opacity .4s ease,visibility .4s ease;
+    -ms-transform: translateY(-50%);
+
+    -moz-transition: opacity .4s ease,visibility .4s ease;
+    -moz-transform: translateY(-50%);
+
+    -o-transition: opacity .4s ease,visibility .4s ease;
+    -o-transform: translateY(-50%);
+
+    -webkit-transition: opacity .4s ease,visibility .4s ease;
+    -webkit-transform: translateY(-50%);
+
+    z-index: 999999!important;
+}
+
+.add-content {
+    animation-name: fadeInUpModal;
+    animation-delay: 50ms;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    background-color: #f8f8f6;
+    border: none;
+    border-radius: 24px;
+    bottom: 0px;
+    box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, .08), 0px 1px 0px 0px #e5e5e5;
+    color: #65b32e;
+    position: relative;
+    margin: 0px auto;
+    max-height: 100vh;
+    max-width: 498px;
+    outline: 0px;
+    opacity: 0;
+    overflow: hidden;
+    top: 50%;
+    width: 100%;
+    transform: none;
+
+    -ms-animation-name: fadeInUpModal;
+    -ms-animation-delay: 50ms;
+    -ms-animation-duration: .3s;
+    -ms-animation-fill-mode: forwards;
+    -ms-animation-iteration-count: 1;
+    -ms-animation-timing-function: ease;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -ms-transform: none;
+
+    -moz-animation-name: fadeInUpModal;
+    -moz-animation-delay: 50ms;
+    -moz-animation-duration: .3s;
+    -moz-animation-fill-mode: forwards;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: ease;
+    -moz-transform: none;
+
+    -o-animation-name: fadeInUpModal;
+    -o-animation-delay: 50ms;
+    -o-animation-duration: .3s;
+    -o-animation-fill-mode: forwards;
+    -o-animation-iteration-count: 1;
+    -o-animation-timing-function: ease;
+    -o-transform: none;
+
+    -webkit-animation-name: fadeInUpModal;
+    -webkit-animation-delay: 50ms;
+    -webkit-animation-duration: .3s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease;
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: none;
+}
+
 #dish-add,
 #dish-edit {
     background: #f8f8f6;
     border: 0px solid #f8f8f6;
     border-radius: 24px;
-    bottom: 0px;
     height: auto;
-    left: 0px;
-    outline: 0;
+    outline: none;
     overflow-y: hidden;
     padding: 16px;
     padding-bottom: 0px;
-    position: static;
-    right: 0px;
-    top: 0px;
     width: auto;
-    transition: all .8s cubic-bezier(.57, .06, .05, .95);
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    -webkit-overflow-scrolling: touch;
 }
 
 @media screen and (min-width: 900px) {
