@@ -14,13 +14,11 @@
         <form>
             <div id="modal-body">
                 <div class="restaurant-imprint">
-                    {{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}
-                    <br />
-                    {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
+                    {{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}<br />
+                    {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}<br />Deutschland
                     <br /><br />
-                    Telefon: {{restaurant.contactInfo.phone}}<br />
-                    Telefax: {{restaurant.contactInfo.fax}}<br />
-                    Webseite: {{restaurant.contactInfo.webSite}}
+                    Telefon: {{restaurant.contactInfo.phone}} / Telefax: {{restaurant.contactInfo.fax}}<br />
+                    Webseite: <a href="{{restaurant.contactInfo.webSite}}" target="_blank" rel="nofollow noreferrer noopener">{{restaurant.contactInfo.webSite}}</a>
                     <br /><br />
                     Diverse Marken sind im Besitz der jeweiligen Eigentümer.<br />Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="nofollow noreferrer noopener">https://ec.europa.eu/consumers/odr</a>. 
                 </div>

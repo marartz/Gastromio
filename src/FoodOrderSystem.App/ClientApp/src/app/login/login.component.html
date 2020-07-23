@@ -1,45 +1,39 @@
 <block-ui>
     <!-- START: Fehlermeldungen -->
     <div id="alert" class="error" *ngIf="submitted && f.Email.errors">
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Email.errors.required">
-            <span>Bitte gebe eine E-Mail-Adresse an</span>
-        </div>
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Email.errors.backend">
-            <span>{{f.name.errors.backend}}</span>
-        </div>
+        <div id="message" tabindex="-1" role="alert" *ngIf="f.Email.errors.required"><span>Bitte gebe eine gültige E-Mail-Adresse an</span></div>
+        <div id="message" tabindex="-1" role="alert" *ngIf="f.Email.errors.backend"><span>{{f.name.errors.backend}}</span></div>
     </div>
     <div id="alert" class="error" *ngIf="submitted && f.Password.errors">
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Password.errors.required">
-            <span>Bitte gebe eine gültige E-Mail-Adresse und ein Passwort an</span>
-        </div>
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Password.errors.backend">
-            <span>{{f.name.errors.backend}}</span>
-        </div>
+        <div id="message" tabindex="-1" role="alert" *ngIf="f.Password.errors.required"><span>Bitte gebe eine gültige E-Mail-Adresse und ein Passwort an</span></div>
+        <div id="message" tabindex="-1" role="alert" *ngIf="f.Password.errors.backend"><span>{{f.name.errors.backend}}</span></div>
     </div>
     <!-- ENDE: Fehlermeldungen -->
 
     <section id="main" role="main">
         <div class="focus-outlet" tabindex="-1" role="group">
 
-            <div id="entry" class="form-wrap">
+            <div id="entry">
+                <div class="login">
+                    <section class="login-background">
+                        <div class="entry-container">
+                            <div class="entry-wrap">
 
-                <h1>Bei Gastromio anmelden</h1>
-                <div class="link-wrap">
-                    <p>Du hast noch keinen Account?</p>
-                    <a href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer noopener">Registrieren</a>
+                                <h1>Anmelden</h1>
+                                <p>Neuer Benutzer? <a href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer noopener">Konto anfragen</a></p>
+
+                                <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+                                    <div class="form-input"><input class="form-field" type="email" id="email" formControlName="Email" placeholder="Deine E-Mail-Adresse" autocomplete="off" ngbAutofocus /></div>
+                                    <div class="form-input"><input class="form-field" type="password" id="password" formControlName="Password" placeholder="Passwort" /></div>
+
+                                    <!--app-general-error [generalError]="generalError"></app-general-error-->
+                                    <button class="form-button-submit" type="submit">Anmelden</button>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </section>
                 </div>
-
-                <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                    <div class="form-input">
-                        <input id="email" placeholder="Deine E-Mail-Adresse" class="form-field" type="text" formControlName="Email" autocomplete="off" ngbAutofocus />
-                    </div>
-                    <div class="form-input">
-                        <input id="password" placeholder="Passwort" class="form-field" type="password" formControlName="Password" />
-                    </div>
-                    <app-general-error [generalError]="generalError" style="text-align: center"></app-general-error>
-                    <button class="form-button-submit" type="submit">Anmelden</button>
-                </form>
-
             </div>
 
         </div>
