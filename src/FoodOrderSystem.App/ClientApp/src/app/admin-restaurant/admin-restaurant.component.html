@@ -391,7 +391,7 @@
                             </div>
 
                             <div id="form">
-                                <h3>Lieferzeiten</h3>
+                                <h3>Öffnungszeiten</h3>
                                 <form [formGroup]="addOpeningPeriodForm" (ngSubmit)="onAddOpeningPeriod(addOpeningPeriodForm.value)">
                                     <div class="backend-input">
                                         <table class="table">
@@ -400,6 +400,7 @@
                                                     <th>Tag</th>
                                                     <th>Beginn</th>
                                                     <th>Ende</th>
+                                                    <th>&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -407,6 +408,11 @@
                                                     <td>{{openingPeriod.dayOfWeekText}}</td>
                                                     <td>{{openingPeriod.startTimeText}}</td>
                                                     <td>{{openingPeriod.endTimeText}}</td>
+                                                    <td>
+                                                        <div class="actions">
+                                                            <button class="edit-link text-link-small" (click)="onRemoveOpeningPeriod(openingPeriod)">Entfernen</button>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
