@@ -838,7 +838,7 @@ form:focus {
     background-size: cover;
     height: calc(50vh - 72px);
     position: sticky;
-    top: 72px; 
+    top: 72px;
 }
 
 @media screen and (min-width: 900px) {
@@ -955,6 +955,12 @@ form:focus {
 	  transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
 }
 
+.opening-hour-filter {
+  position: relative;
+  margin-bottom: 60px;
+  width: 100%;
+}
+
 .cuisine-filter {
     position: relative;
     margin-bottom: 16px;
@@ -1068,7 +1074,7 @@ form:focus {
 }
 
 .restaurant-card .restaurant-description address {
-    line-height: 1.4 !important; 
+    line-height: 1.4 !important;
 }
 
 .restaurant-card .restaurant-phone {
@@ -1088,7 +1094,7 @@ form:focus {
         margin: 8px -16px -20px;
         padding: 16px;
     }
-    
+
     .restaurant-card .menu-link {
         margin-left: auto;
     }
@@ -1333,7 +1339,7 @@ form:focus {
     padding: 0px;
     text-align: center;
     vertical-align: middle;
-    width: 100%; 
+    width: 100%;
 }
 
 #restaurant #menu-categories .text-link {
@@ -1639,7 +1645,7 @@ form:focus {
     height: 72px;
     padding: 20px;
     padding-left: 18px;
-    padding-right: 18px; 
+    padding-right: 18px;
 }
 
 #cart #cart-header #close-cart {
@@ -3038,7 +3044,7 @@ form:focus {
 /* 90.2 #navbar > #cart */
 #navbar #bag .cart-count-wrap {
     position: relative;
-} 
+}
 
 #navbar #bag .cart-count-wrap .cart-count {
     color: #65b32e;

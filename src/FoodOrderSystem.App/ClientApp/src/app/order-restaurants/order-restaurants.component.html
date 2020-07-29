@@ -13,7 +13,13 @@
                 <div id="left">
                     <div class="clearfix left-content">
 
+                        <div class="opening-hour-filter">
+                            Geöffnet:
+                            <input [(ngModel)]="openingHourFilter" (change)="onOpeningHourFilterChanged()">
+                        </div>
+
                         <div class="cuisine-filter">
+                            Küche:
                             <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
                                 <option value="">Alle anzeigen</option>
                                 <option *ngFor="let cuisine of cuisines" [value]="cuisine.id">{{cuisine.name}}</option>

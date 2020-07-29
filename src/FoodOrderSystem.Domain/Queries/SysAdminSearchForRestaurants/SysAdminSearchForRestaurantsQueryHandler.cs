@@ -52,7 +52,7 @@ namespace FoodOrderSystem.Domain.Queries.SysAdminSearchForRestaurants
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, PaymentMethodViewModel.FromPaymentMethod);
 
-            var (total, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, null, null, null,
+            var (total, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, null, null, null, null,
                 query.Skip, query.Take, cancellationToken);
 
             var pagingViewModel = new PagingViewModel<RestaurantViewModel>((int) total, query.Skip, query.Take,

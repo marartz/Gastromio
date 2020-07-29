@@ -53,15 +53,24 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("restaurants")]
         [HttpGet]
-        public async Task<IActionResult> SearchForRestaurantAsync(string search, string orderType, Guid cuisineId)
+        public async Task<IActionResult> SearchForRestaurantAsync(string search, string orderType, Guid cuisineId, string openingHour)
         {
-            OrderType? orderTypeEnum = string.IsNullOrWhiteSpace(orderType) ? (OrderType?)null : ConvertOrderType(orderType);
+            var orderTypeEnum = string.IsNullOrWhiteSpace(orderType) ? (OrderType?)null : ConvertOrderType(orderType);
 
             var tempCuisineId = cuisineId != Guid.Empty ? new CuisineId(cuisineId) : null;
+
+            DateTime? openingHourDateTime = null;
+            if (!string.IsNullOrWhiteSpace(openingHour))
+            {
+                if (DateTime.TryParse(openingHour, out var tempOpeningHour))
+                {
+                    openingHourDateTime = tempOpeningHour;
+                }
+            }
             
             var queryResult =
                 await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(
-                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId), null);
+                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

@@ -199,6 +199,14 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
 
         public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
         {
+            const double earliestOpeningTime = 4d;
+
+            if (openingPeriod.End.TotalHours < earliestOpeningTime)
+            {
+                openingPeriod = new OpeningPeriod(openingPeriod.DayOfWeek, openingPeriod.Start,
+                    TimeSpan.FromHours(openingPeriod.End.TotalHours + 24d));
+            }
+
             if (openingHours.Any(en =>
                 en.DayOfWeek == openingPeriod.DayOfWeek && en.Start == openingPeriod.Start &&
                 en.End == openingPeriod.End))
@@ -206,19 +214,14 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 return SuccessResult<bool>.Create(true);
             }
 
-            var earliestOpeningTime = 4d;
-
-            var newPeriod = GetDayOverflowCorrected(openingPeriod);
-
             if (openingPeriod.Start.TotalHours < earliestOpeningTime)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodBeginsTooEarly);
-            if (!(newPeriod.End.TotalHours > newPeriod.Start.TotalHours))
+            if (!(openingPeriod.End.TotalHours > openingPeriod.Start.TotalHours))
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodEndsBeforeStart);
 
             var anyOverlapping = openingHours?
                 .Where(p => p.DayOfWeek == openingPeriod.DayOfWeek)
-                .Select(p => GetDayOverflowCorrected(p))
-                .Any(period => PeriodsOverlapping(newPeriod, period));
+                .Any(period => PeriodsOverlapping(openingPeriod, period));
 
             if (anyOverlapping == true)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodIntersects);
@@ -239,16 +242,6 @@ namespace FoodOrderSystem.Domain.Model.Restaurant
                 if (x.Start.TotalHours <= y.End.TotalHours && y.Start.TotalHours <= x.End.TotalHours)
                     return true;
                 return false;
-            }
-
-            OpeningPeriod GetDayOverflowCorrected(OpeningPeriod period)
-            {
-                if (period.End.TotalHours < earliestOpeningTime)
-                {
-                    return new OpeningPeriod(period.DayOfWeek, period.Start,
-                        TimeSpan.FromHours(period.End.TotalHours + 24d));
-                }
-                return period;
             }
         }
 

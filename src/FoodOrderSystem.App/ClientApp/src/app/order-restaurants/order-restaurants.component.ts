@@ -13,6 +13,8 @@ import {CuisineModel} from '../cuisine/cuisine.model';
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   cuisines: CuisineModel[];
+
+  openingHourFilter: string;
   selectedCuisineFilter: string;
 
   restaurants: RestaurantModel[];
@@ -92,6 +94,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.pageOfRestaurants = pageOfRestaurants;
   }
 
+  onOpeningHourFilterChanged(): void {
+    this.updateSearch();
+  }
+
   onSelectedCuisineFilterChanged(): void {
     this.updateSearch();
   }
@@ -102,7 +108,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
 
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter)
+      this.selectedCuisineFilter, this.openingHourFilter)
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = result;
