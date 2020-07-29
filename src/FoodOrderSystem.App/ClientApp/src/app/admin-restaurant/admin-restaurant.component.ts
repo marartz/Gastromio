@@ -49,7 +49,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   openingPeriodVMs: OpeningPeriodViewModel[];
   addOpeningPeriodForm: FormGroup;
-  addOpeningPeriodError: string;
 
   changeServiceInfoForm: FormGroup;
 
@@ -129,6 +128,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   private static parseTimeValue(text: string): TimeParseResult {
+    if (!text) {
+      return new TimeParseResult(false, 0);
+    }
+
     text = text.trim();
 
     if (text.length < 5) {
@@ -526,10 +529,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
   onAddOpeningPeriod(value): void {
     const dayOfWeek: number = Number(value.dayOfWeek);
+    const invalidNumberError: string = 'Geben Sie eine gültige Zeit ein';
 
     const startParseResult: TimeParseResult = AdminRestaurantComponent.parseTimeValue(value.start);
     if (!startParseResult.isValid) {
-      this.formError = 'Geben Sie eine gültige Zeit ein';
+      this.formError = invalidNumberError;
       return;
     } else {
       this.formError = undefined;
@@ -537,7 +541,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
     const endParseResult: TimeParseResult = AdminRestaurantComponent.parseTimeValue(value.end);
     if (!endParseResult.isValid) {
-      this.formError = 'Geben Sie eine gültige Zeit ein';
+      this.formError = invalidNumberError;
       return;
     } else {
       this.formError = undefined;
@@ -550,7 +554,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.blockUI.stop();
 
-        this.addOpeningPeriodError = undefined;
+        this.formError = undefined;
         this.addOpeningPeriodForm.reset();
 
         const model = new OpeningPeriodModel();
@@ -562,7 +566,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.addOpeningPeriodError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 

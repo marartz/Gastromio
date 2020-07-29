@@ -21,9 +21,7 @@
                                 <div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div>
                                 <div *ngIf="f.email.errors.pattern">E-Mail-Adresse muss gültig sein</div>
                             </div>
-                            <div *ngIf="message !== undefined">
-                                <span>{{message}}</span>
-                            </div>
+                            <div *ngIf="message !== undefined"><span>{{message}}</span></div>
                         </div>
                         <div class="modal-input" role="combobox">
                             <select id="role" formControlName="role">
@@ -37,7 +35,7 @@
                             <input type="password" id="password" formControlName="password" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Passwort des Benutzers" />
                             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                                 <div *ngIf="f.password.errors.required">Passwort wird benötigt</div>
-                                <div *ngIf="f.password.errors.pattern">Das Passwort ist nicht komplex genug (mind. ein Kleinbuchstabe, ein Großbuchstabe, eine Ziffer und ein Zeichen aus '!@#$%^&')</div>
+                                <div *ngIf="f.password.errors.pattern">Das Passwort ist nicht komplex genug (mind. 1 Klein-, 1 Großbuchstabe, 1 Ziffer und 1 Sonderzeichen)</div>
                             </div>
                         </div>
                         <div class="modal-input" role="combobox">

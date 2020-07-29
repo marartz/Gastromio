@@ -24,13 +24,13 @@
                                 <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab" (click)="onDeliverySelected()"><span>Lieferung</span></button>
                                 <button class="tab-item" [class.selected]="orderType === 'reservation'" role="tab" (click)="onReservationSelected()"><span>Reservierung</span></button>
                                 <ng-container *ngIf="orderType === 'pickup'">
-                                    <div class="tab-slider"><div class="bar" style="width: 33%; left: 0%"></div></div>
+                                    <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%"></div></div>
                                 </ng-container>
                                 <ng-container *ngIf="orderType === 'delivery'">
-                                    <div class="tab-slider"><div class="bar" style="width: 33%; left: 33%"></div></div>
+                                    <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div>
                                 </ng-container>
                                 <ng-container *ngIf="orderType === 'reservation'">
-                                    <div class="tab-slider"><div class="bar" style="width: 33%; left: 66%"></div></div>
+                                    <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div>
                                 </ng-container>
                             </div>
 

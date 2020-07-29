@@ -26,7 +26,7 @@
                                         <img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo">
                                     </div>
                                 </ng-container>
-                                <span class="order-at">Bestelle bei</span>
+                                <span class="order-at">{{getCart().getOrderTypeText()}}</span>
                                 <h1>
                                     {{restaurant.name}}
                                     <span class="imprint-icon" role="button" (click)="openImprintModal()">

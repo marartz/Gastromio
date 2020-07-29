@@ -34,8 +34,788 @@
     <meta http-equiv="imagetoolbar" content="no" />
     <meta http-equiv="Language" content="de" />
 
-    <link rel="dns-prefetch" href="//consent-manager.metic.io/" />
-    <link rel="dns-prefetch" href="//config.metic.io/" />
+    <style type="text/css">
+    #iubenda-cs-banner {
+        background: rgba(0, 0, 0, 0.6);
+        border: 0px;
+        display: flex;
+        display: -ms-flexbox;
+        display: -webkit-box;
+        font-size: 15px;
+        height: 100%;
+        line-height: 1.4;
+        margin: 0px;
+        left: 0px;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0px;
+        pointer-events: none;
+        position: fixed;
+        top: 0px;
+        visibility: hidden;
+        width: 100%;
+        will-change: opacity,visibility;
+        z-index: 99999998;
+        transition: opacity .4s ease,visibility .4s ease;
+        -o-transition: opacity .4s ease,visibility .4s ease;
+        -webkit-transition: opacity .4s ease,visibility .4s ease;
+    }
+
+    #iubenda-cs-banner .iubenda-banner-content:not(.iubenda-custom-content) *,
+    #iubenda-cs-banner [class*=" iub"],
+    #iubenda-cs-banner [class^=iub] {
+        appearance: none;
+        backface-visibility: hidden;
+        background: #f8f8f6;
+        background-attachment: scroll;
+        background-color: #f8f8f6;
+        background-image: none;
+        background-position: 0 0;
+        background-repeat: repeat;
+        background-origin: padding-box;
+        background-clip: border-box;
+        background-size: auto;
+        border: 0px solid #f8f8f6;
+        border-radius: 8px;
+        border-style: none;
+        border-width: medium;
+        bottom: auto;
+        box-sizing: border-box;
+        clear: none;
+        clip: auto;
+        color: #000;
+        counter-increment: none;
+        counter-reset: none;
+        direction: inherit;
+        float: none;
+        font-family: proxima-nova, sans-serif;
+        font-size: 100%;
+        font-style: inherit;
+        font-variant: normal;
+        font-weight: inherit;
+        height: auto;
+        left: auto;
+        letter-spacing: normal;
+        line-height: inherit;
+        list-style-type: inherit;
+        list-style-position: outside;
+        list-style-image: none;
+        margin: 0px;
+        max-height: none;
+        max-width: none;
+        min-height: 0px;
+        min-width: 0px;
+        opacity: 1;
+        outline: 0;
+        overflow: visible;
+        padding: 0px;
+        position: static;
+        quotes: "" "";
+        right: auto;
+        overflow-x: visible;
+        overflow-y: visible;
+        table-layout: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        top: auto;
+        width: auto;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-backface-visibility: hidden;
+        -webkit-box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        unicode-bidi: normal;
+        vertical-align: baseline;
+        visibility: inherit;
+        white-space: normal;
+        width: auto;
+    }
+
+    #iubenda-cs-banner .iub-popover-trigger {
+        display: inline-block;
+        text-decoration: underline;
+        -webkit-text-decoration-style: dashed;
+        text-decoration-style: dashed;
+        position: relative;
+        margin-right: 16px;
+        cursor: pointer;
+        line-height: 1.25;
+    }
+
+    #iubenda-cs-banner .iub-popover-trigger:after,
+    #iubenda-cs-banner .iub-popover-trigger:before {
+        content: "";
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 12px;
+        vertical-align: middle;
+        background-size: 4px;
+        position: absolute;
+        left: calc(100% + 2px);
+        top: 3px
+    }
+
+    #iubenda-cs-banner .iub-popover-trigger:before {
+        background-color: currentColor;
+        opacity: .35
+    }
+
+    #iubenda-cs-banner .iub-popover-trigger:after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='13' viewBox='0 0 7 13'%3E%3Cg fill='%23FFF' fill-rule='evenodd'%3E%3Cpath d='M2.779 1.288a1.287 1.287 0 112.574 0 1.287 1.287 0 01-2.574 0zM5.467 10.422l.903 1.851-.7.341a2.496 2.496 0 01-3.545-2.717l.818-3.252a.42.42 0 00-.178-.382.422.422 0 00-.452-.041l-.844.412-.902-1.852.843-.412a2.491 2.491 0 012.576.233 2.49 2.49 0 01.989 2.389 1.105 1.105 0 01-.02.095l-.817 3.253a.42.42 0 00.178.382c.08.059.244.142.451.041l.7-.341z'/%3E%3C/g%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat
+    }
+
+    #iubenda-cs-banner .iub-popover {
+        position: absolute;
+        top: 24px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #222;
+        z-index: 2;
+        -webkit-box-shadow: 0 0 32px rgba(0, 0, 0, .1);
+        box-shadow: 0 0 32px rgba(0, 0, 0, .1);
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transform: translateY(24px);
+        -ms-transform: translateY(24px);
+        transform: translateY(24px);
+        -webkit-transition: opacity .3s ease, visibility .3s ease, -webkit-transform .3s ease;
+        transition: opacity .3s ease, visibility .3s ease, -webkit-transform .3s ease;
+        -o-transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
+        transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
+        transition: opacity .3s ease, visibility .3s ease, transform .3s ease, -webkit-transform .3s ease;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        z-index: 99;
+        pointer-events: none;
+        overflow: hidden
+    }
+
+    #iubenda-cs-banner .iub-popover-header {
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        z-index: 1;
+        -webkit-box-shadow: 0 16px 16px #fff;
+        box-shadow: 0 16px 16px #fff
+    }
+
+    #iubenda-cs-banner .iub-popover-header>* {
+        padding: 24px;
+        padding-bottom: 0
+    }
+
+    #iubenda-cs-banner .iub-popover-header-title {
+        font-size: 18px;
+        font-weight: 700
+    }
+
+    #iubenda-cs-banner .iub-popover-header-close {
+        font-size: 24px;
+        font-weight: 300;
+        cursor: pointer;
+        line-height: 1;
+        position: relative;
+        top: -2px
+    }
+
+    #iubenda-cs-banner .iub-popover-content {
+        font-size: 14px;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        font-weight: 300;
+        line-height: 1.5;
+        position: relative
+    }
+
+    #iubenda-cs-banner .iub-popover-content>div {
+        padding: 0 24px;
+        overflow-y: auto;
+        height: 100%
+    }
+
+    #iubenda-cs-banner .iub-popover-content>div:after,
+    #iubenda-cs-banner .iub-popover-content>div:before {
+        content: "";
+        display: block;
+        height: 24px
+    }
+
+    #iubenda-cs-banner .iub-popover-content h3 {
+        margin-bottom: 16px;
+        font-weight: 700
+    }
+
+    #iubenda-cs-banner .iub-popover-content p:not(:last-of-type) {
+        margin-bottom: 16px!
+    }
+
+    #iubenda-cs-banner .iub-popover-content a {
+        text-decoration: underline;
+        cursor: pointer;
+        opacity: .8
+    }
+
+    #iubenda-cs-banner .iub-popover-content b,
+    #iubenda-cs-banner .iub-popover-content strong {
+        font-weight: 700
+    }
+
+    #iubenda-cs-banner .iub-popover-content em,
+    #iubenda-cs-banner .iub-popover-content i {
+        font-style: italic
+    }
+
+    #iubenda-cs-banner .iub-popover-content:after {
+        position: absolute;
+        content: "";
+        display: block;
+        height: 24px;
+        pointer-events: none;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(white));
+        background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0, #fff 100%);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 100%)
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating .iub-popover {
+        left: 8px;
+        right: 8px
+    }
+
+    @media (min-width:640px) {
+        #iubenda-cs-banner.iubenda-cs-default .iub-popover {
+            max-width: 992px;
+            margin: 0 auto
+        }
+        #iubenda-cs-banner.iubenda-cs-default.iubenda-cs-top .iub-popover {
+            top: 16px;
+            bottom: -16px
+        }
+        #iubenda-cs-banner.iubenda-cs-default.iubenda-cs-bottom .iub-popover {
+            top: -16px;
+            bottom: 16px
+        }
+    }
+
+    #iubenda-cs-banner.iub-popover-visible .iub-popover {
+        opacity: 1;
+        visibility: visible;
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+        pointer-events: auto
+    }
+
+    #iubenda-cs-banner.iubenda-cs-overlay:before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .5);
+        z-index: 1;
+        pointer-events: auto
+    }
+
+    #iubenda-cs-banner.iubenda-cs-center {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center
+    }
+
+    #iubenda-cs-banner.iubenda-cs-top {
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start
+    }
+
+    #iubenda-cs-banner.iubenda-cs-bottom {
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end
+    }
+
+    #iubenda-cs-banner.iubenda-cs-left {
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start
+    }
+
+    #iubenda-cs-banner.iubenda-cs-right {
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end
+    }
+
+    #iubenda-cs-banner.iubenda-cs-visible {
+        opacity: 1;
+        visibility: visible
+    }
+
+    #iubenda-cs-banner.iubenda-cs-visible .iubenda-cs-container {
+        pointer-events: auto
+    }
+
+    #iubenda-cs-banner.iubenda-cs-slidein .iubenda-cs-container {
+        -webkit-transition: -webkit-transform .4s ease;
+        transition: -webkit-transform .4s ease;
+        -o-transition: transform .4s ease;
+        transition: transform .4s ease;
+        transition: transform .4s ease, -webkit-transform .4s ease
+    }
+
+    #iubenda-cs-banner.iubenda-cs-slidein.iubenda-cs-top .iubenda-cs-container {
+        -webkit-transform: translateY(-48px);
+        -ms-transform: translateY(-48px);
+        transform: translateY(-48px)
+    }
+
+    #iubenda-cs-banner.iubenda-cs-slidein.iubenda-cs-bottom .iubenda-cs-container {
+        -webkit-transform: translateY(48px);
+        -ms-transform: translateY(48px);
+        transform: translateY(48px)
+    }
+
+    #iubenda-cs-banner.iubenda-cs-slidein.iubenda-cs-visible .iubenda-cs-container {
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    #iubenda-cs-banner .iubenda-cs-container {
+        position: relative;
+        z-index: 2
+    }
+
+    #iubenda-cs-banner .iubenda-cs-brand {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 16px
+    }
+
+    #iubenda-cs-banner .iubenda-cs-brand>div {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start
+    }
+
+    #iubenda-cs-banner .iubenda-cs-brand img {
+        max-width: 192px;
+        max-height: 56px
+    }
+
+    #iubenda-cs-banner .iubenda-cs-content {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        -webkit-transition: -webkit-transform .4s ease;
+        transition: -webkit-transform .4s ease;
+        -o-transition: transform .4s ease;
+        transition: transform .4s ease;
+        transition: transform .4s ease, -webkit-transform .4s ease
+    }
+
+    #iubenda-cs-banner .iubenda-cs-rationale {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column
+    }
+
+    #iubenda-cs-banner .iubenda-cs-close-btn {
+        position: absolute;
+        top: -2px;
+        padding: 16px;
+        right: 0px;
+        min-width: 48px;
+        height: 48px;
+        font-size: 24px;
+        line-height: 0;
+        font-weight: lighter;
+        cursor: pointer;
+        text-align: center
+    }
+
+    #iubenda-cs-banner .iubenda-cs-close-btn:hover {
+        opacity: .5
+    }
+
+    #iubenda-cs-banner .iubenda-banner-content {
+        font-weight: 300;
+        margin: 16px;
+        margin-bottom: 0;
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0, #000 16px);
+        -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0, #000 16px);
+        padding-bottom: 32px
+    }
+
+    #iubenda-cs-banner .iubenda-banner-content-padded {
+        padding-right: 32px
+    }
+
+    #iubenda-cs-banner .iubenda-banner-content a {
+        cursor: pointer;
+        color: currentColor;
+        opacity: .7;
+        text-decoration: underline
+    }
+
+    #iubenda-cs-banner .iubenda-banner-content a:hover {
+        opacity: 1
+    }
+
+    #iubenda-cs-banner #iubenda-cs-title {
+        font-weight: 700;
+        margin-bottom: 16px
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group {
+        margin: 16px;
+        z-index: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-top: 0!;
+        -ms-flex-negative: 0;
+        flex-shrink: 0
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group>div {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex
+    }
+
+    @media (min-width:640px) {
+        #iubenda-cs-banner .iubenda-cs-opt-group {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between
+        }
+        #iubenda-cs-banner .iubenda-cs-opt-group-custom {
+            margin-right: auto;
+            -ms-flex-item-align: start;
+            align-self: start;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: flex-start
+        }
+        #iubenda-cs-banner .iubenda-cs-opt-group-consent {
+            margin-left: auto;
+            -ms-flex-item-align: end;
+            align-self: end;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end
+        }
+    }
+
+    @media (max-width:639px) {
+        #iubenda-cs-banner .iubenda-cs-opt-group {
+            margin: 12px;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column
+        }
+        #iubenda-cs-banner .iubenda-cs-opt-group-custom {
+            -webkit-box-ordinal-group: 3;
+            -ms-flex-order: 2;
+            order: 2
+        }
+        #iubenda-cs-banner .iubenda-cs-opt-group-consent {
+            -webkit-box-ordinal-group: 2;
+            -ms-flex-order: 1;
+            order: 1
+        }
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding: 8px 32px;
+        border-radius: 64px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        text-align: center
+    }
+
+    @media (min-width:640px) {
+        #iubenda-cs-banner .iubenda-cs-opt-group button:not(:last-of-type) {
+            margin-right: 8px
+        }
+    }
+
+    @media (max-width:639px) {
+        #iubenda-cs-banner .iubenda-cs-opt-group button {
+            padding: 8px 24px;
+            width: 100%;
+            display: block;
+            text-align: center;
+            margin: 6px 3px
+        }
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand {
+        margin: 0 -8px 0
+    }
+
+    @media (max-width:991px) {
+        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand {
+            margin: -8px -8px 0
+        }
+    }
+
+    @media (min-width:992px) {
+        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand div {
+            margin: 0 auto;
+            width: calc(992px - 32px)
+        }
+    }
+
+    @media (max-width:991px) {
+        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand div {
+            margin: 0 8px
+        }
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-container {
+        width: 100%
+    }
+
+    @media (min-width:992px) {
+        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-rationale {
+            width: 992px;
+            margin: 16px auto
+        }
+    }
+
+    @media (max-width:991px) {
+        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-content {
+            padding: 8px
+        }
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-brand {
+        margin: -8px -8px 0
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-brand div {
+        margin: 8px
+    }
+
+    @media (min-width:992px) {
+        #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-container {
+            width: 992px
+        }
+    }
+
+    @media (min-width:640px) {
+        #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-container,
+        #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-container,
+        #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-container {
+            width: 480px
+        }
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group>div,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group>div,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group>div {
+        width: 100%
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group button,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group button,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group button {
+        display: block;
+        width: 100%;
+        text-align: center
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group-custom,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group-custom,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group-custom {
+        -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+        order: 2
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group-consent,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group-consent,
+    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group-consent {
+        -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+        order: 1
+    }
+
+    #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-content {
+        -webkit-box-shadow: 0 8px 48px rgba(0, 0, 0, .15);
+        box-shadow: 0 8px 48px rgba(0, 0, 0, .15);
+        padding: 8px;
+    }
+
+    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-container,
+    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-content,
+    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-rationale {
+        height: 100%;
+    }
+
+    #iubenda-cs-banner.iubenda-cs-fix-height.iubenda-cs-default-floating .iubenda-cs-content {
+        height: calc(100% - 32px);
+    }
+
+    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-brand img {
+        max-width: 75%;
+    }
+
+    #iubenda-cs-banner .iubenda-cs-content {
+        background-color: #f8f8f6;
+        color: #fff;
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group {
+        color: #000;
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group button {
+        background-color: rgba(255, 255, 255, .1);
+        border-radius: 4px!important;
+        color: #6d6d6d;
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group button:focus,
+    #iubenda-cs-banner .iubenda-cs-opt-group button:hover {
+        color: #6d6d6d!important;
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group button.iubenda-cs-btn-primary {
+        background-color: #65b32e;
+        color: #fff;
+        margin-top: 2px;
+    }
+
+    #iubenda-cs-banner .iubenda-cs-opt-group button.iubenda-cs-btn-primary:focus,
+    #iubenda-cs-banner .iubenda-cs-opt-group button.iubenda-cs-btn-primary:hover {
+        background-color: #256d1b!important;
+        color: #fff!important;
+        transition: all 50ms cubic-bezier(.57, .06, .05, .95), background-color 50ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out!important;
+    }
+
+    #purposes-container .purposes-header-title,
+    #purposes-container .purposes-header-title,
+    #purposes-container .purposes-buttons button,
+    #iubenda-iframe .purposes-top-right .purposes-btn-cp span,
+    #purposes-container .purposes-btn,
+    #purposes-container .purposes-item-title-btn {
+        font-family: proxima-nova, sans-serif!important;
+    }
+
+    #iubenda-iframe #iubFooterBtnContainer button {
+        background: #65b32e!important;
+        background-color: #65b32e!important;
+        color: #fff!important;
+        font-family: proxima-nova, sans-serif!important;
+    }
+
+    #iubenda-iframe #iubFooterBtnContainer button:focus,
+    #iubenda-iframe #iubFooterBtnContainer button:hover {
+        background-color: #256d1b!important;
+        color: #fff!important;
+        opacity: 1!important;
+        transition: all 50ms cubic-bezier(.57, .06, .05, .95), background-color 50ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out!important;
+    }
+    #iubenda-iframe .iubenda-modal-navigation:not(.iubenda-modal-navigation-brand) {
+        background-color: #f8f8f6!important;
+    }
+    </style>
+
+    <script type="text/javascript">
+    var _iub = _iub || [];
+    _iub.csConfiguration = {
+        "cookiePolicyId": 68796811,
+        "cookiePolicyInOtherWindow": true,
+        "cookiePolicyUrl": "/privacy-policy",
+        "consentOnContinuedBrowsing": false,
+        "lang": "de",
+        "perPurposeConsent": true,
+        "reloadOnConsent": true,
+        "siteId": 1962425,
+        "whitelabel": false,
+        "enableTcf": true,
+        "tcfVersion": 2,
+        "tcfPurposes": {
+            "1": "consent_not_needed",
+            "2": false,
+            "4": "li_only",
+            "7": "consent_only"
+        },
+        "tcfPublisherCC": "DE",
+        "isTCFConsentGlobal": false,
+        "banner": {
+            "applyStyles": false,
+            "acceptButtonDisplay": true,
+            "backgroundColor": "#f8f8f6",
+            "content": "Wir verwenden Cookies, um dir mehr Benutzerfreundlichkeit bieten zu können. Durch die Nutzung unserer Seite erklärst du dich damit einverstanden. Hier erhältst du weiterführende Informationen zum Thema %{cookie_policy_link}.",
+            "cookiePolicyLinkCaption": "Datenschutz bei Gastromio",
+            "fontSizeBody": "14px",
+            "position": "float-center",
+        }
+    };
+    </script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" onload="_iub.cc = 'EU';" async></script>
 
     <meta name="HandheldFriendly" content="true" />
     <meta name="MobileOptimized" content="width" />
@@ -51,11 +831,23 @@
     <meta name="format-detection" content="address=no" />
     <meta name="format-detection" content="telephone=no" />
 
-    <link rel="preload stylesheet" as="style" type="text/css" href="/assets/css/frontend.min.css" />
-    <link rel="preload stylesheet" as="style" type="text/css" href="https://use.typekit.net/wxy8rab.css" />
+    <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="/assets/css/frontend.min.css" />
+    <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/wxy8rab.css" />
 
-    <script crossorigin="anonymous" src="https://config.metomic.io/config.js?id=prj:bffaa251-e741-4522-b5ba-dcfa8e5394ea"></script>
-    <script crossorigin="anonymous" src="https://consent-manager.metomic.io/embed.js"></script>
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="1">
+        $('.order').click(function(e) {
+
+        let button = $(this);
+
+        if(!button.hasClass('animate')) {
+            button.addClass('animate');
+            setTimeout(() => {
+                button.removeClass('animate');
+            }, 10000);
+        }
+
+        });
+    </script>
 
     <title>Gastromio</title>
 
@@ -100,8 +892,8 @@
     <link rel="mask-icon" type="image/svg" href="/assets/img/favicons/safari-pinned-tab.svg" color="#65b32e" />
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
-    <script type="text/x-metomic" data-micropolicy="statistics">!function(t,h,e,j,s,n){t.hj=t.hj||function(){(t.hj.q=t.hj.q||[]).push(arguments)},t._hjSettings={hjid:1824267,hjsv:6},s=h.getElementsByTagName("head")[0],(n=h.createElement("script")).async=1,n.src="https://static.hotjar.com/c/hotjar-"+t._hjSettings.hjid+".js?sv="+t._hjSettings.hjsv,s.appendChild(n)}(window,document);</script>
-    <script type="text/x-metomic" data-micropolicy="statistics">window.fbAsyncInit=function(){FB.init({appId:"929536154183982",cookie:!0,xfbml:!0,version:"v7.0"}),FB.AppEvents.logPageView()},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||((o=e.createElement(n)).id=t,o.src="https://connect.facebook.net/en_US/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">!function(t,h,e,j,s,n){t.hj=t.hj||function(){(t.hj.q=t.hj.q||[]).push(arguments)},t._hjSettings={hjid:1824267,hjsv:6},s=h.getElementsByTagName("head")[0],(n=h.createElement("script")).async=1,n.src="https://static.hotjar.com/c/hotjar-"+t._hjSettings.hjid+".js?sv="+t._hjSettings.hjsv,s.appendChild(n)}(window,document);</script>
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">window.fbAsyncInit=function(){FB.init({appId:"929536154183982",cookie:!0,xfbml:!0,version:"v7.0"}),FB.AppEvents.logPageView()},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||((o=e.createElement(n)).id=t,o.src="https://connect.facebook.net/en_US/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
 
     <link rel="search" type="application/opensearchdescription+xml" title="Gastromio" href="/osd.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">

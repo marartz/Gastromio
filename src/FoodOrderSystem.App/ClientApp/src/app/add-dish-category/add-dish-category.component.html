@@ -18,12 +18,8 @@
                         <div class="modal-input" role="combobox">
                             <label>Gerichtkategorie</label>
                             <input type="text" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="Name der Kategorie" />
-                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
-                            </div>
-                            <div *ngIf="message !== undefined">
-                                <span>{{message}}</span>
-                            </div>
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback"><div *ngIf="f.name.errors.required">Name der Kategorie wird benötigt</div></div>
+                            <div *ngIf="message !== undefined"><span>{{message}}</span></div>
                         </div>
                     </fieldset>
                 </div>

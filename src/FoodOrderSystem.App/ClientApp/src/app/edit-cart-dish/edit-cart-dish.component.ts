@@ -7,7 +7,7 @@ import {CartDishModel} from '../cart/cart-dish.model';
 @Component({
   selector: 'app-edit-cart-dish',
   templateUrl: './edit-cart-dish.component.html',
-  styleUrls: ['./edit-cart-dish.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./edit-cart-dish.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
 })
 export class EditCartDishComponent implements OnInit {
   @Input() public cartDish: CartDishModel;

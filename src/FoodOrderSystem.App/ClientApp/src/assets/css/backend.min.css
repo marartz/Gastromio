@@ -17,6 +17,14 @@
 /* 1. #backend */
 #backend {
     background-color: #f8f8f6;
+    font-family: proxima-nova, sans-serif;
+}
+
+@media print {
+    #backend > * {
+        display: none!important;
+        visibility: hidden!important;
+    }
 }
 
 /* 1.1 #backend > #hero */
@@ -35,10 +43,10 @@
 }
 
 #backend #hero .inner {
-    text-align: center;
     margin-right: auto;
     margin-left: auto;
     max-width: 100%;
+    text-align: center;
     width: 502px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -46,19 +54,17 @@
 
 #backend #hero .inner .page-title {
     color: #256d1b;
-    font-family: proxima-nova, sans-serif;
-    font-size: 40px;
-    font-weight: 600;
+    font-size: 44px;
+    font-weight: 700;
     margin-bottom: 10px;
     outline: none;
 }
 
 #backend #hero .inner .page-description {
     color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
-	  margin-bottom: 27px;
+	margin-bottom: 27px;
     margin-left: auto;
     margin-right: auto;
     max-width: 500px;
@@ -109,23 +115,30 @@
 }
 
 #backend #form h3 {
-	  color: grey;
-	  font-family: proxima-nova, sans-serif;
-	  font-size: 14px;
-	  margin-bottom: 16px;
-	  text-transform: capitalize;
+	color: grey;
+	font-size: 14px;
+	margin-bottom: 16px;
+	text-transform: capitalize;
 }
 
 #backend #form form {
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 24px;
     padding: 20px;
     transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -o-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .4s cubic-bezier(.57, .06, .05, .95);
 }
 
 #backend #form .backend-input {
     position: relative;
     transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -o-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .4s cubic-bezier(.57, .06, .05, .95);
 }
 
 #backend #form .backend-input:not(:last-of-type) {
@@ -133,18 +146,18 @@
 }
 
 #backend #form .backend-input input {
-	  margin-bottom: 0px;
-	  width: 100%;
+	margin-bottom: 0px;
+	width: 100%;
 }
 
 #backend #form .backend-input input.disabled {
     border-bottom: 2px dotted #ccc;
     border-bottom-style: dotted;
-    cursor: not-allowed;
-    pointer-events: auto;
     color: #6d6d6d;
-    -webkit-text-fill-color: #6d6d6d;
+    cursor: not-allowed;
     opacity: 1;
+    pointer-events: auto;
+    -webkit-text-fill-color: #6d6d6d;
 }
 
 #backend #form .backend-input input:not(.disabled):focus,
@@ -153,7 +166,6 @@
 }
 
 #backend #form .backend-input .cuisine {
-    background: #fff;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0px 1px 0px #e5e5e5;
@@ -164,8 +176,8 @@
     outline: none;
     overflow: hidden;
     padding: 10px;
-	  text-align: left;
-	  width: 100%;
+	text-align: left;
+	width: 100%;
 }
 
 #backend #form .backend-input .cuisine .wrap {
@@ -196,7 +208,6 @@
 }
 
 #backend #form .backend-input .cuisine .cuisine-name {
-    font-family: proxima-nova, sans-serif;
     font-weight: 500;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
@@ -224,15 +235,18 @@
 }
 
 #backend #payment-method .method {
-    background: #fff;
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 24px;
     color: #3b4245;
     display: block;
     outline: none;
     overflow: hidden;
     text-align: left;
     transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
+    -ms-transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
+    -moz-transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
+    -o-transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
+    -webkit-transition: border-color .3s cubic-bezier(.215, .61, .355, 1);
     width: 100%;
 }
 
@@ -266,7 +280,6 @@
 }
 
 #backend #payment-method .method .payment-name {
-    font-family: proxima-nova, sans-serif;
     line-height: 1;
 }
 
@@ -278,19 +291,22 @@
 #backend #payment-method .actions {
     cursor: pointer;
     margin-left: auto;
-    right: -16px;
     padding: 16px 18px;
     position: absolute;
+    right: -16px;
     text-align: center;
 }
 
 /* 1.5 #backend > #management */
 #backend #management {
+    background-color: #fff;
+    border-radius: 24px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 36px;
     max-width: 1200px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 32px;
+    padding-bottom: 0px;
 }
 
 #backend #management .inner {
@@ -315,7 +331,6 @@
 
 #backend #management .inner table th {
     color: #3b4245;
-    font-family: proxima-nova, sans-serif;
     font-weight: 600;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -361,6 +376,10 @@
     padding: 8px;
     position: relative;
     transition: none;
+    -ms-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    -webkit-transition: none;
 }
 
 #backend #restaurants #informations {
@@ -409,13 +428,11 @@
     margin-bottom: 3px;
 }
 
-
 #backend #restaurants #informations #actions .settings {
     color: #65b32e;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    font-family: proxima-nova, sans-serif;
     font-weight: 600;
     line-height: 18px;
     opacity: 0.8;
@@ -470,20 +487,42 @@
 
 /* 90. #modal */
 #modal {
-    background-color: rgba(248, 248, 246, .56);
-    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: proxima-nova, sans-serif;
     height: 100%;
-    width: 100%;
-    top: 50%;
     left: 0px;
+    position: fixed;
     right: 0px;
+    top: 50%;
+    width: 100%;
+    transition: opacity .4s ease,visibility .4s ease;
     transform: translateY(-50%);
+
+    -ms-transition: opacity .4s ease,visibility .4s ease;
     -ms-transform: translateY(-50%);
-    z-index: 999999 !important;
+
+    -moz-transition: opacity .4s ease,visibility .4s ease;
+    -moz-transform: translateY(-50%);
+
+    -o-transition: opacity .4s ease,visibility .4s ease;
+    -o-transform: translateY(-50%);
+
+    -webkit-transition: opacity .4s ease,visibility .4s ease;
+    -webkit-transform: translateY(-50%);
+
+    z-index: 999999!important;
 }
 
 #modal .modal-content {
-    background-color: #fff;
+    animation-name: fadeInUpModal;
+    animation-delay: 50ms;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    background-color: #f8f8f6;
+    border: none;
+    border-radius: 24px;
     bottom: 0px;
     box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, .08), 0px 1px 0px 0px #e5e5e5;
     color: #65b32e;
@@ -491,81 +530,99 @@
     margin: 0px auto;
     max-height: 100vh;
     max-width: 498px;
-    outline: 0;
+    outline: 0px;
     opacity: 0;
-    overflow-y: hidden;
+    overflow: hidden;
     padding: 72px 0px 0px;
-    transform: none;
-    -ms-transform: none;
+    top: 50%;
     width: 100%;
-}
+    transform: none;
 
-@media screen and (min-width: 350px) {
-  #modal .modal-content {
-        animation-delay: 50ms;
-        animation-duration: .3s;
-        animation-timing-function: ease;
-        animation-iteration-count: 1;
-        animation-name: fadeInUpModal;
-        animation-fill-mode: forwards;
-	      border-radius: 4px;
-        top: 50%;
-    }
-}
+    -ms-animation-name: fadeInUpModal;
+    -ms-animation-delay: 50ms;
+    -ms-animation-duration: .3s;
+    -ms-animation-fill-mode: forwards;
+    -ms-animation-iteration-count: 1;
+    -ms-animation-timing-function: ease;
+    -ms-transform: none;
 
-@keyframes fadeInUpModal {
-    0% {
-        transform: translate3d(0, -43%, 0)
-    }
-    100% {
-        transform: translate3d(0, -50%, 0);
-        opacity: 1
-    }
+    -moz-animation-name: fadeInUpModal;
+    -moz-animation-delay: 50ms;
+    -moz-animation-duration: .3s;
+    -moz-animation-fill-mode: forwards;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: ease;
+    -moz-transform: none;
+
+    -o-animation-name: fadeInUpModal;
+    -o-animation-delay: 50ms;
+    -o-animation-duration: .3s;
+    -o-animation-fill-mode: forwards;
+    -o-animation-iteration-count: 1;
+    -o-animation-timing-function: ease;
+    -o-transform: none;
+
+    -webkit-animation-name: fadeInUpModal;
+    -webkit-animation-delay: 50ms;
+    -webkit-animation-duration: .3s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease;
+    -webkit-transform: none;
 }
 
 /* 90.1 #modal > #modal-header */
 #modal #modal-header {
-    background-color: #fff;
+    background-color: #f8f8f6;
     box-shadow: 0px 2px 21px 0px rgba(204, 204, 204, .4);
     height: 72px;
+    left: 0px;
     position: absolute;
     top: 0px;
-    left: 0px;
     width: 100%;
     z-index: 21;
 }
 
 #modal #modal-header .modal-title {
-	  line-height: 4.5rem;
-	  padding: 0 1.5rem;
-    margin-bottom: .1875rem;
-    letter-spacing: .045em;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: proxima-nova, sans-serif;
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: 700;
+    letter-spacing: 0.72px;
+    line-height: 72px;
+    margin-bottom: 3px;
+    padding: 0px 24px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+#modal #modal-header .modal-title::selection {
+    background-color: #f8f8f6;
+    color: #65b32e;
 }
 
 #modal #modal-header .modal-close {
-    background: 0 0;
-    position: absolute;
-    top: .375rem;
-    right: .375rem;
+    background-color: transparent;
     cursor: pointer;
-    transition: background .3s cubic-bezier(.57,.06,.05,.95),opacity .3s ease-out;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+
+    transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    -ms-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    -moz-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    -o-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    -webkit-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 }
 
 #modal #modal-header .modal-close svg {
     fill: #65b32e;
-    margin-bottom: .5rem;
+    margin-bottom: 8px;
 }
 
 /* 90.2 #modal > #modal-body */
 #modal #modal-body {
-    padding: 0px 24px;
     max-height: calc(80vh - 72px);
     overflow-y: auto;
+    padding: 0px 24px;
 }
 
 #modal #modal-body > :last-child {
@@ -573,7 +630,7 @@
 }
 
 #modal #modal-body::before {
-    background: #fff;
+    background: #f8f8f6;
     content: " ";
     display: block;
     height: 21px;
@@ -585,19 +642,17 @@
 
 #modal #modal-body .restaurant-imprint {
     background-color: #f8f8f6;
-    border-radius: 8px;
+    border-radius: 24px;
     color: #5d6164;
-    font-family: proxima-nova, sans-serif;
     font-size: 14px;
     font-weight: 500;
-    padding: 16px;
+    padding-bottom: 2px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 #modal #modal-body .modal-message {
     color: #5d6164;
-    font-family: proxima-nova, sans-serif;
     font-size: 16px;
     text-align: center;
 }
@@ -609,8 +664,8 @@
 }
 
 #modal #modal-body .modal-input {
-    margin-top: 48px;
     margin-bottom: 20px;
+    margin-top: 48px;
     position: relative;
 }
 
@@ -628,17 +683,15 @@
 
 #modal #modal-body .modal-input select {
     background-color: transparent;
-    border: 0;
+    border: 0px;
     border-bottom: 2px solid #ccc;
     color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
     font-size: 20px;
     height: 36px;
     line-height: 1;
     margin: 0px;
     outline: 0;
     width: 100%;
-    -webkit-border-radius: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -657,22 +710,72 @@
     top: -20px;
     transform: translateY(0);
     -ms-transform: translateY(0);
-    transition: all .4s cubic-bezier(.165, .84, .44, 1), opacity .4s cubic-bezier(.165, .84, .44, 1) .1s, z-index 0s linear .4s;
     width: auto;
-	  z-index: 2;
+	z-index: 2;
 }
 
 /* 90.3 #modal > #modal-footer */
 #modal #modal-footer {
-    background: #fff;
+    background-color: #f8f8f6;
     border-top: 1px solid #eef0f0;
-    padding: 20px 24px;
     bottom: 0px;
     left: 0px;
+    padding: 20px 24px;
     right: 0px;
     z-index: 21;
 }
 
 #modal #modal-footer .inline-button-wrap {
     margin: 0px;
+}
+
+/* 200. ANIMATIONS */
+@keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, -43%, 0)
+    }
+    100% {
+        transform: translate3d(0, -50%, 0);
+        opacity: 1
+    }
+}
+
+@-ms-keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, -43%, 0)
+    }
+    100% {
+        transform: translate3d(0, -50%, 0);
+        opacity: 1
+    }
+}
+
+@-moz-keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, -43%, 0)
+    }
+    100% {
+        transform: translate3d(0, -50%, 0);
+        opacity: 1
+    }
+}
+
+@-o-keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, -43%, 0)
+    }
+    100% {
+        transform: translate3d(0, -50%, 0);
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, -43%, 0)
+    }
+    100% {
+        transform: translate3d(0, -50%, 0);
+        opacity: 1
+    }
 }
