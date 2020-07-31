@@ -67,23 +67,23 @@ body,
 }
 
 #main {
-	  width: 100%;
-	  padding-top: 72px;
-	  height: 100%
+	padding-top: 72px;
+    height: 100%;
+    width: 100%;
 }
 
-@media screen and (min-width: 900px) {
-	  #main {
-		    padding-top: 72px;
-	  }
+@media screen and (min-width: 768px) {
+	#main {
+		padding-top: 72px;
+	}
 }
 
 h1,
 h2,
 h3,
 p {
-	  -webkit-font-smoothing: antialiased;
-	  -moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 h1 {
@@ -92,7 +92,7 @@ h1 {
     font-weight: 500;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 768px) {
     h1 {
         font-size: 36px;
 	  }
@@ -151,12 +151,20 @@ p a {
     font-family: proxima-nova, sans-serif;
     text-decoration: none;
     transition: all .3s ease-out;
+    -ms-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -o-transition: all .3s ease-out;
+    -webkit-transition: all .3s ease-out;
 }
 
 p a:hover {
     border-color: #333;
     color: #333;
     transition: all 150ms ease-out;
+    -ms-transition: all 150ms ease-out;
+    -moz-transition: all 150ms ease-out;
+    -o-transition: all 150ms ease-out;
+    -webkit-transition: all 150ms ease-out;
 }
 
 [class*="text-link"] {
@@ -169,13 +177,21 @@ p a:hover {
     line-height: 1.5;
     text-decoration: none;
     text-transform: uppercase;
-	  transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -o-transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .3s cubic-bezier(.57, .06, .05, .95);
 }
 
 [class*="text-link"]:hover {
     color: #256d1b;
     opacity: .85;
     transition: color 150ms cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: color 150ms cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: color 150ms cubic-bezier(.57, .06, .05, .95);
+    -o-transition: color 150ms cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: color 150ms cubic-bezier(.57, .06, .05, .95);
 }
 
 [class*="text-link"][class*="-small"] {
@@ -199,6 +215,10 @@ ol {
 nav,
 section {
     transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -o-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .4s cubic-bezier(.57, .06, .05, .95);
 }
 
 h6,
@@ -248,11 +268,19 @@ button {
 
 @media screen and (min-width: 768px) {
     button {
-        transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -ms-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -moz-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -o-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -webkit-transition: background-color .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 	  }
 	  button:hover {
-        background: #518f25;
-        transition: all 150ms cubic-bezier(.57, .06, .05, .95), background 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            background-color: #518f25;
+            transition: all 150ms cubic-bezier(.57, .06, .05, .95), background-color 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -ms-transition: all 150ms cubic-bezier(.57, .06, .05, .95), background-color 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -moz-transition: all 150ms cubic-bezier(.57, .06, .05, .95), background-color 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -o-transition: all 150ms cubic-bezier(.57, .06, .05, .95), background-color 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+            -webkit-transition: all 150ms cubic-bezier(.57, .06, .05, .95), background-color 150ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
 	  }
 }
 
@@ -276,6 +304,10 @@ button[class*="hollow"] {
     border: 1px solid #65b32e;
     color: #65b32e;
     transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -ms-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -moz-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -o-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -webkit-transition: all .3s cubic-bezier(.215, .61, .355, 1);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -285,9 +317,13 @@ button[class*="hollow"]:hover {
     background: #65b32e;
     border-color: transparent;
     color: #fff;
-    transition: all 150ms cubic-bezier(.215, .61,. 355, 1);
-	  -webkit-font-smoothing: antialiased;
-	  -moz-osx-font-smoothing: grayscale;
+    transition: all 150ms cubic-bezier(.215, .61, .355, 1);
+    -ms-transition: all 150ms cubic-bezier(.215, .61, .355, 1);
+    -moz-transition: all 150ms cubic-bezier(.215, .61, .355, 1);
+    -o-transition: all 150ms cubic-bezier(.215, .61, .355, 1);
+    -webkit-transition: all 150ms cubic-bezier(.215, .61, .355, 1);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 button[class*="-hollow-info"] {
@@ -404,7 +440,6 @@ textarea {
     outline: 0;
     padding: 0px 0px 5px;
     transition: all .4s cubic-bezier(.165, .84, .44, 1);
-    -webkit-border-radius: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -696,7 +731,7 @@ form:focus {
     border-radius: 0px;
     padding: 0px;
     text-align: center;
-    transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    transition: border-bottom .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
     width: 100%;
 }
 
@@ -706,7 +741,7 @@ form:focus {
 
 .tab-bar .tab-item,
 .tab-bar .tab-item:hover {
-	  background: transparent;
+	background: transparent;
 }
 
 .tab-item span {
@@ -719,6 +754,10 @@ form:focus {
     text-decoration: none;
     text-transform: uppercase;
     transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -o-transition: all .3s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .3s cubic-bezier(.57, .06, .05, .95);
     white-space: nowrap;
 }
 
@@ -740,18 +779,22 @@ form:focus {
     height: 100%;
     position: absolute;
     transition: left 150ms cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: left 150ms cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: left 150ms cubic-bezier(.57, .06, .05, .95);
+    -o-transition: left 150ms cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: left 150ms cubic-bezier(.57, .06, .05, .95);
 }
 
 .link-card {
     border-radius: 8px;
     display: block;
     padding: 0px;
-	  text-decoration: none;
+	text-decoration: none;
 }
 
 .link-card:not(.not-clickable):focus .card-inner,
 .link-card:not(.not-clickable):hover .card-inner {
-	  box-shadow: 0px 0px 0px 2px #a9a54c;
+	box-shadow: 0px 0px 0px 2px #a9a54c;
 }
 
 .link-card:not(.not-clickable):focus h1,
@@ -766,7 +809,11 @@ form:focus {
 .link-card:not(.not-clickable):hover h4,
 .link-card:not(.not-clickable):hover h5,
 .link-card:not(.not-clickable):hover h6 p {
-	  transition: color 150ms ease-out;
+      transition: color 150ms ease-out;
+      -ms-transition: color 150ms ease-out;
+      -moz-transition: color 150ms ease-out;
+      -o-transition: color 150ms ease-out;
+      -webkit-transition: color 150ms ease-out;
 }
 
 .link-card:not(:first-of-type) {
@@ -779,26 +826,30 @@ form:focus {
     margin-left: 0px;
     margin-right: 0px;
     transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -ms-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -moz-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -o-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
+    -webkit-transition: box-shadow .3s cubic-bezier(.215, .61, .355, 1);
     width: 100%;
 }
 
 .card-inner .card-content {
-	  background-color: #fff;
-	  padding: 16px;
+	background-color: #fff;
+	padding: 16px;
 }
 
 .card-inner .background-image {
     background-size: cover;
-	  padding-bottom: 66.666%;
+	padding-bottom: 66.666%;
     width: 100%;
 }
 
 .card-details {
     border-top: 1px solid #e5e5e5;
-	  display: flex;
-	  flex-direction: row;
-	  margin: 18px -16px -20px;
-	  padding: 20px 16px;
+	display: flex;
+	flex-direction: row;
+	margin: 18px -16px -20px;
+	padding: 20px 16px;
 }
 
 /* 2. #home */
@@ -968,7 +1019,7 @@ form:focus {
 }
 
 .restaurant-card {
-    border-radius: 8px;
+    border-radius: 24px;
     display: block;
     outline: none;
     padding: 0px;
@@ -996,7 +1047,7 @@ form:focus {
 }
 
 .restaurant-card .card-inner {
-    border-radius: 8px;
+    border-radius: 24px;
     box-shadow: 0px 0px 0px 2px transparent;
     margin-left: 0px;
     margin-right: 0px;
@@ -1019,7 +1070,7 @@ form:focus {
 .restaurant-card .card-content {
     background-color: #fff;
     border-bottom: 1px solid #e5e5e5;
-    border-radius: 8px;
+    border-radius: 24px;
     padding: 16px;
 }
 
@@ -1332,7 +1383,6 @@ form:focus {
     display: block;
     padding: 0px;
     text-align: center;
-    vertical-align: middle;
     width: 100%; 
 }
 

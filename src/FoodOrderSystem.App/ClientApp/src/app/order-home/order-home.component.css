@@ -9,7 +9,7 @@
 }
 
 .tab .card-inner {
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 24px 24px;
     box-shadow: 0px 0px 0px 2px transparent;
     margin-left: 0px;
     margin-right: 0px;
@@ -18,17 +18,14 @@
     width: 100%;
 }
 
-.tab .card-inner .card-content {
-    background: #fff;
-}
-
+.tab .card-inner .card-content,
 .tab .card-inner .card-content form {
     background: #fff;
 }
 
 .tab .card-inner .card-content .search-wrap {
-    margin-top: 48px;
     margin-bottom: 20px;
+    margin-top: 48px;
 }
 
 .tab .card-inner .card-content .search-wrap .search {
@@ -54,9 +51,12 @@
     position: relative;
     text-overflow: ellipsis;
     transition: all .4s cubic-bezier(.165, .84, .44, 1);
+    -ms-transition: all .4s cubic-bezier(.165, .84, .44, 1);
+    -moz-transition: all .4s cubic-bezier(.165, .84, .44, 1);
+    -o-transition: all .4s cubic-bezier(.165, .84, .44, 1);
+    -webkit-transition: all .4s cubic-bezier(.165, .84, .44, 1);
     white-space: nowrap;
     width: 100%;
-    -webkit-border-radius: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     z-index: 1;
@@ -69,9 +69,9 @@
 }
 
 .tab .card-inner .card-content .search-wrap .search input::placeholder {
+    color: #6d6d6d;
     opacity: 1;
-	  color: #6d6d6d;
-	  -webkit-text-fill-color: #6d6d6d;
+	-webkit-text-fill-color: #6d6d6d;
 }
 
 .tab .card-inner .card-content .search-wrap .search input:hover,
@@ -88,7 +88,7 @@
 
 .tab .card-inner .view-all {
     background-color: #fff;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 24px 24px;
     padding: 0px 16px 16px;
 }
 

@@ -1,7 +1,7 @@
 /* START: Tab-Bar (Lieferung/Abholung) */
 .tab-bar {
     background-color: #fff;
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 24px 24px 0px 0px;
     display: flex;
     flex-direction: row;
     position: relative;
@@ -13,7 +13,7 @@
     border-radius: 0px;
     padding: 0px;
     text-align: center;
-    transition: background .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
+    transition: all .3s cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out;
     width: 100%;
 }
 
