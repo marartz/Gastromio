@@ -1001,9 +1001,13 @@ form:focus {
 
 /* 3. #restaurants */
 #home #restaurants {
-      opacity: 1;
-      outline: none;
-	  transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
+    opacity: 1;
+    outline: none;
+    transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
+    -o-transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
+    -wekit-transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
 }
 
 .cuisine-filter {
@@ -1240,6 +1244,133 @@ form:focus {
     vertical-align: middle;
 }
 
+
+
+#restaurant #menu-hero #hero-content .hero-card .restaurant--name {
+    color: #3b4245;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .imprint-icon {
+    animation-delay: 0s;
+	animation-duration: .5s;
+	animation-fill-mode: forwards;
+	animation-iteration-count: 1;
+	animation-name: fade-in;
+    animation-timing-function: ease-out;
+    margin-left: 3px;
+    transition: all .8s ease-in-out;
+    vertical-align: middle;
+    -moz-animation-delay: 0s;
+    -moz-animation-duration: .5s;
+    -moz-animation-fill-mode: forwards;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-name: fade-in;
+    -moz-animation-timing-function: ease-out;
+    -moz-transition: all .8s ease-in-out;
+    -ms-animation-delay: 0s;
+    -ms-animation-duration: .5s;
+    -ms-animation-fill-mode: forwards;
+	-ms-animation-iteration-count: 1;
+	-ms-animation-name: fade-in;
+    -ms-animation-timing-function: ease-out;
+    -ms-transition: all .8s ease-in-out;
+    -o-animation-delay: 0s;
+	-o-animation-duration: .5s;
+	-o-animation-fill-mode: forwards;
+	-o-animation-iteration-count: 1;
+    -o-animation-name: fade-in;
+    -o-animation-timing-function: ease-out;
+    -o-transition: all .8s ease-in-out;
+	-webkit-animation-delay: 0s;
+	-webkit-animation-duration: .5s;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-animation-iteration-count: 1;
+    -webkit-animation-name: fade-in;
+    -webkit-animation-timing-function: ease-out;
+    -webkit-transition: all .8s ease-in-out;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .imprint-icon svg {
+    display: inline-block;
+    fill: #6d6d6d;
+    height: 14px;
+    margin-bottom: 5px;
+    width: auto;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .restaurant--description {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    text-align: center;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .restaurant--address {
+    color: #a4a5a9;
+    display: block;
+    margin-bottom: 6px;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .restaurant--opening-hours {
+    color: #9dc964;
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+#restaurant #menu-hero #hero-content .hero-card .restaurant--cuisines {
+    color: #3b4245;
+    font-weight: 600;
+}
+
+#restaurant .restaurant--tabs {
+    background-color: #fff;
+    height: 72px;
+    margin-top: 0px;
+    overflow: hidden;
+    position: relative;
+    transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    width: 100%;
+    -moz-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -ms-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -o-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+    -webkit-transition: all .3s cubic-bezier(.215, .61, .355, 1);
+}
+
+#restaurant .restaurant--tabs ul {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    list-style: none;
+    padding-left: 0px;
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#restaurant .restaurant--tabs .nav-tabs .nav-link {
+    background-color: #fff;
+    color: #a4a5a9;
+    font-family: proxima-nova, sans-serif;
+    font-weight: 500;
+    padding: 8px 16px;
+}
+
+#restaurant .restaurant--tabs .nav-tabs .nav-link.active {
+    background-color: #fff;
+    color: #3b4245;
+}
+
+
+
 #restaurant #menu-hero #hero-content .hero-card .order-at {
     color: #41721e;
     font-family: proxima-nova, sans-serif;
@@ -1250,65 +1381,9 @@ form:focus {
     text-transform: uppercase;
 }
 
-#restaurant #menu-hero #hero-content .hero-card h1 {
-    color: #3b4245;
-    display: block;
-    font-size: 20px;
-    font-weight: 500;
-    margin-top: 16px;
-    margin-bottom: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
 
-#restaurant #menu-hero #hero-content .hero-card .imprint-icon {
-    margin-left: 3px;
-    transition: all .8s ease-in-out;
-    vertical-align: middle;
-	-webkit-animation-delay: 0s;
-	-webkit-animation-duration: .5s;
-	-webkit-animation-timing-function: ease-out;
-	-webkit-animation-iteration-count: 1;
-	-webkit-animation-name: fade-in;
-	-webkit-animation-fill-mode: forwards;
-	-moz-animation-delay: 0s;
-	-moz-animation-duration: .5s;
-	-moz-animation-timing-function: ease-out;
-	-moz-animation-iteration-count: 1;
-	-moz-animation-name: fade-in;
-	-moz-animation-fill-mode: forwards;
-	-o-animation-delay: 0s;
-	-o-animation-duration: .5s;
-	-o-animation-timing-function: ease-out;
-	-o-animation-iteration-count: 1;
-	-o-animation-name: fade-in;
-	-o-animation-fill-mode: forwards;
-	animation-delay: 0s;
-	animation-duration: .5s;
-	animation-timing-function: ease-out;
-	animation-iteration-count: 1;
-	animation-name: fade-in;
-	animation-fill-mode: forwards;
-}
 
-#restaurant #menu-hero #hero-content .hero-card .imprint-icon svg {
-    display: inline-block;
-    margin-bottom: 5px;
-    height: 14px;
-    width: auto;
-	fill: #6d6d6d;
-}
 
-#restaurant #menu-hero #hero-content .hero-card p {
-    color: #6d6d6d;
-    display: block;
-    font-family: proxima-nova, sans-serif;
-    font-size: 13.5px;
-    font-weight: 500;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
 
 #restaurant #menu-hero #hero-content .hero-message {
     background: #41721e;
@@ -1346,7 +1421,7 @@ form:focus {
      position: relative;
      transition: all .3s cubic-bezier(.215, .61, .355, 1);
      width: 100%;
-	   z-index: 1;
+	    z-index: 1;
 }
 
 #restaurant #menu-categories .category-bar {
@@ -2412,31 +2487,17 @@ form:focus {
     font-family: proxima-nova, sans-serif;
 }
 
-#checkout h2.order-completed {
-    font-size: 32px;
-    font-weight: 600;
-    text-align: center;
-    padding-top: 32px;
-}
-
-#checkout p.order-completed-info {
-    font-size: 16px;
-    font-weight: 400;
-    text-align: center;
-    padding-bottom: 16px;
-}
-
 #checkout .checkout-content-container {
-	  margin: 0px auto;
-	  max-width: 100%;
-	  padding-left: 0px;
-	  padding-right: 0px;
-	  padding-bottom: 40px;
+	margin: 0px auto;
+	max-width: 100%;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 40px;
 }
 
 #checkout .checkout-content-container .checkout-col {
-    padding-top: 40px;
     padding-left: 0px;
+    padding-top: 80px;
     padding-right: 0px;
 }
 
@@ -2446,9 +2507,52 @@ form:focus {
 
 #checkout .info-card {
     background: #fff;
-    border-radius: 4px;
-    box-shadow: 0px 1px 0px 0px #e5e5e5;
-    padding: 32px;
+    border-radius: 8px;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+#checkout .panel--title {
+    color: #3b4245;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+#checkout .info-group .restaurant-info {
+    width: 100%;
+}
+
+#checkout .info-group .restaurant-info .restaurant--logo > img {
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    float: left;
+    height: 56px;
+    width: 56px;
+}
+
+#checkout .info-group .restaurant {
+    flex-grow: 3;
+}
+
+#checkout .info-group .restaurant-info .restaurant--description {
+    float: left;
+    margin-left: 18px;
+}
+
+#checkout .info-group .restaurant-info .restaurant--description .restaurant--name {
+    color: #3b4245;
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#checkout .info-group .restaurant-info .restaurant--description .restaurant--address {
+    color: #a4a5a9;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 #checkout .info-card .info-group {
@@ -2476,35 +2580,15 @@ form:focus {
     padding-top: 32px;
 }
 
-#checkout #ordered h3,
-#checkout .checkout-content-container .info-pane > .info-label {
-    color: grey;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    margin-bottom: 16px;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-transform: capitalize;
-}
-
-@media screen and (min-width: 1024px) {
-    #checkout #ordered h3,
-    #checkout .checkout-content-container .info-pane > .info-label {
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-}
-
 #checkout #ordered .wrapper {
-	  background: #fff;
-	  box-shadow: 0px 1px 0px 0px #e5e5e5;
-	  border-radius: 4px;
-	  padding: 32px;
+	background-color: #fff;
+	box-shadow: 0px 1px 0px 0px #e5e5e5;
+	border-radius: 4px;
+	padding: 32px;
 }
 
 #checkout #ordered .info-group {
     border-radius: 0px 0px 4px 4px;
-    box-shadow: none;
     display: flex;
     flex-direction: row;
     flex-shrink: 0;
@@ -2530,7 +2614,10 @@ form:focus {
     top: -20px;
     width: auto;
     transform: translateY(0);
+    -moz-transform: translateY(0);
     -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    -webkit-transform: translateY(0);
     z-index: 2;
 }
 
@@ -2539,8 +2626,8 @@ form:focus {
     height: 26px;
     padding-bottom: 0px;
     position: relative;
-    z-index: 1;
     width: 100%;
+    z-index: 1;
 }
 
 #checkout .checkout-message {
@@ -2548,74 +2635,6 @@ form:focus {
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4;
-    margin-top: 20px;
-}
-
-#checkout .info-group .logo {
-    flex-shrink: 0;
-    text-align: center;
-	  padding-right: 16px;
-	  width: 40px;
-}
-
-#checkout .info-group .logo-container {
-    display: flex;
-    align-items: center;
-}
-
-#checkout .info-group .logo-container > img {
-    max-width: 36px;
-    height: 36px;
-    padding: 0px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0px;
-    vertical-align: baseline;
-}
-
-#checkout .info-group .restaurant {
-    flex-grow: 3;
-    min-width: 0px;
-    padding-right: 24px;
-}
-
-#checkout .info-group .restaurant-info {
-    width: 100%;
-}
-
-#checkout .info-group .restaurant-info .restaurant-name {
-    color: #3b4245;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: capitalize;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#checkout .info-group .restaurant-info .restaurant-address {
-    color: #6d6d6d;
-    font-family: proxima-nova, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#checkout .info-group .back {
-    color: #6d6d6d;
-	  font-size: 14px;
-	  min-width: 70px;
-}
-
-#checkout .info-group .back button {
-    justify-content: flex-end;
-    text-align: right;
-    display: flex;
     margin-top: 20px;
 }
 
@@ -2643,8 +2662,7 @@ form:focus {
 #checkout #ordered .dish-content .dish-count span {
     color: #3b4245;
     font-size: 16px;
-    font-weight: 300;
-    text-transform: capitalize;
+    font-weight: 400;
     width: 100%;
 }
 
@@ -2657,8 +2675,7 @@ form:focus {
     color: #3b4245;
     font-size: 16px;
     font-weight: 500;
-    line-height: 1.2;
-    text-transform: capitalize;
+    line-height: 1.3;
     width: 100%;
 }
 
@@ -2703,6 +2720,7 @@ form:focus {
 
 #checkout .panel.total {
     color: #3b4245;
+    font-weight: 600;
 }
 
 #checkout .panel::after {
@@ -2815,6 +2833,20 @@ form:focus {
     }
 }
 
+
+#checkout h2.order-completed {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 32px;
+}
+
+#checkout p.order-completed-info {
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    padding-bottom: 16px;
+}
 /* 80. #entry */
 #entry {
     background-color: #f8f8f6;
@@ -3003,7 +3035,7 @@ form:focus {
     #navbar {
         border-bottom: 0px;
         height: 72px;
-        padding: 0px 40px;
+        padding: 0px 30px;
     }
 }
 
