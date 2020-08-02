@@ -76,7 +76,7 @@ export class OrderService {
   }
 
   public searchForRestaurantsAsync(search: string, orderType: OrderType, cuisineId: string,
-                                   openingHourFilter: string): Observable<RestaurantModel[]> {
+                                   openingHourFilter: string | undefined): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

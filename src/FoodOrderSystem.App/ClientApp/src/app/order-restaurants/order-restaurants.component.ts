@@ -108,7 +108,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
 
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter, this.openingHourFilter)
+      this.selectedCuisineFilter, undefined)
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = result;
