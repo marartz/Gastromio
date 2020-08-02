@@ -1,25 +1,25 @@
-﻿using FoodOrderSystem.App.Helper;
-using FoodOrderSystem.Domain.Commands;
-using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.Queries;
-using FoodOrderSystem.Domain.Queries.GetDishesOfRestaurant;
-using FoodOrderSystem.Domain.Queries.GetRestaurantById;
-using FoodOrderSystem.Domain.Queries.OrderSearchForRestaurants;
-using FoodOrderSystem.Domain.Services;
-using FoodOrderSystem.Domain.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
-using FoodOrderSystem.Domain.Commands.Checkout;
-using FoodOrderSystem.Domain.Model.Cuisine;
-using FoodOrderSystem.Domain.Model.Dish;
-using FoodOrderSystem.Domain.Model.Order;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.Queries.GetAllCuisines;
+using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.Checkout;
+using FoodOrderSystem.Core.Application.DTOs;
+using FoodOrderSystem.Core.Application.Queries;
+using FoodOrderSystem.Core.Application.Queries.GetAllCuisines;
+using FoodOrderSystem.Core.Application.Queries.GetDishesOfRestaurant;
+using FoodOrderSystem.Core.Application.Queries.GetRestaurantById;
+using FoodOrderSystem.Core.Application.Queries.OrderSearchForRestaurants;
+using FoodOrderSystem.Core.Application.Services;
+using FoodOrderSystem.Core.Domain.Model.Cuisine;
+using FoodOrderSystem.Core.Domain.Model.Dish;
+using FoodOrderSystem.Core.Domain.Model.Order;
+using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -46,7 +46,7 @@ namespace FoodOrderSystem.App.Controllers.V1
         public async Task<IActionResult> GetAllCuisines()
         {
             var queryResult =
-                await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineViewModel>>(
+                await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(
                     new GetAllCuisinesQuery(), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
@@ -69,7 +69,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             }
             
             var queryResult =
-                await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantViewModel>>(
+                await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantDTO>>(
                     new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
@@ -79,7 +79,7 @@ namespace FoodOrderSystem.App.Controllers.V1
         public async Task<IActionResult> GetRestaurantAsync(Guid restaurantId)
         {
             var queryResult =
-                await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantViewModel>(
+                await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
                     new GetRestaurantByIdQuery(new RestaurantId(restaurantId), true), null);
             
             return ResultHelper.HandleResult(queryResult, failureMessageService);
@@ -89,7 +89,7 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetDishesOfRestaurantAsync(Guid restaurantId)
         {
-            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryViewModel>>(
+            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
                 new GetDishesOfRestaurantQuery(new RestaurantId(restaurantId)),
                 null
             );
@@ -111,7 +111,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 checkoutModel.Email,
                 ConvertOrderType(checkoutModel.OrderType),
                 new RestaurantId(checkoutModel.RestaurantId),
-                checkoutModel.CartDishes?.Select(en => new CartDishInfo(
+                checkoutModel.CartDishes?.Select(en => new CartDishInfoDTO(
                     en.ItemId,
                     new DishId(en.DishId),
                     en.VariantId,
@@ -122,7 +122,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 new PaymentMethodId(checkoutModel.PaymentMethodId)
             );
            
-            var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderViewModel>(command, null);
+            var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(command, null);
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 

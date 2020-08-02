@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Commands;
-using FoodOrderSystem.Domain.Commands.ProcessPendingNotifications;
+using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

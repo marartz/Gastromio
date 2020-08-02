@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Model.Cuisine;
-using FoodOrderSystem.Domain.Model.Order;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Core.Application.Ports.Persistence;
+using FoodOrderSystem.Core.Domain.Model.Cuisine;
+using FoodOrderSystem.Core.Domain.Model.Order;
+using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
+using FoodOrderSystem.Core.Domain.Model.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 

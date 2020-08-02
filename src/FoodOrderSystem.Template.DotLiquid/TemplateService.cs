@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using DotLiquid;
 using DotLiquid.NamingConventions;
-using FoodOrderSystem.Domain.Adapters.Template;
-using FoodOrderSystem.Domain.Model.Order;
+using FoodOrderSystem.Core.Application.Ports.Template;
+using FoodOrderSystem.Core.Domain.Model.Order;
 
 namespace FoodOrderSystem.Template.DotLiquid
 {

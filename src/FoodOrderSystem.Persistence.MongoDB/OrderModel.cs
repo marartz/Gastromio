@@ -1,5 +1,4 @@
 using System;
-using FoodOrderSystem.Domain.ViewModels;
 
 namespace FoodOrderSystem.Persistence.MongoDB
 {

@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Model.DishCategory;
-using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Core.Application.Ports.Persistence;
+using FoodOrderSystem.Core.Domain.Model.DishCategory;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
+using FoodOrderSystem.Core.Domain.Model.User;
 using MongoDB.Driver;
 
 namespace FoodOrderSystem.Persistence.MongoDB

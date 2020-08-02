@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Core.Application.Ports.Persistence;
+using FoodOrderSystem.Core.Domain.Model.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 

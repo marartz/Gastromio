@@ -7,6 +7,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FoodOrderSystem.App.BackgroundServices;
+using FoodOrderSystem.Core;
+using FoodOrderSystem.Notification.Mailjet;
+using FoodOrderSystem.Persistence.MongoDB;
+using FoodOrderSystem.Template.DotLiquid;
 using Serilog;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,12 +28,12 @@ namespace FoodOrderSystem.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Domain.Initializer.ConfigureServices(services);
+            services.AddCore();
 
             var connectionString = Configuration.GetConnectionString("MongoDB");
             Log.Logger.Information("Using connection string: {0}", connectionString);
             
-            Persistence.MongoDB.Initializer.ConfigureServices(services, connectionString);
+            services.AddMongoDB(connectionString);
 
             var mailjetConfiguration = new Notification.Mailjet.MailjetConfiguration
             {
@@ -38,8 +42,8 @@ namespace FoodOrderSystem.App
             };
             services.AddSingleton(mailjetConfiguration);
             
-            Notification.Mailjet.Initializer.ConfigureServices(services);
-            Template.DotLiquid.Initializer.ConfigureServices(services);
+            services.AddMailjet();
+            services.AddDotLiquid();
             
             services.AddHostedService<NotificationBackgroundService>();
 
