@@ -12,22 +12,25 @@
                     <div class="checkout-content-container">
 
                         <div class="checkout-main-col checkout-col">
+
                             <div class="info-pane" role="group">
-                                <h3 class="info-label">Bestelldetails</h3>
                                 <div class="info-card">
+                                    <h3 class="panel--title">{{getCart().getOrderTypeText()}} von</h3>
                                     <div class="info-section">
                                         <div class="info-group">
                                             <div class="restaurant">
                                                 <div class="restaurant-info">
-                                                    <div class="restaurant-name">{{restaurant.name}} ({{getCart().getOrderTypeText()}})</div>
-                                                    <address>
-                                                        <div class="restaurant-address">{{restaurant.address.street}}</div>
-                                                        <div class="restaurant-address">{{restaurant.address.zipCode}}, {{restaurant.address.city}}</div>
-                                                    </address>
+
+                                                    <ng-container *ngIf="hasLogo()">
+                                                        <div class="restaurant--logo"><img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo"></div>
+                                                    </ng-container>
+
+                                                    <p class="restaurant--description" style="line-height: 1.3 !important;">
+                                                        <span class="restaurant--name">{{restaurant.name}}</span>
+                                                        <span class="restaurant--address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}<br />Deutschland</span>
+                                                    </p>
+                                                                                  
                                                 </div>
-                                            </div>
-                                            <div class="back">
-                                                <button class="hollow button-small" type="button" (click)="onBack()">Zurück</button>
                                             </div>
                                         </div>
                                     </div>
@@ -35,8 +38,10 @@
                             </div>
 
                             <div class="info-pane" role="group">
-                                <h3 class="info-label">Adressinformationen</h3>
                                 <div class="info-card">
+
+                                    <h3 class="panel--title">Adressinformationen</h3>
+
                                     <div class="info-group">
                                         <div class="info-group-center">
 
@@ -90,8 +95,10 @@
                             </div>
 
                             <div class="info-pane" role="group">
-                                <h3 class="info-label">Kontaktinformationen</h3>
                                 <div class="info-card">
+
+                                    <h3 class="panel--title">Kontaktinformationen</h3>
+
                                     <div class="info-group">
                                         <div class="info-group-center">
 
@@ -160,8 +167,10 @@
 
                         <div class="checkout-aside-col checkout-col">
                             <div id="ordered">
-                                <h3>Deine Bestellung</h3>
+
                                 <div class="wrapper">
+
+                                    <h3 class="panel--title">Deine Bestellung</h3>
 
                                     <div class="info-section">
                                         <div class="info-group dish" *ngFor="let cartDish of getCart().getCartDishes()">
@@ -178,13 +187,13 @@
 
                                     <div class="info-section">
                                         <div class="totals-panel">
-                                            <div class="panel subtotal">
-                                                <div class="name">Zwischensumme</div>
-                                                <div class="cost">&euro; {{getCart().getValueOfOrderText()}}</div>
-                                            </div>
                                             <div class="panel delivery-costs" *ngIf="getCart().getCosts()">
                                                 <div class="name">Lieferkosten</div>
                                                 <div class="cost">&euro; {{getCart().getCostsText()}}</div>
+                                            </div>
+                                            <div class="panel subtotal">
+                                                <div class="name">Zwischensumme</div>
+                                                <div class="cost">&euro; {{getCart().getValueOfOrderText()}}</div>
                                             </div>
                                             <div class="panel total">
                                                 <div class="name">Gesamt</div>
@@ -194,12 +203,14 @@
                                     </div>
 
                                     <div class="info-section">
-                                        <div class="panel" *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                        <h3 class="panel--title">Bezahlungsmethode</h3>
+                                        <div *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                            <div class="payment-description">
+                                                <img src="../../assets/img/icons/payment-icons/{{paymentMethod.imageName}}.svg" alt="{{paymentMethod.imageName}}" style="width: 32px;" role="img">
+                                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}} &bull; {{paymentMethod.description}}</label>
+                                            </div>
                                             <div class="payment-method">
                                                 <input type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}" style="height: auto;">
-                                            </div>
-                                            <div class="payment-description">
-                                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}} &bull; {{paymentMethod.description}}</label>
                                             </div>
                                         </div>
                                         <div *ngIf="submitted && f.paymentMethodId.errors">
