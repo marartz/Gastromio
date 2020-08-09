@@ -9,35 +9,34 @@
             <div id="restaurant" *ngIf="generalError === undefined && initialized">
 
                 <div id="menu-hero">
+
                     <div id="hero-image">
                         <ng-container *ngIf="hasBanner()">
                             <div class="background-image" [style]="getBannerStyle()"></div>
                         </ng-container>
-                        <ng-container *ngIf="!hasBanner()">
+                        <!--ng-container *ngIf="!hasBanner(restaurant)">
                             <div class="background-image" style='background-image:url("https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?cs=srgb&dl=fries-with-leaves-dish-718742.jpg&fm=jpg")'></div>
-                        </ng-container>
+                        </ng-container-->
                     </div>
 
                     <div id="hero-content" class="clearfix">
                         <div class="centered">
                             <div class="hero-card">
+
                                 <ng-container *ngIf="hasLogo()">
-                                    <div class="restaurant-logo">
-                                        <img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo">
-                                    </div>
+                                    <div class="restaurant-logo"><img [src]="getLogoUrl()" alt="{{restaurant.name}} Logo"></div>
                                 </ng-container>
-                                <span class="order-at">{{getCart().getOrderTypeText()}}</span>
-                                <h1>
-                                    {{restaurant.name}}
-                                    <span class="imprint-icon" role="button" (click)="openImprintModal()">
-                                        <svg width="48" height="48" viewBox="0 0 48 48"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20zm0 4C10.745 48 0 37.255 0 24S10.745 0 24 0s24 10.745 24 24-10.745 24-24 24z"></path><path d="M26.2 18.572v17.343h-3.59V18.572h3.59zm.61-4.133c0 1.355-1.084 2.439-2.405 2.439-1.321 0-2.405-1.084-2.405-2.439S23.084 12 24.405 12c1.321 0 2.405 1.084 2.405 2.439z"></path></svg>
-                                    </span>
-                                </h1>
-                                <p>
-                                    {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
-                                    <br />{{restaurant.contactInfo.phone}}
-                                    <br />{{restaurant.openingHoursText}}
-                                </p>
+
+                                <div>
+                                    <h1 class="restaurant--name">{{restaurant.name}} <span class="imprint-icon" role="button" (click)="openImprintModal()"><svg width="48" height="48" viewBox="0 0 48 48"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20zm0 4C10.745 48 0 37.255 0 24S10.745 0 24 0s24 10.745 24 24-10.745 24-24 24z"></path><path d="M26.2 18.572v17.343h-3.59V18.572h3.59zm.61-4.133c0 1.355-1.084 2.439-2.405 2.439-1.321 0-2.405-1.084-2.405-2.439S23.084 12 24.405 12c1.321 0 2.405 1.084 2.405 2.439z"></path></svg></span></h1>
+                                    <p class="restaurant--description">
+                                        <span class="restaurant--address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</span>
+                                        <span class="restaurant--opening-hours">Geöffnet 8:00 - 22:00 <!-- {{restaurant.openingHoursText}} --></span>
+                                        <span class="restaurant--cuisines">Cuisine 1 &bull; Cuisine 2 &bull; Cuisines 3</span>
+                                    </p>
+                                </div>
+
+                                <!--span class="order-at">{{getCart().getOrderTypeText()}}</span>-->
                             </div>
                             <div class="hero-message" *ngIf="restaurant.hygienicHandling && restaurant.hygienicHandling.length > 0">
                                 <p>{{restaurant.hygienicHandling}}</p>
@@ -45,6 +44,23 @@
                         </div>
                     </div>
                 </div>
+
+                <!--div class="restaurant--tabs">
+                    <ul class="nav-tabs" ngbNav #nav="ngbNav">
+                        <li ngbNavItem>
+                            <a ngbNavLink>Speisekarte</a>
+                            <ng-template ngbNavContent>Hier stehen alle Speisen</ng-template>
+                        </li>
+                        <li ngbNavItem>
+                          <a ngbNavLink>Über {{restaurant.name}}</a>
+                          <ng-template ngbNavContent>Second content</ng-template>
+                        </li>
+                      </ul>
+                      <div [ngbNavOutlet]="nav"></div>
+                </div-->
+
+
+                
 
                 <div id="menu-categories">
                     <div class="category-bar">
