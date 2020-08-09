@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
         public async Task<Result<bool>> HandleAsync(ProcessPendingNotificationsCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
-            logger.LogDebug("Starting check for pending notifications");
+            //logger.LogDebug("Starting check for pending notifications");
             
             var pendingCustomerNotificationOrders =
                 await orderRepository.FindByPendingCustomerNotificationAsync(cancellationToken);
@@ -57,7 +57,7 @@ namespace FoodOrderSystem.Domain.Commands.ProcessPendingNotifications
                 await TriggerRestaurantNotificationAsync(order, cancellationToken);
             }
             
-            logger.LogDebug("Check for pending notifications ended");
+            //logger.LogDebug("Check for pending notifications ended");
             return SuccessResult<bool>.Create(true);
         }
 

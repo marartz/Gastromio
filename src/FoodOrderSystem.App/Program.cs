@@ -23,6 +23,7 @@ namespace FoodOrderSystem.App
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
+                .WriteTo.File("./logs/log.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
             try
