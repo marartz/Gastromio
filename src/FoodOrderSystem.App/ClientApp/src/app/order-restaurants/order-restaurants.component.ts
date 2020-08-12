@@ -111,7 +111,11 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       this.selectedCuisineFilter, undefined)
       .pipe(take(1))
       .subscribe((result) => {
-        this.restaurants = result;
+
+        this.restaurants = new Array<RestaurantModel>(result.length);
+        for (let i = 0; i < result.length; i++) {
+          this.restaurants[i] = new RestaurantModel(result[i]);
+        }
       }, () => {
       });
   }

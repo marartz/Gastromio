@@ -3,10 +3,19 @@ import {UserModel} from '../user/user.model';
 import {CuisineModel} from '../cuisine/cuisine.model';
 
 export class RestaurantModel {
-  constructor() {
-    this.address = new AddressModel();
-    this.openingHours = new Array<OpeningPeriodModel>();
+
+  constructor(init?: Partial<RestaurantModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+    if (!this.address) {
+      this.address = new AddressModel();
+    }
+    if (!this.openingHours) {
+      this.openingHours = new Array<OpeningPeriodModel>();
+    }
   }
+
 
   public id: string;
 
@@ -22,6 +31,8 @@ export class RestaurantModel {
 
   public openingHoursText: string;
 
+  public openingHoursTodayText: string;
+
   public pickupInfo: PickupInfoModel;
 
   public deliveryInfo: DeliveryInfoModel;
@@ -31,6 +42,8 @@ export class RestaurantModel {
   public hygienicHandling: string;
 
   public cuisines: CuisineModel[];
+
+  public cuisinesText: string;
 
   public paymentMethods: PaymentMethodModel[];
 

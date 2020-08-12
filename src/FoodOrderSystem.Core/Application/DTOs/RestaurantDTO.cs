@@ -11,31 +11,6 @@ namespace FoodOrderSystem.Core.Application.DTOs
 {
     public class RestaurantDTO
     {
-        public RestaurantDTO(Guid id, string name, Address address, ContactInfo contactInfo,
-            IEnumerable<string> imageTypes, IEnumerable<OpeningPeriod> openingHours, string openingHoursText,
-            PickupInfo pickupInfo, DeliveryInfo deliveryInfo, ReservationInfo reservationInfo,
-            string hygienicHandling, IEnumerable<CuisineDTO> cuisines, IEnumerable<PaymentMethodDTO> paymentMethods,
-            IEnumerable<UserDTO> administrators, bool isActive, bool needsSupport)
-        {
-            Id = id;
-            Name = name;
-            Address = address;
-            ContactInfo = contactInfo;
-            ImageTypes = new ReadOnlyCollection<string>(imageTypes.ToList());
-            OpeningHours =
-                new ReadOnlyCollection<OpeningPeriodDTO>(openingHours.Select(en => new OpeningPeriodDTO(en)).ToList());
-            OpeningHoursText = openingHoursText;
-            PickupInfo = pickupInfo;
-            DeliveryInfo = deliveryInfo;
-            ReservationInfo = reservationInfo;
-            HygienicHandling = hygienicHandling;
-            Cuisines = new ReadOnlyCollection<CuisineDTO>(cuisines.ToList());
-            PaymentMethods = new ReadOnlyCollection<PaymentMethodDTO>(paymentMethods.ToList());
-            Administrators = new ReadOnlyCollection<UserDTO>(administrators.ToList());
-            IsActive = isActive;
-            NeedsSupport = needsSupport;
-        }
-
         internal RestaurantDTO(Restaurant restaurant,
             IDictionary<Guid, CuisineDTO> allCuisines,
             IDictionary<Guid, PaymentMethodDTO> allPaymentMethods,
@@ -43,6 +18,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
             IRestaurantImageRepository restaurantImageRepository)
         {
             var openingHoursText = GenerateOpeningHoursText(restaurant);
+            var openingHoursTodayText = GenerateOpeningHoursTodayText(restaurant);
 
             Id = restaurant.Id.Value;
             Name = restaurant.Name;
@@ -53,6 +29,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 new ReadOnlyCollection<OpeningPeriodDTO>(restaurant.OpeningHours.Select(en => new OpeningPeriodDTO(en))
                     .ToList());
             OpeningHoursText = openingHoursText;
+            OpeningHoursTodayText = openingHoursTodayText;
             PickupInfo = restaurant.PickupInfo;
             DeliveryInfo = restaurant.DeliveryInfo;
             ReservationInfo = restaurant.ReservationInfo;
@@ -60,6 +37,9 @@ namespace FoodOrderSystem.Core.Application.DTOs
             Cuisines = restaurant.Cuisines != null
                 ? restaurant.Cuisines.Select(en => RetrieveCuisineModel(allCuisines, en.Value)).ToList()
                 : new List<CuisineDTO>();
+            CuisinesText = restaurant.Cuisines != null
+                ? string.Join(" • ", Cuisines.Select(en => en.Name))
+                : "";
             PaymentMethods = restaurant.PaymentMethods != null
                 ? restaurant.PaymentMethods.Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value))
                     .ToList()
@@ -85,6 +65,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
 
         public string OpeningHoursText { get; }
 
+        public string OpeningHoursTodayText { get; }
+
         public PickupInfo PickupInfo { get; }
 
         public DeliveryInfo DeliveryInfo { get; }
@@ -94,6 +76,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
         public string HygienicHandling { get; }
 
         public IReadOnlyCollection<CuisineDTO> Cuisines { get; }
+
+        public string CuisinesText { get; }
 
         public IReadOnlyCollection<PaymentMethodDTO> PaymentMethods { get; }
 
@@ -158,7 +142,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
                     {
                         if (!first)
                             sb.Append("; ");
-                        WriteOpeningPeriods(sb, startDayOfWeek, dayOfWeek - 1, openingPeriods);
+                        WriteOpeningPeriodsForDays(sb, startDayOfWeek, dayOfWeek - 1, openingPeriods);
                         first = false;
                     }
 
@@ -171,13 +155,41 @@ namespace FoodOrderSystem.Core.Application.DTOs
             {
                 if (!first)
                     sb.Append("; ");
-                WriteOpeningPeriods(sb, startDayOfWeek, 6, openingPeriods);
+                WriteOpeningPeriodsForDays(sb, startDayOfWeek, 6, openingPeriods);
             }
 
             return sb.ToString();
         }
 
-        private static void WriteOpeningPeriods(StringBuilder sb, int startDayOfWeek, int endDayOfWeek,
+        private static string GenerateOpeningHoursTodayText(Restaurant restaurant)
+        {
+            if (restaurant.OpeningHours == null)
+                return "Geschlossen";
+
+            var now = DateTime.Now;
+            var dayOfWeek = ((int)now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            if (now.Hour < 4)
+            {
+                dayOfWeek = (dayOfWeek - 1) % 7;
+            }
+
+            var openingPeriods = restaurant.OpeningHours.Where(en => en.DayOfWeek == dayOfWeek).OrderBy(en => en.Start)
+                .ToList();
+
+            if (openingPeriods.Any())
+            {
+                var sb = new StringBuilder();
+                sb.Append("Geöffnet ");
+                WriteOpeningPeriods(sb, openingPeriods);
+                return sb.ToString();
+            }
+            else
+            {
+                return "Geschlossen";
+            }
+        }
+
+        private static void WriteOpeningPeriodsForDays(StringBuilder sb, int startDayOfWeek, int endDayOfWeek,
             IEnumerable<OpeningPeriod> openingPeriods)
         {
             if (endDayOfWeek > startDayOfWeek)
@@ -192,7 +204,12 @@ namespace FoodOrderSystem.Core.Application.DTOs
             }
 
             sb.Append(" ");
+            
+            WriteOpeningPeriods(sb, openingPeriods);
+        }
 
+        private static void WriteOpeningPeriods(StringBuilder sb, IEnumerable<OpeningPeriod> openingPeriods)
+        {
             var first = true;
             foreach (var openingPeriod in openingPeriods)
             {
