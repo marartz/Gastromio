@@ -168,9 +168,17 @@ namespace FoodOrderSystem.Core.Application.DTOs
 
             var now = DateTime.Now;
             var dayOfWeek = ((int)now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            if (dayOfWeek < 0)
+            {
+                dayOfWeek += 7;
+            }
             if (now.Hour < 4)
             {
                 dayOfWeek = (dayOfWeek - 1) % 7;
+                if (dayOfWeek < 0)
+                {
+                    dayOfWeek += 7;
+                }
             }
 
             var openingPeriods = restaurant.OpeningHours.Where(en => en.DayOfWeek == dayOfWeek).OrderBy(en => en.Start)

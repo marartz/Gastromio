@@ -6,7 +6,8 @@
 
                 <div class="image-wrapper">
                     <div class="welcome-image">
-                        <div class="background-image" style='background-image:url("https://images.pexels.com/photos/842545/pexels-photo-842545.jpeg?crop=entropy&cs=srgb&dl=round-stainless-steel-bowl-with-cooked-meat-and-vegetables-842545.jpg&fit=crop&fm=jpg&h=1280&w=1920")'></div>
+                        <div class="background-image"
+                             style='background-image:url("https://images.pexels.com/photos/842545/pexels-photo-842545.jpeg?crop=entropy&cs=srgb&dl=round-stainless-steel-bowl-with-cooked-meat-and-vegetables-842545.jpg&fit=crop&fm=jpg&h=1280&w=1920")'></div>
                     </div>
                 </div>
 
@@ -15,7 +16,7 @@
 
                         <div class="opening-hour-filter">
                             Geöffnet:
-                            <input [(ngModel)]="openingHourFilter" (change)="onOpeningHourFilterChanged()">
+                            <input [ngModel]="openingHourFilter$ | async" (change)="onOpeningHourFilterChanged($event.target.value)">
                         </div>
 
                         <div class="cuisine-filter">
@@ -27,59 +28,72 @@
                         </div>
 
                         <div class="tab-bar" role="tablist">
-                            <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>
-                            <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab" (click)="onDeliverySelected()"><span>Lieferung</span></button>
-                            <button class="tab-item" [class.selected]="orderType === 'reservation'" role="tab" (click)="onReservationSelected()"><span>Reservierung</span></button>
+                            <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab"
+                                    (click)="onPickupSelected()"><span>Abholung</span></button>
+                            <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab"
+                                    (click)="onDeliverySelected()"><span>Lieferung</span></button>
+                            <button class="tab-item" [class.selected]="orderType === 'reservation'" role="tab"
+                                    (click)="onReservationSelected()"><span>Reservierung</span></button>
                             <ng-container *ngIf="orderType === 'pickup'">
-                                <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%"></div></div>
+                                <div class="tab-slider">
+                                    <div class="bar" style="width: 33.3%; left: 0%"></div>
+                                </div>
                             </ng-container>
                             <ng-container *ngIf="orderType === 'delivery'">
-                                <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div>
+                                <div class="tab-slider">
+                                    <div class="bar" style="width: 33.3%; left: 33.3%"></div>
+                                </div>
                             </ng-container>
                             <ng-container *ngIf="orderType === 'reservation'">
-                                <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div>
+                                <div class="tab-slider">
+                                    <div class="bar" style="width: 33.3%; left: 66.6%"></div>
+                                </div>
                             </ng-container>
                         </div>
 
                         <div id="restaurants" role="region" tabindex="-1">
+                            <ng-container *ngFor="let restaurant of restaurants">
+                                <div class="restaurant-card" [class.restaurant-disabled]="isRestaurantOpen(restaurant) === false">
+                                    <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]"
+                                         [queryParams]="{orderType: orderType}">
 
-                            <div class="restaurant-card" *ngFor="let restaurant of restaurants">
-                                <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">
+                                        <div class="card-content">
+                                            <div class="card-left">
+                                                <div class="card-top">
+                                                    <h4 class="restaurant-name">{{restaurant.name}}</h4>
+                                                </div>
+                                                <div class="restaurant-description">
+                                                    <address>
+                                                        {{restaurant.address.street}}
+                                                        , {{restaurant.address.zipCode}} {{restaurant.address.city}}
+                                                        <div class="restaurant-phone" tabindex="0" role="button">
+                                                            <br/>{{restaurant.contactInfo.phone}}
+                                                            <br/>{{getRestaurantSubText(restaurant)}}
+                                                        </div>
+                                                        <div></div>
+                                                    </address>
+                                                </div>
+                                            </div>
 
-                                    <div class="card-content">
-                                        <div class="card-left">
-                                            <div class="card-top">
-                                                <h4 class="restaurant-name">{{restaurant.name}}</h4>
+                                            <div class="card-right">
+                                                <ng-container *ngIf="!hasLogo(restaurant)">
+                                                    <div style="height: 90px;"></div>
+                                                </ng-container>
+                                                <ng-container *ngIf="hasLogo(restaurant)">
+                                                    <img [src]="getLogoUrl(restaurant)" alt="{{restaurant.name}} Logo"/>
+                                                </ng-container>
+                                                <div class="card-details">
+                                                    <span class="text-link menu-link" tabindex="0"
+                                                          [routerLink]="['/restaurants', restaurant.id]"
+                                                          [queryParams]="{orderType: orderType}">Bestellen</span>
+                                                </div>
                                             </div>
-                                            <div class="restaurant-description">
-                                                <address>
-                                                    {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
-                                                    <div class="restaurant-phone" tabindex="0" role="button">
-                                                        <br />{{restaurant.contactInfo.phone}}
-                                                        <br />{{getRestaurantSubText(restaurant)}}
-                                                    </div>
-                                                    <div></div>
-                                                </address>
-                                            </div>
-                                        </div>
 
-                                        <div class="card-right">
-                                            <ng-container *ngIf="!hasLogo(restaurant)">
-                                                <div style="height: 90px;"></div>
-                                            </ng-container>
-                                            <ng-container *ngIf="hasLogo(restaurant)">
-                                                <img [src]="getLogoUrl(restaurant)" alt="{{restaurant.name}} Logo" />
-                                            </ng-container>
-                                            <div class="card-details">
-                                                <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">Bestellen</span>
-                                            </div>
                                         </div>
 
                                     </div>
-
                                 </div>
-                            </div>
-
+                            </ng-container>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderService} from '../order/order.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
-import {Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 import {OrderType} from '../cart/cart.model';
 import {CuisineModel} from '../cuisine/cuisine.model';
@@ -14,7 +14,7 @@ import {CuisineModel} from '../cuisine/cuisine.model';
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   cuisines: CuisineModel[];
 
-  openingHourFilter: string;
+  openingHourFilter$ = new BehaviorSubject<string>(undefined);
   selectedCuisineFilter: string;
 
   restaurants: RestaurantModel[];
@@ -34,6 +34,16 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value: string) => {
         this.searchPhrase = value;
+        this.updateSearch();
+      });
+
+    this.openingHourFilter$.next(new Date().toISOString());
+    this.openingHourFilter$
+      .pipe(
+        debounceTime(200)
+      )
+      .subscribe(() => {
+        console.log('updateSearch');
         this.updateSearch();
       });
   }
@@ -94,12 +104,12 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.pageOfRestaurants = pageOfRestaurants;
   }
 
-  onOpeningHourFilterChanged(): void {
+  onSelectedCuisineFilterChanged(): void {
     this.updateSearch();
   }
 
-  onSelectedCuisineFilterChanged(): void {
-    this.updateSearch();
+  onOpeningHourFilterChanged(openingHourFilter: string): void {
+    this.openingHourFilter$.next(openingHourFilter);
   }
 
   updateSearch(): void {
@@ -125,5 +135,36 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       return '';
     }
     return restaurant.cuisines.map(en => en.name).join(', ');
+  }
+
+  isRestaurantOpen(restaurant: RestaurantModel): boolean {
+    if (!restaurant.openingHours) {
+      return false;
+    }
+
+    try {
+      const date = new Date(this.openingHourFilter$.getValue());
+
+      let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday
+      if (dayOfWeek < 0) {
+        dayOfWeek += 7;
+      }
+      let time = date.getHours() * 60 + date.getMinutes();
+      if (date.getHours() < 4) {
+        dayOfWeek = (dayOfWeek - 1) % 7;
+        if (dayOfWeek < 0) {
+          dayOfWeek += 7;
+        }
+        time += 24 * 60;
+      }
+
+      let isOpen: boolean;
+      isOpen = restaurant.openingHours.some(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
+
+      return isOpen;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   }
 }
