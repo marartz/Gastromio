@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
@@ -33,6 +34,11 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangeRestaurantName
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
+
+            var existingRestaurants =
+                await restaurantRepository.FindByRestaurantNameAsync(command.Name, cancellationToken);
+            if (existingRestaurants.Any())
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             var result = restaurant.ChangeName(command.Name, currentUser.Id);
             if (result.IsFailure)

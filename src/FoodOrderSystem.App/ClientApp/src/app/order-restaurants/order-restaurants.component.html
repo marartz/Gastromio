@@ -54,7 +54,7 @@
                         <div id="restaurants" role="region" tabindex="-1">
                             <ng-container *ngFor="let restaurant of restaurants">
                                 <div class="restaurant-card" [class.restaurant-disabled]="isRestaurantOpen(restaurant) === false">
-                                    <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]"
+                                    <div class="card-inner" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]"
                                          [queryParams]="{orderType: orderType}">
 
                                         <div class="card-content">

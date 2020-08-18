@@ -6,11 +6,11 @@ namespace FoodOrderSystem.Core.Application.Queries.GetDishesOfRestaurant
 {
     public class GetDishesOfRestaurantQuery : IQuery<ICollection<DishCategoryDTO>>
     {
-        public GetDishesOfRestaurantQuery(RestaurantId restaurantId)
+        public GetDishesOfRestaurantQuery(string restaurantId)
         {
             RestaurantId = restaurantId;
         }
 
-        public RestaurantId RestaurantId { get; }
+        public string RestaurantId { get; }
     }
 }

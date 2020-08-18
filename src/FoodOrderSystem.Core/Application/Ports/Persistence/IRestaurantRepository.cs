@@ -20,6 +20,8 @@ namespace FoodOrderSystem.Core.Application.Ports.Persistence
 
         Task<Restaurant> FindByRestaurantIdAsync(RestaurantId restaurantId, CancellationToken cancellationToken = default);
 
+        Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName, CancellationToken cancellationToken = default);
+
         Task<Restaurant> FindByImportIdAsync(string importId, CancellationToken cancellationToken = default);
 
         Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId, CancellationToken cancellationToken = default);

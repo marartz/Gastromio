@@ -8,6 +8,7 @@ using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.DishCategory;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 
 namespace FoodOrderSystem.Core.Application.Queries.GetDishesOfRestaurant
@@ -36,16 +37,29 @@ namespace FoodOrderSystem.Core.Application.Queries.GetDishesOfRestaurant
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
-            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
+            Restaurant restaurant;
+
+            if (Guid.TryParse(query.RestaurantId, out var restaurantId))
+            {
+                restaurant =
+                    await restaurantRepository.FindByRestaurantIdAsync(new RestaurantId(restaurantId),
+                        cancellationToken);
+            }
+            else
+            {
+                restaurant =
+                    (await restaurantRepository.FindByRestaurantNameAsync(query.RestaurantId, cancellationToken))
+                    .FirstOrDefault();
+            }
+            
             if (restaurant == null)
-                return FailureResult<ICollection<DishCategoryDTO>>.Create(
-                    FailureResultCode.RestaurantDoesNotExist);
+                return FailureResult<ICollection<DishCategoryDTO>>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             var dishCategories =
-                await dishCategoryRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
+                await dishCategoryRepository.FindByRestaurantIdAsync(restaurant.Id, cancellationToken);
             var dishCategoryList = dishCategories != null ? dishCategories.ToList() : new List<DishCategory>();
             
-            var dishes = await dishRepository.FindByRestaurantIdAsync(query.RestaurantId, cancellationToken);
+            var dishes = await dishRepository.FindByRestaurantIdAsync(restaurant.Id, cancellationToken);
             var dishList = dishes != null ? dishes.ToList() : new List<Dish>();
 
             var result = new List<DishCategoryDTO>();

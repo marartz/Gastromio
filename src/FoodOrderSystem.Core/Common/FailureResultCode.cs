@@ -18,6 +18,7 @@
         CuisineAlreadyExists,
         PaymentMethodDoesNotExist,
         PaymentMethodAlreadyExists,
+        RestaurantAlreadyExists,
         RestaurantImageDataTooBig,
         RestaurantImageNotValid,
         NoRestaurantPickupInfosSpecified,

@@ -173,6 +173,15 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return document != null ? FromDocument(document) : null;
         }
 
+        public async Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+            var cursor = await collection.FindAsync(
+                Builders<RestaurantModel>.Filter.Where(en => en.Name.ToLower() == restaurantName.ToLower()),
+                cancellationToken: cancellationToken);
+            return cursor.ToEnumerable().Select(FromDocument);
+        }
+
         public async Task<Restaurant> FindByImportIdAsync(string importId,
             CancellationToken cancellationToken = default)
         {

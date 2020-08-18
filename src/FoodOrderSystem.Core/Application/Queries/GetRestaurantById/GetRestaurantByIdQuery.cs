@@ -5,13 +5,13 @@ namespace FoodOrderSystem.Core.Application.Queries.GetRestaurantById
 {
     public class GetRestaurantByIdQuery : IQuery<RestaurantDTO>
     {
-        public GetRestaurantByIdQuery(RestaurantId restaurantId, bool onlyActiveRestaurants)
+        public GetRestaurantByIdQuery(string restaurantId, bool onlyActiveRestaurants)
         {
             RestaurantId = restaurantId;
             OnlyActiveRestaurants = onlyActiveRestaurants;
         }
 
-        public RestaurantId RestaurantId { get; }
+        public string RestaurantId { get; }
         
         public bool OnlyActiveRestaurants { get; }
     }

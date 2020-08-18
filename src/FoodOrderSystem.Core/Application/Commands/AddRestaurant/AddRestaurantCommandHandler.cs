@@ -47,6 +47,11 @@ namespace FoodOrderSystem.Core.Application.Commands.AddRestaurant
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<RestaurantDTO>.Forbidden();
 
+            var existingRestaurants =
+                await restaurantRepository.FindByRestaurantNameAsync(command.Name, cancellationToken);
+            if (existingRestaurants.Any())
+                return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantDoesNotExist);
+
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));
 

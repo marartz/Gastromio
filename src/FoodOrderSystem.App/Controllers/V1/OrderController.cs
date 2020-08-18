@@ -74,25 +74,24 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}")]
+        [Route("restaurants/{restaurant}")]
         [HttpGet]
-        public async Task<IActionResult> GetRestaurantAsync(Guid restaurantId)
+        public async Task<IActionResult> GetRestaurantAsync(string restaurant)
         {
             var queryResult =
                 await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
-                    new GetRestaurantByIdQuery(new RestaurantId(restaurantId), true), null);
+                    new GetRestaurantByIdQuery(restaurant, true), null);
             
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/dishes")]
+        [Route("restaurants/{restaurant}/dishes")]
         [HttpGet]
-        public async Task<IActionResult> GetDishesOfRestaurantAsync(Guid restaurantId)
+        public async Task<IActionResult> GetDishesOfRestaurantAsync(string restaurant)
         {
-            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
-                new GetDishesOfRestaurantQuery(new RestaurantId(restaurantId)),
-                null
-            );
+            var queryResult =
+                await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
+                    new GetDishesOfRestaurantQuery(restaurant), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

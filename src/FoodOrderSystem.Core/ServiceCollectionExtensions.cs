@@ -58,6 +58,7 @@ namespace FoodOrderSystem.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineAlreadyExists, "Cuisine existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodDoesNotExist, "Zahlungsmethode existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodAlreadyExists, "Zahlungsmethode existiert bereits");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantAlreadyExists, "Gleichnamiges Restaurant existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageDataTooBig, "Die Bilddatei ist zu groß (max. 4MB)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageNotValid, "Die angegebene Bilddatei ist nicht gültig");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.NoRestaurantPickupInfosSpecified, "Keine Informationen über die Abholung spezifiziert");

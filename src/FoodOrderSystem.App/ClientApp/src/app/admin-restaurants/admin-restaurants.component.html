@@ -33,9 +33,9 @@
                                        <div class="restaurant-beschreibung">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
                                        <div id="actions">
                                            <div class="settings">
-                                               <a class="edit" [routerLink]="[restaurant.id]">Details ändern</a>
+                                               <a class="edit" [routerLink]="[restaurant.name.toLowerCase()]">Details ändern</a>
                                                &nbsp;&ndash;&nbsp;
-                                               <a class="edit" [routerLink]="['/restaurants', restaurant.id]" target="_blank">Vorschau</a>
+                                               <a class="edit" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" target="_blank">Vorschau</a>
                                                &nbsp;&ndash;&nbsp;
                                                <a *ngIf="restaurant.needsSupport" class="edit" (click)="onDisableSupport(restaurant)">Unterstützung ausschalten</a>
                                                <a *ngIf="!restaurant.needsSupport" class="edit" (click)="onEnableSupport(restaurant)">Unterstützung einschalten</a>

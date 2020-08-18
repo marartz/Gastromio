@@ -6,6 +6,7 @@ using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 
 namespace FoodOrderSystem.Core.Application.Queries.GetRestaurantById
@@ -44,7 +45,21 @@ namespace FoodOrderSystem.Core.Application.Queries.GetRestaurantById
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
 
-            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(query.RestaurantId);
+            Restaurant restaurant;
+
+            if (Guid.TryParse(query.RestaurantId, out var restaurantId))
+            {
+                restaurant =
+                    await restaurantRepository.FindByRestaurantIdAsync(new RestaurantId(restaurantId),
+                        cancellationToken);
+            }
+            else
+            {
+                restaurant =
+                    (await restaurantRepository.FindByRestaurantNameAsync(query.RestaurantId, cancellationToken))
+                    .FirstOrDefault();
+            }
+
             if (restaurant == null)
                 return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantDoesNotExist);
 

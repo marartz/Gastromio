@@ -86,9 +86,9 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}")]
+        [Route("restaurants/{restaurant}")]
         [HttpGet]
-        public async Task<IActionResult> GetRestaurantAsync(Guid restaurantId)
+        public async Task<IActionResult> GetRestaurantAsync(string restaurant)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -97,24 +97,23 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var queryResult =
                 await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
-                    new GetRestaurantByIdQuery(new RestaurantId(restaurantId), false), new UserId(currentUserId));
+                    new GetRestaurantByIdQuery(restaurant, false), new UserId(currentUserId));
 
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/dishes")]
+        [Route("restaurants/{restaurant}/dishes")]
         [HttpGet]
-        public async Task<IActionResult> GetDishesOfRestaurantAsync(Guid restaurantId)
+        public async Task<IActionResult> GetDishesOfRestaurantAsync(string restaurant)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var queryResult = await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
-                new GetDishesOfRestaurantQuery(new RestaurantId(restaurantId)),
-                new UserId(currentUserId)
-            );
+            var queryResult =
+                await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
+                    new GetDishesOfRestaurantQuery(restaurant), new UserId(currentUserId));
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
