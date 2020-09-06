@@ -11,7 +11,12 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-change-restaurant-name',
   templateUrl: './change-restaurant-name.component.html',
-  styleUrls: ['./change-restaurant-name.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: [
+    './change-restaurant-name.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class ChangeRestaurantNameComponent implements OnInit {
   @Input() public restaurant: RestaurantModel;

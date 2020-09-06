@@ -7,7 +7,12 @@ import {DishVariantModel} from '../dish-category/dish-variant.model';
 @Component({
   selector: 'app-add-dish-to-cart',
   templateUrl: './add-dish-to-cart.component.html',
-  styleUrls: ['./add-dish-to-cart.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: [
+    './add-dish-to-cart.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class AddDishToCartComponent implements OnInit {
   @Input() public dish: DishModel;

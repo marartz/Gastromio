@@ -2,7 +2,7 @@
     <div id="root">
         <div class="layout">
 
-            <!--div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><h1>{{generalError}}</h1></div></div></div-->
+            <div id="notice" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
 
             <div id="checkout" *ngIf="initialized">
 
@@ -15,10 +15,7 @@
                         </div>
                         <div class="information">
                             <div class="header">
-                                <h1 class="restaurant-name">
-                                    {{restaurant.name}}
-                                    <span>{{getCart().getOrderTypeText()}}</span>
-                                </h1>
+                                <h1 class="restaurant-name">{{restaurant.name}} <span>{{getCart().getOrderTypeText()}}</span></h1>
                             </div>
                         </div>
                     </header>
@@ -26,7 +23,7 @@
                     <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
                         <div id="body">
                             <div id="checkout-step">
-                                <h2 class="title">1. Zur Kasse gehen</h2>
+                                <h2 class="title">1. Bestelldetails</h2>
                                 <p class="subtitle">Grundlegende Informationen zu Deiner Bestellung</p>
                             </div>
                             <div id="checkout-details">
@@ -34,16 +31,10 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="street">Adresse</label>
-                                            </div>
+                                            <div class="label-container"><label for="street">Adresse</label></div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="text" placeholder="Lieferadresse eingeben" id="street" formControlName="street" [ngClass]="{ 'is-invalid': submitted && f.street.errors }" />
-                                                <div *ngIf="submitted && f.street.errors">
-                                                    <div *ngIf="f.street.errors.required">
-                                                        <span style="color: red;">Bitte geben Sie die Straße der Lieferadresse ein</span>
-                                                    </div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.street.errors"><div *ngIf="f.street.errors.required"><span style="color: red;">Lieferadresse wird benötigt</span></div></div>
                                             </div>
                                         </div>
                                     </div>
@@ -51,31 +42,19 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3" style="@media screen and (min-width: 768px) { padding-right: 16px; }">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="zipCode">Postleitzahl</label>
-                                            </div>
+                                            <div class="label-container"><label for="zipCode">Postleitzahl</label></div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="number" maxlength="5" placeholder="Postleitzahl" id="zipCode" formControlName="zipCode" [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" />
-                                                <div *ngIf="submitted && f.zipCode.errors">
-                                                    <div *ngIf="f.zipCode.errors.required">
-                                                        <span style="color: red;">Bitte geben Sie die PLZ der Lieferadresse ein</span>
-                                                    </div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.zipCode.errors"><div *ngIf="f.zipCode.errors.required"><span style="color: red;">Postleitzahl wird benötigt</span></div></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3" style="@media screen and (min-width: 768px) { padding-left: 16px; }">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="city">Stadt</label>
-                                            </div>
+                                            <div class="label-container"><label for="city">Stadt</label></div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="text" placeholder="Stadt" id="city" formControlName="city" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
-                                                <div *ngIf="submitted && f.city.errors">
-                                                    <div *ngIf="f.city.errors.required">
-                                                        <span style="color: red;">Bitte geben die Stadt der Lieferadresse ein</span>
-                                                    </div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.city.errors"><div *ngIf="f.city.errors.required"><span style="color: red;">Stadt wird benötigt</span></div></div>
                                             </div>
                                         </div>
                                     </div>
@@ -83,9 +62,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="comments">Kommentar</label>
-                                            </div>
+                                            <div class="label-container"><label for="comments">Kommentar</label></div>
                                             <div class="input-container">
                                                 <textarea class="input" autocomplete="off" type="text" rows="3" maxlength="300" placeholder="Kommentar" id="comments" formControlName="comments" style="border-radius: 10px; height: unset;"></textarea>
                                             </div>
@@ -99,31 +76,19 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3" style="padding-right: 16px;">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="givenName">Vorname</label>
-                                            </div>
+                                            <div class="label-container"><label for="givenName">Vorname</label></div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="text" placeholder="Vorname" id="givenName" formControlName="givenName" [ngClass]="{ 'is-invalid': submitted && f.givenName.errors }" />
-                                                <div *ngIf="submitted && f.givenName.errors">
-                                                    <div *ngIf="f.givenName.errors.required">
-                                                        <span style="color: red;">Bitte geben Sie Ihren Vornamen ein</span>
-                                                    </div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.givenName.errors"><div *ngIf="f.givenName.errors.required"><span style="color: red;">Vorname wird benötigt</span></div></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3" style="padding-left: 16px;">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="lastName">Nachname</label>
-                                            </div>
+                                            <div class="label-container"><label for="lastName">Nachname</label></div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="text" placeholder="Nachname" id="lastName" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-                                                <div *ngIf="submitted && f.lastName.errors">
-                                                    <div *ngIf="f.lastName.errors.required">
-                                                        <span style="color: red;">Bitte geben Sie Ihren Nachnamen ein</span>
-                                                    </div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.lastName.errors"><div *ngIf="f.lastName.errors.required"><span style="color: red;">Nachname wird benötigt</span></div></div>
                                             </div>
                                         </div>
                                     </div>
@@ -131,16 +96,10 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="address-container">
-                                            <div class="label-container">
-                                                <label for="street">Handynummer</label>
-                                            </div>
+                                            <div class="label-container"><label for="street">Handynummer</label></div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="number" placeholder="+49 176 9877 552" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
-                                                <div *ngIf="submitted && f.phone.errors">
-                                                    <div *ngIf="f.phone.errors.required">
-                                                        <span style="color: red;">Bitte geben Sie Ihre Telefonnummer ein</span>
-                                                    </div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.phone.errors"><div *ngIf="f.phone.errors.required"><span style="color: red;">Handynummer wird benötigt</span></div></div>
                                             </div>
                                         </div>
                                     </div>
@@ -153,10 +112,7 @@
                                             </div>
                                             <div class="input-container">
                                                 <input class="input" autocomplete="off" type="email" placeholder="gastromio@email.de" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                                                <div *ngIf="submitted && f.email.errors">
-                                                    <div *ngIf="f.email.errors.required" style="color: red;">Bitte geben Sie Ihre E-Mail-Adresse ein</div>
-                                                    <div *ngIf="f.email.errors.pattern" style="color: red;">Bitte geben Sie eine gültige E-Mail-Adresse muss ein</div>
-                                                </div>
+                                                <div class="invalid-feedback" *ngIf="submitted && f.email.errors"><div *ngIf="f.email.errors.required" style="color: red;">E-Mail-Adresse wird benötigt</div><div *ngIf="f.email.errors.pattern" style="color: red;">E-Mail-Adresse muss gültig sein (z.B. max@mustermann.de)</div></div>
                                             </div>
                                         </div>
                                     </div>
@@ -170,17 +126,11 @@
                             </div>
                             <div id="payment-method">
                                 <button type="button" class="payment-type" id="{{paymentMethod.imageName}}" *ngFor="let paymentMethod of restaurant.paymentMethods">{{paymentMethod.name}} <input type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}"></button>
-                                <div *ngIf="submitted && f.paymentMethodId.errors">
-                                    <div *ngIf="f.paymentMethodId.errors.required">
-                                        <span style="color: red;">Bitte wählen Sie eine Zahlungsmethode aus</span>
-                                    </div>
-                                </div>
+                                <div *ngIf="submitted && f.paymentMethodId.errors"><div class="invalid-feedback" *ngIf="f.paymentMethodId.errors.required"><span style="color: red;">Zahlungsmethode wird benötigt</span></div></div>
                             </div>
                             <button class="confirm-button" type="submit">Bestellung aufgeben</button>
                             <div class="conditions-container">
-                                <div class="links-container">
-                                    <p>Mit dem Kauf stimmst Du unserer <a target="_blank">Datenschutzerklärung</a> zu.</p>
-                                </div>
+                                <div class="links-container"><p>Mit dem Kauf stimmst Du unserer <a target="_blank">Datenschutzerklärung</a> zu.</p></div>
                                 <div class="agreement-container">
                                     <p>Bitte beachte: Die Speisen werden von {{restaurant.name}} verkauft, Gastromio dient ausschließlich als Vermittler.</p>
                                     <p>Mir ist bekannt, dass ich mit Klick auf "Bestellung aufgeben" mein Widerrufsrecht verliere.</p>
@@ -192,7 +142,7 @@
 
                 <section id="my-order">
                     <header id="header">
-                        <span class="title" (click)="hideCart()">Meine Bestellung</span>
+                        <span class="title">Meine Bestellung</span>
                     </header>
                     <div id="body" class="cart-body">
                         <div id="dishes">

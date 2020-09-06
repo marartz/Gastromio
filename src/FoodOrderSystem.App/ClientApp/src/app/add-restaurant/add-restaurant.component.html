@@ -2,16 +2,14 @@
     <div id="modal">
         <div class="wrapper">
             <div class="content">
-                <h1 class="title add-edit">Restaurant hinzufügen</h1>
+                <h1 class="title add-edit">Restaurant anlegen</h1>
                 <form [formGroup]="addRestaurantForm" (ngSubmit)="onSubmit(addRestaurantForm.value)">
                     <div class="form-input">
                         <label class="form-label">Restaurantname</label>
                         <div class="input-group">
                             <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" maxlength="40" minlength="3" required="" spellcheck="false" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required">Name der Kategorie wird benötigt</div>
-                            </div>
-                            <div *ngIf="message !== undefined" class="invalid-feedback">{{message}}</div>
+                            <div class="invalid-feedback" *ngIf="submitted && f.name.errors"><div *ngIf="f.name.errors.required">Name des Restaurants wird benötigt</div></div>
+                            <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
                         </div>
                     </div>
                     <div class="btns-container">

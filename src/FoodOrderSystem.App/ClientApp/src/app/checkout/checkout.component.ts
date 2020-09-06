@@ -16,7 +16,11 @@ import {Location} from '@angular/common';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css', '../../assets/css/frontend_v2.min.css']
+  styleUrls: [
+    './checkout.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class CheckoutComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

@@ -14,13 +14,13 @@
             <div id="tabpanel" role="tabpanel">
                 <header class="header">
                     <h1>Kommst <b>Du</b> nicht <b>zum Essen</b>,<br />kommt das <b>Essen zu Dir</b>!</h1>
-                    <p>Gepflegtes Schlemmen auch während Corona!</p>
+                    <p>Gepflegtes Schlemmen auch während Corona!<br />#wirbestellenlokal</p>
                 </header>
                 <!--div class="search">
                     <input type="text" placeholder="Suchen Sie nach Restaurants, Gastronomen, ..." autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
                     <ng-template #rt let-r="result" let-t="term"><ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight></ng-template>
                 </div-->
-                <a [routerLink]="['/restaurants']"><button class="show-all">Alle anzeigen</button></a>
+                <a [routerLink]="['/restaurants']"><button class="show-all">Jetzt bestellen</button></a>
             </div>
 
         </div>

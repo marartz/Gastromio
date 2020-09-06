@@ -26,7 +26,12 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-admin-restaurant',
   templateUrl: './admin-restaurant.component.html',
-  styleUrls: ['./admin-restaurant.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: [
+    './admin-restaurant.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
