@@ -1,0 +1,586 @@
+/* #chekout */
+#checkout {
+    align-items: stretch;
+    display: flex;
+    font-family: "Quicksand", sans-serif;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 100%;
+    padding-bottom: 48px;
+    width: 100%;
+}
+
+@media screen and (max-width: 992px) {
+    #checkout {
+        flex-wrap: wrap-reverse;
+    }
+}
+
+#checkout > div:first-child {
+    flex: 1 1 auto;
+    width: calc(100% - 35vw);
+}
+
+@media screen and (max-width: 992px) {
+    #checkout > div:first-child {
+        width: 100%;
+    }
+}
+
+/* #chekout > #content */
+#checkout #content {
+    margin-top: 137px;
+    padding: 0px 48px;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content {
+        padding: 0 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #checkout #content {
+        margin-top: 25px;
+    }
+}
+
+#checkout #content .back-link {
+    align-items: center;
+    background-color: transparent;
+    color: #000;
+    color: initial;
+    display: inline-flex;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    text-decoration: none;
+    transition: all .2s ease-in-out;
+}
+
+#checkout #content .back-link:before {
+    background-color: #65b32e;
+    background-image: url(https://app.foodninjas.at/icons/arrow-left.svg);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 40%;
+    border-radius: 50%;
+    content: "";
+    display: inline-block;
+    height: 22px;
+    margin-right: 8px;
+    transition: background-color .4s ease-in-out;
+    width: 22px;
+}
+
+/* #chekout > #content > #header */
+#checkout #content #header {
+    background-color: #e9ecef;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 20px;
+    display: flex;
+    height: 260px;
+    margin-bottom: 32px;
+    max-height: 430px;
+    min-height: 380px;
+    overflow: hidden;
+    padding: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #header {
+        height: auto;
+        max-height: none;
+        min-height: 200px;
+        padding: 160px 16px 16px;
+    }
+}
+
+#checkout #content #header .banner {
+    border-radius: inherit;
+    height: 100%;
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: -1;
+}
+
+#checkout #content #header .banner img {
+    border: 0px;
+    display: inline-block;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    overflow: hidden;
+    pointer-events: none;
+    vertical-align: top;
+    width: 100%;
+}
+
+#checkout #content #header .information {
+    background-color: #fff;
+    border-radius: 10px;
+    color: #8c8e9d;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    min-width: 75%;
+    padding: 20px 24px;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #header .information {
+        height: auto;
+        width: 100%;
+    }
+}
+
+#checkout #content #header .information .header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+#checkout #content #header .information .header .restaurant-name {
+    color: #2b2c43;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 36px;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #header .information .header .restaurant-name {
+        font-size: 26px;
+    }
+}
+
+#checkout #content #header .information .header .restaurant-name span {
+    margin: 0px 0px 0px 28px;
+    position: relative;
+}
+
+#checkout #content #header .information .header .restaurant-name span::before {
+    background-color: #65b32e;
+    border-radius: 50%;
+    content: "";
+    height: 6px;
+    left: -22px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+}
+
+/* #chekout > #content > #body */
+#checkout #content #body {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 2px 16px rgba(85, 86, 138, .06);
+    margin-top: 48px;
+    min-height: 100px;
+    overflow: hidden;
+    padding: 48px;
+    position: relative;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #body {
+        padding: 20px;
+    }
+}
+
+/* #chekout > #content > #body > #checkout-step */
+#checkout #content #body #checkout-step {
+    margin: -48px;
+    padding: 48px;
+}
+
+#checkout #content #body #checkout-step .title {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #body #checkout-step .title {
+        font-size: 26px;
+    }
+}
+
+#checkout #content #body  #checkout-step .subtitle {
+    font-weight: 400;
+    margin: 0px;
+}
+
+/* #chekout > #content > #body > #checkout-details */
+#checkout #content #body #checkout-details {
+    margin-top: 54px;
+}
+
+#checkout #content #body #checkout-details:not(:first-of-type) {
+    margin-top: 54px;
+}
+
+#checkout #content #body #checkout-details .title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 18px;
+    margin-bottom: 32px;
+}
+
+#checkout #content #body #checkout-details .address-container {
+    padding-bottom: 70px;
+    position: relative;
+}
+
+#checkout #content #body #checkout-details .address-container .label-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#checkout #content #body #checkout-details .address-container .label-container label {
+    color: #2b2c43;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: .5rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#checkout #content #body #checkout-details .address-container .input-container {
+    border-radius: 25px;
+    overflow: hidden;
+    position: absolute;
+    transition: all .2s ease-in-out;
+    width: 100%;
+    z-index: 999;
+}
+
+#checkout #content #body #checkout-details .address-container .input-container .input {
+    background-clip: padding-box;
+    background-color: #f7f7fa;
+    border: 2px solid #ced4da;
+    border-color: #f7f7fa;
+    border-radius: 48px;
+    color: #2b2c43;
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    height: 48px;
+    line-height: 1.5;
+    padding: 13px 25px 12px;
+    padding-right: 52px;
+    text-overflow: ellipsis;
+    transition: all .2s ease-in-out;
+    width: 100%;
+}
+
+#checkout #content #body #checkout-details .address-container .input-container .input:focus {
+    background-color: #fff;
+    border-color: #65b32e;
+    box-shadow: 0px 0px 0px 1.5px #65b32e;
+    transition: all .2s ease-in-out;
+}
+
+#checkout #content #body .confirm-button {
+    background-color: #65b32e;
+    border-color: #65b32e;
+    border: 1px solid transparent;
+    border-radius: 48px;
+    color: #fff;
+    display: inline-block;
+    font-family: "Quicksand", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: normal;
+    line-height: 18px;
+    margin-top: 50px;
+    padding: 17px 32px 13px;
+    padding-left: 70px;
+    padding-right: 70px;
+    text-align: center;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;;
+    user-select: none;
+    vertical-align: middle;
+    width: unset;
+}
+
+#checkout #content #body .conditions-container {
+    color: #8c8e9d;
+    margin-top: 50px;
+}
+
+#checkout #content #body .conditions-container .links-container {
+    font-size: 12px;
+}
+
+#checkout #content #body .conditions-container .links-container p {
+    font-family: "Quicksand", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0px;
+}
+
+#checkout #content #body .conditions-container .agreement-container {
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+#checkout #content #body .conditions-container .agreement-container p {
+    font-family: "Quicksand", sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+#checkout #content #body .conditions-container .links-container a {
+    border-bottom: none;
+    color: #65b32e;
+    transition: all .2s ease-in-out;;
+}
+
+/* #chekout > #content > #body > #payment-method */
+#checkout #content #body #payment-method {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: -30px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+#checkout #content #body #payment-method .payment-type {
+    background-color: #f8f9fa;
+    background-position: center 22px;
+    background-repeat: no-repeat;
+    background-size: 50% 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 2px 16px rgba(85, 86, 138, .06);
+    color: #000;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: normal;
+    line-height: 16px;
+    margin-bottom: 30px;
+    overflow: visible;
+    padding: 58px 10px 22px;
+    position: relative;
+    height: 96px;
+    text-align: center;
+    transition: all .2s ease-in-out;
+    width: 192px;
+}
+
+#checkout #content #body #payment-method .payment-type.active {
+    box-shadow: 0 2px 16px rgba(85,86,138,.06);
+    border-radius: 10px;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #body #payment-method .payment-type {
+        margin-top: 25px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #body #payment-method .payment-type {
+        width: calc(50% - 10px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #content #body #payment-method .payment-type:nth-child(2n) {
+        margin-left: 5px;
+        margin-right: 0px;
+    }
+}
+
+#checkout #content #body #payment-method .payment-type#maestro {
+    background-image: url(/assets/images/icons/brands/mastercard.svg);
+    background-size: 50% 26px;
+}
+
+#checkout #content #body #payment-method .payment-type#paypal {
+    background-image: url(/assets/images/icons/brands/paypal.svg);
+    background-size: 50% 26px;
+}
+
+#checkout #content #body #payment-method .payment-type#kreditkarte {
+    background-image: url(/assets/images/icons/brands/visa.svg);
+    background-size: 50% 26px;
+}
+
+#checkout #content #body #payment-method .payment-type#rechnung {
+    background-image: url(/assets/images/icons/brands/klarna.svg);
+}
+
+
+/* #chekout > #my-order */
+#checkout #my-order {
+    background: linear-gradient(180deg, #fff -50%, #f7f7fa);
+    border-radius: 20px 0px 0px 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    padding: 174px 48px;
+    width: 35vw;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #my-order {
+        padding: 114px 20px 40px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #checkout #my-order {
+        border-radius: 0px 0px 20px 20px;
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* #chekout > #my-order > #header */
+#checkout #my-order #header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+#checkout #my-order #header .title {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 36px;
+    pointer-events: none;
+}
+
+@media screen and (max-width: 78px) {
+    #checkout #my-order #header .title {
+        font-size: 26px;
+    }
+}
+
+/* #chekout > #my-order > #body */
+#checkout #my-order #body {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+}
+
+/* #chekout > #my-order > #body > #dishes */
+#checkout #my-order #body #dishes {
+    padding: 50px 0px 10px;
+}
+
+#checkout #my-order #body #dishes .dish {
+    padding: 10px 0px;
+}
+
+#checkout #my-order #body #dishes .dish:not(:last-child) {
+    border-bottom: 1px solid rgba(227, 231, 248, .3);
+    margin-bottom: 10px;
+}
+
+#checkout #my-order #body #dishes .dish .dish-content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+#checkout #my-order #body #dishes .dish .dish-content .name {
+    font-weight: 400;
+    max-width: 50%;
+    padding-right: 10px;
+    width: 50%;
+}
+
+#checkout #my-order #body #dishes .dish .description {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+#checkout #my-order #body #dishes .dish .description .count {
+    color: #8c8e9d;
+}
+
+#checkout #my-order #body #dishes .dish .description .price {
+    color: #21347b;
+    font-size: 18px;
+    font-weight: 500;
+    padding-left: 5px;
+}
+
+/* #chekout > #my-order > #body > #order-fees */
+#checkout #my-order #body #order-fees {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    padding: 20px 0px;
+    position: relative;
+}
+
+#checkout #my-order #body #order-fees:after {
+    bottom: -1px;
+}
+
+#checkout #my-order #body #order-fees:before {
+    top: -1px;
+}
+
+#checkout #my-order #body #order-fees:after,
+#checkout #my-order #body #order-fees:before {
+    background-image: linear-gradient(90deg,#e3e7e8 50%,hsla(0,0%,100%,0) 0);
+    background-position: bottom;
+    background-repeat: repeat-x;
+    background-size: 10px 2px;
+    content: "";
+    height: 1px;
+    left: 0px;
+    position: absolute;
+    width: 100%;
+}
+
+#checkout #my-order #body #order-fees div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#checkout #my-order #body #order-fees div .title {
+    font-weight: 300;
+}
+
+/* #chekout > #my-order > #body > #total */
+#checkout #my-order #body #total {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0px;
+}
+
+#checkout #my-order #body #total span {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#checkout #my-order #body #total span.bill {
+    color: #21347b;
+    font-weight: 500;
+    text-align: right;
+}

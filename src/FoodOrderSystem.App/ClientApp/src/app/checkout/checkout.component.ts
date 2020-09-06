@@ -16,7 +16,7 @@ import {Location} from '@angular/common';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./checkout.component.css', '../../assets/css/frontend_v2.min.css']
 })
 export class CheckoutComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -92,6 +92,21 @@ export class CheckoutComponent implements OnInit {
       return undefined;
     }
     return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
+  }
+
+  hasBanner(
+    restaurant: RestaurantModel
+  ): boolean {
+    return restaurant.imageTypes.some(en => en === 'banner');
+  }
+
+  getBannerStyle(
+    restaurant: RestaurantModel
+  ): string {
+    if (!restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
   }
 
   getCart(): CartModel {

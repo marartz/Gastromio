@@ -1,0 +1,196 @@
+#footer {
+    height: 100%;
+    padding-bottom: 25px;
+    padding-top: 85px;
+}
+
+#footer .wrapper {
+    margin: 0px auto;
+    max-width: 1800px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+@media screen and (max-width: 767px) {
+    #footer .wrapper {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #footer .wrapper {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+
+#footer .grid-row > div:not(first-child) {
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    flex-direction: column;
+    -ms-flex-direction: column;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+}
+
+#footer a {
+    color: rgba(20, 20, 20, 0.5);
+    display: block;
+    font-family: "Quicksand";
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    white-space: nowrap;
+    transition: .3s all linear;
+    -moz-transition: .3s all linear;
+    -ms-transition: .3s all linear;
+    -o-transition: .3s all linear;
+    -webkit-transition: .3s all linear;
+}
+
+#footer a:hover {
+    color: #689FFB;
+}
+
+#footer .footer-title {
+    color: #141414;
+    display: block;
+    font-family: "Quicksand", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    white-space: nowrap;
+}
+
+@media screen and (min-width: 361px) {
+    #footer a {
+        font-size: calc( 16px + -2 * ((100vw - 361px) / 1079));
+    }
+    #footer .footer-title {
+        font-size: calc( 18px + -2 * ((100vw - 361px) / 1079));
+    }
+}
+
+/* #footer > #logo */
+#footer #logo {
+    flex: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 8.33333%;
+    -ms-flex: none;
+    -webkit-box-flex: 0;
+}
+
+@media screen and (max-width: 767px) {
+    #footer #logo {
+        flex: none;
+        padding-left: 8px;
+        padding-right: 8px;
+        position: absolute;
+        width: 16.66667%;
+        -ms-flex: none;
+        -webkit-box-flex: 0;
+    }
+}
+
+@media screen and (max-width: 1679px) {
+    #footer #logo {
+        flex: none;
+        padding-left: 8px;
+        padding-right: 8px;
+        width: 8.33333%;
+        -ms-flex: none;
+        -webkit-box-flex: 0;
+    }
+}
+
+#footer #logo img {
+    width: 24px;
+    transform: translateX(-8px);
+    -webkit-transform: translateX(-8px);
+}
+/* #footer > #contact */
+#footer #contact {
+    flex: none;
+    margin-left: 8.33333%;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 16.66667%;
+    -ms-flex: none;
+    -webkit-box-flex: 0;
+}
+
+@media screen and (max-width: 767px) {
+    #footer #contact {
+        flex: none;
+        margin-left: 25%;
+        margin-top: 40px;
+        order: 3;
+        padding-left: 8px;
+        padding-right: 8px;
+        width: 75%;
+        -ms-flex: none;
+        -ms-flex-order: 3;
+        -webkit-box-flex: 0;
+        -webkit-box-ordinal-group: 4;
+    }
+}
+
+@media screen and (max-width: 1679px) {
+    #footer #contact {
+        flex: none;
+        margin-left: 8.33333%;
+        padding-left: 8px;
+        padding-right: 8px;
+        width: 16.66667%;
+        -ms-flex: none;
+        -webkit-box-flex: 0;
+    }
+}
+
+/* #footer > #bottom */
+#footer #bottom {
+    align-items: center;
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    justify-content: space-between;
+    margin-top: 50px;
+    -ms-flex-align: center;
+    -ms-flex-pack: justify;
+    -webkit-box-align: center;
+    -webkit-box-pack: justify;
+}
+
+@media screen and (max-width: 720px) {
+    #footer #bottom {
+        flex-direction: column;
+        -ms-flex-direction: column;
+        -webkit-box-direction: normal;
+        -webkit-box-orient: vertical;
+    }
+}
+
+#footer #bottom .copyright {
+    color: #141414;
+    font-family: "Quicksand", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+@media screen and (max-width: 720px) {
+    #footer #bottom .copyright {
+        order: 2;
+        -ms-flex-order: 2;
+        -webkit-box-ordinal-group: 3;
+    }
+}
+
+@media screen and (min-width: 361px) {
+    #footer #bottom .copyright {
+        font-size: calc( 12px + 2 * ((100vw - 361px) / 1079));
+    }
+}

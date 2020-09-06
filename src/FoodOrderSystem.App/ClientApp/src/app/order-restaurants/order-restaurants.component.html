@@ -1,24 +1,82 @@
-<section id="main" class="order-home" role="main">
+<div id="root">
+    <div class="layout">
+
+        <div id="order-restaurants">
+
+            <section id="jumbotron">
+                <div id="background">
+                    <div class="left"></div>
+                    <div class="right"></div>
+                </div>
+                <div id="message">
+                    <div class="text main"><b>Unterstütze</b> die Gastronomen in <b>Bocholt</b></div>
+                    <span class="text info">100% des Verdiensts geht an den Gastronomen</span>
+                </div>
+                <div id="steps">
+                    <div class="step"><span style="line-height: 40px;">1. Bestelle dein Lieblingsessen</span></div>
+                    <div class="step"><span style="line-height: 42px;">2. Hole dein Essen ab, oder lasse es dir liefern</span></div>
+                    <div class="step"><span style="line-height: 47px;">3. Genieße dein Essen!</span></div>
+                </div>
+            </section>
+            
+            <section id="restaurants">
+                <div id="header">
+                    <div id="settings">
+                        <h2 class="heading">Restaurants</h2>
+                        <div class="toggle" *ngIf="orderType === 'pickup'" (click)="onDeliverySelected()"><label><div class="switch"></div></label></div>
+                        <div class="toggle delivery" *ngIf="orderType === 'delivery'" (click)="onPickupSelected()"><label><div class="switch"></div></label></div>
+                    </div>
+                    <div id="filters">
+                        <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche"></div>
+                        <div class="cuisine-filter">
+                            <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
+                                <option value="" selected="">Alle anzeigen</option>
+                                <option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wrapper">
+                    <li class="restaurant" *ngFor="let restaurant of restaurants">
+                        <div class="wrapper">
+                            <div id="banner">
+                                <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>
+                                <ng-container *ngIf="!hasBanner(restaurant)"><img src="../../assets/images/background/placeholder.jpg" alt="{{restaurant.name}}" /></ng-container>
+                            </div>
+                            <div id="info">
+                                <div class="restaurant-name">{{restaurant.name}}</div>
+                                <div class="order-info">
+                                    <ng-container *ngIf="orderType === 'pickup'"><span class="clock-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" x="-12.8%" y="-11.1%" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span></ng-container>
+                                    <ng-container *ngIf="orderType === 'delivery'"><span class="clock-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" x="-12.8%" y="-11.1%" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span></ng-container>
+                                    <ng-container *ngIf="orderType === 'pickup'" class="order-time">{{restaurant.pickupInfo.averageTime}} Min.</ng-container>
+                                    <ng-container *ngIf="orderType === 'delivery'" class="order-time">{{restaurant.deliveryInfo.averageTime}} Min.</ng-container>
+                                    <ng-container *ngIf="orderType === 'pickup'"><span class="order-value"><span>&euro;{{restaurant.pickupInfo.minimumOrderValue}}</span> Min.</span></ng-container>
+                                    <ng-container *ngIf="orderType === 'delivery'"><span class="order-value"><span>&euro;{{restaurant.deliveryInfo.minimumOrderValue}}</span> Min.</span></ng-container>
+                                </div>
+                                <div class="cuisines"><span>{{getRestaurantSubText(restaurant)}}</span></div>
+                                <a class="order-now" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">
+                                    Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+</div>
+
+<!--section id="main" class="order-home" role="main">
     <div class="focus-outlet" tabindex="-1" role="group">
 
         <div id="home" class="locations">
             <div id="home-hero">
 
-                <div class="image-wrapper">
-                    <div class="welcome-image">
-                        <div class="background-image" style='background-image:url("https://images.pexels.com/photos/842545/pexels-photo-842545.jpeg?crop=entropy&cs=srgb&dl=round-stainless-steel-bowl-with-cooked-meat-and-vegetables-842545.jpg&fit=crop&fm=jpg&h=1280&w=1920")'></div>
-                    </div>
-                </div>
-
                 <div id="left">
                     <div class="clearfix left-content">
-
-                        <div class="cuisine-filter">
-                            <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
-                                <option value="">Alle anzeigen</option>
-                                <option *ngFor="let cuisine of cuisines" [value]="cuisine.id">{{cuisine.name}}</option>
-                            </select>
-                        </div>
 
                         <div class="tab-bar" role="tablist">
                             <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>
@@ -82,4 +140,4 @@
         </div>
 
     </div>
-</section>
+</section-->

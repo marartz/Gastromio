@@ -11,7 +11,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-add-cuisine',
   templateUrl: './add-cuisine.component.html',
-  styleUrls: ['./add-cuisine.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: ['./add-cuisine.component.css', '../../assets/css/backend_v2.min.css', '../../assets/css/frontend_v2.min.css']
 })
 export class AddCuisineComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

@@ -1,30 +1,23 @@
 <div id="modal">
-    <div class="modal-content" role="dialog">
-
-        <div id="modal-header">
-            <div class="modal-title">Impressum</div>
-            <button class="modal-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-                <svg width="24" viewBox="0 0 24 24" role="img">
-                    <path d="M15.5 7.1L12 10.6 8.5 7.1 7.1 8.5l3.5 3.5-3.5 3.5 1.4 1.4 3.5-3.5 3.5 3.5 1.4-1.4-3.5-3.5 3.5-3.5z"></path>
-                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"></path>
-                </svg>
-            </button>
+    <div class="wrapper">
+        <div class="content">
+            <img class="icon" src="/assets/images/icons/question.svg" alt="" style="width: 64px;" >
+            <h1 class="title">Impressum</h1>
+            <p class="description">
+                {{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}
+                <br />{{restaurant.address.street}}
+                <br />D-{{restaurant.address.zipCode}} {{restaurant.address.city}}
+                <br /><br />
+                <br />Telefon: {{restaurant.contactInfo.phone}}
+                <ng-container><br />Telefax: {{restaurant.contactInfo.fax}}</ng-container>
+                <ng-container><br />Webseite: <a href="{{restaurant.contactInfo.webSite}}" target="_blank" rel="nofollow noreferrer noopener">{{restaurant.contactInfo.webSite}}</a></ng-container>
+                <br />
+                <br />Diverse Marken sind im Besitz der jeweiligen Eigentümer.
+                <br />
+                <br />Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="nofollow noreferrer noopener">https://ec.europa.eu/consumers/odr</a>. 
+                <br />
+            </p>
+            <a href="javascript:" class="back-to-menu" aria-label="Close" (click)="activeModal.dismiss('Cross click')" style="font-family: 'Quicksand', sans-serif; font-weight: 600;">Zurück zum Menü →</a>
         </div>
-
-        <form>
-            <div id="modal-body">
-                <div class="restaurant-imprint">
-                    {{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}<br />
-                    {{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}<br />Deutschland
-                    <br /><br />
-                    Telefon: {{restaurant.contactInfo.phone}} / Telefax: {{restaurant.contactInfo.fax}}<br />
-                    Webseite: <a href="{{restaurant.contactInfo.webSite}}" target="_blank" rel="nofollow noreferrer noopener">{{restaurant.contactInfo.webSite}}</a>
-                    <br /><br />
-                    Diverse Marken sind im Besitz der jeweiligen Eigentümer.<br />Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="nofollow noreferrer noopener">https://ec.europa.eu/consumers/odr</a>. 
-                </div>
-            </div>
-
-        </form>
-
     </div>
 </div>

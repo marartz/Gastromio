@@ -15,7 +15,7 @@
 <head>
     <base href="/" />
 
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
 
     <link rel="canonical" href="https://www.gastromio.de/">
 
@@ -26,13 +26,22 @@
     <link rel="alternate" href="https://www.gastromio.de/" hreflang="de-LI" />
     <link rel="alternate" href="https://www.gastromio.de/" hreflang="de-LU" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, shrink-to-fit=no" />
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" /><![endif]-->
     <!--[if IEMobile]><meta http-equiv="cleartype" content="on" /><![endif]-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="x-dns-prefetch-control" content="off" />
+    <meta http-equiv="x-dns-prefetch-control" content="on" />
     <meta http-equiv="imagetoolbar" content="no" />
     <meta http-equiv="Language" content="de" />
+
+    <style type="text/css">
+    #app {
+        display: grid;
+        grid-auto-rows: auto;
+        grid-template-columns: repeat(var(--cells), 1fr);
+        min-height: 100%;
+    }
+    </style>
 
     <style type="text/css">
     #iubenda-cs-banner {
@@ -832,29 +841,15 @@
     <meta name="format-detection" content="telephone=no" />
 
     <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="/assets/css/frontend.min.css" />
+    <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/yvu2tba.css" />
     <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/wxy8rab.css" />
-
-    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="1">
-        $('.order').click(function(e) {
-
-        let button = $(this);
-
-        if(!button.hasClass('animate')) {
-            button.addClass('animate');
-            setTimeout(() => {
-                button.removeClass('animate');
-            }, 10000);
-        }
-
-        });
-    </script>
 
     <title>Gastromio</title>
 
     <meta name="description" content="Kostenlose Online-Bestellung für Restaurants in Bocholt und Umgebung! Mit Gastromio ist leckeres Essen nur einen Klick entfernt." />
 
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-config" content="/ieconfig.xml" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="msapplication-config" content="ieconfig.xml" />
 
     <meta name="application-name" content="Gastromio" />
     <meta name="theme-color" content="#65b32e" />
@@ -960,6 +955,8 @@
     </script>
 </head>
 <body>
-    <app-root></app-root>
+    <div id="app">
+        <app-root></app-root>
+    </div>
 </body>
 </html>

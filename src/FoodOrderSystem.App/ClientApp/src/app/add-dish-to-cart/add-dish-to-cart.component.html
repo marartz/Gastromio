@@ -1,3 +1,20 @@
+<block-ui>
+    <div id="modal">
+        <div class="wrapper">
+            <div class="content">
+                <h1 class="title add-edit">{{dish.name}}</h1>
+                    
+                    <div class="btns-container">
+                        <button type="button" class="cancel" (click)="onCancel()">Abbrechen</button>
+                        <button type="submit" class="submit" (click)="onSubmit()">Hinzufügen</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</block-ui>
+
+
+
 <div class="add-modal">
     <div class="add-content">
         <div id="dish-add">

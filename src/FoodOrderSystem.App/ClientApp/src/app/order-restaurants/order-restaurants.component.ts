@@ -9,7 +9,7 @@ import {CuisineModel} from '../cuisine/cuisine.model';
 @Component({
   selector: 'app-order-restaurants',
   templateUrl: './order-restaurants.component.html',
-  styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend_v2.min.css']
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   cuisines: CuisineModel[];
@@ -67,6 +67,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       return undefined;
     }
     return '/api/v1/restaurants/' + restaurant.id + '/images/logo';
+  }
+
+  hasBanner(
+    restaurant: RestaurantModel
+  ): boolean {
+    return restaurant.imageTypes.some(en => en === 'banner');
+  }
+
+  getBannerStyle(
+    restaurant: RestaurantModel
+  ): string {
+    if (!restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
   }
 
   onDeliverySelected(): void {

@@ -1010,18 +1010,6 @@ form:focus {
     -wekit-transition: opacity .4s cubic-bezier(.57, .06, .05, .95);
 }
 
-.cuisine-filter {
-    position: relative;
-    margin-bottom: 16px;
-    width: 100%;
-}
-
-@media screen and (min-width: 900px) {
-    .cuisine-filter {
-        margin-top: -50px;
-    }
-}
-
 .restaurant-card {
     border-radius: 24px;
     display: block;
@@ -3135,7 +3123,7 @@ form:focus {
     width: 100%;
 }
 
-/* 90.3 #navbar > .settings */
+/* 90.3 #navbar > .settings 
 #navbar .settings {
     background: #fff;
     border: none;
@@ -3185,7 +3173,7 @@ form:focus {
     -webkit-transition: none;
 }
 
-/* 91. #footer */
+/* 91. #footer 
 #footer {
     align-items: center;
     background: #256d1b;

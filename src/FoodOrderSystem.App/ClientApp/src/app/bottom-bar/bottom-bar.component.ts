@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-bottom-bar',
   templateUrl: './bottom-bar.component.html',
-  styleUrls: ['./bottom-bar.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./bottom-bar.component.css', '../../assets/css/frontend_v2.min.css']
 })
 
 export class BottomBarComponent implements OnInit {

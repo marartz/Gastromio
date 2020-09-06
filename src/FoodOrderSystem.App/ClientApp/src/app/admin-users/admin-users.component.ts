@@ -13,7 +13,7 @@ import {FetchPageInfo, ServerPaginationComponent} from '../pagination/server-pag
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
-  styleUrls: ['./admin-users.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: ['./admin-users.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
 })
 export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(ServerPaginationComponent) pagingComponent: ServerPaginationComponent;

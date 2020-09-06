@@ -584,7 +584,8 @@
 }
 
 #modal #modal-header .modal-title {
-    font-size: 24px;
+    font-family: "Quicksand", sans-serif;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 0.72px;
     line-height: 72px;
@@ -592,11 +593,6 @@
     padding: 0px 24px;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-}
-
-#modal #modal-header .modal-title::selection {
-    background-color: #f8f8f6;
-    color: #65b32e;
 }
 
 #modal #modal-header .modal-close {
@@ -675,6 +671,7 @@
 }
 
 #modal #modal-body .modal-input input {
+    font-family: "Quicksand", sans-serif;
     margin-bottom: 0px;
     position: relative;
     width: 100%;
@@ -700,6 +697,7 @@
     clip: initial;
     color: #6d6d6d;
     display: block;
+    font-family: "Quicksand", sans-serif;
     font-size: 12px;
     height: 18px;
     margin: -1px;
@@ -716,17 +714,56 @@
 
 /* 90.3 #modal > #modal-footer */
 #modal #modal-footer {
-    background-color: #f8f8f6;
-    border-top: 1px solid #eef0f0;
-    bottom: 0px;
-    left: 0px;
-    padding: 20px 24px;
-    right: 0px;
-    z-index: 21;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
 }
 
-#modal #modal-footer .inline-button-wrap {
-    margin: 0px;
+@media screen and (max-width: 768px) {
+    #modal #modal-footer {
+        flex-wrap: wrap-reverse;
+    }
+}
+
+#modal #modal-footer button {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 3rem;
+    color: #212529;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Quicksand", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    height: 48px;
+    letter-spacing: .7px;
+    line-height: 18px;
+    min-width: 140px;
+    padding: 0px 30px;
+    text-align: center;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    vertical-align: middle;
+    width: 100% !important;
+}
+
+#modal #modal-footer button.cancel {
+    background-color: #f7f7fa;
+    border: #f7f7fa;
+    color: rgba(43, 44, 67, .7); 
+}
+
+#modal #modal-footer button.submit {
+    background-color: #65b32e;
+    border-color: #65b32e;
+    color: #fff;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    #modal #modal-footer button.submit {
+        margin: 0 0 10px;
+    }
 }
 
 /* 200. ANIMATIONS */
