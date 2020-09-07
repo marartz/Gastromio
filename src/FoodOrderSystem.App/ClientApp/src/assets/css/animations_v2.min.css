@@ -1,0 +1,27 @@
+/*
+    Inhalt
+
+    easeInModal
+    fadeDownModal
+*/
+
+/* easeInModal */
+@keyframes easeInModal{0%{opacity:0}100%{opacity:1}}
+@-moz-keyframes easeInModal{0%{opacity:0}100%{opacity:1}}
+@-ms-keyframes easeInModal{0%{opacity:0}100%{opacity:1}}
+@-o-keyframes easeInModal{0%{opacity:0}100%{opacity:1}}
+@-webkit-keyframes easeInModal{0%{opacity:0}100%{opacity:1}}
+
+/* fadeDownModal */
+@keyframes fadeDownModal{0%{opacity:0;transform:translate(0px,-25px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-moz-keyframes fadeDownModal{0%{opacity:0;transform:translate(0px,-25px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-ms-keyframes fadeDownModal{0%{opacity:0;transform:translate(0px,-25px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-o-keyframes fadeDownModal{0%{opacity:0;transform:translate(0px,-25px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-webkit-keyframes fadeDownModal{0%{opacity:0;transform:translate(0px,-25px)}100%{opacity:1;transform:translate(0px,0px)}}
+
+/* showTable */
+@keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-moz-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-ms-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-o-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
+@-webkit-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}

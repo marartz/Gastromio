@@ -1,41 +1,63 @@
 <block-ui>
-    <!-- START: Fehlermeldungen -->
-    <div id="alert" class="error" *ngIf="submitted && f.Email.errors">
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Email.errors.required"><span>Bitte gebe eine gültige E-Mail-Adresse an</span></div>
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Email.errors.backend"><span>{{f.name.errors.backend}}</span></div>
-    </div>
-    <div id="alert" class="error" *ngIf="submitted && f.Password.errors">
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Password.errors.required"><span>Bitte gebe eine gültige E-Mail-Adresse und ein Passwort an</span></div>
-        <div id="message" tabindex="-1" role="alert" *ngIf="f.Password.errors.backend"><span>{{f.name.errors.backend}}</span></div>
-    </div>
-    <!-- ENDE: Fehlermeldungen -->
+    <div id="app">
+         <div id="login">
 
-    <section id="main" role="main">
-        <div class="focus-outlet" tabindex="-1" role="group">
+            <div id="notice" class="warning" *ngIf="submitted && f.Email.errors">
+                <p *ngIf="f.Email.errors.required">Bitte geben Sie eine gültige E-Mail-Adresse an</p>
+                <p *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</p>
+            </div>
+            <div id="notice" class="warning" *ngIf="submitted && f.Password.errors">
+                <p *ngIf="f.Password.errors.required">Bitte geben Sie eine gültige E-Mail-Adresse und ein Passwort an</p>
+                <p *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</p>
+            </div>
 
-            <div id="entry">
-                <div class="login">
-                    <section class="login-background">
-                        <div class="entry-container">
-                            <div class="entry-wrap">
+            <div id="left">
+                <img srcset="
+                /assets/images/background/login-640x426.jpg 640w,
+                /assets/images/background/login-1280x853.jpg 1280w,
+                /assets/images/background/login-1920x1280.jpg 1920w,
+                /assets/images/background/login-6108x4072.jpg 6108w"
+                src="/assets/images/background/login-1280x853.jpg"
+                alt="Foto von Daria Shevtsova von Pexels">
+            </div>
 
-                                <h1>Anmelden</h1>
-                                <p>Neuer Benutzer? <a href="https://forms.gle/SPMGmNxVAjcvQqi17" target="_blank" rel="nofollow noreferrer noopener">Konto anfragen</a></p>
-
+            <div id="right">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="child">
+                            <div class="login">
+                                <div class="heading">
+                                    <h6>Willkommen zurück!</h6>
+                                    <p>Melde Dich mit Deinem Konto an, um fortzufahren.</p>
+                                </div>
                                 <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                                    <div class="form-input"><input class="form-field" type="email" id="email" formControlName="Email" placeholder="Deine E-Mail-Adresse" autocomplete="off" ngbAutofocus /></div>
-                                    <div class="form-input"><input class="form-field" type="password" id="password" formControlName="Password" placeholder="Passwort" /></div>
-
+                                    <div class="form-input">
+                                        <label class="form-label">E-Mail-Adresse</label>
+                                        <div class="input-group">
+                                            <input type="email" id="email" name="email" formControlName="Email" placeholder="email@provider.de">
+                                            <div class="icon"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="form-label">Passwort</label>
+                                        <div class="input-group">
+                                            <input type="password" id="password" name="password" formControlName="Password" placeholder="Passwort">
+                                            <div class="icon"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg></span></div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" onclick='FB.AppEvents.logEvent("LoginButtonClicked")'>Anmelden</button>
                                     <!--app-general-error [generalError]="generalError"></app-general-error-->
-                                    <button class="form-button-submit" type="submit">Anmelden</button>
                                 </form>
-                                
+                                <div class="register">
+                                    <small>Kein Konto?</small>
+                                    <a href="" target="_blank" rel="nofollow" onclick='FB.AppEvents.logEvent("RegisterButtonClicked")'>Account anfragen</a>
+                                </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </div>
             </div>
 
         </div>
-    </section>
+    </div>
 </block-ui>

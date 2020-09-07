@@ -1,76 +1,28 @@
-<section id="main" class="order-home" role="main">
-    <div class="focus-outlet" tabindex="-1" role="group">
+<div id="order-home">
+    <section class="order">
+        <div class="wrapper">
 
-        <div id="home" class="order-home">
-            <div id="home-hero">
+            <!--div id="tablist" role="tablist">
+                <button class="tab" role="tab" [class.selected]="orderType === 'pickup'" (click)="onPickupSelected()">Abholung</button>
+                <button class="tab" role="tab" [class.selected]="orderType === 'delivery'" (click)="onDeliverySelected()">Lieferung</button>
+                <button class="tab" role="tab" [class.selected]="orderType === 'reservation'" (click)="onReservationSelected()">Reservieren</button>
+                <ng-container *ngIf="orderType === 'pickup'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%;"></div></div></ng-container>
+                <ng-container *ngIf="orderType === 'delivery'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div></ng-container>
+                <ng-container *ngIf="orderType === 'reservation'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div></ng-container>
+            </div-->
 
-                <div class="image-wrapper">
-                    <div class="welcome-image">
-                        <div class="background-image" style='background-image:url("https://images.pexels.com/photos/842545/pexels-photo-842545.jpeg?crop=entropy&cs=srgb&dl=round-stainless-steel-bowl-with-cooked-meat-and-vegetables-842545.jpg&fit=crop&fm=jpg&h=1280&w=1920")'></div>
-                    </div>
-                </div>
-
-                <div id="left" class="left">
-                    <div class="clearfix left-content">
-
-                        <div id="order" role="search">
-
-                            <h1>Einfach. Lokal. Bestellen.</h1>
-                            <h3>100% des Geldes geht an den Gastronomen. So einfach ist das.</h3>
-                            <br />
-
-                            <div class="tab-bar" role="tablist">
-                                <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>
-                                <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab" (click)="onDeliverySelected()"><span>Lieferung</span></button>
-                                <button class="tab-item" [class.selected]="orderType === 'reservation'" role="tab" (click)="onReservationSelected()"><span>Reservierung</span></button>
-                                <ng-container *ngIf="orderType === 'pickup'">
-                                    <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%"></div></div>
-                                </ng-container>
-                                <ng-container *ngIf="orderType === 'delivery'">
-                                    <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div>
-                                </ng-container>
-                                <ng-container *ngIf="orderType === 'reservation'">
-                                    <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div>
-                                </ng-container>
-                            </div>
-
-                            <div class="tab selected" role="tabpanel">
-                                <div class="card-inner">
-
-                                    <div class="card-content" tabindex="-1">
-                                        <div class="search-wrap">
-                                            <div class="search">
-                                                <div style="background: #fff;">
-                                                    <input type="text" placeholder="Suche nach Restaurants" autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
-
-                                                    <ng-template #rt let-r="result" let-t="term">
-                                                        <ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight>
-                                                    </ng-template>
-
-                                                    <svg height="17" width="17" viewBox="0 0 17 17">
-                                                        <g fill="none" fill-rule="evenodd" stroke="#6d6d6d" stroke-width="2.016" transform="translate(1 1)">
-                                                            <circle cx="5.5" cy="5.5" r="5.5"></circle>
-                                                            <path d="M9.281 9.3l5.4 5.4"></path>
-                                                        </g>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="view-all">
-                                        <a [routerLink]="['/restaurants']">Alle anzeigen &rang;</a>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+            <div id="tabpanel" role="tabpanel">
+                <header class="header">
+                    <h1>Kommst <b>Du</b> nicht <b>zum Essen</b>,<br />kommt das <b>Essen zu Dir</b>!</h1>
+                    <p>Gepflegtes Schlemmen auch während Corona!<br />#wirbestellenlokal</p>
+                </header>
+                <!--div class="search">
+                    <input type="text" placeholder="Suchen Sie nach Restaurants, Gastronomen, ..." autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
+                    <ng-template #rt let-r="result" let-t="term"><ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight></ng-template>
+                </div-->
+                <a [routerLink]="['/restaurants']"><button class="show-all">Jetzt bestellen</button></a>
             </div>
-        </div>
 
-    </div>
-</section>
+        </div>
+    </section>
+</div>

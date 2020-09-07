@@ -14,7 +14,12 @@ import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-re
 @Component({
   selector: 'app-admin-restaurants',
   templateUrl: './admin-restaurants.component.html',
-  styleUrls: ['./admin-restaurants.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: [
+    './admin-restaurants.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(ServerPaginationComponent) pagingComponent: ServerPaginationComponent;

@@ -22,7 +22,7 @@ import {combineLatest} from 'rxjs';
 @Component({
   selector: 'app-order-restaurant',
   templateUrl: './order-restaurant.component.html',
-  styleUrls: ['./order-restaurant.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./order-restaurant.component.css', '../../assets/css/frontend_v2.min.css']
 })
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
@@ -132,7 +132,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (!this.restaurant) {
       return undefined;
     }
-    return 'background-image:url("/api/v1/restaurants/' + this.restaurant.id + '/images/banner")';
+    return '/api/v1/restaurants/' + this.restaurant.id + '/images/banner';;
   }
 
   onDishCategoryChange(dishCategoryDivId: string): void {
@@ -169,10 +169,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     this.orderService.showCart();
   }
 
-  hideCart() {
-    this.orderService.hideCart();
-  }
-
   getCart(): CartModel {
     return this.orderService.getCart();
   }
@@ -198,6 +194,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     }
 
     return dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
+  }
+
+  getRestaurantSubText(restaurant: RestaurantModel): string {
+    if (restaurant === undefined || restaurant.cuisines === undefined || restaurant.cuisines.length === 0) {
+      return '';
+    }
+    return restaurant.cuisines.map(en => en.name).join(', ');
   }
 
   public onAddDishToCart(dish: DishModel): void {
@@ -245,12 +248,5 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     this.proceedError = undefined;
   }
 
-  public proceedToCheckout(): void {
-    if (!this.getCart().isValid()) {
-      this.proceedError = this.getCart().getValidationError();
-      return;
-    }
-    this.proceedError = undefined;
-    this.router.navigateByUrl('/checkout');
-  }
+
 }

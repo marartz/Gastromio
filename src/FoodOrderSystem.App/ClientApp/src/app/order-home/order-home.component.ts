@@ -9,7 +9,7 @@ import {OrderType} from '../cart/cart.model';
 @Component({
   selector: 'app-order-home',
   templateUrl: './order-home.component.html',
-  styleUrls: ['./order-home.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./order-home.component.css', '../../assets/css/frontend_v2.min.css']
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
   selectedRestaurant: RestaurantModel;
@@ -27,32 +27,6 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  }
-
-  onDeliverySelected(): void {
-    this.orderType = 'delivery';
-  }
-
-  onPickupSelected(): void {
-    this.orderType = 'pickup';
-  }
-
-  onReservationSelected(): void {
-    this.orderType = 'reservation';
-  }
-
-  searchForRestaurant = (text: Observable<string>) =>
-    text.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(term => term.length < 2
-        ? of([])
-        : this.orderService.searchForRestaurantsAsync(term, OrderService.translateToOrderType(this.orderType), undefined, undefined)),
-      take(10)
-    )
-
-  formatRestaurant(restaurant: RestaurantModel): string {
-    return restaurant.name;
   }
 
   onRestaurantSelected(restaurant: RestaurantModel): void {

@@ -12,7 +12,12 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-change-dish-category',
   templateUrl: './change-dish-category.component.html',
-  styleUrls: ['./change-dish-category.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: [
+    './change-dish-category.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class ChangeDishCategoryComponent implements OnInit {
   @Input() public restaurantId: string;

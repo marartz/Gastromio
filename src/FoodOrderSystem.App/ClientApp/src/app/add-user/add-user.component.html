@@ -1,60 +1,49 @@
 <block-ui>
     <div id="modal">
-        <div class="modal-content" role="dialog">
-
-            <div id="modal-header">
-                <div class="modal-title">Benutzer hinzufügen</div>
-                <button class="modal-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-                    <svg width="24" viewBox="0 0 24 24" role="img">
-                        <path d="M15.5 7.1L12 10.6 8.5 7.1 7.1 8.5l3.5 3.5-3.5 3.5 1.4 1.4 3.5-3.5 3.5 3.5 1.4-1.4-3.5-3.5 3.5-3.5z"></path>
-                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <form [formGroup]="addUserForm" (ngSubmit)="onSubmit(addUserForm.value)">
-                <div id="modal-body">
-                    <fieldset>
-                        <div class="modal-input" role="combobox">
-                            <input type="email" id="email" formControlName="email" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="E-Mail-Adresse" />
-                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                <div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div>
-                                <div *ngIf="f.email.errors.pattern">E-Mail-Adresse muss gültig sein</div>
-                            </div>
-                            <div *ngIf="message !== undefined"><span>{{message}}</span></div>
+        <div class="wrapper">
+            <div class="content">
+                <h1 class="title add-edit">Benutzer hinzufügen</h1>
+                <form [formGroup]="addUserForm" (ngSubmit)="onSubmit(addUserForm.value)">
+                    <div class="form-input">
+                        <label class="form-label">E-Mail-Adresse</label>
+                        <div class="input-group">
+                            <input type="email" autocomplete="off" autocapitalize="none" mozactionhint="next" autocapitalize="none" inputmode="email" required="" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                            <div class="invalid-feedback" *ngIf="submitted && f.email.errors"><div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div><div *ngIf="f.email.errors.pattern">Ungültige E-Mail Adresse (z.B. max@mustermann.de)</div></div>
+                            <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
                         </div>
-                        <div class="modal-input" role="combobox">
-                            <select id="role" formControlName="role">
-                                <option value="" selected disabled hidden>Rolle des Benutzers</option>
+                    </div>
+                    <div class="form-input">
+                        <label class="form-label">Rolle</label>
+                        <div class="input-group">
+                            <select autocomplete="off" mozactionhint="next" required="" id="role" formControlName="role">
+                                <option value="" selected="" disabled="" hidden="">Bitte auswählen<option>
                                 <option value="Customer">Kunde</option>
                                 <option value="RestaurantAdmin">Restaurantadministrator</option>
                                 <option value="SystemAdmin">Systemadministrator</option>
                             </select>
+                            <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
                         </div>
-                        <div class="modal-input" role="combobox">
-                            <input type="password" id="password" formControlName="password" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Passwort des Benutzers" />
-                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                <div *ngIf="f.password.errors.required">Passwort wird benötigt</div>
-                                <div *ngIf="f.password.errors.pattern">Das Passwort ist nicht komplex genug (mind. 1 Klein-, 1 Großbuchstabe, 1 Ziffer und 1 Sonderzeichen)</div>
-                            </div>
-                        </div>
-                        <div class="modal-input" role="combobox">
-                            <input type="password" id="passwordRepeat" formControlName="passwordRepeat" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.passwordRepeat.errors }" placeholder="Passwort wiederholen" />
-                            <div *ngIf="submitted && f.passwordRepeat.errors" class="invalid-feedback">
-                                <div *ngIf="f.passwordRepeat.errors.confirmedValidator">Das Passwort stimmt nicht mit dem vorherigen überein</div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-
-                <div id="modal-footer">
-                    <div class="inline-button-wrap">
-                        <button class="button-hollow-remove" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
-                        <button class="button" type="submit">Hinzufügen</button>
                     </div>
-                </div>
-            </form>
-
+                    <div class="form-input">
+                        <label class="form-label">Passwort</label>
+                        <div class="input-group">
+                            <input type="password" autocomplete="off" autocapitalize="none" mozactionhint="next" inputmode="verbatim" id="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                            <div class="invalid-feedback" *ngIf="submitted && f.password.errors"><div *ngIf="f.password.errors.required">Passwort wird benötigt</div><div *ngIf="f.password.errors.pattern">Das Passwort ist nicht komplex genug (mind. 1 Klein-, 1 Großbuchstabe, 1 Ziffer und 1 Sonderzeichen)</div></div>
+                        </div>
+                    </div>
+                    <div class="form-input">
+                        <label class="form-label">Passwort wiederholen</label>
+                        <div class="input-group">
+                            <input type="password" autocomplete="off" autocapitalize="none" mozactionhint="send" inputmode="verbatim" id="passwordRepeat" formControlName="passwordRepeat" [ngClass]="{ 'is-invalid': submitted && f.passwordRepeat.errors }">
+                            <div class="invalid-feedback" *ngIf="submitted && f.passwordRepeat.errors"><div *ngIf="f.passwordRepeat.errors.confirmedValidator">Das Passwort stimmt nicht mit dem vorherigen überein</div></div>
+                        </div>
+                    </div>
+                    <div class="btns-container">
+                        <button type="button" class="cancel" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
+                        <button type="submit" class="submit">Hinzufügen</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </block-ui>

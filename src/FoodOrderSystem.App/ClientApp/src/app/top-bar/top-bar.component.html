@@ -35,26 +35,48 @@
             <ng-container *ngIf="isRestaurantAdmin()"><span class="nav-icon-label">Restaurant&nbsp;</span></ng-container>
           </a>
 
-          <ul id="userDropDown" class="dropdown-menu settings" ngbDropdownMenu aria-labelledby="userDropDown" role="menu">
+          <div id="userDropDown" class="dropdown-menu settings" ngbDropdownMenu aria-labelledby="userDropDown" role="menu">
 
-            <ng-container *ngIf="isSystemAdmin()">
-              <li ngbDropdownItem [routerLink]="['/admin/users']"><a [routerLink]="['/admin/users']">Benutzer verwalten</a></li>
-              <li ngbDropdownItem [routerLink]="['/admin/cuisines']"><a [routerLink]="['/admin/cuisines']">Cuisines verwalten</a></li>
-              <li ngbDropdownItem [routerLink]="['/admin/restaurants']"><a [routerLink]="['/admin/restaurants']">Restaurants verwalten</a></li>
-              <li ngbDropdownItem [routerLink]="['/admin/restaurantimport']"><a [routerLink]="['/admin/restaurantimport']">Restaurantimport</a></li>
-              <li ngbDropdownItem [routerLink]="['/admin/dishimport']"><a [routerLink]="['/admin/dishimport']">Speisenimport</a></li>
-            </ng-container>
+              <ng-container *ngIf="isSystemAdmin()">
+                  <h6 class="header">Administration</h6>
+                  <a ngbDropdownItem [routerLink]="['/admin/users']">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                      <span>Benutzer</span>
+                  </a>
+                  <a ngbDropdownItem [routerLink]="['/admin/cuisines']">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                      <span>Cuisines</span>
+                  </a>
+                  <a ngbDropdownItem [routerLink]="['/admin/restaurants']">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                      <span>Restaurants</span>
+                  </a>
+                  <a ngbDropdownItem [routerLink]="['/admin/dishimport']">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                      <span>Speisenimport</span>
+                  </a>
+                  <a ngbDropdownItem [routerLink]="['/admin/restaurantimport']">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                      <span>Restaurantimport</span>
+                  </a>
+              </ng-container>
 
-            <ng-container *ngIf="isRestaurantAdmin()">
-              <li ngbDropdownItem [routerLink]="['/admin/myrestaurants']"><a [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a></li>
-            </ng-container>
+              <ng-container *ngIf="isRestaurantAdmin()">
+                  <h6 class="header">Verwaltung</h6>
+                  <a ngbDropdownItem [routerLink]="['/admin/myrestaurants']">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                      <span>Meine Restaurants</span>
+                  </a>
+              </ng-container>
 
-            <div class="dropdown-divider"></div>
+              <div class="divider"></div>
 
-            <li ngbDropdownItem (click)="logout()"><a (click)="logout()">Abmelden</a></li>
+              <a ngbDropdownItem (click)="logout()">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                  <span>Abmelden</span>
+              </a>
 
-
-          </ul>
+          </div>
 
         </div>
 

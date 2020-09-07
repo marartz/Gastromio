@@ -20,11 +20,18 @@ import {DishModel} from '../dish-category/dish.model';
 import {EditDishComponent} from '../edit-dish/edit-dish.component';
 import {RemoveDishComponent} from '../remove-dish/remove-dish.component';
 import {CuisineModel} from '../cuisine/cuisine.model';
+import {AuthService} from '../auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-restaurant',
   templateUrl: './admin-restaurant.component.html',
-  styleUrls: ['./admin-restaurant.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: [
+    './admin-restaurant.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
@@ -68,7 +75,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private restaurantRestAdminService: RestaurantRestAdminService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.restaurant = new RestaurantModel();
 
@@ -296,6 +305,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
   getRestaurantStatusText(): string {

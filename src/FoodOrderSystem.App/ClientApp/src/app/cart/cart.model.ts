@@ -152,7 +152,7 @@ export class CartModel {
     }
 
     if (this.maximumOrderValue && valueOfOrder > this.maximumOrderValue) {
-      return 'Der Maximalbestellwert von € ' + this.getMaximumOrderValueText() + '  ist überschritten';
+      return 'Der Maximalbestellwert von € ' + this.getMaximumOrderValueText() + ' ist überschritten';
     }
 
     return undefined;

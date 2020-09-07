@@ -9,7 +9,7 @@ import {ImportLogLineModel} from '../restaurant-sys-admin/import-log-line.model'
 @Component({
   selector: 'app-admin-restaurant-import',
   templateUrl: './admin-restaurant-import.component.html',
-  styleUrls: ['./admin-restaurant-import.component.css', '../../assets/css/frontend.min.css', '../../assets/css/backend.min.css']
+  styleUrls: ['./admin-restaurant-import.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
 })
 export class AdminRestaurantImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
