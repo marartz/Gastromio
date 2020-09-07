@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Commands;
-using FoodOrderSystem.Domain.Commands.ProcessPendingNotifications;
+using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -30,7 +30,7 @@ namespace FoodOrderSystem.App.BackgroundServices
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.LogDebug($"Checking orders for pending notifications");
+                //logger.LogDebug($"Checking orders for pending notifications");
                 await CheckOrdersAsync(stoppingToken); 
                 await Task.Delay(5000, stoppingToken);
             }

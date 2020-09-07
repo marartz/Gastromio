@@ -1,11 +1,7 @@
-﻿using FoodOrderSystem.Domain.Model;
-using FoodOrderSystem.Domain.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language;
-using Newtonsoft.Json.Serialization;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using FoodOrderSystem.Core.Application.Services;
+using FoodOrderSystem.Core.Common;
 
 namespace FoodOrderSystem.App.Helper
 {

@@ -63,8 +63,7 @@ export class OrderService {
     }
   }
 
-  public getAllCuisinesAsync(): Observable<CuisineModel[]>
-  {
+  public getAllCuisinesAsync(): Observable<CuisineModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -76,7 +75,8 @@ export class OrderService {
     return this.http.get<RestaurantModel[]>(this.baseUrl + '/cuisines', httpOptions);
   }
 
-  public searchForRestaurantsAsync(search: string, orderType: OrderType, cuisineId: string): Observable<RestaurantModel[]> {
+  public searchForRestaurantsAsync(search: string, orderType: OrderType, cuisineId: string,
+                                   openingHourFilter: string | undefined): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -86,8 +86,7 @@ export class OrderService {
     };
 
     let orderTypeText: string;
-    switch (orderType)
-    {
+    switch (orderType) {
       case OrderType.Pickup:
         orderTypeText = 'pickup';
         break;
@@ -106,6 +105,13 @@ export class OrderService {
 
     if (cuisineId) {
       url += '&cuisineId=' + encodeURIComponent(cuisineId);
+    }
+
+    if (openingHourFilter !== undefined) {
+      const date = Date.parse(openingHourFilter);
+      if (!isNaN(date)) {
+        url += '&openingHour=' + encodeURIComponent(openingHourFilter);
+      }
     }
 
     return this.http.get<RestaurantModel[]>(url, httpOptions);

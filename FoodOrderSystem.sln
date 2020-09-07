@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Domain", "src\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj", "{7DD621AA-BEB4-478C-B066-8ED740D689FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.Core", "src\FoodOrderSystem.Core\FoodOrderSystem.Core.csproj", "{7DD621AA-BEB4-478C-B066-8ED740D689FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodOrderSystem.App", "src\FoodOrderSystem.App\FoodOrderSystem.App.csproj", "{00B578CE-7A6C-4212-823C-165A7693361E}"
 EndProject

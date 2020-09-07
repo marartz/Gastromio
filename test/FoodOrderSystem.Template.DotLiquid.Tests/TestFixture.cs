@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using FoodOrderSystem.Domain.Model.Dish;
-using FoodOrderSystem.Domain.Model.Order;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.Model.Restaurant;
+using FoodOrderSystem.Core.Domain.Model.Dish;
+using FoodOrderSystem.Core.Domain.Model.Order;
+using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
 
 namespace FoodOrderSystem.Template.DotLiquid.Tests
 {

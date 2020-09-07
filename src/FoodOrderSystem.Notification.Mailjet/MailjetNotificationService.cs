@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Adapters.Notification;
+using FoodOrderSystem.Core.Application.Ports.Notification;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
 using Microsoft.Extensions.Logging;

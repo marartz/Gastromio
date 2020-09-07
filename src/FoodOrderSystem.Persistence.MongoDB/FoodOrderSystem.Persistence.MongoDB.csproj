@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FoodOrderSystem.Domain\FoodOrderSystem.Domain.csproj" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+    <ProjectReference Include="..\FoodOrderSystem.Core\FoodOrderSystem.Core.csproj" />
   </ItemGroup>
 
 </Project>

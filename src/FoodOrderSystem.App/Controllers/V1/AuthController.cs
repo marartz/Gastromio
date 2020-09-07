@@ -1,22 +1,21 @@
-﻿using FoodOrderSystem.App.Helper;
-using FoodOrderSystem.App.Models;
-using FoodOrderSystem.Domain.Commands;
-using FoodOrderSystem.Domain.Commands.Login;
-using FoodOrderSystem.Domain.Model;
-using FoodOrderSystem.Domain.Services;
-using FoodOrderSystem.Domain.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using FoodOrderSystem.App.Helper;
+using FoodOrderSystem.App.Models;
+using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.Login;
+using FoodOrderSystem.Core.Application.DTOs;
+using FoodOrderSystem.Core.Application.Services;
+using FoodOrderSystem.Core.Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FoodOrderSystem.App.Controllers.V1
 {
@@ -58,8 +57,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                 await Task.Delay(delay);
             }
             
-            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserViewModel>(new LoginCommand(loginModel.Email, loginModel.Password), null);
-            if (commandResult is SuccessResult<UserViewModel> successResult)
+            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserDTO>(new LoginCommand(loginModel.Email, loginModel.Password), null);
+            if (commandResult is SuccessResult<UserDTO> successResult)
             {
                 memoryCache.Remove(cacheKey);
                 
@@ -99,7 +98,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             return $"FailureCount:{userHostAddress}";
         }
         
-        private string GenerateJSONWebToken(UserViewModel user)
+        private string GenerateJSONWebToken(UserDTO user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

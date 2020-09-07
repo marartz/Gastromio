@@ -1,13 +1,13 @@
-using FoodOrderSystem.Domain.Commands;
-using FoodOrderSystem.Domain.Commands.EnsureAdminUser;
-using FoodOrderSystem.Domain.Model.User;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
-using FoodOrderSystem.Domain.Commands.AddTestData;
-using FoodOrderSystem.Domain.Model;
+using FoodOrderSystem.Core.Application.Commands.AddTestData;
+using FoodOrderSystem.Core.Application.Commands.EnsureAdminUser;
+using FoodOrderSystem.Core.Common;
+using FoodOrderSystem.Core.Domain.Model.User;
+using FoodOrderSystem.Persistence.MongoDB;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -23,6 +23,7 @@ namespace FoodOrderSystem.App
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
+                .WriteTo.File("./logs/log.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
             try
@@ -37,6 +38,8 @@ namespace FoodOrderSystem.App
 
                     var configuration = services.GetService<IConfiguration>();
 
+                    var dbAdminService = services.GetService<IDbAdminService>();
+
                     var currentUser = new User(
                         new UserId(Guid.Empty),
                         Role.SystemAdmin,
@@ -49,18 +52,17 @@ namespace FoodOrderSystem.App
                         new UserId(Guid.Empty)
                     );
 
-                    var commandDispatcher = services.GetService<ICommandDispatcher>();
+                    var ensureAdminUserCommandHandler = services.GetService<EnsureAdminUserCommandHandler>();
 
                     var seed =
                         string.Equals(configuration["Seed"], "true", StringComparison.InvariantCultureIgnoreCase) ||
                         configuration.GetSection("Seed").GetChildren().Any();
                     if (seed)
                     {
-                        Persistence.MongoDB.Initializer.PurgeDatabase(services);
-                        Persistence.MongoDB.Initializer.PrepareDatabase(services);
+                        dbAdminService.PurgeDatabase();
+                        dbAdminService.PrepareDatabase();
 
-                        var result = commandDispatcher
-                            .PostAsync<EnsureAdminUserCommand, bool>(new EnsureAdminUserCommand(), currentUser).Result;
+                        var result = ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).Result;
                         if (result.IsFailure)
                         {
                             var failureResult = (FailureResult<bool>) result;
@@ -80,10 +82,11 @@ namespace FoodOrderSystem.App
                         if (!Int32.TryParse(configuration["Seed:Params:DishCount"], out var dishCount))
                             dishCount = 8;
 
-                        result = commandDispatcher
-                            .PostAsync<AddTestDataCommand, bool>(
-                                new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount), currentUser)
-                            .Result;
+                        var addTestDataCommandHandler = services.GetService<AddTestDataCommandHandler>();
+
+                        result = addTestDataCommandHandler
+                            .HandleAsync(new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount),
+                                currentUser).Result;
                         if (result.IsFailure)
                         {
                             var failureResult = (FailureResult<bool>) result;
@@ -93,10 +96,9 @@ namespace FoodOrderSystem.App
                     }
                     else
                     {
-                        Persistence.MongoDB.Initializer.PrepareDatabase(services);
+                        dbAdminService.PrepareDatabase();
 
-                        var result = commandDispatcher
-                            .PostAsync<EnsureAdminUserCommand, bool>(new EnsureAdminUserCommand(), currentUser).Result;
+                        var result = ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).Result;
                         if (result.IsFailure)
                         {
                             var failureResult = (FailureResult<bool>) result;

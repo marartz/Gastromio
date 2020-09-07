@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace FoodOrderSystem.Domain.Tests
+namespace FoodOrderSystem.Core.Tests
 {
     public class UnitTest1
     {

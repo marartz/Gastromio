@@ -1,11 +1,11 @@
-﻿using FoodOrderSystem.Domain.ViewModels;
-using System;
+﻿using System;
+using FoodOrderSystem.Core.Application.DTOs;
 
 namespace FoodOrderSystem.App.Models
 {
     public class AddOrChangeDishOfRestaurantModel
     {
         public Guid DishCategoryId { get; set; }
-        public DishViewModel Dish { get; set; }
+        public DishDTO Dish { get; set; }
     }
 }

@@ -2,7 +2,7 @@
     <div class="layout">
 
         <div id="order-restaurants">
-
+          
             <section id="jumbotron">
                 <div id="background">
                     <div class="left"></div>
@@ -29,6 +29,7 @@
                     <div id="filters">
                         <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche"></div>
                         <div class="cuisine-filter">
+                            Küche:
                             <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
                                 <option value="" selected="">Alle anzeigen</option>
                                 <option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
@@ -68,76 +69,3 @@
 
     </div>
 </div>
-
-<!--section id="main" class="order-home" role="main">
-    <div class="focus-outlet" tabindex="-1" role="group">
-
-        <div id="home" class="locations">
-            <div id="home-hero">
-
-                <div id="left">
-                    <div class="clearfix left-content">
-
-                        <div class="tab-bar" role="tablist">
-                            <button class="tab-item" [class.selected]="orderType === 'pickup'" role="tab" (click)="onPickupSelected()"><span>Abholung</span></button>
-                            <button class="tab-item" [class.selected]="orderType === 'delivery'" role="tab" (click)="onDeliverySelected()"><span>Lieferung</span></button>
-                            <button class="tab-item" [class.selected]="orderType === 'reservation'" role="tab" (click)="onReservationSelected()"><span>Reservierung</span></button>
-                            <ng-container *ngIf="orderType === 'pickup'">
-                                <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%"></div></div>
-                            </ng-container>
-                            <ng-container *ngIf="orderType === 'delivery'">
-                                <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div>
-                            </ng-container>
-                            <ng-container *ngIf="orderType === 'reservation'">
-                                <div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div>
-                            </ng-container>
-                        </div>
-
-                        <div id="restaurants" role="region" tabindex="-1">
-
-                            <div class="restaurant-card" *ngFor="let restaurant of restaurants">
-                                <div class="card-inner" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">
-
-                                    <div class="card-content">
-                                        <div class="card-left">
-                                            <div class="card-top">
-                                                <h4 class="restaurant-name">{{restaurant.name}}</h4>
-                                            </div>
-                                            <div class="restaurant-description">
-                                                <address>
-                                                    {{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}
-                                                    <div class="restaurant-phone" tabindex="0" role="button">
-                                                        <br />{{restaurant.contactInfo.phone}}
-                                                        <br />{{getRestaurantSubText(restaurant)}}
-                                                    </div>
-                                                    <div></div>
-                                                </address>
-                                            </div>
-                                        </div>
-
-                                        <div class="card-right">
-                                            <ng-container *ngIf="!hasLogo(restaurant)">
-                                                <div style="height: 90px;"></div>
-                                            </ng-container>
-                                            <ng-container *ngIf="hasLogo(restaurant)">
-                                                <img [src]="getLogoUrl(restaurant)" alt="{{restaurant.name}} Logo" />
-                                            </ng-container>
-                                            <div class="card-details">
-                                                <span class="text-link menu-link" tabindex="0" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">Bestellen</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</section-->

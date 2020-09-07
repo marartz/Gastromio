@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Model.Cuisine;
-using FoodOrderSystem.Domain.Model.Order;
-using FoodOrderSystem.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.Model.User;
+using FoodOrderSystem.Core.Application.Ports.Persistence;
+using FoodOrderSystem.Core.Domain.Model.Cuisine;
+using FoodOrderSystem.Core.Domain.Model.Order;
+using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
+using FoodOrderSystem.Core.Domain.Model.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -24,7 +25,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
-            CuisineId cuisineId, bool? isActive, CancellationToken cancellationToken = default)
+            CuisineId cuisineId, DateTime? openingHour, bool? isActive, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
 
@@ -66,6 +67,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             if (cuisineId != null)
             {
                 filter &= Builders<RestaurantModel>.Filter.AnyEq(en => en.Cuisines, cuisineId.Value);
+            }
+
+            if (openingHour.HasValue)
+            {
+                filter &= GenerateOpeningHourFilterDefinition(openingHour.Value);
             }
 
             if (isActive.HasValue)
@@ -83,8 +89,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
         }
 
         public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase,
-            OrderType? orderType, CuisineId cuisineId, bool? isActive, int skip = 0, int take = -1,
-            CancellationToken cancellationToken = default)
+            OrderType? orderType, CuisineId cuisineId, DateTime? openingHour, bool? isActive, int skip = 0,
+            int take = -1, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
 
@@ -126,6 +132,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             if (cuisineId != null)
             {
                 filter &= Builders<RestaurantModel>.Filter.AnyEq(en => en.Cuisines, cuisineId.Value);
+            }
+
+            if (openingHour.HasValue)
+            {
+                filter &= GenerateOpeningHourFilterDefinition(openingHour.Value);
             }
 
             if (isActive.HasValue)
@@ -160,6 +171,15 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 cancellationToken: cancellationToken);
             var document = await cursor.FirstOrDefaultAsync(cancellationToken);
             return document != null ? FromDocument(document) : null;
+        }
+
+        public async Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+            var cursor = await collection.FindAsync(
+                Builders<RestaurantModel>.Filter.Where(en => en.Name.ToLower() == restaurantName.ToLower()),
+                cancellationToken: cancellationToken);
+            return cursor.ToEnumerable().Select(FromDocument);
         }
 
         public async Task<Restaurant> FindByImportIdAsync(string importId,
@@ -246,6 +266,58 @@ namespace FoodOrderSystem.Persistence.MongoDB
         private IMongoCollection<RestaurantModel> GetCollection()
         {
             return database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
+        }
+
+        private FilterDefinition<RestaurantModel> GenerateOpeningHourFilterDefinition(DateTime openingHourFilter)
+        {
+            int filterDayOfWeek;
+
+            switch (openingHourFilter.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    filterDayOfWeek = 0;
+                    break;
+                case DayOfWeek.Tuesday:
+                    filterDayOfWeek = 1;
+                    break;
+                case DayOfWeek.Wednesday:
+                    filterDayOfWeek = 2;
+                    break;
+                case DayOfWeek.Thursday:
+                    filterDayOfWeek = 3;
+                    break;
+                case DayOfWeek.Friday:
+                    filterDayOfWeek = 4;
+                    break;
+                case DayOfWeek.Saturday:
+                    filterDayOfWeek = 5;
+                    break;
+                case DayOfWeek.Sunday:
+                    filterDayOfWeek = 6;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            const double earliestOpeningHour = 4d;
+
+            int filterMinutes;
+
+            if (openingHourFilter.Hour < earliestOpeningHour)
+            {
+                filterDayOfWeek = (filterDayOfWeek - 1) % 7;
+                filterMinutes = (openingHourFilter.Hour + 24) * 60 + openingHourFilter.Minute;
+            }
+            else
+            {
+                filterMinutes = openingHourFilter.Hour * 60 + openingHourFilter.Minute;
+            }
+
+            var openingPeriodModelFilter = Builders<OpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
+                                           Builders<OpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
+                                           Builders<OpeningPeriodModel>.Filter.Gte(m => m.EndTime, filterMinutes);
+
+            return Builders<RestaurantModel>.Filter.ElemMatch(m => m.OpeningHours, openingPeriodModelFilter);
         }
 
         private static Restaurant FromDocument(RestaurantModel document)

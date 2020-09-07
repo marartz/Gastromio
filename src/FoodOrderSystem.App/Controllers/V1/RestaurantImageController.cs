@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FoodOrderSystem.Domain.Model.Restaurant;
-using FoodOrderSystem.Domain.Model.RestaurantImage;
-using FoodOrderSystem.Domain.Queries;
-using FoodOrderSystem.Domain.Queries.GetRestaurantImage;
+using FoodOrderSystem.Core.Application.Queries;
+using FoodOrderSystem.Core.Application.Queries.GetRestaurantImage;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
+using FoodOrderSystem.Core.Domain.Model.RestaurantImage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
