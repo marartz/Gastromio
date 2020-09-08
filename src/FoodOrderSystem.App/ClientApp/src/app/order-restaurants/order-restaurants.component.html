@@ -29,7 +29,6 @@
                     <div id="filters">
                         <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche"></div>
                         <div class="cuisine-filter">
-                            Küche:
                             <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
                                 <option value="" selected="">Alle anzeigen</option>
                                 <option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
@@ -39,7 +38,7 @@
                 </div>
                 
                 <div class="wrapper">
-                    <li class="restaurant" *ngFor="let restaurant of restaurants">
+                    <li class="restaurant" *ngFor="let restaurant of restaurants"><!--  -->
                         <div class="wrapper">
                             <div id="banner">
                                 <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>
