@@ -2,7 +2,7 @@
     <div class="layout">
 
         <div id="order-restaurants">
-          
+
             <section id="jumbotron">
                 <div id="background">
                     <div class="left"></div>
@@ -18,7 +18,7 @@
                     <div class="step"><span style="line-height: 47px;">3. Genieße dein Essen!</span></div>
                 </div>
             </section>
-            
+
             <section id="restaurants">
                 <div id="header">
                     <div id="settings">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="wrapper">
                     <li class="restaurant" *ngFor="let restaurant of restaurants"><!--  -->
                         <div class="wrapper">
@@ -47,15 +47,13 @@
                             <div id="info">
                                 <div class="restaurant-name">{{restaurant.name}}</div>
                                 <div class="order-info">
-                                    <ng-container *ngIf="orderType === 'pickup'"><span class="clock-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" x="-12.8%" y="-11.1%" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span></ng-container>
-                                    <ng-container *ngIf="orderType === 'delivery'"><span class="clock-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" x="-12.8%" y="-11.1%" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span></ng-container>
                                     <ng-container *ngIf="orderType === 'pickup'" class="order-time">{{restaurant.pickupInfo.averageTime}} Min.</ng-container>
                                     <ng-container *ngIf="orderType === 'delivery'" class="order-time">{{restaurant.deliveryInfo.averageTime}} Min.</ng-container>
                                     <ng-container *ngIf="orderType === 'pickup'"><span class="order-value"><span>&euro;{{restaurant.pickupInfo.minimumOrderValue}}</span> Min.</span></ng-container>
                                     <ng-container *ngIf="orderType === 'delivery'"><span class="order-value"><span>&euro;{{restaurant.deliveryInfo.minimumOrderValue}}</span> Min.</span></ng-container>
                                 </div>
                                 <div class="cuisines"><span>{{getRestaurantSubText(restaurant)}}</span></div>
-                                <a class="order-now" [routerLink]="['/restaurants', restaurant.id]" [queryParams]="{orderType: orderType}">
+                                <a class="order-now" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [queryParams]="{orderType: orderType}">
                                     Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                 </a>
                             </div>
