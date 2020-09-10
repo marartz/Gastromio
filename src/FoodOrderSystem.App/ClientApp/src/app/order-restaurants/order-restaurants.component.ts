@@ -5,6 +5,7 @@ import {BehaviorSubject, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 import {OrderType} from '../cart/cart.model';
 import {CuisineModel} from '../cuisine/cuisine.model';
+import {BlockUI, NgBlockUI} from "ng-block-ui";
 
 @Component({
   selector: 'app-order-restaurants',
@@ -12,6 +13,8 @@ import {CuisineModel} from '../cuisine/cuisine.model';
   styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend_v2.min.css']
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
+  @BlockUI() blockUI: NgBlockUI;
+
   cuisines: CuisineModel[];
 
   openingHourFilter$ = new BehaviorSubject<string>(undefined);
@@ -132,16 +135,18 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       this.updateSearchSubscription.unsubscribe();
     }
 
+    this.blockUI.start("Suche läuft");
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
       this.selectedCuisineFilter, undefined)
       .pipe(take(1))
       .subscribe((result) => {
-
         this.restaurants = new Array<RestaurantModel>(result.length);
         for (let i = 0; i < result.length; i++) {
           this.restaurants[i] = new RestaurantModel(result[i]);
         }
+        this.blockUI.stop();
       }, () => {
+          this.blockUI.stop();
       });
   }
 

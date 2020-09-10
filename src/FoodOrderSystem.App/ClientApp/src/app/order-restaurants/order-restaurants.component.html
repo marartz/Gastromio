@@ -20,46 +20,48 @@
             </section>
 
             <section id="restaurants">
-                <div id="header">
-                    <div id="settings">
-                        <h2 class="heading">Restaurants</h2>
-                        <div class="toggle" *ngIf="orderType === 'pickup'" (click)="onDeliverySelected()"><label><div class="switch"></div></label></div>
-                        <div class="toggle delivery" *ngIf="orderType === 'delivery'" (click)="onPickupSelected()"><label><div class="switch"></div></label></div>
-                    </div>
-                    <div id="filters">
-                        <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche"></div>
-                        <div class="cuisine-filter">
-                            <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
-                                <option value="" selected="">Alle anzeigen</option>
-                                <option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
-                            </select>
+                <block-ui>
+                    <div id="header">
+                        <div id="settings">
+                            <h2 class="heading">Restaurants</h2>
+                            <div class="toggle" *ngIf="orderType === 'pickup'" (click)="onDeliverySelected()"><label><div class="switch"></div></label></div>
+                            <div class="toggle delivery" *ngIf="orderType === 'delivery'" (click)="onPickupSelected()"><label><div class="switch"></div></label></div>
+                        </div>
+                        <div id="filters">
+                            <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche"></div>
+                            <div class="cuisine-filter">
+                                <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
+                                    <option value="" selected="">Alle anzeigen</option>
+                                    <option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="wrapper">
-                    <li class="restaurant" *ngFor="let restaurant of restaurants"><!--  -->
-                        <div class="wrapper">
-                            <div id="banner">
-                                <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>
-                                <ng-container *ngIf="!hasBanner(restaurant)"><img src="../../assets/images/background/placeholder.jpg" alt="{{restaurant.name}}" /></ng-container>
-                            </div>
-                            <div id="info">
-                                <div class="restaurant-name">{{restaurant.name}}</div>
-                                <div class="order-info">
-                                    <ng-container *ngIf="orderType === 'pickup'" class="order-time">{{restaurant.pickupInfo.averageTime}} Min.</ng-container>
-                                    <ng-container *ngIf="orderType === 'delivery'" class="order-time">{{restaurant.deliveryInfo.averageTime}} Min.</ng-container>
-                                    <ng-container *ngIf="orderType === 'pickup'"><span class="order-value"><span>&euro;{{restaurant.pickupInfo.minimumOrderValue}}</span> Min.</span></ng-container>
-                                    <ng-container *ngIf="orderType === 'delivery'"><span class="order-value"><span>&euro;{{restaurant.deliveryInfo.minimumOrderValue}}</span> Min.</span></ng-container>
+                    <div class="wrapper">
+                        <li class="restaurant" *ngFor="let restaurant of restaurants"><!--  -->
+                            <div class="wrapper">
+                                <div id="banner">
+                                    <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>
+                                    <ng-container *ngIf="!hasBanner(restaurant)"><img src="../../assets/images/background/placeholder.jpg" alt="{{restaurant.name}}" /></ng-container>
                                 </div>
-                                <div class="cuisines"><span>{{getRestaurantSubText(restaurant)}}</span></div>
-                                <a class="order-now" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [queryParams]="{orderType: orderType}">
-                                    Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                </a>
+                                <div id="info">
+                                    <div class="restaurant-name">{{restaurant.name}}</div>
+                                    <div class="order-info">
+                                        <ng-container *ngIf="orderType === 'pickup'" class="order-time">{{restaurant.pickupInfo.averageTime}} Min.</ng-container>
+                                        <ng-container *ngIf="orderType === 'delivery'" class="order-time">{{restaurant.deliveryInfo.averageTime}} Min.</ng-container>
+                                        <ng-container *ngIf="orderType === 'pickup'"><span class="order-value"><span>&euro;{{restaurant.pickupInfo.minimumOrderValue}}</span> Min.</span></ng-container>
+                                        <ng-container *ngIf="orderType === 'delivery'"><span class="order-value"><span>&euro;{{restaurant.deliveryInfo.minimumOrderValue}}</span> Min.</span></ng-container>
+                                    </div>
+                                    <div class="cuisines"><span>{{getRestaurantSubText(restaurant)}}</span></div>
+                                    <a class="order-now" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [queryParams]="{orderType: orderType}">
+                                        Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </div>
+                        </li>
+                    </div>
+                </block-ui>
             </section>
 
         </div>
