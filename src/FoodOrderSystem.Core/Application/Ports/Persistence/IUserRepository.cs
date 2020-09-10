@@ -20,6 +20,8 @@ namespace FoodOrderSystem.Core.Application.Ports.Persistence
 
         Task<User> FindByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
 
+        Task<IEnumerable<User>> FindByUserIdsAsync(IEnumerable<UserId> userIds, CancellationToken cancellationToken = default);
+
         Task StoreAsync(User user, CancellationToken cancellationToken = default);
 
         Task RemoveAsync(UserId userId, CancellationToken cancellationToken = default);

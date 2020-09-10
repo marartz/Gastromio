@@ -126,6 +126,21 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return document != null ? FromDocument(document) : null;
         }
 
+        public async Task<IEnumerable<User>> FindByUserIdsAsync(IEnumerable<UserId> userIds, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+
+            var filter = FilterDefinition<UserModel>.Empty;
+            foreach (var userId in userIds)
+            {
+                filter |= Builders<UserModel>.Filter.Eq(en => en.Id, userId.Value);
+            }
+            
+            var cursor = await collection.FindAsync(filter, cancellationToken: cancellationToken);
+
+            return (await cursor.ToListAsync(cancellationToken)).Select(FromDocument);
+        }
+
         public async Task StoreAsync(User user, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();

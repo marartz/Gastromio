@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,8 +67,19 @@ namespace FoodOrderSystem.Core.Application.Commands.AddRestaurant
             
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
+            var userIds = restaurant.Administrators;
+            
+            var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
+
+            var userDict = users != null
+                ? users.ToDictionary(user => user.Id, user => new UserDTO(user))
+                : new Dictionary<UserId, UserDTO>();
+
+            var restaurantImageTypes =
+                await restaurantImageRepository.FindTypesByRestaurantIdsAsync(new[] {restaurant.Id}, cancellationToken);
+
             return SuccessResult<RestaurantDTO>.Create(new RestaurantDTO(restaurant, cuisines, paymentMethods,
-                userRepository, restaurantImageRepository));
+                userDict, restaurantImageTypes));
         }
     }
 }

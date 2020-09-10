@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 
@@ -14,8 +13,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
         internal RestaurantDTO(Restaurant restaurant,
             IDictionary<Guid, CuisineDTO> allCuisines,
             IDictionary<Guid, PaymentMethodDTO> allPaymentMethods,
-            IUserRepository userRepository,
-            IRestaurantImageRepository restaurantImageRepository)
+            IDictionary<UserId, UserDTO> users,
+            IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes)
         {
             var openingHoursText = GenerateOpeningHoursText(restaurant);
             var openingHoursTodayText = GenerateOpeningHoursTodayText(restaurant);
@@ -24,7 +23,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
             Name = restaurant.Name;
             Address = restaurant.Address;
             ContactInfo = restaurant.ContactInfo;
-            ImageTypes = RetrieveImageTypes(restaurantImageRepository, restaurant.Id);
+            ImageTypes = RetrieveImageTypes(restaurantImageTypes, restaurant.Id);
             OpeningHours =
                 new ReadOnlyCollection<OpeningPeriodDTO>(restaurant.OpeningHours.Select(en => new OpeningPeriodDTO(en))
                     .ToList());
@@ -45,7 +44,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
                     .ToList()
                 : new List<PaymentMethodDTO>();
             Administrators = restaurant.Administrators != null
-                ? restaurant.Administrators.Select(en => RetrieveUserModel(userRepository, en)).ToList()
+                ? restaurant.Administrators.Select(en => RetrieveUserModel(users, en)).ToList()
                 : new List<UserDTO>();
             IsActive = restaurant.IsActive;
             NeedsSupport = restaurant.NeedsSupport;
@@ -99,17 +98,17 @@ namespace FoodOrderSystem.Core.Application.DTOs
             return allPaymentMethods.TryGetValue(paymentMethodId, out var model) ? model : null;
         }
 
-        private static UserDTO RetrieveUserModel(IUserRepository userRepository, UserId userId)
+        private static UserDTO RetrieveUserModel(IDictionary<UserId, UserDTO> users, UserId userId)
         {
-            var user = userRepository.FindByUserIdAsync(userId).GetAwaiter().GetResult();
-            return user != null ? new UserDTO(user) : null;
+            return users.TryGetValue(userId, out var user) ? user : null;
         }
 
-        private static List<string> RetrieveImageTypes(IRestaurantImageRepository restaurantImageRepository,
+        private static List<string> RetrieveImageTypes(IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes,
             RestaurantId restaurantId)
         {
-            return restaurantImageRepository.FindTypesByRestaurantIdAsync(restaurantId).GetAwaiter().GetResult()
-                .ToList();
+            return restaurantImageTypes.TryGetValue(restaurantId, out var imageTypes)
+                ? imageTypes.ToList()
+                : new List<string>();
         }
 
         private static string GenerateOpeningHoursText(Restaurant restaurant)

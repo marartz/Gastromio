@@ -20,6 +20,9 @@ namespace FoodOrderSystem.Core.Application.Ports.Persistence
         Task<IEnumerable<string>> FindTypesByRestaurantIdAsync(RestaurantId restaurantId,
             CancellationToken cancellationToken = default);
 
+        Task<IDictionary<RestaurantId, IEnumerable<string>>> FindTypesByRestaurantIdsAsync(IEnumerable<RestaurantId> restaurantIds,
+            CancellationToken cancellationToken = default);
+
         Task StoreAsync(RestaurantImage restaurantImage, CancellationToken cancellationToken = default);
 
         Task RemoveByRestaurantImageId(RestaurantImageId restaurantImageId, string type,

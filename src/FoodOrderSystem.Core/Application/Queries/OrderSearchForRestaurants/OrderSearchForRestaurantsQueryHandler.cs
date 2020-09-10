@@ -48,8 +48,24 @@ namespace FoodOrderSystem.Core.Application.Queries.OrderSearchForRestaurants
             var (_, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, query.OrderType,
                 query.CuisineId, query.OpeningHour, true, 0, -1, cancellationToken);
 
-            return SuccessResult<ICollection<RestaurantDTO>>.Create(items.Select(en =>
-                new RestaurantDTO(en, cuisines, paymentMethods, userRepository, restaurantImageRepository)).ToList());
+            var itemList = items.ToList();
+
+            var userIds = itemList != null
+                ? itemList.SelectMany(restaurant => restaurant.Administrators).Distinct()
+                : Enumerable.Empty<UserId>();
+            
+            var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
+
+            var userDict = users != null
+                ? users.ToDictionary(user => user.Id, user => new UserDTO(user))
+                : new Dictionary<UserId, UserDTO>();
+
+            var restaurantImageTypes =
+                await restaurantImageRepository.FindTypesByRestaurantIdsAsync(
+                    itemList.Select(restaurant => restaurant.Id), cancellationToken);
+
+            return SuccessResult<ICollection<RestaurantDTO>>.Create(itemList.Select(en =>
+                new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes)).ToList());
         }
     }
 }

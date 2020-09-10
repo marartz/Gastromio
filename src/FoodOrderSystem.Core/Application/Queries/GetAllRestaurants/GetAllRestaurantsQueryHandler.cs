@@ -51,10 +51,22 @@ namespace FoodOrderSystem.Core.Application.Queries.GetAllRestaurants
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
 
-            var restaurants = await restaurantRepository.FindAllAsync(cancellationToken);
+            var restaurants = (await restaurantRepository.FindAllAsync(cancellationToken)).ToList();
+
+            var userIds = restaurants.SelectMany(restaurant => restaurant.Administrators).Distinct();
+            
+            var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
+
+            var userDict = users != null
+                ? users.ToDictionary(user => user.Id, user => new UserDTO(user))
+                : new Dictionary<UserId, UserDTO>();
+
+            var restaurantImageTypes =
+                await restaurantImageRepository.FindTypesByRestaurantIdsAsync(
+                    restaurants.Select(restaurant => restaurant.Id), cancellationToken);
 
             return SuccessResult<ICollection<RestaurantDTO>>.Create(restaurants.Select(en =>
-                new RestaurantDTO(en, cuisines, paymentMethods, userRepository, restaurantImageRepository)).ToList());
+                new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes)).ToList());
         }
     }
 }

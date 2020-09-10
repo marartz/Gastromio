@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,9 +54,23 @@ namespace FoodOrderSystem.Core.Application.Queries.SysAdminSearchForRestaurants
             var (total, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, null, null, null, null,
                 query.Skip, query.Take, cancellationToken);
 
+            var itemList = items.ToList(); 
+
+            var userIds = itemList.SelectMany(restaurant => restaurant.Administrators).Distinct();
+            
+            var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
+
+            var userDict = users != null
+                ? users.ToDictionary(user => user.Id, user => new UserDTO(user))
+                : new Dictionary<UserId, UserDTO>();
+
+            var restaurantImageTypes =
+                await restaurantImageRepository.FindTypesByRestaurantIdsAsync(
+                    itemList.Select(restaurant => restaurant.Id), cancellationToken);
+
             var pagingViewModel = new PagingDTO<RestaurantDTO>((int) total, query.Skip, query.Take,
-                items.Select(en =>
-                        new RestaurantDTO(en, cuisines, paymentMethods, userRepository, restaurantImageRepository))
+                itemList.Select(en =>
+                        new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes))
                     .ToList());
 
             return SuccessResult<PagingDTO<RestaurantDTO>>.Create(pagingViewModel);

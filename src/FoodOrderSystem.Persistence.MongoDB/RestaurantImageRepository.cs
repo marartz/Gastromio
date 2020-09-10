@@ -70,6 +70,36 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return cursor.ToEnumerable().Select(en => en.Type);
         }
 
+        public async Task<IDictionary<RestaurantId, IEnumerable<string>>> FindTypesByRestaurantIdsAsync(IEnumerable<RestaurantId> restaurantIds, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+            
+            var filter = FilterDefinition<RestaurantImageModel>.Empty;
+            foreach (var restaurantId in restaurantIds)
+            {
+                filter |= Builders<RestaurantImageModel>.Filter.Eq(en => en.RestaurantId, restaurantId.Value);
+            }
+
+            var cursor = await collection.FindAsync(
+                filter,
+                new FindOptions<RestaurantImageModel>
+                {
+                    Sort = Builders<RestaurantImageModel>.Sort.Ascending(en => en.Type),
+                    Projection = Builders<RestaurantImageModel>.Projection.Combine(
+                        Builders<RestaurantImageModel>.Projection.Include(en => en.RestaurantId),
+                        Builders<RestaurantImageModel>.Projection.Include(en => en.Type)
+                    )
+                },
+                cancellationToken);
+
+            return cursor.ToEnumerable()
+                .GroupBy(row => row.RestaurantId)
+                .ToDictionary(
+                    group => new RestaurantId(group.Key), 
+                    group => group.Select(en => en.Type)
+                );
+        }
+
         public async Task StoreAsync(RestaurantImage restaurantImage, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
