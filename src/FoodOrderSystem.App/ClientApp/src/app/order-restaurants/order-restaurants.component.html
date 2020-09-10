@@ -28,7 +28,7 @@
                             <div class="toggle delivery" *ngIf="orderType === 'delivery'" (click)="onPickupSelected()"><label><div class="switch"></div></label></div>
                         </div>
                         <div id="filters">
-                            <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche"></div>
+                            <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche" (keyup)="onSearchType($event.target.value)"></div>
                             <div class="cuisine-filter">
                                 <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
                                     <option value="" selected="">Alle anzeigen</option>
