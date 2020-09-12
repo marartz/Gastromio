@@ -30,6 +30,8 @@
     "tslib": "^1.13.0",
     "zone.js": "~0.10.2"
   },
+  "author": "Marco Artz <marco@gastromio.de>, Luca Wieczorek <luca@gastromio.de>",
+  "license": "MIT",
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.901.7",
     "@angular/cli": "^9.1.6",
@@ -50,5 +52,6 @@
     "ts-node": "~8.3.0",
     "tslint": "^6.1.2",
     "typescript": "~3.8.3"
-  }
+  },
+  "homepage": "https://www.gastromio.de/"
 }

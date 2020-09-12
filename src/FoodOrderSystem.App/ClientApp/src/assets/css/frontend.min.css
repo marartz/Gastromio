@@ -3005,7 +3005,6 @@ form:focus {
 #navbar {
     background-color: #fff;
     border-bottom: 2px solid #e5e5e5;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, .08);
     display: flex;
     font-size: 12px;
     height: 72px;
@@ -3085,7 +3084,7 @@ form:focus {
 #navbar #branding a {
     color: #65b32e;
     cursor: pointer;
-    font-family: proxima-nova, sans-serif;
+    font-family: "Quicksand", sans-serif;
     font-size: 25px;
     font-weight: 600;
     padding: 0px;

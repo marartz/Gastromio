@@ -113,7 +113,7 @@
     }
 }
 
-/* #top-bar > #logo */
+
 #top-bar #logo a {
     display: inline-block;
 }
@@ -153,7 +153,7 @@
     }
 }
 
-/* #top-bar > #account */
+
 #top-bar #account {
     align-items: center;
     display: flex;
@@ -235,7 +235,7 @@
     }
 }
 
-/* 90.2 #navbar > #cart */
+
 #top-bar #bag .cart-count-wrap {
     position: relative;
 } 
