@@ -37,15 +37,15 @@
                                                     <th scope="col" style="min-width: 240px;">Name</th>
                                                     <th scope="col">Adresse</th>
                                                     <th scope="col"></th>
-                                                </tr>  
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let restaurant of restaurants">
                                                     <th scope="row"><p class="email">{{restaurant.name}} <span *ngIf="!restaurant.isActive">(inaktiv)</span></p></th>
                                                     <td><p class="role">{{restaurant.address.street}}<br />{{restaurant.address.zipCode}} {{restaurant.address.city}}</p></td>
                                                     <td class="actions">
-                                                        <a [routerLink]="['/restaurants', restaurant.id]" class="action-item" placement="top" ngbTooltip="Vorschau" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                                                        <a [routerLink]="[restaurant.id]" class="action-item" placement="top" ngbTooltip="Bearbeiten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>
+                                                        <a [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" class="action-item" placement="top" ngbTooltip="Vorschau" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+                                                        <a [routerLink]="['/admin/restaurants', restaurant.name.toLowerCase()]" class="action-item" placement="top" ngbTooltip="Bearbeiten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
