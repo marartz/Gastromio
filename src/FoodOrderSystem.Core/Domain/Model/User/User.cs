@@ -10,7 +10,7 @@ namespace FoodOrderSystem.Core.Domain.Model.User
         private const int SALT_BYTES = 24;
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
-        
+
         private static Regex passwordPolicyRegex = new Regex(@"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}");
 
         public User(
@@ -34,6 +34,8 @@ namespace FoodOrderSystem.Core.Domain.Model.User
             string email,
             byte[] passwordSalt,
             byte[] passwordHash,
+            byte[] passwordResetCode,
+            DateTime? passwordResetExpiration,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -45,6 +47,8 @@ namespace FoodOrderSystem.Core.Domain.Model.User
             Email = email;
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
+            PasswordResetCode = passwordResetCode;
+            PasswordResetExpiration = passwordResetExpiration;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -60,6 +64,10 @@ namespace FoodOrderSystem.Core.Domain.Model.User
         public byte[] PasswordSalt { get; private set; }
 
         public byte[] PasswordHash { get; private set; }
+
+        public byte[] PasswordResetCode { get; private set; }
+
+        public DateTime? PasswordResetExpiration { get; private set; }
 
         public DateTime CreatedOn { get; }
 
@@ -90,7 +98,7 @@ namespace FoodOrderSystem.Core.Domain.Model.User
         {
             if (checkPasswordPolicy && !passwordPolicyRegex.IsMatch(password))
                 return FailureResult<bool>.Create(FailureResultCode.PasswordIsNotValid);
-            
+
             var newPasswordSalt = new byte[SALT_BYTES];
             using (var csprng = new RNGCryptoServiceProvider())
             {
@@ -103,6 +111,44 @@ namespace FoodOrderSystem.Core.Domain.Model.User
             PasswordHash = newPasswordHash;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> GeneratePasswordResetCode()
+        {
+            var resetCode = Guid.NewGuid();
+
+            PasswordResetCode = resetCode.ToByteArray();
+            PasswordResetExpiration = DateTime.Now.AddMinutes(30);
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ValidatePasswordResetCode(byte[] resetCode)
+        {
+            return PasswordResetExpiration.HasValue && DateTime.Now <= PasswordResetExpiration &&
+                   SlowEquals(PasswordResetCode, resetCode)
+                ? (Result<bool>) SuccessResult<bool>.Create(true)
+                : FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);
+        }
+
+        public Result<bool> ChangePasswordWithResetCode(byte[] resetCode, string password)
+        {
+            var tempResult = ValidatePasswordResetCode(resetCode);
+            if (tempResult.IsFailure)
+            {
+                return tempResult;
+            }
+
+            tempResult = ChangePassword(password, true, Id);
+            if (tempResult.IsFailure)
+            {
+                return tempResult;
+            }
+
+            PasswordResetCode = null;
+            PasswordResetExpiration = null;
 
             return SuccessResult<bool>.Create(true);
         }

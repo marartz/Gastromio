@@ -5,6 +5,7 @@ using DotLiquid;
 using DotLiquid.NamingConventions;
 using FoodOrderSystem.Core.Application.Ports.Template;
 using FoodOrderSystem.Core.Domain.Model.Order;
+using FoodOrderSystem.Core.Domain.Model.User;
 
 namespace FoodOrderSystem.Template.DotLiquid
 {
@@ -59,6 +60,32 @@ namespace FoodOrderSystem.Template.DotLiquid
                 return new EmailData
                 {
                     Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
+                    TextPart = "",
+                    HtmlPart = renderResult
+                };
+            }
+        }
+
+        public EmailData GetRequestPasswordChangeEmail(string email, string url)
+        {
+            var assembly = typeof(TemplateService).Assembly;
+            var resourceStream = assembly.GetManifestResourceStream("FoodOrderSystem.Template.DotLiquid.Templates.RequestPasswordChangeTemplate.html");
+            if (resourceStream == null)
+                throw new InvalidOperationException("cannot read template");
+
+            using (resourceStream)
+            using (var streamReader = new StreamReader(resourceStream))
+            {
+                var customerTemplate = streamReader.ReadToEnd();
+                
+                global::DotLiquid.Template.NamingConvention = new CSharpNamingConvention();
+                var template = global::DotLiquid.Template.Parse(customerTemplate);
+            
+                var renderResult = template.Render(Hash.FromAnonymousObject(new {email, url}));
+
+                return new EmailData
+                {
+                    Subject = $"Gastromio.de - Passwort zurücksetzen",
                     TextPart = "",
                     HtmlPart = renderResult
                 };

@@ -60,6 +60,8 @@ import {ServerPaginationComponent} from './pagination/server-pagination.componen
 import {SystemAdminAuthGuardService as SystemAdminAuthGuard} from './auth/system-admin-auth-guard.service';
 import {TopBarComponent} from './top-bar/top-bar.component';
 import {UserAdminService} from './user/user-admin.service';
+import {ChangePasswordComponent} from "./change-password/change-password.component";
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 
 @NgModule({
   imports: [
@@ -72,6 +74,8 @@ import {UserAdminService} from './user/user-admin.service';
       {path: 'imprint', component: ImprintComponent},
       {path: 'privacy-policy', component: PrivacyPolicyComponent},
       {path: 'login', component: LoginComponent},
+      {path: 'forgotpassword', component: ForgotPasswordComponent},
+      {path: 'changepassword', component: ChangePasswordComponent},
       {path: 'restaurants', component: OrderRestaurantsComponent},
       {path: 'restaurants/:restaurantId', component: OrderRestaurantComponent},
       {path: 'checkout', component: CheckoutComponent},
@@ -111,6 +115,7 @@ import {UserAdminService} from './user/user-admin.service';
     BottomBarComponent,
     ChangeCuisineComponent,
     ChangeDishCategoryComponent,
+    ChangePasswordComponent,
     ChangeRestaurantNameComponent,
     ChangeUserDetailsComponent,
     ChangeUserPasswordComponent,
@@ -120,6 +125,7 @@ import {UserAdminService} from './user/user-admin.service';
     DishProductInfoComponent,
     EditDishComponent,
     EditCartDishComponent,
+    ForgotPasswordComponent,
     GeneralErrorComponent,
     GeneralTermsAndConditionsComponent,
     ImprintComponent,

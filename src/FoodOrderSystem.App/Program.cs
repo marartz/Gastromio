@@ -46,6 +46,8 @@ namespace FoodOrderSystem.App
                         "admin@gastromio.de",
                         null,
                         null,
+                        null,
+                        null,
                         DateTime.UtcNow,
                         new UserId(Guid.Empty),
                         DateTime.UtcNow,

@@ -2,11 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import {Observable, Observer} from 'rxjs';
 import {UserModel} from '../user/user.model';
-import {take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
   private loginUrl = 'api/v1/auth/login';
+  private requestPasswordChangeUrl = 'api/v1/auth/requestpasswordchange';
+  private validatePasswordResetCodeUrl = 'api/v1/auth/validatepasswordresetcode';
+  private changePasswordWithResetCodeUrl = 'api/v1/auth/changepasswordwithresetcode';
   private pingUrl = 'api/v1/auth/ping';
 
   constructor(
@@ -61,6 +64,51 @@ export class AuthService {
       return () => {
       };
     });
+  }
+
+  public requestPasswordChangeAsync(email: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      })
+    };
+
+    return this.http.post(this.requestPasswordChangeUrl, {userEmail: email}, httpOptions)
+      .pipe(
+        take(1),
+        map(m => {})
+      );
+  }
+
+  public validatePasswordResetCodeAsync(userId: string, passwordResetCode: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      })
+    };
+
+    return this.http.post(this.validatePasswordResetCodeUrl, {userId, passwordResetCode}, httpOptions)
+      .pipe(
+        take(1),
+        map(m => {})
+      );
+  }
+
+  public changePasswordWithResetCodeAsync(userId: string, passwordResetCode: string, password: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      })
+    };
+
+    return this.http.post(this.validatePasswordResetCodeUrl, {userId, passwordResetCode, password}, httpOptions)
+      .pipe(
+        take(1),
+        map(m => {})
+      );
   }
 
   public pingAsync(): Observable<{}> {

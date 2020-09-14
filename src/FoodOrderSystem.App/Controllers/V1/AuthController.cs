@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.ChangePasswordWithResetCode;
 using FoodOrderSystem.Core.Application.Commands.Login;
+using FoodOrderSystem.Core.Application.Commands.RequestPasswordChange;
+using FoodOrderSystem.Core.Application.Commands.ValidatePasswordResetCode;
 using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Application.Services;
 using FoodOrderSystem.Core.Common;
+using FoodOrderSystem.Core.Domain.Model.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -84,6 +88,73 @@ namespace FoodOrderSystem.App.Controllers.V1
             }
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [AllowAnonymous]
+        [Route("requestpasswordchange")]
+        [HttpPost]
+        public async Task<IActionResult> PostRequestPasswordChangeAsync(
+            [FromBody] RequestPasswordChangeModel requestPasswordChangeModel)
+        {
+            var commandResult =
+                await commandDispatcher.PostAsync<RequestPasswordChangeCommand, bool>(
+                    new RequestPasswordChangeCommand(requestPasswordChangeModel.UserEmail), null);
+
+            return commandResult is SuccessResult<bool>
+                ? Ok()
+                : ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [AllowAnonymous]
+        [Route("validatepasswordresetcode")]
+        [HttpPost]
+        public async Task<IActionResult> PostValidatePasswordResetCodeAsync(
+            [FromBody] ValidatePasswordResetCodeModel validatePasswordResetCodeModel)
+        {
+            byte[] passwordResetCode;
+            
+            try
+            {
+                passwordResetCode = Convert.FromBase64String(validatePasswordResetCodeModel.PasswordResetCode);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+            var commandResult = await commandDispatcher.PostAsync<ValidatePasswordResetCodeCommand, bool>(
+                new ValidatePasswordResetCodeCommand(new UserId(validatePasswordResetCodeModel.UserId),
+                    passwordResetCode), null);
+
+            return commandResult is SuccessResult<bool>
+                ? Ok()
+                : ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [AllowAnonymous]
+        [Route("changepasswordwithresetcode")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangePasswordWithResetCodeAsync(
+            [FromBody] ChangePasswordWithResetCodeModel changePasswordWithResetCodeModel)
+        {
+            byte[] passwordResetCode;
+            
+            try
+            {
+                passwordResetCode = Convert.FromBase64String(changePasswordWithResetCodeModel.PasswordResetCode);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+            var commandResult = await commandDispatcher.PostAsync<ChangePasswordWithResetCodeCommand, bool>(
+                new ChangePasswordWithResetCodeCommand(new UserId(changePasswordWithResetCodeModel.UserId),
+                    passwordResetCode, changePasswordWithResetCodeModel.Password), null);
+
+            return commandResult is SuccessResult<bool>
+                ? Ok()
+                : ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("ping")]

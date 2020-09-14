@@ -49,6 +49,7 @@ namespace FoodOrderSystem.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueTooLong, "Wert von Feld '{0}' zu lang (maximum {1} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.FieldValueInvalid, "Wert von Feld '{0}' hat einen ungültigen Wert: {1}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.WrongCredentials, "Emailadresse und/oder Passwort ist nicht korrekt");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PasswordResetCodeIsInvalid, "Dieser Link ist leider nicht (mehr) gültig, bitte fordern Sie nochmals die Änderung Ihres Passworts an");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserDoesNotExist, "Benutzer existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserAlreadyExists, "Benutzer existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PasswordIsNotValid, "Das Passwort ist nicht komplex genug (mind. ein Kleinbuchstabe, ein Großbuchstabe, eine Ziffer und ein Zeichen aus '!@#$%^&')");

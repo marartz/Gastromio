@@ -6,6 +6,7 @@
         Forbidden,
         InternalServerError,
         WrongCredentials,
+        PasswordResetCodeIsInvalid,
         RequiredFieldEmpty,
         FieldValueTooLong,
         FieldValueInvalid,

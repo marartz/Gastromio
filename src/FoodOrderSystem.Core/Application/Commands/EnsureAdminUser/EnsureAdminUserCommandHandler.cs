@@ -38,6 +38,8 @@ namespace FoodOrderSystem.Core.Application.Commands.EnsureAdminUser
                 "admin@gastromio.de",
                 null,
                 null,
+                null,
+                null,
                 DateTime.UtcNow,
                 currentUser.Id,
                 DateTime.UtcNow,
