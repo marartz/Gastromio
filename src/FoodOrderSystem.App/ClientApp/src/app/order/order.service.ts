@@ -125,7 +125,7 @@ export class OrderService {
   public selectRestaurantAsync(restaurantId: string): Observable<unknown> {
     this.tryLoadCartFromStorage();
     if (!this.storedCart || this.restaurantId !== restaurantId) {
-      console.log('reset order for new/other restaurant');
+      console.log('reset order for new/other restaurant (previous: "' + this.restaurantId + '", next: "' + restaurantId + "')");
       this.restaurant = undefined;
       this.dishCategories = undefined;
       this.storedCart = undefined;
@@ -167,7 +167,7 @@ export class OrderService {
 
     this.storedCart = new StoredCartModel();
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
-    this.storedCart.restaurantId = this.restaurant.id;
+    this.storedCart.restaurantId = this.restaurant.name.toLowerCase();
     this.storedCart.cartDishes = new Array<StoredCartDishModel>();
     this.generateCartModel();
   }

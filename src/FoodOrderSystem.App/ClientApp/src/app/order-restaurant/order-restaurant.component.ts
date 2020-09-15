@@ -165,6 +165,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     return cart ? cart.isVisible() : false;
   }
 
+  hideCart() {
+      this.orderService.hideCart();
+  }
+
   showCart() {
     this.orderService.showCart();
   }
@@ -248,5 +252,12 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     this.proceedError = undefined;
   }
 
-
+  public proceedToCheckout(): void {
+    if (!this.getCart().isValid()) {
+      this.proceedError = this.getCart().getValidationError();
+      return;
+    }
+    this.proceedError = undefined;
+    this.router.navigateByUrl('/checkout');
+  }
 }
