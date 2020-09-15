@@ -1,15 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderService} from '../order/order.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
-import {Observable, of} from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap, take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {OrderType} from '../cart/cart.model';
 
 @Component({
   selector: 'app-order-home',
   templateUrl: './order-home.component.html',
-  styleUrls: ['./order-home.component.css', '../../assets/css/frontend_v2.min.css']
+  styleUrls: [
+    './order-home.component.css',
+    '../../assets/css/frontend_v2.min.css'
+  ]
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
   selectedRestaurant: RestaurantModel;

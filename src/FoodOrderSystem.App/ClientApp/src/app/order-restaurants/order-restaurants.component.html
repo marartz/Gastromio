@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="wrapper">
-                        <li class="restaurant" *ngFor="let restaurant of restaurants"><!--  -->
+                        <li class="restaurant" *ngFor="let restaurant of restaurants"><!-- .closed / .opened -->
                             <div class="wrapper">
                                 <div id="banner">
                                     <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>

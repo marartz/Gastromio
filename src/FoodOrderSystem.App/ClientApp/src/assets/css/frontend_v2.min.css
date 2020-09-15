@@ -32,6 +32,7 @@
 
 html,
 body {
+    background-color: #fff;
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
@@ -267,6 +268,7 @@ button {
 }
 
 #root {
+    background-color: #fff;
     height: 100%;
     width: 100%;
 }
@@ -1284,7 +1286,7 @@ button {
 }
 
 
-/* #order-home */
+/* #order-home
 
 #order-home {
     display: grid;
@@ -1297,12 +1299,7 @@ button {
 #order-home .order {
     align-content: center;
     background-image: url(/assets/images/background/default-1920x1280.jpg);
-    /*
-        https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg
-        https://images.pexels.com/photos/3026802/pexels-photo-3026802.jpeg
-        https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg
-        https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg
-    */
+   
     background-position: right;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1353,7 +1350,7 @@ button {
 }
 
 
-/* #order-home > #tablist */
+
 
 #order-home #tablist {
     display: flex;
@@ -1409,7 +1406,7 @@ button {
 }
 
 
-/* #order-home > #tabpanel */
+
 
 #order-home #tabpanel {
     display: block;
@@ -1483,4 +1480,4 @@ button {
     text-overflow: ellipsis;
     width: 100%;
     -webkit-tap-highlight-color: transparent;
-}
+}*/
