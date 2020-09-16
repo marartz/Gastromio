@@ -38,6 +38,7 @@ import {GeneralTermsAndConditionsComponent} from './general-terms-and-conditions
 import {HttpErrorHandlingService} from './http-error-handling/http-error-handling.service';
 import {ImprintComponent} from './imprint/imprint.component';
 import {LoginComponent} from './login/login.component';
+import {OpeningHourFilterComponent} from './opening-hour-filter/opening-hour-filter.component';
 import {OrderHomeComponent} from './order-home/order-home.component';
 import {OrderRestaurantComponent} from './order-restaurant/order-restaurant.component';
 import {OrderRestaurantImprintComponent} from './order-restaurant-imprint/order-restaurant-imprint.component';
@@ -124,6 +125,7 @@ import {UserAdminService} from './user/user-admin.service';
     GeneralTermsAndConditionsComponent,
     ImprintComponent,
     LoginComponent,
+    OpeningHourFilterComponent,
     OrderHomeComponent,
     OrderRestaurantComponent,
     OrderRestaurantImprintComponent,

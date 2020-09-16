@@ -29,6 +29,9 @@
                         </div>
                         <div id="filters">
                             <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche" (keyup)="onSearchType($event.target.value)"></div>
+                            <div class="opening-hour-filter">
+                                <button (click)="openOpeningHourFilter()">OHF</button>
+                            </div>
                             <div class="cuisine-filter">
                                 <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
                                     <option value="" selected="">Alle anzeigen</option>
@@ -39,7 +42,7 @@
                     </div>
 
                     <div class="wrapper">
-                        <li class="restaurant" *ngFor="let restaurant of restaurants"><!-- .closed / .opened -->
+                        <li class="restaurant" *ngFor="let restaurant of restaurants" [class.opened]="isRestaurantOpen(restaurant)" [class.closed]="!isRestaurantOpen(restaurant)">
                             <div class="wrapper">
                                 <div id="banner">
                                     <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>
