@@ -27,6 +27,34 @@
 
 */
 
+@font-face {
+    font-family: 'Apercu';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/assets/fonts/apercu/apercu-light-pro.woff2) format('woff2'), url(/assets/fonts/apercu/apercu-light-pro.woff) format('woff'), url(/assets/fonts/apercu/apercu-light-pro.eot) format('eot');
+}
+
+@font-face {
+    font-family: 'Apercu';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/assets/fonts/apercu/apercu-regular-pro.woff2) format('woff2'), url(/assets/fonts/apercu/apercu-regular-pro.woff) format('woff'), url(/assets/fonts/apercu/apercu-regular-pro.eot) format('eot');
+}
+
+@font-face {
+    font-family: 'Apercu';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/assets/fonts/apercu/apercu-medium-pro.woff2) format('woff2'), url(/assets/fonts/apercu/apercu-medium-pro.woff) format('woff'), url(/assets/fonts/apercu/apercu-medium-pro.eot) format('eot');
+}
+
+@font-face {
+    font-family: 'Apercu';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/assets/fonts/apercu/apercu-bold-pro.woff2) format('woff2'), url(/assets/fonts/apercu/apercu-bold-pro.woff) format('woff'), url(/assets/fonts/apercu/apercu-bold-pro.eot) format('eot');
+}
+
 
 /* 1. Generelle CSS */
 

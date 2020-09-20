@@ -1,4 +1,17 @@
-<header role="banner">
+<nav id="top-bar">
+    <div id="logo">
+        <a [routerLink]="['/']">
+            <img src="../../assets/images/logo/logo.svg" alt="">
+            Gastromio<span>.de</span>
+        </a>
+    </div>
+    <div id="menu">
+        
+    </div>
+</nav>
+
+
+<!--header role="banner">
   <nav id="navbar" role="navigation">
 
     <div class="nav-left nav-item">
@@ -93,8 +106,8 @@
                   </svg>
                   <span class="cart-count">{{getDishCountOfOrderText()}}</span>
               </span>
-              <!--span class="nav-icon-label">Warenkorb</span-->
-          </a>
+              <span class="nav-icon-label">Warenkorb</span-->
+          <!--/a>
           <a class="nav-link nav-item" (click)="toggleCartVisibility()" *ngIf="isOnOrderPage()">
               <span class="cart-count-wrap">
                   <svg width="20" height="24" viewBox="0 0 20 24" fill="#002140">
@@ -102,9 +115,9 @@
                   </svg>
                   <span class="cart-count">{{getDishCountOfOrderText()}}</span>
               </span>
-              <!--span class="nav-icon-label">Warenkorb</span-->
-          </a>
+              <span class="nav-icon-label">Warenkorb</span-->
+          <!--/a>
       </div>
     </div>
   </nav>
-</header>
+</header-->
