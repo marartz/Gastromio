@@ -112,7 +112,7 @@
 }
 
 #order-home #landing .search input {
-    border-bottom: 0px;
+    border: 0px;
     font-family: "Apercu", sans serif;
     font-size: 22px;
     font-weight: 400;
@@ -202,6 +202,7 @@
 #order-home #cta .cta-button button {
     background-color :#eddc80;
     border-radius: 23px;
+    box-shadow: 0px 5px 10px rgba(darken(dodgerblue, 40%));
     color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 18px;
@@ -210,7 +211,18 @@
     letter-spacing: 0px;
     position: relative;
     text-align: center;
+    transition: all .3s;
     width: 200px;
+}
+
+#order-home #cta .cta-button button:hover {
+    box-shadow: 0px 15px 25px -5px rgba(darken(dodgerblue, 40%));
+    transform: scale(1.03);
+}
+
+#order-home #cta .cta-button button:active {
+    box-shadow: 0px 4px 8px rgba(darken(dodgerblue, 30%));
+    transform: scale(.98);
 }
 
 #order-home #cta div.messer-gabel {
