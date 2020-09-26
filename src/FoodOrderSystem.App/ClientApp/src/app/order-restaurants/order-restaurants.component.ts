@@ -67,8 +67,9 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
     modalRef.componentInstance.value = this.selectedOpeningHourFilter;
     modalRef.result.then((value: Date) => {
-      console.log("filtering by opening hours on date: ", value);
+      console.log('filtering by opening hours on date: ', value);
       this.selectedOpeningHourFilter = value;
+      this.sortRestaurants();
     }, () => {
     });
   }
@@ -141,9 +142,13 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = new Array<RestaurantModel>(result.length);
+
         for (let i = 0; i < result.length; i++) {
           this.restaurants[i] = new RestaurantModel(result[i]);
         }
+
+        this.sortRestaurants();
+
         this.blockUI.stop();
       }, () => {
           this.blockUI.stop();
@@ -158,33 +163,34 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   isRestaurantOpen(restaurant: RestaurantModel): boolean {
-    if (!restaurant.openingHours) {
-      return false;
+    const date = this.selectedOpeningHourFilter ?? new Date();
+    return restaurant.isOpen(date);
+  }
+
+  sortRestaurants(): void {
+    if (!this.restaurants) {
+      return;
     }
 
-    try {
-      const date = this.selectedOpeningHourFilter ?? new Date();
+    const date = this.selectedOpeningHourFilter ?? new Date();
 
-      let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday
-      if (dayOfWeek < 0) {
-        dayOfWeek += 7;
-      }
-      let time = date.getHours() * 60 + date.getMinutes();
-      if (date.getHours() < 4) {
-        dayOfWeek = (dayOfWeek - 1) % 7;
-        if (dayOfWeek < 0) {
-          dayOfWeek += 7;
+    this.restaurants.sort((a, b) => {
+      const isAOpen = a.isOpen(date);
+      const isBOpen = b.isOpen(date);
+
+      if (isAOpen && !isBOpen) {
+        return -1;
+      } else if (!isAOpen && isBOpen) {
+        return 1;
+      } else {
+        if (a.name < b.name) {
+          return -1;
+        } else if (a.name > b.name) {
+          return +1;
+        } else {
+          return 0;
         }
-        time += 24 * 60;
       }
-
-      let isOpen: boolean;
-      isOpen = restaurant.openingHours.some(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
-
-      return isOpen;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
+    });
   }
 }

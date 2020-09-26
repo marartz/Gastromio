@@ -52,6 +52,35 @@ export class RestaurantModel {
   public isActive: boolean;
 
   public needsSupport: boolean;
+
+  isOpen(date: Date): boolean {
+    if (!this.openingHours) {
+      return false;
+    }
+
+    try {
+      let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday
+      if (dayOfWeek < 0) {
+        dayOfWeek += 7;
+      }
+      let time = date.getHours() * 60 + date.getMinutes();
+      if (date.getHours() < 4) {
+        dayOfWeek = (dayOfWeek - 1) % 7;
+        if (dayOfWeek < 0) {
+          dayOfWeek += 7;
+        }
+        time += 24 * 60;
+      }
+
+      let isOpen: boolean;
+      isOpen = this.openingHours.some(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
+
+      return isOpen;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
 }
 
 export class AddressModel {
