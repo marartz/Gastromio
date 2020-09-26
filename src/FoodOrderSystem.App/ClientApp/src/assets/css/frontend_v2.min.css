@@ -886,6 +886,14 @@ button {
     -webkit-box-flex: 0;
 }
 
+#order-restaurants #restaurants .restaurant.opened {
+    filter: opacity(1);
+}
+
+#order-restaurants #restaurants .restaurant.closed {
+    filter: opacity(0.4);
+}
+
 @media screen and (max-width: 768px) {
     #order-restaurants #restaurants .restaurant {
         padding-right: 0px;
