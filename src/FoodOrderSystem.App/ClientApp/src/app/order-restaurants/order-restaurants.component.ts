@@ -1,11 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderService} from '../order/order.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
-import {BehaviorSubject, Subject, Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 import {OrderType} from '../cart/cart.model';
 import {CuisineModel} from '../cuisine/cuisine.model';
-import {BlockUI, NgBlockUI} from "ng-block-ui";
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
 
 @Component({
   selector: 'app-order-restaurants',
@@ -17,7 +19,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   cuisines: CuisineModel[];
 
-  openingHourFilter$ = new BehaviorSubject<string>(undefined);
+  selectedOpeningHourFilter: Date;
   selectedCuisineFilter: string;
 
   restaurants: RestaurantModel[];
@@ -31,7 +33,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   private updateSearchSubscription: Subscription;
 
   constructor(
-    private orderService: OrderService
+    private orderService: OrderService,
+    private modalService: NgbModal,
   ) {
     this.orderType = OrderService.translateFromOrderType(OrderType.Pickup);
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
@@ -39,19 +42,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
         this.searchPhrase = value;
         this.updateSearch();
       });
-
-    this.openingHourFilter$.next(new Date().toISOString());
-    this.openingHourFilter$
-      .pipe(
-        debounceTime(200)
-      )
-      .subscribe(() => {
-        console.log('updateSearch');
-        this.updateSearch();
-      });
   }
 
   ngOnInit() {
+    this.selectedOpeningHourFilter = new Date(); // now
     this.selectedCuisineFilter = '';
     this.orderService.getAllCuisinesAsync()
       .pipe(take(1))
@@ -67,6 +61,16 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
     }
+  }
+
+  openOpeningHourFilter(): void {
+    const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
+    modalRef.componentInstance.value = this.selectedOpeningHourFilter;
+    modalRef.result.then((value: Date) => {
+      console.log("filtering by opening hours on date: ", value);
+      this.selectedOpeningHourFilter = value;
+    }, () => {
+    });
   }
 
   hasLogo(
@@ -126,16 +130,12 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.updateSearch();
   }
 
-  onOpeningHourFilterChanged(openingHourFilter: string): void {
-    this.openingHourFilter$.next(openingHourFilter);
-  }
-
   updateSearch(): void {
     if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
     }
 
-    this.blockUI.start("Suche läuft");
+    this.blockUI.start('Suche läuft');
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
       this.selectedCuisineFilter, undefined)
       .pipe(take(1))
@@ -163,7 +163,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
 
     try {
-      const date = new Date(this.openingHourFilter$.getValue());
+      const date = this.selectedOpeningHourFilter ?? new Date();
 
       let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday
       if (dayOfWeek < 0) {

@@ -3,6 +3,8 @@
 
     easeInModal
     fadeDownModal
+    showTable
+    showDropdown
 */
 
 /* easeInModal */
@@ -25,3 +27,10 @@
 @-ms-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
 @-o-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
 @-webkit-keyframes showTable{0%{opacity:0;transform:translate(0px,-15px)}100%{opacity:1;transform:translate(0px,0px)}}
+
+/* showDropdown */
+@keyframes showDropdown{0%{opacity:0;transform:translateX(0px) translateY(-3px) scale(.97);transition:all .3s ease}100%{opacity:1;transform:translateX(0px) translateY(-3px) scale(1)}}
+@-moz-keyframes showDropdown{0%{opacity:0;transform:translateX(0px) translateY(-3px) scale(.97);transition:all .3s ease}100%{opacity:1;transform:translateX(0px) translateY(-3px) scale(1)}}
+@-ms-keyframes showDropdown{0%{opacity:0;transform:translateX(0px) translateY(-3px) scale(.97);transition:all .3s ease}100%{opacity:1;transform:translateX(0px) translateY(-3px) scale(1)}}
+@-o-keyframes showDropdown{0%{opacity:0;transform:translateX(0px) translateY(-3px) scale(.97);transition:all .3s ease}100%{opacity:1;transform:translateX(0px) translateY(-3px) scale(1)}}
+@-webkit-keyframes showDropdown{0%{opacity:0;transform:translateX(0px) translateY(-3px) scale(.97);transition:all .3s ease}100%{opacity:1;transform:translateX(0px) translateY(-3px) scale(1)}}

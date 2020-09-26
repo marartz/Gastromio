@@ -1,0 +1,15 @@
+<div id="modal" tabindex="-1">
+    <div class="wrapper">
+        <div class="content">
+            <h1 class="title add-edit">Öffnungszeit:</h1>
+            <div class="form-input">
+                <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
+                <ngb-timepicker [(ngModel)]="time" (ngModelChange)="onTimeChanged()"></ngb-timepicker>
+            </div>
+            <div class="btns-container">
+                <button type="button" class="cancel" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
+                <button type="submit" class="submit" (click)="onClose()">Setzen</button>
+            </div>
+        </div>
+    </div>
+</div>

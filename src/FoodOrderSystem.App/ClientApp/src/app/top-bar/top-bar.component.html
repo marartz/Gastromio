@@ -1,4 +1,17 @@
-<header role="banner">
+<nav id="top-bar">
+    <div id="logo">
+        <a [routerLink]="['/']">
+            <img src="../../assets/images/logo/logo.svg" alt="">
+            Gastromio<span>.de</span>
+        </a>
+    </div>
+    <div id="menu">
+        
+    </div>
+</nav>
+
+
+<!--header role="banner">
   <nav id="navbar" role="navigation">
 
     <div class="nav-left nav-item">
@@ -18,8 +31,8 @@
         <a class="nav-link nav-item" *ngIf="getUserEmail() === undefined" id="login" [routerLink]="['/login']">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <g fill="none" fill-rule="evenodd">
-              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#65b32e" fill-rule="nonzero"></path>
-              <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#65b32e" fill-rule="nonzero"></path>
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#002140" fill-rule="nonzero"></path>
+              <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#002140" fill-rule="nonzero"></path>
             </g>
           </svg>
           <span class="nav-icon-label">Anmelden</span>
@@ -30,8 +43,8 @@
           <a class="nav-link nav-item" id="userDropDown" ngbDropdownToggle>
             <svg width="24" height="24" viewBox="0 0 24 24">
               <g fill="none" fill-rule="evenodd">
-                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#65b32e" fill-rule="nonzero"></path>
-                <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#65b32e" fill-rule="nonzero"></path>
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" fill="#002140" fill-rule="nonzero"></path>
+                <path d="M4.874 20.098l3.603-3.012A.745.745 0 0 1 8.715 17h6.59c.039 0 .205.06.233.084l3.583 3.015 1.288-1.53-3.583-3.015a2.571 2.571 0 0 0-1.52-.554H8.714c-.513 0-1.13.225-1.521.552L3.59 18.564l1.283 1.534zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="#002140" fill-rule="nonzero"></path>
               </g>
             </svg>
             <ng-container *ngIf="isSystemAdmin()"><span class="nav-icon-label">Einstellungen&nbsp;</span></ng-container>
@@ -88,23 +101,23 @@
       <div id="bag">
           <a *ngIf="!isOnOrderPage() && getCurRestaurantId() !== undefined" class="nav-link nav-item" [routerLink]="['/restaurants', getCurRestaurantId()]">
               <span class="cart-count-wrap">
-                  <svg width="20" height="24" viewBox="0 0 20 24" fill="#65b32e">
+                  <svg width="20" height="24" viewBox="0 0 20 24" fill="#002140">
                       <path d="M19.9 4h-5c-.5-2.3-2.5-4-4.9-4S5.6 1.7 5.1 4h-5L0 24h20l-.1-20zM10 2c1.3 0 2.4.8 2.8 2H7.2c.4-1.2 1.5-2 2.8-2zM2 22l.1-16H5v2h2V6h6v2h2V6h2.9l.1 16H2z"></path>
                   </svg>
                   <span class="cart-count">{{getDishCountOfOrderText()}}</span>
               </span>
-              <span class="nav-icon-label">Warenkorb</span>
-          </a>
+              <span class="nav-icon-label">Warenkorb</span-->
+          <!--/a>
           <a class="nav-link nav-item" (click)="toggleCartVisibility()" *ngIf="isOnOrderPage()">
               <span class="cart-count-wrap">
-                  <svg width="20" height="24" viewBox="0 0 20 24" fill="#65b32e">
+                  <svg width="20" height="24" viewBox="0 0 20 24" fill="#002140">
                       <path d="M19.9 4h-5c-.5-2.3-2.5-4-4.9-4S5.6 1.7 5.1 4h-5L0 24h20l-.1-20zM10 2c1.3 0 2.4.8 2.8 2H7.2c.4-1.2 1.5-2 2.8-2zM2 22l.1-16H5v2h2V6h6v2h2V6h2.9l.1 16H2z"></path>
                   </svg>
                   <span class="cart-count">{{getDishCountOfOrderText()}}</span>
               </span>
-              <span class="nav-icon-label">Warenkorb</span>
-          </a>
+              <span class="nav-icon-label">Warenkorb</span-->
+          <!--/a>
       </div>
     </div>
   </nav>
-</header>
+</header-->

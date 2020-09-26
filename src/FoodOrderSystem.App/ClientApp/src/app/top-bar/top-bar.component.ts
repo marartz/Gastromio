@@ -10,7 +10,11 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.css', '../../assets/css/frontend.min.css', '../../assets/css/frontend_v2.min.css']
+  styleUrls: [
+    './top-bar.component.css',
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/animations_v2.min.css'
+  ]
 })
 export class TopBarComponent implements OnInit {
 

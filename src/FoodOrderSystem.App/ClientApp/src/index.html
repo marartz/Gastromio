@@ -34,796 +34,45 @@
     <meta http-equiv="imagetoolbar" content="no" />
     <meta http-equiv="Language" content="de" />
 
-    <style type="text/css">
-    #app {
-        display: grid;
-        grid-auto-rows: auto;
-        grid-template-columns: repeat(var(--cells), 1fr);
-        min-height: 100%;
-    }
-    </style>
-
-    <style type="text/css">
-    #iubenda-cs-banner {
-        background: rgba(0, 0, 0, 0.6);
-        border: 0px;
-        display: flex;
-        display: -ms-flexbox;
-        display: -webkit-box;
-        font-size: 15px;
-        height: 100%;
-        line-height: 1.4;
-        margin: 0px;
-        left: 0px;
-        opacity: 0;
-        overflow: hidden;
-        padding: 0px;
-        pointer-events: none;
-        position: fixed;
-        top: 0px;
-        visibility: hidden;
-        width: 100%;
-        will-change: opacity,visibility;
-        z-index: 99999998;
-        transition: opacity .4s ease,visibility .4s ease;
-        -o-transition: opacity .4s ease,visibility .4s ease;
-        -webkit-transition: opacity .4s ease,visibility .4s ease;
-    }
-
-    #iubenda-cs-banner .iubenda-banner-content:not(.iubenda-custom-content) *,
-    #iubenda-cs-banner [class*=" iub"],
-    #iubenda-cs-banner [class^=iub] {
-        appearance: none;
-        backface-visibility: hidden;
-        background: #f8f8f6;
-        background-attachment: scroll;
-        background-color: #f8f8f6;
-        background-image: none;
-        background-position: 0 0;
-        background-repeat: repeat;
-        background-origin: padding-box;
-        background-clip: border-box;
-        background-size: auto;
-        border: 0px solid #f8f8f6;
-        border-radius: 8px;
-        border-style: none;
-        border-width: medium;
-        bottom: auto;
-        box-sizing: border-box;
-        clear: none;
-        clip: auto;
-        color: #000;
-        counter-increment: none;
-        counter-reset: none;
-        direction: inherit;
-        float: none;
-        font-family: proxima-nova, sans-serif;
-        font-size: 100%;
-        font-style: inherit;
-        font-variant: normal;
-        font-weight: inherit;
-        height: auto;
-        left: auto;
-        letter-spacing: normal;
-        line-height: inherit;
-        list-style-type: inherit;
-        list-style-position: outside;
-        list-style-image: none;
-        margin: 0px;
-        max-height: none;
-        max-width: none;
-        min-height: 0px;
-        min-width: 0px;
-        opacity: 1;
-        outline: 0;
-        overflow: visible;
-        padding: 0px;
-        position: static;
-        quotes: "" "";
-        right: auto;
-        overflow-x: visible;
-        overflow-y: visible;
-        table-layout: auto;
-        text-align: left;
-        text-decoration: none;
-        text-indent: 0;
-        text-transform: none;
-        top: auto;
-        width: auto;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        -webkit-backface-visibility: hidden;
-        -webkit-box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-        unicode-bidi: normal;
-        vertical-align: baseline;
-        visibility: inherit;
-        white-space: normal;
-        width: auto;
-    }
-
-    #iubenda-cs-banner .iub-popover-trigger {
-        display: inline-block;
-        text-decoration: underline;
-        -webkit-text-decoration-style: dashed;
-        text-decoration-style: dashed;
-        position: relative;
-        margin-right: 16px;
-        cursor: pointer;
-        line-height: 1.25;
-    }
-
-    #iubenda-cs-banner .iub-popover-trigger:after,
-    #iubenda-cs-banner .iub-popover-trigger:before {
-        content: "";
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        border-radius: 12px;
-        vertical-align: middle;
-        background-size: 4px;
-        position: absolute;
-        left: calc(100% + 2px);
-        top: 3px
-    }
-
-    #iubenda-cs-banner .iub-popover-trigger:before {
-        background-color: currentColor;
-        opacity: .35
-    }
-
-    #iubenda-cs-banner .iub-popover-trigger:after {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='13' viewBox='0 0 7 13'%3E%3Cg fill='%23FFF' fill-rule='evenodd'%3E%3Cpath d='M2.779 1.288a1.287 1.287 0 112.574 0 1.287 1.287 0 01-2.574 0zM5.467 10.422l.903 1.851-.7.341a2.496 2.496 0 01-3.545-2.717l.818-3.252a.42.42 0 00-.178-.382.422.422 0 00-.452-.041l-.844.412-.902-1.852.843-.412a2.491 2.491 0 012.576.233 2.49 2.49 0 01.989 2.389 1.105 1.105 0 01-.02.095l-.817 3.253a.42.42 0 00.178.382c.08.059.244.142.451.041l.7-.341z'/%3E%3C/g%3E%3C/svg%3E");
-        background-position: center;
-        background-repeat: no-repeat
-    }
-
-    #iubenda-cs-banner .iub-popover {
-        position: absolute;
-        top: 24px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-radius: 4px;
-        background-color: #fff;
-        color: #222;
-        z-index: 2;
-        -webkit-box-shadow: 0 0 32px rgba(0, 0, 0, .1);
-        box-shadow: 0 0 32px rgba(0, 0, 0, .1);
-        opacity: 0;
-        visibility: hidden;
-        -webkit-transform: translateY(24px);
-        -ms-transform: translateY(24px);
-        transform: translateY(24px);
-        -webkit-transition: opacity .3s ease, visibility .3s ease, -webkit-transform .3s ease;
-        transition: opacity .3s ease, visibility .3s ease, -webkit-transform .3s ease;
-        -o-transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
-        transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
-        transition: opacity .3s ease, visibility .3s ease, transform .3s ease, -webkit-transform .3s ease;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        z-index: 99;
-        pointer-events: none;
-        overflow: hidden
-    }
-
-    #iubenda-cs-banner .iub-popover-header {
-        -ms-flex-negative: 0;
-        flex-shrink: 0;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        z-index: 1;
-        -webkit-box-shadow: 0 16px 16px #fff;
-        box-shadow: 0 16px 16px #fff
-    }
-
-    #iubenda-cs-banner .iub-popover-header>* {
-        padding: 24px;
-        padding-bottom: 0
-    }
-
-    #iubenda-cs-banner .iub-popover-header-title {
-        font-size: 18px;
-        font-weight: 700
-    }
-
-    #iubenda-cs-banner .iub-popover-header-close {
-        font-size: 24px;
-        font-weight: 300;
-        cursor: pointer;
-        line-height: 1;
-        position: relative;
-        top: -2px
-    }
-
-    #iubenda-cs-banner .iub-popover-content {
-        font-size: 14px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        font-weight: 300;
-        line-height: 1.5;
-        position: relative
-    }
-
-    #iubenda-cs-banner .iub-popover-content>div {
-        padding: 0 24px;
-        overflow-y: auto;
-        height: 100%
-    }
-
-    #iubenda-cs-banner .iub-popover-content>div:after,
-    #iubenda-cs-banner .iub-popover-content>div:before {
-        content: "";
-        display: block;
-        height: 24px
-    }
-
-    #iubenda-cs-banner .iub-popover-content h3 {
-        margin-bottom: 16px;
-        font-weight: 700
-    }
-
-    #iubenda-cs-banner .iub-popover-content p:not(:last-of-type) {
-        margin-bottom: 16px!
-    }
-
-    #iubenda-cs-banner .iub-popover-content a {
-        text-decoration: underline;
-        cursor: pointer;
-        opacity: .8
-    }
-
-    #iubenda-cs-banner .iub-popover-content b,
-    #iubenda-cs-banner .iub-popover-content strong {
-        font-weight: 700
-    }
-
-    #iubenda-cs-banner .iub-popover-content em,
-    #iubenda-cs-banner .iub-popover-content i {
-        font-style: italic
-    }
-
-    #iubenda-cs-banner .iub-popover-content:after {
-        position: absolute;
-        content: "";
-        display: block;
-        height: 24px;
-        pointer-events: none;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(white));
-        background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0, #fff 100%);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 100%)
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating .iub-popover {
-        left: 8px;
-        right: 8px
-    }
-
-    @media (min-width:640px) {
-        #iubenda-cs-banner.iubenda-cs-default .iub-popover {
-            max-width: 992px;
-            margin: 0 auto
-        }
-        #iubenda-cs-banner.iubenda-cs-default.iubenda-cs-top .iub-popover {
-            top: 16px;
-            bottom: -16px
-        }
-        #iubenda-cs-banner.iubenda-cs-default.iubenda-cs-bottom .iub-popover {
-            top: -16px;
-            bottom: 16px
-        }
-    }
-
-    #iubenda-cs-banner.iub-popover-visible .iub-popover {
-        opacity: 1;
-        visibility: visible;
-        -webkit-transform: translateY(0);
-        -ms-transform: translateY(0);
-        transform: translateY(0);
-        pointer-events: auto
-    }
-
-    #iubenda-cs-banner.iubenda-cs-overlay:before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, .5);
-        z-index: 1;
-        pointer-events: auto
-    }
-
-    #iubenda-cs-banner.iubenda-cs-center {
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center
-    }
-
-    #iubenda-cs-banner.iubenda-cs-top {
-        -webkit-box-align: start;
-        -ms-flex-align: start;
-        align-items: flex-start
-    }
-
-    #iubenda-cs-banner.iubenda-cs-bottom {
-        -webkit-box-align: end;
-        -ms-flex-align: end;
-        align-items: flex-end
-    }
-
-    #iubenda-cs-banner.iubenda-cs-left {
-        -webkit-box-pack: start;
-        -ms-flex-pack: start;
-        justify-content: flex-start
-    }
-
-    #iubenda-cs-banner.iubenda-cs-right {
-        -webkit-box-pack: end;
-        -ms-flex-pack: end;
-        justify-content: flex-end
-    }
-
-    #iubenda-cs-banner.iubenda-cs-visible {
-        opacity: 1;
-        visibility: visible
-    }
-
-    #iubenda-cs-banner.iubenda-cs-visible .iubenda-cs-container {
-        pointer-events: auto
-    }
-
-    #iubenda-cs-banner.iubenda-cs-slidein .iubenda-cs-container {
-        -webkit-transition: -webkit-transform .4s ease;
-        transition: -webkit-transform .4s ease;
-        -o-transition: transform .4s ease;
-        transition: transform .4s ease;
-        transition: transform .4s ease, -webkit-transform .4s ease
-    }
-
-    #iubenda-cs-banner.iubenda-cs-slidein.iubenda-cs-top .iubenda-cs-container {
-        -webkit-transform: translateY(-48px);
-        -ms-transform: translateY(-48px);
-        transform: translateY(-48px)
-    }
-
-    #iubenda-cs-banner.iubenda-cs-slidein.iubenda-cs-bottom .iubenda-cs-container {
-        -webkit-transform: translateY(48px);
-        -ms-transform: translateY(48px);
-        transform: translateY(48px)
-    }
-
-    #iubenda-cs-banner.iubenda-cs-slidein.iubenda-cs-visible .iubenda-cs-container {
-        -webkit-transform: translateY(0);
-        -ms-transform: translateY(0);
-        transform: translateY(0)
-    }
-
-    #iubenda-cs-banner .iubenda-cs-container {
-        position: relative;
-        z-index: 2
-    }
-
-    #iubenda-cs-banner .iubenda-cs-brand {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        padding: 16px
-    }
-
-    #iubenda-cs-banner .iubenda-cs-brand>div {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: start;
-        -ms-flex-pack: start;
-        justify-content: flex-start
-    }
-
-    #iubenda-cs-banner .iubenda-cs-brand img {
-        max-width: 192px;
-        max-height: 56px
-    }
-
-    #iubenda-cs-banner .iubenda-cs-content {
-        position: relative;
-        z-index: 1;
-        overflow: hidden;
-        -webkit-transition: -webkit-transform .4s ease;
-        transition: -webkit-transform .4s ease;
-        -o-transition: transform .4s ease;
-        transition: transform .4s ease;
-        transition: transform .4s ease, -webkit-transform .4s ease
-    }
-
-    #iubenda-cs-banner .iubenda-cs-rationale {
-        position: relative;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column
-    }
-
-    #iubenda-cs-banner .iubenda-cs-close-btn {
-        position: absolute;
-        top: -2px;
-        padding: 16px;
-        right: 0px;
-        min-width: 48px;
-        height: 48px;
-        font-size: 24px;
-        line-height: 0;
-        font-weight: lighter;
-        cursor: pointer;
-        text-align: center
-    }
-
-    #iubenda-cs-banner .iubenda-cs-close-btn:hover {
-        opacity: .5
-    }
-
-    #iubenda-cs-banner .iubenda-banner-content {
-        font-weight: 300;
-        margin: 16px;
-        margin-bottom: 0;
-        -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
-        flex: 1 1 auto;
-        overflow-y: auto;
-        mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0, #000 16px);
-        -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0, #000 16px);
-        padding-bottom: 32px
-    }
-
-    #iubenda-cs-banner .iubenda-banner-content-padded {
-        padding-right: 32px
-    }
-
-    #iubenda-cs-banner .iubenda-banner-content a {
-        cursor: pointer;
-        color: currentColor;
-        opacity: .7;
-        text-decoration: underline
-    }
-
-    #iubenda-cs-banner .iubenda-banner-content a:hover {
-        opacity: 1
-    }
-
-    #iubenda-cs-banner #iubenda-cs-title {
-        font-weight: 700;
-        margin-bottom: 16px
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group {
-        margin: 16px;
-        z-index: 1;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        margin-top: 0!;
-        -ms-flex-negative: 0;
-        flex-shrink: 0
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group>div {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex
-    }
-
-    @media (min-width:640px) {
-        #iubenda-cs-banner .iubenda-cs-opt-group {
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-            justify-content: space-between
-        }
-        #iubenda-cs-banner .iubenda-cs-opt-group-custom {
-            margin-right: auto;
-            -ms-flex-item-align: start;
-            align-self: start;
-            -webkit-box-pack: start;
-            -ms-flex-pack: start;
-            justify-content: flex-start
-        }
-        #iubenda-cs-banner .iubenda-cs-opt-group-consent {
-            margin-left: auto;
-            -ms-flex-item-align: end;
-            align-self: end;
-            -webkit-box-pack: end;
-            -ms-flex-pack: end;
-            justify-content: flex-end
-        }
-    }
-
-    @media (max-width:639px) {
-        #iubenda-cs-banner .iubenda-cs-opt-group {
-            margin: 12px;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column
-        }
-        #iubenda-cs-banner .iubenda-cs-opt-group-custom {
-            -webkit-box-ordinal-group: 3;
-            -ms-flex-order: 2;
-            order: 2
-        }
-        #iubenda-cs-banner .iubenda-cs-opt-group-consent {
-            -webkit-box-ordinal-group: 2;
-            -ms-flex-order: 1;
-            order: 1
-        }
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group button {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        padding: 8px 32px;
-        border-radius: 64px;
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        text-align: center
-    }
-
-    @media (min-width:640px) {
-        #iubenda-cs-banner .iubenda-cs-opt-group button:not(:last-of-type) {
-            margin-right: 8px
-        }
-    }
-
-    @media (max-width:639px) {
-        #iubenda-cs-banner .iubenda-cs-opt-group button {
-            padding: 8px 24px;
-            width: 100%;
-            display: block;
-            text-align: center;
-            margin: 6px 3px
-        }
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand {
-        margin: 0 -8px 0
-    }
-
-    @media (max-width:991px) {
-        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand {
-            margin: -8px -8px 0
-        }
-    }
-
-    @media (min-width:992px) {
-        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand div {
-            margin: 0 auto;
-            width: calc(992px - 32px)
-        }
-    }
-
-    @media (max-width:991px) {
-        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-brand div {
-            margin: 0 8px
-        }
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-container {
-        width: 100%
-    }
-
-    @media (min-width:992px) {
-        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-rationale {
-            width: 992px;
-            margin: 16px auto
-        }
-    }
-
-    @media (max-width:991px) {
-        #iubenda-cs-banner.iubenda-cs-default .iubenda-cs-content {
-            padding: 8px
-        }
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-brand {
-        margin: -8px -8px 0
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-brand div {
-        margin: 8px
-    }
-
-    @media (min-width:992px) {
-        #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-container {
-            width: 992px
-        }
-    }
-
-    @media (min-width:640px) {
-        #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-container,
-        #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-container,
-        #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-container {
-            width: 480px
-        }
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group {
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group>div,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group>div,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group>div {
-        width: 100%
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group button,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group button,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group button {
-        display: block;
-        width: 100%;
-        text-align: center
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group-custom,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group-custom,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group-custom {
-        -webkit-box-ordinal-group: 3;
-        -ms-flex-order: 2;
-        order: 2
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-opt-group-consent,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-opt-group-consent,
-    #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-opt-group-consent {
-        -webkit-box-ordinal-group: 2;
-        -ms-flex-order: 1;
-        order: 1
-    }
-
-    #iubenda-cs-banner.iubenda-cs-default-floating .iubenda-cs-content {
-        -webkit-box-shadow: 0 8px 48px rgba(0, 0, 0, .15);
-        box-shadow: 0 8px 48px rgba(0, 0, 0, .15);
-        padding: 8px;
-    }
-
-    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-container,
-    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-content,
-    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-rationale {
-        height: 100%;
-    }
-
-    #iubenda-cs-banner.iubenda-cs-fix-height.iubenda-cs-default-floating .iubenda-cs-content {
-        height: calc(100% - 32px);
-    }
-
-    #iubenda-cs-banner.iubenda-cs-fix-height .iubenda-cs-brand img {
-        max-width: 75%;
-    }
-
-    #iubenda-cs-banner .iubenda-cs-content {
-        background-color: #f8f8f6;
-        color: #fff;
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group {
-        color: #000;
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group button {
-        background-color: rgba(255, 255, 255, .1);
-        border-radius: 4px!important;
-        color: #6d6d6d;
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group button:focus,
-    #iubenda-cs-banner .iubenda-cs-opt-group button:hover {
-        color: #6d6d6d!important;
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group button.iubenda-cs-btn-primary {
-        background-color: #65b32e;
-        color: #fff;
-        margin-top: 2px;
-    }
-
-    #iubenda-cs-banner .iubenda-cs-opt-group button.iubenda-cs-btn-primary:focus,
-    #iubenda-cs-banner .iubenda-cs-opt-group button.iubenda-cs-btn-primary:hover {
-        background-color: #256d1b!important;
-        color: #fff!important;
-        transition: all 50ms cubic-bezier(.57, .06, .05, .95), background-color 50ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out!important;
-    }
-
-    #purposes-container .purposes-header-title,
-    #purposes-container .purposes-header-title,
-    #purposes-container .purposes-buttons button,
-    #iubenda-iframe .purposes-top-right .purposes-btn-cp span,
-    #purposes-container .purposes-btn,
-    #purposes-container .purposes-item-title-btn {
-        font-family: proxima-nova, sans-serif!important;
-    }
-
-    #iubenda-iframe #iubFooterBtnContainer button {
-        background: #65b32e!important;
-        background-color: #65b32e!important;
-        color: #fff!important;
-        font-family: proxima-nova, sans-serif!important;
-    }
-
-    #iubenda-iframe #iubFooterBtnContainer button:focus,
-    #iubenda-iframe #iubFooterBtnContainer button:hover {
-        background-color: #256d1b!important;
-        color: #fff!important;
-        opacity: 1!important;
-        transition: all 50ms cubic-bezier(.57, .06, .05, .95), background-color 50ms cubic-bezier(.57, .06, .05, .95), opacity .3s ease-out!important;
-    }
-    #iubenda-iframe .iubenda-modal-navigation:not(.iubenda-modal-navigation-brand) {
-        background-color: #f8f8f6!important;
-    }
-    </style>
-
     <script type="text/javascript">
     var _iub = _iub || [];
     _iub.csConfiguration = {
-        "cookiePolicyId": 68796811,
+        "askConsentAtCookiePolicyUpdate": true,
+        "banner": {
+            "acceptButtonDisplay": true,
+            "customizeButtonDisplay": true,
+            "cookiePolicyLinkCaption": "Datenschutz bei Gastromio",
+            "position": "float-center",
+            "acceptButtonColor": "#65b32e",
+            "acceptButtonCaptionColor": "#fff",
+            "customizeButtonColor": "#363636",
+            "customizeButtonCaptionColor": "#fff",
+            "textColor": "#fff",
+            "backgroundColor": "#363636",
+            "backgroundOverlay": true,
+            "logo": "data:image/svg+xml;base64,CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0OCA0ODsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPHBhdGggZD0iTTguMTcsNDYuNTZoMC4wMmMtMC4wMS0wLjAxLTAuMDItMC4wMS0wLjAyLTAuMDJWNDYuNTZ6IiBmaWxsPSIjZmZmZmZmIiAvPgoJPGc+CgkJPHBhdGggZD0iTTI3LjMxLDIxLjUzYzAuMjgtMC4xNSwwLjU2LTAuMzUsMC44NC0wLjU4YzAuMjgtMC4yNCwwLjU0LTAuNSwwLjc4LTAuOGMwLjI0LTAuMjksMC40MS0wLjYxLDAuNTEtMC45NAoJCQljMC4xMS0wLjMzLDAuMTMtMC42NywwLjA2LTEuMDFjLTAuMDYtMC4zNC0wLjI2LTAuNjctMC41OS0wLjk5Yy0wLjExLTAuMS0wLjIyLTAuMTUtMC4zNC0wLjE3Yy0wLjEyLTAuMDEtMC4yMywwLTAuMzUsMC4wNAoJCQljLTAuMTEsMC4wNC0wLjIyLDAuMS0wLjMyLDAuMThjLTAuMSwwLjA4LTAuMiwwLjE3LTAuMjksMC4yNmMtMC4xOCwwLjE5LTAuMzksMC40Ny0wLjYxLDAuODNjLTAuMjIsMC4zNi0wLjQxLDAuNzUtMC41NSwxLjE3CgkJCWMtMC4xNCwwLjQyLTAuMjIsMC44My0wLjIyLDEuMjRjMCwwLjQsMC4xMiwwLjc1LDAuMzcsMS4wNEMyNi44LDIxLjc3LDI3LjA0LDIxLjY4LDI3LjMxLDIxLjUzeiIgZmlsbD0iI2ZmZmZmZiIgLz4KCQk8cGF0aCBkPSJNMzEuNSwyMy45M2MtMC4xNywwLjA0LTAuMzIsMC4xMS0wLjQ2LDAuMjFjLTAuMTQsMC4wOS0wLjI2LDAuMi0wLjM4LDAuMzFjLTAuMTIsMC4xMi0wLjIzLDAuMjItMC4zNCwwLjMybDAuMDQtMC4wMQoJCQljLTAuMjgsMC4yMy0wLjUyLDAuNDYtMC43NCwwLjY5Yy0wLjIyLDAuMjMtMC40NCwwLjQ5LTAuNjksMC43N2wtMi40MiwzLjU1YzAuMTktMC4wNCwwLjQ2LTAuMTYsMC43OS0wLjM0CgkJCWMwLjM0LTAuMTgsMC43LTAuNDIsMS4xLTAuN2MwLjQtMC4yOSwwLjgxLTAuNjEsMS4yMy0wLjk4YzAuNDItMC4zNywwLjgtMC43NiwxLjE1LTEuMTljMC4zNS0wLjQyLDAuNjQtMC44NSwwLjg3LTEuMwoJCQljMC4yNC0wLjQ1LDAuMzctMC44OSwwLjQxLTEuMzJDMzEuODYsMjMuODksMzEuNjcsMjMuODgsMzEuNSwyMy45M3oiIGZpbGw9IiNmZmZmZmYiIC8+CgkJPHBhdGggZD0iTTQxLjE1LDYuMDljLTEuOTYtMC42NC0zLjk3LTAuNTMtNS43NSwwLjE3YzAuMTQsMC4xNiwwLjI3LDAuMzQsMC40MiwwLjUzYzAuMTksMC4yNSwwLjM5LDAuNTIsMC41OCwwLjgKCQkJYzAuMTksMC4yOCwwLjM0LDAuNTYsMC40NiwwLjgzYzAuMTIsMC4yNywwLjE5LDAuNTIsMC4yMSwwLjc1YzAuMDIsMC4yMy0wLjA0LDAuNDItMC4xOCwwLjU3Yy0wLjE4LDAtMC4zNy0wLjA3LTAuNTYtMC4yMQoJCQlDMzYuMTQsOS4zOSwzNS45Niw5LjIxLDM1Ljc4LDljLTAuMTgtMC4yMS0wLjM2LTAuNDMtMC41My0wLjY2Yy0wLjE3LTAuMjMtMC4zMy0wLjQzLTAuNDctMC41OGMtMC4yNC0wLjI5LTAuNDktMC41Ni0wLjczLTAuODMKCQkJQzM0LjAzLDYuOTUsMzQuMDEsNi45NSwzNCw2Ljk2Yy0wLjIxLTAuMjgtMC40My0wLjUzLTAuNjYtMC43OWMtMC4xOS0wLjItMC4zNy0wLjM5LTAuNTYtMC41OWMtMC4wMi0wLjAyLTAuMDQtMC4wNC0wLjA2LTAuMDYKCQkJYy0yLjI0LTIuMjItNS4zMS0zLjYtOC43Mi0zLjZjLTQuMSwwLTcuNzMsMS45OS0xMCw1LjA1Yy0yLjA2LTEuMjktNC42Ni0xLjY5LTcuMTUtMC44N2MtNC40NiwxLjQ2LTYuODksNi4yNy01LjQyLDEwLjczCgkJCWMwLjY3LDIuMDQsMi4wNCwzLjY0LDMuNzUsNC42NmMwLjgsMC42OCwxLjY5LDEuMzUsMi42MSwyLjA2YzAsMCwwLDAsMC0wLjAxYzAuMDItMC44NCwwLjA2LTMuNzUsMC4xMi00LjYzCgkJCWMwLjE2LTAuMTIsMC4yOSwwLjA0LDAuMzgsMC41YzAuMDksMC40NiwwLjE1LDEuMDgsMC4xOSwxLjg3YzAuMDQsMC43OSwwLjA1LDEuNjgsMC4wNSwyLjY3YzAsMC45OS0wLjAyLDEuOTgtMC4wNSwyLjk3CgkJCWMwLDAuMTItMC4wMSwwLjIzLTAuMDEsMC4zNGMwLjE2LDQuNTYsMC4zOSwxMC40OSwwLjQ5LDE0LjI2YzAuMjYtMC4zMywwLjY0LTAuNTgsMC45OC0wLjc5YzAuNi0wLjM1LDEuMjQtMC42MiwxLjg5LTAuODQKCQkJYzEuMy0wLjQ2LDIuNjMtMC44MSwzLjk4LTEuMDhjMi43LTAuNTUsNS40NS0wLjg2LDguMjEtMC44OWMyLjc1LTAuMDEsNS41MiwwLjE1LDguMjUsMC42MmMxLjM3LDAuMjQsMi43MywwLjU0LDQuMDcsMC45OQoJCQljMC42NywwLjIzLDEuMzQsMC40OSwxLjk5LDAuODdjMC4yNiwwLjE1LDAuNTIsMC4zNCwwLjc2LDAuNTVsMC41Ni0xNi45OGMxLjExLTAuOSwyLjItMS42NywzLjE3LTIuNQoJCQljMS43MS0xLjAxLDMuMDgtMi42MiwzLjc1LTQuNjZDNDguMDQsMTIuMzYsNDUuNjEsNy41Niw0MS4xNSw2LjA5eiBNMjQuODEsMTkuMTljMC4xMy0wLjQsMC4zLTAuNzgsMC41MS0xLjE1CgkJCWMwLjIxLTAuMzcsMC40NS0wLjcsMC43Mi0xYzAuMjctMC4zLDAuNTYtMC41MywwLjg1LTAuNjhjMC40NC0wLjIzLDAuODgtMC4zMywxLjMyLTAuMjljMC40NCwwLjA0LDAuODQsMC4xNiwxLjIxLDAuMzYKCQkJYzAuMzYsMC4yLDAuNjgsMC40NSwwLjk1LDAuNzRjMC4yNywwLjMsMC40NSwwLjU5LDAuNTcsMC44NmwwLjAyLDAuMDNjMC4yLDAsMC40LTAuMDEsMC41OS0wLjAyYzAuMi0wLjAxLDAuMzgsMCwwLjU0LDAuMDMKCQkJYzAuMTYsMC4wMywwLjMsMC4wOSwwLjQxLDAuMTdjMC4xMSwwLjA5LDAuMTgsMC4yMywwLjIsMC40MWMtMC4yLDAuMi0wLjQyLDAuMzItMC42OSwwLjM1Yy0wLjI2LDAuMDMtMC41NiwwLjA0LTAuODgsMC4wMQoJCQljLTAuMSwwLjQ1LTAuMjUsMC44NC0wLjQ0LDEuMTdjLTAuMTksMC4zMy0wLjQsMC42My0wLjYyLDAuODhjLTAuMDksMC4wOS0wLjIsMC4yLTAuMzQsMC4zMnMtMC4yOSwwLjI1LTAuNDYsMC4zOAoJCQljLTAuMTcsMC4xMy0wLjM0LDAuMjQtMC41MiwwLjM2Yy0wLjE4LDAuMTEtMC4zNSwwLjItMC41MSwwLjI3Yy0wLjQ0LDAuMTktMC44OSwwLjI4LTEuMzMsMC4yNmMtMC40NC0wLjAyLTAuODMtMC4xMi0xLjE4LTAuMzEKCQkJYy0wLjM0LTAuMTktMC42Mi0wLjQ2LTAuODQtMC44MWMtMC4yMi0wLjM1LTAuMzItMC43NS0wLjMxLTEuMjJDMjQuNjEsMTkuOTYsMjQuNjgsMTkuNTgsMjQuODEsMTkuMTl6IE0xNi40MiwxOS4yOQoJCQljMC4yLTAuNDcsMC40Ny0wLjkxLDAuOC0xLjMxczAuNzEtMC43NSwxLjE0LTEuMDZjMC40My0wLjMxLDAuODctMC41NSwxLjM0LTAuNzFjMC40Ny0wLjE3LDAuOTQtMC4yNiwxLjQxLTAuMjYKCQkJYzAuNDctMC4wMSwwLjkxLDAuMDksMS4zMywwLjI4YzAuMTQsMC4wOCwwLjI1LDAuMTcsMC4zNCwwLjI2YzAuMDksMC4xLDAuMTMsMC4xOSwwLjE0LDAuMjhjMC4wMSwwLjA5LTAuMDQsMC4xNi0wLjEzLDAuMjIKCQkJYy0wLjA5LDAuMDYtMC4yNCwwLjA4LTAuNDUsMC4wNmMtMC4yMS0wLjAxLTAuMzctMC4wMi0wLjQ5LTAuMDNjLTAuMTItMC4wMS0wLjIzLTAuMDItMC4zMy0wLjAxYy0wLjEsMC4wMS0wLjIxLDAuMDMtMC4zMiwwLjA2CgkJCWMtMC4xMSwwLjA0LTAuMjYsMC4xLTAuNDUsMC4xOGMtMC4yMSwwLjA5LTAuNDEsMC4yMS0wLjYsMC4zNGMtMC4yLDAuMTQtMC4zOCwwLjI4LTAuNTYsMC40NGMtMC4xOCwwLjE2LTAuMzQsMC4zMy0wLjQ4LDAuNTEKCQkJYy0wLjE1LDAuMTgtMC4yNywwLjM1LTAuMzYsMC41MWMtMC4xMywwLjItMC4yNCwwLjQxLTAuMzYsMC42M2MtMC4xMSwwLjIyLTAuMiwwLjQ1LTAuMjcsMC43Yy0wLjA3LDAuMjUtMC4xLDAuNS0wLjExLDAuNzcKCQkJYy0wLjAxLDAuMjYsMC4wNCwwLjUzLDAuMTMsMC43OWMwLjIyLTAuMDIsMC40Ny0wLjA3LDAuNzUtMC4xNWMwLjI4LTAuMDgsMC41Ni0wLjE3LDAuODQtMC4yOHMwLjU1LTAuMjIsMC44MS0wLjMzCgkJCWMwLjI2LTAuMTEsMC40Ny0wLjIxLDAuNjQtMC4yOWMwLjE3LTAuMDksMC4yOC0wLjE5LDAuMzUtMC4yOWMwLjA2LTAuMSwwLjExLTAuMiwwLjE0LTAuMjljMC4wMy0wLjA5LDAuMDYtMC4xOSwwLjEtMC4zCgkJCWMwLjA0LTAuMSwwLjEyLTAuMjEsMC4yMy0wLjMyYzAuMS0wLjEsMC4yMS0wLjE2LDAuMzMtMC4xOGMwLjEyLTAuMDIsMC4yNS0wLjAyLDAuMzcsMC4wMmMwLjEyLDAuMDMsMC4yNCwwLjA4LDAuMzYsMC4xNQoJCQljMC4xMSwwLjA3LDAuMjEsMC4xNCwwLjI5LDAuMmMwLjAyLDAuMTIsMC4wMiwwLjI2LDAuMDEsMC40M2MtMC4wMiwwLjE3LTAuMDUsMC4zNC0wLjA5LDAuNTFjLTAuMDQsMC4xNy0wLjA5LDAuMzQtMC4xMywwLjUxCgkJCWMtMC4wNCwwLjE3LTAuNzIsMy4yMS0wLjc3LDMuNDZjLTAuMTYsMC42OC0xLjc2LDAuMDYtMS42MS0wLjk3YzAuMTUtMS4wMywwLjE2LTAuOTIsMC4xNS0xLjAzYy0wLjAxLTAuMTEsMC4wMi0wLjMsMC4wNy0wLjU3CgkJCWMtMC4yNiwwLjExLTAuNSwwLjIyLTAuNzIsMC4zM2MtMC4yMywwLjExLTAuNDYsMC4xOS0wLjY5LDAuMjZjLTAuMjQsMC4wNy0wLjQ5LDAuMS0wLjc3LDAuMTFjLTAuMjgsMC0wLjYtMC4wNC0wLjk3LTAuMTIKCQkJYy0wLjI1LTAuMDYtMC40OC0wLjE0LTAuNjktMC4yNWMtMC4yMS0wLjExLTAuMzktMC4yNS0wLjU1LTAuNDJjLTAuMTYtMC4xNy0wLjI4LTAuMzYtMC4zNy0wLjZjLTAuMDktMC4yMy0wLjEzLTAuNS0wLjEyLTAuODEKCQkJQzE2LjExLDIwLjI1LDE2LjIyLDE5Ljc2LDE2LjQyLDE5LjI5eiBNMzMsMjUuMDFjLTAuMSwwLjQ2LTAuMjUsMC45Mi0wLjQ1LDEuMzljLTAuMiwwLjQ3LTAuNDUsMC45Mi0wLjc1LDEuMzYKCQkJYy0wLjMsMC40NC0wLjYzLDAuODQtMC45OSwxLjJjLTAuODMsMC44NC0xLjc2LDEuNTgtMi43OSwyLjJjLTEuMDMsMC42My0yLjE3LDEuMTEtMy40MywxLjQ0Yy0wLjY0LDAuMTctMS4zMiwwLjI4LTIuMDMsMC4zNAoJCQljLTAuNzEsMC4wNi0xLjQxLDAuMDMtMi4wOS0wLjA3Yy0wLjY5LTAuMTEtMS4zMy0wLjMxLTEuOTQtMC42MWMtMC42MS0wLjMtMS4xNC0wLjcxLTEuNTgtMS4yNGMtMC43Mi0wLjg4LTEuMi0xLjgtMS40NC0yLjc1CgkJCWMtMC4yNC0wLjk1LTAuMjktMS45LTAuMTUtMi44NWMwLjE0LTAuOTUsMS41Mi0xLjM1LDEuMjUtMC41NnMtMC4zOCwxLjUtMC4zNCwyLjEzYzAuMDUsMC42NCwwLjIzLDEuMiwwLjU1LDEuNjgKCQkJczAuNzMsMC44OSwxLjIzLDEuMjNjMC41LDAuMzMsMS4wNiwwLjU5LDEuNjksMC43NmMwLjYzLDAuMTgsMS4yOCwwLjI3LDEuOTUsMC4zYzAuNjcsMC4wMiwxLjM0LTAuMDMsMi4wMS0wLjE3CgkJCWMwLjY3LTAuMTQsMS4yOC0wLjM1LDEuODUtMC42M2MwLjE4LTAuNDQsMC4zMy0wLjg0LDAuNDYtMS4xOGMwLjEyLTAuMzUsMC4yNC0wLjY3LDAuMzQtMC45NmMwLjExLTAuMywwLjIyLTAuNTgsMC4zMy0wLjg2CgkJCWMwLjExLTAuMjcsMC4yNS0wLjU1LDAuNDEtMC44NGMwLjE2LTAuMjksMC4zNS0wLjU5LDAuNTgtMC45MWMwLjIzLTAuMzIsMS4wOS0xLjMsMS4yMi0xLjQ0YzAuMTMtMC4xNCwwLjI3LTAuMjgsMC40MS0wLjQyCgkJCWMwLjE0LTAuMTQtMS4zLDEuMjQsMC4zOC0wLjRjMS42OC0xLjY0LDIuMzktMS4xNSwyLjM5LTEuMTVjMC4zNCwwLjE1LDAuNTksMC4zOCwwLjc2LDAuNjhjMC4xNywwLjMxLDAuMjYsMC42NSwwLjI5LDEuMDUKCQkJQzMzLjEzLDI0LjEzLDMzLjEsMjQuNTYsMzMsMjUuMDF6IiBmaWxsPSIjZmZmZmZmIi8+CgkJPHBhdGggZD0iTTM3LjcsNDEuNTFjLTAuNTQtMC4yOS0xLjE1LTAuNTEtMS43OC0wLjdjLTEuMjUtMC4zNy0yLjU3LTAuNjItMy44OS0wLjhjLTIuNjUtMC4zNy01LjM0LTAuNTQtOC4wMy0wLjU5CgkJCWMtMi42OS0wLjA0LTUuMzktMC4wNi04LjA4LDAuMThjLTEuMzQsMC4xMy0yLjY5LDAuMzEtMy45OSwwLjY1Yy0wLjY1LDAuMTgtMS4yOSwwLjM4LTEuODksMC42OWMtMC41NiwwLjMtMS4yMSwwLjcyLTEuMjYsMS4zOAoJCQljMC4wMywwLjY2LDAuNjcsMS4xLDEuMjMsMS40MmMwLjU5LDAuMzMsMS4yMiwwLjU3LDEuODcsMC43OGMxLjMsMC4zOSwyLjY0LDAuNjMsMy45OCwwLjgxYzIuNjksMC4zMyw1LjQxLDAuNDMsOC4xMiwwLjM5CgkJCWMyLjcxLTAuMDMsNS40MS0wLjIxLDguMDctMC42NGMxLjMzLTAuMjIsMi42NC0wLjUsMy45LTAuOWMwLjYzLTAuMiwxLjI0LTAuNDQsMS43Ny0wLjc1YzAuNTQtMC4yOCwxLTAuNzUsMC45NS0wLjk4CgkJCUMzOC43LDQyLjIyLDM4LjI0LDQxLjc4LDM3LjcsNDEuNTF6IiBmaWxsPSIjZmZmZmZmIi8+Cgk8L2c+Cgk8cGF0aCBkPSJNLTQ3LjgzLDQ2LjU2aDAuMDJjLTAuMDEtMC4wMS0wLjAyLTAuMDEtMC4wMi0wLjAyVjQ2LjU2eiIgZmlsbD0iI2ZmZmZmZiIgLz4KCTxwYXRoIGQ9Ik0tMTAyLjgzLDQ2LjU2aDAuMDJjLTAuMDEtMC4wMS0wLjAyLTAuMDEtMC4wMi0wLjAyVjQ2LjU2eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+",
+            "brandTextColor": "#fff",
+            "brandBackgroundColor": "#65b32e",
+            "cookiePolicyLinkCaption": "Datenschutz bei Gastromio",
+            "content": "Wir verwenden Cookies und andere Techniken, um Deine Erfahrungen und Anzeigen gemeinsam mit Dritten zu verbessern und zu personalisieren. Mehr zum %{cookie_policy_link}."
+        },
+        "consentOnContinuedBrowsing": false,
+        "cookiePolicyId": 81452220,
         "cookiePolicyInOtherWindow": true,
         "cookiePolicyUrl": "/privacy-policy",
-        "consentOnContinuedBrowsing": false,
+        "countryDetection": true,
+        "footer": {
+            "btnCaption": "Speichern und Schließen"
+        },
+        "gdprAppliesGlobally": false,
         "lang": "de",
         "perPurposeConsent": true,
         "reloadOnConsent": true,
-        "siteId": 1962425,
-        "whitelabel": false,
-        "enableTcf": true,
-        "tcfVersion": 2,
-        "tcfPurposes": {
-            "1": "consent_not_needed",
-            "2": false,
-            "4": "li_only",
-            "7": "consent_only"
-        },
-        "tcfPublisherCC": "DE",
-        "isTCFConsentGlobal": false,
-        "banner": {
-            "applyStyles": false,
-            "acceptButtonDisplay": true,
-            "backgroundColor": "#f8f8f6",
-            "content": "Wir verwenden Cookies, um dir mehr Benutzerfreundlichkeit bieten zu können. Durch die Nutzung unserer Seite erklärst du dich damit einverstanden. Hier erhältst du weiterführende Informationen zum Thema %{cookie_policy_link}.",
-            "cookiePolicyLinkCaption": "Datenschutz bei Gastromio",
-            "fontSizeBody": "14px",
-            "position": "float-center",
-        }
+        "siteId": 2014325,
+        "whitelabel": false
     };
     </script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/tcf/stub-v2.js"></script>
     <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" onload="_iub.cc = 'EU';" async></script>
 
     <meta name="HandheldFriendly" content="true" />
@@ -835,28 +84,40 @@
     <meta name="bingbot" content="index, follow, noodp" />
 
     <meta name="referrer" content="origin-when-cross-origin" />
-    <meta name="google" content="notranslate" />
     <meta name="format-detection" content="date=no" />
     <meta name="format-detection" content="address=no" />
     <meta name="format-detection" content="telephone=no" />
 
-    <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="/assets/css/frontend.min.css" />
-    <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/yvu2tba.css" />
-    <link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/wxy8rab.css" />
+    <!-- START: Remove before Launch--><link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/yvu2tba.css" /><!-- ENDE: Remove before Launch-->
 
-    <!--Start of Tawk.to Script-->
-    <script class="_iub_cs_activate" type="text/javascript" data-iub-purposes="2">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/5f57a0dff0e7167d000e7cdc/default';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-        })();
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4" src="https://www.googletagmanager.com/gtag/js?id=UA-163336701-1"></script>
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('set','anonymizeIp',!0);gtag('js',new Date());gtag('config','UA-163336701-1')</script>
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">window.fbAsyncInit=function(){FB.init({appId:"929536154183982",cookie:!0,xfbml:!0,version:"v7.0"}),FB.AppEvents.logPageView()},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||((o=e.createElement(n)).id=t,o.src="https://connect.facebook.net/en_US/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-analytics.js"></script>
+
+    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyAOVpnRpeNFv6pR6HjRojEWzNBE8FvRqSc",
+        authDomain: "gastromio-de.firebaseapp.com",
+        databaseURL: "https://gastromio-de.firebaseio.com",
+        projectId: "gastromio-de",
+        storageBucket: "gastromio-de.appspot.com",
+        messagingSenderId: "20374262647",
+        appId: "1:20374262647:web:d549f03d998667846b8772",
+        measurementId: "G-RMLEMZ0Z6B"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
     </script>
-    <!--End of Tawk.to Script-->
 
     <title>Gastromio</title>
 
@@ -888,9 +149,6 @@
 
     <link rel="mask-icon" type="image/svg" href="/assets/images/favicons/safari-pinned-tab.svg" color="#65b32e" />
     <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" /><![endif]-->
-
-    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">!function(t,h,e,j,s,n){t.hj=t.hj||function(){(t.hj.q=t.hj.q||[]).push(arguments)},t._hjSettings={hjid:1824267,hjsv:6},s=h.getElementsByTagName("head")[0],(n=h.createElement("script")).async=1,n.src="https://static.hotjar.com/c/hotjar-"+t._hjSettings.hjid+".js?sv="+t._hjSettings.hjsv,s.appendChild(n)}(window,document);</script>
-    <script class="_iub_cs_activate" type="text/plain" data-iub-purposes="4">window.fbAsyncInit=function(){FB.init({appId:"929536154183982",cookie:!0,xfbml:!0,version:"v7.0"}),FB.AppEvents.logPageView()},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||((o=e.createElement(n)).id=t,o.src="https://connect.facebook.net/en_US/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
 
     <link rel="search" type="application/opensearchdescription+xml" title="Gastromio" href="/osd.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
@@ -932,33 +190,8 @@
     <meta name="dc.language" content="DE" />
     <meta name="dc.title" content="Gastromio &ndash; Einfach. Lokal. Bestellen." />
     <meta name="dc.description" content="Kostenlose Online-Bestellung bei Restaurants in Bocholt und Umgebung! Mit Gastromio ist leckeres Essen nur einen Klick entfernt." />
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Gastromio",
-        "url": "https://www.gastromio.de/",
-        "logo": "https://www.gastromio.de/assets/img/logo/logo.png",
-        "image": "https://www.gastromio.de/assets/img/og/homepage.png",
-        "@id": "https://www.gastromio.de/assets/img/og/homepage.png",
-        "sameAs": [
-            "https://www.facebook.com/Gastromio.de/"
-        ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org/",
-        "@type": "WebSite",
-        "name": "Gastromio",
-        "url": "https://www.gastromio.de/",
-    }
-    </script>
 </head>
 <body>
-    <div id="app">
-        <app-root></app-root>
-    </div>
+    <app-root></app-root>
 </body>
 </html>
