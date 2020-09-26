@@ -800,6 +800,26 @@ button {
     -webkit-transition: all .2s ease-in-out;
 }
 
+#order-restaurants #restaurants #header #filters .cuisine-filter button {
+    background-color: #65b32e;
+    background-image: url(/assets/images/icons/clock.svg);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 22px;
+    border: none;
+    border-radius: 50%;
+    box-shadow: none !important;
+    color: transparent;
+    height: 48px;
+    outline: none !important;
+    margin-right: 8px;
+    width: 48px;
+    transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
 @media screen and (max-width: 768px) {
     #order-restaurants #restaurants #header #filters .restaurant-search {
         width: 100%;
