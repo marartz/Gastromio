@@ -49,7 +49,12 @@
                                     <ng-container *ngIf="!hasBanner(restaurant)"><img src="../../assets/images/background/placeholder.jpg" alt="{{restaurant.name}}" /></ng-container>
                                 </div>
                                 <div id="info">
-                                    <div class="restaurant-name">{{restaurant.name}}</div>
+                                    <div class="restaurant-name">
+                                        {{restaurant.name}}
+                                        <ng-container *ngIf="!isRestaurantOpen(restaurant)">
+                                            (geschlossen)
+                                        </ng-container>
+                                    </div>
                                     <div class="order-info">
                                         <ng-container *ngIf="orderType === 'pickup'" class="order-time">{{restaurant.pickupInfo.averageTime}} Min.</ng-container>
                                         <ng-container *ngIf="orderType === 'delivery'" class="order-time">{{restaurant.deliveryInfo.averageTime}} Min.</ng-container>
@@ -58,7 +63,12 @@
                                     </div>
                                     <div class="cuisines"><span>{{getRestaurantSubText(restaurant)}}</span></div>
                                     <a class="order-now" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [queryParams]="{orderType: orderType}">
-                                        Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        <ng-container *ngIf="isRestaurantOpen(restaurant)">
+                                            Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        </ng-container>
+                                        <ng-container *ngIf="!isRestaurantOpen(restaurant)">
+                                            Öffnen
+                                        </ng-container>
                                     </a>
                                 </div>
                             </div>
