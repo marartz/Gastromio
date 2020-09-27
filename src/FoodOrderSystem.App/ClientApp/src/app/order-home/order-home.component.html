@@ -51,58 +51,6 @@
                         </div>
                       </div-->
 
-                
- 
-
-
         </div>
-
-
-        <!--div id="order-home">
-
-            <section id="jumbotron">
-                <div>
-                    <img class="background" src="/assets/images/jumbotron/background.png" width="100%" alt="">
-                    <img class="teller" src="/assets/images/jumbotron/teller.png" height="128%" alt="">
-                    <img class="pepperoni" src="/assets/images/jumbotron/pepperoni.png" width="12%" alt="">
-                    <img class="basilikum" src="/assets/images/jumbotron/basilikum.png" width="8%" alt="">
-                </div>
-            </section>
-
-            <section id="what">
-                <div class="header">
-                    <h2 class="heading">Was ist Gastromio?</h2>
-                    <h5 class="subheading">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</h5>
-                </div>
-            </section>
-
-            <a [routerLink]="['/restaurants']"><button class="show-all" style="color: red">Jetzt bestellen</button></a-->
-            <!--section class="order">
-                <div class="wrapper">
-        
-                    <div id="tablist" role="tablist">
-                        <button class="tab" role="tab" [class.selected]="orderType === 'pickup'" (click)="onPickupSelected()">Abholung</button>
-                        <button class="tab" role="tab" [class.selected]="orderType === 'delivery'" (click)="onDeliverySelected()">Lieferung</button>
-                        <button class="tab" role="tab" [class.selected]="orderType === 'reservation'" (click)="onReservationSelected()">Reservieren</button>
-                        <ng-container *ngIf="orderType === 'pickup'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%;"></div></div></ng-container>
-                        <ng-container *ngIf="orderType === 'delivery'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div></ng-container>
-                        <ng-container *ngIf="orderType === 'reservation'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div></ng-container>
-                    </div>
-        
-                    <div id="tabpanel" role="tabpanel">
-                        <header class="header">
-                            <h1>Kommst <b>Du</b> nicht <b>zum Essen</b>,<br />kommt das <b>Essen zu Dir</b>!</h1>
-                            <p>Gepflegtes Schlemmen auch während Corona!<br />#wirbestellenlokal</p>
-                        </header>
-                        <div class="search">
-                            <input type="text" placeholder="Suchen Sie nach Restaurants, Gastronomen, ..." autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
-                            <ng-template #rt let-r="result" let-t="term"><ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight></ng-template>
-                        </div>
-                        <a [routerLink]="['/restaurants']"><button class="show-all">Jetzt bestellen</button></a>
-                    </div>
-        
-                </div>
-            </section>
-        </div-->
     </div>
 </div>
