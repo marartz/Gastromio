@@ -49,23 +49,32 @@
 
     <!-- CookiePro Cookie-Einwilligungshinweis – Anfang für gastromio.ddns.net -->
     <script type="text/javascript" src="https://cookie-cdn.cookiepro.com/consent/5f938075-1f29-4fd5-9c72-2da22c63f007-test/OtAutoBlock.js"></script>
-	<script src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="5f938075-1f29-4fd5-9c72-2da22c63f007-test" ></script>
-	<script type="text/javascript"> OptanonWrapper() { }</script>
+	<script type="text/javascript" src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js" charset="UTF-8" data-domain-script="5f938075-1f29-4fd5-9c72-2da22c63f007-test" ></script>
+	<script type="text/javascript">OptanonWrapper() { }</script>
 	<!-- CookiePro-Cookie-Einwilligungshinweis – Ende für gastromio.ddns.net -->
 
-	<script type="text/javascript" >window.fbAsyncInit=function(){FB.init({appId:"929536154183982",cookie:!0,xfbml:!0,version:"v7.0"}),FB.AppEvents.logPageView()},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||((o=e.createElement(n)).id=t,o.src="https://connect.facebook.net/en_US/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
+    <!-- Bing Ads -->
+    <script type="text/javascript">(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"17494298"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
 
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166882016-1"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
+    <!-- Facebook Pixel -->
+	<script type="text/javascript">window.fbAsyncInit=function(){FB.init({appId:"929536154183982",cookie:!0,xfbml:!0,version:"v7.0"}),FB.AppEvents.logPageView()},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||((o=e.createElement(n)).id=t,o.src="https://connect.facebook.net/en_US/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
 
-	  gtag('config', 'UA-166882016-1');
-	</script>
+    <!-- Global site tag (gtag.js) - NEW Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166882016-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-	<script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
-	<script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-analytics.js"></script>
+    gtag('config', 'UA-166882016-1');
+    </script>
+
+    <!-- Google Firebase -->
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+    
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-analytics.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-performance.js"></script>
+
 	<script type="text/javascript">
 		var firebaseConfig = {
 			apiKey: "AIzaSyAOVpnRpeNFv6pR6HjRojEWzNBE8FvRqSc",
@@ -78,35 +87,13 @@
 			measurementId: "G-RMLEMZ0Z6B"
 		};
 		firebase.initializeApp(firebaseConfig);
+
 		firebase.analytics();
+        var perf = firebase.performance();
 	</script>
-	
-	<script>
-		(function(h,o,t,j,a,r){
-			h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-			h._hjSettings={hjid:1790414,hjsv:6};
-			a=o.getElementsByTagName('head')[0];
-			r=o.createElement('script');r.async=1;
-			r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-			a.appendChild(r);
-		})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>
     
-    <script type='text/javascript'>
-        (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function()
-        {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
-        a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
-        r.src=n;var u=t.getElementsByTagName(s)[0];
-        u.parentNode.insertBefore(r,u);})(window,document,
-        'https://sc-static.net/scevent.min.js');
-        
-        snaptr('init', '8c4f46d8-2564-40a0-9328-c6e36fcf33ff', {
-        'user_email': '__INSERT_USER_EMAIL__'
-        });
-        
-        snaptr('track', 'PAGE_VIEW');
-    </script>
-    <!-- START: Remove before Launch--><link class="_iub_cs_activate" type="text/css" data-iub-purposes="1" rel="preload stylesheet" as="style" href="https://use.typekit.net/yvu2tba.css" /><!-- ENDE: Remove before Launch-->
+    <!-- Snapchat Pixel -->
+    <script type="text/javascript">!function(e,t,n){if(!e.snaptr){var a=e.snaptr=function(){a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};a.queue=[];var s="script";r=t.createElement(s),r.async=!0,r.src="https://sc-static.net/scevent.min.js";var c=t.getElementsByTagName(s)[0];c.parentNode.insertBefore(r,c)}}(window,document),snaptr("init","8c4f46d8-2564-40a0-9328-c6e36fcf33ff",{user_email:"__INSERT_USER_EMAIL__"}),snaptr("track","PAGE_VIEW");</script>
 
     <title>Gastromio</title>
 
@@ -141,10 +128,6 @@
 
     <link rel="search" type="application/opensearchdescription+xml" title="Gastromio" href="/osd.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
-
-
-
-
 
     <meta property="og:url" content="https://www.gastromio.de/" />
     <meta property="og:type" content="website" />
