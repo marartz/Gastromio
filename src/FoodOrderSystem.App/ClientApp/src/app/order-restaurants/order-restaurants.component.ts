@@ -12,7 +12,10 @@ import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-fi
 @Component({
   selector: 'app-order-restaurants',
   templateUrl: './order-restaurants.component.html',
-  styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend_v2.min.css']
+  styleUrls: [
+    './order-restaurants.component.css',
+    '../../assets/css/frontend_v2.min.css'
+  ]
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;

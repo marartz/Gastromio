@@ -1,29 +1,5 @@
 /* #order-restaurant */
-#order-restaurant {
-    align-items: stretch;
-    display: flex;
-    flex: 1 1 auto;
-    flex-grow: 1;
-    padding-bottom: 48px;
-    width: 100%;
-}
 
-@media screen and (max-width: 992px) {
-    #order-restaurant {
-        flex-wrap: wrap-reverse;
-    }
-}
-
-#order-restaurant > div:first-child {
-    flex: 1 1 auto;
-    width: 100vh;
-}
-
-@media screen and (max-width: 992px) {
-    #order-restaurant > div:first-child {
-        width: 100%;
-    }
-}
 
 /* #order-restaurant >  */
 #order-restaurant .restaurant-container {
