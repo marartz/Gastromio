@@ -1538,7 +1538,8 @@ button {
     -webkit-tap-highlight-color: transparent;
 }*/
 
-#order-restaurants {
+#order-restaurants,
+#order-restaurant {
     background-color: #ADCCCB;
     background-image: url('../../assets/images/rough/blue.png');
     background-repeat: repeat;
@@ -2109,4 +2110,33 @@ button {
     font-weight: 500;
     margin: 0px 6px 0px 0px;
     padding: 4px 12px;
+}
+
+#order #restaurants .dish-category {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.33px;
+    margin-bottom: 8px;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+#order-restaurant #order #restaurants .restaurant {
+    min-height: 84px;
+}
+
+#order-restaurant #order #restaurants .restaurant #infos {
+    min-height: 84px;
+    padding: 20px;
+}
+
+#order #restaurants .restaurant #infos .restaurant-name {
+    overflow-x: hidden;
+}
+
+#order #restaurants .restaurant #infos .dish-price {
+    float: right;
+    text-align: right;
 }

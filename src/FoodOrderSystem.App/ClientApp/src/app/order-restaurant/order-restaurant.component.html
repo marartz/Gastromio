@@ -1,21 +1,49 @@
-<block-ui>
+
     <div id="root">
         <div class="layout">
-
             <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
-
             <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
 
                 <section id="hero" style="margin-top: 0px;">
                     <div id="text">
-                        <h1 class="name">{{restaurant.name}}</h1>
+                        <h1 class="name">{{restaurant.name}} <!--button class="imprint-button" (click)="openImprintModal()"></button--></h1>
                         <h2 class="info">Lieferzeit XX Min. | Mindestbestellwert {{restaurant.pickupInfo.minimumOrderValue}} &euro;</h2>
                     </div>
+                    <img class="circle" src="../../assets/circle.png" alt="">
                 </section>
 
                 <section id="order">
                     <div class="wrapper">
                         <div class="inner">
+
+                            <aside>
+                                <div class="filter-wrapper">
+                                    <div class="restaurants-counter">Speisekarte</div>
+                                    <!-- #cuisine-filter -->
+                                    <div id="cuisine-filter">
+                                        <p class="title">Filter</p>
+                                        <div class="cuisine-container">
+                                            <div class="cuisine" *ngFor="let dishCategory of dishCategories"><span>{{dishCategory.name}}</span></div><!-- href="{{url}}#{{dishCategory.id}}" -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                            
+                            <div id="restaurants">
+                                <div class="search">
+                                    <div class="icon-wrapper"><div class="icon"></div></div>
+                                    <input type="text" autocapitalize="none" autocomplete="off" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Gericht suchen ...">
+                                </div>
+                                <div *ngFor="let dishCategory of dishCategories">
+                                    <p class="dish-category" id="{{dishCategory.id}}">{{dishCategory.name}}</p>
+                                    <a class="restaurant" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
+                                        <div id="infos">
+                                            <h2 class="restaurant-name" id="{{dish.name}}">{{dish.name}}<span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
+                                            <p class="restaurant-address" style="margin-bottom: 0px;">{{dish.description}}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
     
                         </div>
                     </div>
@@ -46,11 +74,6 @@
                                 <div class="imprint-button-container"><button class="imprint-button" (click)="openImprintModal()"></button></div>
                             </div>
                         </div>
-                        <div class="categories-container">
-                            <div class="categories-selector">
-                                <a type="button" role="button" class="category-button" href="{{url}}#{{dishCategory.id}}" *ngFor="let dishCategory of dishCategories">{{dishCategory.name}}</a>
-                            </div>
-                        </div>
                         <div id="dishes" class="dishes-container" *ngFor="let dishCategory of dishCategories">
 
                             <h2 class="heading" id="{{dishCategory.id}}">{{dishCategory.name}}</h2>
@@ -71,13 +94,13 @@
                             </div>
                         </div>
                     </div>
-                </div-->
-            </div>
+                </div>
+            </div-->
 
         </div>
     </div>
 
-    <!--div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
+    <div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
         <section id="my-order">
             <header id="header"><span class="title">Meine Bestellung</span></header>
             <div id="body" class="cart-body">
@@ -118,6 +141,4 @@
                 </div>
             </div>
         </section>
-    </div-->
-
-</block-ui>
+    </div>
