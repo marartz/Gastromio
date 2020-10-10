@@ -1,27 +1,24 @@
 <nav id="top-bar">
-    <div id="logo">
-        <a [routerLink]="['/']">
-            <img src="../../assets/images/logo/logo.svg" alt="">
-            Gastromio<span>.de</span>
-        </a>
-    </div>
-    <div id="menu">
-        
+    <div class="wrapper">
+        <div id="logo">
+            <a [routerLink]="['/']">
+                <img src="../../assets/images/logo/logo.svg" alt="">
+                Gastromio<span>.de</span>
+            </a>
+        </div>
+        <div id="menu">
+            <a class="link" *ngIf="getUserEmail() === undefined" [routerLink]="['/login']">Anmelden</a>
+                <a class="link" *ngIf="isSystemAdmin()" [routerLink]="['/admin/users']">Administration</a>
+                <a class="link" *ngIf="isRestaurantAdmin()" [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a>
+            <a class="link" *ngIf="isOnOrderPage()" (click)="toggleCartVisibility()">Warenkorb</a>
+            <!--a class="link" *ngIf="!isOnOrderPage() && getCurRestaurantId() !== undefined" [routerLink]="['/restaurants', getCurRestaurantId()]">Warenkorb</a-->
+        </div>
     </div>
 </nav>
 
 
 <!--header role="banner">
   <nav id="navbar" role="navigation">
-
-    <div class="nav-left nav-item">
-        <div id="branding">
-            <a [routerLink]="['/']">
-               
-                Gastromio<span>.de</span>
-            </a>
-        </div>
-    </div>
 
     <div class="nav-right nav-item">
 
