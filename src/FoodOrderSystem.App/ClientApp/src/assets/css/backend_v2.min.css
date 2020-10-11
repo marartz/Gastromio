@@ -19,8 +19,17 @@
 
 #app {
     height: 100%;
-    padding-top: 72px;
     width: 100%;
+}
+
+#backend {
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    margin-top: -72px !important;
+    position: relative;
+    width: 100%;
+    z-index: 20;
 }
 
 /* #backend */
@@ -58,9 +67,12 @@
 
 /* #backend > #hero */
 #backend #hero {
-    background-color: #f9f9fb;
+    background-color: #363636;
     display: block;
     padding-top: 48px;
+    position: relative;
+    width: 100%;
+    z-index: 20;
 }
 
 #backend #hero .wrapper .inner {
@@ -113,18 +125,17 @@
 }
 
 #backend #hero #title span {
-    color: #718096;
-    font-family: "Quicksand", sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 #backend #hero #title h1 {
-    color: #3b4245;
-    font-family: "Quicksand", sans-serif;
-    font-size: 32px;
-    font-weight: 500;
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 50px;
+    font-weight: 700;
     margin-bottom: 0px;
     margin-top: 0px;
 }
@@ -147,7 +158,7 @@
 }
 
 #backend #hero #links .nav-tabs {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #fff;
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
@@ -187,13 +198,13 @@
 
 #backend #hero #links .nav-tabs .tab a {
     background-color: transparent;
-    border-bottom: 1px solid transparent;
-    color: #718096;
+    border-bottom: 3px solid transparent;
+    color: #fff;
     cursor: pointer;
     display: block;
-    font-family: "Quicksand", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
     outline: none;
     padding: 15px 0px;
     text-decoration: none;
@@ -206,21 +217,25 @@
 
 #backend #hero #links .nav-tabs .tab a:hover {
     border-color: transparent transparent transparent;
-    color: #4a5568;
+    opacity: .9;
 }
 
 #backend #hero #links .nav-tabs .tab a.active {
-    color: #718096;
+    opacity: .9;
     background-color: transparent;
-    border-color: transparent transparent #65b32e;
+    border-color: transparent transparent #ADCCCB;
 }
 
 /* #backend > #content */
 #backend #content {
-    background-color: #f9f9fb;
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
     padding-bottom: 32px;
     padding-top: 32px;
     position: relative;
+    width: 100%;
+    z-index: 20;
 }
 
 #backend #content .inner {
@@ -285,10 +300,10 @@
 
 #backend #content .add {
     align-items: center;
-    background-color: #65b32e;
+    background-color: #ADCCCB;
     border: 1px solid transparent;
-    border-color: #65b32e;
-    border-radius: 6px !important;
+    border-color: #ADCCCB;
+    border-radius: 50% !important;
     box-shadow: none;
     color: #fff;
     cursor: pointer;
@@ -319,8 +334,6 @@
 
 #backend #content .add:focus,
 #backend #content .add:hover {
-    background-color: #5a9f29;
-    border-color: #5a9f29;
     color: #fff;
 }
 
@@ -335,8 +348,8 @@
 }
 
 #backend #content #admin-users #title h3 {
-    color: #3b4245;
-    font-family: "Quicksand", sans-serif;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     font-size: 20px;
     font-weight: 500;
     line-height: 1.5;
@@ -349,7 +362,7 @@
     box-sizing: border-box;
     color: #718096;
     display: block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 0px;
@@ -374,7 +387,7 @@
     background-size: 20px;
     border: none;
     border-radius: 48px;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-weight: 500;
     height: 40px;
     line-height: 21px;
@@ -406,7 +419,7 @@
     background-color: transparent;
     border-collapse: separate;
     border-spacing: 0px 16px;
-    color: #718096;
+    color: #363636;
     margin-bottom: 16px;
     width: 100%;
 }
@@ -422,9 +435,9 @@
 #backend #content #table table thead th {
     background-color: transparent;
     border: 0px;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0px;
     padding: 0px 16px;
     position: relative;
@@ -444,7 +457,7 @@
 }
 
 #backend #content #table table tbody th {
-    background-color: #fff;
+    background-color: #ADCCCB;
     border: 0px;
     padding: 16px;
     position: relative;
@@ -460,23 +473,23 @@
 }
 
 #backend #content #table table tbody tr td {
-    background-color: #fff;
+    background-color: #ADCCCB;
 }
 
 #backend #content #table table tbody tr th .email {
-    color: #3b4245;
-    font-family: "Quicksand", sans-serif;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.5;
     margin-bottom: 0px;
 }
 
 #backend #content #table table tbody tr td .role {
     color: #718096;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.5;
     margin-bottom: 0px;
 }
@@ -491,7 +504,7 @@
     text-align: right;
 }
 
-#backend #content  .action-item {
+#backend #content .action-item {
     display: inline-block;
     font-size: 14px;
     cursor: pointer;
@@ -698,8 +711,8 @@ form .form-input .input-group select {
 form .form-input .input-group input:focus,
 form .form-input .input-group select:focus {
     background-color: #fff;
-    border-color: #65b32e;
-    color: #4a5568;
+    border-color: #ADCCCB;
+    color: #363636;
     outline: none;
 }
 
@@ -708,39 +721,29 @@ form .form-input .input-group input::placeholder {
 }
 
 #admin-restaurant form .form-submit {
-    background-color: #65b32e;
-    border: 1px solid transparent;
-    border-color: #65b32e;
-    border-radius: 6px;
-    box-shadow: none;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Quicksand", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: normal;
-    line-height: 1.5;
-    margin-top: 24px;
-    padding: 8px 20px;
+    background-color: #DECF80;
+    border-radius: 23px;
+    box-shadow: 0px 5px 10px rgba(darken(dodgerblue, 40%));
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 40px;
+    letter-spacing: 0px;
     position: relative;
     text-align: center;
-    text-transform: none;
-    transition: all .2s ease;
-    -moz-transition: all .2s ease;
-    -ms-transition: all .2s ease;
-    -o-transition: all .2s ease;
-    -webkit-transition: all .2s ease;
-    user-select: none;
-    vertical-align: middle;
+    transition: all .3s;
+    width: 200px;
+}
+
+#admin-restaurant form .form-submit:active {
+    box-shadow: 0px 4px 8px rgba(darken(dodgerblue, 30%));
+    transform: scale(.98);
 }
 
 #admin-restaurant form .form-submit:hover {
-    background-color: #5a9f29;
-    border-color: #5a9f29;
-    box-shadow: 0px 0px 0px rgba(101, 179, 46, .35);
-    color: #fff;
-    outline: none;
+    box-shadow: 0px 15px 25px -5px rgba(darken(dodgerblue, 40%));
+    transform: scale(1.03);
 }
 
 #admin-restaurant form .file-input {
@@ -754,11 +757,11 @@ form .form-input .input-group input::placeholder {
 }
 
 #admin-restaurant form .file-upload {
-    background-color: #fff;
-    border: 1px solid #e2e8f0;
-    border-color: #fff;
+    background-color: #ADCCCB;
+    border: 1px solid #ADCCCB;
+    border-color: #ADCCCB;
     border-radius: 6px;
-    color: #4a5568 !important;
+    color: #363636 !important;
     cursor: pointer;
     display: block;
     font-family: "Quicksand", sans-serif;
@@ -784,22 +787,21 @@ form .form-input .input-group input::placeholder {
 }
 
 #admin-restaurant .nav-tabs {
-    border: 0px solid #fff;
+    border: 0px solid #ADCCCB;
 }
 
 #admin-restaurant .nav-tabs .nav-link {
-    border: 0px solid #fff;
+    border: 0px solid #ADCCCB;
     border-radius: 6px !important;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-weight: 500;
 }
 
 #admin-restaurant .payment-card {
     background-clip: border-box;
-    background-color: #65b32e;
+    background-color: #ADCCCB;
     border: 0px;
     border-radius: 12px;
-    box-shadow: 0px 8px 16px rgba(101, 179, 46, .4);
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
@@ -889,7 +891,7 @@ form .form-input .input-group input::placeholder {
 #admin-restaurant .payment-card .payment-content .top .badge {
     border-radius: 6px;
     display: inline;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 80%;
     font-weight: 500;
     line-height: 1;
@@ -926,7 +928,7 @@ form .form-input .input-group input::placeholder {
     display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 24px;
     font-weight: 600;
     justify-content: space-between;
@@ -935,14 +937,18 @@ form .form-input .input-group input::placeholder {
 
 #admin-restaurant .payment-card .payment-content .bottom .description {
     color: #eff2f7;
-    font-family: "Quicksand", sans-serif;
-    font-size: 12px;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
     font-weight: 500;
 }
 
 /* 80. #login */
 #login {
-    background-color: #fff;
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    margin-top: -72px;
+    width: 100%;
 }
 
 /* 80.1 #login > #left */
@@ -1067,10 +1073,10 @@ form .form-input .input-group input::placeholder {
 }
 
 #login #right .login .heading h6 {
-    color: #2B2C43;
-    font-family: "Quicksand", sans-serif;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     font-size: 28px;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 4px;
     margin-top: 0px;
 }
@@ -1083,7 +1089,7 @@ form .form-input .input-group input::placeholder {
 
 #login #right .login .heading p {
     color: #718096;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 0px;
@@ -1097,7 +1103,7 @@ form .form-input .input-group input::placeholder {
 #login #right .login form .form-input label:not(.status) {
     color: #718096;
     display: inline-block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 14px;
     font-weight: 400;
     margin-bottom: 8px;
@@ -1122,7 +1128,7 @@ form .form-input .input-group input::placeholder {
     color: #4a5568;
     display: block;
     flex: 1 1 0%;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     height: calc(24px + 24px + 2px);
@@ -1139,13 +1145,13 @@ form .form-input .input-group input::placeholder {
 
 #login #right .login form .form-input .input-group input:not(.r_status):focus {
     background-color: #fff;
-    border-color: #65b32e;
+    border-color: #ADCCCB;
     color: #4a5568;
     outline: none;
 }
 
 #login #right .login form .form-input .input-group input:not(.r_status):focus+.icon span {
-    border-color: #65b32e;
+    border-color: #ADCCCB;
 }
 
 #login #right .login form .form-input .input-group .icon {
@@ -1183,17 +1189,17 @@ form .form-input .input-group input::placeholder {
 }
 
 #login #right .login form button {
-    background-color: #65b32e;
+    background-color: #ADCCCB;
     border: 1px solid transparent;
-    border-color: #65b32e;
+    border-color: #ADCCCB;
     border-radius: 6px;
     box-shadow: none;
     color: #fff;
     cursor: pointer;
     display: block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: normal;
     line-height: 1.5;
     margin-top: 24px;
@@ -1206,8 +1212,8 @@ form .form-input .input-group input::placeholder {
 }
 
 #login #right .login form button:hover {
-    background-color: #5a9f29;
-    border-color: #5a9f29;
+    background-color: #ADCCCB;
+    border-color: #ADCCCB;
     box-shadow: 0px 0px 0px rgba(101, 179, 46, .35);
     color: #fff;
     outline: none;
@@ -1218,26 +1224,28 @@ form .form-input .input-group input::placeholder {
 }
 
 #login #right .login .register small {
-    color: #718096;
-    font-family: "Quicksand", sans-serif;
-    font-size: 80%;
-    font-weight: 400;
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    opacity: .7;
+    font-weight: 500;
 }
 
 #login #right .login .register a {
     background-color: transparent;
-    color: #65b32e;
-    font-family: "Quicksand", sans-serif;
+    color: #fff;
+    font-family: "Apercu", sans-serif;
     font-size: 80%;
     font-weight: 600;
     margin-left: 4px;
     outline: none;
+    opacity: .9;
     text-decoration: none;
     transition: all .2s ease;
 }
 
 #login #right .login .register a:hover {
-    color: #5a9f29;
+    opacity: 1;
     text-decoration: none;
 }
 
@@ -1335,8 +1343,8 @@ form .form-input .input-group input::placeholder {
 }
 
 #modal .content .title {
-    color: #2b2c43;
-    font-family: "Quicksand", sans-serif;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 16px;
@@ -1350,7 +1358,7 @@ form .form-input .input-group input::placeholder {
 }
 
 #modal .content .title.add-edit {
-    color: #65b32e;
+    color: #363636;
     font-size: 32px;
     margin-bottom: 32px;
     margin-top: 0px;
@@ -1361,8 +1369,8 @@ form .form-input .input-group input::placeholder {
 }
 
 #modal .content .description {
-    color: #2b2c43;
-    font-family: "Quicksand", sans-serif;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 32px;
@@ -1391,10 +1399,10 @@ form .form-input .input-group input::placeholder {
     background-color: transparent;
     border: 1px solid transparent;
     border-radius: 3rem;
-    color: #212529;
+    color: #363636;
     cursor: pointer;
     display: inline-block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 18px;
     font-weight: 500;
     height: 48px;

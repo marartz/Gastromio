@@ -9,8 +9,7 @@ import {DishVariantModel} from '../dish-category/dish-variant.model';
   templateUrl: './add-dish-to-cart.component.html',
   styleUrls: [
     './add-dish-to-cart.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
+    '../../assets/css/frontend_v3.min.css',
     '../../assets/css/animations_v2.min.css'
   ]
 })

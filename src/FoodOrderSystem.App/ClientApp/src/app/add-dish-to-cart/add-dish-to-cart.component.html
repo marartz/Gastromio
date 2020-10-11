@@ -1,5 +1,77 @@
 <div id="modal">
     <div class="wrapper">
+        <div class="inner">
+
+            <header id="header">
+                <h1 class="dish-name">{{dish.name}}</h1>
+                <div class="close">
+                    <button type="button" (click)="onCancel()" aria-label="Close"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button>
+                </div>
+            </header>
+
+            <div id="options">
+                <div class="wrapper">
+
+                    <section>
+                        <p class="title">Beschreibung</p>
+                        <p class="description">{{dish.description}}</p>
+                    </section>
+
+                    <section>
+                        <p class="title">Anzahl</p>
+                        <div id="count">
+                            <div class="inner">
+                                <div class="orderweb">
+                                    <span class="dish-inc">
+                                        <button type="button" (click)="incCount()" aria-label="Increase Quantity">
+                                            <div>
+                                                <span>
+                                                    <svg height="24" width="24" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path></svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                    <span class="dish-count"><span>{{count}}</span></span>
+                                    <span class="dish-inc">
+                                        <button type="button" (click)="decCount()" aria-label="Increase Quantity">
+                                            <div>
+                                                <span>
+                                                    <svg height="24" width="24" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path></svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <footer id="footer">
+                <div class="wrapper">
+                    <div class="inner">
+                        <span class="add">
+                            <span class="inner">
+                                <button type="button" (click)="onSubmit()"><span>Hinzufügen für &euro;0.00</span></button>
+                            </span>
+                        </span>
+                        <span class="cancel">
+                            <span class="inner">
+                                <button type="button" (click)="onCancel()"><span>Abbrechen</span></button>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+</div>
+
+<!--div id="modal">
+    <div class="wrapper">
         <div class="content">
             <h1 class="title add-edit dish">{{dish.name}}</h1>
             <h3 class="description">{{dish.description}}</h3>
@@ -31,4 +103,4 @@
             </div>
         </div>
     </div>
-</div>
+</div-->

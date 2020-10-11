@@ -1,23 +1,49 @@
 <block-ui>
-    <div id="modal" tabindex="-1">
+    <div id="modal">
         <div class="wrapper">
-            <div class="content">
-                <h1 class="title add-edit">Cuisine hinzufügen</h1>
+            <div class="inner">
+    
+                <header id="header">
+                    <h1 class="dish-name">Cuisine hinzufügen</h1>
+                    <div class="close">
+                        <button type="button" (click)="activeModal.dismiss('Cross click')" aria-label="Close"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button>
+                    </div>
+                </header>
+    
                 <form [formGroup]="addCuisineForm" (ngSubmit)="onSubmit(addCuisineForm.value)">
-                    <div class="form-input">
-                        <label class="form-label">Cuisine</label>
-                        <div class="input-group">
-                            <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" maxlength="40" minlength="3" required="" spellcheck="true" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-                            <div class="invalid-feedback" *ngIf="submitted && f.name.errors"><div *ngIf="f.name.errors.required">Name der Cuisine wird benötigt</div></div>
-                            <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
+                    <div id="options">
+                        <div class="wrapper">
+                            <section>
+                                <p class="title">Name der Cuisine</p>
+                                <div class="form-input">
+                                    <div class="input-group">
+                                        <input style="width: 100%;" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" maxlength="40" minlength="3" required="" spellcheck="true" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                                        <div class="invalid-feedback" *ngIf="submitted && f.name.errors"><div *ngIf="f.name.errors.required">Name der Cuisine wird benötigt</div></div>
+                                        <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
-                    <div class="btns-container">
-                        <button type="button" class="cancel" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
-                        <button type="submit" class="submit">Hinzufügen</button>
-                    </div>
+        
+                    <footer id="footer">
+                        <div class="wrapper">
+                            <div class="inner">
+                                <span class="add">
+                                    <span class="inner">
+                                        <button type="submit"><span>Hinzufügen</span></button>
+                                    </span>
+                                </span>
+                                <span class="cancel">
+                                    <span class="inner">
+                                        <button type="button" (click)="activeModal.dismiss('Cross click')"><span>Abbrechen</span></button>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
                 </form>
+    
             </div>
         </div>
     </div>
-</block-ui>
