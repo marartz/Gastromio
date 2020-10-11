@@ -8,8 +8,40 @@
         </div>
         <div id="menu">
             <a class="link" *ngIf="getUserEmail() === undefined" [routerLink]="['/login']">Anmelden</a>
-                <a class="link" *ngIf="isSystemAdmin()" [routerLink]="['/admin/users']">Administration</a>
-                <a class="link" *ngIf="isRestaurantAdmin()" [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a>
+
+            <ng-container *ngIf="getUserEmail() !== undefined" ngbDropdown>
+                <a class="link" id="userDropDown" ngbDropdownToggle>
+                    <ng-container *ngIf="isSystemAdmin()">Administration&nbsp;</ng-container>
+                    <ng-container *ngIf="isRestaurantAdmin()">Meine Restaurants&nbsp;</ng-container>
+                </a>
+                <div class="dropdown-menu" id="userDropDown" ngbDropdownMenu aria-labelledby="userDropDown">
+
+                    <ng-container *ngIf="isSystemAdmin()">
+                        <a ngbDropdownItem [routerLink]="['/admin/users']">Benutzer verwalten</a>
+                        <a ngbDropdownItem [routerLink]="['/admin/cuisines']">Cuisines verwalten</a>
+                        <a ngbDropdownItem [routerLink]="['/admin/restaurants']">Restaurants verwalten</a>
+                        <a ngbDropdownItem [routerLink]="['/admin/dishimport']">Speisenimport</a>
+                        <a ngbDropdownItem [routerLink]="['/admin/restaurantimport']">Restaurantimport</a>
+                    </ng-container>
+    
+                    <ng-container *ngIf="isRestaurantAdmin()">
+                        <a ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Restaurants verwalten</a>
+                    </ng-container>
+    
+                    <a ngbDropdownItem (click)="logout()">Logout</a>
+    
+                </div>
+            </ng-container>
+            
+
+
+            <!--a class="link" *ngIf="isSystemAdmin()" [routerLink]="['/admin/users']">Administration</a>
+            <a class="link" *ngIf="isRestaurantAdmin()" [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a-->
+
+
+
+
+
             <a class="link" *ngIf="isOnOrderPage()" (click)="toggleCartVisibility()">Warenkorb</a>
             <!--a class="link" *ngIf="!isOnOrderPage() && getCurRestaurantId() !== undefined" [routerLink]="['/restaurants', getCurRestaurantId()]">Warenkorb</a-->
         </div>

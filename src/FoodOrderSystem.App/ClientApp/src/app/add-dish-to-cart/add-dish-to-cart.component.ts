@@ -35,6 +35,11 @@ export class AddDishToCartComponent implements OnInit {
     return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
+  getTotalPrice(): string {
+    const totalPrice = this.selectedVariant.price * this.count;
+    return '€' + totalPrice.toLocaleString('de', {minimumFractionDigits: 2});
+  }
+
   getVariantText(variant: DishVariantModel): string {
     return variant.name + ' ' + this.getVariantPrice(variant);
   }

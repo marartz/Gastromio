@@ -12,8 +12,7 @@ import {take} from 'rxjs/operators';
   templateUrl: './top-bar.component.html',
   styleUrls: [
     './top-bar.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css'
   ]
 })
 export class TopBarComponent implements OnInit {

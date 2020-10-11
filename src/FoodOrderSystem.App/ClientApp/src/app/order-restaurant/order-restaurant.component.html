@@ -4,12 +4,13 @@
             <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
             <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
 
-                <section id="hero" style="margin-top: 0px;">
-                    <div id="text">
-                        <h1 class="name">{{restaurant.name}} <!--button class="imprint-button" (click)="openImprintModal()"></button--></h1>
-                        <h2 class="info">Lieferzeit XX Min. | Mindestbestellwert {{restaurant.pickupInfo.minimumOrderValue}} &euro;</h2>
+                <section id="hero">
+                    <div class="wrapper">
+                        <div id="text">
+                            <h1 class="name">{{restaurant.name}} <!--button class="imprint-button" (click)="openImprintModal()"></button--></h1>
+                            <h2 class="info">Lieferzeit XX Min. | Mindestbestellwert {{restaurant.pickupInfo.minimumOrderValue}} &euro;</h2>
+                        </div>
                     </div>
-                    <img class="circle" src="../../assets/circle.png" alt="">
                 </section>
 
                 <section id="order">

@@ -46,6 +46,10 @@
                         </div>
                     </section>
 
+                    <section id="remarks">
+                        <input type="text" mozactionhint="send" autocomplete="off" autocapitalize="off" spellcheck="true" placeholder="Anmerkung hinzufügen ..." [(ngModel)]="remarks">
+                    </section>
+
                 </div>
             </div>
 
@@ -54,7 +58,7 @@
                     <div class="inner">
                         <span class="add">
                             <span class="inner">
-                                <button type="button" (click)="onSubmit()"><span>Hinzufügen für &euro;0.00</span></button>
+                                <button type="button" (click)="onSubmit()"><span>Hinzufügen für 10,00&euro;</span></button>
                             </span>
                         </span>
                         <span class="cancel">

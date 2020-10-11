@@ -6,9 +6,7 @@ import {NgbActiveModal, NgbCalendar, NgbDateStruct, NgbTimeStruct} from '@ng-boo
   templateUrl: './opening-hour-filter.component.html',
   styleUrls: [
     './opening-hour-filter.component.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css',
   ]
 })
 export class OpeningHourFilterComponent implements OnInit {
