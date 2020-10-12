@@ -8,11 +8,35 @@ export class RestaurantModel {
     if (init) {
       Object.assign(this, init);
     }
+
     if (!this.address) {
       this.address = new AddressModel();
+    } else {
+      this.address = new AddressModel(init.address);
     }
+
+    if (this.contactInfo) {
+      this.contactInfo = new ContactInfoModel(this.contactInfo);
+    }
+
     if (!this.openingHours) {
       this.openingHours = new Array<OpeningPeriodModel>();
+    } else {
+      for (let i = 0; i < this.openingHours.length; i++) {
+        this.openingHours[i] = new OpeningPeriodModel(this.openingHours[i]);
+      }
+    }
+
+    if (this.pickupInfo) {
+      this.pickupInfo = new PickupInfoModel(this.pickupInfo);
+    }
+
+    if (this.deliveryInfo) {
+      this.deliveryInfo = new DeliveryInfoModel(this.deliveryInfo);
+    }
+
+    if (this.reservationInfo) {
+      this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
     }
   }
 
@@ -84,7 +108,10 @@ export class RestaurantModel {
 }
 
 export class AddressModel {
-  constructor() {
+  constructor(init?: Partial<AddressModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
   }
 
   public street: string;
@@ -95,7 +122,10 @@ export class AddressModel {
 }
 
 export class ContactInfoModel {
-  constructor() {
+  constructor(init?: Partial<ContactInfoModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
   }
 
   public phone: string;
@@ -110,7 +140,10 @@ export class ContactInfoModel {
 }
 
 export class OpeningPeriodModel {
-  constructor() {
+  constructor(init?: Partial<OpeningPeriodModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
   }
 
   public dayOfWeek: number;
@@ -121,6 +154,12 @@ export class OpeningPeriodModel {
 }
 
 export class PickupInfoModel {
+  constructor(init?: Partial<PickupInfoModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
   public enabled: boolean;
 
   public averageTime: number;
@@ -135,6 +174,12 @@ export class PickupInfoModel {
 }
 
 export class DeliveryInfoModel {
+  constructor(init?: Partial<DeliveryInfoModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
   public enabled: boolean;
 
   public averageTime: number;
@@ -149,10 +194,25 @@ export class DeliveryInfoModel {
 
   public costs: number;
 
-  public costsText: string;
+  public getCostsText(): string {
+    const val = this.costs;
+    if (val === undefined) {
+      return undefined;
+    } else if (val > 0) {
+      return val.toLocaleString('de', {minimumFractionDigits: 2});
+    } else {
+      return 'Gratis';
+    }
+  }
 }
 
 export class ReservationInfoModel {
+  constructor(init?: Partial<ReservationInfoModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
   public enabled: boolean;
 }
 
