@@ -9,7 +9,7 @@ import {OrderType} from '../cart/cart.model';
   templateUrl: './order-home.component.html',
   styleUrls: [
     './order-home.component.css',
-    '../../assets/css/frontend_v2.min.css'
+    '../../assets/css/frontend_v3.min.css'
   ]
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {

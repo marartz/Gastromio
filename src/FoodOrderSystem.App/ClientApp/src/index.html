@@ -13,13 +13,6 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de-DE" lang="de-DE" prefix="og: http://ogp.me/ns#">
 <head>
-
-    <style>
-    .modal-content {
-        border-radius: 23px !important;
-    }
-    </style>
-
     <base href="/" />
 
     <meta charset="UTF-8" />
@@ -54,6 +47,12 @@
     <meta name="format-detection" content="address=no" />
     <meta name="format-detection" content="telephone=no" />
 
+    <style>
+        .modal-content {
+            border-radius: 23px !important;
+        }
+    </style>
+
     <!-- CookiePro Cookie-Einwilligungshinweis – Anfang für gastromio.ddns.net -->
     <script type="text/javascript" src="https://cookie-cdn.cookiepro.com/consent/5f938075-1f29-4fd5-9c72-2da22c63f007-test/OtAutoBlock.js"></script>
 	<script type="text/javascript" src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js" charset="UTF-8" data-domain-script="5f938075-1f29-4fd5-9c72-2da22c63f007-test" ></script>
@@ -69,35 +68,12 @@
     <!-- Global site tag (gtag.js) - NEW Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166882016-1"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'UA-166882016-1');
+        gtag('config', 'UA-166882016-1');
     </script>
-
-    <!-- Google Firebase -->
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
-    
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-analytics.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.21.1/firebase-performance.js"></script>
-
-	<script type="text/javascript">
-		var firebaseConfig = {
-			apiKey: "AIzaSyAOVpnRpeNFv6pR6HjRojEWzNBE8FvRqSc",
-			authDomain: "gastromio-de.firebaseapp.com",
-			databaseURL: "https://gastromio-de.firebaseio.com",
-			projectId: "gastromio-de",
-			storageBucket: "gastromio-de.appspot.com",
-			messagingSenderId: "20374262647",
-			appId: "1:20374262647:web:d549f03d998667846b8772",
-			measurementId: "G-RMLEMZ0Z6B"
-		};
-		firebase.initializeApp(firebaseConfig);
-
-		firebase.analytics();
-        var perf = firebase.performance();
-	</script>
     
     <!-- Snapchat Pixel -->
     <script type="text/javascript">!function(e,t,n){if(!e.snaptr){var a=e.snaptr=function(){a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};a.queue=[];var s="script";r=t.createElement(s),r.async=!0,r.src="https://sc-static.net/scevent.min.js";var c=t.getElementsByTagName(s)[0];c.parentNode.insertBefore(r,c)}}(window,document),snaptr("init","8c4f46d8-2564-40a0-9328-c6e36fcf33ff",{user_email:"__INSERT_USER_EMAIL__"}),snaptr("track","PAGE_VIEW");</script>
