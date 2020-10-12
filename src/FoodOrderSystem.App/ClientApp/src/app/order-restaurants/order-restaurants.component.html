@@ -44,13 +44,9 @@
                                     <!-- #cuisine-filter -->
                                     <div id="cuisine-filter">
                                         <p class="title">Filter</p>
-                                        <!-- REMOVE BEFORE PUBLISH--><select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()" style="border-radius: 23px; margin: 0px 6px 0px 0px;">
-                                        <!-- REMOVE BEFORE PUBLISH--><option value="" selected="">Alle anzeigen</option>
-                                        <!-- REMOVE BEFORE PUBLISH--><option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
-                                        <!-- REMOVE BEFORE PUBLISH--></select>
                                         <div class="cuisine-container">
-                                            <div class="cuisine active"><span>Alle anzeigen</span></div>
-                                            <div class="cuisine" *ngFor="let cuisine of cuisines"><span>{{cuisine.name}}</span></div>
+                                            <div class="cuisine active" [class.active]="isCuisineSelected(undefined)"><button (click)="selectCuisine(undefined)">Alle anzeigen</button></div>
+                                            <div class="cuisine" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)"><button (click)="selectCuisine(cuisine)">{{cuisine.name}}</button></div>
                                         </div>
                                     </div>
                                 </div>

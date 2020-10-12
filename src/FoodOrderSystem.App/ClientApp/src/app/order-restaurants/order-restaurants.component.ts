@@ -131,7 +131,22 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.pageOfRestaurants = pageOfRestaurants;
   }
 
-  onSelectedCuisineFilterChanged(): void {
+  isCuisineSelected(cuisine: CuisineModel): boolean {
+    if (cuisine) {
+      return this.selectedCuisineFilter === cuisine.id;
+    } else {
+      return this.selectedCuisineFilter === '';
+    }
+  }
+
+  selectCuisine(cuisine: CuisineModel): void {
+    if (!cuisine) {
+      this.selectedCuisineFilter = '';
+    }
+    else
+    {
+      this.selectedCuisineFilter = cuisine.id;
+    }
     this.updateSearch();
   }
 
