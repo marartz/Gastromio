@@ -159,7 +159,8 @@ namespace FoodOrderSystem.Core.Domain.Services
                 ? (decimal?) restaurantRow.DeliveryCosts.Value
                 : null;
 
-            boolResult = AddServices(restaurant, restaurantRow.OrderTypes, restaurantRow.AverageTime,
+            boolResult = AddServices(restaurant, restaurantRow.OrderTypes,
+                restaurantRow.AverageTime.HasValue ? (int?) restaurantRow.AverageTime.Value.TotalMinutes : null,
                 minimumOrderValuePickup, minimumOrderValueDelivery, deliveryCosts, curUserId);
             if (boolResult.IsFailure)
             {
@@ -276,7 +277,7 @@ namespace FoodOrderSystem.Core.Domain.Services
             }
         }
 
-        private Result<bool> AddServices(Restaurant restaurant, string orderTypesText, TimeSpan? averageTime,
+        private Result<bool> AddServices(Restaurant restaurant, string orderTypesText, int? averageTime,
             decimal? minimumOrderValuePickup, decimal? minimumOrderValueDelivery, decimal? deliveryCosts,
             UserId curUserId)
         {

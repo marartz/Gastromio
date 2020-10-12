@@ -348,9 +348,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.PickupInfo != null
                     ? new PickupInfo(
                         document.PickupInfo.Enabled,
-                        document.PickupInfo.AverageTime.HasValue
-                            ? TimeSpan.FromMinutes(document.PickupInfo.AverageTime.Value)
-                            : (TimeSpan?) null,
+                        document.PickupInfo.AverageTime,
                         Converter.ToDecimal(document.PickupInfo.MinimumOrderValue),
                         Converter.ToDecimal(document.PickupInfo.MaximumOrderValue)
                     )
@@ -358,9 +356,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.DeliveryInfo != null
                     ? new DeliveryInfo(
                         document.DeliveryInfo.Enabled,
-                        document.DeliveryInfo.AverageTime.HasValue
-                            ? TimeSpan.FromMinutes(document.DeliveryInfo.AverageTime.Value)
-                            : (TimeSpan?) null,
+                        document.DeliveryInfo.AverageTime,
                         Converter.ToDecimal(document.DeliveryInfo.MinimumOrderValue),
                         Converter.ToDecimal(document.DeliveryInfo.MaximumOrderValue),
                         Converter.ToDecimal(document.DeliveryInfo.Costs)
@@ -417,9 +413,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     ? new PickupInfoModel
                     {
                         Enabled = obj.PickupInfo.Enabled,
-                        AverageTime = obj.PickupInfo.AverageTime.HasValue
-                            ? (int) obj.PickupInfo.AverageTime.Value.TotalMinutes
-                            : (int?) null,
+                        AverageTime = obj.PickupInfo.AverageTime,
                         MinimumOrderValue = Converter.ToDouble(obj.PickupInfo.MinimumOrderValue),
                         MaximumOrderValue = Converter.ToDouble(obj.PickupInfo.MaximumOrderValue)
                     }
@@ -428,9 +422,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     ? new DeliveryInfoModel
                     {
                         Enabled = obj.DeliveryInfo.Enabled,
-                        AverageTime = obj.DeliveryInfo.AverageTime.HasValue
-                            ? (int) obj.DeliveryInfo.AverageTime.Value.TotalMinutes
-                            : (int?) null,
+                        AverageTime = obj.DeliveryInfo.AverageTime,
                         MinimumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MinimumOrderValue),
                         MaximumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MaximumOrderValue),
                         Costs = Converter.ToDouble(obj.DeliveryInfo.Costs)

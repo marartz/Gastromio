@@ -199,7 +199,7 @@ export class DeliveryInfoModel {
     if (val === undefined) {
       return undefined;
     } else if (val > 0) {
-      return val.toLocaleString('de', {minimumFractionDigits: 2});
+      return 'Min. ' + val.toLocaleString('de', {minimumFractionDigits: 2}) + ' €';
     } else {
       return 'Gratis';
     }
