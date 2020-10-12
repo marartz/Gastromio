@@ -10,7 +10,7 @@
                     </div>
                     <div class="search">
                         <div class="icon-wrapper"><div class="icon"></div></div>
-                        <input type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ...">
+                        <input type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                         <button [routerLink]="['/restaurants']">Alle anzeigen</button>
                     </div>
                 </div>
@@ -29,5 +29,13 @@
             </section>
 
         </div>
+    </div>
+</div>
+
+<div>
+    <div *ngFor="let restaurant of restaurants">
+        <span>{{restaurant.name}}</span>
+        <ng-container *ngIf="restaurant.pickupInfo"><button (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
+        <ng-container *ngIf="restaurant.deliveryInfo"><button (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
     </div>
 </div>

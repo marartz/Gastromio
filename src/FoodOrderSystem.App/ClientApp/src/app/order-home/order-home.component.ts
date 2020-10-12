@@ -2,7 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderService} from '../order/order.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {Router} from '@angular/router';
-import {OrderType} from '../cart/cart.model';
+import {debounceTime, distinctUntilChanged, take} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-order-home',
@@ -15,13 +16,20 @@ import {OrderType} from '../cart/cart.model';
 export class OrderHomeComponent implements OnInit, OnDestroy {
   selectedRestaurant: RestaurantModel;
 
-  orderType: string;
+  private searchPhrase: string;
+  private searchPhraseUpdated: Subject<string> = new Subject<string>();
+
+  restaurants: RestaurantModel[];
 
   constructor(
     private orderService: OrderService,
     public router: Router
   ) {
-    this.orderType = OrderService.translateFromOrderType(OrderType.Pickup);
+    this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
+      .subscribe((value: string) => {
+        this.searchPhrase = value;
+        this.updateSearch();
+      });
   }
 
   ngOnInit() {
@@ -30,7 +38,44 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  onRestaurantSelected(restaurant: RestaurantModel): void {
-    this.router.navigate(['/restaurants', restaurant.id], { queryParams: { orderType: this.orderType } });
+  onSearchType(value: string) {
+    this.searchPhraseUpdated.next(value);
+  }
+
+  updateSearch(): void {
+    this.orderService.searchForRestaurantsAsync(this.searchPhrase, undefined, '', undefined)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.restaurants = new Array<RestaurantModel>(result.length);
+
+        for (let i = 0; i < result.length; i++) {
+          this.restaurants[i] = new RestaurantModel(result[i]);
+        }
+
+        this.sortRestaurants();
+
+        console.log("restaurants: ", this.restaurants);
+      }, () => {
+      });
+  }
+
+  onRestaurantSelected(restaurant: RestaurantModel, orderType: string): void {
+    this.router.navigate(['/restaurants', restaurant.id], { queryParams: { orderType: orderType } });
+  }
+
+  sortRestaurants(): void {
+    if (!this.restaurants) {
+      return;
+    }
+
+    this.restaurants.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return +1;
+      } else {
+        return 0;
+      }
+    });
   }
 }
