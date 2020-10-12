@@ -18,10 +18,11 @@
 
                             <aside>
                                 <div class="filter-wrapper">
-                                    <div class="restaurants-counter" *ngIf="restaurantCount === 1">1 Restaurant</div>
-                                    <div class="restaurants-counter" *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</div>
-                                    <!-- #order-type-filter -->
-                                    <div id="order-type-filter">
+                                    <div id="restaurant-count">
+                                        <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
+                                        <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
+                                    </div>
+                                    <div id="ordertype-filter">
                                         <p class="title">Wie kommt das Essen zu dir?</p>
                                         <div class="filter">
                                             <ng-container *ngIf="orderType === 'pickup'">
@@ -34,28 +35,30 @@
                                             </ng-container>
                                         </div>
                                     </div>
-                                    <!-- #opening-hour-filter -->
                                     <div id="opening-hour-filter">
                                         <p class="title">Für wann möchtest du bestellen?</p>
                                         <button type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
                                     </div>
-                                    <!-- #cuisine-filter -->
                                     <div id="cuisine-filter">
                                         <p class="title">Filter</p>
                                         <div class="cuisine-container">
-                                            <div class="cuisine active" [class.active]="isCuisineSelected(undefined)"><button (click)="selectCuisine(undefined)">Alle anzeigen</button></div>
-                                            <div class="cuisine" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)"><button (click)="selectCuisine(cuisine)">{{cuisine.name}}</button></div>
+                                            <div class="cuisine active" [class.active]="isCuisineSelected(undefined)">
+                                                <button type="button" (click)="selectCuisine(undefined)">Alle anzeigen</button>
+                                            </div>
+                                            <div class="cuisine" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)">
+                                                <button type="button" (click)="selectCuisine(cuisine)">{{cuisine.name}}</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </aside>
 
                             <div id="restaurants">
-                                <div class="search">
+                                <div id="search">
                                     <div class="icon-wrapper"><div class="icon"></div></div>
-                                    <input type="text" autocapitalize="none" autocomplete="off" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
+                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                                 </div>
-                                <a class="restaurant" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [class.opened]="isRestaurantOpen(restaurant)" [class.closed]="!isRestaurantOpen(restaurant)" [queryParams]="{orderType: orderType}" *ngFor="let restaurant of restaurants">
+                                <a id="restaurant" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [class.opened]="isRestaurantOpen(restaurant)" [class.closed]="!isRestaurantOpen(restaurant)" [queryParams]="{orderType: orderType}" *ngFor="let restaurant of restaurants">
                                     <div id="logo">
                                         <div class="logo-wrapper">
                                             <img *ngIf="!hasLogo(restaurant)" src="../../assets/images/logo/no-logo.jpg" alt="{{restaurant.name}}" class="placeholder">

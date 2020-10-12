@@ -22,12 +22,19 @@ import {combineLatest} from 'rxjs';
 @Component({
   selector: 'app-order-restaurant',
   templateUrl: './order-restaurant.component.html',
-  styleUrls: ['./order-restaurant.component.css', '../../assets/css/frontend_v2.min.css']
+  styleUrls: [
+    './order-restaurant.component.css',
+    '../../assets/css/frontend_v3.min.css',
+
+    '../../assets/css/frontend_v2.min.css'
+  ]
 })
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
 
   url: string;
+
+  orderType: string;
 
   generalError: string;
 
