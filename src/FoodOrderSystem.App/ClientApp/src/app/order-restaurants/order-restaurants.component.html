@@ -66,11 +66,11 @@
                                         <h2 class="restaurant-name">{{restaurant.name}}</h2>
                                         <p class="restaurant-address">
                                             <ng-container *ngIf="orderType === 'pickup'">{{restaurant.address.street}}, {{restaurant.address.city}}</ng-container>
-                                            <!--ng-container *ngIf="orderType === 'delivery'">Lieferzeit 30 Min.{{restaurant.deliveryInfo.averageTime}} | Min. BESTELLWERT &euro;<ng-container-->
+                                            <ng-container *ngIf="orderType === 'delivery'">Lieferzeit {{restaurant.deliveryInfo.averageTime}} Minuten | {{restaurant.deliveryInfo.getCostsText()}}</ng-container>
                                         </p>
                                         <div class="cuisines">
                                             <div class="cuisine-container">
-                                                <div class="cuisine-pill"><span>{{getRestaurantSubText(restaurant)}}</span></div>
+                                                <div class="cuisine-pill" *ngFor="let cuisine of restaurant.cuisines"><span>{{cuisine.name}}</span></div>
                                             </div>
                                         </div>
                                     </div>

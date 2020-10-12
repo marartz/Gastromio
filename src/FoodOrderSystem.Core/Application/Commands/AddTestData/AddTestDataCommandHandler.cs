@@ -278,7 +278,7 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
 
             boolResult = restaurant.ChangePickupInfo(new PickupInfo(
                 true,
-                TimeSpan.FromMinutes(15 + index / 100),
+                15 + index / 100,
                 5 + (decimal) index / 100, 
                 100 + (decimal) index / 100
             ), currentUser.Id);
@@ -289,7 +289,7 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
             {
                 boolResult = restaurant.ChangeDeliveryInfo(new DeliveryInfo(
                     true,
-                    TimeSpan.FromMinutes(15 + index / 100),
+                    15 + index / 100,
                     5 + (decimal) index / 100,
                     100 + (decimal) index / 100,
                     3 + (decimal) index / 100

@@ -32,8 +32,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             Address = new Address(null, null, null);
             ContactInfo = new ContactInfo(null, null, null, null, null);
             openingHours = new List<OpeningPeriod>();
-            PickupInfo = new PickupInfo(false, TimeSpan.Zero, null, null);
-            DeliveryInfo = new DeliveryInfo(false, TimeSpan.Zero, null, null, null);
+            PickupInfo = new PickupInfo(false, 0, null, null);
+            DeliveryInfo = new DeliveryInfo(false, 0, null, null, null);
             ReservationInfo = new ReservationInfo(false);
             cuisines = new HashSet<CuisineId>();
             paymentMethods = new HashSet<PaymentMethodId>();
@@ -67,8 +67,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             Address = address ?? new Address(null, null, null);
             ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
             this.openingHours = openingHours ?? new List<OpeningPeriod>();
-            PickupInfo = pickupInfo ?? new PickupInfo(false, TimeSpan.Zero, null, null);
-            DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, TimeSpan.Zero, null, null, null);
+            PickupInfo = pickupInfo ?? new PickupInfo(false, 0, null, null);
+            DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, 0, null, null, null);
             ReservationInfo = reservationInfo ?? new ReservationInfo(false);
             HygienicHandling = hygienicHandling;
             ImportId = importId;
@@ -268,9 +268,9 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return SuccessResult<bool>.Create(true);
             }
 
-            if (pickupInfo.AverageTime.HasValue && pickupInfo.AverageTime.Value.TotalMinutes < 5)
+            if (pickupInfo.AverageTime.HasValue && pickupInfo.AverageTime.Value < 5)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAveragePickupTimeTooLow);
-            if (pickupInfo.AverageTime.HasValue && pickupInfo.AverageTime.Value.TotalMinutes > 120)
+            if (pickupInfo.AverageTime.HasValue && pickupInfo.AverageTime.Value > 120)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAveragePickupTimeTooHigh);
             
             if (pickupInfo.MinimumOrderValue.HasValue && pickupInfo.MinimumOrderValue < 0)
@@ -296,9 +296,9 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return SuccessResult<bool>.Create(true);
             }
 
-            if (deliveryInfo.AverageTime.HasValue && deliveryInfo.AverageTime.Value.TotalMinutes < 5)
+            if (deliveryInfo.AverageTime.HasValue && deliveryInfo.AverageTime.Value < 5)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAverageDeliveryTimeTooLow);
-            if (deliveryInfo.AverageTime.HasValue && deliveryInfo.AverageTime.Value.TotalMinutes > 120)
+            if (deliveryInfo.AverageTime.HasValue && deliveryInfo.AverageTime.Value > 120)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAverageDeliveryTimeTooHigh);
             
             if (deliveryInfo.MinimumOrderValue.HasValue && deliveryInfo.MinimumOrderValue < 0)

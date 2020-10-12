@@ -4,7 +4,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 {
     public class DeliveryInfo
     {
-        public DeliveryInfo(bool enabled, TimeSpan? averageTime, decimal? minimumOrderValue, decimal? maximumOrderValue,
+        public DeliveryInfo(bool enabled, int? averageTime, decimal? minimumOrderValue, decimal? maximumOrderValue,
             decimal? costs)
         {
             Enabled = enabled;
@@ -16,7 +16,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 
         public bool Enabled { get; }
         
-        public TimeSpan? AverageTime { get; }
+        public int? AverageTime { get; }
         
         public decimal? MinimumOrderValue { get; }
         

@@ -4,7 +4,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 {
     public class PickupInfo
     {
-        public PickupInfo(bool enabled, TimeSpan? averageTime, decimal? minimumOrderValue, decimal? maximumOrderValue)
+        public PickupInfo(bool enabled, int? averageTime, decimal? minimumOrderValue, decimal? maximumOrderValue)
         {
             Enabled = enabled;
             AverageTime = averageTime;
@@ -14,7 +14,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 
         public bool Enabled { get; }
         
-        public TimeSpan? AverageTime { get; }
+        public int? AverageTime { get; }
         
         public decimal? MinimumOrderValue { get; }
         
