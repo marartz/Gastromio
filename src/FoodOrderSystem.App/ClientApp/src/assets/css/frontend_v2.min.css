@@ -308,133 +308,15 @@ button {
     width: 100%;
 }
 
-#order-restaurants,
-#order-restaurant {
-    background-color: #ADCCCB;
-    background-image: url('../../assets/images/rough/blue.png');
-    background-repeat: repeat;
-    margin-top: -72px;
-}
 
-/* #hero */
-#hero {
-    background-color: #363636;
-    height: 240px;
-    width: 100%;
-    z-index: 10;
-}
 
-#hero .wrapper {
-    position: relative;
-    height: 100%;
-}
 
-@media screen and (min-width: 570px) {
-    #hero .wrapper {
-        width: calc(100% - 20px);
-        max-width: 1280px;
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-}
 
-@media screen and (min-width: 1004px) {
-    #hero .wrapper {
-        width: 100%;
-        max-width: 1280px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
 
-@media screen and (min-width: 1280px) {
-    #hero .wrapper {
-        width: 100%;
-        max-width: 1320px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
 
-@media screen and (max-width: 569px) {
-    #hero .wrapper {
-        width: calc(100% - 10px);
-        max-width: 1275px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-}
 
-#hero img.circle {
-    height: 186.81px;
-    left: 325px;
-    opacity: 15%;
-    position: absolute;
-    top: 82px;
-    width: 322.32px;
-}
 
-#hero img.plate {
-    height: 543px;
-    overflow: hidden;
-    position: absolute;
-    right: 66px;
-    top: -69px;
-    transform: rotate(90deg);
-    width: 402px;
-}
 
-@media only screen and (max-width: 768px) {
-    #hero img.plate,
-    #hero img.circle {
-        display: none;
-        visibility: hidden;
-    }
-}
-
-/* #hero > #text */
-#hero .wrapper #text {
-    animation-name: uk-fade-bottom-small;
-    animation-duration: 0.8s;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    position: absolute;
-    bottom: 16px;
-    left: 0px;
-}
-
-@media only screen and (min-width: 1030px) {
-    #hero .wrapper #text {
-        margin-left: 52px;
-    }
-}
-
-#hero .wrapper #text .slogan {
-    color: #fff;
-    font-family: "Apercu", sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 0px;
-    margin-top: auto;
-}
-
-#hero .wrapper #text .name {
-    color: #fff;
-    font-family: "Apercu", sans-serif;
-    font-size: 50px;
-    font-weight: 700;
-    margin-bottom: 0px;
-    margin-top: auto;
-}
-
-#hero .wrapper #text .info {
-    color: #fff;
-    font-family: "Apercu", sans-serif;
-    font-size: 16px;
-    font-weight: 300;
-    margin-bottom: 0px;
-    margin-top: auto;
-}
 
 /* #order */
 #order {
@@ -684,6 +566,7 @@ button {
 }
 
 #order aside #cuisine-filter .cuisine {
+    display: contents;
     margin: 0px 0px 4px;
 }
 
@@ -694,8 +577,14 @@ button {
     font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
-    margin: 0px 6px 0px 0px;
-    padding: 4px 12px;
+    margin-right: 4.7px;
+    margin-bottom: 4px;
+    padding: 3px 12px;
+    transition: all .3s ease;
+}
+
+#order aside #cuisine-filter .cuisine button:hover {
+    background-color: #DECF80;
 }
 
 #order aside #cuisine-filter .cuisine.active button {

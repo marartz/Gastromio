@@ -12,10 +12,14 @@
         2.1 #order-home > #landing
         2.2 #order-home > #cta
 
-        3.  #top-bar
-        3.1 #top-bar > #logo
-        3.2 #top-bar > #menu
-        3.3 #top-bar > #userDropDown
+        3.    #order-restaurant
+        3.1   #order-restaurant > #hero
+        3.1.1 #order-restaurant > #hero > #text
+
+        4.  #top-bar
+        4.1 #top-bar > #logo
+        4.2 #top-bar > #menu
+        4.3 #top-bar > #userDropDown
 */
 
 * > * {
@@ -617,7 +621,105 @@
     }
 }
 
-/* 3. #top-bar */
+/* 3 #order-restaurant */
+#order-restaurant {
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    margin-top: -72px;
+}
+
+/* 3.1 #order-restaurant > #hero */
+#order-restaurant #hero {
+    background-color: #363636;
+    height: 240px;
+    max-height: 240px;
+    width: 100%;
+    z-index: 10;
+}
+
+#order-restaurant #hero .wrapper {
+    height: 100%;
+    position: relative;
+}
+
+@media only screen and (min-width: 570px) {
+    #order-restaurant .wrapper {
+        margin-left: 10px;
+        margin-right: 10px;
+        max-width: 1280px;
+        width: calc(100% - 20px);
+    }
+}
+
+@media only screen and (min-width: 1004px) {
+    #order-restaurant .wrapper {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1280px;
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+    #order-restaurant .wrapper {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1320px;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 569px) {
+    #order-restaurant .wrapper {
+        margin-left: 5px;
+        margin-right: 5px;
+        max-width: 1275px;
+        width: calc(100% - 10px);
+    }
+}
+
+/* 3.1.1 #order-restaurant > #hero > #text */
+#order-restaurant #hero #text {
+    bottom: 16px;
+    left: 0px;
+    position: absolute;
+}
+
+@media only screen and (min-width: 1030px) {
+    #order-restaurant #hero #text {
+        margin-left: 52px;
+    }
+}
+
+#order-restaurant #hero #text .name {
+    color: #FFF;
+    font-family: "Apercu", sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 0px;
+    margin-top: auto;
+}
+
+#order-restaurant #hero #text .slogan {
+    color: #FFF;
+    font-family: "Apercu", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 0px;
+    margin-top: auto;
+}
+
+#order-restaurant #hero #text .info {
+    color: #FFF;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 0px;
+    margin-top: auto;
+}
+
+/* 4. #top-bar */
 #top-bar {
     background-color: transparent;
     position: relative;
@@ -644,7 +746,7 @@
     }
 }
 
-/* 3.1 #top-bar > #logo */
+/* 4.1 #top-bar > #logo */
 #top-bar #logo {
     cursor: pointer;
     flex: 1;
@@ -699,7 +801,7 @@
     font-weight: 300;
 }
 
-/* 3.2 #top-bar > #menu */
+/* 4.2 #top-bar > #menu */
 #top-bar #menu {
     align-items: center;
     display: flex;
@@ -732,7 +834,7 @@
     margin-left: 24px;
 }
 
-/* 3.3 #top-bar > #userDropDown */
+/* 4.3 #top-bar > #userDropDown */
 #top-bar #userDropDown {
     background-color: #ADCCCB;
     border: 0px;

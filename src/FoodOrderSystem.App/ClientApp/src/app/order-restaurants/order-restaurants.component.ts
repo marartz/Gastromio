@@ -14,6 +14,9 @@ import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-fi
   templateUrl: './order-restaurants.component.html',
   styleUrls: [
     './order-restaurants.component.css',
+    '../../assets/css/frontend_v3.min.css',
+
+
     '../../assets/css/frontend_v2.min.css'
   ]
 })
