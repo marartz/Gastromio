@@ -26,6 +26,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   selectedCuisineFilter: string;
 
   restaurants: RestaurantModel[];
+  restaurantCount: number;
   pageOfRestaurants: RestaurantModel[];
 
   orderType: string;
@@ -145,6 +146,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = new Array<RestaurantModel>(result.length);
+        this.restaurantCount = result.length;
 
         for (let i = 0; i < result.length; i++) {
           this.restaurants[i] = new RestaurantModel(result[i]);

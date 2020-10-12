@@ -20,7 +20,8 @@
 
                             <aside>
                                 <div class="filter-wrapper">
-                                    <div class="restaurants-counter">999 Restaurants</div>
+                                    <div class="restaurants-counter" *ngIf="restaurantCount === 1">1 Restaurant</div>
+                                    <div class="restaurants-counter" *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</div>
                                     <!-- #order-type-filter -->
                                     <div id="order-type-filter">
                                         <p class="title">Wie kommt das Essen zu dir?</p>
@@ -54,7 +55,7 @@
                                     </div>
                                 </div>
                             </aside>
-                            
+
                             <div id="restaurants">
                                 <div class="search">
                                     <div class="icon-wrapper"><div class="icon"></div></div>
@@ -78,7 +79,7 @@
                                     </div>
                                 </a>
                             </div>
-    
+
                         </div>
                     </div>
                 </section>
