@@ -9,9 +9,7 @@ import {CartDishModel} from '../cart/cart-dish.model';
   templateUrl: './edit-cart-dish.component.html',
   styleUrls: [
     './edit-cart-dish.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css'
   ]
 })
 export class EditCartDishComponent implements OnInit {
