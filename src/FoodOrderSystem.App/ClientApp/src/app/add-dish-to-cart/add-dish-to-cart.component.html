@@ -3,53 +3,44 @@
         <div class="inner">
 
             <header id="header">
-                <h1 class="dish-name">{{dish.name}}</h1>
-                <div class="close">
-                    <button type="button" (click)="onCancel()" aria-label="Close"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button>
-                </div>
+                <h1 class="modal-name">&nbsp;</h1>
+                <div class="close"><button type="button" (click)="onCancel()" aria-label="Close"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button></div>
             </header>
 
             <div id="options">
                 <div class="wrapper">
-
                     <section>
-                        <p class="title">Beschreibung</p>
-                        <p class="description">{{dish.description}}</p>
+                        <h1 class="dish-name">{{dish.name}}</h1>
+                        <p class="dish-description">{{dish.description}}</p>
                     </section>
-
-                    <section>
-                        <p class="title">Anzahl</p>
+                    <section *ngIf="dish.variants.length == 1" style="margin-top: 30px">
                         <div id="count">
-                            <div class="inner">
-                                <div class="orderweb">
-                                    <span class="dish-inc">
-                                        <button type="button" (click)="incCount()" aria-label="Increase Quantity">
-                                            <div>
-                                                <span>
-                                                    <svg height="24" width="24" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path></svg>
-                                                </span>
-                                            </div>
-                                        </button>
-                                    </span>
+                            <div class="wrapper">
+                                <button type="button" class="decrease" (click)="incCount()">+</button>
+                                <span class="dish-count"><span>{{count}}</span></span>
+                                <button type="button" class="increase" (click)="decCount()">-</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section *ngIf="dish.variants.length > 1"  style="margin-top: 30px">
+                        <div class="count-wrapper">
+                            <div id="variant">
+                                <select [(ngModel)]="selectedVariant">
+                                    <option *ngFor="let variant of dish.variants" [ngValue]="variant">{{getVariantText(variant)}}</option>
+                                </select>
+                            </div>
+                            <div id="count">
+                                <div class="wrapper">
+                                    <button type="button" class="decrease" (click)="incCount()">+</button>
                                     <span class="dish-count"><span>{{count}}</span></span>
-                                    <span class="dish-inc">
-                                        <button type="button" (click)="decCount()" aria-label="Increase Quantity">
-                                            <div>
-                                                <span>
-                                                    <svg height="24" width="24" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path></svg>
-                                                </span>
-                                            </div>
-                                        </button>
-                                    </span>
+                                    <button type="button" class="increase" (click)="decCount()">-</button>
                                 </div>
                             </div>
                         </div>
                     </section>
-
                     <section id="remarks">
                         <input type="text" mozactionhint="send" autocomplete="off" autocapitalize="off" spellcheck="true" placeholder="Anmerkung hinzufügen ..." [(ngModel)]="remarks">
                     </section>
-
                 </div>
             </div>
 
@@ -58,7 +49,7 @@
                     <div class="inner">
                         <span class="add">
                             <span class="inner">
-                                <button type="button" (click)="onSubmit()"><span>Hinzufügen für {{getTotalPrice()}}&euro;</span></button>
+                                <button type="button" (click)="onSubmit()"><span>Hinzufügen für {{getTotalPrice()}}</span></button>
                             </span>
                         </span>
                         <span class="cancel">
@@ -73,38 +64,3 @@
         </div>
     </div>
 </div>
-
-<!--div id="modal">
-    <div class="wrapper">
-        <div class="content">
-            <h1 class="title add-edit dish">{{dish.name}}</h1>
-            <h3 class="description">{{dish.description}}</h3>
-            <div style="width: 100%;">
-                <div class="form-input">
-                    <label class="form-label">Anzahl</label>
-                    <div class="flex-space-between">
-                        <div id="quantity" style="align-content: flex-end; text-align: right; justify-content: right; width: unset; margin-bottom: 8px;">
-                            <div class="inner-wrap">
-                                <button class="quantity-btn" (click)="decCount()"><svg viewBox="0 0 100 100"><path fill="#FFF" d="M50 8.8c22.7 0 41.2 18.5 41.2 41.2S72.7 91.2 50 91.2 8.8 72.7 8.8 50 27.3 8.8 50 8.8m0-7.3C23.2 1.5 1.5 23.2 1.5 50S23.2 98.5 50 98.5 98.5 76.8 98.5 50 76.8 1.5 50 1.5z"></path><path fill="#FFF" d="M32 46.5h37v8H32z"></path></svg></button>
-                                <div class="dish-quantity">{{count}}</div>
-                                <button class="quantity-btn" (click)="incCount()"><svg viewBox="0 0 100 100"><path fill="#FFF" d="M50 8.3c22.7 0 41.2 18.5 41.2 41.2S72.7 90.8 50 90.8 8.8 72.3 8.8 49.6 27.3 8.3 50 8.3m0-7.2C23.2 1.1 1.5 22.8 1.5 49.6 1.5 76.3 23.2 98 50 98s48.5-21.7 48.5-48.5C98.5 22.8 76.8 1.1 50 1.1z"></path><path fill="#FFF" d="M31 46.5h38v8H31z"></path><path fill="#FFF" d="M46 31.5h8v38h-8z"></path></svg></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-input" *ngIf="dish.variants.length > 1" style="margin-bottom: 8px;">
-                    <label class="form-label">Variante</label>
-                    <div class="input-group"><select [(ngModel)]="selectedVariant"><option *ngFor="let variant of dish.variants" [ngValue]="variant">{{getVariantText(variant)}}</option></select></div>
-                </div>
-                <div class="form-input">
-                    <label class="form-label">Anmerkungen</label>
-                    <div class="input-group"><input type="text" mozactionhint="send" autocomplete="off" autocapitalize="off" spellcheck="true" [(ngModel)]="remarks"></div>
-                </div>
-            </div>
-            <div class="btns-container">
-                <button type="button" class="cancel" (click)="onCancel()">Abbrechen</button>
-                <button type="submit" class="submit" (click)="onSubmit()">Hinzufügen</button>
-            </div>
-        </div>
-    </div>
-</div-->

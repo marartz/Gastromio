@@ -26,6 +26,13 @@
         4.1 #top-bar > #logo
         4.2 #top-bar > #menu
         4.3 #top-bar > #userDropDown
+
+        99     #modal
+        99.1   #modal > #header
+        99.2   #modal > #options
+        99.2.1 #modal > #options > #variant
+        99.2.2 #modal > #options > #count
+        99.2.3 #modal > #options > #remarks
 */
 
 * > * {
@@ -1709,26 +1716,11 @@ button {
     -webkit-transform: scale(.98);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* #modal */
+/* 99. #modal */
 #modal {
     background-color: transparent;
     display: flex;
+    display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
@@ -1737,13 +1729,6 @@ button {
     -webkit-flex-basis: 560px;
     margin: 0px;
     outline: none;
-    width: 581px;
-}
-
-@media screen and (min-width: 540px) {
-    #modal {
-        max-height: calc(100% - 64px);
-    }
 }
 
 #modal .wrapper {
@@ -1752,30 +1737,32 @@ button {
     background-repeat: repeat;
     border-radius: 23px;
     display: flex;
+    display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
     flex-direction: column;
+    -moz-box-direction: column;
     -ms-flex-direction: column;
+    -webkit-box-direction: column;
     -webkit-flex-direction: column;
-    -webkit-box-direction: normal;
-    -webkit-box-orient: vertical;
     position: relative;
-    transform: scaleX(1);
-    -webkit-transform: scaleX(1);
     width: 100%;
-    transition: transform .3s ease,opacity .3s ease;
-    transition-delay: .2s;
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
 }
 
-/* #modal > #header */
+@media only screen and (min-width: 540px) {
+    #modal {
+        max-height: calc(100% - 64px);
+    }
+}
+
+/* 99.1 #modal > #header */
 #modal #header {
     align-items: center;
-    -ms-flex-align: center;
-    -ms-flex-pack: justify;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -webkit-box-pack: justify;
     border-top-left-radius: 23px;
     border-top-right-radius: 23px;
     display: flex;
@@ -1788,48 +1775,39 @@ button {
     -webkit-flex-shrink: 0;
     justify-content: space-between;
     -webkit-justify-content: space-between;
-    padding: 16px;
-    transition: background .2s ease;
-    -webkit-transition: background .2s ease;
+    padding: 29px 29px 0px 29px;
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
 }
 
-#modal #header .dish-name {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    padding: 0 16px;
+#modal #header .modal-name {
+    align-items: center;
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    margin: 0;
-    line-height: inherit;
+    flex-grow: 1;
     font-family: "Apercu", sans-serif;
     font-size: 20px;
     font-weight: 700;
+    justify-content: center;
+    line-height: inherit;
+    margin: 0px;
+    padding: 0px 29px;
 }
 
 #modal #header .close {
     flex-shrink: 0;
-    -ms-flex-negative: 0;
-    -webkit-flex-shrink: 0;
     height: 24px;
     width: 24px;
 }
 
 #modal #header .close button {
-    background: none;
-    border: none;
+    background-color: transparent;
+    border: 0px;
     cursor: pointer;
     outline: none;
     padding: 0px;
@@ -1839,6 +1817,7 @@ button {
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
     display: inline-flex;
+    display: -moz-inline-box;
     display: -ms-inline-flexbox;
     display: -webkit-inline-box;
     display: -webkit-inline-flex;
@@ -1852,11 +1831,13 @@ button {
     width: 24px;
 }
 
-/* #modal > #footer */
+/* 99.3 #modal > #footer */
 #modal #footer {
     border-bottom-left-radius: 23px;
     border-bottom-right-radius: 23px;
     box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, .08);
+    -moz-box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, .08);
+    -ms-box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, .08);
     -webkit-box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, .08);
     display: flex;
     display: -moz-box;
@@ -1866,56 +1847,43 @@ button {
     flex-shrink: 0;
     -ms-flex-negative: 0;
     -webkit-flex-shrink: 0;
-    padding-top: 16px;
-    padding: 0px 16px 16px;
+    padding: 0px 16px 16px 16px;
     z-index: 1;
-}
-@media screen and (min-width: 540px) {
-    #modal #footer {
-        padding: 0px 24px 24px;
-        padding-top: 24px;
-    }
 }
 
 #modal #footer .wrapper {
     display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
     flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
     flex-direction: column;
+    -moz-box-direction: column;
+    -ms-flex-direction: column;
+    -webkit-box-direction: column;
+    -webkit-flex-direction: column;
 }
 
 #modal #footer .wrapper .inner {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-}
-
-@media screen and (min-width: 540px) {
-    #modal #footer .wrapper .inner {
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: reverse;
-        -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-        flex-direction: row-reverse;
-    }
-}
-
-@media only screen and (min-width: 540px) {
-    #modal #footer .wrapper .inner .add {
-        flex: 2;
-        -ms-flex: 2;
-        -webkit-box-flex: 2;
-        -webkit-flex: 2;
-    }
+    -moz-box-direction: column;
+    -ms-flex-direction: column;
+    -webkit-box-direction: column;
+    -webkit-flex-direction: column;
+    flex-grow: 1;
+    -ms-flex-positive: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
 }
 
 #modal #footer .wrapper .inner .add .inner,
@@ -1926,13 +1894,17 @@ button {
     width: 100%;
 }
 
+#modal #footer .wrapper .inner .cancel {
+    padding-top: 8px;
+}
+
 #modal #footer .wrapper .inner .add .inner button,
 #modal #footer .wrapper .inner .cancel .inner button {
     appearance: none;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     -moz-appearance: none;
     -webkit-appearance: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     background: none;
     border: none;
     border-radius: 23px;
@@ -1951,6 +1923,24 @@ button {
     -webkit-font-smoothing: antialiased;
 }
 
+#modal #footer .wrapper .inner .add .inner button span,
+#modal #footer .wrapper .inner .cancel .inner button span {
+    align-items: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    justify-content: center;
+    -ms-flex-pack: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    text-align: center;
+}
+
 #modal #footer .wrapper .inner .add .inner button {
     background-color: #81B67C;
     color: #FFF;
@@ -1958,199 +1948,201 @@ button {
 
 #modal #footer .wrapper .inner .cancel .inner button {
     background-color: #FFF;
-    border: 1px solid #e8ebeb;
+    border: 1px solid #E8EBEB;
     color: #81B67C;
     font-weight: 400;
     line-height: 22px;
 }
 
-#modal #footer .wrapper .inner .add .inner button span,
-#modal #footer .wrapper .inner .cancel .inner button span {
+@media only screen and (min-width: 540px) {
+    #modal #footer {
+        padding: 0px 29px 29px 29px;
+    }
+    #modal #footer .wrapper .inner {
+        flex-direction: row-reverse;
+        -moz-box-direction: row-reverse;
+        -ms-flex-direction: row-reverse;
+        -webkit-box-direction: row-reverse;
+        -webkit-flex-direction: row-reverse;
+    }
+    #modal #footer .wrapper .inner .add {
+        flex: 2;
+        -moz-box-flex: 2;
+        -ms-flex: 2;
+        -webkit-box-flex: 2;
+        -webkit-flex: 2;
+    }
+    #modal #footer .wrapper .inner .cancel {
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 16px;
+        padding-top: 0px;
+        flex: 1;
+        -moz-box-flex: 1;
+        -ms-flex: 1;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+    }
+}
+
+
+/* 99.2 #modal > #options */
+#modal #options {
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    text-align: center;
-}
-
-#modal #footer .wrapper .inner .cancel {
-    padding-top: 8px;
-}
-
-@media screen and (min-width: 540px) {
-    #modal #footer .wrapper .inner .cancel {
-        padding-top: 0;
-        padding-bottom: 0;
-        padding-left: 0;
-        padding-right: 16px;
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-    }
-}
-
-/* #modal > #options */
-#modal #options {
+    flex-grow: 1;
+    -ms-flex-positive: 1;
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
 }
 
 #modal #options .wrapper {
-    padding: 16px;
-    height: 100%;
-    width: 100%;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-@media screen and (min-width: 540px) {
-    #modal #options .wrapper {
-        padding: 24px;
-    }
+    -webkit-box-sizing: border-box;
+    height: 100%;
+    padding: 16px;
+    width: 100%;
 }
 
 #modal #options section:not(:first-of-type) {
-    padding-top: 24px;
+    padding-top: 10px;
 }
 
-#modal #options section .title {
+#modal #options section h1.dish-name {
     color: #363636;
-    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0px;
+    text-align: center;
+}
+
+#modal #options section p.dish-description {
+    color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 16px;
-    font-weight: 600;
-    line-height: 22px;
+    font-weight: 300;
     margin: 0px;
-    padding-bottom: 8px;
-    -webkit-font-smoothing: subpixel-antialiased;
+    margin-top: 10px;
+    text-align: center;
 }
 
-#modal #options section .description {
-    color: #828585;
-    display: block;
-    font-family: "Apercu", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 19px;
-    margin: 0px;
-    padding-bottom: 8px;
-    text-transform: capitalize;
-    -webkit-font-smoothing: subpixel-antialiased;
+#modal #options .count-wrapper {
+    background-color: #FFF;
+    border: 0px;
+    border-radius: 23px;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    height: 46px;
+    width: 100%;
+}
+
+/* 99.2.1 #modal > #options > #variant */
+#modal #options .count-wrapper #variant {
+    display: inline;
+    padding-right: 16px;
+    width: 100%;
+}
+
+#modal #options .count-wrapper #variant select {
+    background-color: #FFF;
+    border: 0px;
+    border-radius: 23px;
+    height: 46px;
+    padding: 10px 16px 10px 16px;
+    width: 100%;
+}
+
+/* 99.2.2 #modal > #options > #count */
+#modal #options .count-wrapper #count {
+    margin-right: 0px;
+    margin-left: auto;
 }
 
 #modal #options #count {
-    width: 200px;
-    margin: 0 auto;
+    margin: 0px auto;
+    max-width: 250px;
 }
 
-#modal #options #count .inner {
-    padding-top: 24px;
-}
-
-#modal #options #count .inner .orderweb {
+#modal #options #count .wrapper {
+    align-items: center;
     display: flex;
-    justify-content: space-between;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
     flex: 0 0 64px;
     flex-direction: row-reverse;
-    align-items: center;
+    -moz-box-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+    -webkit-box-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 0px !important;
     position: relative;
 }
 
-#modal #options #count .inner .orderweb .dish-count {
-    display: inline-flex;
-    text-align: center;
-    justify-content: center;
-    margin: 0 4px;
-}
-
-#modal #options #count .inner .orderweb .dish-count span {
-    color: #363636;
-    font-size: 30px;
-    line-height: 22px;
-    font-family: "Apercu", sans-serif;
-    font-weight: 700;
-    margin: 0;
-}
-
-#modal #options #count .inner .orderweb .dish-inc {
-    display: -webkit-inline-box;
-    display: -webkit-inline-flex;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    vertical-align: middle;
-    padding-left: 4px;
-}
-
-#modal #options #count .inner .orderweb .dish-inc button {
-    border-radius: 200px;
+#modal #options #count .wrapper button {
+    background-color: #DECF80;
+    border: 0px;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transition-property: -webkit-box-shadow;
-    transition-property: -webkit-box-shadow;
-    transition-property: box-shadow;
-    transition-property: box-shadow,-webkit-box-shadow;
-    -webkit-transition-duration: .15s;
-    transition-duration: .15s;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-    padding: 0;
-    border: none;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-    background-color: transparent;
+    font-family: inherit;
+    height: 46px;
+    margin: 0px;
+    padding: 9px 28px 9px 28px;
     text-align: inherit;
-    cursor: pointer;
+    width: 80px;
 }
 
-#modal #options #count .inner .orderweb .dish-inc button div {
-    color: #81B67C;
-    display: inline-flex;
-    transition-property: color;
-    transition-duration: 0.2s;
+#modal #options #count .wrapper button.decrease {
+    border-radius: 0px 23px 23px 0px;
 }
 
-#modal #options #count .inner .orderweb .dish-inc button div span {
-    width: 24px;
+#modal #options #count .wrapper button.increase {
+    border-radius: 23px 0px 0px 23px;
+}
+
+#modal #options #count .wrapper button svg {
+    fill: #333333;
     height: 24px;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-    display: -webkit-inline-box;
-    display: -webkit-inline-flex;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    vertical-align: text-bottom;
-}
-
-#modal #options #count .inner .orderweb .dish-inc button div span svg {
     width: 24px;
-    height: 24px;
-    fill: #81B67C;
 }
 
+#modal #options #count .wrapper .dish-count {
+    background-color: #FFF;
+    display: inline-flex;
+    height: 46px;
+    justify-content: center;
+    margin: 0px;
+    padding: 9px 42px 9px 42px;
+    text-align: center;
+}
 
+#modal #options #count .wrapper span {
+    color:#323232;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    margin: 0px;
+}
 
+/* 99.2.3 #modal > #options > #remarks */
 #modal #options #remarks input {
     border: 0px;
     border-radius: 23px;
@@ -2167,4 +2159,10 @@ button {
 #modal #options #remarks input::placeholder {
     color: #94918E;
     font-weight: 300;
+}
+
+@media only screen and (min-width: 540px) {
+    #modal #options .wrapper {
+        padding: 29px;
+    }
 }
