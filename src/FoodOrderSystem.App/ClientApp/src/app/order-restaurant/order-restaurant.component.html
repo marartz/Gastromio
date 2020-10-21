@@ -28,20 +28,20 @@
                                         <p class="title">Filter</p>
                                         <div class="cuisine-container">
                                             <div class="cuisine" *ngFor="let dishCategory of dishCategories">
-                                                <button type="button">{{dishCategory.name}}</button>
+                                                <button type="button" (click)="scrollToDishCategory(dishCategory.id)">{{dishCategory.name}}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </aside>
-                            
+
                             <div id="restaurants">
                                 <div id="search">
                                     <div class="icon-wrapper"><div class="icon"></div></div>
                                     <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Gericht suchen ...">
                                 </div>
                                 <div *ngFor="let dishCategory of dishCategories">
-                                    <p class="dish-category" id="{{dishCategory.id}}">{{dishCategory.name}}</p>
+                                    <p class="dish-category" id="dc{{dishCategory.id}}">{{dishCategory.name}}</p>
                                     <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
                                         <div id="infos">
                                             <h2 class="dish-name" id="{{dish.name}}">{{dish.name}}<span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
@@ -50,7 +50,7 @@
                                     </a>
                                 </div>
                             </div>
-    
+
                         </div>
                     </div>
                 </section>
@@ -103,48 +103,49 @@
                 </div>
             </div-->
 
+            </div>
         </div>
-    </div>
 
-    <div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
-        <section id="my-order">
-            <header id="header"><span class="title">Meine Bestellung</span></header>
-            <div id="body" class="cart-body">
-                <div id="dishes">
-                    <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
-                        <div class="dish-content">
-                            <div class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></div>
-                            <div class="description">
-                                <div class="count">x{{cartDish.getCount()}}</div>
-                                <div class="price">&euro;{{cartDish.getPriceText()}}</div>
+        <div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
+            <section id="my-order">
+                <header id="header"><span class="title">Meine Bestellung</span></header>
+                <div id="body" class="cart-body">
+                    <div id="dishes">
+                        <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
+                            <div class="dish-content">
+                                <div class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></div>
+                                <div class="description">
+                                    <div class="count">x{{cartDish.getCount()}}</div>
+                                    <div class="price">&euro;{{cartDish.getPriceText()}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="order-fees" class="restaurant-bill-container">
-                    <div>
-                        <span class="title">Speisen</span>
-                        <span>&euro;{{getCart().getValueOfOrderText()}}</span>
+                    <div id="order-fees" class="restaurant-bill-container">
+                        <div>
+                            <span class="title">Speisen</span>
+                            <span>&euro;{{getCart().getValueOfOrderText()}}</span>
+                        </div>
+                        <div *ngIf="getCart().getMinimumOrderValue() !== 0">
+                            <span class="title">Mindestbestellwert</span>
+                            <span>&euro;{{getCart().getMinimumOrderValueText()}}</span>
+                        </div>
+                        <div *ngIf="getCart().getCosts()">
+                            <span class="title">Lieferkosten</span>
+                            <span>&euro;{{getCart().getCostsText()}}</span>
+                        </div>
                     </div>
-                    <div *ngIf="getCart().getMinimumOrderValue() !== 0">
-                        <span class="title">Mindestbestellwert</span>
-                        <span>&euro;{{getCart().getMinimumOrderValueText()}}</span>
-                    </div>
-                    <div *ngIf="getCart().getCosts()">
-                        <span class="title">Lieferkosten</span>
-                        <span>&euro;{{getCart().getCostsText()}}</span>
+                    <div id="total">
+                        <span>Gesamt</span>
+                        <span class="bill">&euro;{{getCart().getTotalPriceText()}}</span>
                     </div>
                 </div>
-                <div id="total">
-                    <span>Gesamt</span>
-                    <span class="bill">&euro;{{getCart().getTotalPriceText()}}</span>
+                <div id="footer">
+                    <div class="btns-container">
+                        <button class="cancel" (click)="hideCart()">Zurück</button>
+                        <button class="submit" (click)="proceedToCheckout()">Checkout</button>
+                    </div>
                 </div>
-            </div>
-            <div id="footer">
-                <div class="btns-container">
-                    <button class="cancel" (click)="hideCart()">Zurück</button>
-                    <button class="submit" (click)="proceedToCheckout()">Checkout</button>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
