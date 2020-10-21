@@ -106,45 +106,43 @@
         </div>
     </div>
 
-    <div id="cart" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
+    <div id="checkout" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
         <section id="my-order">
-            <header id="header"><span class="title">Meine Bestellung</span></header>
+            <header id="header"><span class="title">Dein Warenkorb</span></header>
             <div id="body" class="cart-body">
                 <div id="dishes">
                     <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
                         <div class="dish-content">
-                            <div class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></div>
+                            <div class="name"><span class="count">{{cartDish.getCount()}}x</span> {{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></div>
                             <div class="description">
-                                <div class="count">x{{cartDish.getCount()}}</div>
-                                <div class="price">&euro;{{cartDish.getPriceText()}}</div>
+                                <div></div>
+                                <div class="price">{{cartDish.getPriceText()}}&euro; <span style="margin-right: 10px; cursor: pointer;" (click)="onRemoveDishVariantFromCart(cartDish)"><i class="fas fa-trash-alt"></i></span><!-- Gericht aus Warenkorb entfernen --></div>
                             </div>
                         </div>
+                        <p class="desc">{{cartDish.getDish().description}}</p>
                     </div>
                 </div>
-                <div id="order-fees" class="restaurant-bill-container">
+                <div id="order-fees">
                     <div>
-                        <span class="title">Speisen</span>
-                        <span>&euro;{{getCart().getValueOfOrderText()}}</span>
+                        <span class="title">Zwischensumme</span>
+                        <span>{{getCart().getValueOfOrderText()}} &euro;</span>
                     </div>
                     <div *ngIf="getCart().getMinimumOrderValue() !== 0">
                         <span class="title">Mindestbestellwert</span>
-                        <span>&euro;{{getCart().getMinimumOrderValueText()}}</span>
+                        <span>{{getCart().getMinimumOrderValueText()}} &euro;</span>
                     </div>
                     <div *ngIf="getCart().getCosts()">
                         <span class="title">Lieferkosten</span>
-                        <span>&euro;{{getCart().getCostsText()}}</span>
+                        <span>{{getCart().getCostsText()}} &euro;</span>
                     </div>
                 </div>
                 <div id="total">
                     <span>Gesamt</span>
-                    <span class="bill">&euro;{{getCart().getTotalPriceText()}}</span>
+                    <span class="bill">{{getCart().getTotalPriceText()}}&euro;</span>
                 </div>
             </div>
-            <div id="footer">
-                <div class="btns-container">
-                    <button class="cancel" (click)="hideCart()">Zurück</button>
-                    <button class="submit" (click)="proceedToCheckout()">Checkout</button>
-                </div>
+            <div id="button-container">
+                <button class="submit" (click)="proceedToCheckout()">Bestellen für {{getCart().getTotalPriceText()}}&euro;</button>
             </div>
         </section>
     </div>

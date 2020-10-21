@@ -1,0 +1,241 @@
+#checkout {
+    background-color: #DECF80;
+    background-image: url('../../assets/images/rough/yellow.png');
+    background-repeat: repeat;
+    height: 100%;
+    overflow: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 72px;
+    position: fixed;
+    width: 352px;
+    transform: translateX(calc(100% - 20px));
+    -moz-transform: translateX(calc(100% - 20px));
+    -ms-transform: translateX(calc(100% - 20px));
+    -webkit-transform: translateX(calc(100% - 20px));
+    transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    right: 0px;
+    top: 0px;
+    z-index: 29;
+}
+
+#checkout.visible {
+    box-shadow: -2px 0px 4px rgba(0, 0, 0, .08);
+    transform: translateX(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -webkit-transform: rotate(0);
+}
+
+@media only screen and (min-width: 768px) {
+    #checkout {
+        padding-top: 72px;
+        width: 378px;
+    }
+}
+
+/* #chekout > #my-order */
+#checkout #my-order {
+    background-color: #DECF80;
+    background-image: url('../../assets/images/rough/yellow.png');
+    background-repeat: repeat;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    -moz-box-direction: column;
+    -ms-flex-direction: column;
+    -webkit-box-direction: column;
+    -webkit-flex-direction: column;
+    padding: 36px 20px;
+
+}
+
+@media only screen and (max-width: 768px) {
+    #checkout #my-order {
+        padding: 60px 20px 40px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    #checkout #my-order {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* #chekout > #my-order > #header */
+#checkout #my-order #header {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    justify-content: center;
+    margin-bottom: 32px;
+    position: relative;
+}
+
+#checkout #my-order #header .title {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 36px;
+    pointer-events: none;
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    #checkout #my-order #header .title {
+        font-size: 32px;
+    }
+}
+
+/* #chekout > #my-order > #body */
+#checkout #my-order #body {
+    align-items: stretch;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    -moz-box-direction: column;
+    -ms-flex-direction: column;
+    -webkit-box-direction: column;
+    -webkit-flex-direction: column;
+}
+
+/* #chekout > #my-order > #body > #dishes */
+#checkout #my-order #body #dishes {
+    padding: 0px 26px;
+}
+
+#checkout #my-order #body #dishes .dish {
+    padding: 10px 0px;
+}
+
+#checkout #my-order #body #dishes .dish:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+#checkout #my-order #body #dishes .dish .dish-content {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    justify-content: space-between;
+}
+
+#checkout #my-order #body #dishes .dish .dish-content .name {
+    font-weight: 500;
+    font-family: "Apercu", sans-serif;
+    color: #363636;
+    font-size: 16px;
+    max-width: 75%;
+    padding-right: 10px;
+    width: 75%;
+}
+
+#checkout #my-order #body #dishes .dish .dish-content .name span.count {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+#checkout #my-order #body #dishes .dish .description {
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    justify-content: space-between;
+    width: 25%;
+}
+
+#checkout #my-order #body #dishes .dish .description .price {
+    font-weight: 500;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #363636;
+}
+
+#checkout #my-order #body #dishes .dish .desc {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+/* #chekout > #my-order > #body > #order-fees */
+#checkout #my-order #body #order-fees {
+    padding: 0px 26px;
+    padding-top: 26px;
+    position: relative;
+}
+
+#checkout #my-order #body #order-fees div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+/* #chekout > #my-order > #body > #total */
+#checkout #my-order #body #total {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 26px;
+}
+
+#checkout #my-order #body #total span {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+#checkout #my-order #body #total span.bill {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: right;
+}
+
+#checkout #my-order #button-container {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 16px;
+    padding-top: 32px;
+    width: 100%;
+}
+
+#checkout #my-order #button-container button {
+    background-color: #363636;
+    color: #fff;
+    border-radius: 23px;
+    height: 48px;
+    width: 100%;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    line-height: 32px;
+    font-weight: 600;
+}
