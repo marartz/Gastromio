@@ -221,7 +221,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var command = new ChangeRestaurantAddressCommand(
                 new RestaurantId(restaurantId),
                 changeRestaurantAddressModel.Street,
-                changeRestaurantAddressModel.ZipCode,
+                changeRestaurantAddressModel.ZipCode.ToString(),
                 changeRestaurantAddressModel.City
             );
 
