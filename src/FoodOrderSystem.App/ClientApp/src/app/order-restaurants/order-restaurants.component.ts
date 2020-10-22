@@ -24,10 +24,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   selectedOpeningHourFilter: Date;
   selectedCuisineFilter: string;
+  showClosedRestaurants: boolean;
 
   restaurants: RestaurantModel[];
   restaurantCount: number;
-  pageOfRestaurants: RestaurantModel[];
 
   orderType: string;
 
@@ -51,6 +51,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedOpeningHourFilter = new Date(); // now
     this.selectedCuisineFilter = '';
+    this.showClosedRestaurants = false;
+
     this.orderService.getAllCuisinesAsync()
       .pipe(take(1))
       .subscribe((cuisines) => {
@@ -73,7 +75,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     modalRef.result.then((value: Date) => {
       console.log('filtering by opening hours on date: ', value);
       this.selectedOpeningHourFilter = value;
-      this.sortRestaurants();
+      this.updateSearch();
     }, () => {
     });
   }
@@ -127,10 +129,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.searchPhraseUpdated.next(value);
   }
 
-  onChangePage(pageOfRestaurants: RestaurantModel[]) {
-    this.pageOfRestaurants = pageOfRestaurants;
-  }
-
   isCuisineSelected(cuisine: CuisineModel): boolean {
     if (cuisine) {
       return this.selectedCuisineFilter === cuisine.id;
@@ -156,8 +154,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Suche läuft');
+
+    const date = this.selectedOpeningHourFilter ?? new Date();
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter, undefined)
+      this.selectedCuisineFilter, this.showClosedRestaurants ? null : date.toISOString())
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = new Array<RestaurantModel>(result.length);
@@ -187,29 +187,28 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     return restaurant.isOpen(date);
   }
 
+  onJustShowOpenRestaurants(): void {
+    this.showClosedRestaurants = false;
+    this.updateSearch();
+  }
+
+  onShowAllRestaurants(): void {
+    this.showClosedRestaurants = true;
+    this.updateSearch();
+  }
+
   sortRestaurants(): void {
     if (!this.restaurants) {
       return;
     }
 
-    const date = this.selectedOpeningHourFilter ?? new Date();
-
     this.restaurants.sort((a, b) => {
-      const isAOpen = a.isOpen(date);
-      const isBOpen = b.isOpen(date);
-
-      if (isAOpen && !isBOpen) {
+      if (a.name < b.name) {
         return -1;
-      } else if (!isAOpen && isBOpen) {
-        return 1;
+      } else if (a.name > b.name) {
+        return +1;
       } else {
-        if (a.name < b.name) {
-          return -1;
-        } else if (a.name > b.name) {
-          return +1;
-        } else {
-          return 0;
-        }
+        return 0;
       }
     });
   }

@@ -51,7 +51,7 @@
                                         </div>
                                     </div>
                                     <div id="preorder-filter">
-                                        <button type="button">Nur geöffnete Restaurants anzeigen</button>
+                                        <button type="button" [disabled]="!showClosedRestaurants ? 'disabled' : null" (click)="onJustShowOpenRestaurants()">Nur geöffnete Restaurants anzeigen</button>
                                     </div>
                                 </div>
                             </aside>
@@ -84,7 +84,7 @@
 
                                 <div class="preorder">
                                     <p>Nicht das Richtige gefunden?<br />Dann bestell bereits jetzt dein Essen vor</p>
-                                    <button type="button"><span>Alle Restaurants anzeigen</span></button>
+                                    <button type="button" (click)="onShowAllRestaurants()"><span>Alle Restaurants anzeigen</span></button>
                                 </div>
 
                             </div>
