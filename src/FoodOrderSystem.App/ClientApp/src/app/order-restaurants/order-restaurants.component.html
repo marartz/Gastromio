@@ -82,7 +82,7 @@
                                     </div>
                                 </a>
 
-                                <div class="preorder">
+                                <div class="preorder" *ngIf="!showClosedRestaurants">
                                     <p>Nicht das Richtige gefunden?<br />Dann bestell bereits jetzt dein Essen vor</p>
                                     <button type="button" (click)="onShowAllRestaurants()"><span>Alle Restaurants anzeigen</span></button>
                                 </div>
