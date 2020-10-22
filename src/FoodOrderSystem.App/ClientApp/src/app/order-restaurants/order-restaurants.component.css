@@ -1,0 +1,57 @@
+.preorder {
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    margin-top: 32px;
+    position: relative;
+}
+
+.preorder p {
+    color: #363636;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.33px;
+    text-align: center;
+}
+
+.preorder button {
+    align-items: center;
+    background-color: #ADCCCB;
+    border-radius: 23px;
+    display: block;
+    height: 46px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    width: 265px;
+}
+
+.preorder button:hover {
+    transform: scale(1.03);
+    -moz-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+}
+
+.preorder button:active {
+    transform: scale(.98);
+    -moz-transform: scale(.98);
+    -ms-transform: scale(.98);
+    -webkit-transform: scale(.98);
+}
+
+.preorder button span {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 26px;
+    padding: 6px 10px;
+    text-align: center;
+}
