@@ -43,6 +43,8 @@ export class CartModel {
   }
 
   public getMinimumOrderValueText(): string {
+    if (!this.minimumOrderValue)
+        return '0';
     return this.minimumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
@@ -51,6 +53,8 @@ export class CartModel {
   }
 
   public getMaximumOrderValueText(): string {
+    if (!this.maximumOrderValue)
+      return '0';
     return this.maximumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
