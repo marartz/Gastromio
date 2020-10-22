@@ -28,7 +28,7 @@
                             </section>
                             <section *ngIf="dish.variants.length >= 2">
                                 <h4 style="margin-top: 16px;">Varianten</h4>
-    
+
                                 <table class="table-sm">
                                     <thead>
                                         <tr>
@@ -55,13 +55,13 @@
                             </section>
                         </div>
                     </div>
-    
+
                     <footer id="footer">
                         <div class="wrapper">
                             <div class="inner">
                                 <span class="add">
                                     <span class="inner">
-                                        <button type="button" (click)="onSubmit()"><span><ng-container *ngIf="isNew">Hinzufügen</ng-container><ng-container *ngIf="!isNew">Speichern</ng-container></span></button>
+                                        <button type="button" (click)="onSubmit(editDishForm.value)"><span><ng-container *ngIf="isNew">Hinzufügen</ng-container><ng-container *ngIf="!isNew">Speichern</ng-container></span></button>
                                     </span>
                                 </span>
                                 <span class="cancel">
