@@ -10,6 +10,7 @@ using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -18,10 +19,12 @@ namespace FoodOrderSystem.Persistence.MongoDB
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly IMongoDatabase database;
+        private readonly ILogger<RestaurantRepository> logger;
 
-        public RestaurantRepository(IMongoDatabase database)
+        public RestaurantRepository(IMongoDatabase database, ILogger<RestaurantRepository> logger)
         {
             this.database = database;
+            this.logger = logger;
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
@@ -312,6 +315,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             {
                 filterMinutes = openingHourFilter.Hour * 60 + openingHourFilter.Minute;
             }
+            
+            logger.LogDebug($"Filter: DayOfWeek = {filterDayOfWeek}, FilterMinutes = {filterMinutes}");
 
             var openingPeriodModelFilter = Builders<OpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
                                            Builders<OpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
