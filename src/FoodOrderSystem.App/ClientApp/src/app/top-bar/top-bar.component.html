@@ -6,10 +6,10 @@
                 Gastromio<span>.de</span>
             </a>
         </div>
-        <div id="menu">
+        <div id="menu" ngbDropdown>
             <a class="link" *ngIf="getUserEmail() === undefined" [routerLink]="['/login']">Anmelden</a>
 
-            <ng-container *ngIf="getUserEmail() !== undefined" ngbDropdown>
+            <ng-container *ngIf="getUserEmail() !== undefined">
                 <a class="link" id="userDropDown" ngbDropdownToggle>
                     <ng-container *ngIf="isSystemAdmin()">Administration&nbsp;</ng-container>
                     <ng-container *ngIf="isRestaurantAdmin()">Meine Restaurants&nbsp;</ng-container>
@@ -23,24 +23,15 @@
                         <a ngbDropdownItem [routerLink]="['/admin/dishimport']">Speisenimport</a>
                         <a ngbDropdownItem [routerLink]="['/admin/restaurantimport']">Restaurantimport</a>
                     </ng-container>
-    
+
                     <ng-container *ngIf="isRestaurantAdmin()">
                         <a ngbDropdownItem [routerLink]="['/admin/myrestaurants']">Restaurants verwalten</a>
                     </ng-container>
-    
+
                     <a ngbDropdownItem (click)="logout()">Logout</a>
-    
+
                 </div>
             </ng-container>
-            
-
-
-            <!--a class="link" *ngIf="isSystemAdmin()" [routerLink]="['/admin/users']">Administration</a>
-            <a class="link" *ngIf="isRestaurantAdmin()" [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a-->
-
-
-
-
 
             <a class="link" *ngIf="isOnOrderPage()" (click)="toggleCartVisibility()">Warenkorb</a>
             <!--a class="link" *ngIf="!isOnOrderPage() && getCurRestaurantId() !== undefined" [routerLink]="['/restaurants', getCurRestaurantId()]">Warenkorb</a-->
@@ -56,7 +47,7 @@
 
       <div class="account-button">
 
-       
+
         <a class="nav-link nav-item" *ngIf="getUserEmail() === undefined" id="login" [routerLink]="['/login']">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <g fill="none" fill-rule="evenodd">
@@ -67,7 +58,7 @@
           <span class="nav-icon-label">Anmelden</span>
         </a>
 
-       
+
         <div class="nav-link nav-item" *ngIf="getUserEmail() !== undefined" ngbDropdown>
           <a class="nav-link nav-item" id="userDropDown" ngbDropdownToggle>
             <svg width="24" height="24" viewBox="0 0 24 24">
