@@ -2,7 +2,38 @@
     <div class="layout">
         <div id="order-home">
 
-            <section id="landing">
+            <section id="start">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="hero-container">
+                            <h1>Essen lokal bestellen</h1>
+                            <h2>in Bocholt und Umgebung</h2>
+                            <div class="search-inner">
+                                <div class="input-wrapper">
+                                    <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
+                                </div>
+                                <div class="button-wrapper">
+                                    <button type="button" [routerLink]="['/restaurants']"><span>Alle anzeigen</span></button>
+                                </div>
+                                <div class="results">
+                                    <div class="rest">
+                                        <div *ngFor="let restaurant of restaurants">
+                                            <span class="restaurant-name">{{restaurant.name}}</span>
+                                            <div class="order-type">
+                                                <ng-container *ngIf="restaurant.pickupInfo"><button (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
+                                                <ng-container *ngIf="restaurant.deliveryInfo"><button (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="teller"></div>
+            </section>
+
+            <!--section id="landing">
                 <div class="wrapper">
                     <div class="text">
                         <h1>Essen lokal bestellen</h1>
@@ -26,6 +57,50 @@
                     </div>
                 </div>
                 <div class="teller"></div>
+            </section-->
+
+            <section id="about">
+                <img class="circle" src="../../assets/circle.png" alt="">
+                <div class="wrapper">
+                    <header>
+                        <h4>So funktioniert</h4>
+                        <h1>Gastromio</h1>
+                    </header>
+                    <div class="step-path">
+                        <img src="../../assets/images/svg/path.svg" alt="">
+                    </div>
+                    
+                    <div class="step step-1">
+                        <div class="text">
+                            <img src="../../assets/images/svg/pizza.svg" alt="">
+                            <h3>Restaurant &amp;<br />Speisen auswählen</h3>
+                            <p>Gib ein Restaurant ein oder klicke<br />Dich durch zahlreiche Menüs in<br />Bocholt und Umgebung.</p>
+                        </div>
+                    </div>
+                    <img class="step-path-mobile" src="../../assets/images/svg/path-mobile.svg" alt="">
+                    <div class="step step-2">
+                        <div class="text">
+                            <h3>Online bezahlen oder<br />bar bei der Übergabe</h3>
+                            <p>Bezahle einfach und sicher online<br />oder bar bei der Übergabe vor Ort.</p>
+                        </div>
+                    </div>
+                    <img class="step-path-mobile" src="../../assets/images/svg/path-mobile.svg" alt="">
+                    <div class="step step-3">
+                        <div class="text">
+                            <img src="../../assets/images/svg/roller.svg" alt="">
+                            <h3>Liefern lassen oder<br />selbst vor Ort abholen</h3>
+                            <p>Du wohnst ganz in der Nähe? Dann<br />kannst du deine Bestellung selbst<br />abholen oder dir ganz bequem<br />nach Hause liefern lassen.</p>
+                        </div>
+                    </div>
+                    <img class="step-path-mobile" src="../../assets/images/svg/path-mobile.svg" alt="">
+                    <div class="step step-4">
+                        <div class="text">
+                            <img src="../../assets/images/svg/roller.svg" alt="">
+                            <h3>100% des Geldes geht<br />an den Gastronomen</h3>
+                            <p>Andere Lieferdienste kassieren<br />eine Gebühr für jede Bestellung,<br />die ein Lokal über den Dienst erhält.<br /><br />In der Corona Krise ist das besonders hart. Gastromio<br />ist eine lokale und für den Gastromonen kostenlose<br />Initiative der Corona Hilfe Bocholt.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section id="cta">

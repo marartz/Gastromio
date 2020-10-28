@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="157px" height="652px" viewBox="0 0 157 652" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Startseite---Desktop" transform="translate(-438.000000, -883.000000)">
+            <g id="Group-7" transform="translate(121.000000, 636.000000)">
+                <g id="Group-9" transform="translate(0.000000, 74.000000)">
+                    <g id="Group-8" transform="translate(0.000000, 133.000000)">
+                        <g id="Group-4" transform="translate(50.000000, 28.000000)">
+                            <g id="Group-12" transform="translate(267.469890, 12.000000)">
+                                <path d="M145.53011,36 C56.1967764,53.3333333 9.86344303,112.333333 6.53010969,213" id="Path" stroke="#81B67C" stroke-dasharray="5"></path>
+                                <path d="M163.254237,242.275872 C115.751412,240.507325 85.6666667,262.840659 73,309.275872 C60.3333333,355.711086 30,377.377753 -18,374.275872" id="Path-Copy" stroke="#81B67C" stroke-dasharray="5" transform="translate(72.627119, 308.372881) rotate(-90.000000) translate(-72.627119, -308.372881) "></path>
+                                <path d="M208.590367,471.05885 C208.590367,471.05885 136.58896,464.05885 108.58896,521.05885 C89.922293,559.05885 48.922293,564.392183 -14.4110404,537.05885" id="Path-Copy-2" stroke="#81B67C" stroke-dasharray="5" transform="translate(97.089663, 512.499296) scale(-1, 1) rotate(-90.000000) translate(-97.089663, -512.499296) "></path>
+                                <circle id="Oval-Copy" fill="#81B67C" cx="6.53010969" cy="213" r="6"></circle>
+                                <circle id="Oval-Copy-2" fill="#81B67C" cx="139.53011" cy="399" r="6"></circle>
+                                <circle id="Oval-Copy-2" fill="#81B67C" cx="73.5301097" cy="624" r="6"></circle>
+                                <circle id="Oval" fill="#81B67C" cx="139.53011" cy="35" r="6"></circle>
+                                <text id="01" font-family="Apercu, sans-serif" font-size="16" font-weight="normal" fill="#81B67C">
+                                    <tspan x="88.0781097" y="15">01</tspan>
+                                </text>
+                                <text id="02" font-family="Apercu, sans-serif" font-size="16" font-weight="normal" fill="#81B67C">
+                                    <tspan x="35.9501097" y="222">02</tspan>
+                                </text>
+                                <text id="03" font-family="Apercu, sans-serif" font-size="16" font-weight="normal" fill="#81B67C">
+                                    <tspan x="72.0541097" y="410">03</tspan>
+                                </text>
+                                <text id="04" font-family="Apercu, sans-serif" font-size="16" font-weight="normal" fill="#81B67C">
+                                    <tspan x="104.64611" y="635">04</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
