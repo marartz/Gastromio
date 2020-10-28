@@ -672,6 +672,22 @@ button {
     }
 }
 
+@media only screen and (max-width: 380px) {
+    #order-home #landing .text {
+        padding-top: 60px;
+    }
+    #order-home #landing .text h1 {
+        font-size: 48px;
+        letter-spacing: -0.44px;
+        line-height: 48px;
+    }
+    #order-home #landing .text h4 {
+        font-size: 22px;
+        letter-spacing: -0.42px;
+        line-height: 28px;
+    }
+}
+
 #order-home #landing .search {
     background-color: #FFF;
     border-radius: 55px;
@@ -679,7 +695,13 @@ button {
     margin-top: 80px;
     overflow: auto;
     position: relative;
-    z-index: 3000;
+    z-index: 3001;
+}
+
+@media screen and (max-width: 768px) {
+    #order-home #landing .search {
+        margin-top: 40px;
+    }
 }
 
 #order-home #landing .search .icon-wrapper {
@@ -736,7 +758,7 @@ button {
     width: 30%;
 }
 
-@media screen and (min-width: 150px) and (max-width: 780px) {
+@media screen and (min-width: 380px) and (max-width: 780px) {
 	#order-home #landing .search {
 		width: 100%;
     }
@@ -750,6 +772,69 @@ button {
     }
 }
 
+@media screen and (max-width: 379px) {
+    #order-home #landing .search .icon {
+        height: 22px;
+        left: 15px;
+        top: 9px;
+        width: 22px;
+    }
+    #order-home #landing .search input {
+        font-size: 16px;
+        margin-left: 15px;
+        width: 40%;
+    }
+    #order-home #landing .search button {
+        font-size: 16px;
+        width: 42%;
+    }
+}
+
+#order-home #landing .results {
+    background-color: #FFF;
+    border-radius: 0px 0px 23px 23px;
+    width: 100%;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    position: relative;
+    margin-top: -30px;
+    max-height: 25vh;
+    overflow: auto;
+    overflow-y: scroll;
+    z-index: 3000;
+}
+
+#order-home #landing .results .rest {
+    padding: 32px;
+    position: static;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    #order-home #landing .results .rest {
+        padding: 16px;
+        padding-top: 32px;
+    }
+}
+
+#order-home #landing .results .restaurant-name {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#order-home #landing .results .order-type {
+    float: right;
+}
+
+#order-home #landing .results .order-type button {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+}
+
 /* 2.2 #order-home #cta */
 #order-home #cta {
     background-color: #DECF80;
@@ -758,6 +843,7 @@ button {
     overflow: hidden;
     position: relative;
     width: 100%;
+    z-index: 2800;
 }
 
 #order-home #cta .text {

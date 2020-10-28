@@ -1,11 +1,15 @@
 /* #chekout */
 #checkout {
     align-items: stretch;
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
     display: flex;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     flex-direction: row;
     flex-grow: 1;
     height: 100%;
+    margin-top: -72px;
     padding-bottom: 48px;
     width: 100%;
 }
@@ -45,147 +49,39 @@
     }
 }
 
-#checkout #content .back-link {
-    align-items: center;
-    background-color: transparent;
-    color: #000;
-    color: initial;
-    display: inline-flex;
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 16px;
-    text-decoration: none;
-    transition: all .2s ease-in-out;
-}
-
-#checkout #content .back-link:before {
-    background-color: #65b32e;
-    background-image: url(https://app.foodninjas.at/icons/arrow-left.svg);
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: 40%;
-    border-radius: 50%;
-    content: "";
-    display: inline-block;
-    height: 22px;
-    margin-right: 8px;
-    transition: background-color .4s ease-in-out;
-    width: 22px;
-}
-
 /* #chekout > #content > #header */
 #checkout #content #header {
-    background-color: #e9ecef;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 20px;
-    display: flex;
-    height: 260px;
     margin-bottom: 32px;
-    max-height: 430px;
-    min-height: 380px;
     overflow: hidden;
     padding: 24px;
     position: relative;
     z-index: 1;
 }
 
-@media screen and (max-width: 768px) {
-    #checkout #content #header {
-        height: auto;
-        max-height: none;
-        min-height: 200px;
-        padding: 160px 16px 16px;
-    }
+#checkout #content #header h1 {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 60px;
+    text-align: center;
 }
 
-#checkout #content #header .banner {
-    border-radius: inherit;
-    height: 100%;
-    left: 0px;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    z-index: -1;
-}
-
-#checkout #content #header .banner img {
-    border: 0px;
-    display: inline-block;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    overflow: hidden;
-    pointer-events: none;
-    vertical-align: top;
-    width: 100%;
-}
-
-#checkout #content #header .information {
-    background-color: #fff;
-    border-radius: 10px;
-    color: #8c8e9d;
-    display: flex;
-    flex-direction: column;
-    font-size: 12px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    min-width: 75%;
-    padding: 20px 24px;
-}
-
-@media screen and (max-width: 768px) {
-    #checkout #content #header .information {
-        height: auto;
-        width: 100%;
-    }
-}
-
-#checkout #content #header .information .header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-}
-
-#checkout #content #header .information .header .restaurant-name {
-    color: #2b2c43;
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 36px;
-}
-
-@media screen and (max-width: 768px) {
-    #checkout #content #header .information .header .restaurant-name {
-        font-size: 26px;
-    }
-}
-
-#checkout #content #header .information .header .restaurant-name span {
-    margin: 0px 0px 0px 28px;
-    position: relative;
-}
-
-#checkout #content #header .information .header .restaurant-name span::before {
-    background-color: #65b32e;
-    border-radius: 50%;
-    content: "";
-    height: 6px;
-    left: -22px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
+#checkout #content #header p {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 32px;
+    text-align: center;
 }
 
 /* #chekout > #content > #body */
 #checkout #content #body {
-    background-color: #fff;
-    border-radius: 10px;
+    background-color: #ADCCCB;
+    border-radius: 23px;
     box-shadow: 0px 2px 16px rgba(85, 86, 138, .06);
     margin-top: 48px;
     min-height: 100px;
@@ -224,19 +120,18 @@
 }
 
 /* #chekout > #content > #body > #checkout-details */
-#checkout #content #body #checkout-details {
-    margin-top: 54px;
-}
-
-#checkout #content #body #checkout-details:not(:first-of-type) {
-    margin-top: 54px;
-}
-
 #checkout #content #body #checkout-details .title {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 18px;
-    margin-bottom: 32px;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#checkout #content #body #checkout-details .subtitle {
+    color: #363636;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 20px;
 }
 
 #checkout #content #body #checkout-details .address-container {
@@ -251,64 +146,69 @@
 }
 
 #checkout #content #body #checkout-details .address-container .label-container label {
-    color: #2b2c43;
+    color: #333333;
     font-size: 14px;
-    font-weight: 500;
-    margin-bottom: .5rem;
+    font-weight: 400;
+    font-family: "Apercu", sans-serif;
+    margin-bottom: 4px;
+    margin-left: 9px;
+    line-height: 20px;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 #checkout #content #body #checkout-details .address-container .input-container {
-    border-radius: 25px;
+    border-radius: 23px;
     overflow: hidden;
     position: absolute;
     transition: all .2s ease-in-out;
     width: 100%;
     z-index: 999;
+    
 }
 
 #checkout #content #body #checkout-details .address-container .input-container .input {
     background-clip: padding-box;
-    background-color: #f7f7fa;
-    border: 2px solid #ced4da;
-    border-color: #f7f7fa;
-    border-radius: 48px;
-    color: #2b2c43;
+    background-color: #fff;
+    border: 0px;
+    border-radius: 23px;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     display: block;
     font-size: 16px;
     font-weight: 400;
     height: 48px;
     line-height: 1.5;
-    padding: 13px 25px 12px;
+    padding: 10px 20px;
     padding-right: 52px;
     text-overflow: ellipsis;
     transition: all .2s ease-in-out;
     width: 100%;
 }
 
-#checkout #content #body #checkout-details .address-container .input-container .input:focus {
+#checkout #content #body #checkout-details .address-container .input-container .input::placeholder {
     background-color: #fff;
-    border-color: #65b32e;
-    box-shadow: 0px 0px 0px 1.5px #65b32e;
-    transition: all .2s ease-in-out;
+    color: #94918E;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 #checkout #content #body .confirm-button {
-    background-color: #65b32e;
-    border-color: #65b32e;
-    border: 1px solid transparent;
-    border-radius: 48px;
+    background-color: #363636;
+    border-color: #363636;
+    border: 0px solid transparent;
+    border-radius: 23px;
     color: #fff;
     display: inline-block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 18px;
     font-weight: 500;
     letter-spacing: normal;
-    line-height: 18px;
+    line-height: 26px;
     margin-top: 50px;
-    padding: 17px 32px 13px;
+    padding: 11px;
     padding-left: 70px;
     padding-right: 70px;
     text-align: center;
@@ -319,36 +219,38 @@
 }
 
 #checkout #content #body .conditions-container {
-    color: #8c8e9d;
-    margin-top: 50px;
+    color: #363636;
+    margin-top: 28px;
 }
 
 #checkout #content #body .conditions-container .links-container {
-    font-size: 12px;
+    font-size: 49px;
 }
 
 #checkout #content #body .conditions-container .links-container p {
-    font-family: "Quicksand", sans-serif;
-    font-size: 12px;
-    font-weight: 400;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
     margin: 0px;
 }
 
 #checkout #content #body .conditions-container .agreement-container {
-    font-size: 10px;
+    font-size: 16px;
     margin-top: 10px;
 }
 
 #checkout #content #body .conditions-container .agreement-container p {
-    font-family: "Quicksand", sans-serif;
-    font-size: 10px;
-    font-weight: 400;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
     margin-bottom: 5px;
 }
 
 #checkout #content #body .conditions-container .links-container a {
     border-bottom: none;
-    color: #65b32e;
+    color: #363636;
+    text-decoration: underline;
+    font-weight: 500;
     transition: all .2s ease-in-out;;
 }
 
@@ -363,15 +265,16 @@
 }
 
 #checkout #content #body #payment-method .payment-type {
-    background-color: #f8f9fa;
+    background-color: #fff;
     background-position: center 22px;
     background-repeat: no-repeat;
     background-size: 50% 20px;
     border: none;
     border-radius: 10px;
     box-shadow: 0px 2px 16px rgba(85, 86, 138, .06);
-    color: #000;
+    color: #363636;
     cursor: pointer;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     letter-spacing: normal;
@@ -411,30 +314,10 @@
     }
 }
 
-#checkout #content #body #payment-method .payment-type#maestro {
-    background-image: url(/assets/images/icons/brands/mastercard.svg);
-    background-size: 50% 26px;
-}
-
-#checkout #content #body #payment-method .payment-type#paypal {
-    background-image: url(/assets/images/icons/brands/paypal.svg);
-    background-size: 50% 26px;
-}
-
-#checkout #content #body #payment-method .payment-type#kreditkarte {
-    background-image: url(/assets/images/icons/brands/visa.svg);
-    background-size: 50% 26px;
-}
-
-#checkout #content #body #payment-method .payment-type#rechnung {
-    background-image: url(/assets/images/icons/brands/klarna.svg);
-}
-
-
 /* #chekout > #my-order */
 #checkout #my-order {
-    background: linear-gradient(180deg, #fff -50%, #f7f7fa);
-    border-radius: 20px 0px 0px 20px;
+    background: #DECF80;
+    border-radius: 23px;
     display: flex;
     flex-direction: column;
     max-width: 480px;
