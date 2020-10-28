@@ -121,11 +121,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(data): void {
-    console.log("submit");
     this.submitted = true;
     if (this.customerForm.invalid) {
-      console.log("errors: ", this.customerForm.errors);
-      console.log("restaurant: ", this.restaurant);
       return;
     }
 
