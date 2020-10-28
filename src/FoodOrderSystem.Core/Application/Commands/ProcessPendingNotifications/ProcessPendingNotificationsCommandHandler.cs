@@ -88,7 +88,7 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
             EmailAddress recipient;
             if (configurationProvider.IsTestSystem)
             {
-                recipient = new EmailAddress("Gastromio-Bestellungen", "artz.marco@gmx.net");
+                recipient = new EmailAddress("Gastromio-Bestellungen", configurationProvider.EmailRecipientForTest);
             }
             else
             {
@@ -138,7 +138,7 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
 
             if (configurationProvider.IsTestSystem)
             {
-                recipientsTo.Add(new EmailAddress("Gastromio-Bestellungen", "artz.marco@gmx.net"));
+                recipientsTo.Add(new EmailAddress("Gastromio-Bestellungen", configurationProvider.EmailRecipientForTest));
             }
             else
             {
