@@ -109,7 +109,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 checkoutModel.Phone,
                 checkoutModel.Email,
                 ConvertOrderType(checkoutModel.OrderType),
-                new RestaurantId(checkoutModel.RestaurantId),
+                checkoutModel.RestaurantId,
                 checkoutModel.CartDishes?.Select(en => new CartDishInfoDTO(
                     en.ItemId,
                     new DishId(en.DishId),

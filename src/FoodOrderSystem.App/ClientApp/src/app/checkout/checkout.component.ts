@@ -67,7 +67,7 @@ export class CheckoutComponent implements OnInit {
           zipCode: ['', Validators.required],
           addAddressInfo: [''],
           city: ['', Validators.required],
-          phone: ['', Validators.required],
+          phone: ['', [Validators.required, Validators.pattern(/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/)]],
           email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
           comments: [''],
           paymentMethodId: ['', Validators.required]
@@ -121,8 +121,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(data): void {
+    console.log("submit");
     this.submitted = true;
     if (this.customerForm.invalid) {
+      console.log("errors: ", this.customerForm.errors);
+      console.log("restaurant: ", this.restaurant);
       return;
     }
 

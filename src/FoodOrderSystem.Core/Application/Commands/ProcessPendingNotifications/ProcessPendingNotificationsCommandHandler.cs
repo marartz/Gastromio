@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using FoodOrderSystem.Core.Application.Ports;
 using FoodOrderSystem.Core.Application.Ports.Notification;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Application.Ports.Template;
@@ -18,25 +19,26 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
         private readonly IOrderRepository orderRepository;
         private readonly ITemplateService templateService;
         private readonly INotificationService notificationService;
+        private readonly IConfigurationProvider configurationProvider;
 
         public ProcessPendingNotificationsCommandHandler(
             ILogger<ProcessPendingNotificationsCommandHandler> logger,
             IOrderRepository orderRepository,
             ITemplateService templateService,
-            INotificationService notificationService
+            INotificationService notificationService,
+            IConfigurationProvider configurationProvider
         )
         {
             this.logger = logger;
             this.orderRepository = orderRepository;
             this.templateService = templateService;
             this.notificationService = notificationService;
+            this.configurationProvider = configurationProvider;
         }
 
         public async Task<Result<bool>> HandleAsync(ProcessPendingNotificationsCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
-            //logger.LogDebug("Starting check for pending notifications");
-            
             var pendingCustomerNotificationOrders =
                 await orderRepository.FindByPendingCustomerNotificationAsync(cancellationToken);
 
@@ -44,10 +46,10 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
-                
+
                 await TriggerCustomerNotificationAsync(order, cancellationToken);
             }
-            
+
             var pendingRestaurantNotificationOrders =
                 await orderRepository.FindByPendingRestaurantNotificationAsync(cancellationToken);
 
@@ -57,8 +59,7 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
                     break;
                 await TriggerRestaurantNotificationAsync(order, cancellationToken);
             }
-            
-            //logger.LogDebug("Check for pending notifications ended");
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -71,11 +72,12 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
                 var delta = DateTime.UtcNow - order.CustomerNotificationInfo.Timestamp;
                 if (delta < delay)
                 {
-                    logger.LogDebug("Delay sending customer email of order {0} by further {1} seconds", order.Id.Value, (delay - delta).TotalSeconds);
+                    logger.LogDebug("Delay sending customer email of order {0} by further {1} seconds", order.Id.Value,
+                        (delay - delta).TotalSeconds);
                     return;
                 }
             }
-            
+
             var emailData = templateService.GetCustomerEmail(order);
             if (emailData == null)
             {
@@ -83,24 +85,32 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
                 throw new InvalidOperationException("could not retrieve email data for customer email");
             }
 
+            EmailAddress recipient;
+            if (configurationProvider.IsTestSystem)
+            {
+                recipient = new EmailAddress("Gastromio-Bestellungen", "artz.marco@gmx.net");
+            }
+            else
+            {
+                recipient = new EmailAddress($"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName}",
+                    order.CustomerInfo.Email);
+            }
+
             var notificationRequest = new NotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
-                new List<EmailAddress>
-                {
-                    new EmailAddress($"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName}", order.CustomerInfo.Email)
-                },
+                new List<EmailAddress> {recipient},
                 new List<EmailAddress>(),
                 new List<EmailAddress>(),
                 emailData.Subject,
                 emailData.TextPart,
                 emailData.HtmlPart
             );
-            
+
             var (success, info) = await TriggerNotificationAsync(notificationRequest, cancellationToken);
             order.RegisterCustomerNotificationAttempt(success, info);
             await orderRepository.StoreAsync(order, cancellationToken);
         }
-        
+
         private async Task TriggerRestaurantNotificationAsync(Order order,
             CancellationToken cancellationToken)
         {
@@ -110,48 +120,58 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
                 var delta = DateTime.UtcNow - order.RestaurantNotificationInfo.Timestamp;
                 if (delta < delay)
                 {
-                    logger.LogDebug("Delay sending restaurant email of order {0} by further {1} seconds", order.Id.Value, (delay - delta).TotalSeconds);
+                    logger.LogDebug("Delay sending restaurant email of order {0} by further {1} seconds",
+                        order.Id.Value, (delay - delta).TotalSeconds);
                     return;
                 }
             }
-            
+
             var emailData = templateService.GetRestaurantEmail(order);
             if (emailData == null)
             {
                 logger.LogError("Could not retrieve email data for restaurant email");
                 throw new InvalidOperationException("could not retrieve email data for restaurant email");
             }
-            
+
+            var recipientsTo = new List<EmailAddress>();
             var recipientsCc = new List<EmailAddress>();
-            if (order.CartInfo.RestaurantNeedsSupport)
+
+            if (configurationProvider.IsTestSystem)
             {
-                recipientsCc.Add(new EmailAddress("Gastromio-Bestellungen", "bestellungen@gastromio.de"));
+                recipientsTo.Add(new EmailAddress("Gastromio-Bestellungen", "artz.marco@gmx.net"));
+            }
+            else
+            {
+                recipientsTo.Add(new EmailAddress($"{order.CartInfo.RestaurantName}", order.CartInfo.RestaurantEmail));
+
+                if (order.CartInfo.RestaurantNeedsSupport)
+                {
+                    recipientsCc.Add(new EmailAddress("Gastromio-Bestellungen", "bestellungen@gastromio.de"));
+                }
             }
 
             var notificationRequest = new NotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
-                new List<EmailAddress>
-                {
-                    new EmailAddress($"{order.CartInfo.RestaurantName}", order.CartInfo.RestaurantEmail)
-                },
+                recipientsTo,
                 recipientsCc,
                 new List<EmailAddress>(),
                 emailData.Subject,
                 emailData.TextPart,
                 emailData.HtmlPart
             );
-            
+
             var (success, info) = await TriggerNotificationAsync(notificationRequest, cancellationToken);
             order.RegisterRestaurantNotificationAttempt(success, info);
             await orderRepository.StoreAsync(order, cancellationToken);
         }
-        
+
         private async Task<(bool success, string info)> TriggerNotificationAsync(
             NotificationRequest notificationRequest, CancellationToken cancellationToken)
         {
             try
             {
-                var notificationResponse = await notificationService.SendNotificationAsync(notificationRequest, cancellationToken);
+                var notificationResponse =
+                    await notificationService.SendNotificationAsync(notificationRequest, cancellationToken);
                 return notificationResponse.Success
                     ? (true, notificationResponse.Message)
                     : (false, notificationResponse.Message);

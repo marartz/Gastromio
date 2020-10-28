@@ -8,7 +8,7 @@
 
                 <div id="content" class="checkout-container">
 
-                    
+
 
                     <header id="header">
                         <h1>Kasse</h1>
@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div id="checkout-details" style="margin-top: 108px;">
                                 <div class="title">Persönliche Details</div>
                                 <p class="subtitle">Wohin soll Deine Bestellung geliefert werden?</p>
@@ -91,7 +91,7 @@
                                         <div class="address-container">
                                             <div class="label-container"><label for="street">Telefonnummer</label></div>
                                             <div class="input-container">
-                                                <input class="input" autocomplete="off" type="number" placeholder="0170 12345678" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+                                                <input class="input" autocomplete="off" type="string" placeholder="0170 12345678" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
                                                 <div class="invalid-feedback" *ngIf="submitted && f.phone.errors"><div *ngIf="f.phone.errors.required"><span style="color: red;">Handynummer wird benötigt</span></div></div>
                                             </div>
                                         </div>
@@ -118,9 +118,12 @@
                                 <p class="subtitle">Wie möchtest Du bezahlen? Weitere Zahlungsarten in Bearbeitung und werden in Zukunft folgen.</p>
                             </div>
                             <div id="payment-method">
-                                <input type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.name}}" *ngFor="let paymentMethod of restaurant.paymentMethods">
-
-
+                                <fieldset>
+                                    <ng-container  *ngFor="let paymentMethod of restaurant.paymentMethods">
+                                        <input type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}">
+                                        <label for="{{paymentMethod.id}}">{{paymentMethod.name}}</label>
+                                    </ng-container>
+                                </fieldset>
                                 <!--button type="button" class="payment-type" id="{{paymentMethod.imageName}}" *ngFor="let paymentMethod of restaurant.paymentMethods">{{paymentMethod.name}} </button-->
                                 <div *ngIf="submitted && f.paymentMethodId.errors"><div class="invalid-feedback" *ngIf="f.paymentMethodId.errors.required"><span style="color: red;">Zahlungsmethode wird benötigt</span></div></div>
                             </div>

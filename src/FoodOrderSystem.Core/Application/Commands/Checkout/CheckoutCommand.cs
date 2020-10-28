@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Core.Domain.Model.Restaurant;
 
 namespace FoodOrderSystem.Core.Application.Commands.Checkout
 {
@@ -18,7 +17,7 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             string phone,
             string email,
             OrderType orderType,
-            RestaurantId restaurantId,
+            string restaurantId,
             IList<CartDishInfoDTO> cartDishes,
             string comments,
             PaymentMethodId paymentMethodId
@@ -48,7 +47,7 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
         public string Phone { get; }
         public string Email { get; }
         public OrderType OrderType { get; }
-        public RestaurantId RestaurantId { get; }
+        public string RestaurantId { get; }
         public IList<CartDishInfoDTO> CartDishes { get; }
         public string Comments { get; }
         public PaymentMethodId PaymentMethodId { get; }

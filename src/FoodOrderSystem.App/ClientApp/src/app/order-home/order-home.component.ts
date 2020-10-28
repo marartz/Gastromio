@@ -60,6 +60,7 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   }
 
   onRestaurantSelected(restaurant: RestaurantModel, orderType: string): void {
+    console.log('orderType:', orderType);
     this.router.navigate(['/restaurants', restaurant.id], { queryParams: { orderType: orderType } });
   }
 

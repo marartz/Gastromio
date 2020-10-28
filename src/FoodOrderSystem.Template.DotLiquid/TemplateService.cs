@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DotLiquid;
 using DotLiquid.NamingConventions;
 using FoodOrderSystem.Core.Application.Ports.Template;
@@ -12,115 +13,261 @@ namespace FoodOrderSystem.Template.DotLiquid
     {
         public EmailData GetCustomerEmail(Order order)
         {
-            var assembly = typeof(TemplateService).Assembly;
-            var resourceStream = assembly.GetManifestResourceStream("FoodOrderSystem.Template.DotLiquid.Templates.CustomerTemplate.html");
-            if (resourceStream == null)
-                throw new InvalidOperationException("cannot read template");
+            // var assembly = typeof(TemplateService).Assembly;
+            // var resourceStream = assembly.GetManifestResourceStream("FoodOrderSystem.Template.DotLiquid.Templates.CustomerTemplate.html");
+            // if (resourceStream == null)
+            //     throw new InvalidOperationException("cannot read template");
+            //
+            // using (resourceStream)
+            // using (var streamReader = new StreamReader(resourceStream))
+            // {
+            //     var customerTemplate = streamReader.ReadToEnd();
+            //     
+            //     global::DotLiquid.Template.NamingConvention = new CSharpNamingConvention();
+            //     var template = global::DotLiquid.Template.Parse(customerTemplate);
+            //
+            //     var renderResult = template.Render(Hash.FromAnonymousObject(GenerateOrderObject(order)));
+            //
+            //     return new EmailData
+            //     {
+            //         Subject = "Ihre Bestellung bei Gastromio.de",
+            //         TextPart = "",
+            //         HtmlPart = renderResult
+            //     };
+            // }
 
-            using (resourceStream)
-            using (var streamReader = new StreamReader(resourceStream))
+            var sb = new StringBuilder();
+
+            sb.Append("Hallo ");
+            sb.Append(order.CustomerInfo.GivenName);
+            sb.Append(",");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            sb.Append("wir haben Deine Bestellung empfangen und an ");
+            sb.Append(order.CartInfo.RestaurantInfo);
+            sb.Append(" weitergeleitet!");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            sb.Append(
+                "Bei Fragen oder Anmerkungen zu Deiner getätigten Bestellung möchten wir Dich bitten, das Restaurant unter ");
+            sb.Append(order.CartInfo.RestaurantPhone);
+            sb.Append(" anzurufen.");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            sb.Append("Deine Bestellung bei ");
+            sb.Append(order.CartInfo.RestaurantName);
+            sb.Append(":");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            AppendOrderDetails(sb, order);
+
+            sb.AppendLine();
+
+            sb.AppendLine("Dein Gastromio-Team");
+
+            return new EmailData
             {
-                var customerTemplate = streamReader.ReadToEnd();
-                
-                global::DotLiquid.Template.NamingConvention = new CSharpNamingConvention();
-                var template = global::DotLiquid.Template.Parse(customerTemplate);
-            
-                var renderResult = template.Render(Hash.FromAnonymousObject(GenerateOrderObject(order)));
-            
-                return new EmailData
-                {
-                    Subject = "Ihre Bestellung bei Gastromio.de",
-                    TextPart = "",
-                    HtmlPart = renderResult
-                };
-            }
+                Subject = "Ihre Bestellung bei Gastromio.de",
+                TextPart = sb.ToString(),
+                HtmlPart = ""
+            };
         }
 
         public EmailData GetRestaurantEmail(Order order)
         {
-            var assembly = typeof(TemplateService).Assembly;
-            var resourceStream = assembly.GetManifestResourceStream("FoodOrderSystem.Template.DotLiquid.Templates.RestaurantTemplate.html");
-            if (resourceStream == null)
-                throw new InvalidOperationException("cannot read template");
+            // var assembly = typeof(TemplateService).Assembly;
+            // var resourceStream = assembly.GetManifestResourceStream("FoodOrderSystem.Template.DotLiquid.Templates.RestaurantTemplate.html");
+            // if (resourceStream == null)
+            //     throw new InvalidOperationException("cannot read template");
+            //
+            // using (resourceStream)
+            // using (var streamReader = new StreamReader(resourceStream))
+            // {
+            //     var customerTemplate = streamReader.ReadToEnd();
+            //     
+            //     global::DotLiquid.Template.NamingConvention = new CSharpNamingConvention();
+            //     var template = global::DotLiquid.Template.Parse(customerTemplate);
+            //
+            //     var renderResult = template.Render(Hash.FromAnonymousObject(GenerateOrderObject(order)));
+            //
+            //     var customerInfo =
+            //         $"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
+            //
+            //     return new EmailData
+            //     {
+            //         Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
+            //         TextPart = "",
+            //         HtmlPart = renderResult
+            //     };
+            // }
 
-            using (resourceStream)
-            using (var streamReader = new StreamReader(resourceStream))
+            var sb = new StringBuilder();
+
+            sb.Append("Hallo ");
+            sb.Append(order.CartInfo.RestaurantName);
+            sb.Append(",");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            sb.Append("Wir haben eine neue Bestellung empfangen. Hier die Details:");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            AppendOrderDetails(sb, order);
+
+            sb.AppendLine();
+
+            sb.AppendLine("Dein Gastromio-Team");
+
+            var customerInfo =
+                $"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
+
+            return new EmailData
             {
-                var customerTemplate = streamReader.ReadToEnd();
-                
-                global::DotLiquid.Template.NamingConvention = new CSharpNamingConvention();
-                var template = global::DotLiquid.Template.Parse(customerTemplate);
-            
-                var renderResult = template.Render(Hash.FromAnonymousObject(GenerateOrderObject(order)));
-
-                var customerInfo =
-                    $"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
-            
-                return new EmailData
-                {
-                    Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
-                    TextPart = "",
-                    HtmlPart = renderResult
-                };
-            }
-        }
-
-        private object GenerateOrderObject(Order order)
-        {
-            return new
-            {
-                OrderId = order.Id.Value,
-                CustomerInfo = new
-                {
-                    order.CustomerInfo.GivenName,
-                    order.CustomerInfo.LastName,
-                    order.CustomerInfo.Street,
-                    order.CustomerInfo.AddAddressInfo,
-                    order.CustomerInfo.ZipCode,
-                    order.CustomerInfo.City,
-                    order.CustomerInfo.Phone,
-                    order.CustomerInfo.Email
-                },
-                CartInfo = new
-                {
-                    OrderType = ConvertOrderType(order.CartInfo.OrderType),
-                    order.CartInfo.RestaurantName,
-                    order.CartInfo.RestaurantInfo,
-                    order.CartInfo.RestaurantPhone,
-                    order.CartInfo.RestaurantEmail,
-                    OrderedDishes = order.CartInfo.OrderedDishes.Select(en =>
-                        new
-                        {
-                            en.DishName,
-                            en.VariantName,
-                            VariantPrice = en.VariantPrice.ToString("0.00"),
-                            en.Count,
-                            Price = (en.Count * en.VariantPrice).ToString("0.00"),
-                            en.Remarks
-                        }
-                    )
-                },
-                order.Comments,
-                order.PaymentMethodName,
-                order.PaymentMethodDescription,
-                Costs = order.Costs.ToString("0.00"),
-                TotalPrice = order.TotalPrice.ToString("0.00")
+                Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
+                TextPart = sb.ToString(),
+                HtmlPart = ""
             };
         }
 
-        private static string ConvertOrderType(OrderType orderType)
+        private static void AppendOrderDetails(StringBuilder sb, Order order)
         {
-            switch (orderType)
+            foreach (var orderedDish in order.CartInfo.OrderedDishes)
             {
-                case OrderType.Pickup:
-                    return "Abholung";
-                case OrderType.Delivery:
-                    return "Lieferung";
-                case OrderType.Reservation:
-                    return "Reservierung";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(orderType), orderType, null);
+                sb.Append(orderedDish.Count);
+                sb.Append("x ");
+
+                sb.Append(orderedDish.DishName);
+
+                if (!string.IsNullOrEmpty(orderedDish.VariantName))
+                {
+                    sb.Append(" (");
+                    sb.Append(orderedDish.VariantName);
+                    sb.Append(")");
+                }
+
+                sb.Append(": ");
+
+                sb.Append(orderedDish.VariantPrice);
+                sb.Append("€");
+
+                if (!string.IsNullOrEmpty(orderedDish.Remarks))
+                {
+                    sb.Append(" (");
+                    sb.Append(orderedDish.Remarks);
+                    sb.Append(" )");
+                }
+
+                sb.AppendLine();
             }
+
+            sb.AppendLine();
+            sb.AppendLine();
+
+            if (order.Costs > 0)
+            {
+                sb.Append("Lieferkosten: ");
+                sb.Append(order.Costs);
+                sb.Append("€");
+                sb.AppendLine();
+            }
+
+            sb.Append("Gesamtpreis: ");
+            sb.Append(order.TotalPrice);
+            sb.Append("€");
+            sb.AppendLine();
+
+            sb.Append("Zahlungsmethode: ");
+            sb.Append(order.PaymentMethodName);
+            sb.AppendLine();
+
+            sb.AppendLine();
+
+            sb.Append("Bestelldetails:");
+            sb.AppendLine();
+
+            sb.Append(order.CustomerInfo.GivenName);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.LastName);
+            sb.AppendLine();
+
+            sb.AppendLine(order.CustomerInfo.Street);
+            sb.Append(order.CustomerInfo.ZipCode);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.City);
+            sb.AppendLine();
+
+            sb.AppendLine();
+
+            sb.Append(order.CustomerInfo.Phone);
+            sb.AppendLine();
+
+            sb.Append(order.CustomerInfo.Email);
+            sb.AppendLine();
+
+            sb.AppendLine();
         }
+
+        // private object GenerateOrderObject(Order order)
+        // {
+        //     return new
+        //     {
+        //         OrderId = order.Id.Value,
+        //         CustomerInfo = new
+        //         {
+        //             order.CustomerInfo.GivenName,
+        //             order.CustomerInfo.LastName,
+        //             order.CustomerInfo.Street,
+        //             order.CustomerInfo.AddAddressInfo,
+        //             order.CustomerInfo.ZipCode,
+        //             order.CustomerInfo.City,
+        //             order.CustomerInfo.Phone,
+        //             order.CustomerInfo.Email
+        //         },
+        //         CartInfo = new
+        //         {
+        //             OrderType = ConvertOrderType(order.CartInfo.OrderType),
+        //             order.CartInfo.RestaurantName,
+        //             order.CartInfo.RestaurantInfo,
+        //             order.CartInfo.RestaurantPhone,
+        //             order.CartInfo.RestaurantEmail,
+        //             OrderedDishes = order.CartInfo.OrderedDishes.Select(en =>
+        //                 new
+        //                 {
+        //                     en.DishName,
+        //                     en.VariantName,
+        //                     VariantPrice = en.VariantPrice.ToString("0.00"),
+        //                     en.Count,
+        //                     Price = (en.Count * en.VariantPrice).ToString("0.00"),
+        //                     en.Remarks
+        //                 }
+        //             )
+        //         },
+        //         order.Comments,
+        //         order.PaymentMethodName,
+        //         order.PaymentMethodDescription,
+        //         Costs = order.Costs.ToString("0.00"),
+        //         TotalPrice = order.TotalPrice.ToString("0.00")
+        //     };
+        // }
+
+        // private static string ConvertOrderType(OrderType orderType)
+        // {
+        //     switch (orderType)
+        //     {
+        //         case OrderType.Pickup:
+        //             return "Abholung";
+        //         case OrderType.Delivery:
+        //             return "Lieferung";
+        //         case OrderType.Reservation:
+        //             return "Reservierung";
+        //         default:
+        //             throw new ArgumentOutOfRangeException(nameof(orderType), orderType, null);
+        //     }
+        // }
     }
 }

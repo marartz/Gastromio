@@ -35,6 +35,13 @@ namespace FoodOrderSystem.App
             
             services.AddMongoDB(connectionString);
 
+            var configurationProvider = new ConfigurationProvider
+            {
+                IsTestSystem = Configuration.GetValue("IsTestSystem", true),
+                EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net")
+            };
+            services.AddSingleton<FoodOrderSystem.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
+
             var mailjetConfiguration = new Notification.Mailjet.MailjetConfiguration
             {
                 ApiKey = Configuration.GetValue<string>("Mailjet:ApiKey"),

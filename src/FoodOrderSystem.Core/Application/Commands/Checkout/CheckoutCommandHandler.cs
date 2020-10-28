@@ -9,6 +9,7 @@ using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 using Microsoft.Extensions.Logging;
 
@@ -39,8 +40,21 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            var restaurant =
-                await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            Restaurant restaurant;
+
+            if (Guid.TryParse(command.RestaurantId, out var restaurantId))
+            {
+                restaurant =
+                    await restaurantRepository.FindByRestaurantIdAsync(new RestaurantId(restaurantId),
+                        cancellationToken);
+            }
+            else
+            {
+                restaurant =
+                    (await restaurantRepository.FindByRestaurantNameAsync(command.RestaurantId, cancellationToken))
+                    .FirstOrDefault();
+            }
+
             if (restaurant == null)
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
             if (!restaurant.IsActive)
@@ -76,7 +90,7 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
                 if (dish == null)
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                 dishDict.Add(cartDish.ItemId, dish);
-                if (dish.RestaurantId != command.RestaurantId)
+                if (dish.RestaurantId != restaurant.Id)
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                 var variant = dish.Variants.FirstOrDefault(en => en.VariantId == cartDish.VariantId);
                 if (variant == null)
@@ -167,7 +181,7 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
                 ),
                 new CartInfo(
                     command.OrderType,
-                    command.RestaurantId,
+                    restaurant.Id,
                     restaurant.Name,
                     restaurantInfo,
                     restaurant.ContactInfo.Phone,

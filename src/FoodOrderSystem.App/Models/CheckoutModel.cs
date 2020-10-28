@@ -14,7 +14,7 @@ namespace FoodOrderSystem.App.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public string OrderType { get; set; }
-        public Guid RestaurantId { get; set; }
+        public string RestaurantId { get; set; }
         public List<CartDishInfoModel> CartDishes { get; set; }
         public string Comments { get; set; }
         
