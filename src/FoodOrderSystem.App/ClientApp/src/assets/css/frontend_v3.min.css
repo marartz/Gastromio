@@ -534,7 +534,7 @@ button {
     }
 }
 
-/* 2.1 #order-home > #landing */
+/* 2.1 #order-home > #landing
 #order-home #landing {
     background-color: #ADCCCB;
     background-image: url('../../assets/images/rough/blue.png');
@@ -805,16 +805,12 @@ button {
 }
 
 #order-home #landing .results .rest {
-    padding: 32px;
     position: static;
     width: 100%;
 }
 
-@media screen and (max-width: 768px) {
-    #order-home #landing .results .rest {
-        padding: 16px;
-        padding-top: 32px;
-    }
+#order-home #landing .results .restaurant-name:first-of-type {
+    margin-top: 32px;
 }
 
 #order-home #landing .results .restaurant-name {
@@ -822,6 +818,15 @@ button {
     font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
+    margin-left: 32px;
+    margin-right: 32px;
+}
+
+@media screen and (max-width: 768px) {
+    #order-home #landing .results .restaurant-name {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
 }
 
 #order-home #landing .results .order-type {
