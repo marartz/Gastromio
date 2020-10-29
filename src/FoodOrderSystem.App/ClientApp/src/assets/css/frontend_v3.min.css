@@ -1396,7 +1396,7 @@ button {
 }
 
 #order-restaurant #order aside #preorder-filter button::before {
-    background-image: url('../../assets/images/svg/checkbox-active.svg');
+    background-image: url('../../assets/images/svg/checkbox-unactive.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     content: " ";
@@ -1408,7 +1408,7 @@ button {
 }
 
 #order-restaurant #order aside #preorder-filter button:disabled::before {
-    background-image: url('../../assets/images/svg/checkbox-unactive.svg');
+    background-image: url('../../assets/images/svg/checkbox-active.svg');
 }
 
 /* 3.2.2 #order-restaurant > #order > #restaurants */
