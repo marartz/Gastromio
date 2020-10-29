@@ -10,7 +10,7 @@
                     <h2>Deine Bestellung bei „{{restaurant.name}}“</h2> <!-- ({{getCart().getOrderTypeText()}}) -->
                 <!--/header-->
 
-                <div id="body">
+                <div id="body" class="info">
                     <section id="infocard">
                         <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
                             <h3 class="title">Lieferadresse</h3>
@@ -85,7 +85,7 @@
                         </p>
                     </section>
                 </div>
-                <div id="body">
+                <div id="body" class="cart">
                     <section id="cart">
                         <h3 class="title">Warenkorb</h3>
                         <div id="dishes">

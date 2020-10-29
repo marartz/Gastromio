@@ -66,11 +66,18 @@
     margin-top: 137px;
     padding: 0px 80px;
     padding-left: 80px;
+    width: 100%;
 }
 
 @media only screen and (max-width: 768px) {
     #checkout #body {
         padding: 0px 16px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    #checkout #body.info {
+        margin-top: 48px;
     }
 }
 
@@ -93,6 +100,7 @@
     overflow: hidden;
     padding: 20px;
     position: relative;
+    width: 100%;
 }
 
 #checkout #body #infocard .title {
@@ -246,6 +254,13 @@
     width: 35vw;
 }
 
+@media only screen and (max-width: 992px) {
+    #checkout #body #cart {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
 #checkout #body #cart .title {
     color: #363636;
     font-family: "Apercu", sans-serif;
@@ -327,6 +342,12 @@
     font-size: 14px;
     letter-spacing: 0px;
     padding-left: 20px;
+}
+
+@media only screen and (max-width: 992px) {
+    #checkout #body #cart #dishes .dish .top .description {
+        max-width: 65%;
+    }
 }
 
 #checkout #body #cart #dishes .dish .top .remarks {
