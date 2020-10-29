@@ -986,7 +986,7 @@ button {
 
 @media only screen and (min-width: 570px) {
     #order-restaurant .wrapper {
-        margin-left: 10px;
+        margin-left: 20px;
         margin-right: 10px;
         max-width: 1280px;
         width: calc(100% - 20px);
@@ -995,14 +995,14 @@ button {
 
 @media only screen and (min-width: 1004px) {
     #order-restaurant .wrapper {
-        margin-left: auto;
+        margin-left: 20px;
         margin-right: auto;
         max-width: 1280px;
         width: 100%;
     }
 }
 
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1030px) {
     #order-restaurant .wrapper {
         margin-left: auto;
         margin-right: auto;

@@ -13,6 +13,15 @@
 
             <block-ui [delayStart]="1500">
                 <section id="order">
+
+                    <div class="mobile-filter">
+                        <button type="button" class="filtern">Filtern</button>
+                        <div class="search">
+                            <div class="icon-wrapper"><div class="icon"></div></div>
+                            <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchType($event.target.value)">
+                        </div>
+                    </div>
+
                     <div class="wrapper">
                         <div class="inner">
 
