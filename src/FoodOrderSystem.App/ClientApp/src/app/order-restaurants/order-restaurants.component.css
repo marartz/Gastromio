@@ -61,11 +61,12 @@
 
 
 
-.mobile-filter {
+.mobile-filter,
+.mobile-info {
     display: none;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 1030px) {
     .mobile-filter {
         display: inline-flex;
         height: 42px;
@@ -137,5 +138,21 @@
     .mobile-filter .search input:focus {
         outline: none;
     }
-    
+    .mobile-info {
+        display: block;
+        position: relative;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+    .mobile-info .restaurant-count {
+        color: #363636;
+        font-family: "Apercu", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.42px;
+        line-height: 32px;
+        margin-top: 14px;
+        margin-left: 20px;
+    }
 }

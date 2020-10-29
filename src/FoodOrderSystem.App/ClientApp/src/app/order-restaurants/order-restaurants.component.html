@@ -21,6 +21,12 @@
                             <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchType($event.target.value)">
                         </div>
                     </div>
+                    <div class="mobile-info">
+                        <div class="restaurant-count">
+                            <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
+                            <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
+                        </div>
+                    </div>
 
                     <div class="wrapper">
                         <div class="inner">

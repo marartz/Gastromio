@@ -9,10 +9,10 @@
     padding-top: 72px;
     position: fixed;
     width: 352px;
-    transform: translateX(calc(100% - 20px));
-    -moz-transform: translateX(calc(100% - 20px));
-    -ms-transform: translateX(calc(100% - 20px));
-    -webkit-transform: translateX(calc(100% - 20px));
+    transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
     transition: all .4s cubic-bezier(.57, .06, .05, .95);
     -moz-transition: all .4s cubic-bezier(.57, .06, .05, .95);
     -ms-transition: all .4s cubic-bezier(.57, .06, .05, .95);
@@ -58,7 +58,7 @@
 
 @media only screen and (max-width: 768px) {
     #checkout #my-order {
-        padding: 60px 20px 40px;
+        padding: 20px 20px 40px;
     }
 }
 
@@ -141,9 +141,9 @@
     font-family: "Apercu", sans-serif;
     color: #363636;
     font-size: 16px;
-    max-width: 75%;
+    max-width: 65%;
     padding-right: 10px;
-    width: 75%;
+    width: 65%;
 }
 
 #checkout #my-order #body #dishes .dish .dish-content .name span.count {
@@ -160,7 +160,7 @@
     display: -webkit-box;
     display: -webkit-flex;
     justify-content: space-between;
-    width: 25%;
+    width: 35%;
 }
 
 #checkout #my-order #body #dishes .dish .description .price {
@@ -170,6 +170,32 @@
     font-weight: 500;
     color: #363636;
 }
+
+#checkout #my-order #body #dishes .dish .description .price .edit::after {
+    background-image: url('../../assets/images/svg/edit.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    margin-left: 4px;
+}
+
+#checkout #my-order #body #dishes .dish .description .price .remove::after {
+    background-image: url('../../assets/images/svg/delete.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    margin-left: 18px;
+}
+
+
 
 #checkout #my-order #body #dishes .dish .desc {
     color: #363636;

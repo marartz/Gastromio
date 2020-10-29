@@ -116,7 +116,10 @@
                             <div class="name"><span class="count">{{cartDish.getCount()}}x</span> {{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></div>
                             <div class="description">
                                 <div></div>
-                                <div class="price">{{cartDish.getPriceText()}}&euro; <span style="margin-right: 10px; cursor: pointer;" (click)="onRemoveDishVariantFromCart(cartDish)"><i class="fas fa-trash-alt"></i></span><!-- Gericht aus Warenkorb entfernen --></div>
+                                <div class="price">{{cartDish.getPriceText()}}&euro;
+                                    <span style="margin-right: 10px; cursor: pointer;" class="edit"></span>
+                                    <span style="margin-right: 10px; cursor: pointer;" class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></span>
+                                </div>
                             </div>
                         </div>
                         <p class="desc">{{cartDish.getDish().description}}</p>

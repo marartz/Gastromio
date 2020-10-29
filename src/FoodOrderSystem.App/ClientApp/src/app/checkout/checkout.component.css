@@ -209,13 +209,12 @@
     line-height: 26px;
     margin-top: 50px;
     padding: 11px;
-    padding-left: 70px;
-    padding-right: 70px;
     text-align: center;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;;
     user-select: none;
     vertical-align: middle;
     width: unset;
+    width: 100%;
 }
 
 #checkout #content #body .conditions-container {
@@ -263,6 +262,15 @@
     margin-top: 30px;
     width: 100%;
 }
+
+#checkout #content #body #payment-method input {
+    background: #ADCCCB;
+    border: 2px solid #FFF;
+    border-radius: 23px;
+    margin-right: 8px;
+}
+
+
 
 #checkout #content #body #payment-method .payment-type {
     background-color: #fff;
@@ -343,7 +351,7 @@
 #checkout #my-order #header {
     align-items: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     position: relative;
 }
 
@@ -401,11 +409,11 @@
 }
 
 #checkout #my-order #body #dishes .dish .description .count {
-    color: #8c8e9d;
+    font-weight: 400;
 }
 
 #checkout #my-order #body #dishes .dish .description .price {
-    color: #21347b;
+    color: #363636;
     font-size: 18px;
     font-weight: 500;
     padding-left: 5px;
@@ -459,11 +467,11 @@
 
 #checkout #my-order #body #total span {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 #checkout #my-order #body #total span.bill {
-    color: #21347b;
-    font-weight: 500;
+    color: #363636;
+    font-weight: 700;
     text-align: right;
 }
