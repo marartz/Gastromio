@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderService} from '../order/order.service';
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {Router} from '@angular/router';
-import {debounceTime, distinctUntilChanged, take} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, filter, take} from "rxjs/operators";
 import {Subject} from "rxjs";
 
 @Component({
@@ -25,10 +25,18 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     public router: Router
   ) {
-    this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
+    this.searchPhraseUpdated.asObservable()
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged()
+      )
       .subscribe((value: string) => {
-        this.searchPhrase = value;
-        this.updateSearch();
+        if (value.length >= 3) {
+          this.searchPhrase = value;
+          this.updateSearch();
+        } else {
+          this.restaurants = new Array<RestaurantModel>();
+        }
       });
   }
 
