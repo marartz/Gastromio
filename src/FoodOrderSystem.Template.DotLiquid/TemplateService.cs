@@ -162,6 +162,16 @@ namespace FoodOrderSystem.Template.DotLiquid
 
         private static void AppendOrderDetails(StringBuilder sb, Order order)
         {
+            if (order.ServiceTime.HasValue)
+            {
+                sb.Append("Gewünschtes Datum / Uhrzeit: ");
+                sb.Append(order.ServiceTime.Value.ToLongDateString());
+                sb.Append(" ");
+                sb.Append(order.ServiceTime.Value.ToLongTimeString());
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+
             foreach (var orderedDish in order.CartInfo.OrderedDishes)
             {
                 sb.Append(orderedDish.Count);

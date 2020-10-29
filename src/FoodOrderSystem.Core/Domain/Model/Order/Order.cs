@@ -17,7 +17,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Order
             string paymentMethodName,
             string paymentMethodDescription,
             decimal costs,
-            decimal totalPrice 
+            decimal totalPrice,
+            DateTime? serviceTime
         )
         {
             Id = id;
@@ -29,6 +30,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Order
             PaymentMethodDescription = paymentMethodDescription;
             Costs = costs;
             TotalPrice = totalPrice;
+            ServiceTime = serviceTime;
             CreatedOn = DateTime.UtcNow;
         }
 
@@ -42,6 +44,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Order
             string paymentMethodDescription,
             decimal costs,
             decimal totalPrice,
+            DateTime? serviceTime,
             NotificationInfo customerNotificationInfo,
             NotificationInfo restaurantNotificationInfo,
             DateTime createdOn,
@@ -58,6 +61,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Order
             PaymentMethodDescription = paymentMethodDescription;
             Costs = costs;
             TotalPrice = totalPrice;
+            ServiceTime = serviceTime;
             CustomerNotificationInfo = customerNotificationInfo;
             RestaurantNotificationInfo = restaurantNotificationInfo;
             CreatedOn = createdOn;
@@ -82,6 +86,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Order
         public decimal Costs { get; }
 
         public decimal TotalPrice { get; }
+        
+        public DateTime? ServiceTime { get; }
 
         public NotificationInfo CustomerNotificationInfo { get; private set; }
 

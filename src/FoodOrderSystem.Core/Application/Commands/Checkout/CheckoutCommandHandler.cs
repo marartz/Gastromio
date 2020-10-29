@@ -203,7 +203,8 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
                 paymentMethod.Name,
                 paymentMethod.Description,
                 costs,
-                totalPrice
+                totalPrice,
+                command.ServiceTime
             );
 
             var result = order.Validate();
