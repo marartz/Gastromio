@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,9 @@ namespace FoodOrderSystem.App
                 IsTestSystem = Configuration.GetValue("IsTestSystem", true),
                 EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net")
             };
+
+            Log.Information($"EmailRecipientForTest: {configurationProvider.EmailRecipientForTest}");
+            
             services.AddSingleton<FoodOrderSystem.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
 
             var mailjetConfiguration = new Notification.Mailjet.MailjetConfiguration
