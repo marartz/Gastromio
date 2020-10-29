@@ -413,6 +413,8 @@
     user-select: none;
     white-space: nowrap;
     width: 100%;
+    position: relative;
+    z-index: 5;
 }
 
 @media screen and (max-width: 768px) {
@@ -422,7 +424,7 @@
         padding: 0px;
         margin: 0px;
         position: relative;
-        z-index: 3;
+        z-index: 4;
     }
 }
 
@@ -446,7 +448,6 @@
     margin-top: 42px;
     max-height: 36vh;
     overflow: hidden;
-    z-index: 4;
 }
 
 @media screen and (max-width: 767px) {
@@ -455,6 +456,7 @@
         margin-left: 16px;
         margin-right: 16px;
         width: unset;
+        z-index: 4;
     }
 }
 
