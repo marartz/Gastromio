@@ -7,7 +7,7 @@
                 <section id="hero">
                     <div class="wrapper">
                         <div id="text">
-                            <h1 class="name">{{restaurant.name}} <!--button class="imprint-button" (click)="openImprintModal()"></button--></h1>
+                            <h1 class="name" (click)="openImprintModal()">{{restaurant.name}}</h1>
                             <h2 class="info">
                                 {{restaurant.address.street}}, {{restaurant.address.city}}
                                 <!--ng-container *ngIf="orderType === 'pickup'">{{restaurant.address.street}}, {{restaurant.address.city}}</ng-container>

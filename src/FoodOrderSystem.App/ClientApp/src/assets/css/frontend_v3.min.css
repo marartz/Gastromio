@@ -1042,6 +1042,18 @@ button {
     margin-top: auto;
 }
 
+#order-restaurant #hero #text .name::after {
+    background-image: url('../../assets/images/svg/info.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    cursor: pointer;
+    height: 22px;
+    width: 22px;
+    position: absolute;
+    margin-left: 4px;
+}
+
 #order-restaurant #hero #text .slogan {
     color: #FFF;
     font-family: "Apercu", sans-serif;
