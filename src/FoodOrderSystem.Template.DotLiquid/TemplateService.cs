@@ -63,6 +63,19 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
             sb.AppendLine();
 
+            if (order.CartInfo.OrderType == OrderType.Pickup)
+            {
+                sb.Append("Die gewählte Bestellart ist: Abholung. Bitte hole das Essen beim Restaurant ab.");
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+            else if (order.CartInfo.OrderType == OrderType.Delivery)
+            {
+                sb.Append("Die gewählte Bestellart ist: Lieferung. Das Essen wird Dir nach Hause geliefert.");
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+            
             AppendOrderDetails(sb, order);
 
             sb.AppendLine();
@@ -117,6 +130,19 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
             sb.AppendLine();
 
+            if (order.CartInfo.OrderType == OrderType.Pickup)
+            {
+                sb.Append("Die gewählte Bestellart ist: Abholung. Der Besteller holt die Bestellung ab.");
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+            else if (order.CartInfo.OrderType == OrderType.Delivery)
+            {
+                sb.Append("Die gewählte Bestellart ist: Lieferung. Bitte dem Besteller die Bestellung zur gewünschten Adresse liefern.");
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+            
             AppendOrderDetails(sb, order);
 
             sb.AppendLine();
