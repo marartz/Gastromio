@@ -422,7 +422,7 @@
         padding: 0px;
         margin: 0px;
         position: relative;
-        z-index: -1;
+        z-index: 3;
     }
 }
 
@@ -446,7 +446,7 @@
     margin-top: 42px;
     max-height: 36vh;
     overflow: hidden;
-    z-index: -1;
+    z-index: 4;
 }
 
 @media screen and (max-width: 767px) {
