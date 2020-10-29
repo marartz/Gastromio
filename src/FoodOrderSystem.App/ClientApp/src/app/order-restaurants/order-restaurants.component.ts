@@ -22,6 +22,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   cuisines: CuisineModel[];
 
+  showMobileFilterDetails: boolean;
+
   selectedOpeningHourFilter: Date;
   selectedCuisineFilter: string;
   showClosedRestaurants: boolean;
@@ -67,6 +69,14 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     if (this.updateSearchSubscription !== undefined) {
       this.updateSearchSubscription.unsubscribe();
     }
+  }
+
+  onToggleMobileFilterDetails(): void {
+    this.showMobileFilterDetails = !this.showMobileFilterDetails;
+  }
+
+  onHideMobileFilterDetails(): void {
+    this.showMobileFilterDetails = false;
   }
 
   openOpeningHourFilter(): void {

@@ -15,12 +15,48 @@
                 <section id="order">
 
                     <div class="mobile-filter">
-                        <button type="button" class="filtern">Filtern</button>
+                        <button type="button" class="filtern" (click)="onToggleMobileFilterDetails()">Filtern</button>
                         <div class="search">
                             <div class="icon-wrapper"><div class="icon"></div></div>
                             <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchType($event.target.value)">
                         </div>
                     </div>
+                    <ng-container *ngIf="showMobileFilterDetails">
+                        <div class="mobile-filter-details">
+                            <div><button (click)="onHideMobileFilterDetails()">Close</button></div>
+                            <div id="mobile-ordertype-filter">
+                                <p class="title">Wie kommt das Essen zu dir?</p>
+                                <div class="filter">
+                                    <ng-container *ngIf="orderType === 'pickup'">
+                                        <button type="button" class="switch active"><span>Abholung</span></button>
+                                        <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                    </ng-container>
+                                    <ng-container *ngIf="orderType === 'delivery'">
+                                        <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+                                        <button type="button" class="switch active"><span>Lieferung</span></button>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div id="mobile-opening-hour-filter">
+                                <p class="title">Für wann möchtest du bestellen?</p>
+                                <button type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
+                            </div>
+                            <div id="mobile-cuisine-filter">
+                                <p class="title">Filter</p>
+                                <div class="cuisine-container">
+                                    <div class="cuisine active" [class.active]="isCuisineSelected(undefined)">
+                                        <button type="button" (click)="selectCuisine(undefined)">Alle anzeigen</button>
+                                    </div>
+                                    <div class="cuisine" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)">
+                                        <button type="button" (click)="selectCuisine(cuisine)">{{cuisine.name}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="mobile-preorder-filter">
+                                <button type="button" [disabled]="!showClosedRestaurants ? 'disabled' : null" (click)="onJustShowOpenRestaurants()">Nur geöffnete Restaurants anzeigen</button>
+                            </div>
+                        </div>
+                    </ng-container>
                     <div class="mobile-info">
                         <div class="restaurant-count">
                             <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
