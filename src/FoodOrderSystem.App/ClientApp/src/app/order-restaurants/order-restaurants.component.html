@@ -26,12 +26,12 @@
                                         <p class="title">Wie kommt das Essen zu dir?</p>
                                         <div class="filter">
                                             <ng-container *ngIf="orderType === 'pickup'">
-                                                <button type="button" class="switch active">Abholung</button>
+                                                <button type="button" class="switch active"><span>Abholung</span></button>
                                                 <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
                                             </ng-container>
                                             <ng-container *ngIf="orderType === 'delivery'">
                                                 <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
-                                                <button type="button" class="switch active">Lieferung</button>
+                                                <button type="button" class="switch active"><span>Lieferung</span></button>
                                             </ng-container>
                                         </div>
                                     </div>
