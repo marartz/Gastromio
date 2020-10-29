@@ -20,9 +20,10 @@
                                         <div *ngFor="let restaurant of restaurants">
                                             <span class="restaurant-name">{{restaurant.name}}</span>
                                             <div class="order-type">
-                                                <ng-container *ngIf="restaurant.pickupInfo"><button (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
-                                                <ng-container *ngIf="restaurant.deliveryInfo"><button (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
+                                                <ng-container *ngIf="restaurant.pickupInfo"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
+                                                <ng-container *ngIf="restaurant.deliveryInfo"><button type="button" (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
                                             </div>
+                                            <div class="border"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +98,7 @@
                         <div class="text">
                             <img src="../../assets/images/svg/roller.svg" alt="">
                             <h3>100% des Geldes geht<br />an den Gastronomen</h3>
-                            <p>Andere Lieferdienste kassieren<br />eine Gebühr für jede Bestellung,<br />die ein Lokal über den Dienst erhält.<br /><br />In der Corona Krise ist das besonders hart. Gastromio<br />ist eine lokale und für den Gastromonen kostenlose<br />Initiative der Corona Hilfe Bocholt.</p>
+                            <p>Andere Lieferdienste kassieren<br />eine Gebühr für jede Bestellung,<br />die ein Lokal über den Dienst erhält.<br /><br />In der Corona-Krise ist das besonders hart.<br />Gastromio ist eine lokale und für den Gastromonen<br />kostenlose Initiative der Corona Hilfe Bocholt.</p>
                         </div>
                     </div>
                 </div>
