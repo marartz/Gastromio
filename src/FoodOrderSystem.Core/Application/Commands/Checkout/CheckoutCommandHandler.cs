@@ -62,24 +62,6 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             var restaurantInfo =
                 $"{restaurant.Name} ({restaurant.Address?.Street}, {restaurant.Address?.ZipCode} {restaurant.Address?.City})";
 
-            switch (command.OrderType)
-            {
-                case OrderType.Pickup:
-                    if (restaurant.PickupInfo == null || !restaurant.PickupInfo.Enabled)
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-                    break;
-                case OrderType.Delivery:
-                    if (restaurant.DeliveryInfo == null || !restaurant.DeliveryInfo.Enabled)
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-                    break;
-                case OrderType.Reservation:
-                    if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             decimal totalPrice = 0;
 
             var dishDict = new Dictionary<Guid, Dish>();
@@ -111,48 +93,27 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
                 totalPrice += cartDish.Count * variant.Price;
             }
 
-            if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MinimumOrderValue.HasValue &&
-                totalPrice < restaurant.PickupInfo.MinimumOrderValue.Value)
-            {
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-            }
-            
-            if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MaximumOrderValue.HasValue &&
-                totalPrice > restaurant.PickupInfo.MaximumOrderValue.Value)
-            {
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-            }
-            
-            if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MinimumOrderValue.HasValue &&
-                totalPrice < restaurant.DeliveryInfo.MinimumOrderValue.Value)
-            {
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-            }
-            
-            if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MaximumOrderValue.HasValue &&
-                totalPrice > restaurant.DeliveryInfo.MaximumOrderValue.Value)
-            {
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-            }
-            
             switch (command.OrderType)
             {
                 case OrderType.Pickup:
-                    if (restaurant.PickupInfo == null || !restaurant.PickupInfo.Enabled)
+                    if (!ValidateOrderTypePickup(command, restaurant, totalPrice))
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                     break;
                 case OrderType.Delivery:
-                    if (restaurant.DeliveryInfo == null || !restaurant.DeliveryInfo.Enabled)
+                    if (!ValidateOrderTypeDelivery(command, restaurant, totalPrice))
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                     break;
                 case OrderType.Reservation:
-                    if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
+                    if (!ValidateOrderTypeReservation(restaurant))
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
+            var serviceTime = command.ServiceTime ?? DateTime.Now;
+            if (!restaurant.IsOpen(serviceTime))
+                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
 
             var paymentMethod =
                 await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId, cancellationToken);
@@ -207,14 +168,101 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
                 command.ServiceTime
             );
 
-            var result = order.Validate();
-            if (result.IsFailure)
-                return result.Cast<OrderDTO>();
-
             await orderRepository.StoreAsync(order, cancellationToken);
-            
+
             var viewModel = new OrderDTO(order, paymentMethod);
             return SuccessResult<OrderDTO>.Create(viewModel);
+        }
+
+        private bool ValidateOrderTypePickup(CheckoutCommand command, Restaurant restaurant, decimal totalPrice)
+        {
+            if (restaurant.PickupInfo == null || !restaurant.PickupInfo.Enabled)
+            {
+                return false;
+            }
+
+            if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MinimumOrderValue.HasValue &&
+                totalPrice < restaurant.PickupInfo.MinimumOrderValue.Value)
+            {
+                return false;
+            }
+
+            if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MaximumOrderValue.HasValue &&
+                totalPrice > restaurant.PickupInfo.MaximumOrderValue.Value)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Email))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Phone))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateOrderTypeDelivery(CheckoutCommand command, Restaurant restaurant, decimal totalPrice)
+        {
+            if (restaurant.DeliveryInfo == null || !restaurant.DeliveryInfo.Enabled)
+            {
+                return false;
+            }
+
+            if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MinimumOrderValue.HasValue &&
+                totalPrice < restaurant.DeliveryInfo.MinimumOrderValue.Value)
+            {
+                return false;
+            }
+
+            if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MaximumOrderValue.HasValue &&
+                totalPrice > restaurant.DeliveryInfo.MaximumOrderValue.Value)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.GivenName))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.LastName))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Street))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.ZipCode))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Email))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Phone))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateOrderTypeReservation(Restaurant restaurant)
+        {
+            if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
+                return false;
+            return true;
         }
     }
 }

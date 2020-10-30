@@ -15,7 +15,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         private ISet<CuisineId> cuisines;
         private ISet<PaymentMethodId> paymentMethods;
         private ISet<UserId> administrators;
-        
+
         public Restaurant(
             RestaurantId id,
             DateTime createdOn,
@@ -86,25 +86,25 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         public RestaurantId Id { get; }
 
         public string Name { get; private set; }
-        
+
         public Address Address { get; private set; }
-        
+
         public ContactInfo ContactInfo { get; private set; }
-        
+
         public IReadOnlyCollection<OpeningPeriod> OpeningHours =>
             openingHours != null ? new ReadOnlyCollection<OpeningPeriod>(openingHours) : null;
-        
+
         public PickupInfo PickupInfo { get; private set; }
-        
+
         public DeliveryInfo DeliveryInfo { get; private set; }
-        
+
         public ReservationInfo ReservationInfo { get; private set; }
-        
+
         public string HygienicHandling { get; private set; }
-        
+
         public IReadOnlyCollection<CuisineId> Cuisines =>
             cuisines != null ? new ReadOnlyCollection<CuisineId>(cuisines.ToList()) : null;
-        
+
         public IReadOnlyCollection<PaymentMethodId> PaymentMethods =>
             paymentMethods != null ? new ReadOnlyCollection<PaymentMethodId>(paymentMethods.ToList()) : null;
 
@@ -112,19 +112,19 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             administrators != null ? new ReadOnlyCollection<UserId>(administrators.ToList()) : null;
 
         public string ImportId { get; private set; }
-        
+
         public bool IsActive { get; private set; }
 
         public bool NeedsSupport { get; private set; }
 
         public DateTime CreatedOn { get; }
-        
+
         public UserId CreatedBy { get; }
-        
+
         public DateTime UpdatedOn { get; private set; }
-        
+
         public UserId UpdatedBy { get; private set; }
-        
+
         public Result<bool> ChangeName(string name, UserId changedBy)
         {
             if (string.IsNullOrEmpty(name))
@@ -135,7 +135,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             Name = name;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -149,14 +149,17 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (address.Street.Length > 100)
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(address.Street), 100);
             if (!Validators.IsValidStreet(address.Street))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.Street), address.Street);
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.Street),
+                    address.Street);
 
             if (string.IsNullOrEmpty(address.ZipCode))
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.ZipCode));
             if (address.ZipCode.Length != 5 || address.ZipCode.Any(en => !char.IsDigit(en)))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode), address.ZipCode);
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode),
+                    address.ZipCode);
             if (!Validators.IsValidZipCode(address.ZipCode))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode), address.ZipCode);
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode),
+                    address.ZipCode);
 
             if (string.IsNullOrEmpty(address.City))
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.City));
@@ -175,27 +178,64 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (string.IsNullOrEmpty(contactInfo.Phone))
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(contactInfo.Phone));
             if (!Validators.IsValidPhoneNumber(contactInfo.Phone))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Phone), contactInfo.Phone);
-            
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Phone),
+                    contactInfo.Phone);
+
             if (!string.IsNullOrEmpty(contactInfo.Fax) && !Validators.IsValidPhoneNumber(contactInfo.Fax))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Fax), contactInfo.Fax);
-            
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Fax),
+                    contactInfo.Fax);
+
             if (!string.IsNullOrEmpty(contactInfo.WebSite) && !Validators.IsValidWebsite(contactInfo.WebSite))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.WebSite), contactInfo.WebSite);
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.WebSite),
+                    contactInfo.WebSite);
 
             if (string.IsNullOrEmpty(contactInfo.ResponsiblePerson))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(contactInfo.ResponsiblePerson));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty,
+                    nameof(contactInfo.ResponsiblePerson));
 
             if (string.IsNullOrEmpty(contactInfo.EmailAddress))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(contactInfo.EmailAddress));
+                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty,
+                    nameof(contactInfo.EmailAddress));
             if (!Validators.IsValidEmailAddress(contactInfo.EmailAddress))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.EmailAddress), contactInfo.EmailAddress);
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.EmailAddress),
+                    contactInfo.EmailAddress);
 
             ContactInfo = contactInfo;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
+        }
+
+        public bool IsOpen(DateTime date)
+        {
+            if (openingHours == null)
+            {
+                return false;
+            }
+            
+            var dayOfWeek = ((int)date.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            if (dayOfWeek < 0)
+            {
+                dayOfWeek += 7;
+            }
+
+            var time = date.Hour * 60 + date.Minute;
+            if (date.Hour < 4)
+            {
+                dayOfWeek = (dayOfWeek - 1) % 7;
+                if (dayOfWeek < 0)
+                {
+                    dayOfWeek += 7;
+                }
+
+                time += 24 * 60;
+            }
+
+            var isOpen = openingHours.Any(en =>
+                en.DayOfWeek == dayOfWeek && en.Start.TotalMinutes <= time && time <= en.End.TotalMinutes);
+
+            return isOpen;
         }
 
         public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
@@ -252,11 +292,11 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             {
                 return SuccessResult<bool>.Create(true);
             }
-            
+
             openingHours = openingHours.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -272,12 +312,12 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAveragePickupTimeTooLow);
             if (pickupInfo.AverageTime.HasValue && pickupInfo.AverageTime.Value > 120)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAveragePickupTimeTooHigh);
-            
+
             if (pickupInfo.MinimumOrderValue.HasValue && pickupInfo.MinimumOrderValue < 0)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMinimumPickupOrderValueTooLow);
             if (pickupInfo.MinimumOrderValue.HasValue && pickupInfo.MinimumOrderValue > 50)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMinimumPickupOrderValueTooHigh);
-            
+
             if (pickupInfo.MaximumOrderValue.HasValue && pickupInfo.MaximumOrderValue < 0)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMaximumPickupOrderValueTooLow);
 
@@ -300,12 +340,12 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAverageDeliveryTimeTooLow);
             if (deliveryInfo.AverageTime.HasValue && deliveryInfo.AverageTime.Value > 120)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantAverageDeliveryTimeTooHigh);
-            
+
             if (deliveryInfo.MinimumOrderValue.HasValue && deliveryInfo.MinimumOrderValue < 0)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMinimumDeliveryOrderValueTooLow);
             if (deliveryInfo.MinimumOrderValue.HasValue && deliveryInfo.MinimumOrderValue > 50)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMinimumDeliveryOrderValueTooHigh);
-            
+
             if (deliveryInfo.MaximumOrderValue.HasValue && deliveryInfo.MaximumOrderValue < 0)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMaximumDeliveryOrderValueTooLow);
 

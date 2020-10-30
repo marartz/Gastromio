@@ -77,10 +77,13 @@ export class RestaurantModel {
 
   public needsSupport: boolean;
 
-  isOpen(date: Date): boolean {
+  public isOpen(date: Date): boolean {
     if (!this.openingHours) {
       return false;
     }
+
+    if (date === undefined)
+      date = new Date();
 
     try {
       let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday

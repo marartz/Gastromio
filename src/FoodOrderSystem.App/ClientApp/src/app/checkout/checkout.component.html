@@ -6,87 +6,205 @@
 
             <header class="checkout-header" *ngIf="initialized">
                 <h1>Kasse</h1>
-                <h2>Deine Bestellung bei „{{restaurant.name}}“</h2> <!-- ({{getCart().getOrderTypeText()}}) -->
+                <h2>Deine Bestellung bei „{{restaurant.name}}“</h2>
                 <h3>{{getCart().getOrderTypeText()}} &ndash; etwa {{getCart().getAverageTime()}} Minuten</h3>
             </header>
 
             <div id="checkout" *ngIf="initialized">
                 <div id="body" class="info">
-                    <section id="infocard">
-                        <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
+
+                    <!-- Pickup -->
+
+                    <ng-container *ngIf="getCart().isPickup()">
+                        <section id="infocard">
+                            <h3 class="title">Deine Daten</h3>
+                            <h4 class="subtitle">Wie kann das Restaurant Dich kontaktieren?</h4>
+
+                            <label for="email">E-Mail Adresse</label>
+                            <input autocomplete="off" type="email" id="email" [(ngModel)]="email"
+                                   [ngClass]="{ 'is-invalid': submitted && getEmailError() }"
+                                   placeholder="bernd@beispiel.de"/>
+                            <div class="invalid-feedback" *ngIf="submitted && getEmailError()">
+                                <div>{{getEmailError()}}</div>
+                            </div>
+
+                            <label for="street">Telefonnummer</label>
+                            <input autocomplete="off" type="string" id="phone" [(ngModel)]="phone"
+                                   [ngClass]="{ 'is-invalid': submitted && getPhoneError() }"
+                                   placeholder="0170 12345678"/>
+                            <div class="invalid-feedback" *ngIf="submitted && getPhoneError()">
+                                <div>{{getPhoneError()}}</div>
+                            </div>
+
+                            <label for="comments">Zusatz (optional)</label>
+                            <input autocomplete="off" type="text" maxlength="300" [(ngModel)]="comments"
+                                   placeholder="z.B. „Statt klingeln, bitte kurz anrufen.“" id="comments"/>
+                        </section>
+                        <section id="infocard">
+                            <h3 class="title">Abholzeit</h3>
+
+                            <h4 class="subtitle">
+                                <span>Wann möchtest du dein Essen abholen? </span>
+                                <br/><br/>
+                                <span *ngIf="restaurant.isOpen(undefined)">{{restaurant.name}} hat heute für dich
+                                    geöffnet: {{restaurant.openingHoursTodayText}}.</span>
+                                <span *ngIf="!restaurant.isOpen(undefined)">{{restaurant.name}} ist im Moment
+                                    geschlossen.</span>
+                                <br/><br/>
+                                <span>Öffnungszeiten: {{restaurant.openingHoursText}}</span>
+                            </h4>
+
+                            <button *ngIf="restaurant.isOpen(undefined)" type="button" class="pill"
+                                    [class.active]="!serviceTime"
+                                    (click)="onAsFastAsPossible()">
+                                Schnellstmöglich
+                            </button>
+
+                            <button type="button" class="pill" [class.active]="serviceTime"
+                                    (click)="onSelectServiceTime()">
+                                <span *ngIf="!serviceTime">Datum/Uhrzeit wählen</span>
+                                <span *ngIf="serviceTime">{{getServiceTimeText()}}</span>
+                            </button>
+
+                            <div style="color: darkred;" *ngIf="serviceTime && getServiceTimeError()">
+                                <div>{{getServiceTimeError()}}</div>
+                            </div>
+                        </section>
+                    </ng-container>
+
+                    <!-- Delivery -->
+
+                    <ng-container *ngIf="getCart().isDelivery()">
+                        <section id="infocard">
                             <h3 class="title">Lieferadresse</h3>
                             <h4 class="subtitle">Wohin soll Deine Bestellung geliefert werden?</h4>
 
                             <div class="vorname-nachname">
                                 <div class="vorname">
                                     <label for="givenName">Vorname</label>
-                                    <input autocomplete="off" type="text" id="givenName" formControlName="givenName" [ngClass]="{ 'is-invalid': submitted && f.givenName.errors }" placeholder="Bernd" />
-                                    <div class="invalid-feedback" *ngIf="submitted && f.givenName.errors"><div *ngIf="f.givenName.errors.required">Bitte geben deinen Vornamen an.</div></div>
+                                    <input autocomplete="off" type="text" id="givenName" [(ngModel)]="givenName"
+                                           [ngClass]="{ 'is-invalid': submitted && getGivenNameError() }"
+                                           placeholder="Bernd"/>
+                                    <div class="invalid-feedback" *ngIf="submitted && getGivenNameError()">
+                                        <div>{{getGivenNameError()}}</div>
+                                    </div>
                                 </div>
                                 <div class="nachname">
                                     <label for="lastName">Nachname</label>
-                                    <input autocomplete="off" type="text" id="lastName" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" placeholder="Mustermann" />
-                                    <div class="invalid-feedback" *ngIf="submitted && f.lastName.errors"><div *ngIf="f.lastName.errors.required">Bitte geben deinen Nachnamen an.</div></div>
+                                    <input autocomplete="off" type="text" id="lastName" [(ngModel)]="lastName"
+                                           [ngClass]="{ 'is-invalid': submitted && getLastNameError() }"
+                                           placeholder="Mustermann"/>
+                                    <div class="invalid-feedback" *ngIf="submitted && getLastNameError()">
+                                        <div>{{getLastNameError()}}</div>
+                                    </div>
                                 </div>
                             </div>
 
                             <label for="street">Straße</label>
-                            <input autocomplete="off" type="text" id="street" formControlName="street" [ngClass]="{ 'is-invalid': submitted && f.street.errors }" placeholder="z.B. Bahnhofstr. 1a" />
-                            <div class="invalid-feedback" *ngIf="submitted && f.street.errors"><div *ngIf="f.street.errors.required">Bitte gebe eine Lieferadresse an.</div></div>
+                            <input autocomplete="off" type="text" id="street" [(ngModel)]="street"
+                                   [ngClass]="{ 'is-invalid': submitted && getStreetError() }"
+                                   placeholder="z.B. Bahnhofstr. 1a"/>
+                            <div class="invalid-feedback" *ngIf="submitted && getStreetError()">
+                                <div>{{getStreetError()}}</div>
+                            </div>
 
                             <div class="plz-city">
                                 <div class="plz">
                                     <label for="zipCode">PLZ</label>
-                                    <input autocomplete="off" type="number" maxlength="5" id="zipCode" formControlName="zipCode" [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" placeholder="46395" />
-                                    <div class="invalid-feedback" *ngIf="submitted && f.zipCode.errors"><div *ngIf="f.zipCode.errors.required">Bitte gebe eine Postleitzahl an.</div></div>
+                                    <input autocomplete="off" type="number" maxlength="5" id="zipCode"
+                                           [(ngModel)]="zipCode"
+                                           [ngClass]="{ 'is-invalid': submitted && getZipCodeError() }"
+                                           placeholder="46395"/>
+                                    <div class="invalid-feedback" *ngIf="submitted && getZipCodeError()">
+                                        <div>{{getZipCodeError()}}</div>
+                                    </div>
                                 </div>
                                 <div class="city">
                                     <label for="city">Stadt</label>
-                                    <input autocomplete="off" type="text" id="city" formControlName="city" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" placeholder="Bocholt" />
-                                    <div class="invalid-feedback" *ngIf="submitted && f.city.errors"><div *ngIf="f.city.errors.required">Bitte gebe eine Stadt an.</div></div>
+                                    <input autocomplete="off" type="text" id="city" [(ngModel)]="city"
+                                           [ngClass]="{ 'is-invalid': submitted && getCityError() }"
+                                           placeholder="Bocholt"/>
+                                    <div class="invalid-feedback" *ngIf="submitted && getCityError()">
+                                        <div>{{getCityError()}}</div>
+                                    </div>
                                 </div>
                             </div>
 
                             <label for="email">E-Mail Adresse</label>
-                            <input autocomplete="off" type="email" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="bernd@beispiel.de" />
-                            <div class="invalid-feedback" *ngIf="submitted && f.email.errors">
-                                <span *ngIf="f.email.errors.required">Bitte gebe deine E-Mail Adresse an.</span>
-                                <span *ngIf="f.email.errors.pattern" style="color: red;">Bitte gebe eine gültige E-Mail Adresse an.</span>
+                            <input autocomplete="off" type="email" id="email" [(ngModel)]="email"
+                                   [ngClass]="{ 'is-invalid': submitted && getEmailError() }"
+                                   placeholder="bernd@beispiel.de"/>
+                            <div class="invalid-feedback" *ngIf="submitted && getEmailError()">
+                                <div>{{getEmailError()}}</div>
                             </div>
 
                             <label for="street">Telefonnummer</label>
-                            <input autocomplete="off" type="string" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" placeholder="0170 12345678" />
-                            <div class="invalid-feedback" *ngIf="submitted && f.phone.errors"><div *ngIf="f.phone.errors.required">Bitte gebe deine Telefonnummer an.</div></div>
+                            <input autocomplete="off" type="string" id="phone" [(ngModel)]="phone"
+                                   [ngClass]="{ 'is-invalid': submitted && getPhoneError() }"
+                                   placeholder="0170 12345678"/>
+                            <div class="invalid-feedback" *ngIf="submitted && getPhoneError()">
+                                <div>{{getPhoneError()}}</div>
+                            </div>
 
                             <label for="comments">Zusatz (optional)</label>
-                            <input autocomplete="off" type="text" maxlength="300" placeholder="z.B. „Statt klingeln, bitte kurz anrufen.“" id="comments" formControlName="comments" />
-                        </form>
-                    </section>
-                    <section id="infocard">
-                        <h3 class="title">Lieferzeit</h3>
-                        <h4 class="subtitle">Wann möchtest du dein Essen erhalten? {{restaurant.name}} hat heute von XX:XX Uhr bis XX:XX Uhr für dich geöffnet.</h4>
-                    
-                        <button type="button" class="pill active">Aktiv</button>
-                        <button type="button" class="pill">Inaktiv</button>
+                            <input autocomplete="off" type="text" maxlength="300" [(ngModel)]="comments"
+                                   placeholder="z.B. „Statt klingeln, bitte kurz anrufen.“" id="comments"/>
+                        </section>
+                        <section id="infocard">
+                            <h3 class="title">Lieferzeit</h3>
 
-                    </section>
+                            <h4 class="subtitle">
+                                <span>Wann möchtest du dein Essen erhalten? </span>
+                                <span *ngIf="restaurant.isOpen(undefined)">{{restaurant.name}} hat heute für dich
+                                    geöffnet: {{restaurant.openingHoursTodayText}}.</span>
+                                <span *ngIf="!restaurant.isOpen(undefined)">{{restaurant.name}} ist im Moment
+                                    geschlossen.</span>
+                                <br/><br/>
+                                <span>Öffnungszeiten: {{restaurant.openingHoursText}}</span>
+                            </h4>
+
+                            <button *ngIf="restaurant.isOpen(undefined)" type="button" class="pill"
+                                    [class.active]="!serviceTime"
+                                    (click)="onAsFastAsPossible()">
+                                Schnellstmöglich
+                            </button>
+
+                            <button type="button" class="pill" [class.active]="serviceTime"
+                                    (click)="onSelectServiceTime()">
+                                <span *ngIf="!serviceTime">Datum/Uhrzeit wählen</span>
+                                <span *ngIf="serviceTime">{{getServiceTimeText()}}</span>
+                            </button>
+
+                            <div style="color: darkred;" *ngIf="serviceTime && getServiceTimeError()">
+                                <div>{{getServiceTimeError()}}</div>
+                            </div>
+                        </section>
+                    </ng-container>
+
                     <section id="infocard">
-                        <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
-                            <h3 class="title">Zahlungsmethode</h3>
-                            <h4 class="subtitle">Wie möchtest du bezahlen? Weitere Zahlungsarten in Bearbeitung und werden in Zukunft folgen.</h4>
-                            <ng-container *ngFor="let paymentMethod of restaurant.paymentMethods">
-                                <input type="radio" id="{{paymentMethod.id}}" name="paymentMethodId" formControlName="paymentMethodId" value="{{paymentMethod.id}}">
-                                <label for="{{paymentMethod.id}}">{{paymentMethod.name}}</label>
-                            </ng-container>
-                            <div class="invalid-feedback" *ngIf="submitted && f.paymentMethodId.errors"><div *ngIf="f.paymentMethodId.errors.required">Bitte wähle eine Zahlungsmethode aus.</div></div>
-                        </form>
+                        <h3 class="title">Zahlungsmethode</h3>
+                        <h4 class="subtitle">Wie möchtest du bezahlen? Weitere Zahlungsarten in Bearbeitung und
+                            werden in Zukunft folgen.</h4>
+                        <ng-container *ngFor="let paymentMethod of restaurant.paymentMethods">
+                            <button type="button" class="pill" [class.active]="paymentMethodId === paymentMethod.id"
+                                    (click)="onSelectPaymentMethod(paymentMethod)">{{paymentMethod.name}}</button>
+                        </ng-container>
+                        <div style="color: darkred;" *ngIf="submitted && getPaymentError()">
+                            <div>{{getPaymentError()}}</div>
+                        </div>
                     </section>
-                    <button type="submit" class="confirm-purchase">Kostenpflichtig bestellen</button>
+                    <div style="color: darkred;" *ngIf="submitted && getCartError()">
+                        <div>{{getCartError()}}</div>
+                    </div>
+                    <button class="confirm-purchase" (click)="onCheckout()">Kostenpflichtig bestellen</button>
                     <section id="disclaimer">
                         <p>
-                            Mit dem Kauf stimmst Du unserer <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzerklärung</a> zu.<br /><br />
-                            Bitte beachte: Die Speisen werden von „{{restaurant.name}}“ verkauft, Gastromio dient ausschließlich als Vermittler.<br /><br />
-                            Mir ist bekannt, dass ich mit Klick auf "Kostenpflichtig bestellen" mein Widerrufsrecht verliere.
+                            Mit dem Kauf stimmst Du unserer <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzerklärung</a>
+                            zu.<br/><br/>
+                            Bitte beachte: Die Speisen werden von „{{restaurant.name}}“ verkauft, Gastromio dient
+                            ausschließlich als Vermittler.<br/><br/>
+                            Mir ist bekannt, dass ich mit Klick auf "Kostenpflichtig bestellen" mein Widerrufsrecht
+                            verliere.
                         </p>
                     </section>
                 </div>
@@ -97,12 +215,15 @@
                             <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
                                 <div class="top">
                                     <span class="count">{{cartDish.getCount()}}x</span>
-                                    <span class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></span>
+                                    <span class="name">{{cartDish.getDish().name}} <span
+                                        *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}}
+                                        )</span></span>
                                     <span class="price">{{cartDish.getPriceText()}}&euro;</span>
                                     <button class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></button>
                                 </div>
                                 <div class="top">
-                                    <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getRemarks()}}</span>
+                                    <span class="description">{{cartDish.getDish().description}}
+                                        <br/>{{cartDish.getRemarks()}}</span>
                                 </div>
                             </div>
                         </div>
@@ -115,9 +236,10 @@
                                 <span class="fee-title">Mindestbestellwert</span>
                                 <span class="fee-price">{{getCart().getMinimumOrderValueText()}} &euro;</span>
                             </div>
-                            <div class="costs">
+                            <div class="costs" *ngIf="getCart().isDelivery()">
                                 <span class="fee-title">Lieferkosten</span>
-                                <span class="fee-price" *ngIf="getCart().getCosts() !== 0">{{getCart().getCostsText()}} &euro;</span>
+                                <span class="fee-price" *ngIf="getCart().getCosts() !== 0">{{getCart().getCostsText()}}
+                                    &euro;</span>
                                 <span class="fee-price" *ngIf="getCart().getCosts() == 0">Gratis</span>
                             </div>
                             <div class="total">
@@ -127,7 +249,6 @@
                         </div>
                     </section>
                 </div>
-
 
 
                 <!--

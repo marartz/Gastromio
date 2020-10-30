@@ -98,6 +98,11 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostOrder([FromBody] CheckoutModel checkoutModel)
         {
+            if (checkoutModel.ServiceTime.HasValue)
+            {
+                checkoutModel.ServiceTime = checkoutModel.ServiceTime.Value.ToLocalTime();
+            }
+            
             var command = new CheckoutCommand(
                 checkoutModel.GivenName,
                 checkoutModel.LastName,

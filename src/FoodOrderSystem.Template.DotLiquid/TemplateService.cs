@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using DotLiquid;
-using DotLiquid.NamingConventions;
+﻿using System.Text;
 using FoodOrderSystem.Core.Application.Ports.Template;
 using FoodOrderSystem.Core.Domain.Model.Order;
 
@@ -63,21 +58,21 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
             sb.AppendLine();
 
+            AppendOrderDetails(sb, order);
+
             if (order.CartInfo.OrderType == OrderType.Pickup)
             {
                 sb.Append("Die gewählte Bestellart ist: Abholung. Bitte hole das Essen beim Restaurant ab.");
-                sb.AppendLine();
                 sb.AppendLine();
             }
             else if (order.CartInfo.OrderType == OrderType.Delivery)
             {
                 sb.Append("Die gewählte Bestellart ist: Lieferung. Das Essen wird Dir nach Hause geliefert.");
                 sb.AppendLine();
-                sb.AppendLine();
             }
             
-            AppendOrderDetails(sb, order);
-
+            AppendServiceTime(sb, order);
+            
             sb.AppendLine();
 
             sb.AppendLine("Dein Gastromio-Team");
@@ -130,28 +125,32 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
             sb.AppendLine();
 
+            AppendOrderDetails(sb, order);
+
             if (order.CartInfo.OrderType == OrderType.Pickup)
             {
                 sb.Append("Die gewählte Bestellart ist: Abholung. Der Besteller holt die Bestellung ab.");
-                sb.AppendLine();
                 sb.AppendLine();
             }
             else if (order.CartInfo.OrderType == OrderType.Delivery)
             {
                 sb.Append("Die gewählte Bestellart ist: Lieferung. Bitte dem Besteller die Bestellung zur gewünschten Adresse liefern.");
                 sb.AppendLine();
-                sb.AppendLine();
             }
             
-            AppendOrderDetails(sb, order);
-
+            AppendServiceTime(sb, order);
+            
             sb.AppendLine();
 
             sb.AppendLine("Dein Gastromio-Team");
 
-            var customerInfo =
-                $"{order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
-
+            var customerInfo = order.CartInfo.OrderType switch
+            {
+                OrderType.Delivery =>
+                    $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})",
+                _ => $"({order.CustomerInfo.Email} {order.CustomerInfo.Phone})"
+            };
+                
             return new EmailData
             {
                 Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
@@ -162,16 +161,6 @@ namespace FoodOrderSystem.Template.DotLiquid
 
         private static void AppendOrderDetails(StringBuilder sb, Order order)
         {
-            if (order.ServiceTime.HasValue)
-            {
-                sb.Append("Gewünschtes Datum / Uhrzeit: ");
-                sb.Append(order.ServiceTime.Value.ToLongDateString());
-                sb.Append(" ");
-                sb.Append(order.ServiceTime.Value.ToLongTimeString());
-                sb.AppendLine();
-                sb.AppendLine();
-            }
-
             foreach (var orderedDish in order.CartInfo.OrderedDishes)
             {
                 sb.Append(orderedDish.Count);
@@ -226,24 +215,52 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.Append("Bestelldetails:");
             sb.AppendLine();
 
-            sb.Append(order.CustomerInfo.GivenName);
-            sb.Append(" ");
-            sb.Append(order.CustomerInfo.LastName);
-            sb.AppendLine();
+            if (order.CartInfo.OrderType == OrderType.Delivery)
+            {
+                sb.Append(order.CustomerInfo.GivenName);
+                sb.Append(" ");
+                sb.Append(order.CustomerInfo.LastName);
+                sb.AppendLine();
 
-            sb.AppendLine(order.CustomerInfo.Street);
-            sb.Append(order.CustomerInfo.ZipCode);
-            sb.Append(" ");
-            sb.Append(order.CustomerInfo.City);
-            sb.AppendLine();
+                sb.AppendLine(order.CustomerInfo.Street);
+                sb.Append(order.CustomerInfo.ZipCode);
+                sb.Append(" ");
+                sb.Append(order.CustomerInfo.City);
+                sb.AppendLine();
+            }
 
-            sb.AppendLine();
-
+            sb.Append("Telefonnummer: ");
             sb.Append(order.CustomerInfo.Phone);
             sb.AppendLine();
 
+            sb.Append("E-Mail Adresse: ");
             sb.Append(order.CustomerInfo.Email);
             sb.AppendLine();
+
+            if (!string.IsNullOrWhiteSpace(order.CustomerInfo.AddAddressInfo))
+            {
+                sb.Append("Zusatzinformationen: ");
+                sb.Append(order.CustomerInfo.AddAddressInfo);
+                sb.AppendLine();
+            }
+            
+            sb.AppendLine();
+        }
+
+        private static void AppendServiceTime(StringBuilder sb, Order order)
+        {
+            sb.Append("Gewünschtes Datum / Uhrzeit: ");
+            if (order.ServiceTime.HasValue)
+            {
+                var localServiceTime = order.ServiceTime.Value.ToLocalTime();
+                sb.Append(localServiceTime.ToLongDateString());
+                sb.Append(" ");
+                sb.Append(localServiceTime.ToLongTimeString());
+            }
+            else
+            {
+                sb.Append("Schnellstmöglich");
+            }
 
             sb.AppendLine();
         }

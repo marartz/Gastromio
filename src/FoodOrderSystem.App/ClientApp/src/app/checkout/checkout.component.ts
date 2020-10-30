@@ -6,13 +6,15 @@ import {HttpErrorHandlingService} from '../http-error-handling/http-error-handli
 import {RestaurantModel} from '../restaurant/restaurant.model';
 import {DishCategoryModel} from '../dish-category/dish-category.model';
 import {take} from 'rxjs/operators';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CheckoutModel} from '../order/checkout.model';
 import {HttpErrorResponse} from '@angular/common/http';
 import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {CartDishModel} from "../cart/cart-dish.model";
+import {CartDishModel} from '../cart/cart-dish.model';
+import {PaymentMethodModel} from "../payment-method/payment-method.model";
+import {OpeningHourFilterComponent} from "../opening-hour-filter/opening-hour-filter.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-checkout',
@@ -33,11 +35,20 @@ export class CheckoutComponent implements OnInit {
   restaurant: RestaurantModel;
   dishCategories: DishCategoryModel[];
 
-  customerForm: FormGroup;
+  givenName: string;
+  lastName: string;
+  street: string;
+  zipCode: number;
+  city: string;
+  phone: string;
+  email: string;
+  comments: string;
+  paymentMethodId: string;
+  serviceTime: Date;
 
   constructor(
-    private formBuilder: FormBuilder,
     private orderService: OrderService,
+    private modalService: NgbModal,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private router: Router,
     private location: Location
@@ -61,30 +72,15 @@ export class CheckoutComponent implements OnInit {
           this.generalError = undefined;
         }
 
-        this.customerForm = this.formBuilder.group({
-          givenName: ['', Validators.required],
-          lastName: ['', Validators.required],
-          street: ['', Validators.required],
-          zipCode: ['', Validators.required],
-          addAddressInfo: [''],
-          city: ['', Validators.required],
-          phone: ['', [Validators.required, Validators.pattern(/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/)]],
-          email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-          comments: [''],
-          paymentMethodId: ['', Validators.required]
-        });
-
         this.restaurant = this.orderService.getRestaurant();
+
         this.dishCategories = this.orderService.getDishCategories();
+
         this.initialized = true;
       }, error => {
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
       });
-  }
-
-  get f() {
-    return this.customerForm.controls;
   }
 
   hasLogo(): boolean {
@@ -113,6 +109,107 @@ export class CheckoutComponent implements OnInit {
     return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
   }
 
+  getGivenNameError(): string {
+    if (!this.getCart().isDelivery())
+      return undefined;
+    if (!this.givenName || this.givenName.trim().length === 0)
+      return 'Bitte gib Deinen Vornamen an.';
+    return undefined;
+  }
+
+  getLastNameError(): string {
+    if (!this.getCart().isDelivery())
+      return undefined;
+    if (!this.lastName || this.lastName.trim().length === 0)
+      return 'Bitte gib Deinen Nachnamen an.';
+    return undefined;
+  }
+
+  getStreetError(): string {
+    if (!this.getCart().isDelivery())
+      return undefined;
+    if (!this.street || this.street.trim().length === 0)
+      return 'Bitte gib eine Strasse an.';
+    return undefined;
+  }
+
+  getZipCodeError(): string {
+    if (!this.getCart().isDelivery())
+      return undefined;
+    if (!this.zipCode || this.zipCode < 10000 || this.zipCode > 99999)
+      return 'Bitte gib eine Postleitzahl an.';
+    return undefined;
+  }
+
+  getCityError(): string {
+    if (!this.getCart().isDelivery())
+      return undefined;
+    if (!this.city || this.city.trim().length === 0)
+      return 'Bitte gib eine Stadt an.';
+    return undefined;
+  }
+
+  getPhoneError(): string {
+    if (!this.phone || this.phone.trim().length === 0)
+      return 'Bitte gib eine Telefonnummer an.';
+    const regex = /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/;
+    if (!regex.test(this.phone))
+      return 'Bitte gib eine gültige Telefonnummer an.';
+    return undefined;
+  }
+
+  getEmailError(): string {
+    if (!this.email || this.email.trim().length === 0)
+      return 'Bitte gib eine Emailadresse an.';
+    const regex = RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
+    if (!regex.test(this.email))
+      return 'Bitte gib eine gültige Emailadresse an.';
+    return undefined;
+  }
+
+  getPaymentError(): string {
+    if (!this.paymentMethodId || this.paymentMethodId.trim().length === 0)
+      return 'Bitte wähle eine Zahlungsmethode aus.';
+    return undefined;
+  }
+
+  onSelectPaymentMethod(paymentMethod: PaymentMethodModel): void {
+    this.paymentMethodId = paymentMethod.id;
+  }
+
+  onAsFastAsPossible(): void {
+    this.serviceTime = undefined;
+  }
+
+  onSelectServiceTime(): void {
+    const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
+    modalRef.componentInstance.value = this.serviceTime;
+    modalRef.result.then((value: Date) => {
+      this.serviceTime = value;
+    }, () => {
+    });
+  }
+
+  getServiceTimeText(): string {
+    if (!this.serviceTime)
+      return undefined;
+    return this.serviceTime.toLocaleDateString() + ', ' + this.serviceTime.getHours() + ':' + this.serviceTime.getMinutes();
+  }
+
+  getServiceTimeError(): string {
+    if (!this.restaurant.isOpen(this.serviceTime))
+      return "Das Restaurant hat zum gewählten Zeitpunkt nicht geöffnet";
+    return undefined;
+  }
+
+  getCartError(): string {
+    if (this.getCart().getCartDishes().length === 0)
+      return "Der Warenkorb ist leer. Bitte wähle erst ein oder mehrere Gerichte aus.";
+    else if (!this.getCart().isValid())
+      return this.getCart().getValidationError();
+    return undefined;
+  }
+
   getCart(): CartModel {
     return this.orderService.getCart();
   }
@@ -129,12 +226,19 @@ export class CheckoutComponent implements OnInit {
   }
 
   isValid(): boolean {
-    return !this.customerForm.invalid;
+    return !this.getGivenNameError() &&
+      !this.getLastNameError() &&
+      !this.getStreetError() &&
+      !this.getZipCodeError() &&
+      !this.getCityError() &&
+      !this.getEmailError() &&
+      !this.getPhoneError() &&
+      !this.getPaymentError() &&
+      !this.getServiceTimeError() &&
+      !this.getCartError()
   }
 
-  onSubmit(data): void {
-    console.log('onSubmit: ', data);
-
+  onCheckout(): void {
     this.submitted = true;
 
     if (!this.isValid()) {
@@ -144,14 +248,14 @@ export class CheckoutComponent implements OnInit {
     const cart = this.getCart();
 
     const checkoutModel = new CheckoutModel();
-    checkoutModel.givenName = data.givenName;
-    checkoutModel.lastName = data.lastName;
-    checkoutModel.street = data.street;
-    checkoutModel.addAddressInfo = data.addAddressInfo;
-    checkoutModel.zipCode = data.zipCode.toString();
-    checkoutModel.city = data.city;
-    checkoutModel.phone = data.phone;
-    checkoutModel.email = data.email;
+    checkoutModel.givenName = this.givenName;
+    checkoutModel.lastName = this.lastName;
+    checkoutModel.street = this.street;
+    checkoutModel.zipCode = this.zipCode?.toString();
+    checkoutModel.city = this.city;
+    checkoutModel.phone = this.phone;
+    checkoutModel.email = this.email;
+    checkoutModel.addAddressInfo = this.comments;
     checkoutModel.orderType = OrderService.translateFromOrderType(cart.getOrderType());
     checkoutModel.restaurantId = cart.getRestaurantId();
     checkoutModel.cartDishes = new Array<StoredCartDishModel>();
@@ -166,8 +270,9 @@ export class CheckoutComponent implements OnInit {
       checkoutModel.cartDishes.push(storedCartDish);
     }
 
-    checkoutModel.comments = data.comments;
-    checkoutModel.paymentMethodId = data.paymentMethodId;
+    checkoutModel.comments = this.comments;
+    checkoutModel.paymentMethodId = this.paymentMethodId;
+    checkoutModel.serviceTime = this.serviceTime?.toISOString();
 
     console.log('Checkout Model: ', checkoutModel);
 
@@ -177,7 +282,6 @@ export class CheckoutComponent implements OnInit {
       .subscribe(() => {
         this.blockUI.stop();
         this.generalError = undefined;
-        this.customerForm.reset();
         this.router.navigateByUrl('/order-summary');
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();

@@ -30,6 +30,18 @@ export class CartModel {
     }
   }
 
+  public isPickup(): boolean {
+    return this.orderType === OrderType.Pickup;
+  }
+
+  public isDelivery(): boolean {
+    return this.orderType === OrderType.Delivery;
+  }
+
+  public isReservation(): boolean {
+    return this.orderType === OrderType.Reservation;
+  }
+
   public getRestaurantId(): string {
     return this.restaurantId;
   }

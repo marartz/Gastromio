@@ -391,7 +391,7 @@ export class OrderService {
     if (this.restaurantId && !this.restaurant) {
       observables.push(this.getRestaurantAsync(this.restaurantId).pipe(tap(restaurant => {
         console.log('loaded restaurant: ', restaurant);
-        this.restaurant = restaurant;
+        this.restaurant = new RestaurantModel(restaurant);
       })));
     }
 

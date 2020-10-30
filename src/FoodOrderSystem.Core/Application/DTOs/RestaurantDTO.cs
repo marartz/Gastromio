@@ -163,7 +163,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
         private static string GenerateOpeningHoursTodayText(Restaurant restaurant)
         {
             if (restaurant.OpeningHours == null)
-                return "Geschlossen";
+                return null;
 
             var now = DateTime.Now;
             var dayOfWeek = ((int)now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
@@ -186,13 +186,12 @@ namespace FoodOrderSystem.Core.Application.DTOs
             if (openingPeriods.Any())
             {
                 var sb = new StringBuilder();
-                sb.Append("Geöffnet ");
                 WriteOpeningPeriods(sb, openingPeriods);
                 return sb.ToString();
             }
             else
             {
-                return "Geschlossen";
+                return null;
             }
         }
 
