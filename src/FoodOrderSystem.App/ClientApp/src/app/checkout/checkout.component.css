@@ -78,6 +78,7 @@
 
 /* #checkout > #body */
 #checkout #body {
+    padding: 0px 80px;
     padding-left: 80px;
     width: 100%;
 }
