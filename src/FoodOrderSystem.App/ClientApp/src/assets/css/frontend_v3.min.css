@@ -1184,10 +1184,33 @@ button {
     margin-bottom: 8px;
 }
 
+#order-restaurant .mobile-filter-details #mobile-ordertype-filter .title {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.33px;
+    margin-bottom: 8px;
+}
+
 #order-restaurant #order aside #ordertype-filter .filter {
     background-color: #ADCCCB;
     border-radius: 23px;
     cursor: pointer;
+    height: 42px;
+    margin-bottom: 22px;
+    width: 222px;
+}
+
+#order-restaurant .mobile-filter-details #mobile-ordertype-filter .filter {
+    background-color: #ADCCCB;
+    border-radius: 23px;
+    cursor: pointer;
+    display: flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-box;
+        display: -webkit-flex;
     height: 42px;
     margin-bottom: 22px;
     width: 222px;
@@ -1227,7 +1250,44 @@ button {
     width: 101px;
 }
 
-#order-restaurant #order aside #ordertype-filter .filter .switch.active {
+#order-restaurant .mobile-filter-details #mobile-ordertype-filter .filter .switch {
+    align-items: center;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    color: #323232;
+    cursor: pointer;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex: 1 1 auto;
+    -moz-box-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    -webkit-box-flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+    font-size: 16px;
+    font-family: "Apercu", sans-serif;
+    font-weight: 500;
+    justify-content: center;
+    height: 42px;
+    line-height: 26px;
+    outline: none;
+    padding: 8px 18px 8px 18px;
+    position: relative;
+    text-align: center;
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    vertical-align: baseline;
+    width: 101px;
+    justify-content: flex-start;
+        -ms-flex-pack: start;
+}
+
+#order-restaurant #order aside #ordertype-filter .filter .switch.active,
+#order-restaurant .mobile-filter-details #mobile-ordertype-filter .filter .switch.active {
     background-color: #DECF80;
     border: 2px solid #ADCCCB;
     border-radius: 23px;
@@ -1235,11 +1295,13 @@ button {
     width: 50%;
 }
 
-#order-restaurant #order aside #ordertype-filter .filter .switch.active span {
+#order-restaurant #order aside #ordertype-filter .filter .switch.active span,
+#order-restaurant .mobile-filter-details #mobile-ordertype-filter .filter .switch.active span {
     margin-left: 14px;
 }
 
-#order-restaurant #order aside #ordertype-filter .filter .switch.active:before {
+#order-restaurant #order aside #ordertype-filter .filter .switch.active:before,
+#order-restaurant .mobile-filter-details #mobile-ordertype-filter .filter .switch.active::before {
     background-image: url('../../assets/images/svg/radio-active.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -1281,6 +1343,15 @@ button {
     margin-bottom: 8px;
 }
 
+#order-restaurant .mobile-filter-details #mobile-opening-hour-filter .title {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.33px;
+    margin-bottom: 8px;
+}
+
 #order-restaurant #order aside #opening-hour-filter button {
     background-color: #ADCCCB;
     border-radius: 23px;
@@ -1299,14 +1370,34 @@ button {
     width: 222px;
 }
 
-#order-restaurant #order aside #opening-hour-filter button:hover {
+#order-restaurant .mobile-filter-details #mobile-opening-hour-filter button {
+    background-color: #ADCCCB;
+    border-radius: 23px;
+    color: #363636;
+    cursor: pointer;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 42px;
+    margin-bottom: 22px;
+    outline: none;
+    transition: all .3s;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    width: 222px;
+}
+
+#order-restaurant #order aside #opening-hour-filter button:hover,
+#order-restaurant .mobile-filter-details #mobile-opening-hour-filter button:hover {
     transform: scale(1.03);
     -moz-transform: scale(1.03);
     -ms-transform: scale(1.03);
     -webkit-transform: scale(1.03);
 }
 
-#order-restaurant #order aside #opening-hour-filter button:active {
+#order-restaurant #order aside #opening-hour-filter button:active,
+#order-restaurant .mobile-filter-details #mobile-opening-hour-filter button:active {
     transform: scale(.98);
     -moz-transform: scale(.98);
     -ms-transform: scale(.98);
@@ -1340,16 +1431,28 @@ button {
     margin-bottom: 8px;
 }
 
-#order-restaurant #order aside #cuisine-filter .cuisine-container {
+#order-restaurant .mobile-filter-details #mobile-cuisine-filter .title {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.33px;
+    margin-bottom: 8px;
+}
+
+#order-restaurant #order aside #cuisine-filter .cuisine-container,
+#order-restaurant .mobile-filter-details #mobile-cuisine-filter .cuisine-container {
     overflow-x: unset;
 }
 
-#order-restaurant #order aside #cuisine-filter .cuisine {
+#order-restaurant #order aside #cuisine-filter .cuisine,
+#order-restaurant .mobile-filter-details #mobile-cuisine-filter .cuisine {
     display: contents;
     margin: 0px 0px 4px;
 }
 
-#order-restaurant #order aside #cuisine-filter .cuisine button {
+#order-restaurant #order aside #cuisine-filter .cuisine button,
+#order-restaurant .mobile-filter-details #mobile-cuisine-filter button {
     background-color: #ADCCCB;
     border-radius: 23px;
     color: #323232;
@@ -1365,11 +1468,13 @@ button {
     -webkit-transition: all .3s ease;
 }
 
-#order-restaurant #order aside #cuisine-filter .cuisine button:hover {
+#order-restaurant #order aside #cuisine-filter .cuisine button:hover,
+#order-restaurant .mobile-filter-details #mobile-cuisine-filter .cuisine button:hover {
     background-color: #DECF80;
 }
 
-#order-restaurant #order aside #cuisine-filter .cuisine.active button {
+#order-restaurant #order aside #cuisine-filter .cuisine.active button,
+#order-restaurant .mobile-filter-details #mobile-cuisine-filter .cuisine.active button {
     background-color: #DECF80;
 }
 
@@ -1385,7 +1490,8 @@ button {
     }
 }
 
-#order-restaurant #order aside #preorder-filter button {
+#order-restaurant #order aside #preorder-filter button,
+#order-restaurant .mobile-filter-details #mobile-preorder-filter button {
     color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 16px;
@@ -1395,8 +1501,12 @@ button {
     text-align: left;
 }
 
+#order-restaurant .mobile-filter-details #mobile-preorder-filter button {
+    margin-top: 16px;
+}
+
 #order-restaurant #order aside #preorder-filter button::before {
-    background-image: url('../../assets/images/svg/checkbox-active.svg');
+    background-image: url('../../assets/images/svg/checkbox-unactive.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     content: " ";
@@ -1407,8 +1517,24 @@ button {
     margin-top: 6px;
 }
 
-#order-restaurant #order aside #preorder-filter button:disabled::before {
+#order-restaurant .mobile-filter-details #mobile-preorder-filter button::before {
     background-image: url('../../assets/images/svg/checkbox-unactive.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    left: 22px;
+    margin-top: 0px;
+}
+
+#order-restaurant #order aside #preorder-filter button:disabled::before {
+    background-image: url('../../assets/images/svg/checkbox-active.svg');
+}
+
+#order-restaurant .mobile-filter-details #mobile-preorder-filter button:disabled::before {
+    background-image: url('../../assets/images/svg/checkbox-active.svg');
 }
 
 /* 3.2.2 #order-restaurant > #order > #restaurants */

@@ -55,97 +55,44 @@
                     </div>
                 </section>
 
-
-                <!--div class="restaurant-container">
-                    <header id="header">
-                        <div class="banner"><img [src]="getBannerStyle()" alt="{{restaurant.name}}"></div>
-                        <div class="information">
-                            <div class="header">
-                                <h1 class="restaurant-name">{{restaurant.name}}</h1>
-                            </div>
-                            <p class="restaurant-description" *ngIf="restaurant.hygienicHandling && restaurant.hygienicHandling.length > 0">{{restaurant.hygienicHandling}}</p>
-                            <div class="cuisine-container"><span class="cuisines">{{getRestaurantSubText(restaurant)}}</span></div>
-                            <div class="info-footer mt-auto">
-                                <div class="address">{{restaurant.address.street}}, {{restaurant.address.zipCode}} {{restaurant.address.city}}</div>
-                                <div class="opening-hours">{{restaurant.openingHoursText}}</div>
-                                <div class="minimum-order">min. &euro;{{restaurant.pickupInfo.minimumOrderValue}}</div>
-                            </div>
-                        </div>
-                    </header>
-                    <div class="menu-container">
-                        <div class="menu-header">
-                            <h2 class="heading">Speisekarte</h2>
-                            <div class="input-container">
-                                <input style="visibility: hidden;">
-                                <div class="imprint-button-container"><button class="imprint-button" (click)="openImprintModal()"></button></div>
-                            </div>
-                        </div>
-                        <div id="dishes" class="dishes-container" *ngFor="let dishCategory of dishCategories">
-
-                            <h2 class="heading" id="{{dishCategory.id}}">{{dishCategory.name}}</h2>
-
-                            <div class="dish-list">
-                                <div id="dish" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
-                                    <div class="dish-content">
-                                        <div id="heading">
-                                            <span class="dish-name" title="{{dish.name}}">{{dish.name}}</span>
-                                            <span class="dish-price">&euro;{{getFirstDishVariant(dish)}}</span>
-                                        </div>
-                                        <div id="footer">
-                                            <div class="dish-description">{{dish.description}}</div>
-                                            <div class="actions-container"><button class="add"></button></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div-->
-
             </div>
         </div>
 
     <div id="checkout" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
-        <section id="my-order">
-            <header id="header"><span class="title">Dein Warenkorb</span></header>
-            <div id="body" class="cart-body">
-                <div id="dishes">
-                    <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
-                        <div class="dish-content">
-                            <div class="name"><span class="count">{{cartDish.getCount()}}x</span> {{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></div>
-                            <div class="description">
-                                <div></div>
-                                <div class="price">{{cartDish.getPriceText()}}&euro;
-                                    <span style="margin-right: 10px; cursor: pointer;" class="edit"></span>
-                                    <span style="margin-right: 10px; cursor: pointer;" class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="desc">{{cartDish.getDish().description}}</p>
+        <section id="cart">
+            <h3 class="title">Dein Warenkorb</h3>
+            <div id="dishes">
+                <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
+                    <div class="top">
+                        <span class="count">{{cartDish.getCount()}}x</span>
+                        <span class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></span>
+                        <span class="price">{{cartDish.getPriceText()}}&euro;</span>
+                        <button class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></button>
                     </div>
-                </div>
-                <div id="order-fees">
-                    <div>
-                        <span class="title">Zwischensumme</span>
-                        <span>{{getCart().getValueOfOrderText()}} &euro;</span>
+                    <div class="top">
+                        <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getDish().remarks}}</span>
                     </div>
-                    <div *ngIf="getCart().getMinimumOrderValue() !== 0">
-                        <span class="title">Mindestbestellwert</span>
-                        <span>{{getCart().getMinimumOrderValueText()}} &euro;</span>
-                    </div>
-                    <div *ngIf="getCart().getCosts()">
-                        <span class="title">Lieferkosten</span>
-                        <span>{{getCart().getCostsText()}} &euro;</span>
-                    </div>
-                </div>
-                <div id="total">
-                    <span>Gesamt</span>
-                    <span class="bill">{{getCart().getTotalPriceText()}}&euro;</span>
                 </div>
             </div>
-            <div id="button-container">
-                <button class="submit" (click)="proceedToCheckout()">Bestellen für {{getCart().getTotalPriceText()}}&euro;</button>
+            <div id="order-fees">
+                <div class="subtotal">
+                    <span class="fee-title">Zwischensumme</span>
+                    <span class="fee-price">{{getCart().getValueOfOrderText()}} &euro;</span>
+                </div>
+                <div class="minimumordervalue" *ngIf="getCart().getMinimumOrderValue() !== 0">
+                    <span class="fee-title">Mindestbestellwert</span>
+                    <span class="fee-price">{{getCart().getMinimumOrderValueText()}} &euro;</span>
+                </div>
+                <div class="costs">
+                    <span class="fee-title">Lieferkosten</span>
+                    <span class="fee-price" *ngIf="getCart().getCosts() !== 0">{{getCart().getCostsText()}} &euro;</span>
+                    <span class="fee-price" *ngIf="getCart().getCosts() == 0">Gratis</span>
+                </div>
+                <div class="total">
+                    <span class="fee-title">Gesamt</span>
+                    <span class="fee-price">{{getCart().getTotalPriceText()}} &euro;</span>
+                </div>
             </div>
+            <button class="proceed-to-checkout" (click)="proceedToCheckout()">Bestellen für {{getCart().getTotalPriceText()}}&euro;</button>
         </section>
     </div>

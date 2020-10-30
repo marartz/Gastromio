@@ -353,6 +353,7 @@
 @media only screen and (max-width: 992px) {
     #order-home #start .input-wrapper input {
         font-size: 18px;
+        z-index: 5;
     }
 }
 
