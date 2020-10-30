@@ -65,6 +65,10 @@
                     <section id="infocard">
                         <h3 class="title">Lieferzeit</h3>
                         <h4 class="subtitle">Wann möchtest du dein Essen erhalten? {{restaurant.name}} hat heute von XX:XX Uhr bis XX:XX Uhr für dich geöffnet.</h4>
+                    
+                        <button type="button" class="pill active">Aktiv</button>
+                        <button type="button" class="pill">Inaktiv</button>
+
                     </section>
                     <section id="infocard">
                         <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">

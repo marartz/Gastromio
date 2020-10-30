@@ -208,6 +208,59 @@
     margin-left: 9px;
 }
 
+#checkout #body #infocard button.pill {
+    background-color: #ADCCCB;
+    border: 2px solid #fff;
+    border-radius: 23px;
+    color: #363636;
+    font-family: "Apercu";
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.33px;
+    height: 42px;
+    margin-bottom: 10px;
+    padding-left: 48px;
+    width: 100%;
+    text-align: left;
+    transition: all .3s ease;
+}
+
+#checkout #body #infocard button.pill:hover {
+    background-color: #FFF;
+}
+
+#checkout #body #infocard button.pill::before {
+    background-image: url('../../assets/images/svg/radio-unactive.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    left: 40px;
+    margin-top: -3px;
+}
+
+#checkout #body #infocard button.pill.active {
+    background-color: #FFF;
+}
+
+#checkout #body #infocard button.pill.active:hover::before {
+    background-image: url('../../assets/images/svg/radio-unactive.svg');
+}
+
+#checkout #body #infocard button.pill.active::before {
+    background-image: url('../../assets/images/svg/radio-active.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    left: 40px;
+    margin-top: -3px;
+}
+
 #checkout #body .confirm-purchase {
     background-color: #363636;
     border-radius: 23px;
