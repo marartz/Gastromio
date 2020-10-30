@@ -70,7 +70,8 @@ namespace FoodOrderSystem.Template.DotLiquid.Tests
                 "Bar",
                 "Sie zahlen Bar",
                 (decimal)2,
-                (decimal)26.5
+                (decimal)26.5,
+                new DateTime(2020, 10, 29, 20, 0, 0)
             );
         }
     }

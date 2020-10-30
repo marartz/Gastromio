@@ -22,6 +22,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public double TotalPrice { get; set; }
         
+        public DateTime? ServiceTime { get; set; }
+        
         public NotificationInfoModel CustomerNotificationInfo { get; set; }
         
         public NotificationInfoModel RestaurantNotificationInfo { get; set; }

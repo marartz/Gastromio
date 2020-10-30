@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Domain.Model.Order;
@@ -20,7 +21,8 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             string restaurantId,
             IList<CartDishInfoDTO> cartDishes,
             string comments,
-            PaymentMethodId paymentMethodId
+            PaymentMethodId paymentMethodId,
+            DateTime? serviceTime
         )
         {
             GivenName = givenName;
@@ -36,6 +38,7 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             CartDishes = cartDishes;
             Comments = comments;
             PaymentMethodId = paymentMethodId;
+            ServiceTime = serviceTime;
         }
         
         public string GivenName { get; }
@@ -51,5 +54,6 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
         public IList<CartDishInfoDTO> CartDishes { get; }
         public string Comments { get; }
         public PaymentMethodId PaymentMethodId { get; }
+        public DateTime? ServiceTime { get; }
     }
 }

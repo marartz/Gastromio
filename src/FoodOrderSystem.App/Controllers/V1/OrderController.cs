@@ -17,7 +17,6 @@ using FoodOrderSystem.Core.Domain.Model.Cuisine;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -118,7 +117,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                     en.Remarks
                 )).ToList(),
                 checkoutModel.Comments,
-                new PaymentMethodId(checkoutModel.PaymentMethodId)
+                new PaymentMethodId(checkoutModel.PaymentMethodId),
+                checkoutModel.ServiceTime
             );
            
             var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(command, null);

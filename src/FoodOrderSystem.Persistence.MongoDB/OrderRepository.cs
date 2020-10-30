@@ -167,6 +167,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 row.PaymentMethodDescription,
                 (decimal) row.Costs,
                 (decimal) row.TotalPrice,
+                row.ServiceTime,
                 row.CustomerNotificationInfo != null
                     ? new NotificationInfo(
                         row.CustomerNotificationInfo.Status,
@@ -251,6 +252,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 PaymentMethodDescription = obj.PaymentMethodDescription,
                 Costs = (double) obj.Costs,
                 TotalPrice = (double) obj.TotalPrice,
+                ServiceTime = obj.ServiceTime,
                 CustomerNotificationInfo = obj.CustomerNotificationInfo != null
                     ? new NotificationInfoModel
                     {

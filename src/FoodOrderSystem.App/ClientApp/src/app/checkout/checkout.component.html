@@ -7,7 +7,7 @@
             <header class="checkout-header" *ngIf="initialized">
                 <h1>Kasse</h1>
                 <h2>Deine Bestellung bei „{{restaurant.name}}“</h2> <!-- ({{getCart().getOrderTypeText()}}) -->
-                <h3>{{getCart().getOrderTypeText()}} &ndash; etwa XX Minuten</h3>
+                <h3>{{getCart().getOrderTypeText()}} &ndash; etwa {{getCart().getAverageTime()}} Minuten</h3>
             </header>
 
             <div id="checkout" *ngIf="initialized">
@@ -33,7 +33,7 @@
                             <label for="street">Straße</label>
                             <input autocomplete="off" type="text" id="street" formControlName="street" [ngClass]="{ 'is-invalid': submitted && f.street.errors }" placeholder="z.B. Bahnhofstr. 1a" />
                             <div class="invalid-feedback" *ngIf="submitted && f.street.errors"><div *ngIf="f.street.errors.required">Bitte gebe eine Lieferadresse an.</div></div>
-                        
+
                             <div class="plz-city">
                                 <div class="plz">
                                     <label for="zipCode">PLZ</label>
@@ -57,7 +57,7 @@
                             <label for="street">Telefonnummer</label>
                             <input autocomplete="off" type="string" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" placeholder="0170 12345678" />
                             <div class="invalid-feedback" *ngIf="submitted && f.phone.errors"><div *ngIf="f.phone.errors.required">Bitte gebe deine Telefonnummer an.</div></div>
-                                            
+
                             <label for="comments">Zusatz (optional)</label>
                             <input autocomplete="off" type="text" maxlength="300" placeholder="z.B. „Statt klingeln, bitte kurz anrufen.“" id="comments" formControlName="comments" />
                         </form>
@@ -99,10 +99,10 @@
                                     <span class="count">{{cartDish.getCount()}}x</span>
                                     <span class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></span>
                                     <span class="price">{{cartDish.getPriceText()}}&euro;</span>
-                                    <button class="remove"></button> <!-- (click)="onRemoveDishVariantFromCart(cartDish) -->
+                                    <button class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></button>
                                 </div>
                                 <div class="top">
-                                    <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getDish().remarks}}</span>
+                                    <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getRemarks()}}</span>
                                 </div>
                             </div>
                         </div>

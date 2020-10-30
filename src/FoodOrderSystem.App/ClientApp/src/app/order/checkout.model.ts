@@ -14,4 +14,5 @@ export class CheckoutModel {
   public cartDishes: StoredCartDishModel[];
   public comments: string;
   public paymentMethodId: string;
+  public serviceTime: string;
 }
