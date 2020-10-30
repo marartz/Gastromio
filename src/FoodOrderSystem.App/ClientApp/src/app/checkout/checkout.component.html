@@ -95,10 +95,10 @@
                                     <span class="count">{{cartDish.getCount()}}x</span>
                                     <span class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></span>
                                     <span class="price">{{cartDish.getPriceText()}}&euro;</span>
-                                    <button class="remove"></button> <!-- (click)="onRemoveDishVariantFromCart(cartDish) -->
+                                    <button class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></button>
                                 </div>
                                 <div class="top">
-                                    <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getDish().remarks}}</span>
+                                    <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getRemarks()}}</span>
                                 </div>
                             </div>
                         </div>

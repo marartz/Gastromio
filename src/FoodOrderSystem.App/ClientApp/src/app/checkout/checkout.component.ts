@@ -12,6 +12,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {StoredCartDishModel} from '../cart/stored-cart-dish.model';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {CartDishModel} from "../cart/cart-dish.model";
 
 @Component({
   selector: 'app-checkout',
@@ -120,9 +121,23 @@ export class CheckoutComponent implements OnInit {
     this.location.back();
   }
 
+  public onRemoveDishVariantFromCart(cartDishVariant: CartDishModel): void {
+    if (cartDishVariant === undefined) {
+      return;
+    }
+    this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
+  }
+
+  isValid(): boolean {
+    return !this.customerForm.invalid;
+  }
+
   onSubmit(data): void {
+    console.log('onSubmit: ', data);
+
     this.submitted = true;
-    if (this.customerForm.invalid) {
+
+    if (!this.isValid()) {
       return;
     }
 
@@ -156,7 +171,7 @@ export class CheckoutComponent implements OnInit {
 
     console.log('Checkout Model: ', checkoutModel);
 
-    this.blockUI.start('Verarbeite Daten...');
+    this.blockUI.start('Bestellung wird verarbeitet...');
     this.orderService.checkoutAsync(checkoutModel)
       .pipe(take(1))
       .subscribe(() => {
