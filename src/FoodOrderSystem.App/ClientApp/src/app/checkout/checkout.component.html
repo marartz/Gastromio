@@ -2,14 +2,15 @@
     <div id="root">
         <div class="layout">
 
-            <div id="notice" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
+            <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
+
+            <header class="checkout-header" *ngIf="initialized">
+                <h1>Kasse</h1>
+                <h2>Deine Bestellung bei „{{restaurant.name}}“</h2> <!-- ({{getCart().getOrderTypeText()}}) -->
+                <h3>{{getCart().getOrderTypeText()}} &ndash; etwa XX Minuten</h3>
+            </header>
 
             <div id="checkout" *ngIf="initialized">
-                <!--header>
-                    <h1>Kasse</h1>
-                    <h2>Deine Bestellung bei „{{restaurant.name}}“</h2> <!-- ({{getCart().getOrderTypeText()}}) -->
-                <!--/header-->
-
                 <div id="body" class="info">
                     <section id="infocard">
                         <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
