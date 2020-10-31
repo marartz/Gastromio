@@ -189,7 +189,14 @@ export class CheckoutComponent implements OnInit {
   getServiceTimeText(): string {
     if (!this.serviceTime)
       return undefined;
-    return this.serviceTime.toLocaleDateString() + ', ' + this.serviceTime.getHours() + ':' + this.serviceTime.getMinutes();
+
+    let hoursText = this.serviceTime.getHours().toString();
+    hoursText = ('0' + hoursText).slice(-2);
+
+    let minutesText = this.serviceTime.getMinutes().toString();
+    minutesText = ('0' + minutesText).slice(-2);
+
+    return this.serviceTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
   }
 
   getServiceTimeError(): string {
