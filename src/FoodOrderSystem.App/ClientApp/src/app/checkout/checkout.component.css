@@ -213,6 +213,15 @@
     margin-left: 9px;
 }
 
+#checkout #body #cart .invalid-feedback {
+    color: darkred;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 9px;
+}
+
 #checkout #body #infocard button.pill {
     background-color: #ADCCCB;
     border: 2px solid #fff;

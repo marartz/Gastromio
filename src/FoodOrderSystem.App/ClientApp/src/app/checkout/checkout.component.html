@@ -227,9 +227,6 @@
                             <div>{{getPaymentError()}}</div>
                         </div>
                     </section>
-                    <div class="invalid-feedback" *ngIf="submitted && getCartError()">
-                        <div>{{getCartError()}}</div>
-                    </div>
                     <button class="confirm-purchase" (click)="onCheckout()"
                             [disabled]="getServiceTimeError() !== undefined">Kostenpflichtig bestellen</button>
                     <section id="disclaimer">
@@ -282,6 +279,9 @@
                                 <span class="fee-title">Gesamt</span>
                                 <span class="fee-price">{{getCart().getTotalPriceText()}} &euro;</span>
                             </div>
+                        </div>
+                        <div class="invalid-feedback" *ngIf="submitted && getCartError()">
+                            <div>{{getCartError()}}</div>
                         </div>
                     </section>
                 </div>
