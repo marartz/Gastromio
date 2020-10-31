@@ -168,6 +168,10 @@
     width: 100%;
 }
 
+#checkout #body #infocard input:disabled {
+    background-color: #adb5bd;
+}
+
 #checkout #body #infocard input::placeholder {
     color: #94918E;
 }
@@ -242,6 +246,10 @@
     margin-top: -3px;
 }
 
+#checkout #body #infocard button:disabled {
+    background-color: #adb5bd;
+}
+
 #checkout #body #infocard button.pill.active {
     background-color: #FFF;
 }
@@ -278,6 +286,10 @@
     margin-right: 76px;
     text-align: center;
     width: calc(100% - 152px);
+}
+
+#checkout #body .confirm-purchase:disabled {
+    background-color: #adb5bd;
 }
 
 @media only screen and (max-width: 992px) {

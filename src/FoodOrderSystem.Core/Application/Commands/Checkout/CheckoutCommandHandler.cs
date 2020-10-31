@@ -161,9 +161,9 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             }
 
             var serviceTime = command.ServiceTime ?? DateTime.Now;
-            if (!restaurant.IsOpen(serviceTime))
+            if (!restaurant.IsOrderPossibleAt(serviceTime))
             {
-                logger.LogInformation($"Declined order {newOrderId.Value}: restaurant is not open at specified time");
+                logger.LogInformation($"Declined order {newOrderId.Value}: order at this time is not possible");
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
             }
 
