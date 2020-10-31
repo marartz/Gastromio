@@ -202,6 +202,7 @@
 
 #checkout #body #infocard .invalid-feedback {
     color: darkred;
+    display: block;
     font-family: "Apercu", sans-serif;
     font-size: 14px;
     font-weight: 400;

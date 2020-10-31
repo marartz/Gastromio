@@ -66,8 +66,8 @@
 
                             <h4 class="subtitle">
                                 <span>Wann möchtest du dein Essen abholen?</span>
-                                <span *ngIf="restaurant.isOpen(undefined)">{{restaurant.name}} hat heute für dich geöffnet: {{restaurant.openingHoursTodayText}}.</span>
-                                <span *ngIf="!restaurant.isOpen(undefined)">{{restaurant.name}} hat im Moment geschlossen.</span>
+                                <span *ngIf="restaurant.isOpen(undefined)"> {{restaurant.name}} hat heute für dich geöffnet: {{restaurant.openingHoursTodayText}}.</span>
+                                <span *ngIf="!restaurant.isOpen(undefined)"> {{restaurant.name}} hat im Moment geschlossen.</span>
                                 <!--span>Öffnungszeiten: {{restaurant.openingHoursText}}</span-->
                             </h4>
 
