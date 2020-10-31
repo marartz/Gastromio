@@ -236,6 +236,15 @@
     font-size: 24px;
 }
 
+#checkout #cart .invalid-feedback {
+    color: darkred;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 9px;
+}
+
 #checkout #cart button.proceed-to-checkout {
     background-color: #363636;
     border-radius: 23px;
