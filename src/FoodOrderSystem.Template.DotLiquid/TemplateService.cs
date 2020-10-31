@@ -33,7 +33,7 @@ namespace FoodOrderSystem.Template.DotLiquid
 
             var sb = new StringBuilder();
 
-            sb.Append("Hallo ");
+            sb.Append("Lieber ");
             sb.Append(order.CustomerInfo.GivenName);
             sb.Append(",");
             sb.AppendLine();
@@ -45,11 +45,24 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
             sb.AppendLine();
 
-            sb.Append(
-                "Bei Fragen oder Anmerkungen zu Deiner getätigten Bestellung möchten wir Dich bitten, das Restaurant unter ");
+            sb.AppendLine(
+                "Gastromio.de wurde ehrenamtlich erstellt, um Bocholts schönes Gastronomieangebot zu erhalten. Gastromio wurde");
+            sb.AppendLine(
+                "erst kürzlich in Betrieb genommen. Es ist also möglich, dass der Wirt noch nicht in der Bestellabwicklung über");
+            sb.AppendLine(
+                "Gastromio geübt ist, oder sich ein Systemfehler eingeschlichen hat, den wir noch nicht kennen. Wir haben daher");
+            sb.AppendLine(
+                "den Wirt gebeten, seine Vorbestellungen zu Beginn der Schicht kurz per Email zu bestätigen. Passiert das nicht,");
+            sb.AppendLine(
+                "frag ruhig kurz nach, sei aber nett, es ist für den Wirt genauso neu, wie für Dich. Das Restaurant ist unter der");
+            sb.Append("Telefonnummer ");
             sb.Append(order.CartInfo.RestaurantPhone);
-            sb.Append(" anzurufen.");
+            sb.AppendLine(" zu erreichen.");
             sb.AppendLine();
+
+            sb.AppendLine(
+                "Wenn ein Problem aufgetreten ist, das ihr nicht lösen konntet, melde Dich doch gerne unter info@gastromio.de!");
+            sb.AppendLine("Wir nehmen Deinen Hinweis gerne auf.");
             sb.AppendLine();
 
             sb.Append("Deine Bestellung bei ");
@@ -191,8 +204,7 @@ namespace FoodOrderSystem.Template.DotLiquid
             }
 
             sb.AppendLine();
-            sb.AppendLine();
-
+            
             if (order.Costs > 0)
             {
                 sb.Append("Lieferkosten: ");
