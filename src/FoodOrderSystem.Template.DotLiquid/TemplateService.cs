@@ -147,8 +147,8 @@ namespace FoodOrderSystem.Template.DotLiquid
             var customerInfo = order.CartInfo.OrderType switch
             {
                 OrderType.Delivery =>
-                    $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} ({order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})",
-                _ => $"({order.CustomerInfo.Email} {order.CustomerInfo.Phone})"
+                    $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} {order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})",
+                _ => $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName}, {order.CustomerInfo.Email}, {order.CustomerInfo.Phone})"
             };
                 
             return new EmailData
@@ -215,13 +215,13 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.Append("Bestelldetails:");
             sb.AppendLine();
 
+            sb.Append(order.CustomerInfo.GivenName);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.LastName);
+            sb.AppendLine();
+
             if (order.CartInfo.OrderType == OrderType.Delivery)
             {
-                sb.Append(order.CustomerInfo.GivenName);
-                sb.Append(" ");
-                sb.Append(order.CustomerInfo.LastName);
-                sb.AppendLine();
-
                 sb.AppendLine(order.CustomerInfo.Street);
                 sb.Append(order.CustomerInfo.ZipCode);
                 sb.Append(" ");

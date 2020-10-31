@@ -110,16 +110,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   getGivenNameError(): string {
-    if (!this.getCart().isDelivery())
-      return undefined;
     if (!this.givenName || this.givenName.trim().length === 0)
       return 'Bitte gib Deinen Vornamen an.';
     return undefined;
   }
 
   getLastNameError(): string {
-    if (!this.getCart().isDelivery())
-      return undefined;
     if (!this.lastName || this.lastName.trim().length === 0)
       return 'Bitte gib Deinen Nachnamen an.';
     return undefined;

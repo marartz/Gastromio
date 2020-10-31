@@ -193,6 +193,16 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
                 return false;
             }
 
+            if (string.IsNullOrWhiteSpace(command.GivenName))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.LastName))
+            {
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(command.Email))
             {
                 return false;
