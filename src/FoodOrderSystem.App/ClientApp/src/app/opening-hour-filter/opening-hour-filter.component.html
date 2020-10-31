@@ -10,9 +10,40 @@
             </header>
 
             <div id="options">
-                <div class="wrapper">
+                <div class="wrapper" style="align-content: center; justify-content: center; display: flex;">
+                    <style>
+                        :host /deep/ ngb-datepicker > * {
+                            outline: none !important;
+                        }
+                        :host /deep/ ngb-datepicker {
+                            border: 0px solid transparent;
+                        }
+                        :host /deep/ ngb-datepicker .ngb-dp-header {
+                            background-color: #363636;
+                            border-radius: 23px 23px 0px 0px;
+                            padding: 8px;
+                        }
+                    </style>
                     <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
-                    <ngb-timepicker [(ngModel)]="time" [minuteStep]="15" (ngModelChange)="onTimeChanged()"></ngb-timepicker>
+                    <style>
+                        :host /deep/ ngb-timepicker > * {
+                            outline: none !important;
+                        }
+                        :host /deep/ ngb-timepicker button {
+                            color: #363636;
+                        }
+                        :host /deep/ ngb-timepicker input {
+                            background-color: transparent;
+                            border: 0px solid transparent;
+                            font-family: "Apercu", sans-serif;
+                            font-size: 28px;
+                            font-weight: 700;
+                        }
+                        :host /deep/ ngb-timepicker .ngb-tp-chevron::before {
+                            border-width: 2px 2px 0px 0px;
+                        }
+                    </style>
+                    <ngb-timepicker class="timepicker" [(ngModel)]="time" [minuteStep]="15" (ngModelChange)="onTimeChanged()" style="margin-left: auto; margin-right: auto;"></ngb-timepicker>
                 </div>
             </div>
 
