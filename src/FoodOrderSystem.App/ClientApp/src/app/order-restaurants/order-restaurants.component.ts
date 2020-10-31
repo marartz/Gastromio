@@ -51,7 +51,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedOpeningHourFilter = OrderRestaurantsComponent.roundOnQuarterHours(new Date()); // now
     this.selectedCuisineFilter = '';
     this.showClosedRestaurants = false;
 
@@ -81,7 +80,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   openOpeningHourFilter(): void {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
-    modalRef.componentInstance.value = this.selectedOpeningHourFilter;
+    modalRef.componentInstance.value = this.selectedOpeningHourFilter ?? new Date();
     modalRef.result.then((value: Date) => {
       this.selectedOpeningHourFilter = value;
       this.updateSearch();

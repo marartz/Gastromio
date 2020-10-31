@@ -168,7 +168,7 @@ export class OrderService {
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
     this.storedCart.restaurantId = this.restaurant.name.toLowerCase();
     this.storedCart.cartDishes = new Array<StoredCartDishModel>();
-    this.storedCart.serviceTime = serviceTime.toISOString();
+    this.storedCart.serviceTime = serviceTime?.toISOString();
     this.generateCartModel();
   }
 
