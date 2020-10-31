@@ -184,7 +184,7 @@ namespace FoodOrderSystem.Template.DotLiquid
                 {
                     sb.Append(" (");
                     sb.Append(orderedDish.Remarks);
-                    sb.Append(" )");
+                    sb.Append(")");
                 }
 
                 sb.AppendLine();
