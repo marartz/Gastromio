@@ -61,7 +61,7 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
 
             sb.AppendLine(
-                "Wenn ein Problem aufgetreten ist, das ihr nicht lösen konntet, melde Dich doch gerne unter info@gastromio.de!");
+                "Wenn ein Problem aufgetreten ist, das ihr nicht lösen konntet, melde Dich doch gerne unter support@gastromio.de!");
             sb.AppendLine("Wir nehmen Deinen Hinweis gerne auf.");
             sb.AppendLine();
 
