@@ -194,6 +194,7 @@ export class OrderService {
     let storedCartDish = this.storedCart.cartDishes.find(en => en.dishId === dish.id && en.variantId === variant.variantId);
     if (storedCartDish !== undefined) {
       storedCartDish.count += count;
+      storedCartDish.remarks = remarks;
     } else {
       storedCartDish = new StoredCartDishModel();
       storedCartDish.itemId = Guid.create().toString();
