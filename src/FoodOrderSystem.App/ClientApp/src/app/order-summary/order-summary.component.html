@@ -2,9 +2,12 @@
     <div class="layout">
         <div id="confirmation">
             <div class="text">
-                <h2>Vielen Dank für Deine Bestellung!</h2>
-                <h3>Deine Bestellung wurde an „Restaurantname“ übermittelt! Eine Bestellübersicht wurde an die hinterlegte E-Mail Adresse gesendet.</h3>
-                <h4>Wir wünschen Euch einen Guten Appetit!</h4>
+                <span>
+                    <span class="top">Vielen Dank für Deine Bestellung!</span><br />
+                    <span class="middle">Deine Bestellung wurde an „Restaurantname“ übermittelt!<br />Eine Bestellübersicht wurde an deine hinterlegte E-Mail Adresse gesendet.</span><br />
+                    <span class="bottom">„Restaurantname“ und das Gastromio-Team wünschen Euch einen Guten Appetit!</span>
+                </span>
+                <button [routerLink]="['/']" target="_blank">Zurück zur Startseite ...</button>
             </div>
         </div>
     </div>

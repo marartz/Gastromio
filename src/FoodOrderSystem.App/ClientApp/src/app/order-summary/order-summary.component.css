@@ -2,20 +2,28 @@
     background-color: #ADCCCB;
     background-image: url('../../assets/images/rough/blue.png');
     background-repeat: repeat;
-    height: 100%;
+    height: 100vh;
     position: relative;
+    margin-top: -72px;
 }
 
 #confirmation .text {
-    align-content: center;
     display: flex;
     justify-content: center;
-    text-align: center;
-    padding-left: 16px;
-    padding-right: 16px;
+    align-items: center;
+    flex-direction: column;
+    padding: 16px;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
 }
 
-#confirmation .text h2 {
+#confirmation .text span {
+    text-align: center;
+    display: inline-block;
+    margin: auto;
+}
+
+#confirmation .text span span.top {
     color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 52px;
@@ -28,7 +36,7 @@
     text-align: center;
 }
 
-#confirmation .text h3 {
+#confirmation .text span span.middle {
     color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 28px;
@@ -36,9 +44,10 @@
     letter-spacing: -0.5px;
     line-height: 32px;
     text-align: center;
+    margin-top: 32px;
 }
 
-#confirmation .text h4 {
+#confirmation .text span span.bottom {
     color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 20px;
@@ -46,4 +55,53 @@
     letter-spacing: -0.5px;
     line-height: 24px;
     text-align: center;
+    margin-top: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    #confirmation .text span span.top {
+        font-size: 38px;
+    }
+    #confirmation .text span span.middle {
+        font-size: 20px;
+        margin-top: 8px;
+    }
+    #confirmation .text span span.bottom {
+        font-size: 16px;
+        margin-top: 16px;
+    }
+}
+
+#confirmation .text button {
+    background-color: #ADCCCB;
+    border: 0px;
+    border-radius: 23px;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    height: 50px;
+    letter-spacing: 0px;
+    margin-top: 32px;
+    position: relative;
+    text-align: center;
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    width: 300px;
+}
+
+#confirmation .text button:hover {
+    transform: scale(1.03);
+    -moz-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+}
+
+#confirmation .text button:active {
+    transform: scale(.98);
+    -moz-transform: scale(.98);
+    -ms-transform: scale(.98);
+    -webkit-transform: scale(.98);
 }
