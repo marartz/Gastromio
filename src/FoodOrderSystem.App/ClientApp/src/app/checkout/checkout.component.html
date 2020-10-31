@@ -83,7 +83,7 @@
                                 <span *ngIf="serviceTime">{{getServiceTimeText()}}</span>
                             </button>
 
-                            <div style="color: darkred;" *ngIf="serviceTime && getServiceTimeError()">
+                            <div class="invalid-feedback" *ngIf="serviceTime && getServiceTimeError()">
                                 <div>{{getServiceTimeError()}}</div>
                             </div>
                         </section>
@@ -189,7 +189,7 @@
                                 <span *ngIf="serviceTime">{{getServiceTimeText()}}</span>
                             </button>
 
-                            <div style="color: darkred;" *ngIf="serviceTime && getServiceTimeError()">
+                            <div class="invalid-feedback" *ngIf="serviceTime && getServiceTimeError()">
                                 <div>{{getServiceTimeError()}}</div>
                             </div>
                         </section>
@@ -203,11 +203,11 @@
                             <button type="button" class="pill" [class.active]="paymentMethodId === paymentMethod.id"
                                     (click)="onSelectPaymentMethod(paymentMethod)">{{paymentMethod.name}}</button>
                         </ng-container>
-                        <div style="color: darkred;" *ngIf="submitted && getPaymentError()">
+                        <div class="invalid-feedback" *ngIf="submitted && getPaymentError()">
                             <div>{{getPaymentError()}}</div>
                         </div>
                     </section>
-                    <div style="color: darkred;" *ngIf="submitted && getCartError()">
+                    <div class="invalid-feedback" *ngIf="submitted && getCartError()">
                         <div>{{getCartError()}}</div>
                     </div>
                     <button class="confirm-purchase" (click)="onCheckout()">Kostenpflichtig bestellen</button>
