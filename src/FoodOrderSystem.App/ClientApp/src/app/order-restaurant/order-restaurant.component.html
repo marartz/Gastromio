@@ -38,9 +38,9 @@
                             <div id="restaurants">
                                 <div id="search">
                                     <div class="icon-wrapper"><div class="icon"></div></div>
-                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Gericht suchen ...">
+                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Gericht suchen ..." (keyup)="onSearchTextChanged($event.target.value)">
                                 </div>
-                                <div *ngFor="let dishCategory of dishCategories">
+                                <div *ngFor="let dishCategory of filteredDishCategories">
                                     <p class="dish-category" id="dc{{dishCategory.id}}">{{dishCategory.name}}</p>
                                     <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
                                         <div id="infos">

@@ -45,6 +45,9 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   openingHours: string;
   dishCategories: DishCategoryModel[];
 
+  searchPhrase: string;
+  filteredDishCategories: DishCategoryModel[];
+
   currentDishCategoryDivId: string;
 
   proceedError: string;
@@ -99,7 +102,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
         this.restaurant = this.orderService.getRestaurant();
         this.dishCategories = this.orderService.getDishCategories();
-        this.openingHours = 'Mo. 10:00-14:00';
+        this.openingHours = this.restaurant.openingHoursTodayText;
 
         const cart = this.orderService.getCart();
 
@@ -108,6 +111,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
         } else {
           this.orderService.showCart();
         }
+
+        this.filterDishCategories();
 
         this.initialized = true;
       }, error => {
@@ -139,7 +144,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (!this.restaurant) {
       return undefined;
     }
-    return '/api/v1/restaurants/' + this.restaurant.id + '/images/banner';;
+    return '/api/v1/restaurants/' + this.restaurant.id + '/images/banner';
   }
 
   onDishCategoryChange(dishCategoryDivId: string): void {
@@ -173,7 +178,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   hideCart() {
-      this.orderService.hideCart();
+    this.orderService.hideCart();
   }
 
   showCart() {
@@ -197,6 +202,47 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     modalRef.result.then(() => {
     }, () => {
     });
+  }
+
+  onSearchTextChanged(searchPhrase: string): void {
+    if (!searchPhrase || searchPhrase.trim().length === 0) {
+      this.searchPhrase = undefined;
+    } else {
+      this.searchPhrase = searchPhrase.toLocaleLowerCase();
+    }
+    this.filterDishCategories();
+  }
+
+  filterDishCategories(): void {
+    console.log('searchPhrase: ', this.searchPhrase);
+    if (!this.searchPhrase) {
+      this.filteredDishCategories = this.dishCategories;
+      return;
+    }
+
+    this.filteredDishCategories = new Array<DishCategoryModel>();
+
+    for (let dishCategory of this.dishCategories) {
+      let hasMatch = false;
+
+      let dishCategoryClone = new DishCategoryModel();
+      dishCategoryClone.id = dishCategory.id;
+      dishCategoryClone.name = dishCategory.name;
+      dishCategoryClone.dishes = new Array<DishModel>();
+
+      for (let dish of dishCategory.dishes) {
+        const nameContainsSearchPhrase = dish.name && dish.name.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
+        const descriptionContainsSearchPhrase = dish.description && dish.description.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
+        if (nameContainsSearchPhrase || descriptionContainsSearchPhrase) {
+          dishCategoryClone.dishes.push(dish);
+          hasMatch = true;
+        }
+      }
+
+      if (hasMatch) {
+        this.filteredDishCategories.push(dishCategoryClone);
+      }
+    }
   }
 
   getFirstDishVariant(dish: DishModel): string {
