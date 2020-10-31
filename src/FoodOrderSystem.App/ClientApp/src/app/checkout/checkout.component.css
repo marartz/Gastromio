@@ -245,8 +245,8 @@
     background-color: #FFF;
 }
 
-#checkout #body #infocard button.pill.active:hover::before {
-    background-image: url('../../assets/images/svg/radio-unactive.svg');
+#checkout #body #infocard button.pill.active:hover {
+    background-color: #ADCCCB;
 }
 
 #checkout #body #infocard button.pill.active::before {
