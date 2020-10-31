@@ -23,6 +23,58 @@
                             border-radius: 23px 23px 0px 0px;
                             padding: 8px;
                         }
+                        :host /deep/ ngb-datepicker .ngb-dp-month {
+                            border-radius: 0px 0px 23px 23px;
+                            width: 100%;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-navigation .ngb-dp-navigation-chevron {
+                            border-width: 2px 2px 0px 0px;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link {
+                            color: #FFF;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link:disabled {
+                            color: #FFF;
+                            opacity: 0.5;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-navigation-select select {
+                            background-color: transparent;
+                            border: 0px solid transparent;
+                            color: #FFF;
+                            font-family: "Apercu", sans-serif;
+                            text-align: center;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekdays {
+                            background-color: #363636;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekday {
+                            color: #FFF;
+                            font-family: "Apercu", sans-serif;
+                            font-style: normal;
+                            width: 14.285714%;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week:not(.ngb-dp-weekdays) {
+                            background-color: #DECF80;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day {
+                            font-family: "Apercu", sans-serif;
+                            font-style: normal;
+                            width: 14.285714%;
+                            color: #363636;
+                            opacity: 1;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day.disabled {
+                            cursor: not-allowed;
+                            color: #363636;
+                            opacity: 0.5;
+                        }
+                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day div {
+                            width: unset;
+                            transition: all .2s ease;
+                        }
+                        :host /deep/ ngb-datepicker .bg-primary {
+                            background-color: #81B67C !important;
+                        }
                     </style>
                     <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
                     <style>
