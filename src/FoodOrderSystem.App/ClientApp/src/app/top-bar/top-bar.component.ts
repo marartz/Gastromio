@@ -30,7 +30,6 @@ export class TopBarComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
       }, response => {
-        console.log('initialize error: ', response);
       });
   }
 

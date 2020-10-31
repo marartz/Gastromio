@@ -4,4 +4,5 @@ export class StoredCartModel {
   public orderType: string;
   public restaurantId: string;
   public cartDishes: StoredCartDishModel[];
+  public serviceTime: string;
 }

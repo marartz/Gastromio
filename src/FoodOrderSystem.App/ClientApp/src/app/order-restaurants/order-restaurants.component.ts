@@ -51,7 +51,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedOpeningHourFilter = new Date(); // now
+    this.selectedOpeningHourFilter = OrderRestaurantsComponent.roundOnQuarterHours(new Date()); // now
     this.selectedCuisineFilter = '';
     this.showClosedRestaurants = false;
 
@@ -83,12 +83,26 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
     modalRef.componentInstance.value = this.selectedOpeningHourFilter;
     modalRef.result.then((value: Date) => {
-      console.log('filtering by opening hours on date: ', value);
       this.selectedOpeningHourFilter = value;
       this.updateSearch();
     }, () => {
     });
   }
+
+  getOpeningHourFilterText(): string {
+    if (!this.selectedOpeningHourFilter)
+      return undefined;
+
+    let hoursText = this.selectedOpeningHourFilter.getHours().toString();
+    hoursText = ('0' + hoursText).slice(-2);
+
+    let minutesText = this.selectedOpeningHourFilter.getMinutes().toString();
+    minutesText = ('0' + minutesText).slice(-2);
+
+    return this.selectedOpeningHourFilter.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
+  }
+
+
 
   hasLogo(
     restaurant: RestaurantModel
@@ -221,5 +235,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
         return 0;
       }
     });
+  }
+
+  private static roundOnQuarterHours(date: Date): Date {
+    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    return new Date(date.getTime() + minutesToAdd * 60000);
   }
 }

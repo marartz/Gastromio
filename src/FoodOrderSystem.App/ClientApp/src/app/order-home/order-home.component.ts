@@ -63,8 +63,6 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
         }
 
         this.sortRestaurants();
-
-        console.log("restaurants: ", this.restaurants);
       }, () => {
       });
   }

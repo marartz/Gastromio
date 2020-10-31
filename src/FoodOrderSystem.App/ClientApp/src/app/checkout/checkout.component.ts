@@ -77,6 +77,8 @@ export class CheckoutComponent implements OnInit {
 
         this.dishCategories = this.orderService.getDishCategories();
 
+        this.serviceTime = this.orderService.getCart().getServiceTime()
+
         this.initialized = true;
       }, error => {
         this.blockUI.stop();

@@ -68,6 +68,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     this.blockUI.start('Restaurant wird geladen ...');
 
     let orderType: OrderType;
+    let serviceTime: Date;
 
     const observables = [
       this.route.paramMap.pipe(tap(params => {
@@ -93,6 +94,15 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
               this.generalError = 'Unbekannte Bestellart: ' + orderTypeText;
           }
         }
+
+        const serviceTimeText = params.serviceTime;
+        if (serviceTimeText) {
+          try {
+            const dt = serviceTimeText.split(/[: T-]/).map(parseFloat);
+            serviceTime = new Date(Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0));
+          }
+          catch {}
+        }
       }))
     ];
 
@@ -106,8 +116,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
         const cart = this.orderService.getCart();
 
-        if (!cart || cart.getOrderType() !== orderType) {
-          this.orderService.startOrder(orderType);
+        if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
+          this.orderService.startOrder(orderType, serviceTime);
         } else {
           this.orderService.showCart();
         }
@@ -214,7 +224,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   filterDishCategories(): void {
-    console.log('searchPhrase: ', this.searchPhrase);
     if (!this.searchPhrase) {
       this.filteredDishCategories = this.dishCategories;
       return;

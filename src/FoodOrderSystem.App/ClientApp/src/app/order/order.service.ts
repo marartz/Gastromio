@@ -125,7 +125,6 @@ export class OrderService {
   public selectRestaurantAsync(restaurantId: string): Observable<unknown> {
     this.tryLoadCartFromStorage();
     if (!this.storedCart || this.restaurantId !== restaurantId) {
-      console.log('reset order for new/other restaurant (previous: "' + this.restaurantId + '", next: "' + restaurantId + "')");
       this.restaurant = undefined;
       this.dishCategories = undefined;
       this.storedCart = undefined;
@@ -146,7 +145,7 @@ export class OrderService {
     return this.dishCategories;
   }
 
-  public startOrder(orderType: OrderType): void {
+  public startOrder(orderType: OrderType, serviceTime: Date): void {
     switch (orderType) {
       case OrderType.Pickup:
         if (!this.restaurant.pickupInfo || !this.restaurant.pickupInfo.enabled) {
@@ -169,6 +168,7 @@ export class OrderService {
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
     this.storedCart.restaurantId = this.restaurant.name.toLowerCase();
     this.storedCart.cartDishes = new Array<StoredCartDishModel>();
+    this.storedCart.serviceTime = serviceTime.toISOString();
     this.generateCartModel();
   }
 
@@ -320,7 +320,6 @@ export class OrderService {
   private tryLoadCartFromStorage(): boolean {
     const json = localStorage.getItem('cart');
     if (!json) {
-      console.log('found no cart json in local storage');
       return false;
     }
     console.log('loaded cart from storage: ', json);
@@ -338,40 +337,32 @@ export class OrderService {
         case 'reservation':
           break;
         default:
-          console.log('unknown order type: ', storedCart.orderType);
           return false;
       }
 
       if (storedCart.restaurantId === undefined) {
-        console.log('restaurant id is not available');
         return false;
       }
 
       if (!storedCart.cartDishes) {
-        console.log('no cart dishes available');
         return false;
       }
 
       const knownItemIds = new Map<string, string>();
       for (const storedCartDishModel of storedCart.cartDishes) {
         if (!storedCartDishModel.itemId || storedCartDishModel.itemId.length === 0) {
-          console.log('item id is not valid:', storedCartDishModel.itemId);
           return false;
         }
         if (knownItemIds.get(storedCartDishModel.itemId)) {
-          console.log('item id is not unique:', storedCartDishModel.itemId);
           return false;
         }
         if (!storedCartDishModel.dishId || storedCartDishModel.dishId.length === 0) {
-          console.log('dish id is not valid:', storedCartDishModel.dishId);
           return false;
         }
         if (!storedCartDishModel.variantId || storedCartDishModel.variantId.length === 0) {
-          console.log('dish id is not valid:', storedCartDishModel.variantId);
           return false;
         }
         if (storedCartDishModel.count <= 0) {
-          console.log('invalid count: ', storedCartDishModel.count);
           return false;
         }
       }
@@ -381,7 +372,6 @@ export class OrderService {
       this.generateCartModel();
       return true;
     } catch (exc) {
-      console.log('Exception in tryLoadCartFromStorage:', exc);
       return false;
     }
   }
@@ -391,7 +381,6 @@ export class OrderService {
 
     if (this.restaurantId && !this.restaurant) {
       observables.push(this.getRestaurantAsync(this.restaurantId).pipe(tap(restaurant => {
-        console.log('loaded restaurant: ', restaurant);
         this.restaurant = new RestaurantModel(restaurant);
       })));
     }
@@ -493,6 +482,14 @@ export class OrderService {
       cartDishes.push(CartDish);
     }
 
+    let serviceTime: Date = undefined;
+    try {
+      const dt = this.storedCart.serviceTime.split(/[: T-]/).map(parseFloat);
+      serviceTime = new Date(Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0));
+    }
+    catch {}
+
+
     this.cart = new CartModel(
       OrderService.translateToOrderType(this.storedCart.orderType),
       this.restaurantId,
@@ -502,7 +499,8 @@ export class OrderService {
       costs,
       this.restaurant.hygienicHandling,
       cartDishes,
-      this.visible
+      this.visible,
+      serviceTime
     );
   }
 
