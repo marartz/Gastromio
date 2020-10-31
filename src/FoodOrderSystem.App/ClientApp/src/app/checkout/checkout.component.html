@@ -233,7 +233,7 @@
                                         *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}}
                                         )</span></span>
                                     <span class="price">{{cartDish.getPriceText()}}&euro;</span>
-                                    <button class="edit"></button>
+                                    <button class="edit" (click)="onEditCartDish(cartDish)"></button>
                                     <button class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></button>
                                 </div>
                                 <div class="top">

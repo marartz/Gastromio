@@ -15,6 +15,7 @@ import {CartDishModel} from '../cart/cart-dish.model';
 import {PaymentMethodModel} from "../payment-method/payment-method.model";
 import {OpeningHourFilterComponent} from "../opening-hour-filter/opening-hour-filter.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {EditCartDishComponent} from "../edit-cart-dish/edit-cart-dish.component";
 
 @Component({
   selector: 'app-checkout',
@@ -219,6 +220,14 @@ export class CheckoutComponent implements OnInit {
 
   onBack(): void {
     this.location.back();
+  }
+
+  public onEditCartDish(cartDish: CartDishModel): void {
+    const modalRef = this.modalService.open(EditCartDishComponent);
+    modalRef.componentInstance.cartDish = cartDish;
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   public onRemoveDishVariantFromCart(cartDishVariant: CartDishModel): void {
