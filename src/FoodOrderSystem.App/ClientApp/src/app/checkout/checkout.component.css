@@ -389,12 +389,35 @@
     white-space: nowrap;
 }
 
+#checkout #body #cart #dishes .dish .top .edit {
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    float: left;
+    min-width: 1.25rem;
+    padding: 0px;
+}
+
+#checkout #body #cart #dishes .dish .top .edit::before {
+    background-image: url('../../assets/images/svg/edit.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    height: 14px;
+    width: 14px;
+    padding: 16px 0px;
+}
+
 #checkout #body #cart #dishes .dish .top .remove {
     background-color: transparent;
     border: 0px;
     cursor: pointer;
     float: left;
     min-width: 1.25rem;
+    padding: 0px;
 }
 
 #checkout #body #cart #dishes .dish .top .remove::before {
