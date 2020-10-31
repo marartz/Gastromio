@@ -12,6 +12,7 @@ using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FoodOrderSystem.Core.Application.Commands.Checkout
 {
@@ -40,6 +41,12 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
+            var newOrderId = new OrderId(Guid.NewGuid());
+
+            var commandJson = JsonConvert.SerializeObject(command);
+            
+            logger.LogInformation($"Received order request {newOrderId.Value}: {commandJson}");
+
             Restaurant restaurant;
 
             if (Guid.TryParse(command.RestaurantId, out var restaurantId))
@@ -56,9 +63,17 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             }
 
             if (restaurant == null)
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: restaurant not found");
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+            }
+
             if (!restaurant.IsActive)
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: restaurant not active");
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+            }
+
             var restaurantInfo =
                 $"{restaurant.Name} ({restaurant.Address?.Street}, {restaurant.Address?.ZipCode} {restaurant.Address?.City})";
 
@@ -70,25 +85,47 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             {
                 var dish = await dishRepository.FindByDishIdAsync(cartDish.DishId, cancellationToken);
                 if (dish == null)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: dish not found");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
+
                 dishDict.Add(cartDish.ItemId, dish);
                 if (dish.RestaurantId != restaurant.Id)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: dish does not belong to restaurant");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
+
                 var variant = dish.Variants.FirstOrDefault(en => en.VariantId == cartDish.VariantId);
                 if (variant == null)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: variant does not belong to dish");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
+
                 variantDict.Add(cartDish.ItemId, variant);
                 if (!string.IsNullOrWhiteSpace(cartDish.Remarks))
                 {
                     var remarks = cartDish.Remarks.Trim();
                     if (remarks.Length > 1000)
+                    {
+                        logger.LogInformation($"Declined order {newOrderId.Value}: remark is longer than 1000 characters");
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    }
                 }
 
                 if (cartDish.Count <= 0)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: dish count is negative");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
+
                 if (cartDish.Count > 100)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: dish count is greater than 100");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
 
                 totalPrice += cartDish.Count * variant.Price;
             }
@@ -96,16 +133,28 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             switch (command.OrderType)
             {
                 case OrderType.Pickup:
-                    if (!ValidateOrderTypePickup(command, restaurant, totalPrice))
+                    if (!ValidateOrderTypePickup(command, newOrderId, restaurant, totalPrice))
+                    {
+                        logger.LogInformation($"Declined order {newOrderId.Value}: pickup order is not valid");
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    }
+
                     break;
                 case OrderType.Delivery:
-                    if (!ValidateOrderTypeDelivery(command, restaurant, totalPrice))
+                    if (!ValidateOrderTypeDelivery(command, newOrderId, restaurant, totalPrice))
+                    {
+                        logger.LogInformation($"Declined order {newOrderId.Value}: delivery order is not valid");
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    }
+
                     break;
                 case OrderType.Reservation:
-                    if (!ValidateOrderTypeReservation(restaurant))
+                    if (!ValidateOrderTypeReservation(restaurant, newOrderId))
+                    {
+                        logger.LogInformation($"Declined order {newOrderId.Value}: reservation order is not valid");
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -113,12 +162,18 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
 
             var serviceTime = command.ServiceTime ?? DateTime.Now;
             if (!restaurant.IsOpen(serviceTime))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: restaurant is not open at specified time");
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+            }
 
             var paymentMethod =
                 await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId, cancellationToken);
             if (paymentMethod == null)
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: payment method is not known");
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+            }
 
             decimal costs = 0;
             if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.Costs.HasValue)
@@ -129,7 +184,7 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             totalPrice += costs;
 
             var order = new Order(
-                new OrderId(Guid.NewGuid()),
+                newOrderId,
                 new CustomerInfo(
                     command.GivenName,
                     command.LastName,
@@ -171,107 +226,134 @@ namespace FoodOrderSystem.Core.Application.Commands.Checkout
             await orderRepository.StoreAsync(order, cancellationToken);
 
             var viewModel = new OrderDTO(order, paymentMethod);
+            logger.LogInformation($"Order is processed successfully: {newOrderId.Value}");
             return SuccessResult<OrderDTO>.Create(viewModel);
         }
 
-        private bool ValidateOrderTypePickup(CheckoutCommand command, Restaurant restaurant, decimal totalPrice)
+        private bool ValidateOrderTypePickup(CheckoutCommand command, OrderId newOrderId, Restaurant restaurant, decimal totalPrice)
         {
             if (restaurant.PickupInfo == null || !restaurant.PickupInfo.Enabled)
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: pickup is not enabled");
                 return false;
             }
 
             if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MinimumOrderValue.HasValue &&
                 totalPrice < restaurant.PickupInfo.MinimumOrderValue.Value)
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: minimum order value for pickup not met");
                 return false;
             }
 
             if (command.OrderType == OrderType.Pickup && restaurant.PickupInfo.MaximumOrderValue.HasValue &&
                 totalPrice > restaurant.PickupInfo.MaximumOrderValue.Value)
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: maximum order value for pickup exceeded");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.GivenName))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: given name is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.LastName))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: last name is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.Email))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: email is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.Phone))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: phone is empty");
                 return false;
             }
 
             return true;
         }
 
-        private bool ValidateOrderTypeDelivery(CheckoutCommand command, Restaurant restaurant, decimal totalPrice)
+        private bool ValidateOrderTypeDelivery(CheckoutCommand command, OrderId newOrderId, Restaurant restaurant, decimal totalPrice)
         {
             if (restaurant.DeliveryInfo == null || !restaurant.DeliveryInfo.Enabled)
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: delivery is not enabled");
                 return false;
             }
 
             if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MinimumOrderValue.HasValue &&
                 totalPrice < restaurant.DeliveryInfo.MinimumOrderValue.Value)
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: minimum order value for delivery is not met");
                 return false;
             }
 
             if (command.OrderType == OrderType.Delivery && restaurant.DeliveryInfo.MaximumOrderValue.HasValue &&
                 totalPrice > restaurant.DeliveryInfo.MaximumOrderValue.Value)
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: maximum order value for delivery exceeded");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.GivenName))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: given name is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.LastName))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: last name is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.Street))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: street is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.ZipCode))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: zip code is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.City))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: city is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.Email))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: email is empty");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(command.Phone))
             {
+                logger.LogInformation($"Declined order {newOrderId.Value}: phone is empty");
                 return false;
             }
 
             return true;
         }
 
-        private bool ValidateOrderTypeReservation(Restaurant restaurant)
+        private bool ValidateOrderTypeReservation(Restaurant restaurant, OrderId newOrderId)
         {
             if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: reservation is not enabled");
                 return false;
+            }
+
             return true;
         }
     }
