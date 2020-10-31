@@ -177,7 +177,7 @@ namespace FoodOrderSystem.Template.DotLiquid
 
                 sb.Append(": ");
 
-                sb.Append(orderedDish.VariantPrice);
+                sb.Append(orderedDish.VariantPrice.ToString("0.00"));
                 sb.Append("€");
 
                 if (!string.IsNullOrEmpty(orderedDish.Remarks))
@@ -196,13 +196,13 @@ namespace FoodOrderSystem.Template.DotLiquid
             if (order.Costs > 0)
             {
                 sb.Append("Lieferkosten: ");
-                sb.Append(order.Costs);
+                sb.Append(order.Costs.ToString("0.00"));
                 sb.Append("€");
                 sb.AppendLine();
             }
 
             sb.Append("Gesamtpreis: ");
-            sb.Append(order.TotalPrice);
+            sb.Append(order.TotalPrice.ToString("0.00"));
             sb.Append("€");
             sb.AppendLine();
 
