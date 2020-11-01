@@ -134,11 +134,28 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
             sb.AppendLine();
 
-            sb.Append("Wir haben eine neue Bestellung für Dich über Gastromio.de entgegengenommen.");
+            sb.Append("Wir haben eine neue Bestellung für Dich über Gastromio.de entgegengenommen:");
             sb.AppendLine();
             sb.AppendLine();
 
-            sb.AppendLine("Ein kurzer Hinweis vorweg:");
+            AppendOrderDetails(sb, order);
+
+            if (order.CartInfo.OrderType == OrderType.Pickup)
+            {
+                sb.Append("Die gewählte Bestellart ist: Abholung. Der Besteller holt die Bestellung ab.");
+                sb.AppendLine();
+            }
+            else if (order.CartInfo.OrderType == OrderType.Delivery)
+            {
+                sb.Append("Die gewählte Bestellart ist: Lieferung. Bitte dem Besteller die Bestellung zur gewünschten Adresse liefern.");
+                sb.AppendLine();
+            }
+            
+            AppendServiceTime(sb, order);
+            
+            sb.AppendLine();
+
+            sb.AppendLine("Noch ein wichtiger Hinweis:");
             
             sb.AppendLine(
                 "Gastromio.de wurde ehrenamtlich von Helfern der Coronahilfe-Bocholt erstellt, um Deine Existenz als Gastronom in dieser");
@@ -164,7 +181,7 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine();
 
             sb.AppendLine(
-                "Wenn ein Problem aufgetreten ist, das Ihr nicht lösen konntet, melde es doch gerne unter info@gastromio.de! Wir nehmen Deinen");
+                "Wenn ein Problem aufgetreten ist, das Ihr nicht lösen konntet, melde es doch gerne unter support@gastromio.de! Wir nehmen Deinen");
             sb.AppendLine("Hinweis gerne auf.");
             sb.AppendLine();
 
@@ -184,25 +201,6 @@ namespace FoodOrderSystem.Template.DotLiquid
                 "etwas zu kritisieren hast und erkläre uns einfach, was Du Dir anders wünschst, sie alle tun ihr Bestes.");
 
             sb.AppendLine();
-            sb.AppendLine("Nun aber hier die Details der eingegangenen Bestellung:");
-
-            AppendOrderDetails(sb, order);
-
-            if (order.CartInfo.OrderType == OrderType.Pickup)
-            {
-                sb.Append("Die gewählte Bestellart ist: Abholung. Der Besteller holt die Bestellung ab.");
-                sb.AppendLine();
-            }
-            else if (order.CartInfo.OrderType == OrderType.Delivery)
-            {
-                sb.Append("Die gewählte Bestellart ist: Lieferung. Bitte dem Besteller die Bestellung zur gewünschten Adresse liefern.");
-                sb.AppendLine();
-            }
-            
-            AppendServiceTime(sb, order);
-            
-            sb.AppendLine();
-
             sb.AppendLine("Dein Gastromio-Team");
 
             var customerInfo = order.CartInfo.OrderType switch
