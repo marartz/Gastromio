@@ -18,6 +18,7 @@ import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.compo
 import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
 import {take, tap} from 'rxjs/operators';
 import {combineLatest} from 'rxjs';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-order-restaurant',
@@ -55,6 +56,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
     private orderService: OrderService,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private modalService: NgbModal,
@@ -123,6 +125,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
         }
 
         this.filterDishCategories();
+
+        this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
 
         this.initialized = true;
       }, error => {
