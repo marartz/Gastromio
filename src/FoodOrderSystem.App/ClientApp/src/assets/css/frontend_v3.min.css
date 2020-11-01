@@ -1535,11 +1535,11 @@ button {
     margin-top: 0px;
 }
 
-#order-restaurant #order aside #preorder-filter button:disabled::before {
+#order-restaurant #order aside #preorder-filter button.active::before {
     background-image: url('../../assets/images/svg/checkbox-active.svg');
 }
 
-#order-restaurant .mobile-filter-details #mobile-preorder-filter button:disabled::before {
+#order-restaurant .mobile-filter-details #mobile-preorder-filter button.active::before {
     background-image: url('../../assets/images/svg/checkbox-active.svg');
 }
 
