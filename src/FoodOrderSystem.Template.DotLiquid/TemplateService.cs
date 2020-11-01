@@ -52,7 +52,7 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.AppendLine(
                 "Gastromio geübt ist, oder sich ein Systemfehler eingeschlichen hat, den wir noch nicht kennen. Wir haben daher");
             sb.AppendLine(
-                "den Wirt gebeten, seine Vorbestellungen zu Beginn der Schicht kurz per Email zu bestätigen. Passiert das nicht,");
+                "den Wirt gebeten, seine Vorbestellungen zu Beginn der Schicht kurz per E-Mail zu bestätigen. Passiert das nicht,");
             sb.AppendLine(
                 "frag ruhig kurz nach, sei aber nett, es ist für den Wirt genauso neu, wie für Dich. Das Restaurant ist unter der");
             sb.Append("Telefonnummer ");
@@ -128,15 +128,63 @@ namespace FoodOrderSystem.Template.DotLiquid
 
             var sb = new StringBuilder();
 
-            sb.Append("Hallo ");
+            sb.Append("Liebes Restaurant ");
             sb.Append(order.CartInfo.RestaurantName);
             sb.Append(",");
             sb.AppendLine();
             sb.AppendLine();
 
-            sb.Append("Wir haben eine neue Bestellung empfangen. Hier die Details:");
+            sb.Append("Wir haben eine neue Bestellung für Dich über Gastromio.de entgegengenommen.");
             sb.AppendLine();
             sb.AppendLine();
+
+            sb.AppendLine("Ein kurzer Hinweis vorweg:");
+            
+            sb.AppendLine(
+                "Gastromio.de wurde ehrenamtlich von Helfern der Coronahilfe-Bocholt erstellt, um Deine Existenz als Gastronom in dieser");
+            sb.AppendLine(
+                "schweren Zeit zu erhalten. Weder Du noch Dein Kunde haben durch Gastromio.de irgendwelche Kosten. Gastromio.de wurde erst");
+            sb.AppendLine(
+                "kürzlich in Betrieb genommen. Es ist also möglich, dass der Kunde noch unsicher ist, ob die Bestellabwicklung über Gastromio");
+            sb.AppendLine(
+                "funktioniert. Wir haben ihm daher zugesagt, dass Du die Bestellung zu Beginn Deiner Schicht kurz per E-Mail bestätigen würdest.");
+            sb.Append(
+                "Falls er etwas bestellt hat, das aktuell nicht lieferbar ist, rufe ihn bitte an, er ist unter Telefonnummer ");
+            sb.AppendLine(order.CustomerInfo.Phone);
+            sb.Append("bzw. unter der E-Mail-Adresse ");
+            sb.Append(order.CustomerInfo.Email);
+            sb.AppendLine(" zu erreichen.");
+            sb.AppendLine();
+            
+            sb.AppendLine(
+                "Bestellungen per E-Mail betreffen immer nur Vorbestellungen für die nächste Öffnungszeit/Schicht. Bestellungen oder Abholungen,");
+            sb.AppendLine(
+                "die der Kunde für sofort oder möglichst schnell erhalten will, lassen wir auf Wunsch vieler Wirte, zunächst telefonisch bei Dir");
+            sb.AppendLine("eingehen.");
+            sb.AppendLine();
+
+            sb.AppendLine(
+                "Wenn ein Problem aufgetreten ist, das Ihr nicht lösen konntet, melde es doch gerne unter info@gastromio.de! Wir nehmen Deinen");
+            sb.AppendLine("Hinweis gerne auf.");
+            sb.AppendLine();
+
+            sb.AppendLine(
+                "Solltest Du Deine Öffnungszeiten ändern oder Deine Speisekarte anpassen wollen und dabei Schwierigkeiten haben, kannst Du auch");
+            sb.AppendLine(
+                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine Mail schicken an hotline@coronahilfe-bocholt.de");
+            sb.AppendLine();
+
+            sb.AppendLine(
+                "Denke bitte daran: Alle Helfer, die Dein Angebot über Gastromio.de im Internet und auf verschiedenen Sozialen Medien");
+            sb.AppendLine(
+                "kommunizieren, tun das ehrenamtlich nach bestem Wissen und Gewissen, und völlig ohne Gegenleistung. Oft sind es Stammkunden,");
+            sb.AppendLine(
+                "die möchten, dass Du weiter existierst, aber vielleicht macht auch einer mal einen Fehler dabei. Bitte sei also nett, wenn Du");
+            sb.AppendLine(
+                "etwas zu kritisieren hast und erkläre uns einfach, was Du Dir anders wünschst, sie alle tun ihr Bestes.");
+
+            sb.AppendLine();
+            sb.AppendLine("Nun aber hier die Details der eingegangenen Bestellung:");
 
             AppendOrderDetails(sb, order);
 
