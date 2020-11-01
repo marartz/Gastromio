@@ -1853,7 +1853,6 @@ button {
     background-color: transparent;
     position: relative;
     z-index: 30;
-    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 #top-bar .wrapper {
@@ -1902,19 +1901,6 @@ button {
     width: 48px;
 }
 
-#top-bar #logo:hover img {
-    transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-}
-
-@media only screen and (min-width: 768px) {
-    #top-bar #logo img {
-        margin-right: 6px;
-    }
-}
-
 #top-bar #logo a {
     color: #FFF;
     cursor: pointer;
@@ -1928,6 +1914,27 @@ button {
 
 #top-bar #logo a span {
     font-weight: 300;
+}
+
+@media only screen and (max-width: 767px) {
+    #top-bar #logo a span {
+        display: none;
+    }
+    #top-bar #logo img {
+        margin-right: 6px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #top-bar #logo:hover img {
+        transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    }
+    #top-bar #logo img {
+        margin-right: 6px;
+    }
 }
 
 /* 4.2 #top-bar > #menu */
