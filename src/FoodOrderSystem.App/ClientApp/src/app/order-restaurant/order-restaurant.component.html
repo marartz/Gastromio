@@ -1,10 +1,10 @@
 
     <div id="root">
         <div class="layout">
-            <div id="error" *ngIf="generalError !== undefined"><div class="middle"><div id="general" tabindex="-1" role="alert"><!--h1>{{generalError}}</h1--><h1>Ein technischer Fehler ist aufgetreten</h1><p>Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div></div></div>
+            <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
             <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
 
-                <section id="hero">
+                <section id="hero" [style.background-image]="getBannerStyle()" style="background-repeat: no-repeat; background-size: cover;" >
                     <div class="wrapper">
                         <div id="text">
                             <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>

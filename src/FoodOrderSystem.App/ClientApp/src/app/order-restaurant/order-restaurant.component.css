@@ -46,7 +46,7 @@
     display: flex;
     flex-direction: column;
     max-width: 480px;
-    padding: 20px 28px;
+    padding: 80px 28px;
     width: 100%;
 }
 
@@ -261,4 +261,27 @@
     margin-right: 20px;
     text-align: center;
     width: calc(100% - 40px);
+}
+
+
+
+#fp-alert {
+    align-items: center;
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    margin-top: -72px;
+    padding: 16px;
+    position: relative;
+    width: 100%;
+}
+
+#fp-alert p {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 46px;
+    font-weight: 700;
 }
