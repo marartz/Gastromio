@@ -34,32 +34,6 @@
                 <div class="teller"></div>
             </section>
 
-            <!--section id="landing">
-                <div class="wrapper">
-                    <div class="text">
-                        <h1>Essen lokal bestellen</h1>
-                        <h4>in Bocholt und Umgebung</h4>
-                    </div>
-                    <div class="search">
-                        <div class="icon-wrapper"><div class="icon"></div></div>
-                        <input type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
-                        <button [routerLink]="['/restaurants']">Alle anzeigen</button>
-                    </div>
-                    <div class="results">
-                        <div class="rest">
-                            <div *ngFor="let restaurant of restaurants">
-                                <span class="restaurant-name">{{restaurant.name}}</span>
-                                <div class="order-type">
-                                    <ng-container *ngIf="restaurant.pickupInfo"><button (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
-                                    <ng-container *ngIf="restaurant.deliveryInfo"><button (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="teller"></div>
-            </section-->
-
             <section id="about">
                 <img class="circle" src="../../assets/circle.png" alt="">
                 <div class="wrapper">
@@ -107,10 +81,10 @@
             <section id="cta">
                 <div class="wrapper">
                     <div class="text">
-                        <h4>Mit kontaktloser Lieferung<br />bei online bezahlten Bestellungen</h4>
-                        <p>Vorzugsweise klingeln die Fahrer bei dir und stellen<br />deine Bestellung vor der Wohnungstür ab.</p>
+                        <h4>Ist Dein Lieblingsrestaurant<br />noch noch nicht mit dabei?</h4>
+                        <p>Registriere Dich ganz einfach und kostenlos<br />und sei noch morgen mit dabei.</p>
                     </div>
-                    <div class="cta-button"><button [routerLink]="['/restaurants']">Los geht’s ...</button></div>
+                    <div class="cta-button"><button href="https://gastromio.de/registrieren">Los geht’s ...</button></div>
                     <div class="messer-gabel"></div>
                 </div>
             </section>

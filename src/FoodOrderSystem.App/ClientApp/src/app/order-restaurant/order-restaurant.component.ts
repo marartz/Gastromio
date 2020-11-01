@@ -154,7 +154,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (!this.restaurant) {
       return undefined;
     }
-    return '/api/v1/restaurants/' + this.restaurant.id + '/images/banner';
+    return 'url(\'/api/v1/restaurants/' + this.restaurant.id + '/images/banner' + '\')';
   }
 
   onDishCategoryChange(dishCategoryDivId: string): void {
