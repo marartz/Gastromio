@@ -1,64 +1,26 @@
-<div id="modal">
-    <div class="wrapper">
-        <div class="inner">
-
-            <header id="header">
-                <h1>Informationen zur Beta-Phase</h1>
-                <div class="close">
-                    <button type="button" (click)="activeModal.dismiss('Cross click')" aria-label="Close"><span><svg
-                        height="24" width="24" viewBox="0 0 24 24"><path
-                        d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span>
-                    </button>
-                </div>
-            </header>
-
-            <p>
-                Gastromio.de wurde ehrenamtlich von Helfern der Coronahilfe-Bocholt erstellt, um einen Beitrag zu leisten, die Existenz der
-                Gastronomen in dieser schweren Zeit zu erhalten. Durch die Nutzung von Gastromio.de entstehen weder dem Besteller noch dem
-                Restaurant irgendwelche Kosten.
-            </p>
-
-            <p>
-                Gastromio.de wurde erst kürzlich in Betrieb genommen. Es ist also möglich, dass sich der ein oder andere Fehler im System
-                eingeschlichen hat, den wir noch nicht kennen. Das bitten wir im Vorhinein zu entschuldigen.
-            </p>
-
-            <p>
-                Weiterhin sind die Wirte in der Bestellabwicklung über Gastrmio noch nicht geübt. Daher ermöglicht das System im Moment nur
-                Vorbestellungen für die nächste Öffnungszeit/Schicht auf elektronischem Wege zu übermitteln. Bestellungen oder Abholungen,
-                die der Besteller für sofort oder möglichst schnell erhalten will, lassen wir auf Wunsch vieler Wirte, zunächst nur telefonisch
-                zu. Wir haben die Wirte gebeten, Vorbestellungen zu Beginn der nächsten Schicht kurz per E-Mail zu bestätigen.
-            </p>
-
-            <p>
-                Alle Helfer, die Dein Angebot über Gastromio.de im Internet und auf verschiedenen Sozialen Medien kommunizieren, tun das
-                ehrenamtlich nach bestem Wissen und Gewissen, und völlig ohne Gegenleistung. Oft sind es Stammkunden, die möchten, dass
-                Restaurants weiter existieren, aber vielleicht macht auch der eine oder andere mal einen Fehler dabei. Wir bitten Kunden
-                und Restaurants bei Problemen um konstruktive Kritik. Wir alle tun unser Bestes! :-)
-            </p>
-
-            <p>
-                Für alle Probleme oder Fragen rund um unser Angebot sind wir gerne unter support@gastromio.de oder über die Hotline der
-                Coronahilfe Bocholt, 02871-287381, ansprechbar!
-            </p>
-
-            <p>
-                Dein Gastromio-Team
-            </p>
-
-            <footer id="footer">
-                <div class="wrapper">
-                    <div class="inner">
-                        <span class="close">
-                            <span class="inner">
-                                <button type="button"
-                                        (click)="activeModal.dismiss('Cross click')"><span>Schließen</span></button>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </footer>
-
-        </div>
+<div class="overlay">
+    <div id="betaModal">
+        <a class="close" (click)="activeModal.dismiss('Cross click')" aria-label="Close"></a>
+        <span class="title">Informationen</span>
+        <p>Gastromio.de wurde erst kürzlich in Betrieb genommen. Es ist also möglich, dass sich der ein oder andere Fehler im System eingeschlichen hat, den wir noch nicht kennen. Das bitten wir im Vorhinein zu entschuldigen.</p>
+        <p>
+            Weiterhin sind die Wirte in der Bestellabwicklung über Gastrmio noch nicht geübt. Daher ermöglicht das System im Moment nur
+            Vorbestellungen für die nächste Öffnungszeit/Schicht auf elektronischem Wege zu übermitteln. Bestellungen oder Abholungen,
+            die der Besteller für sofort oder möglichst schnell erhalten will, lassen wir auf Wunsch vieler Wirte, zunächst nur telefonisch
+            zu. Wir haben die Wirte gebeten, Vorbestellungen zu Beginn der nächsten Schicht kurz per E-Mail zu bestätigen.
+        </p>
+        <p>
+            Alle Helfer, die über Gastromio.de im Internet und auf verschiedenen Sozialen Medien kommunizieren, tun das
+            ehrenamtlich nach bestem Wissen und Gewissen, und völlig ohne Gegenleistung. Sie möchten, dass
+            Restaurants weiter existieren und bitten Kunden und Restaurants bei Problemen um konstruktive Kritik.
+        </p>
+        <p>
+            Für alle Probleme oder Fragen rund um unser Angebot sind wir gerne unter <a href="mailto:support@gastromio.de"><u>support@gastromio.de</u></a> oder über die Hotline der
+            Coronahilfe Bocholt, 02871-287381, ansprechbar!
+        </p>
+        <p>
+            <i>Dein Gastromio-Team</i>
+        </p>
+        <a class="close-link" (click)="activeModal.dismiss('Cross click')" aria-label="Close">Schließen</a>
     </div>
 </div>
