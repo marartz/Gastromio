@@ -28,7 +28,7 @@
                             </h4>
 
                             <ng-container *ngIf="restaurant.isOpen(undefined)">
-                                <span style="font-style: italic">In der aktuellen Öffnungszeit nimmt das Restaurant keine elektronischen Bestellungen an.</span>
+                                <span style="font-style: italic">In der aktuellen Öffnungszeit nimmt das Restaurant keine elektronischen Bestellungen entgegen.</span>
                                 <br/><br/>
                                 <button type="button" class="pill" [class.active]="!serviceTime" (click)="onAsFastAsPossible()">
                                     Ich bestelle telefonisch unter {{restaurant.contactInfo.phone}}
@@ -112,7 +112,7 @@
                             </h4>
 
                             <ng-container *ngIf="restaurant.isOpen(undefined)">
-                                <span style="font-style: italic">In der aktuellen Öffnungszeit nimmt das Restaurant keine elektronischen Bestellungen an.</span>
+                                <span style="font-style: italic">In der aktuellen Öffnungszeit nimmt das Restaurant keine elektronischen Bestellungen entgegen.</span>
                                 <br/><br/>
                                 <button type="button" class="pill" [class.active]="!serviceTime" (click)="onAsFastAsPossible()">
                                     Ich bestelle telefonisch unter {{restaurant.contactInfo.phone}}

@@ -204,7 +204,7 @@ export class CheckoutComponent implements OnInit {
 
   getServiceTimeError(): string {
     if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
-      return "Eine Bestellung zum gewählten Zeitpunkt ist nicht möglich.";
+      return "Eine elektronische Bestellung zum gewählten Zeitpunkt ist nicht möglich.";
     return undefined;
   }
 
