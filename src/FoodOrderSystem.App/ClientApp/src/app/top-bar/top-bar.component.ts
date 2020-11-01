@@ -6,6 +6,7 @@ import {UserModel} from '../user/user.model';
 import {Router} from '@angular/router';
 import {OrderService} from '../order/order.service';
 import {take} from 'rxjs/operators';
+import {BetaInfoComponent} from "../beta-info/beta-info.component";
 
 @Component({
   selector: 'app-top-bar',
@@ -31,6 +32,13 @@ export class TopBarComponent implements OnInit {
       .subscribe(() => {
       }, response => {
       });
+  }
+
+  onOpenBetaInfoModal() {
+    const modalRef = this.modalService.open(BetaInfoComponent);
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   getUserEmail(): string {
