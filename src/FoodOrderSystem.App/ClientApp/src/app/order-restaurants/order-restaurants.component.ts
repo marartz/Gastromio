@@ -211,7 +211,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   onJustShowOpenRestaurants(): void {
-    this.showClosedRestaurants = false;
+    this.showClosedRestaurants = !this.showClosedRestaurants;
     this.updateSearch();
   }
 
