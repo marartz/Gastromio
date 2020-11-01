@@ -77,6 +77,8 @@ export class CheckoutComponent implements OnInit {
 
         this.dishCategories = this.orderService.getDishCategories();
 
+        this.serviceTime = this.orderService.getCart().getServiceTime()
+
         this.initialized = true;
       }, error => {
         this.blockUI.stop();
@@ -201,8 +203,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   getServiceTimeError(): string {
-    if (!this.restaurant.isOpen(this.serviceTime))
-      return "Das Restaurant hat zum gewählten Zeitpunkt nicht geöffnet";
+    if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
+      return "Eine Bestellung zum gewählten Zeitpunkt ist nicht möglich.";
     return undefined;
   }
 

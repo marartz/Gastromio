@@ -77,36 +77,67 @@ export class RestaurantModel {
 
   public needsSupport: boolean;
 
-  public isOpen(date: Date): boolean {
+  public isOpen(dateTime: Date): boolean {
     if (!this.openingHours) {
       return false;
     }
 
-    if (date === undefined)
-      date = new Date();
+    if (dateTime === undefined)
+      dateTime = new Date();
 
-    try {
-      let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday
+    return this.findOpeningPeriodIndex(dateTime) > -1;
+  }
+
+  public isOrderPossibleAt(orderDateTime: Date): boolean {
+    if (!this.openingHours) {
+      return false;
+    }
+
+    if (orderDateTime === undefined)
+      orderDateTime = new Date();
+
+    const now = new Date();
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const orderDate = new Date(orderDateTime.getFullYear(), orderDateTime.getMonth(), orderDateTime.getDate());
+
+    if (orderDateTime < now)
+    {
+      return false;
+    }
+
+    let indexOrder = this.findOpeningPeriodIndex(orderDateTime);
+    if (indexOrder < 0)
+    {
+      return false;
+    }
+
+    if (orderDate > today)
+    {
+      return true;
+    }
+
+    let indexNow = this.findOpeningPeriodIndex(now);
+    return indexNow < 0 || indexOrder > indexNow;
+  }
+
+  private findOpeningPeriodIndex(dateTime: Date): number {
+    let dayOfWeek = (dateTime.getDay() - 1) % 7; // DayOfWeek starts with Sunday
+    if (dayOfWeek < 0) {
+      dayOfWeek += 7;
+    }
+    let time = dateTime.getHours() * 60 + dateTime.getMinutes();
+    if (dateTime.getHours() < 4) {
+      dayOfWeek = (dayOfWeek - 1) % 7;
       if (dayOfWeek < 0) {
         dayOfWeek += 7;
       }
-      let time = date.getHours() * 60 + date.getMinutes();
-      if (date.getHours() < 4) {
-        dayOfWeek = (dayOfWeek - 1) % 7;
-        if (dayOfWeek < 0) {
-          dayOfWeek += 7;
-        }
-        time += 24 * 60;
-      }
-
-      let isOpen: boolean;
-      isOpen = this.openingHours.some(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
-
-      return isOpen;
-    } catch (e) {
-      console.error(e);
-      return false;
+      time += 24 * 60;
     }
+
+    return this.openingHours.findIndex(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
   }
 }
 

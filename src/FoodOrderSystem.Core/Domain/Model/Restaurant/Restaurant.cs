@@ -207,37 +207,16 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        public bool IsOpen(DateTime date)
+        public bool IsOpen(DateTime dateTime)
         {
             if (openingHours == null)
             {
                 return false;
             }
             
-            var dayOfWeek = ((int)date.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
-            if (dayOfWeek < 0)
-            {
-                dayOfWeek += 7;
-            }
-
-            var time = date.Hour * 60 + date.Minute;
-            if (date.Hour < 4)
-            {
-                dayOfWeek = (dayOfWeek - 1) % 7;
-                if (dayOfWeek < 0)
-                {
-                    dayOfWeek += 7;
-                }
-
-                time += 24 * 60;
-            }
-
-            var isOpen = openingHours.Any(en =>
-                en.DayOfWeek == dayOfWeek && en.Start.TotalMinutes <= time && time <= en.End.TotalMinutes);
-
-            return isOpen;
+            return FindOpeningPeriodIndex(dateTime) > -1;
         }
-
+        
         public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
         {
             const double earliestOpeningTime = 4d;
@@ -298,6 +277,33 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
+        }
+
+        public bool IsOrderPossibleAt(DateTime orderDateTime)
+        {
+            if (openingHours == null)
+            {
+                return false;
+            }
+
+            if (orderDateTime < DateTime.Now)
+            {
+                return false;
+            }
+
+            var indexOrder = FindOpeningPeriodIndex(orderDateTime);
+            if (indexOrder < 0)
+            {
+                return false;
+            }
+
+            if (orderDateTime.Date > DateTime.Today)
+            {
+                return true;
+            }
+            
+            var indexNow = FindOpeningPeriodIndex(DateTime.Now);
+            return indexNow < 0 || indexOrder > indexNow;
         }
 
         public Result<bool> ChangePickupInfo(PickupInfo pickupInfo, UserId changedBy)
@@ -486,6 +492,32 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return SuccessResult<bool>.Create(true);
             NeedsSupport = true;
             return SuccessResult<bool>.Create(true);
+        }
+
+        private int FindOpeningPeriodIndex(DateTime dateTime)
+        {
+            var dayOfWeek = ((int) dateTime.DayOfWeek - 1) % 7;
+            if (dayOfWeek < 0)
+            {
+                dayOfWeek += 7;
+            }
+
+            var time = dateTime.Hour * 60 + dateTime.Minute;
+            if (dateTime.Hour < 4)
+            {
+                dayOfWeek = (dayOfWeek - 1) % 7;
+                if (dayOfWeek < 0)
+                {
+                    dayOfWeek += 7;
+                }
+
+                time += 24 * 60;
+            }
+
+            var openingHoursList = openingHours.ToList();
+
+            return openingHoursList.FindIndex(en =>
+                en.DayOfWeek == dayOfWeek && en.Start.TotalMinutes <= time && time <= en.End.TotalMinutes);
         }
     }
 }

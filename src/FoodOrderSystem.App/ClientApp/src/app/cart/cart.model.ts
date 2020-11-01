@@ -10,7 +10,8 @@ export class CartModel {
     private costs: number,
     private hygienicHandling: string,
     private cartDishes: CartDishModel[],
-    private visible: boolean
+    private visible: boolean,
+    private serviceTime: Date
   ) {
   }
 
@@ -154,6 +155,10 @@ export class CartModel {
 
   public isVisible(): boolean {
     return this.visible;
+  }
+
+  public getServiceTime(): Date {
+    return this.serviceTime;
   }
 
   public isValid(): boolean {

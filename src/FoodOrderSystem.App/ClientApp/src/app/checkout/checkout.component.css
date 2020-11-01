@@ -168,6 +168,10 @@
     width: 100%;
 }
 
+#checkout #body #infocard input:disabled {
+    background-color: #adb5bd;
+}
+
 #checkout #body #infocard input::placeholder {
     color: #94918E;
 }
@@ -209,6 +213,15 @@
     margin-left: 9px;
 }
 
+#checkout #body #cart .invalid-feedback {
+    color: darkred;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 9px;
+}
+
 #checkout #body #infocard button.pill {
     background-color: #ADCCCB;
     border: 2px solid #fff;
@@ -240,6 +253,10 @@
     position: absolute;
     left: 40px;
     margin-top: -3px;
+}
+
+#checkout #body #infocard button:disabled {
+    background-color: #adb5bd;
 }
 
 #checkout #body #infocard button.pill.active {
@@ -278,6 +295,10 @@
     margin-right: 76px;
     text-align: center;
     width: calc(100% - 152px);
+}
+
+#checkout #body .confirm-purchase:disabled {
+    background-color: #adb5bd;
 }
 
 @media only screen and (max-width: 992px) {

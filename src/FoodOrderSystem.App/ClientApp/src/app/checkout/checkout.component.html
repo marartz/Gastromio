@@ -17,6 +17,35 @@
 
                     <ng-container *ngIf="getCart().isPickup()">
                         <section id="infocard">
+                            <h3 class="title">Abholzeit</h3>
+
+                            <h4 class="subtitle">
+                                <span>Wann möchtest du dein Essen abholen?</span>
+                                <span *ngIf="restaurant.isOpen(undefined)"> {{restaurant.name}} hat heute für dich geöffnet: {{restaurant.openingHoursTodayText}}.</span>
+                                <span *ngIf="!restaurant.isOpen(undefined)"> {{restaurant.name}} hat im Moment geschlossen.</span>
+                                <br/><br/>
+                                <span>Öffnungszeiten: {{restaurant.openingHoursText}}</span>
+                            </h4>
+
+                            <ng-container *ngIf="restaurant.isOpen(undefined)">
+                                <span style="font-style: italic">In der aktuellen Öffnungszeit nimmt das Restaurant keine elektronischen Bestellungen an.</span>
+                                <br/><br/>
+                                <button type="button" class="pill" [class.active]="!serviceTime" (click)="onAsFastAsPossible()">
+                                    Ich bestelle telefonisch unter {{restaurant.contactInfo.phone}}
+                                </button>
+                            </ng-container>
+
+                            <button type="button" class="pill" [class.active]="serviceTime"
+                                    (click)="onSelectServiceTime()">
+                                <span *ngIf="!serviceTime">Vorbestellung</span>
+                                <span *ngIf="serviceTime">Vorbestellung: {{getServiceTimeText()}}</span>
+                            </button>
+
+                            <div class="invalid-feedback" *ngIf="serviceTime && getServiceTimeError()">
+                                <div>{{getServiceTimeError()}}</div>
+                            </div>
+                        </section>
+                        <section id="infocard">
                             <h3 class="title">Deine Daten</h3>
                             <h4 class="subtitle">Wie kann das Restaurant Dich kontaktieren?</h4>
 
@@ -25,6 +54,7 @@
                                     <label for="givenName">Vorname</label>
                                     <input autocomplete="off" type="text" id="givenName" [(ngModel)]="givenName"
                                            [ngClass]="{ 'is-invalid': submitted && getGivenNameError() }"
+                                           [disabled]="getServiceTimeError() !== undefined"
                                            placeholder="Bernd"/>
                                     <div class="invalid-feedback" *ngIf="submitted && getGivenNameError()">
                                         <div>{{getGivenNameError()}}</div>
@@ -34,6 +64,7 @@
                                     <label for="lastName">Nachname</label>
                                     <input autocomplete="off" type="text" id="lastName" [(ngModel)]="lastName"
                                            [ngClass]="{ 'is-invalid': submitted && getLastNameError() }"
+                                           [disabled]="getServiceTimeError() !== undefined"
                                            placeholder="Mustermann"/>
                                     <div class="invalid-feedback" *ngIf="submitted && getLastNameError()">
                                         <div>{{getLastNameError()}}</div>
@@ -44,6 +75,7 @@
                             <label for="email">E-Mail Adresse</label>
                             <input autocomplete="off" type="email" id="email" [(ngModel)]="email"
                                    [ngClass]="{ 'is-invalid': submitted && getEmailError() }"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="bernd@beispiel.de"/>
                             <div class="invalid-feedback" *ngIf="submitted && getEmailError()">
                                 <div>{{getEmailError()}}</div>
@@ -52,6 +84,7 @@
                             <label for="street">Telefonnummer</label>
                             <input autocomplete="off" type="string" id="phone" [(ngModel)]="phone"
                                    [ngClass]="{ 'is-invalid': submitted && getPhoneError() }"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="0170 12345678"/>
                             <div class="invalid-feedback" *ngIf="submitted && getPhoneError()">
                                 <div>{{getPhoneError()}}</div>
@@ -59,39 +92,43 @@
 
                             <label for="comments">Zusatz (optional)</label>
                             <input autocomplete="off" type="text" maxlength="300" [(ngModel)]="comments"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="z.B. „Statt klingeln, bitte kurz anrufen.“" id="comments"/>
-                        </section>
-                        <section id="infocard">
-                            <h3 class="title">Abholzeit</h3>
-
-                            <h4 class="subtitle">
-                                <span>Wann möchtest du dein Essen abholen?</span>
-                                <span *ngIf="restaurant.isOpen(undefined)"> {{restaurant.name}} hat heute für dich geöffnet: {{restaurant.openingHoursTodayText}}.</span>
-                                <span *ngIf="!restaurant.isOpen(undefined)"> {{restaurant.name}} hat im Moment geschlossen.</span>
-                                <!--span>Öffnungszeiten: {{restaurant.openingHoursText}}</span-->
-                            </h4>
-
-                            <button *ngIf="restaurant.isOpen(undefined)" type="button" class="pill"
-                                    [class.active]="!serviceTime"
-                                    (click)="onAsFastAsPossible()">
-                                Schnellstmöglich
-                            </button>
-
-                            <button type="button" class="pill" [class.active]="serviceTime"
-                                    (click)="onSelectServiceTime()">
-                                <span *ngIf="!serviceTime">Vorbestellung</span>
-                                <span *ngIf="serviceTime">{{getServiceTimeText()}}</span>
-                            </button>
-
-                            <div class="invalid-feedback" *ngIf="serviceTime && getServiceTimeError()">
-                                <div>{{getServiceTimeError()}}</div>
-                            </div>
                         </section>
                     </ng-container>
 
                     <!-- Delivery -->
 
                     <ng-container *ngIf="getCart().isDelivery()">
+                        <section id="infocard">
+                            <h3 class="title">Lieferzeit</h3>
+
+                            <h4 class="subtitle">
+                                <span>Wann möchtest du dein Essen erhalten? </span>
+                                <span *ngIf="restaurant.isOpen(undefined)"> {{restaurant.name}} hat heute für dich von {{restaurant.openingHoursTodayText}} geöffnet.</span>
+                                <span *ngIf="!restaurant.isOpen(undefined)"> {{restaurant.name}} hat im Moment geschlossen.</span>
+                                <br/><br/>
+                                <span>Öffnungszeiten: {{restaurant.openingHoursText}}</span>
+                            </h4>
+
+                            <ng-container *ngIf="restaurant.isOpen(undefined)">
+                                <span style="font-style: italic">In der aktuellen Öffnungszeit nimmt das Restaurant keine elektronischen Bestellungen an.</span>
+                                <br/><br/>
+                                <button type="button" class="pill" [class.active]="!serviceTime" (click)="onAsFastAsPossible()">
+                                    Ich bestelle telefonisch unter {{restaurant.contactInfo.phone}}
+                                </button>
+                            </ng-container>
+
+                            <button type="button" class="pill" [class.active]="serviceTime"
+                                    (click)="onSelectServiceTime()">
+                                <span *ngIf="!serviceTime">Vorbestellung</span>
+                                <span *ngIf="serviceTime">Vorbestellung: {{getServiceTimeText()}}</span>
+                            </button>
+
+                            <div class="invalid-feedback" *ngIf="serviceTime && getServiceTimeError()">
+                                <div>{{getServiceTimeError()}}</div>
+                            </div>
+                        </section>
                         <section id="infocard">
                             <h3 class="title">Lieferadresse</h3>
                             <h4 class="subtitle">Wohin soll Deine Bestellung geliefert werden?</h4>
@@ -101,6 +138,7 @@
                                     <label for="givenName">Vorname</label>
                                     <input autocomplete="off" type="text" id="givenName" [(ngModel)]="givenName"
                                            [ngClass]="{ 'is-invalid': submitted && getGivenNameError() }"
+                                           [disabled]="getServiceTimeError() !== undefined"
                                            placeholder="Bernd"/>
                                     <div class="invalid-feedback" *ngIf="submitted && getGivenNameError()">
                                         <div>{{getGivenNameError()}}</div>
@@ -110,6 +148,7 @@
                                     <label for="lastName">Nachname</label>
                                     <input autocomplete="off" type="text" id="lastName" [(ngModel)]="lastName"
                                            [ngClass]="{ 'is-invalid': submitted && getLastNameError() }"
+                                           [disabled]="getServiceTimeError() !== undefined"
                                            placeholder="Mustermann"/>
                                     <div class="invalid-feedback" *ngIf="submitted && getLastNameError()">
                                         <div>{{getLastNameError()}}</div>
@@ -120,6 +159,7 @@
                             <label for="street">Straße</label>
                             <input autocomplete="off" type="text" id="street" [(ngModel)]="street"
                                    [ngClass]="{ 'is-invalid': submitted && getStreetError() }"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="z.B. Bahnhofstr. 1a"/>
                             <div class="invalid-feedback" *ngIf="submitted && getStreetError()">
                                 <div>{{getStreetError()}}</div>
@@ -130,6 +170,7 @@
                                     <label for="zipCode">PLZ</label>
                                     <input autocomplete="off" type="number" maxlength="5" id="zipCode"
                                            [(ngModel)]="zipCode"
+                                           [disabled]="getServiceTimeError() !== undefined"
                                            [ngClass]="{ 'is-invalid': submitted && getZipCodeError() }"
                                            placeholder="46395"/>
                                     <div class="invalid-feedback" *ngIf="submitted && getZipCodeError()">
@@ -140,6 +181,7 @@
                                     <label for="city">Stadt</label>
                                     <input autocomplete="off" type="text" id="city" [(ngModel)]="city"
                                            [ngClass]="{ 'is-invalid': submitted && getCityError() }"
+                                           [disabled]="getServiceTimeError() !== undefined"
                                            placeholder="Bocholt"/>
                                     <div class="invalid-feedback" *ngIf="submitted && getCityError()">
                                         <div>{{getCityError()}}</div>
@@ -150,6 +192,7 @@
                             <label for="email">E-Mail Adresse</label>
                             <input autocomplete="off" type="email" id="email" [(ngModel)]="email"
                                    [ngClass]="{ 'is-invalid': submitted && getEmailError() }"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="bernd@beispiel.de"/>
                             <div class="invalid-feedback" *ngIf="submitted && getEmailError()">
                                 <div>{{getEmailError()}}</div>
@@ -158,6 +201,7 @@
                             <label for="street">Telefonnummer</label>
                             <input autocomplete="off" type="string" id="phone" [(ngModel)]="phone"
                                    [ngClass]="{ 'is-invalid': submitted && getPhoneError() }"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="0170 12345678"/>
                             <div class="invalid-feedback" *ngIf="submitted && getPhoneError()">
                                 <div>{{getPhoneError()}}</div>
@@ -165,33 +209,8 @@
 
                             <label for="comments">Zusatz (optional)</label>
                             <input autocomplete="off" type="text" maxlength="300" [(ngModel)]="comments"
+                                   [disabled]="getServiceTimeError() !== undefined"
                                    placeholder="z.B. „Statt klingeln, bitte kurz anrufen.“" id="comments"/>
-                        </section>
-                        <section id="infocard">
-                            <h3 class="title">Lieferzeit</h3>
-
-                            <h4 class="subtitle">
-                                <span>Wann möchtest du dein Essen erhalten? </span>
-                                <span *ngIf="restaurant.isOpen(undefined)">{{restaurant.name}} hat heute für dich von {{restaurant.openingHoursTodayText}} geöffnet.</span>
-                                <span *ngIf="!restaurant.isOpen(undefined)">{{restaurant.name}} hat im Moment geschlossen.</span>
-                                <!--span>Öffnungszeiten: {{restaurant.openingHoursText}}</span-->
-                            </h4>
-
-                            <button *ngIf="restaurant.isOpen(undefined)" type="button" class="pill"
-                                    [class.active]="!serviceTime"
-                                    (click)="onAsFastAsPossible()">
-                                Schnellstmöglich
-                            </button>
-
-                            <button type="button" class="pill" [class.active]="serviceTime"
-                                    (click)="onSelectServiceTime()">
-                                <span *ngIf="!serviceTime">Vorbestellung</span>
-                                <span *ngIf="serviceTime">{{getServiceTimeText()}}</span>
-                            </button>
-
-                            <div class="invalid-feedback" *ngIf="serviceTime && getServiceTimeError()">
-                                <div>{{getServiceTimeError()}}</div>
-                            </div>
                         </section>
                     </ng-container>
 
@@ -201,16 +220,15 @@
                             werden in Zukunft folgen.</h4>
                         <ng-container *ngFor="let paymentMethod of restaurant.paymentMethods">
                             <button type="button" class="pill" [class.active]="paymentMethodId === paymentMethod.id"
+                                    [disabled]="getServiceTimeError() !== undefined"
                                     (click)="onSelectPaymentMethod(paymentMethod)">{{paymentMethod.name}}</button>
                         </ng-container>
                         <div class="invalid-feedback" *ngIf="submitted && getPaymentError()">
                             <div>{{getPaymentError()}}</div>
                         </div>
                     </section>
-                    <div class="invalid-feedback" *ngIf="submitted && getCartError()">
-                        <div>{{getCartError()}}</div>
-                    </div>
-                    <button class="confirm-purchase" (click)="onCheckout()">Kostenpflichtig bestellen</button>
+                    <button class="confirm-purchase" (click)="onCheckout()"
+                            [disabled]="getServiceTimeError() !== undefined">Kostenpflichtig bestellen</button>
                     <section id="disclaimer">
                         <p>
                             Mit dem Kauf stimmst Du unserer <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzerklärung</a>
@@ -261,6 +279,9 @@
                                 <span class="fee-title">Gesamt</span>
                                 <span class="fee-price">{{getCart().getTotalPriceText()}} &euro;</span>
                             </div>
+                        </div>
+                        <div class="invalid-feedback" *ngIf="submitted && getCartError()">
+                            <div>{{getCartError()}}</div>
                         </div>
                     </section>
                 </div>
