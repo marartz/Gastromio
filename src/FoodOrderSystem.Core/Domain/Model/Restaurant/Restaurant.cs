@@ -269,6 +269,14 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             }
         }
 
+        public Result<bool> RemoveAllOpeningPeriods(UserId changedBy)
+        {
+            openingHours = new List<OpeningPeriod>();
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
         public Result<bool> RemoveOpeningPeriod(int dayOfWeek, TimeSpan start, UserId changedBy)
         {
             if (openingHours == null)
