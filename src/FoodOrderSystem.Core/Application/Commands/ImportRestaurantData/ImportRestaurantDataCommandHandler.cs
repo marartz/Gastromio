@@ -137,6 +137,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
 
                     cell = row.GetCell(27);
                     restaurantRow.Fax = cell?.StringCellValue;
+
+                    cell = row.GetCell(31);
+                    restaurantRow.IsActive = cell?.StringCellValue.Trim().ToUpperInvariant() == "J";
                 }
                 catch (Exception e)
                 {

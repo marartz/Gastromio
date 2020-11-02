@@ -197,17 +197,31 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
-            boolResult = restaurant.Activate(curUserId);
-            if (boolResult.IsFailure)
+            if (restaurantRow.IsActive)
             {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
+                boolResult = restaurant.Activate(curUserId);
+                if (boolResult.IsFailure)
+                {
+                    AddFailureMessageToLog(log, rowIndex, boolResult);
+                    return;
+                }
             }
+            else
+            {
+                boolResult = restaurant.Deactivate(curUserId);
+                if (boolResult.IsFailure)
+                {
+                    AddFailureMessageToLog(log, rowIndex, boolResult);
+                    return;
+                }
+            }
+
+            var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
 
             log.AddLine(ImportLogLineType.Information, rowIndex,
                 newRestaurant
-                    ? "Lege ein neues Restaurant '{0}' an."
-                    : "Aktualisiere das bereits existierende Restaurant '{0}'.", restaurant.Name);
+                    ? "Lege ein neues Restaurant '{0}' an ({1})."
+                    : "Aktualisiere das bereits existierende Restaurant '{0}' ({1}).", restaurant.Name, activityStatus);
             
             if (!dryRun)
                 await restaurantRepository.StoreAsync(restaurant, cancellationToken);
