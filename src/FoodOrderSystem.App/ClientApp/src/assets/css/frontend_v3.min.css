@@ -903,7 +903,7 @@ button {
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
     -webkit-transition: all .3s ease;
-    width: 200px;
+    width: 270px;
 }
 
 #order-home #cta .cta-button button:hover {
@@ -973,8 +973,11 @@ button {
 /* 3.1 #order-restaurant > #hero */
 #order-restaurant #hero {
     background-color: #363636;
+    background-image: url('../../assets/images/rough/grey.png');
+    background-repeat: repeat;
     height: 240px;
     max-height: 240px;
+    position: relative;
     width: 100%;
     z-index: 10;
 }
