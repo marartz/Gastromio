@@ -235,9 +235,4 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  private static roundOnQuarterHours(date: Date): Date {
-    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
-    return new Date(date.getTime() + minutesToAdd * 60000);
-  }
 }

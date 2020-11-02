@@ -77,7 +77,11 @@ export class CheckoutComponent implements OnInit {
 
         this.dishCategories = this.orderService.getDishCategories();
 
-        this.serviceTime = this.orderService.getCart().getServiceTime()
+        this.serviceTime = this.orderService.getCart().getServiceTime();
+
+        if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
+          this.serviceTime = CheckoutComponent.roundOnQuarterHours(new Date());
+        }
 
         this.initialized = true;
       }, error => {
@@ -205,6 +209,7 @@ export class CheckoutComponent implements OnInit {
   getServiceTimeError(): string {
     if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
       return "Eine elektronische Bestellung zum gewählten Zeitpunkt ist nicht möglich.";
+
     return undefined;
   }
 
@@ -302,4 +307,10 @@ export class CheckoutComponent implements OnInit {
         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
+
+  private static roundOnQuarterHours(date: Date): Date {
+    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    return new Date(date.getTime() + minutesToAdd * 60000);
+  }
+
 }

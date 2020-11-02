@@ -56,6 +56,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             string importId,
             bool isActive,
             bool needsSupport,
+            SupportedOrderMode supportedOrderMode,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -74,6 +75,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             ImportId = importId;
             IsActive = isActive;
             NeedsSupport = needsSupport;
+            SupportedOrderMode = supportedOrderMode;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -116,6 +118,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         public bool IsActive { get; private set; }
 
         public bool NeedsSupport { get; private set; }
+
+        public SupportedOrderMode SupportedOrderMode { get; private set; }
 
         public DateTime CreatedOn { get; }
 
@@ -213,10 +217,10 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             {
                 return false;
             }
-            
+
             return FindOpeningPeriodIndex(dateTime) > -1;
         }
-        
+
         public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
         {
             const double earliestOpeningTime = 4d;
@@ -288,6 +292,11 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 
             if (orderDateTime < DateTime.Now)
             {
+                orderDateTime = DateTime.Now;
+            }
+
+            if (SupportedOrderMode == SupportedOrderMode.OnlyPhone)
+            {
                 return false;
             }
 
@@ -297,13 +306,18 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return false;
             }
 
-            if (orderDateTime.Date > DateTime.Today)
+            if (SupportedOrderMode == SupportedOrderMode.AtNextShift)
             {
-                return true;
+                if (orderDateTime.Date > DateTime.Today)
+                {
+                    return true;
+                }
+
+                var indexNow = FindOpeningPeriodIndex(DateTime.Now);
+                return indexNow < 0 || indexOrder > indexNow;
             }
-            
-            var indexNow = FindOpeningPeriodIndex(DateTime.Now);
-            return indexNow < 0 || indexOrder > indexNow;
+
+            return true;
         }
 
         public Result<bool> ChangePickupInfo(PickupInfo pickupInfo, UserId changedBy)
@@ -467,6 +481,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (!IsActive)
                 return SuccessResult<bool>.Create(true);
             IsActive = false;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
@@ -475,6 +491,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (IsActive)
                 return SuccessResult<bool>.Create(true);
             IsActive = true;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
@@ -483,6 +501,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (!NeedsSupport)
                 return SuccessResult<bool>.Create(true);
             NeedsSupport = false;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
@@ -491,6 +511,16 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (NeedsSupport)
                 return SuccessResult<bool>.Create(true);
             NeedsSupport = true;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeSupportedOrderMode(SupportedOrderMode supportedOrderMode, UserId changedBy)
+        {
+            SupportedOrderMode = supportedOrderMode;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
