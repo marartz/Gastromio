@@ -314,6 +314,28 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
             var restAdmin = restAdminDict[restAdminName];
             restaurant.AddAdministrator(restAdmin.Id, currentUser.Id);
 
+            SupportedOrderMode supportedOrderMode = SupportedOrderMode.OnlyPhone;
+            if (index % 3 == 0)
+            {
+                supportedOrderMode = SupportedOrderMode.OnlyPhone;
+            }
+            else if (index % 3 == 1)
+            {
+                supportedOrderMode = SupportedOrderMode.AtNextShift;
+            }
+            else if (index % 3 == 2)
+            {
+                supportedOrderMode = SupportedOrderMode.Anytime;
+            }
+
+            boolResult = restaurant.ChangeSupportedOrderMode(supportedOrderMode, currentUser.Id);
+            if (boolResult.IsFailure)
+                return boolResult;
+
+            boolResult = restaurant.Activate(currentUser.Id);
+            if (boolResult.IsFailure)
+                return boolResult;
+
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
             for (var catIndex = 0; catIndex < dishCatCount; catIndex++)

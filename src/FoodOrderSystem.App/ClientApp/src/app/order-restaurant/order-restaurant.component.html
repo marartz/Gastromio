@@ -1,62 +1,71 @@
+<div id="root">
+    <div class="layout">
+        <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
+        <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
 
-    <div id="root">
-        <div class="layout">
-            <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
-            <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
-
-                <section id="hero" [style.background-image]="getBannerStyle()" style="background-repeat: no-repeat; background-size: cover;" >
-                    <div class="wrapper">
-                        <div id="text">
-                            <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>
-                            <h2 class="info">
-                                {{restaurant.address.street}}, {{restaurant.address.city}}
-                                <!--ng-container *ngIf="orderType === 'pickup'">{{restaurant.address.street}}, {{restaurant.address.city}}</ng-container>
-                                <ng-container *ngIf="orderType === 'delivery'">Lieferzeit {{restaurant.deliveryInfo.averageTime}} Min. | Mindestbestellwert {{restaurant.pickupInfo.minimumOrderValue}} &euro;</ng-container-->
-                            </h2>
-                        </div>
+            <section id="hero" [style.background-image]="getBannerStyle()"
+                     style="background-repeat: no-repeat; background-size: cover;">
+                <div class="wrapper">
+                    <div id="text">
+                        <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>
+                        <h2 class="info">
+                            <span>{{restaurant.address.street}}, {{restaurant.address.city}}</span>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> - Nur telefonische Bestellung</span></ng-container>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> - Telefonisch Bestellung & Online-Vorbestellung</span></ng-container>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> - Online-Bestellung</span></ng-container>
+                            <span> - Heute geöffnet: {{restaurant.openingHoursTodayText}}</span>
+                        </h2>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <section id="order">
-                    <div class="wrapper">
-                        <div class="inner">
+            <section id="order">
+                <div class="wrapper">
+                    <div class="inner">
 
-                            <aside>
-                                <div class="filter-wrapper">
-                                    <div id="restaurant-count">Speisekarte</div>
-                                    <div id="cuisine-filter">
-                                        <p class="title">Filter</p>
-                                        <div class="cuisine-container">
-                                            <div class="cuisine" *ngFor="let dishCategory of dishCategories">
-                                                <button type="button" (click)="scrollToDishCategory(dishCategory.id)">{{dishCategory.name}}</button>
-                                            </div>
+                        <aside>
+                            <div class="filter-wrapper">
+                                <div id="restaurant-count">Speisekarte</div>
+                                <div id="cuisine-filter">
+                                    <p class="title">Filter</p>
+                                    <div class="cuisine-container">
+                                        <div class="cuisine" *ngFor="let dishCategory of dishCategories">
+                                            <button type="button"
+                                                    (click)="scrollToDishCategory(dishCategory.id)">{{dishCategory.name}}</button>
                                         </div>
                                     </div>
                                 </div>
-                            </aside>
-
-                            <div id="restaurants">
-                                <div id="search">
-                                    <div class="icon-wrapper"><div class="icon"></div></div>
-                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Gericht suchen ..." (keyup)="onSearchTextChanged($event.target.value)">
-                                </div>
-                                <div *ngFor="let dishCategory of filteredDishCategories">
-                                    <p class="dish-category" id="dc{{dishCategory.id}}">{{dishCategory.name}}</p>
-                                    <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)" *ngFor="let dish of dishCategory.dishes">
-                                        <div id="infos">
-                                            <h2 class="dish-name" id="{{dish.name}}">{{dish.name}}<span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
-                                            <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
-                                        </div>
-                                    </a>
-                                </div>
                             </div>
+                        </aside>
 
+                        <div id="restaurants">
+                            <div id="search">
+                                <div class="icon-wrapper">
+                                    <div class="icon"></div>
+                                </div>
+                                <input type="text" autocomplete="off" inputmode="latin" maxlength="100"
+                                       spellcheck="false" placeholder="Gericht suchen ..."
+                                       (keyup)="onSearchTextChanged($event.target.value)">
+                            </div>
+                            <div *ngFor="let dishCategory of filteredDishCategories">
+                                <p class="dish-category" id="dc{{dishCategory.id}}">{{dishCategory.name}}</p>
+                                <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)"
+                                   *ngFor="let dish of dishCategory.dishes">
+                                    <div id="infos">
+                                        <h2 class="dish-name" id="{{dish.name}}">{{dish.name}}<span
+                                            class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
+                                        <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </section>
 
-            </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
+    </div>
 
     <div id="checkout" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
         <section id="cart">
@@ -65,13 +74,16 @@
                 <div class="dish" *ngFor="let cartDish of getCart().getCartDishes()">
                     <div class="top">
                         <span class="count">{{cartDish.getCount()}}x</span>
-                        <span class="name">{{cartDish.getDish().name}} <span *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}})</span></span>
+                        <span class="name">{{cartDish.getDish().name}} <span
+                            *ngIf="cartDish.getDish().variants.length > 1">({{cartDish.getVariant().name}}
+                            )</span></span>
                         <span class="price">{{cartDish.getPriceText()}}&euro;</span>
                         <button class="edit" (click)="onEditCartDish(cartDish)"></button>
                         <button class="remove" (click)="onRemoveDishVariantFromCart(cartDish)"></button>
                     </div>
                     <div class="top">
-                        <span class="description">{{cartDish.getDish().description}}<br />{{cartDish.getRemarks()}}</span>
+                        <span class="description">{{cartDish.getDish().description}}
+                            <br/>{{cartDish.getRemarks()}}</span>
                     </div>
                 </div>
             </div>
@@ -86,7 +98,8 @@
                 </div>
                 <div class="costs" *ngIf="getCart().isDelivery()">
                     <span class="fee-title">Lieferkosten</span>
-                    <span class="fee-price" *ngIf="getCart().getCosts() !== 0">{{getCart().getCostsText()}} &euro;</span>
+                    <span class="fee-price" *ngIf="getCart().getCosts() !== 0">{{getCart().getCostsText()}}
+                        &euro;</span>
                     <span class="fee-price" *ngIf="getCart().getCosts() == 0">Gratis</span>
                 </div>
                 <div class="total">
@@ -97,6 +110,9 @@
             <div class="invalid-feedback" *ngIf="proceedError">
                 <div>{{proceedError}}</div>
             </div>
-            <button class="proceed-to-checkout" (click)="proceedToCheckout()">Bestellen für {{getCart().getTotalPriceText()}}&euro;</button>
+            <button class="proceed-to-checkout" (click)="proceedToCheckout()">Bestellen
+                für {{getCart().getTotalPriceText()}}&euro;
+            </button>
         </section>
     </div>
+</div>

@@ -215,6 +215,13 @@ namespace FoodOrderSystem.Core.Domain.Services
                     return;
                 }
             }
+            
+            boolResult = SetSupportOrderMode(restaurant, restaurantRow.SupportedOrderMode, curUserId);
+            if (boolResult.IsFailure)
+            {
+                AddFailureMessageToLog(log, rowIndex, boolResult);
+                return;
+            }
 
             var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
 
@@ -460,6 +467,36 @@ namespace FoodOrderSystem.Core.Domain.Services
             if (!dryRun)
                 await userRepository.StoreAsync(createUserResult.Value);
             return createUserResult;
+        }
+
+        private Result<bool> SetSupportOrderMode(Restaurant restaurant, string supportedOrderModeText, UserId curUserId)
+        {
+            SupportedOrderMode supportedOrderMode;
+
+            if (!string.IsNullOrEmpty(supportedOrderModeText))
+            {
+                switch (supportedOrderModeText)
+                {
+                    case "Telefonisch":
+                        supportedOrderMode = SupportedOrderMode.OnlyPhone;
+                        break;
+                    case "Schicht":
+                        supportedOrderMode = SupportedOrderMode.AtNextShift;
+                        break;
+                    case "Jederzeit":
+                        supportedOrderMode = SupportedOrderMode.Anytime;
+                        break;
+                    default:
+                        return FailureResult<bool>.Create(FailureResultCode.ImportUnknownSupportedOrderMode,
+                            supportedOrderModeText);
+                }
+            }
+            else
+            {
+                supportedOrderMode = SupportedOrderMode.OnlyPhone;
+            }
+
+            return restaurant.ChangeSupportedOrderMode(supportedOrderMode, curUserId);
         }
 
         private void AddFailureMessageToLog<T>(ImportLog log, int rowIndex, Result<T> result)

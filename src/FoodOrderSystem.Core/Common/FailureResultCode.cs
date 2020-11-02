@@ -55,5 +55,6 @@
         ImportOpeningPeriodIsInvalid,
         ImportOrderTypeIsInvalid,
         ImportPaymentMethodNotFound,
+        ImportUnknownSupportedOrderMode
     }
 }

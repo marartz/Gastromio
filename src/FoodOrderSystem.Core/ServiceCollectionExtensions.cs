@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using FoodOrderSystem.Core.Application.Commands;
-using FoodOrderSystem.Core.Application.Commands.ImportDishData;
-using FoodOrderSystem.Core.Application.Commands.ImportRestaurantData;
 using FoodOrderSystem.Core.Application.Queries;
 using FoodOrderSystem.Core.Application.Services;
 using FoodOrderSystem.Core.Common;
@@ -95,6 +93,7 @@ namespace FoodOrderSystem.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportOpeningPeriodIsInvalid, "Die angegebenen Öffnungszeiten sind ungültig: {0}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportOrderTypeIsInvalid, "Die angegebene Bestellart ist ungültig: {0}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportPaymentMethodNotFound, "Die angegebene Zahlungsmethode ist nicht bekannt: {0}");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportUnknownSupportedOrderMode, "Der angegebene unterstützte Bestellmodus ist nicht bekannt: {0}");
 
             if (!failureMessageService.AreAllCodesRegisteredForCulture(deDeCultureInfo))
                 throw new InvalidOperationException($"Not all messages for culture {deDeCultureInfo} are registered");

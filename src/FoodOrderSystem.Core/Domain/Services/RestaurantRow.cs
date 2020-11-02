@@ -41,5 +41,7 @@ namespace FoodOrderSystem.Core.Domain.Services
         public string AdministratorUserEmailAddress { get; set; }
         
         public bool IsActive { get; set; }
+        
+        public string SupportedOrderMode { get; set; }
     }
 }

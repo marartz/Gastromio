@@ -140,6 +140,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
 
                     cell = row.GetCell(31);
                     restaurantRow.IsActive = cell?.StringCellValue.Trim().ToUpperInvariant() == "J";
+
+                    cell = row.GetCell(32);
+                    restaurantRow.SupportedOrderMode = cell?.StringCellValue.Trim();
                 }
                 catch (Exception e)
                 {

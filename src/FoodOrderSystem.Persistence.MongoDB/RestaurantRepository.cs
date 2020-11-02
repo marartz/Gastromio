@@ -377,6 +377,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.ImportId,
                 document.IsActive,
                 document.NeedsSupport,
+                FromDbSupportedOrderMode(document.SupportedOrderMode),
                 document.CreatedOn,
                 new UserId(document.CreatedBy),
                 document.UpdatedOn,
@@ -450,11 +451,47 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 ImportId = obj.ImportId,
                 IsActive = obj.IsActive,
                 NeedsSupport = obj.NeedsSupport,
+                SupportedOrderMode = ToDbSupportedOrderMode(obj.SupportedOrderMode),
                 CreatedOn = obj.CreatedOn,
                 CreatedBy = obj.CreatedBy.Value,
                 UpdatedOn = obj.UpdatedOn,
                 UpdatedBy = obj.UpdatedBy.Value
             };
+        }
+
+        private static string ToDbSupportedOrderMode(SupportedOrderMode supportedOrderMode)
+        {
+            switch (supportedOrderMode)
+            {
+                case SupportedOrderMode.OnlyPhone:
+                    return "phone";
+                case SupportedOrderMode.AtNextShift:
+                    return "shift";
+                case SupportedOrderMode.Anytime:
+                    return "anytime";
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {supportedOrderMode}");
+            }
+        }
+
+        private static SupportedOrderMode FromDbSupportedOrderMode(string supportedOrderMode)
+        {
+            if (string.IsNullOrWhiteSpace(supportedOrderMode))
+            {
+                return SupportedOrderMode.OnlyPhone;
+            }
+
+            switch (supportedOrderMode)
+            {
+                case "phone":
+                    return SupportedOrderMode.OnlyPhone;
+                case "shift":
+                    return SupportedOrderMode.AtNextShift;
+                case "anytime":
+                    return SupportedOrderMode.Anytime;
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {supportedOrderMode}");
+            }
         }
     }
 }

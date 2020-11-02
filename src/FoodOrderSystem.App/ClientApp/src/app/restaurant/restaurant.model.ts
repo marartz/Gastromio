@@ -77,6 +77,8 @@ export class RestaurantModel {
 
   public needsSupport: boolean;
 
+  public supportedOrderMode: string;
+
   public isOpen(dateTime: Date): boolean {
     if (!this.openingHours) {
       return false;
@@ -93,34 +95,35 @@ export class RestaurantModel {
       return false;
     }
 
-    if (orderDateTime === undefined)
-      orderDateTime = new Date();
-
     const now = new Date();
+
+    if (orderDateTime === undefined || orderDateTime < now)
+      orderDateTime = new Date();
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const orderDate = new Date(orderDateTime.getFullYear(), orderDateTime.getMonth(), orderDateTime.getDate());
 
-    if (orderDateTime < now)
-    {
+    if (this.supportedOrderMode === 'phone') {
       return false;
     }
 
     let indexOrder = this.findOpeningPeriodIndex(orderDateTime);
-    if (indexOrder < 0)
-    {
+    if (indexOrder < 0) {
       return false;
     }
 
-    if (orderDate > today)
-    {
-      return true;
+    if (this.supportedOrderMode === 'shift') {
+      if (orderDate > today) {
+        return true;
+      }
+
+      let indexNow = this.findOpeningPeriodIndex(now);
+      return indexNow < 0 || indexOrder > indexNow;
     }
 
-    let indexNow = this.findOpeningPeriodIndex(now);
-    return indexNow < 0 || indexOrder > indexNow;
+    return true;
   }
 
   private findOpeningPeriodIndex(dateTime: Date): number {
