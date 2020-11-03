@@ -2,9 +2,9 @@ name: Build and Publish
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ master, staging, develop ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ master, staging, develop ]
 
 jobs:
   build-sources:
