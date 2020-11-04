@@ -230,6 +230,22 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
+            if (!string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuUrl))
+            {
+                var externalMenuId = Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7");
+                boolResult = restaurant.SetExternalMenu(new ExternalMenu(
+                    externalMenuId,
+                    "Tageskarte",
+                    "Täglich wechselnde Tageskarte, nur telefonisch bestellbar.",
+                    restaurantRow.ExternalMenuUrl
+                ), curUserId);
+                if (boolResult.IsFailure)
+                {
+                    AddFailureMessageToLog(log, rowIndex, boolResult);
+                    return;
+                }
+            }
+
             var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
 
             log.AddLine(ImportLogLineType.Information, rowIndex,

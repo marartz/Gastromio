@@ -33,6 +33,10 @@
                                             <button type="button"
                                                     (click)="scrollToDishCategory(dishCategory.id)">{{dishCategory.name}}</button>
                                         </div>
+                                        <div class="cuisine" *ngFor="let externalMenu of restaurant.externalMenus">
+                                            <button type="button"
+                                                    (click)="scrollToExternalMenu(externalMenu.id)">{{externalMenu.name}}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -55,6 +59,15 @@
                                         <h2 class="dish-name" id="{{dish.name}}">{{dish.name}}<span
                                             class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
                                         <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div *ngFor="let externalMenu of restaurant.externalMenus">
+                                <p class="dish-category" id="em{{externalMenu.id}}">{{externalMenu.name}}</p>
+                                <a id="restaurant" class="dish" href="{{externalMenu.url}}" target="_blank">
+                                    <div id="infos">
+                                        <h2 class="dish-name">{{externalMenu.name}} <i class="fas fa-external-link-alt"></i></h2>
+                                        <p class="dish-description" style="margin-bottom: 0px;">{{externalMenu.description}}</p>
                                     </div>
                                 </a>
                             </div>

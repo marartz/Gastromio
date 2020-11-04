@@ -82,6 +82,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
                     cell = row.GetCell(10);
                     restaurantRow.WebSite = cell?.StringCellValue;
 
+                    cell = row.GetCell(11);
+                    restaurantRow.ExternalMenuUrl = cell?.StringCellValue;
+
                     cell = row.GetCell(12);
                     restaurantRow.OrderTypes = cell?.StringCellValue;
 

@@ -94,7 +94,6 @@ namespace FoodOrderSystem.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportOrderTypeIsInvalid, "Die angegebene Bestellart ist ungültig: {0}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportPaymentMethodNotFound, "Die angegebene Zahlungsmethode ist nicht bekannt: {0}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ImportUnknownSupportedOrderMode, "Der angegebene unterstützte Bestellmodus ist nicht bekannt: {0}");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ExternalMenuAlreadyExists, "Die externe Speisekarte existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ExternalMenuDoesNotExist, "Die externe Speisekarte existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ExternalMenuHasNoName, "Für die externe Speisekarte ist kein Name angegeben");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.ExternalMenuHasNoDescription, "Für die externe Speisekarte ist keine Beschreibung angegeben");

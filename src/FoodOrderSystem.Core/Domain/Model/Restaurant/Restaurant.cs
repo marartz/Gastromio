@@ -540,35 +540,24 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> AddExternalMenu(ExternalMenu menu, UserId changedBy)
+        public Result<bool> SetExternalMenu(ExternalMenu menu, UserId changedBy)
         {
             if (menu == null)
                 throw new ArgumentNullException(nameof(menu));
-            if (externalMenus.ContainsKey(menu.Id))
-                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuAlreadyExists);
             if (string.IsNullOrWhiteSpace(menu.Name))
                 return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoName);
             if (string.IsNullOrWhiteSpace(menu.Description))
                 return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoDescription);
             if (string.IsNullOrWhiteSpace(menu.Url))
                 return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoUrl);
-            externalMenus.Add(menu.Id, menu);
-            return SuccessResult<bool>.Create(true);
-        }
-
-        public Result<bool> ChangeExternalMenu(ExternalMenu menu, UserId changedBy)
-        {
-            if (menu == null)
-                throw new ArgumentNullException(nameof(menu));
             if (!externalMenus.ContainsKey(menu.Id))
-                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuDoesNotExist);
-            if (string.IsNullOrWhiteSpace(menu.Name))
-                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoName);
-            if (string.IsNullOrWhiteSpace(menu.Description))
-                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoDescription);
-            if (string.IsNullOrWhiteSpace(menu.Url))
-                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoUrl);
-            externalMenus[menu.Id] = menu;
+            {
+                externalMenus.Add(menu.Id, menu);
+            }
+            else
+            {
+                externalMenus[menu.Id] = menu;
+            }
             return SuccessResult<bool>.Create(true);
         }
 

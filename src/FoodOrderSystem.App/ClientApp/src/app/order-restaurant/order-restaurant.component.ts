@@ -173,6 +173,14 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     element.scrollIntoView();
   }
 
+  scrollToExternalMenu(externalMenuId: string): void {
+    const element = document.querySelector('#em' + externalMenuId);
+    if (element === null) {
+      return;
+    }
+    element.scrollIntoView();
+  }
+
   openProductInfoModal(dish: DishModel): void {
     const modalRef = this.modalService.open(DishProductInfoComponent, {centered: true});
     modalRef.componentInstance.dish = dish;

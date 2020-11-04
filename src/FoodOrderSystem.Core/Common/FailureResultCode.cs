@@ -56,7 +56,6 @@
         ImportOrderTypeIsInvalid,
         ImportPaymentMethodNotFound,
         ImportUnknownSupportedOrderMode,
-        ExternalMenuAlreadyExists,
         ExternalMenuDoesNotExist,
         ExternalMenuHasNoName,
         ExternalMenuHasNoDescription,
