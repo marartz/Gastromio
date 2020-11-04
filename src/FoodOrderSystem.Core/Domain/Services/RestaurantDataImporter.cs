@@ -235,8 +235,12 @@ namespace FoodOrderSystem.Core.Domain.Services
                 var externalMenuId = Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7");
                 boolResult = restaurant.SetExternalMenu(new ExternalMenu(
                     externalMenuId,
-                    "Tageskarte",
-                    "Täglich wechselnde Tageskarte, nur telefonisch bestellbar.",
+                    !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuName)
+                        ? restaurantRow.ExternalMenuName
+                        : "Tageskarte",
+                    !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuDescription)
+                        ? restaurantRow.ExternalMenuDescription
+                        : "Täglich wechselnde Tageskarte, nur telefonisch bestellbar.",
                     restaurantRow.ExternalMenuUrl
                 ), curUserId);
                 if (boolResult.IsFailure)

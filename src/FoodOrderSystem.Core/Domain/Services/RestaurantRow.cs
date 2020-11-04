@@ -44,6 +44,8 @@ namespace FoodOrderSystem.Core.Domain.Services
         
         public string SupportedOrderMode { get; set; }
         
+        public string ExternalMenuName { get; set; }
+        public string ExternalMenuDescription { get; set; }
         public string ExternalMenuUrl { get; set; }
     }
 }
