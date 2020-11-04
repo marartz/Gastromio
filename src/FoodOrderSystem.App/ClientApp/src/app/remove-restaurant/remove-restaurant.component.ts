@@ -10,7 +10,11 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-remove-restaurant',
   templateUrl: './remove-restaurant.component.html',
-  styleUrls: ['./remove-restaurant.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: [
+    './remove-restaurant.component.css',
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
+  ]
 })
 export class RemoveRestaurantComponent implements OnInit {
   @Input() public restaurant: RestaurantModel;

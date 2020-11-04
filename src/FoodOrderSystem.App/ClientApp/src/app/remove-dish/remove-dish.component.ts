@@ -10,7 +10,11 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-remove-dish',
   templateUrl: './remove-dish.component.html',
-  styleUrls: ['./remove-dish.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: [
+    './remove-dish.component.css',
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
+  ]
 })
 export class RemoveDishComponent implements OnInit {
   @Input() public restaurantId: string;

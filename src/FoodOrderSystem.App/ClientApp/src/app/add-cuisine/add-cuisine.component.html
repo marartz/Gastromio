@@ -1,49 +1,33 @@
 <block-ui>
-    <div id="modal">
-        <div class="wrapper">
-            <div class="inner">
-    
-                <header id="header">
-                    <h1 class="dish-name">Cuisine hinzufügen</h1>
-                    <div class="close">
-                        <button type="button" (click)="activeModal.dismiss('Cross click')" aria-label="Close"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button>
-                    </div>
-                </header>
-    
+    <div class="modal-overlay">
+        <div class="modal_v3">
+            <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
+            <header id="header">
+                <div class="left"></div>
+                <div class="middle"><h1 class="title" tabindex="-1">Cuisine hinzufügen</h1></div>
+                <div class="right"></div>
+            </header>
+            <div id="body" tabindex="0">
                 <form [formGroup]="addCuisineForm" (ngSubmit)="onSubmit(addCuisineForm.value)">
-                    <div id="options">
-                        <div class="wrapper">
-                            <section>
-                                <p class="title">Name der Cuisine</p>
-                                <div class="form-input">
-                                    <div class="input-group">
-                                        <input style="width: 100%;" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" maxlength="40" minlength="3" required="" spellcheck="true" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-                                        <div class="invalid-feedback" *ngIf="submitted && f.name.errors"><div *ngIf="f.name.errors.required">Name der Cuisine wird benötigt</div></div>
-                                        <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-        
-                    <footer id="footer">
-                        <div class="wrapper">
-                            <div class="inner">
-                                <span class="add">
-                                    <span class="inner">
-                                        <button type="submit"><span>Hinzufügen</span></button>
-                                    </span>
-                                </span>
-                                <span class="cancel">
-                                    <span class="inner">
-                                        <button type="button" (click)="activeModal.dismiss('Cross click')"><span>Abbrechen</span></button>
-                                    </span>
-                                </span>
+                    <div class="wrapper">
+                        <div class="input-wrapper">
+                            <div class="input-inner">
+                                <div style="background: none; border-radius: 8px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
+                                <label>
+                                    <div class="label">Name der Cuisine</div>
+                                    <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" maxlength="40" minlength="3" required="" spellcheck="true" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                                </label>
+                                <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 8px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
                             </div>
                         </div>
-                    </footer>
+                    </div>
+                    <div id="feedback">
+                        <div class="help-text" *ngIf="submitted && f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für die Cuisine an.</span></div>
+                        <div class="help-text" *ngIf="message !== undefined">{{message}}</div>
+                    </div>
+                    <div id="submit"><button type="submit">Hinzufügen</button></div>
                 </form>
-    
             </div>
         </div>
     </div>
+</block-ui>

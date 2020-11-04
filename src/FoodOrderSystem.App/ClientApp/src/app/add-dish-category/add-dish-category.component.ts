@@ -13,9 +13,8 @@ import {take} from 'rxjs/operators';
   templateUrl: './add-dish-category.component.html',
   styleUrls: [
     './add-dish-category.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class AddDishCategoryComponent implements OnInit {

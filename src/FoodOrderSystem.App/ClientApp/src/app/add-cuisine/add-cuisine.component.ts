@@ -13,7 +13,8 @@ import {take} from 'rxjs/operators';
   templateUrl: './add-cuisine.component.html',
   styleUrls: [
     './add-cuisine.component.css',
-    '../../assets/css/frontend_v3.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class AddCuisineComponent implements OnInit {
