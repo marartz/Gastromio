@@ -49,6 +49,15 @@ namespace FoodOrderSystem.Core.Application.DTOs
             IsActive = restaurant.IsActive;
             NeedsSupport = restaurant.NeedsSupport;
             SupportedOrderMode = ConvertSupportedOrderMode(restaurant.SupportedOrderMode);
+            ExternalMenus = restaurant.ExternalMenus != null
+                ? restaurant.ExternalMenus.Select(menu => new ExternalMenuDTO(
+                        menu.Id,
+                        menu.Name,
+                        menu.Description,
+                        menu.Url)
+                    )
+                    .ToList()
+                : new List<ExternalMenuDTO>();
         }
 
         public Guid Id { get; }
@@ -89,6 +98,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
 
         public string SupportedOrderMode { get; }
 
+        public IReadOnlyCollection<ExternalMenuDTO> ExternalMenus { get; }
+
         private static CuisineDTO RetrieveCuisineModel(IDictionary<Guid, CuisineDTO> allCuisines,
             Guid cuisineId)
         {
@@ -106,7 +117,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
             return users.TryGetValue(userId, out var user) ? user : null;
         }
 
-        private static List<string> RetrieveImageTypes(IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes,
+        private static List<string> RetrieveImageTypes(
+            IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes,
             RestaurantId restaurantId)
         {
             return restaurantImageTypes.TryGetValue(restaurantId, out var imageTypes)
@@ -169,11 +181,12 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 return null;
 
             var now = DateTime.Now;
-            var dayOfWeek = ((int)now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
             if (dayOfWeek < 0)
             {
                 dayOfWeek += 7;
             }
+
             if (now.Hour < 4)
             {
                 dayOfWeek = (dayOfWeek - 1) % 7;
@@ -213,7 +226,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
             }
 
             sb.Append(" ");
-            
+
             WriteOpeningPeriods(sb, openingPeriods);
         }
 

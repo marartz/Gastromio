@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using FoodOrderSystem.Core.Common;
@@ -15,6 +16,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         private ISet<CuisineId> cuisines;
         private ISet<PaymentMethodId> paymentMethods;
         private ISet<UserId> administrators;
+        private readonly IDictionary<Guid, ExternalMenu> externalMenus;
 
         public Restaurant(
             RestaurantId id,
@@ -38,6 +40,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             cuisines = new HashSet<CuisineId>();
             paymentMethods = new HashSet<PaymentMethodId>();
             administrators = new HashSet<UserId>();
+            externalMenus = new Dictionary<Guid, ExternalMenu>();
         }
 
         public Restaurant(
@@ -57,6 +60,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             bool isActive,
             bool needsSupport,
             SupportedOrderMode supportedOrderMode,
+            IList<ExternalMenu> externalMenus,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -76,6 +80,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             IsActive = isActive;
             NeedsSupport = needsSupport;
             SupportedOrderMode = supportedOrderMode;
+            this.externalMenus = externalMenus?.ToDictionary(menu => menu.Id, menu => menu) ??
+                                 new Dictionary<Guid, ExternalMenu>();
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -120,6 +126,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         public bool NeedsSupport { get; private set; }
 
         public SupportedOrderMode SupportedOrderMode { get; private set; }
+
+        public IReadOnlyCollection<ExternalMenu> ExternalMenus => externalMenus.Values.ToImmutableList();
 
         public DateTime CreatedOn { get; }
 
@@ -529,6 +537,48 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             SupportedOrderMode = supportedOrderMode;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> AddExternalMenu(ExternalMenu menu, UserId changedBy)
+        {
+            if (menu == null)
+                throw new ArgumentNullException(nameof(menu));
+            if (externalMenus.ContainsKey(menu.Id))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuAlreadyExists);
+            if (string.IsNullOrWhiteSpace(menu.Name))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoName);
+            if (string.IsNullOrWhiteSpace(menu.Description))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoDescription);
+            if (string.IsNullOrWhiteSpace(menu.Url))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoUrl);
+            externalMenus.Add(menu.Id, menu);
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeExternalMenu(ExternalMenu menu, UserId changedBy)
+        {
+            if (menu == null)
+                throw new ArgumentNullException(nameof(menu));
+            if (!externalMenus.ContainsKey(menu.Id))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuDoesNotExist);
+            if (string.IsNullOrWhiteSpace(menu.Name))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoName);
+            if (string.IsNullOrWhiteSpace(menu.Description))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoDescription);
+            if (string.IsNullOrWhiteSpace(menu.Url))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuHasNoUrl);
+            externalMenus[menu.Id] = menu;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RemoveExternalMenu(Guid menuId, UserId changedBy)
+        {
+            if (menuId == default)
+                throw new ArgumentException($"is default", nameof(menuId));
+            if (!externalMenus.ContainsKey(menuId))
+                return FailureResult<bool>.Create(FailureResultCode.ExternalMenuDoesNotExist);
+            externalMenus.Remove(menuId);
             return SuccessResult<bool>.Create(true);
         }
 

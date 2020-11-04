@@ -38,6 +38,12 @@ export class RestaurantModel {
     if (this.reservationInfo) {
       this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
     }
+
+    if (this.externalMenus) {
+      for (let i = 0; i < this.externalMenus.length; i++) {
+        this.externalMenus[i] = new ExternalMenu(this.externalMenus[i]);
+      }
+    }
   }
 
 
@@ -78,6 +84,8 @@ export class RestaurantModel {
   public needsSupport: boolean;
 
   public supportedOrderMode: string;
+
+  public externalMenus: ExternalMenu[];
 
   public isOpen(dateTime: Date): boolean {
     if (!this.openingHours) {
@@ -275,4 +283,20 @@ export class ServiceInfoModel {
   public reservationEnabled: boolean;
 
   public hygienicHandling: string;
+}
+
+export class ExternalMenu {
+  constructor(init?: Partial<ExternalMenu>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
+  public id: string;
+
+  public name: string;
+
+  public description: string;
+
+  public url: string;
 }

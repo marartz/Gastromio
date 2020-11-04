@@ -176,7 +176,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return document != null ? FromDocument(document) : null;
         }
 
-        public async Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName,
+            CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
             var cursor = await collection.FindAsync(
@@ -315,7 +316,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
             {
                 filterMinutes = openingHourFilter.Hour * 60 + openingHourFilter.Minute;
             }
-            
+
             logger.LogDebug($"Filter: DayOfWeek = {filterDayOfWeek}, FilterMinutes = {filterMinutes}");
 
             var openingPeriodModelFilter = Builders<OpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
@@ -378,6 +379,12 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.IsActive,
                 document.NeedsSupport,
                 FromDbSupportedOrderMode(document.SupportedOrderMode),
+                document.ExternalMenus?.Select(menu => new ExternalMenu(
+                    menu.Id,
+                    menu.Name,
+                    menu.Description,
+                    menu.Url
+                )).ToList() ?? new List<ExternalMenu>(),
                 document.CreatedOn,
                 new UserId(document.CreatedBy),
                 document.UpdatedOn,
@@ -452,6 +459,15 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 IsActive = obj.IsActive,
                 NeedsSupport = obj.NeedsSupport,
                 SupportedOrderMode = ToDbSupportedOrderMode(obj.SupportedOrderMode),
+                ExternalMenus = obj.ExternalMenus != null
+                    ? obj.ExternalMenus.Select(en => new ExternalMenuModel
+                    {
+                        Id = en.Id,
+                        Name = en.Name,
+                        Description = en.Description,
+                        Url = en.Url
+                    }).ToList()
+                    : new List<ExternalMenuModel>(),
                 CreatedOn = obj.CreatedOn,
                 CreatedBy = obj.CreatedBy.Value,
                 UpdatedOn = obj.UpdatedOn,
