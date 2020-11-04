@@ -13,8 +13,7 @@ import {take} from 'rxjs/operators';
   styleUrls: [
     './admin-my-restaurants.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {

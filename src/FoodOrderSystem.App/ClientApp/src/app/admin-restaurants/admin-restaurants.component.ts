@@ -17,8 +17,7 @@ import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-re
   styleUrls: [
     './admin-restaurants.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestroy {

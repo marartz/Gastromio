@@ -16,8 +16,7 @@ import {FetchPageInfo, ServerPaginationComponent} from '../pagination/server-pag
   styleUrls: [
     './admin-users.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {

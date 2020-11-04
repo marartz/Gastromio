@@ -6,8 +6,7 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: [
     './imprint.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/legal_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/legal_v2.min.css'
   ]
 })
 

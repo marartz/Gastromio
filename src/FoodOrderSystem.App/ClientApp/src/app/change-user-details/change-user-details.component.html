@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div id="feedback">
-                        <div class="help-text" *ngIf="submitted && f.email.errors">
+                        <div class="help-text" *ngIf="f.email.errors">
                             <span *ngIf="f.email.errors.required">Bitte gebe einen E-Mail Adresse an.</span>
                             <span *ngIf="f.email.errors.pattern">Bitte gebe eine gültige E-Mail Adresse an.</span>
                         </div>

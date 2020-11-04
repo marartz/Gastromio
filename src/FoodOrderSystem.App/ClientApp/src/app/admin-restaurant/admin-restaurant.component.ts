@@ -29,8 +29,7 @@ import {Router} from '@angular/router';
   styleUrls: [
     './admin-restaurant.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {

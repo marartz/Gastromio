@@ -13,8 +13,7 @@ import {RemoveCuisineComponent} from '../remove-cuisine/remove-cuisine.component
   styleUrls: [
     './admin-cuisines.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminCuisinesComponent implements OnInit {

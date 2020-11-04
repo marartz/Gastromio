@@ -8,7 +8,7 @@
                 <div class="right"></div>
             </header>
             <div id="body" tabindex="0">
-                <form [formGroup]="changeCuisineForm" (ngSubmit)="onSubmit(changeCuisineForm.value)">
+                <form [formGroup]="changeDishCategoryForm" (ngSubmit)="onSubmit(changeDishCategoryForm.value)">
                     <div class="wrapper">
                         <div class="input-wrapper">
                             <div class="input-inner">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div id="feedback">
-                        <div class="help-text" *ngIf="submitted && f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für die Kategorie an.</span></div>
+                        <div class="help-text" *ngIf="f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für die Kategorie an.</span></div>
                         <div class="help-text" *ngIf="message !== undefined">{{message}}</div>
                     </div>
                     <div id="submit"><button type="submit">Speichern</button></div>
