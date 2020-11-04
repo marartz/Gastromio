@@ -98,6 +98,13 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
+            boolResult = restaurant.RemoveAllOpeningPeriods(curUserId);
+            if (boolResult.IsFailure)
+            {
+                AddFailureMessageToLog(log, rowIndex, boolResult);
+                return;
+            }
+
             boolResult = AddOpeningHours(restaurant, 0, restaurantRow.OpeningHoursMonday, curUserId);
             if (boolResult.IsFailure)
             {
@@ -302,7 +309,7 @@ namespace FoodOrderSystem.Core.Domain.Services
             decimal? minimumOrderValuePickup, decimal? minimumOrderValueDelivery, decimal? deliveryCosts,
             UserId curUserId)
         {
-            var orderTypeTexts = orderTypesText.Split(',');
+            var orderTypeTexts = orderTypesText?.Split(',') ?? new string[0];
 
             var hadPickup = false;
             var hadDelivery = false;

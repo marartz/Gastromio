@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,8 +32,11 @@ namespace FoodOrderSystem.App
 
             var connectionString = Configuration.GetConnectionString("MongoDB");
             Log.Logger.Information("Using connection string: {0}", connectionString);
+
+            var databaseName = Configuration.GetValue("DatabaseName", Constants.DatabaseName);
+            Log.Logger.Information("Using database name: {0}", databaseName);
             
-            services.AddMongoDB(connectionString);
+            services.AddMongoDB(connectionString, databaseName);
 
             var configurationProvider = new ConfigurationProvider
             {
@@ -46,7 +48,7 @@ namespace FoodOrderSystem.App
             
             services.AddSingleton<FoodOrderSystem.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
 
-            var mailjetConfiguration = new Notification.Mailjet.MailjetConfiguration
+            var mailjetConfiguration = new MailjetConfiguration
             {
                 ApiKey = Configuration.GetValue<string>("Mailjet:ApiKey"),
                 ApiSecret = Configuration.GetValue<string>("Mailjet:ApiSecret")
