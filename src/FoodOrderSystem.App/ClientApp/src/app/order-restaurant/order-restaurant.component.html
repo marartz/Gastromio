@@ -10,10 +10,10 @@
                         <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>
                         <h2 class="info">
                             <span>{{restaurant.address.street}}, {{restaurant.address.city}}</span>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> - Nur telefonische Bestellung</span></ng-container>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> - Telefonisch Bestellung & Online-Vorbestellung</span></ng-container>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> - Online-Bestellung</span></ng-container>
-                            <span> - Heute geöffnet: {{restaurant.openingHoursTodayText}}</span>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> (Nur telefonische Bestellung)</span></ng-container>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> (Telefonisch Bestellung & Online-Vorbestellung)</span></ng-container>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> (Online-Bestellung)</span></ng-container>
+                            <span><br />Heute von {{restaurant.openingHoursTodayText}} geöffnet</span>
                         </h2>
                     </div>
                 </div>

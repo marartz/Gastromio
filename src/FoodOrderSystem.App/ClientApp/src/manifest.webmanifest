@@ -6,8 +6,8 @@
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
-    "theme_color": "#65b32e",
-    "background_color": "#65b32e",
+    "theme_color": "#ADCCCB",
+    "background_color": "#ADCCCB",
     "icons": [
         {
             "src": "/assets/img/favicons/favicon-512x512.png",
@@ -54,7 +54,7 @@
     "related_applications": [
         {
             "platform": "web",
-            "url": "https://www.gastromio.de/"
+            "url": "https://www.gastromio.de"
         }
     ]
 }

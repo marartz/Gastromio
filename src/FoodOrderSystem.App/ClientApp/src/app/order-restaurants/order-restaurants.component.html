@@ -131,15 +131,15 @@
                                         <h2 class="restaurant-name">{{restaurant.name}}</h2>
                                         <p class="restaurant-address">
                                             <ng-container *ngIf="!isRestaurantOpen(restaurant)">
-                                                <span>Für Abholung und Lieferung geschlossen.</span>
+                                                <span style="font-weight: 500;">Im Moment geschlossen</span>
                                             </ng-container>
                                             <ng-container *ngIf="isRestaurantOpen(restaurant)">
                                                 <ng-container *ngIf="orderType === 'pickup'"><span>{{restaurant.address.street}}, {{restaurant.address.city}}</span></ng-container>
                                                 <ng-container *ngIf="orderType === 'delivery'"><span>Lieferzeit {{restaurant.deliveryInfo.averageTime}} Minuten | {{restaurant.deliveryInfo.getCostsText()}}</span></ng-container>
                                             </ng-container>
-                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> - Nur telefonische Bestellung</span></ng-container>
-                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> - Telefonisch Bestellung & Online-Vorbestellung</span></ng-container>
-                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> - Online-Bestellung</span></ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> <br />Nur telefonische Bestellung</span></ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> <br />Telefonisch Bestellung und <br /> Online-Vorbestellung</span></ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> <br />Online-Bestellung</span></ng-container>
                                         </p>
                                         <div class="cuisines">
                                             <div class="cuisine-container">

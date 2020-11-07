@@ -26,7 +26,7 @@
 
 /* #modal */
 .modal_v3 {
-    animation-name: slide-fwd-center;
+    animation-name: fadeInUpModal;
     animation-duration: 400ms;
     animation-fill-mode: both;
     animation-iteration-count: 1;
@@ -44,6 +44,28 @@
     -webkit-box-orient: vertical;
 }
 
+@keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, 6%, 0) scale(1);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1.05);
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes fadeInUpModal {
+    0% {
+        transform: translate3d(0, 6%, 0) scale(1);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1.05);
+        opacity: 1
+    }
+}
+
 @media screen and (min-width: 744px) {
     .modal_v3 {
         border-radius: 23px;
@@ -58,10 +80,6 @@
     position: absolute;
     left: 24px;
     top: 16px;
-}
-
-.modal_v3 #close:hover {
-    color: #000; 
 }
 
 .modal_v3 #close:hover button::before {
@@ -82,6 +100,10 @@
     position: relative;
     touch-action: manipulation;
     transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s, transform 0.25s ease 0s;
+}
+
+.modal_v3 #close:hover button {
+    color: #363636; 
 }
 
 .modal_v3 #close button::before {
@@ -180,11 +202,12 @@
 
 .modal_v3 #body .wrapper {
     background-color: #FFF;
-    border-radius: 8px;
+    border-radius: 23px;
     position: relative;
 }
 
-.modal_v3 #body form .input-wrapper {
+.modal_v3 #body form .input-wrapper,
+.modal_v3 #body div.form .input-wrapper {
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
@@ -192,18 +215,21 @@
     display: -webkit-flex;
 }
 
-.modal_v3 #body form .input-wrapper .border {
+.modal_v3 #body form .input-wrapper .border,
+.modal_v3 #body div.form .input-wrapper .border {
     border-style: solid;
     pointer-events: none;
     position: absolute;
 }
 
-.modal_v3 #body form .input-wrapper .input-inner {
+.modal_v3 #body form .input-wrapper .input-inner,
+.modal_v3 #body div.form .input-wrapper .input-inner {
     flex: 1 1 0%;
     position: relative;
 }
 
-.modal_v3 #body form .input-wrapper .input-inner label {
+.modal_v3 #body form .input-wrapper .input-inner label,
+.modal_v3 #body div.form .input-wrapper .input-inner label {
     background-color: transparent;
     border: none;
     border-color: transparent;
@@ -231,11 +257,12 @@
     -webkit-flex: 1;
 }
 
-.modal_v3 #body form .input-wrapper .input-inner label .label {
+.modal_v3 #body form .input-wrapper .input-inner label .label,
+.modal_v3 #body div.form .input-wrapper .input-inner label .label {
     color: #94918E;
     font-size: 16px;
     font-weight: 400;
-    left: 12px;
+    left: 14px;
     line-height: 20px;
     margin: 0px;
     position: absolute;
@@ -258,7 +285,9 @@
 }
 
 .modal_v3 #body form .input-wrapper .input-inner label input,
-.modal_v3 #body form .input-wrapper .input-inner label select {
+.modal_v3 #body form .input-wrapper .input-inner label select,
+.modal_v3 #body div.form .input-wrapper .input-inner label input,
+.modal_v3 #body div.form .input-wrapper .input-inner label select {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -325,7 +354,7 @@
 .modal_v3 #body #submit button {
     background-color: #ADCCCB;
     border: none;
-    border-radius: 8px;
+    border-radius: 23px;
     color: #FFF;
     cursor: pointer;
     display: inline-block;
@@ -357,4 +386,150 @@
     transform: scale(0.97);
     -ms-transform: scale(0.97);
     -webkit-transform: scale(0.97);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.modal_v3 section h1.dish-name {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0px;
+    text-align: center;
+}
+
+.modal_v3 section p.dish-description {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.modal_v3 .count-wrapper {
+    background-color: #FFF;
+    border: 0px;
+    border-radius: 23px;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    height: 46px;
+    width: 100%;
+}
+
+/* 99.2.1 #modal > #options > #variant */
+.modal_v3 .count-wrapper #variant {
+    display: inline;
+    padding-right: 16px;
+    width: 100%;
+}
+
+.modal_v3 .count-wrapper #variant select {
+    background-color: #FFF;
+    border: 0px;
+    border-radius: 23px;
+    height: 46px;
+    padding: 10px 16px 10px 16px;
+    width: 100%;
+}
+
+/* 99.2.2 #modal > #options > #count */
+.modal_v3 .count-wrapper #count {
+    margin-right: 0px;
+    margin-left: auto;
+}
+
+.modal_v3 #count {
+    margin: 0px auto;
+    max-width: 250px;
+}
+
+.modal_v3 #count .c-wrapper {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex: 0 0 64px;
+    flex-direction: row-reverse;
+    -moz-box-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+    -webkit-box-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 0px !important;
+    position: relative;
+}
+
+.modal_v3 #count .c-wrapper button {
+    background-color: #DECF80;
+    border: 0px;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    font-family: inherit;
+    height: 46px;
+    margin: 0px;
+    padding: 14px 28px 9px 28px;
+    text-align: inherit;
+    width: 80px;
+}
+
+.modal_v3 #count .c-wrapper button.decrease {
+    border-radius: 0px 23px 23px 0px;
+}
+
+.modal_v3 #count .c-wrapper button.increase {
+    border-radius: 23px 0px 0px 23px;
+}
+
+.modal_v3 #count .c-wrapper button svg {
+    fill: #333333;
+    height: 24px;
+    width: 24px;
+}
+
+.modal_v3 #count .c-wrapper .dish-count {
+    background-color: #FFF;
+    display: inline-flex;
+    height: 46px;
+    justify-content: center;
+    margin: 0px;
+    padding: 9px 42px 9px 42px;
+    text-align: center;
+}
+
+.modal_v3 #count .c-wrapper span {
+    color:#323232;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    margin: 0px;
 }

@@ -239,6 +239,12 @@
     transition: all .3s ease;
 }
 
+#checkout #body #infocard button.pill:disabled {
+    background-color: #ADB5BD !important;
+    border-color: #ADB5BD;
+    cursor: not-allowed;
+}
+
 #checkout #body #infocard button.pill:hover {
     background-color: #FFF;
 }
@@ -253,10 +259,6 @@
     position: absolute;
     left: 40px;
     margin-top: -3px;
-}
-
-#checkout #body #infocard button:disabled {
-    background-color: #adb5bd;
 }
 
 #checkout #body #infocard button.pill.active {
@@ -298,7 +300,9 @@
 }
 
 #checkout #body .confirm-purchase:disabled {
-    background-color: #adb5bd;
+    background-color: #ADB5BD;
+    border-color: #ADB5BD;
+    cursor: not-allowed;
 }
 
 @media only screen and (max-width: 992px) {
