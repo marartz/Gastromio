@@ -1448,11 +1448,11 @@ button {
     display: -ms-flexbox;
     display: -webkit-box;
     display: -webkit-flex;
-    flex: 0 0 136px;
-    -moz-box-flex: 0 0 136px;
-    -ms-flex: 0 0 136px;
-    -webkit-box-flex: 0 0 136px;
-    -webkit-flex: 0 0 136px;
+    flex: 0 0 160px;
+    -moz-box-flex: 0 0 160px;
+    -ms-flex: 0 0 160px;
+    -webkit-box-flex: 0 0 160px;
+    -webkit-flex: 0 0 160px;
     flex-direction: column;
     -moz-box-direction: column;
     -ms-flex-direction: column;

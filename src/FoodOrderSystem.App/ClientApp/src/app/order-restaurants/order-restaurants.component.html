@@ -138,7 +138,7 @@
                                                 <ng-container *ngIf="orderType === 'delivery'"><span>Lieferzeit {{restaurant.deliveryInfo.averageTime}} Minuten | {{restaurant.deliveryInfo.getCostsText()}}</span></ng-container>
                                             </ng-container>
                                             <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> <br />Nur telefonische Bestellung</span></ng-container>
-                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> <br />Telefonisch Bestellung und <br /> Online-Vorbestellung</span></ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> <br />Telefonische Bestellung und Online-Vorbestellung</span></ng-container>
                                             <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> <br />Online-Bestellung</span></ng-container>
                                         </p>
                                         <div class="cuisines">
