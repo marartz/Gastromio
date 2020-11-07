@@ -147,6 +147,7 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
                 if (order.CartInfo.RestaurantNeedsSupport)
                 {
                     recipientsCc.Add(new EmailAddress("Gastromio-Bestellungen", "bestellungen@gastromio.de"));
+                    recipientsCc.Add(new EmailAddress("Hotline - Coronahilfe Bocholt", "hotline@coronahilfe-bocholt.de"));
                 }
             }
 
