@@ -44,8 +44,12 @@ namespace FoodOrderSystem.App
                 EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net")
             };
 
-            Log.Information($"EmailRecipientForTest: {configurationProvider.EmailRecipientForTest}");
-            
+            Log.Information($"IsTestSystem: {configurationProvider.IsTestSystem}");
+            if (configurationProvider.IsTestSystem)
+            {
+                Log.Information($"EmailRecipientForTest: {configurationProvider.EmailRecipientForTest}");
+            }
+
             services.AddSingleton<FoodOrderSystem.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
 
             var mailjetConfiguration = new MailjetConfiguration
