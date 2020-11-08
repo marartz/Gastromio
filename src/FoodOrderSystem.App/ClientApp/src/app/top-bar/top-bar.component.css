@@ -1,5 +1,5 @@
 #beta-banner {
-    background-color: #81B67C;
+    background-color: #363636;
     color: #FFF;
     display: block;
     font-family: "Apercu", sans-serif;
@@ -21,7 +21,7 @@
     cursor: pointer;
     display: block;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 400;
     text-decoration: none;
     transform: translateY(0);
     transition: color 0.3s;
@@ -32,7 +32,6 @@
 }
 
 #beta-banner a svg {
-    animation: jump 2s ease alternate infinite;
     display: inline-block;
     height: 24px;
     margin: 0px 6px 0px 0px;
@@ -47,7 +46,6 @@
         padding: 6px 16px;
     }
     #beta-banner svg {
-        animation: jump 3s ease alternate infinite;
         display: block;
         height: 26px;
         position: absolute;
@@ -64,28 +62,4 @@
     #beta-banner a svg {
         display: none;
     }
-}
-
-@keyframes jump {
-	0% {
-		transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
-	}
-	60% {
-		transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
-	}
-	68% {
-		transform: translate3d(0, -10%, 0) scale3d(0.9, 1.1, 1)
-	}
-	78% {
-		transform: translate3d(0, -20%, 0) scale3d(1.1, 0.9, 1)
-	}
-	86% {
-		transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
-	}
-	94% {
-		transform: translate3d(0, -10%, 0) scale3d(0.9, 1.1, 1)
-	}
-	100% {
-		transform: translate3d(0, -20%, 0) scale3d(1.1, 0.9, 1)
-	}
 }

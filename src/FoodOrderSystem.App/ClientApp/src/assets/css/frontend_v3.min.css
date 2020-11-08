@@ -1235,6 +1235,8 @@ button {
 @media only screen and (min-width: 1030px) {
     #order-restaurant #order aside #preorder-filter {
         display: block;
+    }
+    #order-restaurant #mobile-preorder-filter {
         margin-bottom: 24px;
     }
 }
