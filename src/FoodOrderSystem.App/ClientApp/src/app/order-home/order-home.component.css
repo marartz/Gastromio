@@ -458,14 +458,18 @@
         padding: 8px;
         margin-left: 16px;
         margin-right: 16px;
-        width: unset;
+        width: calc(100% - 32px);
         z-index: 4;
+        background-color: #FFF;
+        border-radius: 23px;
+        margin-top: 26px;
     }
 }
 
 #order-home #start .results .rest {
     position: static;
     width: 100%;
+    background-color: #FFF;
 }
 
 #order-home #start .results .rest:nth-child(1) {
@@ -770,7 +774,7 @@
         display: flex;
         right: px;
         line-height: -20px;
-        left: 200px;
+        left: 212px;
         margin-top: -26px;
     }
 }
@@ -806,7 +810,7 @@
         width: 38.94px;
         display: flex;
         line-height: -20px;
-        left: 270px;
+        left: 288px;
         margin-top: -20px;
     }
 }
@@ -839,7 +843,7 @@
 #about .step h3 {
     color: #81B67C;
     font-family: "Apercu", sans-serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     text-align: left;
 }
@@ -853,7 +857,7 @@
 #about .step p {
     color: #FFF;
     font-family: "Apercu", sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
     text-align: left;
     margin-top: 20px;
