@@ -26,6 +26,7 @@
     background-color: #ADCCCB;
     background-image: url('../../assets/images/rough/blue.png');
     background-repeat: repeat;
+    font-family: "Apercu", sans-serif !important;
     margin-top: -72px !important;
     position: relative;
     width: 100%;
@@ -570,8 +571,8 @@
 
 #admin-restaurant .form-header h3,
 #admin-restaurant .form-header h5 {
-    color: #212529;
-    font-family: "Quicksand", sans-serif;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
     font-size: 20px;
     font-weight: 600;
     line-height: 1.5;
@@ -587,20 +588,20 @@ form .form-input {
 }
 
 form .form-input label {
-    color: #718096;
+    color: #363636;
     display: inline-block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 300;
     margin-bottom: 8px;
     text-transform: none;
 }
 
 #admin-restaurant form .status {
     background-color: #fff;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #FFF;
     border-color: #65b32e;
-    border-radius: 8px;
+    border-radius: 23px;
     box-shadow: none;
     color: #65b32e !important;
     cursor: pointer;
@@ -681,7 +682,7 @@ form .form-input .input-group select {
     background-clip: padding-box;
     background-color: #fff;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border-radius: 23px;
     box-shadow: none;
     color: #4a5568;
     display: block;
@@ -690,7 +691,7 @@ form .form-input .input-group select {
     -ms-flex: 1 1 0%;
     -webkit-box-flex: 1 1 0%;
     -webkit-flex: 1 1 0%;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     height: calc(24px + 24px + 2px);
@@ -764,7 +765,7 @@ form .form-input .input-group input::placeholder {
     color: #363636 !important;
     cursor: pointer;
     display: block;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     margin: 0px;
     outline: none;
     overflow: hidden;
@@ -1471,12 +1472,12 @@ form .form-input .input-group input::placeholder {
     background-clip: padding-box;
     background-color: #fff;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border-radius: 23px;
     box-shadow: none;
     color: #4a5568;
     display: block;
     flex: 1 1 0%;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 500;
     height: calc(24px + 24px + 2px);
@@ -1525,7 +1526,7 @@ form .form-input .input-group input::placeholder {
 #notice {
     background-color: #65b32e;
     border: 1px solid #65b32e;
-    border-radius: 6px;
+    border-radius: 23px;
     box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, .05);
     left: 50%;
     padding: 6px 30px;

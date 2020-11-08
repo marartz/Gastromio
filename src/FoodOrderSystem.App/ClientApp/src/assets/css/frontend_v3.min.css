@@ -1248,10 +1248,11 @@ button {
     letter-spacing: -0.33px;
     margin-left: 24px;
     text-align: left;
+    margin-bottom: 22px;
 }
 
 #order-restaurant .mobile-filter-details #mobile-preorder-filter button {
-    margin-top: 16px;
+    margin-top: 0px;
 }
 
 #order-restaurant #order aside #preorder-filter button::before {
@@ -1263,7 +1264,7 @@ button {
     width: 20px;
     position: absolute;
     left: 0px;
-    margin-top: 6px;
+    margin-top: -1px;
 }
 
 #order-restaurant .mobile-filter-details #mobile-preorder-filter button::before {
