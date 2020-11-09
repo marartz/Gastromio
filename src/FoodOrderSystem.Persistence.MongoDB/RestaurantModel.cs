@@ -35,6 +35,10 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public bool NeedsSupport { get; set; }
         
+        public string SupportedOrderMode { get; set; }
+        
+        public List<ExternalMenuModel> ExternalMenus { get; set; }
+        
         public DateTime CreatedOn { get; set; }
         
         public Guid CreatedBy { get; set; }

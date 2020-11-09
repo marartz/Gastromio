@@ -9,10 +9,10 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.css]
-indent_size = 4
+indent_size = tab
 
 [*.html]
-indent_size = 4
+indent_size = tab
 
 [*.md]
 max_line_length = off
@@ -22,5 +22,8 @@ trim_trailing_whitespace = false
 indent_size = 2
 quote_type = single
 
+[*.txt]
+indent_size = tab
+
 [*.xml]
-indent_size = 4
+indent_size = tab

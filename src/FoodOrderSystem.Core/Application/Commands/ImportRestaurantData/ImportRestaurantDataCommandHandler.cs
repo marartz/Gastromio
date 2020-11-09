@@ -82,6 +82,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
                     cell = row.GetCell(10);
                     restaurantRow.WebSite = cell?.StringCellValue;
 
+                    cell = row.GetCell(11);
+                    restaurantRow.ExternalMenuUrl = cell?.StringCellValue;
+
                     cell = row.GetCell(12);
                     restaurantRow.OrderTypes = cell?.StringCellValue;
 
@@ -137,6 +140,18 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
 
                     cell = row.GetCell(27);
                     restaurantRow.Fax = cell?.StringCellValue;
+
+                    cell = row.GetCell(31);
+                    restaurantRow.IsActive = cell?.StringCellValue.Trim().ToUpperInvariant() == "J";
+
+                    cell = row.GetCell(32);
+                    restaurantRow.SupportedOrderMode = cell?.StringCellValue.Trim();
+
+                    cell = row.GetCell(35);
+                    restaurantRow.ExternalMenuName = cell?.StringCellValue.Trim();
+
+                    cell = row.GetCell(36);
+                    restaurantRow.ExternalMenuDescription = cell?.StringCellValue.Trim();
                 }
                 catch (Exception e)
                 {

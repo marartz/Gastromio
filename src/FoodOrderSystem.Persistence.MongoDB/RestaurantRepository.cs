@@ -10,6 +10,7 @@ using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -18,10 +19,12 @@ namespace FoodOrderSystem.Persistence.MongoDB
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly IMongoDatabase database;
+        private readonly ILogger<RestaurantRepository> logger;
 
-        public RestaurantRepository(IMongoDatabase database)
+        public RestaurantRepository(IMongoDatabase database, ILogger<RestaurantRepository> logger)
         {
             this.database = database;
+            this.logger = logger;
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
@@ -173,7 +176,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return document != null ? FromDocument(document) : null;
         }
 
-        public async Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName,
+            CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
             var cursor = await collection.FindAsync(
@@ -313,6 +317,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 filterMinutes = openingHourFilter.Hour * 60 + openingHourFilter.Minute;
             }
 
+            logger.LogDebug($"Filter: DayOfWeek = {filterDayOfWeek}, FilterMinutes = {filterMinutes}");
+
             var openingPeriodModelFilter = Builders<OpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
                                            Builders<OpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
                                            Builders<OpeningPeriodModel>.Filter.Gte(m => m.EndTime, filterMinutes);
@@ -348,9 +354,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.PickupInfo != null
                     ? new PickupInfo(
                         document.PickupInfo.Enabled,
-                        document.PickupInfo.AverageTime.HasValue
-                            ? TimeSpan.FromMinutes(document.PickupInfo.AverageTime.Value)
-                            : (TimeSpan?) null,
+                        document.PickupInfo.AverageTime,
                         Converter.ToDecimal(document.PickupInfo.MinimumOrderValue),
                         Converter.ToDecimal(document.PickupInfo.MaximumOrderValue)
                     )
@@ -358,9 +362,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.DeliveryInfo != null
                     ? new DeliveryInfo(
                         document.DeliveryInfo.Enabled,
-                        document.DeliveryInfo.AverageTime.HasValue
-                            ? TimeSpan.FromMinutes(document.DeliveryInfo.AverageTime.Value)
-                            : (TimeSpan?) null,
+                        document.DeliveryInfo.AverageTime,
                         Converter.ToDecimal(document.DeliveryInfo.MinimumOrderValue),
                         Converter.ToDecimal(document.DeliveryInfo.MaximumOrderValue),
                         Converter.ToDecimal(document.DeliveryInfo.Costs)
@@ -376,6 +378,13 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 document.ImportId,
                 document.IsActive,
                 document.NeedsSupport,
+                FromDbSupportedOrderMode(document.SupportedOrderMode),
+                document.ExternalMenus?.Select(menu => new ExternalMenu(
+                    menu.Id,
+                    menu.Name,
+                    menu.Description,
+                    menu.Url
+                )).ToList() ?? new List<ExternalMenu>(),
                 document.CreatedOn,
                 new UserId(document.CreatedBy),
                 document.UpdatedOn,
@@ -417,9 +426,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     ? new PickupInfoModel
                     {
                         Enabled = obj.PickupInfo.Enabled,
-                        AverageTime = obj.PickupInfo.AverageTime.HasValue
-                            ? (int) obj.PickupInfo.AverageTime.Value.TotalMinutes
-                            : (int?) null,
+                        AverageTime = obj.PickupInfo.AverageTime,
                         MinimumOrderValue = Converter.ToDouble(obj.PickupInfo.MinimumOrderValue),
                         MaximumOrderValue = Converter.ToDouble(obj.PickupInfo.MaximumOrderValue)
                     }
@@ -428,9 +435,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     ? new DeliveryInfoModel
                     {
                         Enabled = obj.DeliveryInfo.Enabled,
-                        AverageTime = obj.DeliveryInfo.AverageTime.HasValue
-                            ? (int) obj.DeliveryInfo.AverageTime.Value.TotalMinutes
-                            : (int?) null,
+                        AverageTime = obj.DeliveryInfo.AverageTime,
                         MinimumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MinimumOrderValue),
                         MaximumOrderValue = Converter.ToDouble(obj.DeliveryInfo.MaximumOrderValue),
                         Costs = Converter.ToDouble(obj.DeliveryInfo.Costs)
@@ -453,11 +458,56 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 ImportId = obj.ImportId,
                 IsActive = obj.IsActive,
                 NeedsSupport = obj.NeedsSupport,
+                SupportedOrderMode = ToDbSupportedOrderMode(obj.SupportedOrderMode),
+                ExternalMenus = obj.ExternalMenus != null
+                    ? obj.ExternalMenus.Select(en => new ExternalMenuModel
+                    {
+                        Id = en.Id,
+                        Name = en.Name,
+                        Description = en.Description,
+                        Url = en.Url
+                    }).ToList()
+                    : new List<ExternalMenuModel>(),
                 CreatedOn = obj.CreatedOn,
                 CreatedBy = obj.CreatedBy.Value,
                 UpdatedOn = obj.UpdatedOn,
                 UpdatedBy = obj.UpdatedBy.Value
             };
+        }
+
+        private static string ToDbSupportedOrderMode(SupportedOrderMode supportedOrderMode)
+        {
+            switch (supportedOrderMode)
+            {
+                case SupportedOrderMode.OnlyPhone:
+                    return "phone";
+                case SupportedOrderMode.AtNextShift:
+                    return "shift";
+                case SupportedOrderMode.Anytime:
+                    return "anytime";
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {supportedOrderMode}");
+            }
+        }
+
+        private static SupportedOrderMode FromDbSupportedOrderMode(string supportedOrderMode)
+        {
+            if (string.IsNullOrWhiteSpace(supportedOrderMode))
+            {
+                return SupportedOrderMode.OnlyPhone;
+            }
+
+            switch (supportedOrderMode)
+            {
+                case "phone":
+                    return SupportedOrderMode.OnlyPhone;
+                case "shift":
+                    return SupportedOrderMode.AtNextShift;
+                case "anytime":
+                    return SupportedOrderMode.Anytime;
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {supportedOrderMode}");
+            }
         }
     }
 }

@@ -221,7 +221,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             var command = new ChangeRestaurantAddressCommand(
                 new RestaurantId(restaurantId),
                 changeRestaurantAddressModel.Street,
-                changeRestaurantAddressModel.ZipCode,
+                changeRestaurantAddressModel.ZipCode.ToString(),
                 changeRestaurantAddressModel.City
             );
 
@@ -271,17 +271,13 @@ namespace FoodOrderSystem.App.Controllers.V1
                 new ChangeRestaurantServiceInfoCommand(new RestaurantId(restaurantId),
                     new PickupInfo(
                         changeRestaurantServiceInfoModel.PickupEnabled,
-                        changeRestaurantServiceInfoModel.PickupAverageTime.HasValue
-                            ? TimeSpan.FromMinutes(changeRestaurantServiceInfoModel.PickupAverageTime.Value)
-                            : (TimeSpan?) null,
+                        changeRestaurantServiceInfoModel.PickupAverageTime,
                         changeRestaurantServiceInfoModel.PickupMinimumOrderValue,
                         changeRestaurantServiceInfoModel.PickupMaximumOrderValue
                     ),
                     new DeliveryInfo(
                         changeRestaurantServiceInfoModel.DeliveryEnabled,
-                        changeRestaurantServiceInfoModel.DeliveryAverageTime.HasValue
-                            ? TimeSpan.FromMinutes(changeRestaurantServiceInfoModel.DeliveryAverageTime.Value)
-                            : (TimeSpan?) null,
+                        changeRestaurantServiceInfoModel.DeliveryAverageTime,
                         changeRestaurantServiceInfoModel.DeliveryMinimumOrderValue,
                         changeRestaurantServiceInfoModel.DeliveryMaximumOrderValue,
                         changeRestaurantServiceInfoModel.DeliveryCosts

@@ -17,7 +17,6 @@ using FoodOrderSystem.Core.Domain.Model.Cuisine;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
-using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -99,6 +98,11 @@ namespace FoodOrderSystem.App.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> PostOrder([FromBody] CheckoutModel checkoutModel)
         {
+            if (checkoutModel.ServiceTime.HasValue)
+            {
+                checkoutModel.ServiceTime = checkoutModel.ServiceTime.Value.ToLocalTime();
+            }
+            
             var command = new CheckoutCommand(
                 checkoutModel.GivenName,
                 checkoutModel.LastName,
@@ -109,7 +113,7 @@ namespace FoodOrderSystem.App.Controllers.V1
                 checkoutModel.Phone,
                 checkoutModel.Email,
                 ConvertOrderType(checkoutModel.OrderType),
-                new RestaurantId(checkoutModel.RestaurantId),
+                checkoutModel.RestaurantId,
                 checkoutModel.CartDishes?.Select(en => new CartDishInfoDTO(
                     en.ItemId,
                     new DishId(en.DishId),
@@ -118,7 +122,8 @@ namespace FoodOrderSystem.App.Controllers.V1
                     en.Remarks
                 )).ToList(),
                 checkoutModel.Comments,
-                new PaymentMethodId(checkoutModel.PaymentMethodId)
+                new PaymentMethodId(checkoutModel.PaymentMethodId),
+                checkoutModel.ServiceTime
             );
            
             var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(command, null);

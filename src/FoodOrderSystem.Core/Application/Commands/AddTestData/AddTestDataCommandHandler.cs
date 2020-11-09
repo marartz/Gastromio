@@ -278,7 +278,7 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
 
             boolResult = restaurant.ChangePickupInfo(new PickupInfo(
                 true,
-                TimeSpan.FromMinutes(15 + index / 100),
+                15 + index / 100,
                 5 + (decimal) index / 100, 
                 100 + (decimal) index / 100
             ), currentUser.Id);
@@ -289,7 +289,7 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
             {
                 boolResult = restaurant.ChangeDeliveryInfo(new DeliveryInfo(
                     true,
-                    TimeSpan.FromMinutes(15 + index / 100),
+                    15 + index / 100,
                     5 + (decimal) index / 100,
                     100 + (decimal) index / 100,
                     3 + (decimal) index / 100
@@ -313,6 +313,28 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
 
             var restAdmin = restAdminDict[restAdminName];
             restaurant.AddAdministrator(restAdmin.Id, currentUser.Id);
+
+            SupportedOrderMode supportedOrderMode = SupportedOrderMode.OnlyPhone;
+            if (index % 3 == 0)
+            {
+                supportedOrderMode = SupportedOrderMode.OnlyPhone;
+            }
+            else if (index % 3 == 1)
+            {
+                supportedOrderMode = SupportedOrderMode.AtNextShift;
+            }
+            else if (index % 3 == 2)
+            {
+                supportedOrderMode = SupportedOrderMode.Anytime;
+            }
+
+            boolResult = restaurant.ChangeSupportedOrderMode(supportedOrderMode, currentUser.Id);
+            if (boolResult.IsFailure)
+                return boolResult;
+
+            boolResult = restaurant.Activate(currentUser.Id);
+            if (boolResult.IsFailure)
+                return boolResult;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

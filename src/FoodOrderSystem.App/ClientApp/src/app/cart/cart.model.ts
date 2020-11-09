@@ -10,7 +10,8 @@ export class CartModel {
     private costs: number,
     private hygienicHandling: string,
     private cartDishes: CartDishModel[],
-    private visible: boolean
+    private visible: boolean,
+    private serviceTime: Date
   ) {
   }
 
@@ -30,6 +31,18 @@ export class CartModel {
     }
   }
 
+  public isPickup(): boolean {
+    return this.orderType === OrderType.Pickup;
+  }
+
+  public isDelivery(): boolean {
+    return this.orderType === OrderType.Delivery;
+  }
+
+  public isReservation(): boolean {
+    return this.orderType === OrderType.Reservation;
+  }
+
   public getRestaurantId(): string {
     return this.restaurantId;
   }
@@ -43,6 +56,8 @@ export class CartModel {
   }
 
   public getMinimumOrderValueText(): string {
+    if (!this.minimumOrderValue)
+        return '0';
     return this.minimumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
@@ -51,6 +66,8 @@ export class CartModel {
   }
 
   public getMaximumOrderValueText(): string {
+    if (!this.maximumOrderValue)
+      return '0';
     return this.maximumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
@@ -138,6 +155,10 @@ export class CartModel {
 
   public isVisible(): boolean {
     return this.visible;
+  }
+
+  public getServiceTime(): Date {
+    return this.serviceTime;
   }
 
   public isValid(): boolean {

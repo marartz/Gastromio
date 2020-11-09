@@ -6,14 +6,14 @@ import {UserModel} from '../user/user.model';
 import {Router} from '@angular/router';
 import {OrderService} from '../order/order.service';
 import {take} from 'rxjs/operators';
+import {BetaInfoComponent} from "../beta-info/beta-info.component";
 
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
   styleUrls: [
     './top-bar.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css'
   ]
 })
 export class TopBarComponent implements OnInit {
@@ -31,8 +31,14 @@ export class TopBarComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
       }, response => {
-        console.log('initialize error: ', response);
       });
+  }
+
+  onOpenBetaInfoModal() {
+    const modalRef = this.modalService.open(BetaInfoComponent);
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   getUserEmail(): string {

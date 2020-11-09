@@ -13,9 +13,8 @@ import {take} from 'rxjs/operators';
   templateUrl: './change-restaurant-name.component.html',
   styleUrls: [
     './change-restaurant-name.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class ChangeRestaurantNameComponent implements OnInit {

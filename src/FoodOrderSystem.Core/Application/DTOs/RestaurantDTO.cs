@@ -48,6 +48,16 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 : new List<UserDTO>();
             IsActive = restaurant.IsActive;
             NeedsSupport = restaurant.NeedsSupport;
+            SupportedOrderMode = ConvertSupportedOrderMode(restaurant.SupportedOrderMode);
+            ExternalMenus = restaurant.ExternalMenus != null
+                ? restaurant.ExternalMenus.Select(menu => new ExternalMenuDTO(
+                        menu.Id,
+                        menu.Name,
+                        menu.Description,
+                        menu.Url)
+                    )
+                    .ToList()
+                : new List<ExternalMenuDTO>();
         }
 
         public Guid Id { get; }
@@ -86,6 +96,10 @@ namespace FoodOrderSystem.Core.Application.DTOs
 
         public bool NeedsSupport { get; }
 
+        public string SupportedOrderMode { get; }
+
+        public IReadOnlyCollection<ExternalMenuDTO> ExternalMenus { get; }
+
         private static CuisineDTO RetrieveCuisineModel(IDictionary<Guid, CuisineDTO> allCuisines,
             Guid cuisineId)
         {
@@ -103,7 +117,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
             return users.TryGetValue(userId, out var user) ? user : null;
         }
 
-        private static List<string> RetrieveImageTypes(IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes,
+        private static List<string> RetrieveImageTypes(
+            IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes,
             RestaurantId restaurantId)
         {
             return restaurantImageTypes.TryGetValue(restaurantId, out var imageTypes)
@@ -163,14 +178,15 @@ namespace FoodOrderSystem.Core.Application.DTOs
         private static string GenerateOpeningHoursTodayText(Restaurant restaurant)
         {
             if (restaurant.OpeningHours == null)
-                return "Geschlossen";
+                return null;
 
             var now = DateTime.Now;
-            var dayOfWeek = ((int)now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
             if (dayOfWeek < 0)
             {
                 dayOfWeek += 7;
             }
+
             if (now.Hour < 4)
             {
                 dayOfWeek = (dayOfWeek - 1) % 7;
@@ -186,13 +202,12 @@ namespace FoodOrderSystem.Core.Application.DTOs
             if (openingPeriods.Any())
             {
                 var sb = new StringBuilder();
-                sb.Append("Geöffnet ");
                 WriteOpeningPeriods(sb, openingPeriods);
                 return sb.ToString();
             }
             else
             {
-                return "Geschlossen";
+                return null;
             }
         }
 
@@ -211,7 +226,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
             }
 
             sb.Append(" ");
-            
+
             WriteOpeningPeriods(sb, openingPeriods);
         }
 
@@ -284,6 +299,21 @@ namespace FoodOrderSystem.Core.Application.DTOs
             }
 
             return true;
+        }
+
+        private static string ConvertSupportedOrderMode(SupportedOrderMode supportedOrderMode)
+        {
+            switch (supportedOrderMode)
+            {
+                case Domain.Model.Restaurant.SupportedOrderMode.OnlyPhone:
+                    return "phone";
+                case Domain.Model.Restaurant.SupportedOrderMode.AtNextShift:
+                    return "shift";
+                case Domain.Model.Restaurant.SupportedOrderMode.Anytime:
+                    return "anytime";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(supportedOrderMode), supportedOrderMode, null);
+            }
         }
     }
 }

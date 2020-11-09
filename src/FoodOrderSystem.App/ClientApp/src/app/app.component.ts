@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {OrderHomeComponent} from './order-home/order-home.component';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -8,13 +7,24 @@ import {Title} from '@angular/platform-browser';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   routerOutlet: RouterOutlet;
 
   constructor(
-    private titleService: Title
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private router: Router
   ) {
-    titleService.setTitle('Gastromio - Einfach. Lokal. Bestellen.');
+  }
+
+  ngOnInit() {
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      this.titleService.setTitle('Gastromio - Einfach. Lokal. Bestellen.');
+      window.scrollTo(0, 0);
+    });
   }
 
   onActivate(component: any): void {

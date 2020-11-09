@@ -20,6 +20,7 @@ import {AdminRestaurantsComponent} from './admin-restaurants/admin-restaurants.c
 import {AdminUsersComponent} from './admin-users/admin-users.component';
 import {AppComponent} from './app.component';
 import {AuthService} from './auth/auth.service';
+import {BetaInfoComponent} from './beta-info/beta-info.component';
 import {BottomBarComponent} from './bottom-bar/bottom-bar.component';
 import {ChangeCuisineComponent} from './change-cuisine/change-cuisine.component';
 import {ChangeDishCategoryComponent} from './change-dish-category/change-dish-category.component';
@@ -113,6 +114,7 @@ import {ForgotPasswordComponent} from "./forgot-password/forgot-password.compone
     AdminRestaurantsComponent,
     AdminUsersComponent,
     AppComponent,
+    BetaInfoComponent,
     BottomBarComponent,
     ChangeCuisineComponent,
     ChangeDishCategoryComponent,

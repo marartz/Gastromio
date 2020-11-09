@@ -98,6 +98,13 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
+            boolResult = restaurant.RemoveAllOpeningPeriods(curUserId);
+            if (boolResult.IsFailure)
+            {
+                AddFailureMessageToLog(log, rowIndex, boolResult);
+                return;
+            }
+
             boolResult = AddOpeningHours(restaurant, 0, restaurantRow.OpeningHoursMonday, curUserId);
             if (boolResult.IsFailure)
             {
@@ -159,7 +166,8 @@ namespace FoodOrderSystem.Core.Domain.Services
                 ? (decimal?) restaurantRow.DeliveryCosts.Value
                 : null;
 
-            boolResult = AddServices(restaurant, restaurantRow.OrderTypes, restaurantRow.AverageTime,
+            boolResult = AddServices(restaurant, restaurantRow.OrderTypes,
+                restaurantRow.AverageTime.HasValue ? (int?) restaurantRow.AverageTime.Value.TotalMinutes : null,
                 minimumOrderValuePickup, minimumOrderValueDelivery, deliveryCosts, curUserId);
             if (boolResult.IsFailure)
             {
@@ -196,17 +204,58 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
-            boolResult = restaurant.Activate(curUserId);
+            if (restaurantRow.IsActive)
+            {
+                boolResult = restaurant.Activate(curUserId);
+                if (boolResult.IsFailure)
+                {
+                    AddFailureMessageToLog(log, rowIndex, boolResult);
+                    return;
+                }
+            }
+            else
+            {
+                boolResult = restaurant.Deactivate(curUserId);
+                if (boolResult.IsFailure)
+                {
+                    AddFailureMessageToLog(log, rowIndex, boolResult);
+                    return;
+                }
+            }
+            
+            boolResult = SetSupportOrderMode(restaurant, restaurantRow.SupportedOrderMode, curUserId);
             if (boolResult.IsFailure)
             {
                 AddFailureMessageToLog(log, rowIndex, boolResult);
                 return;
             }
 
+            if (!string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuUrl))
+            {
+                var externalMenuId = Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7");
+                boolResult = restaurant.SetExternalMenu(new ExternalMenu(
+                    externalMenuId,
+                    !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuName)
+                        ? restaurantRow.ExternalMenuName
+                        : "Tageskarte",
+                    !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuDescription)
+                        ? restaurantRow.ExternalMenuDescription
+                        : "Täglich wechselnde Tageskarte, nur telefonisch bestellbar.",
+                    restaurantRow.ExternalMenuUrl
+                ), curUserId);
+                if (boolResult.IsFailure)
+                {
+                    AddFailureMessageToLog(log, rowIndex, boolResult);
+                    return;
+                }
+            }
+
+            var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
+
             log.AddLine(ImportLogLineType.Information, rowIndex,
                 newRestaurant
-                    ? "Lege ein neues Restaurant '{0}' an."
-                    : "Aktualisiere das bereits existierende Restaurant '{0}'.", restaurant.Name);
+                    ? "Lege ein neues Restaurant '{0}' an ({1})."
+                    : "Aktualisiere das bereits existierende Restaurant '{0}' ({1}).", restaurant.Name, activityStatus);
             
             if (!dryRun)
                 await restaurantRepository.StoreAsync(restaurant, cancellationToken);
@@ -276,11 +325,11 @@ namespace FoodOrderSystem.Core.Domain.Services
             }
         }
 
-        private Result<bool> AddServices(Restaurant restaurant, string orderTypesText, TimeSpan? averageTime,
+        private Result<bool> AddServices(Restaurant restaurant, string orderTypesText, int? averageTime,
             decimal? minimumOrderValuePickup, decimal? minimumOrderValueDelivery, decimal? deliveryCosts,
             UserId curUserId)
         {
-            var orderTypeTexts = orderTypesText.Split(',');
+            var orderTypeTexts = orderTypesText?.Split(',') ?? new string[0];
 
             var hadPickup = false;
             var hadDelivery = false;
@@ -445,6 +494,36 @@ namespace FoodOrderSystem.Core.Domain.Services
             if (!dryRun)
                 await userRepository.StoreAsync(createUserResult.Value);
             return createUserResult;
+        }
+
+        private Result<bool> SetSupportOrderMode(Restaurant restaurant, string supportedOrderModeText, UserId curUserId)
+        {
+            SupportedOrderMode supportedOrderMode;
+
+            if (!string.IsNullOrEmpty(supportedOrderModeText))
+            {
+                switch (supportedOrderModeText)
+                {
+                    case "Telefonisch":
+                        supportedOrderMode = SupportedOrderMode.OnlyPhone;
+                        break;
+                    case "Schicht":
+                        supportedOrderMode = SupportedOrderMode.AtNextShift;
+                        break;
+                    case "Jederzeit":
+                        supportedOrderMode = SupportedOrderMode.Anytime;
+                        break;
+                    default:
+                        return FailureResult<bool>.Create(FailureResultCode.ImportUnknownSupportedOrderMode,
+                            supportedOrderModeText);
+                }
+            }
+            else
+            {
+                supportedOrderMode = SupportedOrderMode.OnlyPhone;
+            }
+
+            return restaurant.ChangeSupportedOrderMode(supportedOrderMode, curUserId);
         }
 
         private void AddFailureMessageToLog<T>(ImportLog log, int rowIndex, Result<T> result)

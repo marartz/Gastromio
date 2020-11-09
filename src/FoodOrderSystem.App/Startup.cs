@@ -32,10 +32,27 @@ namespace FoodOrderSystem.App
 
             var connectionString = Configuration.GetConnectionString("MongoDB");
             Log.Logger.Information("Using connection string: {0}", connectionString);
-            
-            services.AddMongoDB(connectionString);
 
-            var mailjetConfiguration = new Notification.Mailjet.MailjetConfiguration
+            var databaseName = Configuration.GetValue("DatabaseName", Constants.DatabaseName);
+            Log.Logger.Information("Using database name: {0}", databaseName);
+            
+            services.AddMongoDB(connectionString, databaseName);
+
+            var configurationProvider = new ConfigurationProvider
+            {
+                IsTestSystem = Configuration.GetValue("IsTestSystem", true),
+                EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net")
+            };
+
+            Log.Information($"IsTestSystem: {configurationProvider.IsTestSystem}");
+            if (configurationProvider.IsTestSystem)
+            {
+                Log.Information($"EmailRecipientForTest: {configurationProvider.EmailRecipientForTest}");
+            }
+
+            services.AddSingleton<FoodOrderSystem.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
+
+            var mailjetConfiguration = new MailjetConfiguration
             {
                 ApiKey = Configuration.GetValue<string>("Mailjet:ApiKey"),
                 ApiSecret = Configuration.GetValue<string>("Mailjet:ApiSecret")

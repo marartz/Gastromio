@@ -9,9 +9,8 @@ import {DishVariantModel} from '../dish-category/dish-variant.model';
   templateUrl: './add-dish-to-cart.component.html',
   styleUrls: [
     './add-dish-to-cart.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class AddDishToCartComponent implements OnInit {
@@ -34,6 +33,11 @@ export class AddDishToCartComponent implements OnInit {
 
   getVariantPrice(variant: DishVariantModel): string {
     return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
+  }
+
+  getTotalPrice(): string {
+    const totalPrice = this.selectedVariant.price * this.count;
+    return totalPrice.toLocaleString('de', {minimumFractionDigits: 2}) + ' €';
   }
 
   getVariantText(variant: DishVariantModel): string {

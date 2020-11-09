@@ -1,4 +1,17 @@
-# FoodOrderSystem
+<h1 align="center">FoodOrderSystem</h1>
+
+<p align="center">
+    <a href="https://github.com/marartz/FoodOrderSystem/blob/develop/LICENSE" target="_blank">
+        <img src="https://img.shields.io/github/license/marartz/FoodOrderSystem?style=flat-square" alt="FoodOrderSystem licence" />
+    </a>
+    <a href="https://github.com/marartz/FoodOrderSystem/issues" target="_blank">
+        <img src="https://img.shields.io/github/issues/marartz/FoodOrderSystem?style=flat-square" alt="FoodOrderSystem issues" />
+    </a>
+    <a href="https://www.gastromio.de/" target="blank">
+        <img src="https://img.shields.io/website?url=https%3A%2F%2Fwww.gastromio.de%2FFoodOrderSystem&logo=github&style=flat-square" />
+    </a>
+
+</p>
 
 ## Voraussetzungen für Entwickler
 - .NET SDK 3.1
@@ -40,8 +53,7 @@ Wenn die Datenbank zurückgesetzt und Testdaten automatisiert angelegt werden so
 
 Copyright (c) 2020 Marco Artz. All Rights reserved.
 
-Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License.
+Licensed under the **MIT License** (the "License").
+You may obtain a copy of the License at https://opensource.org/licenses/MIT.
 
-You may obtain a copy of the License at https://www.apache.org/licenses/LICENSE-2.0.
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the [LICENSE](./LICENSE) for the specific language governing permissions and limitations under the License.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the conditions mentioned in [LICENSE](./LICENSE).

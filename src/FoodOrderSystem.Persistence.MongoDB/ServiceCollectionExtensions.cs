@@ -7,12 +7,12 @@ namespace FoodOrderSystem.Persistence.MongoDB
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddMongoDB(this IServiceCollection services, string connectionString)
+        public static void AddMongoDB(this IServiceCollection services, string connectionString, string databaseName)
         {
             var client = new MongoClient(connectionString);
             services.AddSingleton<IMongoClient>(client);
 
-            var database = client.GetDatabase(Constants.DatabaseName);
+            var database = client.GetDatabase(databaseName);
             services.AddSingleton(database);
 
             services.AddTransient<IDbAdminService, DbAdminService>();

@@ -36,7 +36,7 @@
                 <div class="wrapper">
                     <div class="inner">
                         <div class="inner-wrapper">
-    
+
                             <div id="admin-restaurant">
 
                                 <!-- START: Restaurantinformationen -->
@@ -54,8 +54,8 @@
                                         <div class="col-lg-6">
                                             <div class="form-input">
                                                 <label class="form-label">Status</label>
-                                                <label type="submit" class="status inactive" *ngIf="!restaurant.isActive" (click)="onActivate()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><input type="checkbox" readonly="" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">Inaktiv</label>
-                                                <label type="submit" class="status" *ngIf="restaurant.isActive" (click)="onDeactivate()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><input type="checkbox" readonly="" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">Aktiv</label>
+                                                <label type="submit" class="status inactive" *ngIf="!restaurant.isActive" (click)="onActivate()"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 29.2c-7.333 0-13.2-5.867-13.2-13.2s5.867-13.2 13.2-13.2 13.2 5.867 13.2 13.2c0 7.333-5.867 13.2-13.2 13.2zM16 1.333c-8.133 0-14.667 6.533-14.667 14.667s6.533 14.667 14.667 14.667c8.133 0 14.667-6.533 14.667-14.667s-6.533-14.667-14.667-14.667z"></path></svg><input type="checkbox" readonly="" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">Inaktiv</label>
+                                                <label type="submit" class="status" *ngIf="restaurant.isActive" (click)="onDeactivate()"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M20.533 11.867c0.267-0.267 0.667-0.4 1.067-0.133 0.267 0.267 0.4 0.667 0.133 1.067l-5.867 7.333c-0.133 0.133-0.267 0.267-0.533 0.267 0 0 0 0 0 0-0.133 0-0.4-0.133-0.533-0.267l-3.6-3.6c-0.267-0.267-0.267-0.8 0-1.067s0.8-0.267 1.067 0l3.067 3.067 5.2-6.667zM16 2.8c-7.333 0-13.2 5.867-13.2 13.2s5.867 13.2 13.2 13.2c7.333 0 13.2-5.867 13.2-13.2s-5.867-13.2-13.2-13.2zM16 1.333c8.133 0 14.667 6.533 14.667 14.667s-6.533 14.667-14.667 14.667c-8.133 0-14.667-6.533-14.667-14.667s6.533-14.667 14.667-14.667z"></path></svg><input type="checkbox" readonly="" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">Aktiv</label>
                                             </div>
                                         </div>
                                     </div>
@@ -196,8 +196,8 @@
                                             <div class="form-input">
                                                 <label class="form-label" placement="top" ngbTooltip="PNG/JPG und (500x500)">Logo</label>
                                                 <div class="input-group">
-                                                    <input type="file" accept="image/*" mozactionhint="send" autocomplete="off" capture="" id="logo" class="file-input" #logo (change)="onLogoChange($event)">
-                                                    <label class="file-upload" for="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Datei auswählen...</span></label>
+                                                    <input type="file" accept="image/*" mozactionhint="send" autocomplete="off" capture="" id="logo-file" class="file-input" #logo (change)="onLogoChange($event)">
+                                                    <label class="file-upload" for="logo-file"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Datei auswählen...</span></label>
                                                 </div>
                                             </div>
                                             <img *ngIf="hasLogo()" [src]="logoUrl" style="border-radius: 16px; width: 100%;">
@@ -210,8 +210,8 @@
                                             <div class="form-input">
                                                 <label class="form-label" placement="top" ngbTooltip="PNG/JPG">Banner</label>
                                                 <div class="input-group">
-                                                    <input type="file" accept="image/*" mozactionhint="send" autocomplete="off" capture="" id="banner" class="file-input" #banner (change)="onBannerChange($event)">
-                                                    <label class="file-upload" for="banner"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Datei auswählen...</span></label>
+                                                    <input type="file" accept="image/*" mozactionhint="send" autocomplete="off" capture="" id="banner-file" class="file-input" #banner (change)="onBannerChange($event)">
+                                                    <label class="file-upload" for="banner-file"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Datei auswählen...</span></label>
                                                 </div>
                                             </div>
                                             <img *ngIf="hasBanner()" [src]="bannerUrl" style="border-radius: 16px; width: 100%;">
@@ -329,7 +329,7 @@
                                             <div class="form-input">
                                                 <label class="form-label">Aktiviert</label>
                                                 <div class="input-group">
-                                                    <input type="checkbox" id="reservationEnabled" formControlName="deliveryEnabled" />
+                                                    <input type="checkbox" id="reservationEnabled" formControlName="reservationEnabled" />
                                                 </div>
                                             </div>
                                         </div>
@@ -415,7 +415,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>                     
+                                </div>
                                 <!-- ENDE: Bezahlungsmöglichkeiten -->
 
                                 <hr class="divider">
@@ -431,7 +431,7 @@
                                             <tr>
                                                 <th scope="col" style="min-width: 240px;">Name</th>
                                                 <th scope="col"></th>
-                                            </tr>  
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let user of restaurant.administrators">
@@ -478,7 +478,7 @@
                                                     <th scope="col">Beginn</th>
                                                     <th scope="col">Ende</th>
                                                     <th scope="col"></th>
-                                                </tr>  
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let openingPeriod of openingPeriodVMs">
@@ -506,7 +506,7 @@
                                                     <th scope="col"></th>
                                                     <th scope="col"></th>
                                                     <th scope="col"></th>
-                                                </tr>  
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
@@ -578,7 +578,7 @@
                                                             </ng-container>
                                                         </ng-container>
                                                     </table>
-                                                    
+
                                                 </a>
                                                 <ng-template ngbNavContent>
                                                     <div id="table">
@@ -622,7 +622,7 @@
                                 <!-- ENDE: Speisekarte -->
 
                             </div>
-    
+
                         </div>
                     </div>
                 </div>

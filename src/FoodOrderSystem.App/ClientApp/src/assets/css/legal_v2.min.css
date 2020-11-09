@@ -1,5 +1,15 @@
 section {
-    background-color: #fff;
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    position: relative;
+    width: 100%;
+    z-index: 20;
+}
+
+section:first-of-type {
+    margin-top: -72px !important;
+    padding-top: 72px;
 }
 
 section > * {
@@ -59,7 +69,7 @@ p {
 }
 
 .subtitle {
-    color: #94918E;
+    color: #363636;
     font-family: "Apercu", sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -95,9 +105,9 @@ p {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    background-color: #fff;
+    background-color: #ADCCCB;
     background-clip: border-box;
-    border: 1px solid #eff2f7;
+    border: 1px solid #ADCCCB;
     border-radius: .75rem;
 }
 

@@ -5,7 +5,7 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: './bottom-bar.component.html',
   styleUrls: [
     './bottom-bar.component.css',
-    '../../assets/css/frontend_v2.min.css'
+    '../../assets/css/frontend_v3.min.css'
   ]
 })
 

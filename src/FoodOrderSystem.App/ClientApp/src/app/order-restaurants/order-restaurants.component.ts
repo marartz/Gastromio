@@ -12,18 +12,24 @@ import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-fi
 @Component({
   selector: 'app-order-restaurants',
   templateUrl: './order-restaurants.component.html',
-  styleUrls: ['./order-restaurants.component.css', '../../assets/css/frontend_v2.min.css']
+  styleUrls: [
+    './order-restaurants.component.css',
+    '../../assets/css/frontend_v3.min.css'
+  ]
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
 
   cuisines: CuisineModel[];
 
+  showMobileFilterDetails: boolean;
+
   selectedOpeningHourFilter: Date;
   selectedCuisineFilter: string;
+  showClosedRestaurants: boolean;
 
   restaurants: RestaurantModel[];
-  pageOfRestaurants: RestaurantModel[];
+  restaurantCount: number;
 
   orderType: string;
 
@@ -45,8 +51,9 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedOpeningHourFilter = new Date(); // now
     this.selectedCuisineFilter = '';
+    this.showClosedRestaurants = false;
+
     this.orderService.getAllCuisinesAsync()
       .pipe(take(1))
       .subscribe((cuisines) => {
@@ -63,15 +70,38 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onToggleMobileFilterDetails(): void {
+    this.showMobileFilterDetails = !this.showMobileFilterDetails;
+  }
+
+  onHideMobileFilterDetails(): void {
+    this.showMobileFilterDetails = false;
+  }
+
   openOpeningHourFilter(): void {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
-    modalRef.componentInstance.value = this.selectedOpeningHourFilter;
+    modalRef.componentInstance.value = this.selectedOpeningHourFilter ?? new Date();
     modalRef.result.then((value: Date) => {
-      console.log("filtering by opening hours on date: ", value);
       this.selectedOpeningHourFilter = value;
+      this.updateSearch();
     }, () => {
     });
   }
+
+  getOpeningHourFilterText(): string {
+    if (!this.selectedOpeningHourFilter)
+      return undefined;
+
+    let hoursText = this.selectedOpeningHourFilter.getHours().toString();
+    hoursText = ('0' + hoursText).slice(-2);
+
+    let minutesText = this.selectedOpeningHourFilter.getMinutes().toString();
+    minutesText = ('0' + minutesText).slice(-2);
+
+    return this.selectedOpeningHourFilter.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
+  }
+
+
 
   hasLogo(
     restaurant: RestaurantModel
@@ -122,11 +152,22 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.searchPhraseUpdated.next(value);
   }
 
-  onChangePage(pageOfRestaurants: RestaurantModel[]) {
-    this.pageOfRestaurants = pageOfRestaurants;
+  isCuisineSelected(cuisine: CuisineModel): boolean {
+    if (cuisine) {
+      return this.selectedCuisineFilter === cuisine.id;
+    } else {
+      return this.selectedCuisineFilter === '';
+    }
   }
 
-  onSelectedCuisineFilterChanged(): void {
+  selectCuisine(cuisine: CuisineModel): void {
+    if (!cuisine) {
+      this.selectedCuisineFilter = '';
+    }
+    else
+    {
+      this.selectedCuisineFilter = cuisine.id;
+    }
     this.updateSearch();
   }
 
@@ -136,14 +177,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     }
 
     this.blockUI.start('Suche läuft');
+
+    const date = this.selectedOpeningHourFilter ?? new Date();
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter, undefined)
+      this.selectedCuisineFilter, this.showClosedRestaurants ? null : date.toISOString())
       .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = new Array<RestaurantModel>(result.length);
+        this.restaurantCount = result.length;
+
         for (let i = 0; i < result.length; i++) {
           this.restaurants[i] = new RestaurantModel(result[i]);
         }
+
+        this.sortRestaurants();
+
         this.blockUI.stop();
       }, () => {
           this.blockUI.stop();
@@ -158,33 +206,33 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   isRestaurantOpen(restaurant: RestaurantModel): boolean {
-    if (!restaurant.openingHours) {
-      return false;
+    const date = this.selectedOpeningHourFilter ?? new Date();
+    return restaurant.isOpen(date);
+  }
+
+  onJustShowOpenRestaurants(): void {
+    this.showClosedRestaurants = !this.showClosedRestaurants;
+    this.updateSearch();
+  }
+
+  onShowAllRestaurants(): void {
+    this.showClosedRestaurants = true;
+    this.updateSearch();
+  }
+
+  sortRestaurants(): void {
+    if (!this.restaurants) {
+      return;
     }
 
-    try {
-      const date = this.selectedOpeningHourFilter ?? new Date();
-
-      let dayOfWeek = (date.getDay() - 1) % 7; // DayOfWeek starts with Sunday
-      if (dayOfWeek < 0) {
-        dayOfWeek += 7;
+    this.restaurants.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return +1;
+      } else {
+        return 0;
       }
-      let time = date.getHours() * 60 + date.getMinutes();
-      if (date.getHours() < 4) {
-        dayOfWeek = (dayOfWeek - 1) % 7;
-        if (dayOfWeek < 0) {
-          dayOfWeek += 7;
-        }
-        time += 24 * 60;
-      }
-
-      let isOpen: boolean;
-      isOpen = restaurant.openingHours.some(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
-
-      return isOpen;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
+    });
   }
 }

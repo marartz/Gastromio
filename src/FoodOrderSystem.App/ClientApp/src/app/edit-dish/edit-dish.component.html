@@ -1,88 +1,80 @@
 <block-ui>
     <div id="modal">
-        <div class="modal-content" role="dialog">
+        <div class="wrapper">
+            <div class="inner">
 
-            <div id="modal-header">
-                <div class="modal-title">
-                    <ng-container *ngIf="isNew">Gericht hinzufügen</ng-container>
-                    <ng-container *ngIf="!isNew">Gericht bearbeiten</ng-container>
-                </div>
-                <button class="modal-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-                    <svg width="24" viewBox="0 0 24 24" role="img">
-                        <path d="M15.5 7.1L12 10.6 8.5 7.1 7.1 8.5l3.5 3.5-3.5 3.5 1.4 1.4 3.5-3.5 3.5 3.5 1.4-1.4-3.5-3.5 3.5-3.5z"></path>
-                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"></path>
-                    </svg>
-                </button>
-            </div>
+                <header id="header">
+                    <h1 class="modal-name"><ng-container *ngIf="isNew">Gericht hinzufügen</ng-container><ng-container *ngIf="!isNew">Gericht bearbeiten</ng-container></h1>
+                    <div class="close"><button type="button" aria-label="Close" (click)="activeModal.dismiss('Cross click')"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button></div>
+                </header>
 
-            <form [formGroup]="editDishForm" (ngSubmit)="onSubmit(editDishForm.value)">
-                <div id="modal-body">
-                    <fieldset>
-                        <div class="modal-input" role="combobox">
-                            <label>Name des Gerichts</label>
-                            <input type="text" id="name" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="z.B. Pizza Funghi" />
-                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required">Name wird benötigt.</div>
-                            </div>
-                            <div *ngIf="message !== undefined">
-                                <span>{{message}}</span>
-                            </div>
+                <form [formGroup]="editDishForm" (ngSubmit)="onSubmit(editDishForm.value)">
+                    <div id="options">
+                        <div class="wrapper">
+                            <section id="remarks">
+                                <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="true" id="name" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="Name des Gerichts ...">
+                                <div *ngIf="submitted && f.name.errors" class="invalid-feedback"><div *ngIf="f.name.errors.required">Name wird benötigt.</div></div>
+                                <div *ngIf="message !== undefined"><span>{{message}}</span></div>
+                            </section>
+                            <section id="remarks">
+                                <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="true" id="description" formControlName="description" placeholder="Beschreibung des Gerichts ...">
+                            </section>
+                            <section id="remarks">
+                                <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="false" id="productInfo" formControlName="productInfo" placeholder="Zusatzstoffe und Allergene (optional) ...">
+                            </section>
+                            <section id="remarks" *ngIf="dish.variants.length <= 1">
+                                <label for="price">Preis des Gerichts</label>
+                                <input type="number" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" placeholder="Preis des Gerichts ...">
+                            </section>
+                            <section *ngIf="dish.variants.length >= 2">
+                                <h4 style="margin-top: 16px;">Varianten</h4>
+
+                                <table class="table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-family: proxima-nova, sans-serif; font-size: 14px; font-weight: 500;">Name</th>
+                                            <th style="font-family: proxima-nova, sans-serif; font-size: 14px; font-weight: 500;">Preis</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let variant of dish.variants">
+                                            <td><input type="text" class="form-control" [(ngModel)]="variant.name" [ngModelOptions]="{standalone: true}"></td>
+                                            <td><input type="number" class="form-control" [(ngModel)]="variant.price" [ngModelOptions]="{standalone: true}"></td>
+                                            <td>
+                                                <div class="float-right" style="white-space: nowrap;">
+                                                    <button type="button" class="btn btn-danger btn-sm m-1" (click)="onRemoveVariant(variant)"><i class="fas fa-trash-alt"></i></button>
+                                                    <!--<button class="btn btn-secondary btn-sm m-1 ml-2"><i class="fas fa-arrow-up"></i></button>
+                                                        <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-arrow-down"></i></button>
+                                                        <button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
                         </div>
-                        <div class="modal-input" role="combobox">
-                            <label>Beschreibung des Gerichts</label>
-                            <input type="text" id="description" formControlName="description" placeholder="z.B. mit Thunfisch und Schinken" />
-                        </div>
-                        <div class="modal-input" role="combobox">
-                            <label>Zusatzstoffe und Allergene (optional)</label>
-                            <input type="text" id="productInfo" formControlName="productInfo" placeholder="" />
-                        </div>
-                        <ng-container *ngIf="dish.variants.length <= 1">
-                            <div class="modal-input" role="combobox">
-                                <label>Preis des Gerichts</label>
-                                <input type="number" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" placeholder="z.B. 5,99" />
-                            </div>
-                        </ng-container>
-                        <ng-container *ngIf="dish.variants.length >= 2">
-                            <h4>Varianten</h4>
-
-                            <table class="table-sm">
-                                <thead>
-                                    <tr>
-                                        <th style="font-family: proxima-nova, sans-serif; font-size: 14px; font-weight: 500;">Name</th>
-                                        <th style="font-family: proxima-nova, sans-serif; font-size: 14px; font-weight: 500;">Preis</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let variant of dish.variants">
-                                        <td><input type="text" class="form-control" [(ngModel)]="variant.name" [ngModelOptions]="{standalone: true}"></td>
-                                        <td><input type="number" class="form-control" [(ngModel)]="variant.price" [ngModelOptions]="{standalone: true}"></td>
-                                        <td>
-                                            <div class="float-right" style="white-space: nowrap;">
-                                                <button type="button" class="btn btn-danger btn-sm m-1" (click)="onRemoveVariant(variant)"><i class="fas fa-trash-alt"></i></button>
-                                                <!--<button class="btn btn-secondary btn-sm m-1 ml-2"><i class="fas fa-arrow-up"></i></button>
-                                                    <button class="btn btn-secondary btn-sm m-1"><i class="fas fa-arrow-down"></i></button>
-                                                    <button class="btn btn-primary btn-sm m-1 ml-2"><i class="fas fa-level-down-alt"></i></button>-->
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </ng-container>
-                    </fieldset>
-                </div>
-
-                <div id="modal-footer">
-                    <div class="inline-button-wrap">
-                        <button class="button-hollow-info" (click)="onAddVariant()">Neue Variante</button>
-                        <button class="button" type="submit">
-                            <ng-container *ngIf="isNew">Hinzufügen</ng-container>
-                            <ng-container *ngIf="!isNew">Speichern</ng-container>
-                        </button>
                     </div>
-                </div>
-            </form>
 
+                    <footer id="footer">
+                        <div class="wrapper">
+                            <div class="inner">
+                                <span class="add">
+                                    <span class="inner">
+                                        <button type="button" (click)="onSubmit(editDishForm.value)"><span><ng-container *ngIf="isNew">Hinzufügen</ng-container><ng-container *ngIf="!isNew">Speichern</ng-container></span></button>
+                                    </span>
+                                </span>
+                                <span class="cancel">
+                                    <span class="inner">
+                                        <button type="button" (click)="onAddVariant()"><span>Variante +</span></button>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
+                </form>
+
+            </div>
         </div>
     </div>
 </block-ui>

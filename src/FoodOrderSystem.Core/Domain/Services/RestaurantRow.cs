@@ -39,5 +39,13 @@ namespace FoodOrderSystem.Core.Domain.Services
         public string PaymentMethods { get; set; }
 
         public string AdministratorUserEmailAddress { get; set; }
+        
+        public bool IsActive { get; set; }
+        
+        public string SupportedOrderMode { get; set; }
+        
+        public string ExternalMenuName { get; set; }
+        public string ExternalMenuDescription { get; set; }
+        public string ExternalMenuUrl { get; set; }
     }
 }

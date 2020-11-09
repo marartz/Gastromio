@@ -29,8 +29,7 @@ import {Router} from '@angular/router';
   styleUrls: [
     './admin-restaurant.component.css',
     '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {
@@ -231,7 +230,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
               deliveryMinimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
               deliveryMaximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
               deliveryCosts: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
-              reservationEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false,
+              reservationEnabled: this.restaurant.reservationInfo != null ? this.restaurant.reservationInfo.enabled : false,
               hygienicHandling: this.restaurant.hygienicHandling
             });
             this.changeServiceInfoForm.markAsPristine();
@@ -621,6 +620,9 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   onAddCuisine(value): void {
+    if (!value || !value.cuisineId)
+      return;
+
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantRestAdminService.addCuisineToRestaurantAsync(this.restaurant.id, value.cuisineId)
       .pipe(take(1))

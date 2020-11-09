@@ -1,73 +1,167 @@
 <div id="root">
     <div class="layout">
+        <div id="order-restaurant">
 
-        <div id="order-restaurants">
-
-            <section id="jumbotron">
-                <div id="background">
-                    <div class="left"></div>
-                    <div class="right"></div>
-                </div>
-                <div id="message">
-                    <div class="text main"><b>Unterstütze</b> die Gastronomen in <b>Bocholt</b></div>
-                    <span class="text info">100% des Verdiensts geht an den Gastronomen</span>
-                </div>
-                <div id="steps">
-                    <div class="step"><span style="line-height: 40px;">1. Bestelle dein Lieblingsessen</span></div>
-                    <div class="step"><span style="line-height: 42px;">2. Hole dein Essen ab, oder lasse es dir liefern</span></div>
-                    <div class="step"><span style="line-height: 47px;">3. Genieße dein Essen!</span></div>
+            <section id="hero" style="background-image: url('../../assets/images/hero/pizza.jpg');">
+                <div class="wrapper">
+                    <div id="text">
+                        <h2 class="slogan">Regional, einfach und gut</h2>
+                        <h1 class="name">Gastromio</h1>
+                    </div>
                 </div>
             </section>
 
-            <section id="restaurants">
-                <block-ui [delayStart]="1500">
-                    <div id="header">
-                        <div id="settings">
-                            <h2 class="heading">Restaurants</h2>
-                            <div class="toggle" *ngIf="orderType === 'pickup'" (click)="onDeliverySelected()"><label><div class="switch"></div></label></div>
-                            <div class="toggle delivery" *ngIf="orderType === 'delivery'" (click)="onPickupSelected()"><label><div class="switch"></div></label></div>
+            <block-ui [delayStart]="1500">
+                <section id="order">
+
+                    <div class="mobile-filter">
+                        <button type="button" class="filtern" (click)="onToggleMobileFilterDetails()">Filtern</button>
+                        <div class="search">
+                            <div class="icon-wrapper"><div class="icon"></div></div>
+                            <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchType($event.target.value)">
                         </div>
-                        <div id="filters">
-                            <div class="restaurant-search"><input type="text" autocomplete="off" placeholder="Suche" (keyup)="onSearchType($event.target.value)"></div>
-                            <div class="cuisine-filter opening-hour-filter">
-                                <button (click)="openOpeningHourFilter()">OHF</button>
+                    </div>
+                    <ng-container *ngIf="showMobileFilterDetails">
+                        <div class="mobile-filter-details">
+                            <div class="content">
+                                <header class="top">
+                                    <h4>Filter</h4>
+                                    <button (click)="onHideMobileFilterDetails()"></button>
+                                </header>
+
+                                <div id="mobile-preorder-filter">
+                                    <button type="button" [class.active]="!showClosedRestaurants" (click)="onJustShowOpenRestaurants()">Nur geöffnete Restaurants anzeigen</button>
+                                </div>
+                                <div id="mobile-ordertype-filter">
+                                    <p class="title">Wie kommt das Essen zu dir?</p>
+                                    <div class="filter">
+                                        <ng-container *ngIf="orderType === 'pickup'">
+                                            <button type="button" class="switch active"><span>Abholung</span></button>
+                                            <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                        </ng-container>
+                                        <ng-container *ngIf="orderType === 'delivery'">
+                                            <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+                                            <button type="button" class="switch active"><span>Lieferung</span></button>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <div id="mobile-opening-hour-filter">
+                                    <p class="title">Für wann möchtest du bestellen?</p>
+                                    <button *ngIf="!selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
+                                    <button *ngIf="selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">{{getOpeningHourFilterText()}}</button>
+                                </div>
+                                <div id="mobile-cuisine-filter">
+                                    <p class="title">Filter</p>
+                                    <div class="cuisine-container">
+                                        <div class="cuisine active" [class.active]="isCuisineSelected(undefined)">
+                                            <button type="button" (click)="selectCuisine(undefined)">Alle anzeigen</button>
+                                        </div>
+                                        <div class="cuisine" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)">
+                                            <button type="button" (click)="selectCuisine(cuisine)">{{cuisine.name}}</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="cuisine-filter">
-                                <select [(ngModel)]="selectedCuisineFilter" (change)="onSelectedCuisineFilterChanged()">
-                                    <option value="" selected="">Alle anzeigen</option>
-                                    <option [value]="cuisine.id" *ngFor="let cuisine of cuisines">{{cuisine.name}}</option>
-                                </select>
-                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="mobile-info">
+                        <div class="restaurant-count">
+                            <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
+                            <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
                         </div>
                     </div>
 
                     <div class="wrapper">
-                        <li class="restaurant" *ngFor="let restaurant of restaurants" [class.opened]="isRestaurantOpen(restaurant)" [class.closed]="!isRestaurantOpen(restaurant)">
-                            <div class="wrapper">
-                                <div id="banner">
-                                    <ng-container *ngIf="hasBanner(restaurant)"><img [src]="getBannerStyle(restaurant)" alt="{{restaurant.name}}" /></ng-container>
-                                    <ng-container *ngIf="!hasBanner(restaurant)"><img src="../../assets/images/background/placeholder.jpg" alt="{{restaurant.name}}" /></ng-container>
-                                </div>
-                                <div id="info">
-                                    <div class="restaurant-name">{{restaurant.name}}</div>
-                                    <div class="order-info">
-                                        <ng-container *ngIf="orderType === 'pickup'" class="order-time">{{restaurant.pickupInfo.averageTime}} Min.</ng-container>
-                                        <ng-container *ngIf="orderType === 'delivery'" class="order-time">{{restaurant.deliveryInfo.averageTime}} Min.</ng-container>
-                                        <ng-container *ngIf="orderType === 'pickup'"><span class="order-value"><span>&euro;{{restaurant.pickupInfo.minimumOrderValue}}</span> Min.</span></ng-container>
-                                        <ng-container *ngIf="orderType === 'delivery'"><span class="order-value"><span>&euro;{{restaurant.deliveryInfo.minimumOrderValue}}</span> Min.</span></ng-container>
+                        <div class="inner">
+
+                            <aside>
+                                <div class="filter-wrapper">
+                                    <div id="restaurant-count">
+                                        <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
+                                        <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
                                     </div>
-                                    <div class="cuisines"><span>{{getRestaurantSubText(restaurant)}}</span></div>
-                                    <a class="order-now" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [queryParams]="{orderType: orderType}">
-                                        Jetzt bestellen <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                    </a>
+                                    <div id="preorder-filter">
+                                        <button type="button" [class.active]="!showClosedRestaurants" (click)="onJustShowOpenRestaurants()">Nur geöffnete anzeigen</button>
+                                    </div>
+                                    <div id="ordertype-filter">
+                                        <p class="title">Wie kommt das Essen zu dir?</p>
+                                        <div class="filter">
+                                            <ng-container *ngIf="orderType === 'pickup'">
+                                                <button type="button" class="switch active"><span>Abholung</span></button>
+                                                <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                            </ng-container>
+                                            <ng-container *ngIf="orderType === 'delivery'">
+                                                <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+                                                <button type="button" class="switch active"><span>Lieferung</span></button>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    <div id="opening-hour-filter">
+                                        <p class="title">Für wann möchtest du bestellen?</p>
+                                        <button *ngIf="!selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
+                                        <button *ngIf="selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">{{getOpeningHourFilterText()}}</button>
+                                    </div>
+                                    <div id="cuisine-filter">
+                                        <p class="title">Filter</p>
+                                        <div class="cuisine-container">
+                                            <div class="cuisine active" [class.active]="isCuisineSelected(undefined)">
+                                                <button type="button" (click)="selectCuisine(undefined)">Alle anzeigen</button>
+                                            </div>
+                                            <div class="cuisine" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)">
+                                                <button type="button" (click)="selectCuisine(cuisine)">{{cuisine.name}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
+                            </aside>
+
+                            <div id="restaurants">
+                                <div id="search">
+                                    <div class="icon-wrapper"><div class="icon"></div></div>
+                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
+                                </div>
+                                <a id="restaurant" [routerLink]="['/restaurants', restaurant.name.toLowerCase()]" [class.opened]="isRestaurantOpen(restaurant)" [class.closed]="!isRestaurantOpen(restaurant)" [queryParams]="{orderType: orderType, serviceTime: selectedOpeningHourFilter?.toISOString()}" *ngFor="let restaurant of restaurants">
+                                    <div id="logo">
+                                        <div class="logo-wrapper">
+                                            <img *ngIf="!hasLogo(restaurant)" src="../../assets/images/logo/no-logo.jpg" alt="{{restaurant.name}}" class="placeholder">
+                                            <img *ngIf="hasLogo(restaurant)" [src]="getLogoUrl(restaurant)" alt="{{restaurant.name}}">
+                                        </div>
+                                    </div>
+                                    <div id="infos">
+                                        <h2 class="restaurant-name">{{restaurant.name}}</h2>
+                                        <p class="restaurant-address">
+                                            <ng-container *ngIf="!isRestaurantOpen(restaurant)">
+                                                <span style="font-weight: 500;">Im Moment geschlossen</span>
+                                            </ng-container>
+                                            <ng-container *ngIf="isRestaurantOpen(restaurant)">
+                                                <ng-container *ngIf="orderType === 'pickup'"><span>{{restaurant.address.street}}, {{restaurant.address.city}}</span></ng-container>
+                                                <ng-container *ngIf="orderType === 'delivery'"><span>Lieferzeit {{restaurant.deliveryInfo.averageTime}} Minuten | {{restaurant.deliveryInfo.getCostsText()}}</span></ng-container>
+                                            </ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> <br />Nur telefonische Bestellung</span></ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> <br />Telefonische Bestellung und Online-Vorbestellung</span></ng-container>
+                                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> <br />Online-Bestellung</span></ng-container>
+                                        </p>
+                                        <div class="cuisines">
+                                            <div class="cuisine-container">
+                                                <div class="cuisine-pill" *ngFor="let cuisine of restaurant.cuisines"><span>{{cuisine.name}}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="preorder" *ngIf="!showClosedRestaurants">
+                                    <p>Nicht das Richtige gefunden?<br />Dann bestell bereits jetzt dein Essen vor</p>
+                                    <button type="button" (click)="onShowAllRestaurants()"><span>Alle Restaurants anzeigen</span></button>
+                                </div>
+
                             </div>
-                        </li>
+
+                        </div>
                     </div>
-                </block-ui>
-            </section>
+                </section>
+            </block-ui>
 
         </div>
-
     </div>
 </div>

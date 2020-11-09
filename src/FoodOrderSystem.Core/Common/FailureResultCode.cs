@@ -56,5 +56,10 @@
         ImportOpeningPeriodIsInvalid,
         ImportOrderTypeIsInvalid,
         ImportPaymentMethodNotFound,
+        ImportUnknownSupportedOrderMode,
+        ExternalMenuDoesNotExist,
+        ExternalMenuHasNoName,
+        ExternalMenuHasNoDescription,
+        ExternalMenuHasNoUrl
     }
 }

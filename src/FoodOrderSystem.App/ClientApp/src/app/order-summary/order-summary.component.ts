@@ -6,7 +6,7 @@ import {OrderModel} from '../order/order.model';
 @Component({
   selector: 'app-order-summary',
   templateUrl: './order-summary.component.html',
-  styleUrls: ['./order-summary.component.css', '../../assets/css/frontend.min.css']
+  styleUrls: ['./order-summary.component.css', '../../assets/css/frontend_v3.min.css']
 })
 export class OrderSummaryComponent implements OnInit {
   restaurant: RestaurantModel;

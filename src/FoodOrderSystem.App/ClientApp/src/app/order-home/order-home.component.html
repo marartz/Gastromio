@@ -2,107 +2,92 @@
     <div class="layout">
         <div id="order-home">
 
-            <section id="landing">
+            <section id="start" class="bg-rough-blue">
                 <div class="wrapper">
-                    <div class="text">
-                        <h1>Essen lokal bestellen</h1>
-                        <h4>in Bocholt und Umgebung</h4>
+                    <div class="inner">
+                        <div class="hero-container">
+                            <h1>Essen lokal bestellen</h1>
+                            <h2>in Bocholt und Umgebung</h2>
+                            <div class="search-inner">
+                                <div class="input-wrapper">
+                                    <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
+                                </div>
+                                <div class="button-wrapper">
+                                    <button type="button" [routerLink]="['/restaurants']"><span>Alle anzeigen</span></button>
+                                </div>
+                                <div class="results">
+                                    <div class="rest">
+                                        <div *ngFor="let restaurant of restaurants">
+                                            <span class="restaurant-name">{{restaurant.name}}</span>
+                                            <div class="order-type">
+                                                <ng-container *ngIf="restaurant.pickupInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
+                                                <ng-container *ngIf="restaurant.deliveryInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
+                                            </div>
+                                            <div class="border"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="search">
-                        <div class="icon-wrapper"><div class="icon"></div></div>
-                        <input type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ...">
-                        <button [routerLink]="['/restaurants']">Alle anzeigen</button>
+                </div>
+                <div class="teller"></div>
+            </section>
+
+            <section id="about" class="bg-rough-grey">
+                <img class="circle" src="../../assets/images/circle.png" alt="">
+                <div class="wrapper">
+                    <header>
+                        <h4>So funktioniert</h4>
+                        <h1>Gastromio</h1>
+                    </header>
+                    <div class="step-path">
+                        <img src="../../assets/images/svg/path.svg" alt="">
+                    </div>
+
+                    <div class="step step-1">
+                        <div class="text">
+                            <img src="../../assets/images/svg/pizza.svg" alt="">
+                            <h3>Restaurant &amp;<br />Speisen auswählen</h3>
+                            <p>Gib ein Restaurant ein oder klicke<br />Dich durch zahlreiche Menüs in<br />Bocholt und Umgebung.</p>
+                        </div>
+                    </div>
+                    <img class="step-path-mobile" src="../../assets/images/svg/path-mobile.svg" alt="">
+                    <div class="step step-2">
+                        <div class="text">
+                            <h3>Bezahle einfach<br />bar bei der Übergabe</h3>
+                            <p>Wähle deine Zahlmethode und<br />bezahle erst bei der Übergabe vor Ort.</p>
+                        </div>
+                    </div>
+                    <img class="step-path-mobile" src="../../assets/images/svg/path-mobile.svg" alt="">
+                    <div class="step step-3">
+                        <div class="text">
+                            <img src="../../assets/images/svg/roller.svg" alt="">
+                            <h3>Liefern lassen oder<br />selbst vor Ort abholen</h3>
+                            <p>Du wohnst ganz in der Nähe? Dann<br />kannst du deine Bestellung selbst<br />abholen oder dir ganz bequem<br />nach Hause liefern lassen.</p>
+                        </div>
+                    </div>
+                    <img class="step-path-mobile" src="../../assets/images/svg/path-mobile.svg" alt="">
+                    <div class="step step-4">
+                        <div class="text">
+                            <h3>100% des Geldes geht<br />an den Gastronomen</h3>
+                            <p>Andere Lieferdienste kassieren<br />eine Gebühr für jede Bestellung,<br />die ein Lokal über den Dienst erhält.<br /><br />In der Corona-Krise ist das besonders hart.<br />Gastromio ist eine lokale und für den Gastromonen<br />kostenlose Initiative der Corona Hilfe Bocholt.</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section id="cta">
+            <section id="cta" class="bg-rough-yellow">
                 <div class="wrapper">
                     <div class="text">
-                        <h4>Mit kontaktloser Lieferung<br />bei online bezahlten Bestellungen</h4>
-                        <p>Vorzugsweise klingeln die Fahrer bei dir und stellen<br />deine Bestellung vor der Wohnungstür ab.</p>
+                        <h4>Hilf uns, anderen zu helfen</h4>
+                        <p>Teile unsere Initiative mit Deinen Freunden und Bekannten,<br />sei es in sozialen Medien, lokalen Zeitungen oder in<br />deinem persönlichen Netzwerk.</p>
                     </div>
-                    <div class="cta-button"><button [routerLink]="['/restaurants']">Los geht’s ...</button></div>
+                    <div class="cta-button"><button type="button"><a href="https://gastrom.io/presse" target="_blank">Alle Infos zu Gastromio</a></button></div>
                     <div class="messer-gabel"></div>
                 </div>
             </section>
 
-                    
-                    
-                    <!--div class="m-insearch-loinactive-NOXmfT">
-                        <div class="atoms-form-on-surface-o3weZ2">
-                          <div class="atoms-color-dark-red-SVm6QT">
-                            <div class="atoms-color-dark-red-ce5Kux"></div>
-                          </div>
-                        </div>
-                        <div class="m-insearch-arinactive-o3weZ2">
-                          <div class="atoms-icon-earch-thin-4lzdDs"></div>
-                        </div>
-                        <div class="x-restauran-chen-u2026-o3weZ2">
-                          <span class="span2-85j5kI">Restaurant suchen ...</span>
-                        </div>
-                      </div>
-                      <div class="m-b-buttongreen-NOXmfT">
-                        <div class="m-b-buttongreen-WHnkVx">
-                          <div class="atoms-form-on-surface-152Kip">
-                            <div class="atoms-color-dark-red-cXjPT9"></div>
-                          </div>
-                          <a class="alle-anzeigen" [routerLink]="['/restaurants']">Alle anzeigen</a>
-                        </div>
-                      </div-->
-
-                
- 
-
-
         </div>
-
-
-        <!--div id="order-home">
-
-            <section id="jumbotron">
-                <div>
-                    <img class="background" src="/assets/images/jumbotron/background.png" width="100%" alt="">
-                    <img class="teller" src="/assets/images/jumbotron/teller.png" height="128%" alt="">
-                    <img class="pepperoni" src="/assets/images/jumbotron/pepperoni.png" width="12%" alt="">
-                    <img class="basilikum" src="/assets/images/jumbotron/basilikum.png" width="8%" alt="">
-                </div>
-            </section>
-
-            <section id="what">
-                <div class="header">
-                    <h2 class="heading">Was ist Gastromio?</h2>
-                    <h5 class="subheading">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</h5>
-                </div>
-            </section>
-
-            <a [routerLink]="['/restaurants']"><button class="show-all" style="color: red">Jetzt bestellen</button></a-->
-            <!--section class="order">
-                <div class="wrapper">
-        
-                    <div id="tablist" role="tablist">
-                        <button class="tab" role="tab" [class.selected]="orderType === 'pickup'" (click)="onPickupSelected()">Abholung</button>
-                        <button class="tab" role="tab" [class.selected]="orderType === 'delivery'" (click)="onDeliverySelected()">Lieferung</button>
-                        <button class="tab" role="tab" [class.selected]="orderType === 'reservation'" (click)="onReservationSelected()">Reservieren</button>
-                        <ng-container *ngIf="orderType === 'pickup'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 0%;"></div></div></ng-container>
-                        <ng-container *ngIf="orderType === 'delivery'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 33.3%"></div></div></ng-container>
-                        <ng-container *ngIf="orderType === 'reservation'"><div class="tab-slider"><div class="bar" style="width: 33.3%; left: 66.6%"></div></div></ng-container>
-                    </div>
-        
-                    <div id="tabpanel" role="tabpanel">
-                        <header class="header">
-                            <h1>Kommst <b>Du</b> nicht <b>zum Essen</b>,<br />kommt das <b>Essen zu Dir</b>!</h1>
-                            <p>Gepflegtes Schlemmen auch während Corona!<br />#wirbestellenlokal</p>
-                        </header>
-                        <div class="search">
-                            <input type="text" placeholder="Suchen Sie nach Restaurants, Gastronomen, ..." autocomplete="off" [(ngModel)]="selectedRestaurant" [ngbTypeahead]="searchForRestaurant" [resultTemplate]="rt" [editable]='false' (selectItem)="onRestaurantSelected($event.item)" />
-                            <ng-template #rt let-r="result" let-t="term"><ngb-highlight class="result" [result]="r.name" [term]="t"></ngb-highlight></ng-template>
-                        </div>
-                        <a [routerLink]="['/restaurants']"><button class="show-all">Jetzt bestellen</button></a>
-                    </div>
-        
-                </div>
-            </section>
-        </div-->
     </div>
 </div>

@@ -11,7 +11,11 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-remove-user',
   templateUrl: './remove-user.component.html',
-  styleUrls: ['./remove-user.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: [
+    './remove-user.component.css',
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
+  ]
 })
 export class RemoveUserComponent implements OnInit {
   @Input() public user: UserModel;

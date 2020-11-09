@@ -1,32 +1,48 @@
 <block-ui>
-    <div id="modal">
-        <div class="wrapper">
-            <div class="content">
-                <h1 class="title add-edit">Benutzer bearbeiten</h1>
+    <div class="modal-overlay">
+        <div class="modal_v3">
+            <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
+            <header id="header">
+                <div class="left"></div>
+                <div class="middle"><h1 class="title" tabindex="-1">Benutzer bearbeiten</h1></div>
+                <div class="right"></div>
+            </header>
+            <div id="body" tabindex="0">
                 <form [formGroup]="changeUserDetailsForm" (ngSubmit)="onSubmit(changeUserDetailsForm.value)">
-                    <div class="form-input">
-                        <label class="form-label">E-Mail-Adresse</label>
-                        <div class="input-group">
-                            <input type="email" autocomplete="off" autocapitalize="none" mozactionhint="next" autocapitalize="none" autocomplete="email" inputmode="email" required="" id="email" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
-                            <div class="invalid-feedback" *ngIf="f.email.errors"><div *ngIf="f.email.errors.required">E-Mail-Adresse wird benötigt</div><div *ngIf="f.email.errors.email">Ungültige E-Mail Adresse (z.B. max@mustermann.de)</div></div>
-                            <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
+                    <div class="wrapper">
+                        <div class="input-wrapper">
+                            <div class="input-inner">
+                                <div style="background: none; border-radius: 8px 8px 0px 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
+                                <label>
+                                    <div class="label">E-Mail Adresse</div>
+                                    <input type="email" autocomplete="off" autocapitalize="none" mozactionhint="next" autocapitalize="none" autocomplete="email" inputmode="email" required="" id="email" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
+                                </label>
+                                <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 8px 8px 0px 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
+                            </div>
+                        </div>
+                        <div class="input-wrapper">
+                            <div class="input-inner">
+                                <div style="background: none; border-radius: 0px 0px 8px 8px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
+                                <label>
+                                    <div class="label">Rolle</div>
+                                    <select autocomplete="off" mozactionhint="next" required="" id="role" formControlName="role">
+                                        <option value="Customer">Kunde</option>
+                                        <option value="RestaurantAdmin">Restaurantadministrator</option>
+                                        <option value="SystemAdmin">Systemadministrator</option>
+                                    </select>
+                                </label>
+                                <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px 0px 8px 8px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-input">
-                        <label class="form-label">Rolle</label>
-                        <div class="input-group">
-                            <select autocomplete="off" mozactionhint="next" required="" id="role" formControlName="role">
-                                <option value="Customer">Kunde</option>
-                                <option value="RestaurantAdmin">Restaurantadministrator</option>
-                                <option value="SystemAdmin">Systemadministrator</option>
-                            </select>
-                            <div class="invalid-feedback" *ngIf="message !== undefined">{{message}}</div>
+                    <div id="feedback">
+                        <div class="help-text" *ngIf="f.email.errors">
+                            <span *ngIf="f.email.errors.required">Bitte gebe einen E-Mail Adresse an.</span>
+                            <span *ngIf="f.email.errors.pattern">Bitte gebe eine gültige E-Mail Adresse an.</span>
                         </div>
+                        <div class="help-text" *ngIf="message !== undefined">{{message}}</div>
                     </div>
-                    <div class="btns-container">
-                        <button type="button" class="cancel" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
-                        <button type="submit" class="submit">Speichern</button>
-                    </div>
+                    <div id="submit"><button type="submit">Speichern</button></div>
                 </form>
             </div>
         </div>

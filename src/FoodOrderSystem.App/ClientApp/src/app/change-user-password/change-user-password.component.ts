@@ -15,9 +15,8 @@ import {take} from "rxjs/operators";
   templateUrl: './change-user-password.component.html',
   styleUrls: [
     './change-user-password.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class ChangeUserPasswordComponent implements OnInit {

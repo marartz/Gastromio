@@ -6,9 +6,8 @@ import {NgbActiveModal, NgbCalendar, NgbDateStruct, NgbTimeStruct} from '@ng-boo
   templateUrl: './opening-hour-filter.component.html',
   styleUrls: [
     './opening-hour-filter.component.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class OpeningHourFilterComponent implements OnInit {
@@ -26,7 +25,7 @@ export class OpeningHourFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    const now = new Date();
+    const now = OpeningHourFilterComponent.roundOnQuarterHours(new Date());
 
     this.minDate = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
 
@@ -43,7 +42,8 @@ export class OpeningHourFilterComponent implements OnInit {
   }
 
   onTimeChanged(): void {
-    const now = new Date();
+    const now = OpeningHourFilterComponent.roundOnQuarterHours(new Date());
+
     let date = this.calculateDate();
 
     if (date < now) {
@@ -52,7 +52,8 @@ export class OpeningHourFilterComponent implements OnInit {
   }
 
   onClose(): void {
-    const now = new Date();
+    const now = OpeningHourFilterComponent.roundOnQuarterHours(new Date());
+
     let date = this.calculateDate();
 
     if (date < now) {
@@ -60,6 +61,11 @@ export class OpeningHourFilterComponent implements OnInit {
     }
 
     this.activeModal.close(date);
+  }
+
+  private static roundOnQuarterHours(date: Date): Date {
+    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    return new Date(date.getTime() + minutesToAdd * 60000);
   }
 
   private calculateDate(): Date {
