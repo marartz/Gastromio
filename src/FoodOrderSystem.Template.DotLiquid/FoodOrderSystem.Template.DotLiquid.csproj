@@ -14,12 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Templates\CustomerTemplate.html" />
-      <EmbeddedResource Include="Templates\RequestPasswordChangeTemplate.html" />
-      <EmbeddedResource Include="Templates\RestaurantTemplate.html" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\FoodOrderSystem.Core\FoodOrderSystem.Core.csproj" />
     </ItemGroup>
 
