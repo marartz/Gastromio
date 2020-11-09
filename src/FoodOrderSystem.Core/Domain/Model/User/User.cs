@@ -120,14 +120,14 @@ namespace FoodOrderSystem.Core.Domain.Model.User
             var resetCode = Guid.NewGuid();
 
             PasswordResetCode = resetCode.ToByteArray();
-            PasswordResetExpiration = DateTime.Now.AddMinutes(30);
+            PasswordResetExpiration = DateTime.UtcNow.AddMinutes(30);
 
             return SuccessResult<bool>.Create(true);
         }
 
         public Result<bool> ValidatePasswordResetCode(byte[] resetCode)
         {
-            return PasswordResetExpiration.HasValue && DateTime.Now <= PasswordResetExpiration &&
+            return PasswordResetExpiration.HasValue && DateTime.UtcNow <= PasswordResetExpiration &&
                    SlowEquals(PasswordResetCode, resetCode)
                 ? (Result<bool>) SuccessResult<bool>.Create(true)
                 : FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);

@@ -198,7 +198,47 @@ namespace FoodOrderSystem.Template.DotLiquid
 
         public EmailData GetRequestPasswordChangeEmail(string email, string url)
         {
-            return null; // TODO
+            var sb = new StringBuilder();
+
+            sb.Append("<p>");
+            sb.Append("Hallo ");
+            sb.Append(email);
+            sb.Append(",");
+            sb.Append("</p>");
+
+            sb.Append("<p>");
+            sb.Append("Wir haben über Gastromio die Aufforderung erhalten, Dein Passwort zurückzusetzen!");
+            sb.Append("<br/>");
+            sb.Append("Wenn das ein Versehen war oder nicht von Dir veranlasst worden ist, kannst Du diese E-Mail einfach ignorieren. Dein Passwort wurde nicht geändert!");
+            sb.Append("</p>");
+
+            sb.Append("<p>");
+            sb.AppendLine("Falls Du doch Dein Passwort ändern möchtest, klicke bitte auf den folgenden Link und folge den dort genannten Anweisungen:");
+            sb.Append("</p>");
+
+            sb.Append("<a href='");
+            sb.Append(url);
+            sb.Append("'>");
+            sb.Append(url);
+            sb.Append("</a>");
+            
+            sb.AppendLine("<br/>");
+
+            sb.Append("<p>");
+            sb.AppendLine("Dein Gastromio-Team");
+            sb.Append("</p>");
+
+            var message = sb.ToString();
+
+            return new EmailData
+            {
+                Subject = $"Gastromio.de - Anforderung zur Änderung Deines Passworts",
+                TextPart = message
+                    .Replace("<br/>", "\r\n")
+                    .Replace("<p>", "")
+                    .Replace("</p>", "\r\n"),
+                HtmlPart = message
+            };
         }
 
         private static void AppendOrderDetails(StringBuilder sb, Order order)

@@ -12,12 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: [
-    './change-password.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
-  ]
+  styleUrls: ['./change-password.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
 })
 export class ChangePasswordComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -25,9 +20,10 @@ export class ChangePasswordComponent implements OnInit {
   userId: string;
   passwordResetCode: string;
   valid: boolean = false;
+  success: boolean = false;
 
   changePasswordForm: FormGroup;
-  message: string;
+  errorMessage: string;
   submitted = false;
 
   constructor(
@@ -60,7 +56,8 @@ export class ChangePasswordComponent implements OnInit {
           this.blockUI.stop();
         },
         (response: HttpErrorResponse) => {
-          this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+          this.valid = false;
+          this.errorMessage = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
           this.blockUI.stop();
         },
       );
@@ -76,16 +73,18 @@ export class ChangePasswordComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start('Verarbeite Daten...');
+    this.blockUI.start('Ändere Dein Passwort...');
     this.authService.changePasswordWithResetCodeAsync(this.userId, this.passwordResetCode, data.password)
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
-        this.message = undefined;
+        this.submitted = false;
+        this.errorMessage = undefined;
+        this.success = true;
         this.changePasswordForm.reset();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.errorMessage = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
       });
   }
 }

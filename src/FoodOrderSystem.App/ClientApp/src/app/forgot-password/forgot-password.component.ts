@@ -9,12 +9,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: [
-    './forgot-password.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css',
-    '../../assets/css/animations_v2.min.css'
-  ]
+  styleUrls: ['./forgot-password.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
 })
 export class ForgotPasswordComponent implements OnInit {
 
@@ -41,6 +36,7 @@ export class ForgotPasswordComponent implements OnInit {
       .subscribe(
         () => {
           this.sent = true;
+          this.message = undefined;
         },
         (response: HttpErrorResponse) => {
           this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();

@@ -23,10 +23,16 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangePasswordWithResetCode
                 throw new ArgumentNullException(nameof(command));
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
+            
+            if (user == null)
+                return FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);
 
-            return user != null
-                ? user.ChangePasswordWithResetCode(command.PasswordResetCode, command.Password)
-                : FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);
+            var result = user.ChangePasswordWithResetCode(command.PasswordResetCode, command.Password);
+            if (result.IsFailure)
+                return result;
+
+            await userRepository.StoreAsync(user, cancellationToken);
+            return result;
         }
     }
 }

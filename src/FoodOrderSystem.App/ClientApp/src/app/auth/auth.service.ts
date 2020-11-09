@@ -104,7 +104,7 @@ export class AuthService {
       })
     };
 
-    return this.http.post(this.validatePasswordResetCodeUrl, {userId, passwordResetCode, password}, httpOptions)
+    return this.http.post(this.changePasswordWithResetCodeUrl, {userId, passwordResetCode, password}, httpOptions)
       .pipe(
         take(1),
         map(m => {})
