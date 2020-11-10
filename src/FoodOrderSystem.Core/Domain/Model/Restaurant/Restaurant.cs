@@ -46,6 +46,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         public Restaurant(
             RestaurantId id,
             string name,
+            string alias,
             Address address,
             ContactInfo contactInfo,
             IList<OpeningPeriod> openingHours,
@@ -69,6 +70,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         {
             Id = id;
             Name = name;
+            Alias = alias;
             Address = address ?? new Address(null, null, null);
             ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
             this.openingHours = openingHours ?? new List<OpeningPeriod>();
@@ -94,6 +96,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         public RestaurantId Id { get; }
 
         public string Name { get; private set; }
+        
+        public string Alias { get; }
 
         public Address Address { get; private set; }
 

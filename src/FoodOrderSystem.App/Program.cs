@@ -106,6 +106,8 @@ namespace FoodOrderSystem.App
                             throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
                         }
                     }
+                    
+                    dbAdminService.CorrectRestaurantAliases();
                 }
 
                 host.Run();

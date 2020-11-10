@@ -67,5 +67,18 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 new CreateIndexModel<OrderModel>(
                     Builders<OrderModel>.IndexKeys.Ascending(x => x.RestaurantNotificationInfo.Status)));
         }
+
+        public void CorrectRestaurantAliases()
+        {
+            var collection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
+            var documents = collection.Find(_ => true).ToList();
+
+            foreach (var document in documents)
+            {
+                document.Alias = RestaurantRepository.CreateAlias(document.Name);
+                var filter = Builders<RestaurantModel>.Filter.Eq(en => en.Id, document.Id);
+                collection.ReplaceOne(filter, document);
+            }
+        }
     }
 }

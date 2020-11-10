@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -180,9 +181,11 @@ namespace FoodOrderSystem.Persistence.MongoDB
             CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
-            var cursor = await collection.FindAsync(
-                Builders<RestaurantModel>.Filter.Where(en => en.Name.ToLower() == restaurantName.ToLower()),
-                cancellationToken: cancellationToken);
+
+            var filter = Builders<RestaurantModel>.Filter.Where(en => en.Name.ToLower() == restaurantName.ToLower())
+                         | Builders<RestaurantModel>.Filter.Where(en => en.Alias != null && en.Alias.ToLower() == restaurantName.ToLower());
+
+            var cursor = await collection.FindAsync(filter, cancellationToken: cancellationToken);
             return cursor.ToEnumerable().Select(FromDocument);
         }
 
@@ -256,6 +259,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var collection = GetCollection();
             var filter = Builders<RestaurantModel>.Filter.Eq(en => en.Id, restaurant.Id.Value);
             var document = ToDocument(restaurant);
+            document.Alias = CreateAlias(document.Name);
             var options = new ReplaceOptions {IsUpsert = true};
             await collection.ReplaceOneAsync(filter, document, options, cancellationToken);
         }
@@ -331,6 +335,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
             return new Restaurant(
                 new RestaurantId(document.Id),
                 document.Name,
+                document.Alias,
                 document.Address != null
                     ? new Address(
                         document.Address.Street,
@@ -508,6 +513,30 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 default:
                     throw new InvalidOperationException($"unknown supported order mode: {supportedOrderMode}");
             }
+        }
+
+        internal static string CreateAlias(string name)
+        {
+            if (name == null)
+                return null;
+
+            name = name.ToLowerInvariant();
+            
+            var sb = new StringBuilder();
+
+            for (var pos = 0; pos < name.Length; pos++)
+            {
+                var c = name[pos];
+
+                if (char.IsWhiteSpace(c))
+                    sb.Append('-');
+                else if (char.IsLetter(c))
+                    sb.Append(c);
+                else if (char.IsDigit(c))
+                    sb.Append(c);
+            }
+
+            return sb.ToString();
         }
     }
 }
