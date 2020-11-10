@@ -49,6 +49,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var restaurantImageCollection = database.GetCollection<RestaurantImageModel>(Constants.RestaurantImageCollectionName);
             restaurantImageCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.RestaurantId)));
+            restaurantImageCollection.Indexes.CreateOne(
+                new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.Type)));
             
             var userCollection = database.GetCollection<UserModel>(Constants.UserCollectionName);
             userCollection.Indexes.CreateOne(
