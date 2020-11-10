@@ -42,7 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FoodOrderSystem.Core\FoodOrderSystem.Core.csproj" />
-    <ProjectReference Include="..\FoodOrderSystem.Notification.Mailjet\FoodOrderSystem.Notification.Mailjet.csproj" />
+    <ProjectReference Include="..\FoodOrderSystem.Notification.Smtp\FoodOrderSystem.Notification.Smtp.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Persistence.MongoDB\FoodOrderSystem.Persistence.MongoDB.csproj" />
     <ProjectReference Include="..\FoodOrderSystem.Template.DotLiquid\FoodOrderSystem.Template.DotLiquid.csproj" />
   </ItemGroup>

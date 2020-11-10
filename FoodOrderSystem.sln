@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F468EC0A-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Domain.Tests", "test\FoodOrderSystem.Domain.Tests\FoodOrderSystem.Domain.Tests.csproj", "{E5678086-E8A1-4885-8700-A72652C5C7FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodOrderSystem.Notification.Smtp", "src\FoodOrderSystem.Notification.Smtp\FoodOrderSystem.Notification.Smtp.csproj", "{A31B855F-072F-488A-BBBE-63EE3DF0DB55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{E5678086-E8A1-4885-8700-A72652C5C7FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5678086-E8A1-4885-8700-A72652C5C7FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5678086-E8A1-4885-8700-A72652C5C7FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A31B855F-072F-488A-BBBE-63EE3DF0DB55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A31B855F-072F-488A-BBBE-63EE3DF0DB55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A31B855F-072F-488A-BBBE-63EE3DF0DB55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A31B855F-072F-488A-BBBE-63EE3DF0DB55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,5 +83,6 @@ Global
 		{3C5D72DE-A15B-4759-BD26-39C2852BCC8D} = {F468EC0A-00FC-4B26-B729-858B21687576}
 		{C35345EB-C10E-4F0B-902D-792C80A8C90F} = {F468EC0A-00FC-4B26-B729-858B21687576}
 		{E5678086-E8A1-4885-8700-A72652C5C7FA} = {F468EC0A-00FC-4B26-B729-858B21687576}
+		{A31B855F-072F-488A-BBBE-63EE3DF0DB55} = {FADF6549-FC27-40AB-8DBF-B185760560D9}
 	EndGlobalSection
 EndGlobal
