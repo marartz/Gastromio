@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
-      this.titleService.setTitle('Gastromio - Einfach. Lokal. Bestellen.');
+      this.titleService.setTitle('Gastromio &ndash; Essen lokal bestellen');
       window.scrollTo(0, 0);
     });
   }
