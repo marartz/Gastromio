@@ -138,7 +138,8 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
 
             if (configurationProvider.IsTestSystem)
             {
-                recipientsTo.Add(new EmailAddress("Gastromio-Bestellungen", configurationProvider.EmailRecipientForTest));
+                recipientsTo.Add(
+                    new EmailAddress("Gastromio-Bestellungen", configurationProvider.EmailRecipientForTest));
             }
             else
             {
@@ -147,14 +148,15 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
                 if (order.CartInfo.RestaurantNeedsSupport)
                 {
                     recipientsCc.Add(new EmailAddress("Gastromio-Bestellungen", "bestellungen@gastromio.de"));
-                    recipientsCc.Add(new EmailAddress("Hotline - Coronahilfe Bocholt", "hotline@coronahilfe-bocholt.de"));
+                    recipientsCc.Add(
+                        new EmailAddress("Hotline - Coronahilfe Bocholt", "hotline@coronahilfe-bocholt.de"));
                 }
             }
 
             var notificationRequest = new NotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
                 recipientsTo,
-                recipientsCc,
+                new List<EmailAddress>(),
                 new List<EmailAddress>(),
                 emailData.Subject,
                 emailData.TextPart,
@@ -162,6 +164,25 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
             );
 
             var (success, info) = await TriggerNotificationAsync(notificationRequest, cancellationToken);
+
+            if (success)
+            {
+                foreach (var recipientCc in recipientsCc)
+                {
+                    notificationRequest = new NotificationRequest(
+                        new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
+                        new List<EmailAddress> {recipientCc},
+                        new List<EmailAddress>(),
+                        new List<EmailAddress>(),
+                        emailData.Subject,
+                        emailData.TextPart,
+                        emailData.HtmlPart
+                    );
+
+                    await TriggerNotificationAsync(notificationRequest, cancellationToken); // don't break if sending notification failed
+                }
+            }
+
             order.RegisterRestaurantNotificationAttempt(success, info);
             await orderRepository.StoreAsync(order, cancellationToken);
         }
@@ -179,7 +200,22 @@ namespace FoodOrderSystem.Core.Application.Commands.ProcessPendingNotifications
             }
             catch (Exception e)
             {
-                logger.LogWarning(e, "exception while sending notification");
+                var from = notificationRequest?.Sender?.Email ?? "";
+                
+                var to = notificationRequest?.RecipientsTo != null
+                    ? string.Join(", ", notificationRequest.RecipientsTo)
+                    : "";
+                
+                var cc = notificationRequest?.RecipientsCc != null
+                    ? string.Join(", ", notificationRequest.RecipientsCc)
+                    : "";
+
+                var bcc = notificationRequest?.RecipientsBcc != null
+                    ? string.Join(", ", notificationRequest.RecipientsBcc)
+                    : "";
+
+                logger.LogWarning(e,
+                    $"exception while sending notification from {from} to {to} (Cc: {cc}, Bcc: {bcc})");
                 return (false, "Exception: " + e);
             }
         }
