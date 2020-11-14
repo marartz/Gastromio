@@ -46,11 +46,13 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportDishData
             for (var rowIndex = sheet.FirstRowNum + 1; rowIndex <= sheet.LastRowNum; rowIndex++)
             {
                 var row = sheet.GetRow(rowIndex);
-
-                var dishRow = new DishRow();
+                if (row == null)
+                    continue;
 
                 try
                 {
+                    var dishRow = new DishRow();
+
                     var cell = row.GetCell(13);
                     if (string.IsNullOrWhiteSpace(cell?.ToString()))
                         continue;
@@ -73,14 +75,14 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportDishData
 
                     cell = row.GetCell(7);
                     dishRow.VariantPrice = cell?.NumericCellValue;
+
+                    await dishDataImporter.ImportDishAsync(log, rowIndex + 1, dishRow, curUserId,
+                        dryRun);
                 }
                 catch (Exception e)
                 {
                     log.AddLine(ImportLogLineType.Error, rowIndex + 1, "Ausnahme: {0}", e.ToString());
                 }
-
-                await dishDataImporter.ImportDishAsync(log, rowIndex + 1, dishRow, curUserId,
-                    dryRun);
             }
 
             return SuccessResult<ImportLog>.Create(log);
