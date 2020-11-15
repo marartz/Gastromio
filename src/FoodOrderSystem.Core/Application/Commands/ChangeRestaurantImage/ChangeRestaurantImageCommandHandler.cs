@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
@@ -50,6 +51,14 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangeRestaurantImage
                 await restaurantImageRepository.RemoveByRestaurantIdAndTypeAsync(command.RestaurantId, command.Type,
                     cancellationToken); 
                 return SuccessResult<bool>.Create(true);
+            }
+
+            var types = (await restaurantImageRepository.FindTypesByRestaurantIdAsync(command.RestaurantId,
+                cancellationToken))?.ToList();
+            if (types != null && types.Contains(command.Type))
+            {
+                await restaurantImageRepository.RemoveByRestaurantIdAndTypeAsync(command.RestaurantId, command.Type,
+                    cancellationToken);
             }
 
             if (command.Image.Length > 2024 * 2024) // 4 MB

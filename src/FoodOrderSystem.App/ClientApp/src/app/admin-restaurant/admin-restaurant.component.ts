@@ -402,7 +402,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
     const reader = new FileReader();
     const [file] = event.target.files;
-    reader.readAsDataURL(file);
 
     reader.onload = () => {
       this.changeBannerForm.patchValue({
@@ -411,6 +410,8 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       this.bannerUrl = reader.result as string;
       this.changeBannerForm.markAsDirty();
     };
+
+    reader.readAsDataURL(file);
   }
 
   openChangeRestaurantNameForm(): void {
