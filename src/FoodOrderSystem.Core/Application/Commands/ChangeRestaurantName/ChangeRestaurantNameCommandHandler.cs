@@ -31,14 +31,17 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangeRestaurantName
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
-
+            
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
+
+            if (string.Equals(restaurant.Name?.Trim(), command.Name?.Trim()))
+                return SuccessResult<bool>.Create(true);
 
             var existingRestaurants =
                 await restaurantRepository.FindByRestaurantNameAsync(command.Name, cancellationToken);
             if (existingRestaurants.Any())
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantAlreadyExists);
 
             var result = restaurant.ChangeName(command.Name, currentUser.Id);
             if (result.IsFailure)
