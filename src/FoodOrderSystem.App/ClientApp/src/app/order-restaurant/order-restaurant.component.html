@@ -9,7 +9,7 @@
                     <div id="text">
                         <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>
                         <h2 class="info">
-                            <span>{{restaurant.address.street}}, {{restaurant.address.city}}</span>
+                            <span>{{restaurant.address.street}}, {{restaurant.address.city}}<br /></span>
                             <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> (Nur telefonische Bestellung)</span></ng-container>
                             <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> (Telefonische Bestellung & Online-Vorbestellung)</span></ng-container>
                             <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> (Telefonische Bestellung & Online-Bestellung)</span></ng-container>
@@ -56,8 +56,10 @@
                                 <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)"
                                    *ngFor="let dish of dishCategory.dishes">
                                     <div id="infos">
-                                        <h2 class="dish-name" id="{{dish.name}}">{{dish.name}}<span
-                                            class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
+                                        <h2 class="dish-name" id="{{dish.name}}">
+                                            <span>{{dish.name}}</span>
+                                            <span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span>
+                                        </h2>
                                         <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
                                     </div>
                                 </a>
