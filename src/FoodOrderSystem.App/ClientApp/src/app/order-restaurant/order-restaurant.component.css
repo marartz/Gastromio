@@ -37,6 +37,58 @@
     }
 }
 
+#checkout #close {
+    display: flex;
+    position: absolute;
+    left: 24px;
+    top: 16px;
+}
+
+#checkout #close button::before {
+    background-color: transparent;
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 32px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+}
+
+#checkout #close:hover button::before {
+    background-color: rgba(222, 207, 128, .5);
+}
+
+#checkout #close button {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    color: #363636;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0px;
+    outline: none;
+    padding: 0px;
+    position: relative;
+    touch-action: manipulation;
+    transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s, transform 0.25s ease 0s;
+}
+
+#checkout #close:hover button {
+    color: #363636; 
+}
+
+
+
+@media screen and (min-width: 744px) {
+    #checkout #close {
+        top: 24px;
+    }
+}
+
 /* #chekout > #my-order */
 #checkout #cart {
     background-color: #DECF80;
@@ -71,6 +123,14 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    max-height: 40vh;
+    overflow-y: scroll;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #cart #dishes {
+        max-height: 30vh;
+    }
 }
 
 #checkout #cart #dishes .dish {
