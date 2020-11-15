@@ -1,38 +1,36 @@
-<div id="root">
-    <div class="layout">
-        <div id="order-home">
-
-            <section id="start" class="bg-rough-blue">
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="hero-container">
-                            <h1>Essen lokal bestellen</h1>
-                            <h2>in Bocholt und Umgebung</h2>
-                            <div class="search-inner">
-                                <div class="input-wrapper">
-                                    <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
-                                </div>
-                                <div class="button-wrapper">
-                                    <button type="button" [routerLink]="['/restaurants']"><span>Alle anzeigen</span></button>
-                                </div>
-                                <div class="results">
-                                    <div class="rest">
-                                        <div *ngFor="let restaurant of restaurants">
-                                            <span class="restaurant-name">{{restaurant.name}}</span>
-                                            <div class="order-type">
-                                                <ng-container *ngIf="restaurant.pickupInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
-                                                <ng-container *ngIf="restaurant.deliveryInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
-                                            </div>
-                                            <div class="border"></div>
-                                        </div>
+<div id="order-home">
+    
+    <section id="landing" class="bg-rough-blue">
+        <div class="wrapper">
+            <div class="inner">
+                <div class="hero-container">
+                    <h1>Essen lokal bestellen</h1>
+                    <h2>in Bocholt und Umgebung</h2>
+                    <div class="search-inner">
+                        <div class="input-wrapper">
+                            <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)" data-hj-suppress>
+                        </div>
+                        <div class="button-wrapper">
+                            <button type="button" [routerLink]="['/restaurants']"><span>Alle anzeigen</span></button>
+                        </div>
+                        <div id="results" class="visibleonsearch">
+                            <div class="rest">
+                                <div *ngFor="let restaurant of restaurants">
+                                    <span class="restaurant-name">{{restaurant.name}}</span>
+                                    <div class="order-type">
+                                        <ng-container *ngIf="restaurant.pickupInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
+                                        <ng-container *ngIf="restaurant.deliveryInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
                                     </div>
+                                    <div class="border"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="teller"></div>
-            </section>
+            </div>
+        </div>
+        <div class="teller"></div>
+    </section>
 
             <section id="about" class="bg-rough-grey">
                 <img class="circle" src="../../assets/images/circle.png" alt="">
@@ -89,5 +87,4 @@
             </section>
 
         </div>
-    </div>
-</div>
+
