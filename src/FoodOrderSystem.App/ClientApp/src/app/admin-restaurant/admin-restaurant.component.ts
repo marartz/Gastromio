@@ -354,10 +354,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   updateLogoUrl(): void {
-    if (!this.hasLogo()) {
-      return undefined;
+    if (this.hasLogo()) {
+      this.logoUrl = '/api/v1/restaurants/' + this.restaurant?.id + '/images/logo?random=' + Math.random();
+    } else {
+      this.logoUrl = undefined;
     }
-    this.logoUrl = '/api/v1/restaurants/' + this.restaurant?.id + '/images/logo?random=' + Math.random();
   }
 
   onLogoChange(event) {
@@ -367,14 +368,16 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
     const reader = new FileReader();
     const [file] = event.target.files;
-    reader.readAsDataURL(file);
 
     reader.onload = () => {
       this.changeLogoForm.patchValue({
         logo: reader.result
       });
+      this.logoUrl = reader.result as string;
       this.changeLogoForm.markAsDirty();
     };
+
+    reader.readAsDataURL(file);
   }
 
   hasBanner(): boolean {
@@ -385,10 +388,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   }
 
   updateBannerUrl(): void {
-    if (!this.hasBanner()) {
-      return undefined;
+    if (this.hasBanner()) {
+      this.bannerUrl = '/api/v1/restaurants/' + this.restaurant?.id + '/images/banner?random=' + Math.random();
+    } else {
+      this.bannerUrl = undefined;
     }
-    this.bannerUrl = '/api/v1/restaurants/' + this.restaurant?.id + '/images/banner?random=' + Math.random();
   }
 
   onBannerChange(event) {
@@ -404,6 +408,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       this.changeBannerForm.patchValue({
         banner: reader.result
       });
+      this.bannerUrl = reader.result as string;
       this.changeBannerForm.markAsDirty();
     };
   }
