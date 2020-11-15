@@ -51,7 +51,7 @@ namespace FoodOrderSystem.Core.Application.Commands.AddRestaurant
             var existingRestaurants =
                 await restaurantRepository.FindByRestaurantNameAsync(command.Name, cancellationToken);
             if (existingRestaurants.Any())
-                return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantDoesNotExist);
+                return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantAlreadyExists);
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));

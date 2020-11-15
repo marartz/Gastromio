@@ -45,11 +45,13 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
             for (var rowIndex = sheet.FirstRowNum + 1; rowIndex <= sheet.LastRowNum; rowIndex++)
             {
                 var row = sheet.GetRow(rowIndex);
-
-                var restaurantRow = new RestaurantRow();
+                if (row == null)
+                    continue;
 
                 try
                 {
+                    var restaurantRow = new RestaurantRow();
+
                     var cell = row.GetCell(28);
                     if (string.IsNullOrWhiteSpace(cell?.ToString()))
                         continue;
@@ -152,14 +154,14 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
 
                     cell = row.GetCell(36);
                     restaurantRow.ExternalMenuDescription = cell?.StringCellValue.Trim();
+
+                    await restaurantDataImporter.ImportRestaurantAsync(log, rowIndex + 1, restaurantRow, curUserId,
+                        dryRun);
                 }
                 catch (Exception e)
                 {
                     log.AddLine(ImportLogLineType.Error, rowIndex + 1, "Ausnahme: {0}", e.ToString());
                 }
-
-                await restaurantDataImporter.ImportRestaurantAsync(log, rowIndex + 1, restaurantRow, curUserId,
-                    dryRun);
             }
 
             return SuccessResult<ImportLog>.Create(log);
