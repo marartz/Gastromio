@@ -52,44 +52,44 @@ namespace FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant
                 return FailureResult<Guid>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
 
             Dish dish;
-            if (command.Dish.Id != Guid.Empty)
+            if (command.DishId != Guid.Empty)
             {
                 var dishes = await dishRepository.FindByDishCategoryIdAsync(dishCategory.Id, cancellationToken);
-                dish = dishes?.FirstOrDefault(en => en.Id.Value == command.Dish.Id);
+                dish = dishes?.FirstOrDefault(en => en.Id.Value == command.DishId);
                 if (dish == null)
                     return FailureResult<Guid>.Create(FailureResultCode.DishDoesNotBelongToDishCategory);
 
                 Result<bool> tempResult;
 
-                if (!string.Equals(dish.Name, command.Dish.Name))
+                if (!string.Equals(dish.Name, command.Name))
                 {
-                    tempResult = dish.ChangeName(command.Dish.Name, currentUser.Id);
+                    tempResult = dish.ChangeName(command.Name, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
-                if (!string.Equals(dish.Description, command.Dish.Description))
+                if (!string.Equals(dish.Description, command.Description))
                 {
-                    tempResult = dish.ChangeDescription(command.Dish.Description, currentUser.Id);
+                    tempResult = dish.ChangeDescription(command.Description, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
-                if (!string.Equals(dish.ProductInfo, command.Dish.ProductInfo))
+                if (!string.Equals(dish.ProductInfo, command.ProductInfo))
                 {
-                    tempResult = dish.ChangeProductInfo(command.Dish.ProductInfo, currentUser.Id);
+                    tempResult = dish.ChangeProductInfo(command.ProductInfo, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
-                if (dish.OrderNo != command.Dish.OrderNo)
+                if (dish.OrderNo != command.OrderNo)
                 {
-                    tempResult = dish.ChangeOrderNo(command.Dish.OrderNo, currentUser.Id);
+                    tempResult = dish.ChangeOrderNo(command.OrderNo, currentUser.Id);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Guid>();
                 }
 
-                tempResult = dish.ReplaceVariants(command.Dish.Variants, currentUser.Id);
+                tempResult = dish.ReplaceVariants(command.Variants, currentUser.Id);
                 if (tempResult.IsFailure)
                     return tempResult.Cast<Guid>();
             }
@@ -98,11 +98,11 @@ namespace FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant
                 var createResult = dishFactory.Create(
                     command.RestaurantId,
                     command.DishCategoryId,
-                    command.Dish.Name,
-                    command.Dish.Description,
-                    command.Dish.ProductInfo,
-                    command.Dish.OrderNo,
-                    command.Dish.Variants,
+                    command.Name,
+                    command.Description,
+                    command.ProductInfo,
+                    command.OrderNo,
+                    command.Variants,
                     currentUser.Id
                 );
 

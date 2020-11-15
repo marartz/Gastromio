@@ -547,8 +547,22 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<AddOrChangeDishOfRestaurantCommand, Guid>(
-                new AddOrChangeDishOfRestaurantCommand(new RestaurantId(restaurantId),
-                    new DishCategoryId(model.DishCategoryId), model.Dish),
+                new AddOrChangeDishOfRestaurantCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId),
+                    model.Dish.Id,
+                    model.Dish.Name,
+                    model.Dish.Description,
+                    model.Dish.ProductInfo,
+                    model.Dish.OrderNo,
+                    model.Dish.Variants?.Select(
+                        variant => new DishVariant(
+                            variant.VariantId,
+                            variant.Name,
+                            variant.Price
+                        )
+                    )
+                ),
                 new UserId(currentUserId)
             );
 
