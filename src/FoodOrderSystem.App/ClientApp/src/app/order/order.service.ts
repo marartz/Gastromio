@@ -99,7 +99,7 @@ export class OrderService {
 
     let url = this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
 
-    if (orderType) {
+    if (orderType != undefined) {
       url += '&orderType=' + encodeURIComponent(orderTypeText);
     }
 
