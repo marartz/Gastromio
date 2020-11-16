@@ -29,6 +29,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   showClosedRestaurants: boolean;
 
   restaurants: RestaurantModel[];
+  closedRestaurants: RestaurantModel[];
   restaurantCount: number;
 
   orderType: string;
@@ -180,16 +181,32 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
     const date = this.selectedOpeningHourFilter ?? new Date();
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter, this.showClosedRestaurants ? null : date.toISOString())
+      this.selectedCuisineFilter, null)
       .pipe(take(1))
       .subscribe((result) => {
-        this.restaurants = new Array<RestaurantModel>(result.length);
-        this.restaurantCount = result.length;
-
+        let restaurants = new Array<RestaurantModel>(result.length);
         for (let i = 0; i < result.length; i++) {
-          this.restaurants[i] = new RestaurantModel(result[i]);
+          restaurants[i] = new RestaurantModel(result[i]);
         }
 
+        if (this.showClosedRestaurants) {
+          this.restaurants = restaurants;
+          this.closedRestaurants = undefined;
+        } else {
+          let openedRestaurants = new Array<RestaurantModel>();
+          let closedRestaurants = new Array<RestaurantModel>();
+          for (let restaurant of restaurants) {
+            if (restaurant.isOpen(this.selectedOpeningHourFilter)) {
+              openedRestaurants.push(restaurant);
+            } else {
+              closedRestaurants.push(restaurant);
+            }
+          }
+          this.restaurants = openedRestaurants;
+          this.closedRestaurants = closedRestaurants;
+        }
+
+        this.restaurantCount = result.length;
         this.sortRestaurants();
 
         this.blockUI.stop();
@@ -221,11 +238,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   sortRestaurants(): void {
-    if (!this.restaurants) {
-      return;
-    }
-
-    this.restaurants.sort((a, b) => {
+    const compareFn = (a: RestaurantModel, b: RestaurantModel) => {
       if (a.name < b.name) {
         return -1;
       } else if (a.name > b.name) {
@@ -233,6 +246,14 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       } else {
         return 0;
       }
-    });
+    };
+
+    if (this.restaurants) {
+      this.restaurants.sort(compareFn);
+    }
+
+    if (this.closedRestaurants) {
+      this.closedRestaurants.sort(compareFn);
+    }
   }
 }
