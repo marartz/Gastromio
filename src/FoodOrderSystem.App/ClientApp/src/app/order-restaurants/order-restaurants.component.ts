@@ -26,7 +26,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   selectedOpeningHourFilter: Date;
   selectedCuisineFilter: string;
-  showClosedRestaurants: boolean;
 
   restaurants: RestaurantModel[];
   closedRestaurants: RestaurantModel[];
@@ -53,7 +52,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.selectedCuisineFilter = '';
-    this.showClosedRestaurants = false;
 
     this.orderService.getAllCuisinesAsync()
       .pipe(take(1))
@@ -189,22 +187,17 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
           restaurants[i] = new RestaurantModel(result[i]);
         }
 
-        if (this.showClosedRestaurants) {
-          this.restaurants = restaurants;
-          this.closedRestaurants = undefined;
-        } else {
-          let openedRestaurants = new Array<RestaurantModel>();
-          let closedRestaurants = new Array<RestaurantModel>();
-          for (let restaurant of restaurants) {
-            if (restaurant.isOpen(this.selectedOpeningHourFilter)) {
-              openedRestaurants.push(restaurant);
-            } else {
-              closedRestaurants.push(restaurant);
-            }
+        let openedRestaurants = new Array<RestaurantModel>();
+        let closedRestaurants = new Array<RestaurantModel>();
+        for (let restaurant of restaurants) {
+          if (restaurant.isOpen(this.selectedOpeningHourFilter)) {
+            openedRestaurants.push(restaurant);
+          } else {
+            closedRestaurants.push(restaurant);
           }
-          this.restaurants = openedRestaurants;
-          this.closedRestaurants = closedRestaurants;
         }
+        this.restaurants = openedRestaurants;
+        this.closedRestaurants = closedRestaurants;
 
         this.restaurantCount = result.length;
         this.sortRestaurants();
@@ -225,16 +218,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   isRestaurantOpen(restaurant: RestaurantModel): boolean {
     const date = this.selectedOpeningHourFilter ?? new Date();
     return restaurant.isOpen(date);
-  }
-
-  onJustShowOpenRestaurants(): void {
-    this.showClosedRestaurants = !this.showClosedRestaurants;
-    this.updateSearch();
-  }
-
-  onShowAllRestaurants(): void {
-    this.showClosedRestaurants = true;
-    this.updateSearch();
   }
 
   sortRestaurants(): void {

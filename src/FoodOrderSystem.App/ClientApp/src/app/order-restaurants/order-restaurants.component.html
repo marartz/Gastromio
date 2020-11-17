@@ -29,9 +29,6 @@
                                     <button (click)="onHideMobileFilterDetails()"></button>
                                 </header>
 
-                                <div id="mobile-preorder-filter">
-                                    <button type="button" [class.active]="showClosedRestaurants" (click)="onJustShowOpenRestaurants()">Geschlossene Restaurants einreihen</button>
-                                </div>
                                 <div id="mobile-ordertype-filter">
                                     <p class="title">Wie kommt das Essen zu dir?</p>
                                     <div class="filter">
@@ -80,9 +77,6 @@
                                         <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
                                         <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
                                     </div>
-                                    <div id="preorder-filter">
-                                        <button type="button" [class.active]="showClosedRestaurants" (click)="onJustShowOpenRestaurants()">Geschlossene Restaurants einreihen</button>
-                                    </div>
                                     <div id="ordertype-filter">
                                         <p class="title">Wie kommt das Essen zu dir?</p>
                                         <div class="filter">
@@ -124,7 +118,7 @@
 
                                 <app-order-restaurants-row *ngFor="let restaurant of restaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>
 
-                                <div class="preorder" *ngIf="!showClosedRestaurants">
+                                <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
                                     <p>Nicht das Richtige gefunden?<br />Dann bestell bereits jetzt dein Essen vor</p>
                                 </div>
 
