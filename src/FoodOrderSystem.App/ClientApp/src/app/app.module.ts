@@ -45,6 +45,7 @@ import {OrderRestaurantComponent} from './order-restaurant/order-restaurant.comp
 import {OrderRestaurantImprintComponent} from './order-restaurant-imprint/order-restaurant-imprint.component';
 import {OrderRestaurantOpeningHoursComponent} from './order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import {OrderRestaurantsComponent} from './order-restaurants/order-restaurants.component';
+import {OrderRestaurantsRowComponent} from './order-restaurants-row/order-restaurants-row.component';
 import {OrderService} from './order/order.service';
 import {OrderSummaryComponent} from './order-summary/order-summary.component';
 import {PrivacyPolicyComponent} from './privacy-policy/privacy-policy.component';
@@ -133,6 +134,7 @@ import {UserAdminService} from './user/user-admin.service';
     OrderRestaurantImprintComponent,
     OrderRestaurantOpeningHoursComponent,
     OrderRestaurantsComponent,
+    OrderRestaurantsRowComponent,
     OrderSummaryComponent,
     PrivacyPolicyComponent,
     RemoveCuisineComponent,
