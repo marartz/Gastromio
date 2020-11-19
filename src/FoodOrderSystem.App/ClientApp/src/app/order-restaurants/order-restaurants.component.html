@@ -63,8 +63,7 @@
                     </ng-container>
                     <div class="mobile-info">
                         <div class="restaurant-count">
-                            <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
-                            <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
+                            {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants sind gerade geöffnet
                         </div>
                     </div>
 
@@ -74,8 +73,7 @@
                             <aside>
                                 <div class="filter-wrapper">
                                     <div id="restaurant-count">
-                                        <ng-container *ngIf="restaurantCount === 1">1 Restaurant</ng-container>
-                                        <ng-container *ngIf="restaurantCount !== 1">{{restaurantCount}} Restaurants</ng-container>
+                                        {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants sind gerade geöffnet
                                     </div>
                                     <div id="ordertype-filter">
                                         <p class="title">Wie kommt das Essen zu dir?</p>
@@ -116,10 +114,12 @@
                                     <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                                 </div>
 
-                                <app-order-restaurants-row *ngFor="let restaurant of restaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>
 
                                 <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
-                                    <p>Nicht das Richtige gefunden?<br />Dann bestell bereits jetzt dein Essen vor</p>
+                                    <p>
+                                        Die Folgenden Restaurants haben um diese Uhrzeit nicht geöffnet,<br/>bei einigen von Ihnen kannst Du aber für eine spätere Öffnungszeit vorbestellen.
+                                    </p>
                                 </div>
 
                                 <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>

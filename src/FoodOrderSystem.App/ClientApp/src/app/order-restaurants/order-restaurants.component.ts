@@ -27,9 +27,12 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   selectedOpeningHourFilter: Date;
   selectedCuisineFilter: string;
 
-  restaurants: RestaurantModel[];
+  totalRestaurantCount: number;
+
+  openedRestaurants: RestaurantModel[];
+  openedRestaurantCount: number;
   closedRestaurants: RestaurantModel[];
-  restaurantCount: number;
+  closedRestaurantCount: number;
 
   orderType: string;
 
@@ -182,7 +185,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       this.selectedCuisineFilter, null)
       .pipe(take(1))
       .subscribe((result) => {
+
         let restaurants = new Array<RestaurantModel>(result.length);
+        this.totalRestaurantCount = result.length;
+
         for (let i = 0; i < result.length; i++) {
           restaurants[i] = new RestaurantModel(result[i]);
         }
@@ -196,10 +202,13 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
             closedRestaurants.push(restaurant);
           }
         }
-        this.restaurants = openedRestaurants;
-        this.closedRestaurants = closedRestaurants;
 
-        this.restaurantCount = result.length;
+        this.openedRestaurants = openedRestaurants;
+        this.openedRestaurantCount = openedRestaurants.length;
+
+        this.closedRestaurants = closedRestaurants;
+        this.closedRestaurantCount = closedRestaurants.length;
+
         this.sortRestaurants();
 
         this.blockUI.stop();
@@ -231,8 +240,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
       }
     };
 
-    if (this.restaurants) {
-      this.restaurants.sort(compareFn);
+    if (this.openedRestaurants) {
+      this.openedRestaurants.sort(compareFn);
     }
 
     if (this.closedRestaurants) {
