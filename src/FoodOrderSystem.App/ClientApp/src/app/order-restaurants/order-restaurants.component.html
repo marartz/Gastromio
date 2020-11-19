@@ -63,7 +63,7 @@
                     </ng-container>
                     <div class="mobile-info">
                         <div class="restaurant-count">
-                            {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants sind gerade geöffnet
+                            {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
                             <aside>
                                 <div class="filter-wrapper">
                                     <div id="restaurant-count">
-                                        {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants sind gerade geöffnet
+                                        {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants
                                     </div>
                                     <div id="ordertype-filter">
                                         <p class="title">Wie kommt das Essen zu dir?</p>
@@ -117,8 +117,14 @@
                                 <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>
 
                                 <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
+                                    <h3>
+                                        Für 
+                                        <ng-container *ngIf="orderType === 'pickup'">Abholung</ng-container>
+                                        <ng-container *ngIf="orderType === 'delivery'">Lieferung</ng-container>
+                                        geschlossen
+                                    </h3>
                                     <p>
-                                        Die Folgenden Restaurants haben um diese Uhrzeit nicht geöffnet,<br/>bei einigen von Ihnen kannst Du aber für eine spätere Öffnungszeit vorbestellen.
+                                        Die Folgenden Restaurants haben um diese Uhrzeit nicht geöffnet, <br>bei einigen von Ihnen kannst Du aber für eine spätere Öffnungszeit vorbestellen.
                                     </p>
                                 </div>
 
