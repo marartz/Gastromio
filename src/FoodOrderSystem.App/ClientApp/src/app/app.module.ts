@@ -6,6 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import {BlockUIModule} from 'ng-block-ui';
 
+import {AboutComponent} from './about/about.component';
 import {AddCuisineComponent} from './add-cuisine/add-cuisine.component';
 import {AddDishCategoryComponent} from './add-dish-category/add-dish-category.component';
 import {AddDishToCartComponent} from './add-dish-to-cart/add-dish-to-cart.component';
@@ -35,7 +36,6 @@ import {DishProductInfoComponent} from './dish-productinfo/dish-productinfo.comp
 import {EditDishComponent} from './edit-dish/edit-dish.component';
 import {EditCartDishComponent} from './edit-cart-dish/edit-cart-dish.component';
 import {GeneralErrorComponent} from './http-error-handling/general-error.component';
-import {GeneralTermsAndConditionsComponent} from './general-terms-and-conditions/general-terms-and-conditions.component';
 import {HttpErrorHandlingService} from './http-error-handling/http-error-handling.service';
 import {ImprintComponent} from './imprint/imprint.component';
 import {LoginComponent} from './login/login.component';
@@ -71,7 +71,7 @@ import {UserAdminService} from './user/user-admin.service';
       {path: '', component: OrderHomeComponent},
       {path: 'customer-information', component: CustomerInformationComponent},
       {path: 'restaurant-information', component: RestaurantInformationComponent},
-      {path: 'general-terms-and-conditions', component: GeneralTermsAndConditionsComponent},
+      {path: 'about', component: AboutComponent},
       {path: 'imprint', component: ImprintComponent},
       {path: 'privacy-policy', component: PrivacyPolicyComponent},
       {path: 'login', component: LoginComponent},
@@ -98,6 +98,7 @@ import {UserAdminService} from './user/user-admin.service';
     BlockUIModule.forRoot(),
   ],
   declarations: [
+    AboutComponent,
     AddCuisineComponent,
     AddDishCategoryComponent,
     AddDishToCartComponent,
@@ -125,7 +126,6 @@ import {UserAdminService} from './user/user-admin.service';
     EditDishComponent,
     EditCartDishComponent,
     GeneralErrorComponent,
-    GeneralTermsAndConditionsComponent,
     ImprintComponent,
     LoginComponent,
     OpeningHourFilterComponent,

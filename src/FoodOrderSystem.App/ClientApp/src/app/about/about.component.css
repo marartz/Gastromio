@@ -1,0 +1,81 @@
+.agb {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: proxima-nova, sans-serif;
+    color: #4c5b52;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+@media screen (min-width: 1200px) {
+    .agb {
+        max-width: 980px;
+    }
+}
+
+.agb h3 {
+    margin: 24px 0px 12px 0px;
+}
+
+.agb p {
+    font-size: 16px;
+    margin: 0px 0px 20px 0px;
+}
+
+.agb strong {
+    font-weight: 700;
+}
+
+.agb a {
+    color: rgb(0, 108, 187);
+    text-decoration: none;
+}
+
+.agb ul {
+    padding: 0 0 0 20px;
+    margin: 0 0 20px 0;
+}
+
+.agb .t1, .t2, .t3, .t4, .t5, .t6 {
+    display: block;
+}
+
+.agb h1, h2, h3, .t1, .t2, .t3 {
+    font-weight: 700;
+}
+
+.agb h4, h5, h6, .t4, .t5, .t6 {
+    font-weight: bold;
+}
+
+.agb .t3 {
+    font-size: 32px;
+    margin: 48px 0 24px 0;
+}
+
+.agb .t4 {
+    font-size: 24px;
+}
+
+.agb  .dptable {
+    margin: 24px 0px;
+    display: grid;
+    grid-gap: 4px 20px;
+}
+
+@media screen (min-width: 768px) {
+    .agb .dptable {
+        grid-template-columns: 30% auto;
+        grid-gap: 12px 20px;
+    }
+}
+
+.agb .dptable div:nth-child(2n+1) {
+    font-weight: 600;
+}
+
+.agb .block {
+    display: block;
+}
