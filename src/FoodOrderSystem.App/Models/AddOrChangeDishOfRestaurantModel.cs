@@ -6,6 +6,6 @@ namespace FoodOrderSystem.App.Models
     public class AddOrChangeDishOfRestaurantModel
     {
         public Guid DishCategoryId { get; set; }
-        public DishDTO Dish { get; set; }
+        public DishModel Dish { get; set; }
     }
 }

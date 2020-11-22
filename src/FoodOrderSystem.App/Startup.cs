@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FoodOrderSystem.App.BackgroundServices;
 using FoodOrderSystem.Core;
-using FoodOrderSystem.Notification.Mailjet;
+using FoodOrderSystem.Notification.Smtp;
 using FoodOrderSystem.Persistence.MongoDB;
 using FoodOrderSystem.Template.DotLiquid;
 using Serilog;
@@ -52,14 +52,16 @@ namespace FoodOrderSystem.App
 
             services.AddSingleton<FoodOrderSystem.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
 
-            var mailjetConfiguration = new MailjetConfiguration
+            var smtpConfiguration = new SmtpConfiguration()
             {
-                ApiKey = Configuration.GetValue<string>("Mailjet:ApiKey"),
-                ApiSecret = Configuration.GetValue<string>("Mailjet:ApiSecret")
+                ServerName = Configuration.GetValue<string>("Smtp:ServerName"),
+                Port = Configuration.GetValue<int>("Smtp:Port"),
+                UserName = Configuration.GetValue<string>("Smtp:UserName"),
+                Password = Configuration.GetValue<string>("Smtp:Password")
             };
-            services.AddSingleton(mailjetConfiguration);
-            
-            services.AddMailjet();
+            services.AddSingleton(smtpConfiguration);
+            services.AddSmtp();
+
             services.AddDotLiquid();
             
             services.AddHostedService<NotificationBackgroundService>();

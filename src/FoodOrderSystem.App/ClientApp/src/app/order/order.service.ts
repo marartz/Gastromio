@@ -99,7 +99,7 @@ export class OrderService {
 
     let url = this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
 
-    if (orderType) {
+    if (orderType != undefined) {
       url += '&orderType=' + encodeURIComponent(orderTypeText);
     }
 
@@ -166,7 +166,7 @@ export class OrderService {
 
     this.storedCart = new StoredCartModel();
     this.storedCart.orderType = OrderService.translateFromOrderType(orderType);
-    this.storedCart.restaurantId = this.restaurant.name.toLowerCase();
+    this.storedCart.restaurantId = this.restaurant.alias;
     this.storedCart.cartDishes = new Array<StoredCartDishModel>();
     this.storedCart.serviceTime = serviceTime?.toISOString();
     this.generateCartModel();

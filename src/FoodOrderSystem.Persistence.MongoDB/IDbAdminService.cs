@@ -5,5 +5,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
         void PurgeDatabase();
 
         void PrepareDatabase();
+
+        void CorrectRestaurantAliases();
     }
 }

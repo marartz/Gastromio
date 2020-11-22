@@ -51,6 +51,8 @@ export class RestaurantModel {
 
   public name: string;
 
+  public alias: string;
+
   public address: AddressModel;
 
   public contactInfo: ContactInfoModel;

@@ -6,6 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import {BlockUIModule} from 'ng-block-ui';
 
+import {AboutComponent} from './about/about.component';
 import {AddCuisineComponent} from './add-cuisine/add-cuisine.component';
 import {AddDishCategoryComponent} from './add-dish-category/add-dish-category.component';
 import {AddDishToCartComponent} from './add-dish-to-cart/add-dish-to-cart.component';
@@ -35,7 +36,6 @@ import {DishProductInfoComponent} from './dish-productinfo/dish-productinfo.comp
 import {EditDishComponent} from './edit-dish/edit-dish.component';
 import {EditCartDishComponent} from './edit-cart-dish/edit-cart-dish.component';
 import {GeneralErrorComponent} from './http-error-handling/general-error.component';
-import {GeneralTermsAndConditionsComponent} from './general-terms-and-conditions/general-terms-and-conditions.component';
 import {HttpErrorHandlingService} from './http-error-handling/http-error-handling.service';
 import {ImprintComponent} from './imprint/imprint.component';
 import {LoginComponent} from './login/login.component';
@@ -45,6 +45,7 @@ import {OrderRestaurantComponent} from './order-restaurant/order-restaurant.comp
 import {OrderRestaurantImprintComponent} from './order-restaurant-imprint/order-restaurant-imprint.component';
 import {OrderRestaurantOpeningHoursComponent} from './order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import {OrderRestaurantsComponent} from './order-restaurants/order-restaurants.component';
+import {OrderRestaurantsRowComponent} from './order-restaurants-row/order-restaurants-row.component';
 import {OrderService} from './order/order.service';
 import {OrderSummaryComponent} from './order-summary/order-summary.component';
 import {PrivacyPolicyComponent} from './privacy-policy/privacy-policy.component';
@@ -72,7 +73,7 @@ import {ForgotPasswordComponent} from "./forgot-password/forgot-password.compone
       {path: '', component: OrderHomeComponent},
       {path: 'customer-information', component: CustomerInformationComponent},
       {path: 'restaurant-information', component: RestaurantInformationComponent},
-      {path: 'general-terms-and-conditions', component: GeneralTermsAndConditionsComponent},
+      {path: 'about', component: AboutComponent},
       {path: 'imprint', component: ImprintComponent},
       {path: 'privacy-policy', component: PrivacyPolicyComponent},
       {path: 'login', component: LoginComponent},
@@ -101,6 +102,7 @@ import {ForgotPasswordComponent} from "./forgot-password/forgot-password.compone
     BlockUIModule.forRoot(),
   ],
   declarations: [
+    AboutComponent,
     AddCuisineComponent,
     AddDishCategoryComponent,
     AddDishToCartComponent,
@@ -130,7 +132,6 @@ import {ForgotPasswordComponent} from "./forgot-password/forgot-password.compone
     EditCartDishComponent,
     ForgotPasswordComponent,
     GeneralErrorComponent,
-    GeneralTermsAndConditionsComponent,
     ImprintComponent,
     LoginComponent,
     OpeningHourFilterComponent,
@@ -139,6 +140,7 @@ import {ForgotPasswordComponent} from "./forgot-password/forgot-password.compone
     OrderRestaurantImprintComponent,
     OrderRestaurantOpeningHoursComponent,
     OrderRestaurantsComponent,
+    OrderRestaurantsRowComponent,
     OrderSummaryComponent,
     PrivacyPolicyComponent,
     RemoveCuisineComponent,

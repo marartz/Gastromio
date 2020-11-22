@@ -9,10 +9,10 @@
                     <div id="text">
                         <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>
                         <h2 class="info">
-                            <span>{{restaurant.address.street}}, {{restaurant.address.city}}</span>
+                            <span>{{restaurant.address.street}}, {{restaurant.address.city}}<br /></span>
                             <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> (Nur telefonische Bestellung)</span></ng-container>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> (Telefonisch Bestellung & Online-Vorbestellung)</span></ng-container>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> (Online-Bestellung)</span></ng-container>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> (Telefonische Bestellung & Online-Vorbestellung)</span></ng-container>
+                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> (Telefonische Bestellung & Online-Bestellung)</span></ng-container>
                             <span><br />Heute von {{restaurant.openingHoursTodayText}} geöffnet</span>
                         </h2>
                     </div>
@@ -56,8 +56,10 @@
                                 <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)"
                                    *ngFor="let dish of dishCategory.dishes">
                                     <div id="infos">
-                                        <h2 class="dish-name" id="{{dish.name}}">{{dish.name}}<span
-                                            class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span></h2>
+                                        <h2 class="dish-name" id="{{dish.name}}">
+                                            <span class="dish-n">{{dish.name}}</span>
+                                            <span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span>
+                                        </h2>
                                         <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
                                     </div>
                                 </a>
@@ -66,7 +68,7 @@
                                 <p class="dish-category" id="em{{externalMenu.id}}">{{externalMenu.name}}</p>
                                 <a id="restaurant" class="dish" href="{{externalMenu.url}}" target="_blank">
                                     <div id="infos">
-                                        <h2 class="dish-name">{{externalMenu.name}} <i class="fas fa-external-link-alt"></i></h2>
+                                        <h2 class="dish-name external">{{externalMenu.name}}</h2>
                                         <p class="dish-description" style="margin-bottom: 0px;">{{externalMenu.description}}</p>
                                     </div>
                                 </a>
@@ -81,6 +83,7 @@
     </div>
 
     <div id="checkout" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
+        <div id="close"><button (click)="toggleCartVisibility()" type="button" aria-label="Schließen"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
         <section id="cart">
             <h3 class="title">Dein Warenkorb</h3>
             <div id="dishes">

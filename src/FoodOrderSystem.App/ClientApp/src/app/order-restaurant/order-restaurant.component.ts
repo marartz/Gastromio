@@ -334,4 +334,16 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     this.proceedError = undefined;
     this.router.navigateByUrl('/checkout');
   }
+
+  toggleCartVisibility(): void {
+    const cart = this.orderService.getCart();
+    if (!cart) {
+      return;
+    }
+    if (cart.isVisible()) {
+      this.orderService.hideCart();
+    } else {
+      this.orderService.showCart();
+    }
+  }
 }

@@ -15,7 +15,8 @@ import {take} from 'rxjs/operators';
   templateUrl: './edit-dish.component.html',
   styleUrls: [
     './edit-dish.component.css',
-    '../../assets/css/frontend_v3.min.css'
+    '../../assets/css/frontend_v3.min.css',
+    '../../assets/css/modals.component.min.css'
   ]
 })
 export class EditDishComponent implements OnInit {
