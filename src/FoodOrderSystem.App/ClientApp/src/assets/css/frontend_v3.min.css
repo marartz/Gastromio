@@ -2275,6 +2275,16 @@ button {
     max-height: 25px;
 }
 
+#order-restaurant #order #restaurants #restaurant.dish #infos .dish-name {
+    display: flex;
+    max-height: unset;
+    word-break: break-word;
+}
+
+.dish-n {
+    width: 70%;
+}
+
 #order-restaurant #order #restaurants #restaurant #infos .restaurant-address,
 #order-restaurant #order #restaurants #restaurant.dish #infos .dish-description {
     color: #363636;
@@ -2284,8 +2294,10 @@ button {
 }
 
 #order-restaurant #order #restaurants #restaurant #infos .dish-price {
-    float: right;
     text-align: right;
+    display: inline-flex;
+    margin-right: 0px;
+    margin-left: auto;
 }
 
 #order-restaurant #order #restaurants #restaurant #infos .cuisines {

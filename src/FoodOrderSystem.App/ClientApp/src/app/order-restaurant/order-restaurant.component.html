@@ -57,7 +57,7 @@
                                    *ngFor="let dish of dishCategory.dishes">
                                     <div id="infos">
                                         <h2 class="dish-name" id="{{dish.name}}">
-                                            <span>{{dish.name}}</span>
+                                            <span class="dish-n">{{dish.name}}</span>
                                             <span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span>
                                         </h2>
                                         <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
@@ -68,7 +68,7 @@
                                 <p class="dish-category" id="em{{externalMenu.id}}">{{externalMenu.name}}</p>
                                 <a id="restaurant" class="dish" href="{{externalMenu.url}}" target="_blank">
                                     <div id="infos">
-                                        <h2 class="dish-name">{{externalMenu.name}} <i class="fas fa-external-link-alt"></i></h2>
+                                        <h2 class="dish-name external">{{externalMenu.name}}</h2>
                                         <p class="dish-description" style="margin-bottom: 0px;">{{externalMenu.description}}</p>
                                     </div>
                                 </a>
