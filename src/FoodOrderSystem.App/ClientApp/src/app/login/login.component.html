@@ -1,62 +1,67 @@
 <block-ui>
-    <div id="app">
-         <div id="login">
+    <div id="login">
 
-            <div id="notice" class="warning" *ngIf="submitted && f.Email.errors">
-                <p *ngIf="f.Email.errors.required">Bitte geben Sie eine gültige E-Mail-Adresse an</p>
+        <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Email.errors">
+            <span style="align-items: center; display: inline-flex;">
+                <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 16 16"><g><path d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M9,12H7V7h2V12z M8,6C7.4,6,7,5.6,7,5s0.4-1,1-1 s1,0.4,1,1S8.6,6,8,6z"></path></g></svg>
+                <p *ngIf="f.Email.errors.required">Bitte gib eine gültige E-Mail Adresse an</p>
                 <p *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</p>
-            </div>
-            <div id="notice" class="warning" *ngIf="submitted && f.Password.errors">
-                <p *ngIf="f.Password.errors.required">Bitte geben Sie eine gültige E-Mail-Adresse und ein Passwort an</p>
+            </span>
+        </div>
+
+        <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Password.errors">
+            <span style="align-items: center; display: inline-flex;">
+                <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 16 16"><g><path d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M9,12H7V7h2V12z M8,6C7.4,6,7,5.6,7,5s0.4-1,1-1 s1,0.4,1,1S8.6,6,8,6z"></path></g></svg>
+                <p *ngIf="f.Password.errors.required">Bitte gib eine gültige E-Mail Adresse und ein Passwort an</p>
                 <p *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</p>
+            </span>
+        </div>
+
+        <div class="wrapper">
+            <div id="back">
+                <a [routerLink]="['/']">
+                    <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M6 4.655L10.655 0 12 1.345 7.345 6 12 10.655 10.655 12 6 7.345 1.345 12 0 10.655 4.655 6 0 1.345 1.345 0 6 4.655z" fill="#FFFFFF" fill-rule="nonzero" /></svg>
+                </a>
             </div>
 
             <div id="left">
-                <img srcset="
-                /assets/images/background/login-640x426.jpg 640w,
-                /assets/images/background/login-1280x853.jpg 1280w,
-                /assets/images/background/login-1920x1280.jpg 1920w,
-                /assets/images/background/login-6108x4072.jpg 6108w"
-                src="/assets/images/background/login-1280x853.jpg"
-                alt="Foto von Daria Shevtsova von Pexels">
+                <div class="background-image"></div>
             </div>
 
             <div id="right">
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="child">
-                            <div class="login">
-                                <div class="heading">
-                                    <h6>Willkommen zurück!</h6>
-                                    <p>Melde Dich mit Deinem Konto an, um fortzufahren.</p>
-                                </div>
-                                <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                                    <div class="form-input">
-                                        <label class="form-label">E-Mail-Adresse</label>
-                                        <div class="input-group">
-                                            <input type="email" id="email" name="email" formControlName="Email" placeholder="email@provider.de" data-hj-suppress>
-                                            <div class="icon"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span></div>
+                <div class="form-wrapper">
+                    <div class="form">
+                        <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+                            <h1>Willkommen zurück!</h1>
+                            <div class="subtext">
+                                Melde Dich mit Deinem Konto an, um fortzufahren.
+                            </div>
+                            <div class="input-wrapper">
+                                <div class="input-100">
+                                    <div class="input-root">
+                                        <label>E-Mail Adresse</label>
+                                        <div class="inner-input">
+                                            <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" autofocus="" inputmode="email" spellcheck="off" id="email" name="email" formControlName="Email" placeholder="bernd@mustermann.de" data-hj-suppress>
                                         </div>
                                     </div>
-                                    <div class="form-input">
-                                        <label class="form-label">Passwort</label>
-                                        <div class="input-group">
-                                            <input type="password" id="password" name="password" formControlName="Password" placeholder="Passwort" data-hj-suppress>
-                                            <div class="icon"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg></span></div>
+                                </div>
+                                <div class="input-100">
+                                    <div class="input-root">
+                                        <label>Passwort</label>
+                                        <div class="inner-input">
+                                            <input type="password" mozactionhint="send" autocapitalize="none" autocomplete="password" spellcheck="off" id="password" name="password" formControlName="Password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" data-hj-suppress>
                                         </div>
                                     </div>
-                                    <button type="submit">Anmelden</button>
-                                    <app-general-error [generalError]="generalError"></app-general-error>
-                                </form>
-                                <div class="forgot-password">
-                                    <a [routerLink]="['/forgotpassword']">Passwort vergessen...</a>
-                                </div>
-                                <div class="register">
-                                    <small>Kein Konto?</small>
-                                    <a href="https://gastrom.io/register" target="_blank">Restaurant registrieren</a>
                                 </div>
                             </div>
-                        </div>
+                            <div class="forgot-password">
+                                <a [routerLink]="['/forgotpassword']">Passwort vergessen...</a>
+                            </div>
+                            <button class="login-register" type="submit">Anmelden</button>
+                            <div class="disclaimer">
+                                Mit Klick auf "Anmelden" stimmst Du den <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzbestimmungen</a> von Gastromio zu. Diese Website ist durch Cloudflare geschützt und es gelten die <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank">Cloudflare-Datenschutzbestimmungen</a> und <a href="https://www.cloudflare.com/de-de/terms/" target="_blank">Nutzungsbedingungen</a>.
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

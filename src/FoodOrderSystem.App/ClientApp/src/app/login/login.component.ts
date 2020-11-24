@@ -11,7 +11,7 @@ import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: ['./login.component.css', '../../assets/css/frontend_v3.min.css']
 })
 export class LoginComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
