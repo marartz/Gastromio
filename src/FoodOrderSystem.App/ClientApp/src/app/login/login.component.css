@@ -370,7 +370,7 @@
     line-height: 14px;
     color: #FFF;
     opacity: 75%;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     padding-top: 10px;
     font-family: "Apercu", sans-serif;
 }
@@ -385,6 +385,32 @@
 }
 
 #login #right form .disclaimer a {
+    color: #DECF80;
+    text-decoration: none;
+}
+
+#login #right form .forgot-password {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: -0.12px;
+    line-height: 14px;
+    color: #FFF;
+    opacity: 75%;
+    margin-bottom: 40px;
+    padding-top: 10px;
+    font-family: "Apercu", sans-serif;
+}
+
+@media only screen and (min-width: 768px) {
+    #login #right form .forgot-password {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
+        letter-spacing: -0.12px;
+    }
+}
+
+#login #right form .forgot-password a {
     color: #DECF80;
     text-decoration: none;
 }

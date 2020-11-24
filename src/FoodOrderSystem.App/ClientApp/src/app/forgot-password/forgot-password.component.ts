@@ -15,6 +15,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgotPasswordForm: FormGroup;
   message: string;
+  submitted: boolean = false;
   sent: boolean = false;
 
   constructor(
@@ -30,7 +31,16 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.forgotPasswordForm.controls;
+  }
+
   onSubmit(data) {
+    this.submitted = true;
+    if (this.forgotPasswordForm.invalid) {
+      return;
+    }
+
     this.authService.requestPasswordChangeAsync(data.email)
       .pipe(take(1))
       .subscribe(
