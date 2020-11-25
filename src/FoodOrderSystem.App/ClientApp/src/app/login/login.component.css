@@ -369,7 +369,7 @@
     letter-spacing: -0.12px;
     line-height: 14px;
     color: #FFF;
-    opacity: 75%;
+    opacity: 0.75;
     margin-bottom: 20px;
     padding-top: 10px;
     font-family: "Apercu", sans-serif;
@@ -395,7 +395,7 @@
     letter-spacing: -0.12px;
     line-height: 14px;
     color: #FFF;
-    opacity: 75%;
+    opacity: 0.75;
     margin-bottom: 40px;
     padding-top: 10px;
     font-family: "Apercu", sans-serif;
