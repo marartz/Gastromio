@@ -132,6 +132,10 @@
 }
 
 #login #right .form-wrapper {
+    animation-name: fadeDownContent;
+    animation-duration: 1000ms;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -369,7 +373,6 @@
     letter-spacing: -0.12px;
     line-height: 14px;
     color: #FFF;
-    opacity: 0.75;
     margin-bottom: 20px;
     padding-top: 10px;
     font-family: "Apercu", sans-serif;
@@ -395,7 +398,6 @@
     letter-spacing: -0.12px;
     line-height: 14px;
     color: #FFF;
-    opacity: 0.75;
     margin-bottom: 40px;
     padding-top: 10px;
     font-family: "Apercu", sans-serif;
@@ -477,6 +479,29 @@
     }
     100% {
         transform: translate3d(0, 0, 0) scale(1.05);
+        opacity: 1
+    }
+}
+
+
+@keyframes fadeDownContent {
+    0% {
+        transform: translate3d(0, 6%, 0) scale(1.05);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes fadeDownContent {
+    0% {
+        transform: translate3d(0, 6%, 0) scale(1.05);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
         opacity: 1
     }
 }

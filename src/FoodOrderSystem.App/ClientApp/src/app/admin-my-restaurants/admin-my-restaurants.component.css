@@ -1,0 +1,77 @@
+#admin-my-restaurants {
+    margin-top: -72px;
+    min-height: calc(100vh - 72px);
+    position: relative;
+}
+
+#page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+#page #drawer {
+    position: relative;
+    width: 370px;
+    min-width: 370px;
+    max-width: 370px;
+    display: flex;
+    max-height: 100vh;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: #363636;
+    box-shadow: none;
+    height: 100vh;
+    z-index: 1101;
+}
+
+#page #drawer #drawer-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 38px 16px 20px;
+}
+
+#page #drawer #drawer-header .drawer-heading {
+    color: #fff;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 24px;
+    font-family: "Apercu", sans-serif;
+    font-weight: 500;
+}
+
+#page #drawer .restaurant-list {
+    overflow: auto;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+}
+
+#page #drawer .restaurant-list .list {
+    margin-top: 15px;
+    position: relative;
+    transition: height 480ms ease-out 0s;
+    height: 264px;
+
+    margin-bottom: 15px;
+}
+
+#page #drawer .restaurant-list .list .restaurant-item {
+    width: auto;
+    border-radius: 8px;
+    background-color: #ADCCCB;
+    margin: 0 20px;
+    padding: 13px 16px 14px;
+    transition: all .2s ease-in-out;
+}
+
+#page #drawer .restaurant-list .list .restaurant-item:not(:first-of-type) {
+    margin-top: 16px;
+}

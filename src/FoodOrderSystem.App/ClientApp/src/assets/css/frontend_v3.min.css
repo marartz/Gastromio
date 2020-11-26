@@ -1528,6 +1528,11 @@ button {
     font-weight: 700;
     margin-bottom: 0px;
     margin-top: auto;
+    animation-name: fadeDownContent !important;
+    animation-duration: 800ms !important;
+    animation-fill-mode: both !important;
+    animation-delay: 400ms !important;
+    animation-iteration-count: 1 !important;
 }
 
 @media screen and (max-width: 767px) {
@@ -1546,6 +1551,11 @@ button {
     width: 22px;
     position: absolute;
     margin-left: 4px;
+    animation-name: fadeDownContent !important;
+    animation-duration: 600ms !important;
+    animation-fill-mode: both !important;
+    animation-delay: 1100ms !important;
+    animation-iteration-count: 1 !important;
 }
 
 #order-restaurant #hero #text .slogan {
@@ -1555,6 +1565,11 @@ button {
     font-weight: 700;
     margin-bottom: 0px;
     margin-top: auto;
+    animation-name: fadeDownContent !important;
+    animation-duration: 800ms !important;
+    animation-fill-mode: both !important;
+    animation-delay: 400ms !important;
+    animation-iteration-count: 1 !important;
 }
 
 #order-restaurant #hero #text .info {
@@ -1564,6 +1579,11 @@ button {
     font-weight: 300;
     margin-bottom: 0px;
     margin-top: auto;
+    animation-name: fadeDownContent !important;
+    animation-duration: 800ms !important;
+    animation-fill-mode: both !important;
+    animation-delay: 800ms !important;
+    animation-iteration-count: 1 !important;
 }
 
 /* 3.2 #order-restaurant > #order */
@@ -1625,6 +1645,11 @@ button {
     display: none;
     float: left;
     font-size: 15px;
+    animation-name: fade !important;
+    animation-duration: 800ms !important;
+    animation-fill-mode: both !important;
+    animation-delay: 400ms !important;
+    animation-iteration-count: 1 !important;
 }
 
 @media only screen and (min-width: 1030px) {
@@ -2037,6 +2062,11 @@ button {
 /* 3.2.2 #order-restaurant > #order > #restaurants */
 #order-restaurant #order #restaurants {
     min-height: 80vh;
+    animation-name: fade !important;
+    animation-duration: 800ms !important;
+    animation-fill-mode: both !important;
+    animation-delay: 400ms !important;
+    animation-iteration-count: 1 !important;
 }
 
 @media only screen and (max-width: 569px) {
@@ -2167,6 +2197,26 @@ button {
     -webkit-transition: all .3s ease;
 }
 
+@keyframes fadeDownContent {
+    0% {
+        transform: translate3d(0, 6%, 0) scale(1.05);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1
+    }
+}
+
 #order-restaurant #order #restaurants #restaurant:hover {
     transform: scale(1.03);
     -moz-transform: scale(1.03);
@@ -2179,10 +2229,6 @@ button {
     -moz-transform: scale(.98);
     -ms-transform: scale(.98);
     -webkit-transform: scale(.98);
-}
-
-#order-restaurant #order #restaurants #restaurant.closed {
-    animation: none;
 }
 
 #order-restaurant #order #restaurants #restaurant.dish {
@@ -2361,7 +2407,6 @@ button {
     }
 }
 
-/* 4. #top-bar */
 #top-bar {
     background-color: transparent;
     position: relative;
@@ -2387,7 +2432,6 @@ button {
     }
 }
 
-/* 4.1 #top-bar > #logo */
 #top-bar #logo {
     cursor: pointer;
     flex: 1;
@@ -2450,7 +2494,6 @@ button {
     }
 }
 
-/* 4.2 #top-bar > #menu */
 #top-bar #menu {
     align-items: center;
     display: flex;
@@ -2483,7 +2526,6 @@ button {
     margin-left: 24px;
 }
 
-/* 4.3 #top-bar > #userDropDown */
 #top-bar #userDropDown {
     background-color: #ADCCCB;
     border: 0px;
@@ -2506,7 +2548,6 @@ button {
 
 #top-bar #userDropDown a:hover {
     background-color: #DECF80;
-    /*transform: scale(1.03);*/
 }
 
 #top-bar #userDropDown a:active {
