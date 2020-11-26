@@ -1,22 +1,5 @@
-<div id="admin-my-restaurants" class="bg-rough-yellow">
-    <section id="page">
-        <section id="drawer">
-            <div id="drawer-header">
-                <h5 class="drawer-heading">Deine Restaurants</h5>
-            </div>
-            <ul class="restaurant-list">
-                <div class="list">
-                    <span style="z-index: 2; opacity: 1; display: block; position: absolute; top: 0px; left: 0px; width: 370px; transition: opacity 480ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s, transform 480ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s; transform: translateX(0px) translateY(0px);">
-                        <div class="restaurant-item" *ngFor="let restaurant of restaurants" [routerLink]="['/admin/restaurants', restaurant.alias]">
-                            <svg role="img" aria-label="Lade Restaurants..." viewBox="0 0 305 49" preserveAspectRatio="none"><title>Lade Restaurants...</title><rect x="0" y="0" width="305" height="49" clip-path="url(#z9kp626yjg)" style="fill: url(&quot;#xey6aknqrgr&quot;);"></rect><defs><clipPath id="z9kp626yjg"><rect rx="7" ry="7" height="14" x="0" y="5" width="80"></rect><rect rx="7" ry="7" height="14" x="220" y="5" width="80"></rect><rect rx="6" ry="6" height="12" x="0" y="37" width="160"></rect></clipPath><linearGradient id="xey6aknqrgr"><stop offset="0%" stop-color="rgba(255, 255, 255, 0.55)" stop-opacity="1"><animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="50%" stop-color="rgba(255, 255, 255, 0.15)" stop-opacity="1"><animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop><stop offset="100%" stop-color="rgba(255, 255, 255, 0.55)" stop-opacity="1"><animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s" repeatCount="indefinite"></animate></stop></linearGradient></defs></svg>
-                        </div>
-                    </span>
-                </div>
-            </ul>
-        </section>
-    </section>
-</div>
-<!--div id="app">
+
+<div id="app">
     <div id="backend">
 
         <section id="hero">
@@ -79,4 +62,4 @@
         </section>
 
     </div>
-</div-->
+</div>

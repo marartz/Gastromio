@@ -12,7 +12,8 @@ import {take} from 'rxjs/operators';
   templateUrl: './admin-my-restaurants.component.html',
   styleUrls: [
     './admin-my-restaurants.component.css',
-    '../../assets/css/frontend_v3.min.css'
+    '../../assets/css/frontend_v2.min.css',
+    '../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
