@@ -19,7 +19,7 @@
     -webkit-transition: all .4s cubic-bezier(.57, .06, .05, .95);
     right: 0px;
     top: 0px;
-    z-index: 29;
+    z-index: 30;
 }
 
 #checkout.visible {
