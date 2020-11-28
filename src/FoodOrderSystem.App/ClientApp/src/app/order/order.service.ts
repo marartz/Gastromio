@@ -149,17 +149,17 @@ export class OrderService {
     switch (orderType) {
       case OrderType.Pickup:
         if (!this.restaurant.pickupInfo || !this.restaurant.pickupInfo.enabled) {
-          throw new Error('restaurant does not support pickup');
+          throw new Error('Entschuldigung, die Bestellart Abholung wird von dem Restaurant nicht unterstützt');
         }
         break;
       case OrderType.Delivery:
         if (!this.restaurant.deliveryInfo || !this.restaurant.deliveryInfo.enabled) {
-          throw new Error('restaurant does not support delivery');
+          throw new Error('Entschuldigung, die Bestellart Lieferung wird von dem Restaurant nicht unterstützt');
         }
         break;
       case OrderType.Reservation:
         if (!this.restaurant.reservationInfo || !this.restaurant.reservationInfo.enabled) {
-          throw new Error('restaurant does not support reservation');
+          throw new Error('Entschuldigung, die Bestellart Reservierung wird von dem Restaurant nicht unterstützt');
         }
         break;
     }

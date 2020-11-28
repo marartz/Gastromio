@@ -112,23 +112,33 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       this.orderService.selectRestaurantAsync(this.restaurantId).pipe(take(1)).subscribe(() => {
         this.blockUI.stop();
 
-        this.restaurant = this.orderService.getRestaurant();
-        this.dishCategories = this.orderService.getDishCategories();
-        this.openingHours = this.restaurant.openingHoursTodayText;
+        try {
+          this.restaurant = this.orderService.getRestaurant();
+          this.dishCategories = this.orderService.getDishCategories();
+          this.openingHours = this.restaurant.openingHoursTodayText;
 
-        const cart = this.orderService.getCart();
+          const cart = this.orderService.getCart();
 
-        if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
-          this.orderService.startOrder(orderType, serviceTime);
-        } else {
-          this.orderService.showCart();
+          if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
+            this.orderService.startOrder(orderType, serviceTime);
+          } else {
+            this.orderService.showCart();
+          }
+
+          this.filterDishCategories();
+
+          this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
+
+          this.initialized = true;
         }
-
-        this.filterDishCategories();
-
-        this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
-
-        this.initialized = true;
+        catch (e) {
+          if (e instanceof Error) {
+            this.generalError = e.message;
+          }
+          else {
+            throw e;
+          }
+        }
       }, error => {
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
