@@ -19,7 +19,7 @@
                             <div id="links">
                                 <div class="col">
                                     <ul class="nav-tabs">
-                                        
+
                                     </ul>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                                                     <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" inputmode="email" required="" id="emailAddress" formControlName="emailAddress" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.emailAddress.errors }">
                                                     <div *ngIf="ciForm.submitted && cif.emailAddress.errors" class="invalid-feedback">
                                                         <div *ngIf="cif.emailAddress.errors.required">E-Mail-Adresse wird benötigt</div>
-                                                        <div *ngIf="cif.emailAddress.errors.pattern">Ungültige E-Mail Adresse (z.B. max@mustermann.de)</div>
+                                                        <div *ngIf="cif.emailAddress.errors.pattern">Ungültige E-Mail-Adresse (z.B. max@mustermann.de)</div>
                                                     </div>
                                                 </div>
                                             </div>

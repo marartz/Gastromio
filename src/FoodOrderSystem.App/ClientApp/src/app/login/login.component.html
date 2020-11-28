@@ -4,7 +4,7 @@
         <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Email.errors">
             <span style="align-items: center; display: inline-flex;">
                 <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 16 16"><g><path d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M9,12H7V7h2V12z M8,6C7.4,6,7,5.6,7,5s0.4-1,1-1 s1,0.4,1,1S8.6,6,8,6z"></path></g></svg>
-                <p *ngIf="f.Email.errors.required">Bitte gib eine gültige E-Mail Adresse an</p>
+                <p *ngIf="f.Email.errors.required">Bitte gib eine gültige E-Mail-Adresse an</p>
                 <p *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</p>
             </span>
         </div>
@@ -12,7 +12,7 @@
         <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Password.errors">
             <span style="align-items: center; display: inline-flex;">
                 <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 16 16"><g><path d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M9,12H7V7h2V12z M8,6C7.4,6,7,5.6,7,5s0.4-1,1-1 s1,0.4,1,1S8.6,6,8,6z"></path></g></svg>
-                <p *ngIf="f.Password.errors.required">Bitte gib eine gültige E-Mail Adresse und ein Passwort an</p>
+                <p *ngIf="f.Password.errors.required">Bitte gib eine gültige E-Mail-Adresse und ein Passwort an</p>
                 <p *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</p>
             </span>
         </div>
@@ -39,7 +39,7 @@
                             <div class="input-wrapper">
                                 <div class="input-100">
                                     <div class="input-root">
-                                        <label>E-Mail Adresse</label>
+                                        <label>E-Mail-Adresse</label>
                                         <div class="inner-input">
                                             <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" autofocus="" inputmode="email" spellcheck="off" id="email" name="email" formControlName="Email" placeholder="bernd@mustermann.de" data-hj-suppress>
                                         </div>

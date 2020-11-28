@@ -14,7 +14,7 @@
                             <div class="input-inner">
                                 <div style="background: none; border-radius: 8px 8px 0px 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                 <label>
-                                    <div class="label">E-Mail Adresse</div>
+                                    <div class="label">E-Mail-Adresse</div>
                                     <input type="email" autocomplete="off" autocapitalize="none" mozactionhint="next" autocapitalize="none" inputmode="email" required="" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
                                 </label>
                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 8px 8px 0px 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
@@ -58,8 +58,8 @@
                     </div>
                     <div id="feedback">
                         <div class="help-text" *ngIf="submitted && f.email.errors">
-                            <span *ngIf="f.email.errors.required">Bitte gebe einen E-Mail Adresse an.</span>
-                            <span *ngIf="f.email.errors.pattern">Bitte gebe eine gültige E-Mail Adresse an.</span>
+                            <span *ngIf="f.email.errors.required">Bitte gebe eine E-Mail-Adresse an.</span>
+                            <span *ngIf="f.email.errors.pattern">Bitte gebe eine gültige E-Mail-Adresse an.</span>
                         </div>
                         <div class="help-text" *ngIf="submitted && f.password.errors">
                             <span *ngIf="f.password.errors.required">Bitte gebe ein Passwort an.</span>
