@@ -3,7 +3,7 @@
         <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
         <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
 
-            <section id="hero" [style.background-image]="getBannerStyle()"
+            <section id="hero" class="hasrestaurantbanner" [style.background-image]="getBannerStyle()"
                      style="background-repeat: no-repeat; background-size: cover;">
                 <div class="wrapper">
                     <div id="text">
