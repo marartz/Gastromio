@@ -692,6 +692,11 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     if (index < 0) {
       return;
     }
+
+    if (this.paymentMethods[index].id.toLocaleUpperCase() === '8DBBC822-E4FF-47B6-8CA2-68F4F0C51AA3') {
+      return;
+    }
+
     const currentStatus = this.paymentMethodStatus[index];
     this.blockUI.start('Verarbeite Daten...');
     let observable: Observable<boolean>;

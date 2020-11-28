@@ -37,6 +37,7 @@
         RestaurantDeliveryCostsTooLow,
         RestaurantDeliveryCostsTooHigh,
         NoRestaurantReservationInfosSpecified,
+        RestaurantWithoutCashPaymentNotAllowed,
         RestaurantOpeningPeriodBeginsTooEarly,
         RestaurantOpeningPeriodEndsBeforeStart,
         RestaurantOpeningPeriodIntersects,
