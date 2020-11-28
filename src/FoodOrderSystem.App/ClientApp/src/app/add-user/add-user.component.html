@@ -27,7 +27,6 @@
                                     <div class="label">Rolle</div>
                                     <select autocomplete="off" mozactionhint="next" required="" id="role" formControlName="role">
                                         <option value="" selected="" disabled="" hidden="">Bitte auswählen<option>
-                                        <option value="Customer">Kunde</option>
                                         <option value="RestaurantAdmin">Restaurantadministrator</option>
                                         <option value="SystemAdmin">Systemadministrator</option>
                                     </select>
@@ -60,6 +59,9 @@
                         <div class="help-text" *ngIf="submitted && f.email.errors">
                             <span *ngIf="f.email.errors.required">Bitte gebe eine E-Mail-Adresse an.</span>
                             <span *ngIf="f.email.errors.pattern">Bitte gebe eine gültige E-Mail-Adresse an.</span>
+                        </div>
+                        <div class="help-text" *ngIf="submitted && f.role.errors">
+                            <span *ngIf="f.role.errors.required">Bitte wähle eine Rolle aus.</span>
                         </div>
                         <div class="help-text" *ngIf="submitted && f.password.errors">
                             <span *ngIf="f.password.errors.required">Bitte gebe ein Passwort an.</span>
