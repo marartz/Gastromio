@@ -2,7 +2,7 @@
     <div class="layout">
         <div id="order-restaurant">
 
-            <section id="hero" style="background-image: url('../../assets/images/hero/pizza.jpg');">
+            <section id="hero" [class]="getCuisineClass()">
                 <div class="wrapper">
                     <div id="text">
                         <h2 class="slogan">Regional, einfach und gut</h2>
@@ -118,7 +118,7 @@
 
                                 <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
                                     <h3>
-                                        Für 
+                                        Für
                                         <ng-container *ngIf="orderType === 'pickup'">Abholung</ng-container>
                                         <ng-container *ngIf="orderType === 'delivery'">Lieferung</ng-container>
                                         geschlossen

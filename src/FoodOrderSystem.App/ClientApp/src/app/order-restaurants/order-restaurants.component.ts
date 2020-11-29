@@ -25,7 +25,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   showMobileFilterDetails: boolean;
 
   selectedOpeningHourFilter: Date;
-  selectedCuisineFilter: string;
+  selectedCuisine: CuisineModel;
 
   totalRestaurantCount: number;
 
@@ -54,7 +54,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedCuisineFilter = '';
+    this.selectedCuisine = undefined;
 
     this.orderService.getAllCuisinesAsync()
       .pipe(take(1))
@@ -156,21 +156,28 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   isCuisineSelected(cuisine: CuisineModel): boolean {
     if (cuisine) {
-      return this.selectedCuisineFilter === cuisine.id;
+      return this.selectedCuisine === cuisine;
     } else {
-      return this.selectedCuisineFilter === '';
+      return this.selectedCuisine === undefined;
     }
   }
 
   selectCuisine(cuisine: CuisineModel): void {
     if (!cuisine) {
-      this.selectedCuisineFilter = '';
+      this.selectedCuisine = undefined;
     }
     else
     {
-      this.selectedCuisineFilter = cuisine.id;
+      this.selectedCuisine = cuisine;
     }
     this.updateSearch();
+  }
+
+  getCuisineClass(): string {
+    if (!this.selectedCuisine) {
+      return 'cuisine-all';
+    }
+    return 'cuisine-' + this.selectedCuisine.id;
   }
 
   updateSearch(): void {
@@ -182,7 +189,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
     const date = this.selectedOpeningHourFilter ?? new Date();
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter, null)
+      this.selectedCuisine?.id ?? '', null)
       .pipe(take(1))
       .subscribe((result) => {
 
