@@ -1,20 +1,25 @@
 import {Component, OnInit, Input} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+
+import {take} from 'rxjs/operators';
+
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {CuisineAdminService} from '../cuisine/cuisine-admin.service';
-import {CuisineModel} from '../cuisine/cuisine.model';
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {take} from 'rxjs/operators';
+
+import {CuisineModel} from '../../../shared/models/cuisine.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {CuisineAdminService} from '../../services/cuisine-admin.service';
 
 @Component({
   selector: 'app-remove-cuisine',
   templateUrl: './remove-cuisine.component.html',
   styleUrls: [
     './remove-cuisine.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class RemoveCuisineComponent implements OnInit {

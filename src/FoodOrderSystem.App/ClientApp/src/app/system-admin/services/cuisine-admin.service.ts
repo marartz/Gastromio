@@ -1,8 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+
 import {Observable} from 'rxjs';
-import {AuthService} from '../auth/auth.service';
-import {CuisineModel} from './cuisine.model';
+
+import {CuisineModel} from '../../shared/models/cuisine.model';
+
+import {AuthService} from '../../auth/services/auth.service';
 
 @Injectable()
 export class CuisineAdminService {

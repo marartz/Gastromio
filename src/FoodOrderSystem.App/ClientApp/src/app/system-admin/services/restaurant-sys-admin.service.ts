@@ -1,10 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+
 import {Observable} from 'rxjs';
-import {AuthService} from '../auth/auth.service';
-import {RestaurantModel} from '../restaurant/restaurant.model';
-import {PagingModel} from '../pagination/paging.model';
-import {ImportLogModel} from './import-log.model';
+
+import {RestaurantModel} from '../../shared/models/restaurant.model';
+import {PagingModel} from '../../shared/components/pagination/paging.model';
+
+import {AuthService} from '../../auth/services/auth.service';
+
+import {ImportLogModel} from '../models/import-log.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
@@ -37,6 +41,30 @@ export class RestaurantSysAdminService {
       })
     };
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', {name}, httpOptions);
+  }
+
+  public activateRestaurantAsync(id: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/activate',
+      {}, httpOptions);
+  }
+
+  public deactivateRestaurantAsync(id: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/deactivate',
+      {}, httpOptions);
   }
 
   public enableSupportForRestaurantAsync(restaurantId: string): Observable<void> {

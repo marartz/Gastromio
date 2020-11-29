@@ -1,20 +1,24 @@
 import {Component, OnInit, Input} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {UserAdminService} from '../user/user-admin.service';
-import {UserModel} from '../user/user.model';
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {HttpErrorResponse} from '@angular/common/http';
+
 import {take} from 'rxjs/operators';
+
+import {UserModel} from '../../../shared/models/user.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {UserAdminService} from '../../services/user-admin.service';
 
 @Component({
   selector: 'app-remove-user',
   templateUrl: './remove-user.component.html',
   styleUrls: [
     './remove-user.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class RemoveUserComponent implements OnInit {

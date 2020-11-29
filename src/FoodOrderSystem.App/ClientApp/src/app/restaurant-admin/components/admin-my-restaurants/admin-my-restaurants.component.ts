@@ -1,19 +1,21 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-
-import {RestaurantModel} from '../restaurant/restaurant.model';
-import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
-
-import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
+
 import {take} from 'rxjs/operators';
+
+import {RestaurantModel} from '../../../shared/models/restaurant.model';
+
+import {AuthService} from '../../../auth/services/auth.service';
+
+import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
 
 @Component({
   selector: 'app-admin-my-restaurants',
   templateUrl: './admin-my-restaurants.component.html',
   styleUrls: [
     './admin-my-restaurants.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {

@@ -17,6 +17,10 @@ import {ServerPaginationComponent} from './components/pagination/server-paginati
   ],
   providers: [
     HttpErrorHandlingService
+  ],
+  exports: [
+    ClientPaginationComponent,
+    ServerPaginationComponent
   ]
 })
 export class SharedModule {

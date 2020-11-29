@@ -1,15 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {RestaurantSysAdminService} from '../restaurant-sys-admin/restaurant-sys-admin.service';
-import {take} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
+
+import {take} from 'rxjs/operators';
+
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {ImportLogLineModel} from '../restaurant-sys-admin/import-log-line.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {ImportLogLineModel} from '../../models/import-log-line.model';
+
+import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.service';
 
 @Component({
   selector: 'app-admin-dish-import',
   templateUrl: './admin-dish-import.component.html',
-  styleUrls: ['./admin-dish-import.component.css', '../../assets/css/frontend_v2.min.css', '../../assets/css/backend_v2.min.css']
+  styleUrls: ['./admin-dish-import.component.css', '../../../../assets/css/frontend_v2.min.css', '../../../../assets/css/backend_v2.min.css']
 })
 export class AdminDishImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

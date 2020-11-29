@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+
 import {Observable} from 'rxjs';
-import {AuthService} from '../auth/auth.service';
-import {UserModel} from './user.model';
-import {PagingModel} from '../pagination/paging.model';
+
+import {UserModel} from '../../shared/models/user.model';
+import {PagingModel} from '../../shared/components/pagination/paging.model';
+
+import {AuthService} from '../../auth/services/auth.service';
 
 @Injectable()
 export class UserAdminService {

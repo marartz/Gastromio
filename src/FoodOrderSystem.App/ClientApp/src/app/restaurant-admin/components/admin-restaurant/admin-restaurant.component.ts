@@ -1,35 +1,42 @@
 import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {OpeningPeriodModel, RestaurantModel} from '../restaurant/restaurant.model';
-import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ChangeRestaurantNameComponent} from '../change-restaurant-name/change-restaurant-name.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PaymentMethodModel} from '../payment-method/payment-method.model';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+
 import {Observable, of} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap, take} from 'rxjs/operators';
-import {UserModel} from '../user/user.model';
+
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {HttpErrorResponse} from '@angular/common/http';
+
+import {CuisineModel} from '../../../shared/models/cuisine.model';
+import {DishModel} from '../../../shared/models/dish.model';
+import {DishCategoryModel} from '../../../shared/models/dish-category.model';
+import {PaymentMethodModel} from '../../../shared/models/payment-method.model';
+import {OpeningPeriodModel, RestaurantModel} from '../../../shared/models/restaurant.model';
+import {UserModel} from '../../../shared/models/user.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {AuthService} from '../../../auth/services/auth.service';
+
+import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
+
+import {ChangeRestaurantNameComponent} from '../change-restaurant-name/change-restaurant-name.component';
 import {AddDishCategoryComponent} from '../add-dish-category/add-dish-category.component';
 import {ChangeDishCategoryComponent} from '../change-dish-category/change-dish-category.component';
-import {DishCategoryModel} from '../dish-category/dish-category.model';
 import {RemoveDishCategoryComponent} from '../remove-dish-category/remove-dish-category.component';
-import {DishModel} from '../dish-category/dish.model';
 import {EditDishComponent} from '../edit-dish/edit-dish.component';
 import {RemoveDishComponent} from '../remove-dish/remove-dish.component';
-import {CuisineModel} from '../cuisine/cuisine.model';
-import {AuthService} from '../auth/auth.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-restaurant',
   templateUrl: './admin-restaurant.component.html',
   styleUrls: [
     './admin-restaurant.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {

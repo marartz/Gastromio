@@ -5,6 +5,8 @@ import {RouterModule} from '@angular/router';
 import {CommonUiModule} from "./common-ui/common-ui.module";
 import {AuthUiModule} from "./auth-ui/auth-ui.module";
 import {OrderUiModule} from "./order-ui/order-ui.module";
+import {SystemAdminModule} from "./system-admin/system-admin.module";
+import {RestaurantAdminModule} from "./restaurant-admin/restaurant-admin.module";
 
 import {AppComponent} from './app.component';
 
@@ -14,15 +16,9 @@ import {AppComponent} from './app.component';
     CommonUiModule,
     AuthUiModule,
     OrderUiModule,
-    RouterModule.forRoot([
-      // {path: 'admin/users', component: AdminUsersComponent, canActivate: [SystemAdminAuthGuard]},
-      // {path: 'admin/cuisines', component: AdminCuisinesComponent, canActivate: [SystemAdminAuthGuard]},
-      // {path: 'admin/restaurants', component: AdminRestaurantsComponent, canActivate: [SystemAdminAuthGuard]},
-      // {path: 'admin/restaurantimport', component: AdminRestaurantImportComponent, canActivate: [SystemAdminAuthGuard]},
-      // {path: 'admin/dishimport', component: AdminDishImportComponent, canActivate: [SystemAdminAuthGuard]},
-      // {path: 'admin/myrestaurants', component: AdminMyRestaurantsComponent, canActivate: [RestaurantAdminAuthGuard]},
-      // {path: 'admin/restaurants/:restaurantId', component: AdminRestaurantComponent, canActivate: [RestaurantAdminAuthGuard]},
-    ]),
+    SystemAdminModule,
+    RestaurantAdminModule,
+    RouterModule.forRoot([])
   ],
   declarations: [
     AppComponent

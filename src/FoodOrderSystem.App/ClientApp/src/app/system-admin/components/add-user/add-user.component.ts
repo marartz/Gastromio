@@ -1,21 +1,26 @@
 import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {HttpErrorResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {UserAdminService} from '../user/user-admin.service';
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ConfirmPasswordValidator} from '../validators/password.validator';
 import {take} from 'rxjs/operators';
+
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {ConfirmPasswordValidator} from '../../../auth/validators/password.validator';
+
+import {UserAdminService} from '../../services/user-admin.service';
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: [
     './add-user.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class AddUserComponent implements OnInit {

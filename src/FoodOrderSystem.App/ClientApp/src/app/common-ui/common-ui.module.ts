@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
-
 import {CommonModule} from "@angular/common";
+
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 import {AuthModule} from '../auth/auth.module';
 import {OrderModule} from '../order/order.module';
@@ -15,6 +16,7 @@ import {CommonUiRoutingModule} from "./common-ui.routing.module";
 @NgModule({
   imports: [
     CommonModule,
+    NgbModule,
     CommonUiRoutingModule,
     AuthModule,
     OrderModule

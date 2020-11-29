@@ -1,19 +1,25 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {DishModel} from '../dish-category/dish.model';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
 import {HttpErrorResponse} from '@angular/common/http';
+
 import {take} from 'rxjs/operators';
+
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+
+import {DishModel} from '../../../shared/models/dish.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
 
 @Component({
   selector: 'app-remove-dish',
   templateUrl: './remove-dish.component.html',
   styleUrls: [
     './remove-dish.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class RemoveDishComponent implements OnInit {

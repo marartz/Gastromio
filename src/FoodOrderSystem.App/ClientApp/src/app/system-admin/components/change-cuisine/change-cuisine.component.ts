@@ -1,21 +1,26 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {HttpErrorResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {CuisineModel} from '../cuisine/cuisine.model';
-import {CuisineAdminService} from '../cuisine/cuisine-admin.service';
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {HttpErrorResponse} from '@angular/common/http';
 import {take} from 'rxjs/operators';
+
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+
+import {CuisineModel} from '../../../shared/models/cuisine.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {CuisineAdminService} from '../../services/cuisine-admin.service';
 
 @Component({
   selector: 'app-change-cuisine',
   templateUrl: './change-cuisine.component.html',
   styleUrls: [
     './change-cuisine.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class ChangeCuisineComponent implements OnInit {

@@ -1,19 +1,25 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {RestaurantSysAdminService} from '../restaurant-sys-admin/restaurant-sys-admin.service';
-import {RestaurantModel} from '../restaurant/restaurant.model';
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
 import {HttpErrorResponse} from '@angular/common/http';
+
 import {take} from 'rxjs/operators';
+
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+
+import {RestaurantModel} from '../../../shared/models/restaurant.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.service';
 
 @Component({
   selector: 'app-remove-restaurant',
   templateUrl: './remove-restaurant.component.html',
   styleUrls: [
     './remove-restaurant.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class RemoveRestaurantComponent implements OnInit {

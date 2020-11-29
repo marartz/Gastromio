@@ -1,22 +1,28 @@
 import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
-import {UserAdminService} from '../user/user-admin.service';
-import {UserModel} from '../user/user.model';
+
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {UserModel} from '../../../shared/models/user.model';
+
+import {FetchPageInfo, ServerPaginationComponent} from '../../../shared/components/pagination/server-pagination.component';
+
+import {UserAdminService} from '../../services/user-admin.service';
+
 import {AddUserComponent} from '../add-user/add-user.component';
 import {ChangeUserDetailsComponent} from '../change-user-details/change-user-details.component';
 import {ChangeUserPasswordComponent} from '../change-user-password/change-user-password.component';
 import {RemoveUserComponent} from '../remove-user/remove-user.component';
-import {FetchPageInfo, ServerPaginationComponent} from '../pagination/server-pagination.component';
 
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
   styleUrls: [
     './admin-users.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -1,20 +1,26 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
-import {DishCategoryModel} from '../dish-category/dish-category.model';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+
 import {take} from 'rxjs/operators';
+
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {BlockUI, NgBlockUI} from 'ng-block-ui';
+
+import {DishCategoryModel} from '../../../shared/models/dish-category.model';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
 
 @Component({
   selector: 'app-add-dish-category',
   templateUrl: './add-dish-category.component.html',
   styleUrls: [
     './add-dish-category.component.css',
-    '../../assets/css/frontend_v3.min.css',
-    '../../assets/css/modals.component.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/modals.component.min.css'
   ]
 })
 export class AddDishCategoryComponent implements OnInit {

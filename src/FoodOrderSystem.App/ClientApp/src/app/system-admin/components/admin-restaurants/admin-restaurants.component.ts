@@ -1,23 +1,28 @@
 import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
+
 import {Subject} from 'rxjs';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 
-import {RestaurantSysAdminService} from '../restaurant-sys-admin/restaurant-sys-admin.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {RestaurantModel} from '../../../shared/models/restaurant.model';
+
+import {ServerPaginationComponent, FetchPageInfo} from '../../../shared/components/pagination/server-pagination.component';
+
+import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+
+import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.service';
+
 import {AddRestaurantComponent} from '../add-restaurant/add-restaurant.component';
 import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.component';
-import {RestaurantModel} from '../restaurant/restaurant.model';
-import {ServerPaginationComponent, FetchPageInfo} from '../pagination/server-pagination.component';
-import {HttpErrorHandlingService} from '../http-error-handling/http-error-handling.service';
-import {RestaurantRestAdminService} from '../restaurant-rest-admin/restaurant-rest-admin.service';
 
 @Component({
   selector: 'app-admin-restaurants',
   templateUrl: './admin-restaurants.component.html',
   styleUrls: [
     './admin-restaurants.component.css',
-    '../../assets/css/frontend_v2.min.css',
-    '../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/backend_v2.min.css'
   ]
 })
 export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -30,7 +35,6 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
   constructor(
     private modalService: NgbModal,
     private restaurantSysAdminService: RestaurantSysAdminService,
-    private restaurantRestAdminService: RestaurantRestAdminService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
@@ -85,7 +89,7 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   onActivate(restaurant: RestaurantModel): void {
-    this.restaurantRestAdminService.activateRestaurantAsync(restaurant.id)
+    this.restaurantSysAdminService.activateRestaurantAsync(restaurant.id)
       .pipe(take(1))
       .subscribe(() => {
         restaurant.isActive = true;
@@ -95,7 +99,7 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   onDeactivate(restaurant: RestaurantModel): void {
-    this.restaurantRestAdminService.deactivateRestaurantAsync(restaurant.id)
+    this.restaurantSysAdminService.deactivateRestaurantAsync(restaurant.id)
       .pipe(take(1))
       .subscribe(() => {
         restaurant.isActive = false;
