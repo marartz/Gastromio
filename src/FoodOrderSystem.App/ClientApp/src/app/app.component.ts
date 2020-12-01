@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -8,7 +8,6 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  routerOutlet: RouterOutlet;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -25,8 +24,5 @@ export class AppComponent implements OnInit {
       this.titleService.setTitle('Gastromio - Essen lokal bestellen');
       window.scrollTo(0, 0);
     });
-  }
-
-  onActivate(component: any): void {
   }
 }

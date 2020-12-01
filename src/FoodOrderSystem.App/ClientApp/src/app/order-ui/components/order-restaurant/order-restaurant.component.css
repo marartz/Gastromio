@@ -1,0 +1,365 @@
+.hasrestaurantbanner::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25));
+}
+
+#checkout {
+    background-color: #DECF80;
+    background-image: url('../../../../assets/images/rough/yellow.png');
+    background-repeat: repeat;
+    height: 100%;
+    overflow: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 72px;
+    position: fixed;
+    width: 352px;
+    transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -moz-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -ms-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    -webkit-transition: all .4s cubic-bezier(.57, .06, .05, .95);
+    right: 0px;
+    top: 0px;
+    z-index: 30;
+}
+
+#checkout.visible {
+    box-shadow: -2px 0px 4px rgba(0, 0, 0, .08);
+    transform: translateX(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -webkit-transform: rotate(0);
+}
+
+@media only screen and (min-width: 768px) {
+    #checkout {
+        padding-top: 72px;
+        width: 378px;
+    }
+}
+
+#checkout #close {
+    display: flex;
+    position: absolute;
+    left: 24px;
+    top: 16px;
+}
+
+#checkout #close button::before {
+    background-color: transparent;
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 32px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+}
+
+#checkout #close:hover button::before {
+    background-color: rgba(222, 207, 128, .5);
+}
+
+#checkout #close button {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    color: #363636;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0px;
+    outline: none;
+    padding: 0px;
+    position: relative;
+    touch-action: manipulation;
+    transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s, transform 0.25s ease 0s;
+}
+
+#checkout #close:hover button {
+    color: #363636;
+}
+
+
+
+@media screen and (min-width: 744px) {
+    #checkout #close {
+        top: 24px;
+    }
+}
+
+/* #chekout > #my-order */
+#checkout #cart {
+    background-color: #DECF80;
+    background-image: url('../../../../assets/images/rough/yellow.png');
+    background-repeat: repeat;
+    border-radius: 23px;
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    padding: 80px 28px;
+    width: 100%;
+}
+
+@media only screen and (max-width: 992px) {
+    #checkout #cart {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+#checkout #cart .title {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0px;
+    margin-bottom: 32px;
+    text-align: center;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#checkout #cart #dishes {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    max-height: 40vh;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+#checkout #cart #dishes:focus,
+#checkout #cart #dishes:hover  {
+    scrollbar-width: unset;
+    -ms-overflow-style: unset;
+}
+
+@media screen and (max-width: 768px) {
+    #checkout #cart #dishes {
+        max-height: 30vh;
+    }
+}
+
+#checkout #cart #dishes .dish {
+    padding: 4px 0px;
+    color: #363636;
+    font-size: 14px;
+    font-family: "Apercu", sans-serif;
+    font-weight: 500;
+    letter-spacing: 0px;
+}
+
+#checkout #cart #dishes .dish .top {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    transform: translateZ(0);
+    align-items: center;
+    width: 100%;
+}
+
+#checkout #cart #dishes .dish .top .count {
+    font-weight: 300;
+    padding-right: 10px;
+    width: 20px;
+}
+
+#checkout #cart #dishes .dish .top .name {
+    width: 100%;
+    padding: 4px 0px;
+    word-break: break-word;
+    flex: 1 1;
+}
+
+#checkout #cart #dishes .dish .top .price {
+    text-align: right;
+    min-width: 3rem;
+    white-space: nowrap;
+}
+
+#checkout #cart #dishes .dish .top .edit {
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    float: left;
+    min-width: 1.25rem;
+    padding: 0px;
+}
+
+#checkout #cart #dishes .dish .top .edit::before {
+    background-image: url('../../../../assets/images/svg/edit.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    height: 14px;
+    width: 14px;
+    padding: 16px 0px;
+}
+
+#checkout #cart #dishes .dish .top .remove {
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    float: left;
+    min-width: 1.25rem;
+    padding: 0px;
+}
+
+#checkout #cart #dishes .dish .top .remove::before {
+    background-image: url('../../../../assets/images/svg/delete.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    content: " ";
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    height: 14px;
+    width: 14px;
+    padding: 16px 0px;
+}
+
+#checkout #cart #dishes .dish .top .description {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0px;
+    padding-left: 20px;
+}
+
+@media only screen and (max-width: 992px) {
+    #checkout #cart #dishes .dish .top .description {
+        max-width: 65%;
+    }
+}
+
+#checkout #cart #dishes .dish .top .remarks {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0px;
+    padding-left: 20px;
+}
+
+#checkout #cart #order-fees {
+    padding: 22px 20px;
+}
+
+#checkout #cart #order-fees .subtotal,
+#checkout #cart #order-fees .minimumordervalue,
+#checkout #cart #order-fees .costs {
+    display: flex;
+    align-content: center;
+    transform: translateZ(0);
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#checkout #cart #order-fees .total {
+    display: flex;
+    align-content: center;
+    transform: translateZ(0);
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 6px;
+}
+
+#checkout #cart #order-fees .fee-title {
+    color: #363636;
+    float: left;
+    font-family: "Apercu", sans-serif;
+    font-weight: 300;
+    letter-spacing: 0px;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px 0px;
+    text-align: left;
+}
+
+#checkout #cart #order-fees .total .fee-title {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+#checkout #cart #order-fees .fee-price {
+    color: #363636;
+    float: right;
+    font-family: "Apercu", sans-serif;
+    font-weight: 300;
+    letter-spacing: 0px;
+    font-size: 14px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+#checkout #cart #order-fees .total .fee-price {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+#checkout #cart .invalid-feedback {
+    color: darkred;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 9px;
+}
+
+#checkout #cart button.proceed-to-checkout {
+    background-color: #363636;
+    border-radius: 23px;
+    color: #FFF;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    height: 46px;
+    letter-spacing: 0px;
+    line-height: 26px;
+    margin-top: 20px;
+    padding: 11px;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+    width: calc(100% - 40px);
+}
+
+
+
+#fp-alert {
+    align-items: center;
+    background-color: #ADCCCB;
+    background-image: url('../../../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    margin-top: -72px;
+    padding: 16px;
+    position: relative;
+    width: 100%;
+}
+
+#fp-alert p {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 46px;
+    font-weight: 700;
+}
