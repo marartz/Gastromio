@@ -315,7 +315,7 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.Append(order.CustomerInfo.Phone);
             sb.AppendLine("<br/>");
 
-            sb.Append("E-Mail Adresse: ");
+            sb.Append("E-Mail-Adresse: ");
             sb.Append(order.CustomerInfo.Email);
 
             if (!string.IsNullOrWhiteSpace(order.CustomerInfo.AddAddressInfo))
