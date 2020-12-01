@@ -1,0 +1,629 @@
+<block-ui>
+    <div id="app">
+
+        <div id="notice" class="warning" *ngIf="generalError !== undefined"><p>Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div>
+        <div id="notice" class="warning" *ngIf="formError !== undefined"><p>{{formError}}</p></div>
+
+        <div id="backend" *ngIf="generalError === undefined">
+
+            <section id="hero">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="inner-wrapper">
+                            <div id="title">
+                                <div class="col">
+                                    <span>Verwaltung</span>
+                                    <h1>Mein Restaurant</h1>
+                                </div>
+                            </div>
+                            <div id="links">
+                                <div class="col">
+                                    <ul class="nav-tabs">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content">
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="inner-wrapper">
+
+                            <div id="admin-restaurant">
+
+                                <!-- START: Restaurantinformationen -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Restaurantinformationen</h5></div>
+                                </div>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Für eine Namensänderung schreiben Sie uns bitte eine E-Mail an support@gastromio.de">Name</label>
+                                                <div class="input-group"><input type="text" autocapitalize="off" autocomplete="off" readonly="" value="{{restaurant.name}}" (click)="openChangeRestaurantNameForm()"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Status</label>
+                                                <label type="submit" class="status inactive" *ngIf="!restaurant.isActive" (click)="onActivate()"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 29.2c-7.333 0-13.2-5.867-13.2-13.2s5.867-13.2 13.2-13.2 13.2 5.867 13.2 13.2c0 7.333-5.867 13.2-13.2 13.2zM16 1.333c-8.133 0-14.667 6.533-14.667 14.667s6.533 14.667 14.667 14.667c8.133 0 14.667-6.533 14.667-14.667s-6.533-14.667-14.667-14.667z"></path></svg><input type="checkbox" readonly="" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">Inaktiv</label>
+                                                <label type="submit" class="status" *ngIf="restaurant.isActive" (click)="onDeactivate()"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M20.533 11.867c0.267-0.267 0.667-0.4 1.067-0.133 0.267 0.267 0.4 0.667 0.133 1.067l-5.867 7.333c-0.133 0.133-0.267 0.267-0.533 0.267 0 0 0 0 0 0-0.133 0-0.4-0.133-0.533-0.267l-3.6-3.6c-0.267-0.267-0.267-0.8 0-1.067s0.8-0.267 1.067 0l3.067 3.067 5.2-6.667zM16 2.8c-7.333 0-13.2 5.867-13.2 13.2s5.867 13.2 13.2 13.2c7.333 0 13.2-5.867 13.2-13.2s-5.867-13.2-13.2-13.2zM16 1.333c8.133 0 14.667 6.533 14.667 14.667s-6.533 14.667-14.667 14.667c-8.133 0-14.667-6.533-14.667-14.667s6.533-14.667 14.667-14.667z"></path></svg><input type="checkbox" readonly="" checked="{{restaurant.isActive ? 'checked' : ''}}" onclick="return false;">Aktiv</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- ENDE: Restaurantinformationen -->
+
+                                <hr class="divider">
+
+                                <!-- START: Adressinformationen -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Adressinformationen</h5></div>
+                                </div>
+                                <form [formGroup]="changeAddressForm" #aiForm="ngForm" (ngSubmit)="onSaveAddress(changeAddressForm.value)">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Straße</label>
+                                                <div class="input-group">
+                                                    <input type="text" mozactionhint="next" autocapitalize="words" autocomplete="street-address" maxlength="200" required="" id="street" formControlName="street" [ngClass]="{ 'is-invalid': aiForm.submitted && af.street.errors }">
+                                                    <div *ngIf="aiForm.submitted && af.street.errors" class="invalid-feedback">
+                                                        <div *ngIf="af.street.errors.required">Straße Ihres Unternehmens wird benötigt</div>
+                                                        <div *ngIf="af.street.errors.pattern">Kein gültiger Straßenname (z.B. Musterstraße 11)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Postleitzahl</label>
+                                                <div class="input-group">
+                                                    <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="postal-code" inputmode="numeric" maxlength="5" minlength="5" required="" id="zipCode" formControlName="zipCode" [ngClass]="{ 'is-invalid': aiForm.submitted && af.zipCode.errors }">
+                                                    <div *ngIf="aiForm.submitted && af.zipCode.errors" class="invalid-feedback">
+                                                        <div *ngIf="af.zipCode.errors.required">Postleitzahl Ihres Unternehmens wird benötigt</div>
+                                                        <div *ngIf="af.zipCode.errors.pattern">Keine gültige Postleitzahl (z.B. 46395)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Stadt</label>
+                                                <div class="input-group">
+                                                    <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="country" maxlength="50" required="" id="city" formControlName="city" [ngClass]="{ 'is-invalid': aiForm.submitted && af.city.errors }">
+                                                    <div *ngIf="aiForm.submitted && af.city.errors" class="invalid-feedback">
+                                                        <div *ngIf="af.city.errors.required">Stadt Ihres Unternehmens wird benötigt</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="form-submit" *ngIf="changeAddressForm.dirty">Speichern</button>
+                                </form>
+                                <!-- ENDE: Adressinformationen -->
+
+                                <hr class="divider">
+
+                                <!-- START: Kontaktinformationen -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Kontaktinformationen</h5></div>
+                                </div>
+                                <form [formGroup]="changeContactInfoForm" #ciForm="ngForm" (ngSubmit)="onSaveContactInfo(changeContactInfoForm.value)">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="An diese E-Mail werden Bestellungen gesendet">E-Mail-Adresse</label>
+                                                <div class="input-group">
+                                                    <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" inputmode="email" required="" id="emailAddress" formControlName="emailAddress" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.emailAddress.errors }">
+                                                    <div *ngIf="ciForm.submitted && cif.emailAddress.errors" class="invalid-feedback">
+                                                        <div *ngIf="cif.emailAddress.errors.required">E-Mail-Adresse wird benötigt</div>
+                                                        <div *ngIf="cif.emailAddress.errors.pattern">Ungültige E-Mail-Adresse (z.B. max@mustermann.de)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="An diese Telefonnummer können sich Kunden bei Fragen wenden">Telefon</label>
+                                                <div class="input-group">
+                                                    <input type="tel" mozactionhint="next" autocapitalize="none" autocomplete="tel" inputmode="tel" required="" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.phone.errors }">
+                                                    <div *ngIf="ciForm.submitted && cif.phone.errors" class="invalid-feedback">
+                                                        <div *ngIf="cif.phone.errors.required">Telefonnummer wird benötigt</div>
+                                                        <div *ngIf="cif.phone.errors.pattern">Ungültige Telefonnummer (z.B. 02871 789012)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-input">
+                                                <label class="form-label">Fax</label>
+                                                <div class="input-group">
+                                                    <input type="tel" mozactionhint="next" autocapitalize="none" autocomplete="tel" inputmode="tel" id="phone" formControlName="phone" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.phone.errors }" id="fax" formControlName="fax" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.fax.errors }">
+                                                    <div *ngIf="ciForm.submitted && cif.fax.errors" class="invalid-feedback">
+                                                        <div *ngIf="cif.fax.errors.pattern">Ungültige Faxnummer (z.B. 02871 789013)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Die Webseite Ihres Unternehmens (Kein Soziales Medium)">Webseite</label>
+                                                <div class="input-group">
+                                                    <input type="url" mozactionhint="next" autocapitalize="none" autocomplete="url" inputmode="url" id="webSite" formControlName="webSite" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.webSite.errors }">
+                                                    <div *ngIf="ciForm.submitted && cif.webSite.errors" class="invalid-feedback">
+                                                        <div *ngIf="cif.webSite.errors.pattern">Ungültige Webseite (z.B. https://www.mein-restaurant.de/)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Verantwortlich für den Internetauftritt nach §5 E-Commerce Gesetz">Verantwortliche Person</label>
+                                                <div class="input-group">
+                                                    <input type="text" mozactionhint="send" autocapitalize="words" autocomplete="name" inputmode="latin-name" required="" id="responsiblePerson" formControlName="responsiblePerson" [ngClass]="{ 'is-invalid': ciForm.submitted && cif.responsiblePerson.errors }">
+                                                    <div *ngIf="ciForm.submitted && cif.responsiblePerson.errors" class="invalid-feedback">
+                                                        <div *ngIf="cif.responsiblePerson.errors.required">Verantwortliche Person wird benötigt</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="form-submit" *ngIf="changeContactInfoForm.dirty">Speichern</button>
+                                </form>
+                                <!-- ENDE: Kontaktinformationen -->
+
+                                <hr class="divider">
+
+                                <!-- START: Grafiken -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Grafiken</h5></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form [formGroup]="changeLogoForm" (ngSubmit)="onSaveLogo(changeLogoForm.value)">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="PNG/JPG und (500x500)">Logo</label>
+                                                <div class="input-group">
+                                                    <input type="file" accept="image/*" mozactionhint="send" autocomplete="off" capture="" id="logo-file" class="file-input" #logo (change)="onLogoChange($event)">
+                                                    <label class="file-upload" for="logo-file"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Datei auswählen...</span></label>
+                                                </div>
+                                            </div>
+                                            <img *ngIf="logoUrl" [src]="logoUrl" style="border-radius: 16px; width: 100%;">
+                                            <button type="submit" class="image-save" *ngIf="changeLogoForm.dirty" placement="top" ngbTooltip="Speichern"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></button>
+                                            <button type="button" class="image-delete" *ngIf="hasLogo()" placement="top" ngbTooltip="Löschen" (click)="onRemoveLogo()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <form [formGroup]="changeBannerForm" (ngSubmit)="onSaveBanner(changeBannerForm.value)">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="PNG/JPG">Banner</label>
+                                                <div class="input-group">
+                                                    <input type="file" accept="image/*" mozactionhint="send" autocomplete="off" capture="" id="banner-file" class="file-input" #banner (change)="onBannerChange($event)">
+                                                    <label class="file-upload" for="banner-file"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Datei auswählen...</span></label>
+                                                </div>
+                                            </div>
+                                            <img *ngIf="bannerUrl" [src]="bannerUrl" style="border-radius: 16px; width: 100%;">
+                                            <button type="submit" class="image-save" *ngIf="changeBannerForm.dirty" placement="top" ngbTooltip="Speichern"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></button>
+                                            <button type="button" class="image-delete" *ngIf="hasBanner()" placement="top" ngbTooltip="Löschen" (click)="onRemoveBanner()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- ENDE: Grafiken -->
+
+                                <hr class="divider">
+
+                                <!-- START: Bestellmöglichkeiten -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Bestellmöglichkeiten</h5></div>
+                                </div>
+                                <form [formGroup]="changeServiceInfoForm" (ngSubmit)="onSaveServiceInfo(changeServiceInfoForm.value)">
+                                    <div class="form-header">
+                                        <div class="col"><h3>Abholung</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Aktiviert</label>
+                                                <div class="input-group">
+                                                    <input type="checkbox" id="pickupEnabled" formControlName="pickupEnabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Durchschnittliche Zeit für die Zubereitung (in Minuten)">Durchschnittl. Zubereitungszeit</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" maxlength="3" id="pickupAverageTime" formControlName="pickupAverageTime" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Minimaler Bestellwert (in Euro)">Min. Bestellwert</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" id="pickupMinimumOrderValue" formControlName="pickupMinimumOrderValue" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Maximaler Bestellwert (in Euro)">Max. Bestellwert</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="send" autocapitalize="none" autocomplete="off" inputmode="numeric" id="pickupMaximumOrderValue" formControlName="pickupMaximumOrderValue" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-header">
+                                        <div class="col"><h3>Lieferung</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Aktiviert</label>
+                                                <div class="input-group">
+                                                    <input type="checkbox" id="deliveryEnabled" formControlName="deliveryEnabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Durchschnittliche Zeit für die Zubereitung inkl. Lieferzeit (in Minuten)">Durchschnittl. Zubereitungszeit</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" maxlength="3" id="deliveryAverageTime" formControlName="deliveryAverageTime" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Lieferkosten pro Bestellung (in Euro)">Lieferkosten</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" id="deliveryCosts" formControlName="deliveryCosts" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Minimaler Bestellwert (in Euro)">Min. Bestellwert</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" id="deliveryMinimumOrderValue" formControlName="deliveryMinimumOrderValue" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Maximaler Bestellwert (in Euro)">Max. Bestellwert</label>
+                                                <div class="input-group">
+                                                    <input type="number" mozactionhint="send" autocapitalize="none" autocomplete="off" inputmode="numeric" id="deliveryMaximumOrderValue" formControlName="deliveryMaximumOrderValue" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-header">
+                                        <div class="col"><h3>Tischreservierung</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Aktiviert</label>
+                                                <div class="input-group">
+                                                    <input type="checkbox" id="reservationEnabled" formControlName="reservationEnabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label" placement="top" ngbTooltip="Was haben Sie für Coronabedingte Maßnamen ergriffen?">Hygienische Abwicklung</label>
+                                                <div class="input-group">
+                                                    <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="verbatim" maxlength="1000" minlength="100" spellcheck="true" id="hygienicHandling" formControlName="hygienicHandling" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="form-submit" type="submit" *ngIf="changeServiceInfoForm.dirty">Speichern</button>
+                                </form>
+                                <!-- ENDE: Bestellmöglichkeiten -->
+
+                                <hr class="divider">
+
+                                <!-- START: Kontaktinformationen -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Restaurantkategorien</h5></div>
+                                </div>
+                                <form [formGroup]="addCuisineForm" (ngSubmit)="onAddCuisine(addCuisineForm.value)">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-input">
+                                                <label class="form-label">Cuisines</label>
+                                                <div class="input-group">
+                                                    <select id="cuisineId" formControlName="cuisineId">
+                                                        <option disabled selected active>Bitte auswählen</option>
+                                                        <option *ngFor="let cuisine of availableCuisines" value="{{cuisine.id}}">{{cuisine.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="backend-input">
+                                                <div class="cuisine" tabindex="-1">
+                                                    <div class="wrap" *ngFor="let cuisine of restaurant.cuisines">
+                                                        <h6>{{cuisine.name}} <button class="edit-link text-link-small" (click)="onRemoveCuisine(cuisine.id)">Entfernen</button></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="form-submit" *ngIf="addCuisineForm.dirty">Hinzufügen</button>
+                                </form>
+                                <!-- ENDE: Kontaktinformationen -->
+
+                                <hr class="divider">
+
+                                <!-- START: Bezahlungsmöglichkeiten -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Bezahlungsmöglichkeiten</h5></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="payment-card" *ngFor="let paymentMethod of paymentMethods" (click)="onPaymentMethodStatusToggled(paymentMethod)">
+                                            <div class="payment-body">
+                                                <div class="payment-container">
+                                                    <div class="payment-wrapper">
+                                                        <div class="payment-content">
+                                                            <div class="top">
+                                                                <div class="col">
+                                                                    <img src="../../assets/images/icons/brands/{{paymentMethod.imageName}}.svg" alt="" style="height: 26px;">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <span class="badge active" *ngIf="isPaymentMethodEnabled(paymentMethod)">Aktiv</span>
+                                                                    <span class="badge inactive" *ngIf="!isPaymentMethodEnabled(paymentMethod)">Inaktiv</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bottom">
+                                                                <div class="name">{{paymentMethod.name}}</div>
+                                                                <span class="description">{{paymentMethod.description}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ENDE: Bezahlungsmöglichkeiten -->
+
+                                <hr class="divider">
+
+                                <!-- START: Restaurantverwalter -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Restaurantverwalter</h5></div>
+                                    <div class="col-auto"></div>
+                                </div>
+                                <div id="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="min-width: 240px;">Name</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let user of restaurant.administrators">
+                                                <th scope="row">
+                                                    <p class="email">{{user.email}}</p>
+                                                </th>
+                                                <td class="actions">
+                                                    <a (click)="removeUser(user)" class="action-item red" placement="top" ngbTooltip="Löschen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- /// -->
+                                <div>
+                                    <div class="backend-input">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><input id="user" type="text" class="form-control" [(ngModel)]="userToBeAdded" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' /></td>
+                                                    <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">+ Hinzufügen</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /// -->
+
+                                <!-- ENDE: Restaurantverwalter -->
+
+                                <hr class="divider">
+
+                                <!-- START: Lieferzeiten -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Lieferzeiten</h5></div>
+                                </div>
+                                <form [formGroup]="addOpeningPeriodForm" (ngSubmit)="onAddOpeningPeriod(addOpeningPeriodForm.value)">
+                                    <div id="table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" style="min-width: 240px;">Tag</th>
+                                                    <th scope="col">Beginn</th>
+                                                    <th scope="col">Ende</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let openingPeriod of openingPeriodVMs">
+                                                    <th scope="row">
+                                                        <p class="email">{{openingPeriod.dayOfWeekText}}</p>
+                                                    </th>
+                                                    <th scope="row">
+                                                        <p class="email">{{openingPeriod.startTimeText}}</p>
+                                                    </th>
+                                                    <th scope="row">
+                                                        <p class="email">{{openingPeriod.endTimeText}}</p>
+                                                    </th>
+                                                    <td class="actions">
+                                                        <a (click)="onRemoveOpeningPeriod(openingPeriod)" class="action-item red" placement="top" ngbTooltip="Löschen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="form-input">
+                                                            <div class="input-group">
+                                                                <select class="form-control" id="dayOfWeek" formControlName="dayOfWeek">
+                                                                    <option value="" selected disabled hidden>-- Bitte auswählen --</option>
+                                                                    <option value="0">Montag</option>
+                                                                    <option value="1">Dienstag</option>
+                                                                    <option value="2">Mittwoch</option>
+                                                                    <option value="3">Donnerstag</option>
+                                                                    <option value="4">Freitag</option>
+                                                                    <option value="5">Samstag</option>
+                                                                    <option value="6">Sonntag</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="row">
+                                                        <div class="form-input">
+                                                            <div class="input-group">
+                                                                <input type="time" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" class="form-control" formControlName="start">
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="row">
+                                                        <div class="form-input">
+                                                            <div class="input-group">
+                                                                <input type="time" mozactionhint="next" autocapitalize="none" autocomplete="off" inputmode="numeric" class="form-control" formControlName="end">
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td class="actions">
+                                                        <div class="form-input">
+                                                            <div class="input-group">
+                                                                <button role="button" class="action-item green" placement="top" ngbTooltip="Hinzufügen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                                <!-- ENDE: Lieferzeiten -->
+
+                                <hr class="divider">
+
+                                <!-- START: Speisekarte -->
+                                <div class="form-header">
+                                    <div class="col"><h5>Speisekarte</h5></div>
+                                </div>
+                                <form>
+                                    <div class="backend-input">
+                                        <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeDishCategoryId">
+                                            <li [ngbNavItem]="dishCategory.id" *ngFor="let dishCategory of dishCategories">
+                                                <a id="form" ngbNavLink>
+                                                    <table>
+                                                        {{dishCategory.name}}
+                                                        <ng-container *ngIf="activeDishCategoryId === dishCategory.id">
+                                                            <span (click)="openChangeDishCategoryForm(dishCategory)" class="action-item mr-0 pr-0" placement="top" ngbTooltip="Bearbeiten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></span>
+                                                            <span (click)="openRemoveDishCategoryForm(dishCategory)" class="action-item red pl-1 mr-0 pr-0" placement="top" ngbTooltip="Löschen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></span>
+                                                            <ng-container *ngIf="!isFirstDishCategory(dishCategory)">
+                                                                <span (click)="decOrderOfDishCategory(dishCategory)" class="action-item pl-1 mr-0 pr-0" placement="top" ngbTooltip="Nach links"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!isLastDishCategory(dishCategory)">
+                                                                <span (click)="incOrderOfDishCategory(dishCategory)" class="action-item pl-1 mr-0 pr-0" placement="top" ngbTooltip="Nach rechts"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </table>
+
+                                                </a>
+                                                <ng-template ngbNavContent>
+                                                    <div id="table">
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col" style="min-width: 240px;">Name</th>
+                                                                    <th scope="col">Preis</th>
+                                                                    <th scope="col">
+                                                                        <div class="float-right">
+                                                                            <button class="action-item" (click)="openEditDishForm(dishCategory, undefined)" placement="left" ngbTooltip="Gericht anlegen"><i class="fas fa-plus"></i></button>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let dish of dishCategory.dishes">
+                                                                    <th scope="row">
+                                                                        <p class="email">{{dish.name}} <br /><span style="font-size: 80%">{{dish.description}}</span></p>
+                                                                    </th>
+                                                                    <th><p class="email">{{getPricesOfDish(dish)}}</p></th>
+                                                                    <td class="actions">
+                                                                        <a (click)="openEditDishForm(dishCategory, dish)" class="action-item" placement="top" ngbTooltip="Bearbeiten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>
+                                                                        <a (click)="openRemoveDishForm(dishCategory, dish)" class="action-item red" placement="top" ngbTooltip="Löschen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>
+                                                                        <button (click)="decOrderOfDish(dishCategory, dish)" [disabled]="isFirstDish(dishCategory, dish)" class="action-item" placement="top" ngbTooltip="Nach oben"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+                                                                        <button (click)="incOrderOfDish(dishCategory, dish)" [disabled]="isLastDish(dishCategory, dish)" class="action-item" placement="top" ngbTooltip="Nach unten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </ng-template>
+                                            </li>
+                                            <li>
+                                                <button class="action-item" (click)="openAddDishCategoryForm()" placement="left" ngbTooltip="Kategorie erstellen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                            </li>
+                                        </ul>
+                                        <div [ngbNavOutlet]="nav"></div>
+                                    </div>
+                                </form>
+                                <!-- ENDE: Speisekarte -->
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</block-ui>
