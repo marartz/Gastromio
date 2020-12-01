@@ -1,0 +1,33 @@
+<block-ui>
+    <div class="modal-overlay">
+        <div class="modal_v3">
+            <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
+            <header id="header">
+                <div class="left"></div>
+                <div class="middle"><h1 class="title" tabindex="-1">Cuisine bearbeiten</h1></div>
+                <div class="right"></div>
+            </header>
+            <div id="body" tabindex="0">
+                <form [formGroup]="changeCuisineForm" (ngSubmit)="onSubmit(changeCuisineForm.value)">
+                    <div class="wrapper">
+                        <div class="input-wrapper">
+                            <div class="input-inner">
+                                <div style="background: none; border-radius: 8px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
+                                <label>
+                                    <div class="label">Name der Cuisine</div>
+                                    <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" maxlength="40" minlength="3" required="" spellcheck="true" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': f.name.errors }">
+                                </label>
+                                <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 8px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="feedback">
+                        <div class="help-text" *ngIf="f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für die Cuisine an.</span></div>
+                        <div class="help-text" *ngIf="message !== undefined">{{message}}</div>
+                    </div>
+                    <div id="submit"><button type="submit">Speichern</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</block-ui>
