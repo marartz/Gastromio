@@ -3,7 +3,7 @@ import {Location} from '@angular/common';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
@@ -11,7 +11,7 @@ import {take} from 'rxjs/operators';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
-import {PaymentMethodModel} from "../../../shared/models/payment-method.model";
+import {PaymentMethodModel} from '../../../shared/models/payment-method.model';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
 
@@ -22,8 +22,8 @@ import {StoredCartDishModel} from '../../../order/models/stored-cart-dish.model'
 
 import {OrderService} from '../../../order/services/order.service';
 
-import {OpeningHourFilterComponent} from "../opening-hour-filter/opening-hour-filter.component";
-import {EditCartDishComponent} from "../edit-cart-dish/edit-cart-dish.component";
+import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
+import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
 
 @Component({
   selector: 'app-checkout',
@@ -216,14 +216,14 @@ export class CheckoutComponent implements OnInit {
 
   getServiceTimeError(): string {
     if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
-      return "Eine elektronische Bestellung zum gewählten Zeitpunkt ist nicht möglich.";
+      return 'Eine elektronische Bestellung zum gewählten Zeitpunkt ist nicht möglich.';
 
     return undefined;
   }
 
   getCartError(): string {
     if (this.getCart().getCartDishes().length === 0)
-      return "Der Warenkorb ist leer. Bitte wähle erst ein oder mehrere Gerichte aus.";
+      return 'Der Warenkorb ist leer. Bitte wähle erst ein oder mehrere Gerichte aus.';
     else if (!this.getCart().isValid())
       return this.getCart().getValidationError();
     return undefined;

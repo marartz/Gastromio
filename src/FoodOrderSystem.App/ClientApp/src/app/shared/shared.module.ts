@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 
 import {HttpErrorHandlingService} from './services/http-error-handling.service';
 import {ClientPaginationComponent} from './components/pagination/client-pagination.component';

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse} from '@angular/common/http';
 
-import {take} from "rxjs/operators";
+import {take} from 'rxjs/operators';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
 
-import {AuthService} from "../../../auth/services/auth.service";
+import {AuthService} from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',

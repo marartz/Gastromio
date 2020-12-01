@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from '@angular/router';
 
-import {concatMap, take} from "rxjs/operators";
+import {concatMap, take} from 'rxjs/operators';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
 
-import {AuthService} from "../../../auth/services/auth.service";
+import {AuthService} from '../../../auth/services/auth.service';
 import {ConfirmPasswordValidator} from '../../../auth/validators/password.validator';
 
 

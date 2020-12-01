@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
-import {RestaurantAdminAuthGuardService} from "../auth/services/restaurant-admin-auth-guard.service";
+import {RestaurantAdminAuthGuardService} from '../auth/services/restaurant-admin-auth-guard.service';
 
-import {AdminMyRestaurantsComponent} from "./components/admin-my-restaurants/admin-my-restaurants.component";
-import {AdminRestaurantComponent} from "./components/admin-restaurant/admin-restaurant.component";
+import {AdminMyRestaurantsComponent} from './components/admin-my-restaurants/admin-my-restaurants.component';
+import {AdminRestaurantComponent} from './components/admin-restaurant/admin-restaurant.component';
 
 const routes: Routes = [
   {path: 'admin/myrestaurants', component: AdminMyRestaurantsComponent, canActivate: [RestaurantAdminAuthGuardService]},
