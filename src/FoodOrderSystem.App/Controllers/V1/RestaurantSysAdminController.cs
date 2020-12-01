@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.ActivateRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddRestaurant;
+using FoodOrderSystem.Core.Application.Commands.DeactivateRestaurant;
 using FoodOrderSystem.Core.Application.Commands.DisableSupportForRestaurant;
 using FoodOrderSystem.Core.Application.Commands.EnableSupportForRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ImportDishData;
@@ -75,6 +77,40 @@ namespace FoodOrderSystem.App.Controllers.V1
             var commandResult =
                 await commandDispatcher.PostAsync<AddRestaurantCommand, RestaurantDTO>(
                     new AddRestaurantCommand(addRestaurantModel.Name), new UserId(currentUserId));
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/activate")]
+        [HttpPost]
+        public async Task<IActionResult> PostActivateAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<ActivateRestaurantCommand, bool>(
+                new ActivateRestaurantCommand(new RestaurantId(restaurantId)),
+                new UserId(currentUserId)
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/deactivate")]
+        [HttpPost]
+        public async Task<IActionResult> PostDeactivateAsync(Guid restaurantId)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<DeactivateRestaurantCommand, bool>(
+                new DeactivateRestaurantCommand(new RestaurantId(restaurantId)),
+                new UserId(currentUserId)
+            );
+
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
