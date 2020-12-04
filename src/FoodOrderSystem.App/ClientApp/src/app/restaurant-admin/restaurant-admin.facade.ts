@@ -4,7 +4,13 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {map, take} from "rxjs/operators";
 
-import {AddressModel, ContactInfoModel, RestaurantModel} from "../shared/models/restaurant.model";
+import {
+  AddressModel,
+  ContactInfoModel, DeliveryInfoModel,
+  PickupInfoModel, ReservationInfoModel,
+  RestaurantModel,
+  ServiceInfoModel
+} from "../shared/models/restaurant.model";
 
 import {RestaurantRestAdminService} from "./services/restaurant-rest-admin.service";
 import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
@@ -249,7 +255,9 @@ export class RestaurantAdminFacade {
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
+
         this.restaurant$.value.address = address;
+
         this.restaurant$.next(this.restaurant$.value)
       }, response => {
         this.isUpdating$.next(false);
@@ -279,12 +287,14 @@ export class RestaurantAdminFacade {
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
+
         if (!this.restaurant$.value.imageTypes) {
           this.restaurant$.value.imageTypes = new Array<string>();
         }
         if (!this.restaurant$.value.imageTypes.some(en => en === 'logo')) {
           this.restaurant$.value.imageTypes.push('logo');
         }
+
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
@@ -299,7 +309,9 @@ export class RestaurantAdminFacade {
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
+
         this.restaurant$.value.imageTypes = this.restaurant$.value.imageTypes.filter(en => en !== 'logo');
+
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
@@ -314,12 +326,14 @@ export class RestaurantAdminFacade {
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
+
         if (!this.restaurant$.value.imageTypes) {
           this.restaurant$.value.imageTypes = new Array<string>();
         }
         if (!this.restaurant$.value.imageTypes.some(en => en === 'banner')) {
           this.restaurant$.value.imageTypes.push('banner');
         }
+
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
@@ -334,7 +348,45 @@ export class RestaurantAdminFacade {
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
+
         this.restaurant$.value.imageTypes = this.restaurant$.value.imageTypes.filter(en => en !== 'banner');
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  changeServiceInfo(serviceInfo: ServiceInfoModel): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.changeRestaurantServiceInfoAsync(this.restaurant$.value.id, serviceInfo)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        this.restaurant$.value.pickupInfo = new PickupInfoModel({
+          enabled: serviceInfo.pickupEnabled,
+          averageTime: serviceInfo.pickupAverageTime,
+          minimumOrderValue: serviceInfo.pickupMinimumOrderValue,
+          maximumOrderValue: serviceInfo.pickupMaximumOrderValue,
+        });
+
+        this.restaurant$.value.deliveryInfo = new DeliveryInfoModel({
+          enabled: serviceInfo.deliveryEnabled,
+          averageTime: serviceInfo.deliveryAverageTime,
+          minimumOrderValue: serviceInfo.deliveryMinimumOrderValue,
+          maximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
+          costs: serviceInfo.deliveryCosts
+        });
+
+        this.restaurant$.value.reservationInfo = new ReservationInfoModel({
+          enabled: serviceInfo.reservationEnabled
+        });
+
+        this.restaurant$.value.hygienicHandling = serviceInfo.hygienicHandling;
+
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);

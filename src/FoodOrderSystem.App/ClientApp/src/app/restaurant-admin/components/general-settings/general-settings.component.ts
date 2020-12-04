@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {debounceTime} from "rxjs/operators";
 
-import {AddressModel, ContactInfoModel, RestaurantModel} from "../../../shared/models/restaurant.model";
+import {AddressModel, ContactInfoModel} from "../../../shared/models/restaurant.model";
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
@@ -23,9 +23,6 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
   changeContactInfoForm: FormGroup;
 
   subscription: Subscription;
-
-  isInitialized$: Observable<boolean>;
-  restaurant$: Observable<RestaurantModel>;
 
   constructor(
     private facade: RestaurantAdminFacade,
@@ -72,30 +69,27 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isInitialized$ = this.facade.getIsInitialized$();
-    this.restaurant$ = this.facade.getRestaurant$();
-
-    this.subscription = this.restaurant$.subscribe(restaurant => {
+    this.subscription = this.facade.getRestaurant$().subscribe(restaurant => {
       this.changeAddressForm.patchValue({
-        street: restaurant.address != null ? restaurant.address.street : '',
-        zipCode: restaurant.address != null ? restaurant.address.zipCode : '',
-        city: restaurant.address != null ? restaurant.address.city : '',
+        street: restaurant.address?.street ?? '',
+        zipCode: restaurant.address?.zipCode ?? '',
+        city: restaurant.address?.city ?? '',
       });
       this.changeAddressForm.markAsPristine();
 
       this.changeContactInfoForm.patchValue({
-        phone: restaurant.contactInfo != null ? restaurant.contactInfo.phone : '',
-        fax: restaurant.contactInfo != null ? restaurant.contactInfo.fax : '',
-        webSite: restaurant.contactInfo != null ? restaurant.contactInfo.webSite : '',
-        responsiblePerson: restaurant.contactInfo != null ? restaurant.contactInfo.responsiblePerson : '',
-        emailAddress: restaurant.contactInfo != null ? restaurant.contactInfo.emailAddress : '',
+        phone: restaurant.contactInfo?.phone ?? '',
+        fax: restaurant.contactInfo?.fax ?? '',
+        webSite: restaurant.contactInfo?.webSite ?? '',
+        responsiblePerson: restaurant.contactInfo?.responsiblePerson ?? '',
+        emailAddress: restaurant.contactInfo?.emailAddress ?? '',
       });
       this.changeContactInfoForm.markAsPristine();
     });
-
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
 }

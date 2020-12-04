@@ -264,6 +264,11 @@ export class ReservationInfoModel {
 }
 
 export class ServiceInfoModel {
+  constructor(init?: Partial<ServiceInfoModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
   public pickupEnabled: boolean;
 
   public pickupAverageTime: number;

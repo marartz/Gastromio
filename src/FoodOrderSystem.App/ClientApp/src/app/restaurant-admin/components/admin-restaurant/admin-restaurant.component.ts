@@ -27,8 +27,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   // openingPeriodVMs: OpeningPeriodViewModel[];
   // addOpeningPeriodForm: FormGroup;
   //
-  // changeServiceInfoForm: FormGroup;
-  //
   // availableCuisines: CuisineModel[];
   // addCuisineForm: FormGroup;
   //
@@ -54,20 +52,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     //   dayOfWeek: '',
     //   start: '',
     //   end: ''
-    // });
-    //
-    // this.changeServiceInfoForm = this.formBuilder.group({
-    //   pickupEnabled: false,
-    //   pickupAverageTime: '',
-    //   pickupMinimumOrderValue: '',
-    //   pickupMaximumOrderValue: '',
-    //   deliveryEnabled: false,
-    //   deliveryAverageTime: '',
-    //   deliveryMinimumOrderValue: '',
-    //   deliveryMaximumOrderValue: '',
-    //   deliveryCosts: '',
-    //   reservationEnabled: false,
-    //   hygienicHandling: ''
     // });
     //
     // this.addCuisineForm = this.formBuilder.group({
@@ -330,21 +314,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 //           this.restaurant.openingHours.splice(index, 1);
 //           this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
 //         }
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
-//
-//   onSaveServiceInfo(value): void {
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.changeRestaurantServiceInfoAsync(this.restaurant.id, value)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         this.blockUI.stop();
-//         this.formError = undefined;
-//         this.restaurant.pickupInfo = value;
-//         this.changeServiceInfoForm.markAsPristine();
 //       }, (response: HttpErrorResponse) => {
 //         this.blockUI.stop();
 //         this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
