@@ -1,1 +1,20 @@
-<p>cuisine-management works!</p>
+<div>
+    <div class="form-header">
+        <div class="col"><h5>Restaurantkategorien</h5></div>
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="backend-input">
+                    <div class="cuisine" tabindex="-1">
+                        <div class="wrap" *ngFor="let cuisine of cuisines$ | async">
+                            <h6 (click)="onToggleCuisine(cuisine.id)">{{cuisine.name}}</h6>
+                            <ng-container *ngIf="(isCuisineEnabled$(cuisine.id) | async) === true">enabled</ng-container>
+                            <ng-container *ngIf="(isCuisineEnabled$(cuisine.id) | async) === false">disabled</ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

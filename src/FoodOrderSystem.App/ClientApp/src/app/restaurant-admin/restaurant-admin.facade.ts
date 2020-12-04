@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 
-import {BehaviorSubject, Observable} from "rxjs";
-import {map, take} from "rxjs/operators";
+import {BehaviorSubject, combineLatest, Observable} from "rxjs";
+import {map, take, tap} from "rxjs/operators";
 
 import {
   AddressModel,
@@ -14,16 +14,26 @@ import {
 
 import {RestaurantRestAdminService} from "./services/restaurant-rest-admin.service";
 import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
+import {CuisineModel} from "../shared/models/cuisine.model";
+import {PaymentMethodModel} from "../shared/models/payment-method.model";
+import {DishCategoryModel} from "../shared/models/dish-category.model";
 
 @Injectable()
 export class RestaurantAdminFacade {
 
   private restaurantId: string;
+
   private isInitializing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private isInitialized$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
   private initializationError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+
+  private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(undefined);
+  private paymentMethods$: BehaviorSubject<PaymentMethodModel[]> = new BehaviorSubject<PaymentMethodModel[]>(undefined);
   private restaurant$: BehaviorSubject<RestaurantModel> = new BehaviorSubject<RestaurantModel>(undefined);
+  private dishCategories$: BehaviorSubject<DishCategoryModel[]> = new BehaviorSubject<DishCategoryModel[]>(undefined);
+
   private selectedTab$: BehaviorSubject<string> = new BehaviorSubject<string>("general");
+
   private isUpdating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
 
@@ -36,123 +46,77 @@ export class RestaurantAdminFacade {
   public initialize(restaurantId: string): void {
     this.restaurantId = restaurantId;
 
-    this.restaurantAdminService.getRestaurantAsync(restaurantId)
-      .pipe(take(1))
-      .subscribe(
-        (data) => {
-          this.restaurant$.next(data);
+    const getCuisines$ = this.restaurantAdminService.getCuisinesAsync()
+      .pipe(
+        tap(cuisines => {
+          this.cuisines$.next(cuisines);
+        })
+      );
 
-          //
-          //         this.restaurant.cuisines.sort((a, b) => {
-          //           if (a.name < b.name) {
-          //             return -1;
-          //           }
-          //           if (a.name > b.name) {
-          //             return 1;
-          //           }
-          //           return 0;
-          //         });
-          //
-          //         if (this.hasLogo()) {
-          //           this.updateLogoUrl();
-          //         }
-          //
-          //         if (this.hasBanner()) {
-          //           this.updateBannerUrl();
-          //         }
-          //
+    const getPaymentMethods$ = this.restaurantAdminService.getPaymentMethodsAsync()
+      .pipe(
+        tap(paymentMethods => {
+          this.paymentMethods$.next(paymentMethods.sort((a, b) => {
+            if (a.name < b.name) {
+              return -1;
+            }
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          }));
+        })
+      );
+
+    const getRestaurant$ = this.restaurantAdminService.getRestaurantAsync(restaurantId)
+      .pipe(
+        tap(restaurant => {
+          restaurant.cuisines.sort((a, b) => {
+            if (a.name < b.name) {
+              return -1;
+            }
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          });
+
+          restaurant.paymentMethods.sort((a, b) => {
+            if (a.name < b.name) {
+              return -1;
+            }
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          });
+
+          this.restaurant$.next(restaurant);
+        })
+      );
+
+    const getDishesOfRestaurant$ = this.restaurantAdminService.getDishesOfRestaurantAsync(restaurantId)
+      .pipe(
+        tap(dishCategories => {
+          this.dishCategories$.next(dishCategories);
+        })
+      )
+
+    const observables = [
+      getCuisines$,
+      getPaymentMethods$,
+      getRestaurant$,
+      getDishesOfRestaurant$
+    ];
+
+    combineLatest(observables)
+      .subscribe(
+        () => {
+
           //         this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
-          //
-          //         this.changeAddressForm.patchValue({
-          //           street: this.restaurant.address != null ? this.restaurant.address.street : '',
-          //           zipCode: this.restaurant.address != null ? this.restaurant.address.zipCode : '',
-          //           city: this.restaurant.address != null ? this.restaurant.address.city : '',
-          //         });
-          //         this.changeAddressForm.markAsPristine();
-          //
-          //         this.changeContactInfoForm.patchValue({
-          //           phone: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.phone : '',
-          //           fax: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.fax : '',
-          //           webSite: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.webSite : '',
-          //           responsiblePerson: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.responsiblePerson : '',
-          //           emailAddress: this.restaurant.contactInfo != null ? this.restaurant.contactInfo.emailAddress : '',
-          //         });
-          //         this.changeContactInfoForm.markAsPristine();
-          //
-          //         this.changeServiceInfoForm.patchValue({
-          //           pickupEnabled: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.enabled : false,
-          //           pickupAverageTime: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.averageTime : '',
-          //           pickupMinimumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.minimumOrderValue : '',
-          //           pickupMaximumOrderValue: this.restaurant.pickupInfo != null ? this.restaurant.pickupInfo.maximumOrderValue : '',
-          //           deliveryEnabled: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.enabled : false,
-          //           deliveryAverageTime: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.averageTime : '',
-          //           deliveryMinimumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.minimumOrderValue : '',
-          //           deliveryMaximumOrderValue: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.maximumOrderValue : '',
-          //           deliveryCosts: this.restaurant.deliveryInfo != null ? this.restaurant.deliveryInfo.costs : '',
-          //           reservationEnabled: this.restaurant.reservationInfo != null ? this.restaurant.reservationInfo.enabled : false,
-          //           hygienicHandling: this.restaurant.hygienicHandling
-          //         });
-          //         this.changeServiceInfoForm.markAsPristine();
-          //
-          //         this.restaurantRestAdminService.getDishesOfRestaurantAsync(this.restaurantId)
-          //           .pipe(take(1))
-          //           .subscribe(
-          //             (dishCategories) => {
-          //
-          //               this.dishCategories = dishCategories;
-          //
+
           //               if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
           //                 this.activeDishCategoryId = this.dishCategories[0].id;
-          //               }
-          //
-          //               this.restaurantRestAdminService.getCuisinesAsync()
-          //                 .pipe(take(1))
-          //                 .subscribe(
-          //                   (cuisines) => {
-          //                     this.availableCuisines = cuisines.filter(cuisine => this.restaurant.cuisines
-          //                       .findIndex(en => en.id === cuisine.id) === -1);
-          //
-          //                     this.restaurantRestAdminService.getPaymentMethodsAsync()
-          //                       .pipe(take(1))
-          //                       .subscribe(
-          //                         (paymentMethods) => {
-          //                           this.paymentMethods = paymentMethods.sort((a, b) => {
-          //                             if (a.name < b.name) {
-          //                               return -1;
-          //                             }
-          //                             if (a.name > b.name) {
-          //                               return 1;
-          //                             }
-          //                             return 0;
-          //                           });
-          //                           this.paymentMethodStatus = new Array<boolean>(this.paymentMethods.length);
-          //
-          //                           for (let i = 0; i < this.paymentMethods.length; i++) {
-          //                             this.paymentMethodStatus[i] = this.restaurant.paymentMethods
-          //                               .some(en => en.id === this.paymentMethods[i].id);
-          //                           }
-          //
-          //                           this.blockUI.stop();
-          //                         },
-          //                         (error: HttpErrorResponse) => {
-          //                           this.blockUI.stop();
-          //                           this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-          //                         }
-          //                       );
-          //                   },
-          //                   (error: HttpErrorResponse) => {
-          //                     this.blockUI.stop();
-          //                     this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-          //                   }
-          //                 );
-          //
-          //             },
-          //             (error: HttpErrorResponse) => {
-          //               this.blockUI.stop();
-          //               this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-          //             }
-          //           );
-
 
           this.isInitializing$.next(false);
           this.isInitialized$.next(true);
@@ -177,8 +141,20 @@ export class RestaurantAdminFacade {
     return this.initializationError$;
   }
 
+  public getCuisines$(): Observable<CuisineModel[]> {
+    return this.cuisines$;
+  }
+
+  public getPaymentMethods$(): Observable<PaymentMethodModel[]> {
+    return this.paymentMethods$;
+  }
+
   public getRestaurant$(): Observable<RestaurantModel> {
     return this.restaurant$;
+  }
+
+  public getDishCategories$(): Observable<DishCategoryModel[]> {
+    return this.dishCategories$;
   }
 
   public getSelectedTab$(): Observable<string> {
@@ -242,6 +218,33 @@ export class RestaurantAdminFacade {
         })
       );
   }
+
+  public getCuisineStatus$(): Observable<{}> {
+    return this.restaurant$.asObservable()
+      .pipe(
+        map(restaurant => {
+          const result = {};
+          for (let cuisine of this.cuisines$.value) {
+            result[cuisine.id] = restaurant.cuisines.some(en => en.id === cuisine.id);
+          }
+          return result;
+        })
+      );
+  }
+
+  public getPaymentMethodStatus$(): Observable<{}> {
+    return this.restaurant$.asObservable()
+      .pipe(
+        map(restaurant => {
+          const result = {};
+          for (let paymentMethod of this.paymentMethods$.value) {
+            result[paymentMethod.id] = restaurant.paymentMethods.some(en => en.id === paymentMethod.id);
+          }
+          return result;
+        })
+      );
+  }
+
 
 
   public selectTab(tab: string): void {
@@ -386,6 +389,88 @@ export class RestaurantAdminFacade {
         });
 
         this.restaurant$.value.hygienicHandling = serviceInfo.hygienicHandling;
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  toggleCuisine(cuisineId: string): void {
+    this.isUpdating$.next(true);
+
+    let observable: Observable<boolean>;
+
+    const isCurrentlyEnabled = this.restaurant$.value.cuisines.some(en => en.id === cuisineId);
+    if (isCurrentlyEnabled) {
+      observable = this.restaurantAdminService.removeCuisineFromRestaurantAsync(this.restaurant$.value.id, cuisineId);
+    } else {
+      observable = this.restaurantAdminService.addCuisineToRestaurantAsync(this.restaurant$.value.id, cuisineId);
+    }
+
+    observable
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        if (isCurrentlyEnabled) {
+          this.restaurant$.value.cuisines = this.restaurant$.value.cuisines.filter(en => en.id !== cuisineId);
+        } else {
+          const cuisine = this.cuisines$.value.find(en => en.id === cuisineId);
+          this.restaurant$.value.cuisines.push(cuisine);
+          this.restaurant$.value.cuisines.sort((a, b) => {
+            if (a.name < b.name) {
+              return -1;
+            }
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  togglePaymentMethod(paymentMethodId: string): void {
+    this.isUpdating$.next(true);
+
+    let observable: Observable<boolean>;
+
+    const isCurrentlyEnabled = this.restaurant$.value.paymentMethods.some(en => en.id === paymentMethodId);
+    if (isCurrentlyEnabled) {
+      observable = this.restaurantAdminService.removePaymentMethodFromRestaurantAsync(this.restaurant$.value.id, paymentMethodId);
+    } else {
+      observable = this.restaurantAdminService.addPaymentMethodToRestaurantAsync(this.restaurant$.value.id, paymentMethodId);
+    }
+
+    observable
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        if (isCurrentlyEnabled) {
+          this.restaurant$.value.paymentMethods = this.restaurant$.value.paymentMethods.filter(en => en.id !== paymentMethodId);
+        } else {
+          const paymentMethod = this.paymentMethods$.value.find(en => en.id === paymentMethodId);
+          this.restaurant$.value.paymentMethods.push(paymentMethod);
+          this.restaurant$.value.paymentMethods.sort((a, b) => {
+            if (a.name < b.name) {
+              return -1;
+            }
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          });
+        }
 
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {
