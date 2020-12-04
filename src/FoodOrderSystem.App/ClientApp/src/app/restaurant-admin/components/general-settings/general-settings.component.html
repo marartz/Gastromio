@@ -1,0 +1,142 @@
+<div id="admin-restaurant">
+    <div class="form-header">
+        <div class="col"><h5>Adressinformationen</h5></div>
+    </div>
+    <form [formGroup]="changeAddressForm">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label">Straße</label>
+                    <div class="input-group">
+                        <input type="text" mozactionhint="next" autocapitalize="words" autocomplete="street-address"
+                               maxlength="200" required="" id="street" formControlName="street"
+                               [ngClass]="{ 'is-invalid': af.street.errors }">
+                        <div *ngIf="af.street.errors" class="invalid-feedback">
+                            <div *ngIf="af.street.errors.required">Straße Ihres Unternehmens wird benötigt</div>
+                            <div *ngIf="af.street.errors.pattern">Kein gültiger Straßenname (z.B. Musterstraße 11)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label">Postleitzahl</label>
+                    <div class="input-group">
+                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="postal-code"
+                               inputmode="numeric" maxlength="5" minlength="5" required="" id="zipCode"
+                               formControlName="zipCode"
+                               [ngClass]="{ 'is-invalid': af.zipCode.errors }">
+                        <div *ngIf="af.zipCode.errors" class="invalid-feedback">
+                            <div *ngIf="af.zipCode.errors.required">Postleitzahl Ihres Unternehmens wird benötigt</div>
+                            <div *ngIf="af.zipCode.errors.pattern">Keine gültige Postleitzahl (z.B. 46395)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label">Stadt</label>
+                    <div class="input-group">
+                        <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="country"
+                               maxlength="50" required="" id="city" formControlName="city"
+                               [ngClass]="{ 'is-invalid': af.city.errors }">
+                        <div *ngIf="af.city.errors" class="invalid-feedback">
+                            <div *ngIf="af.city.errors.required">Stadt Ihres Unternehmens wird benötigt</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr class="divider">
+
+    <div class="form-header">
+        <div class="col"><h5>Kontaktinformationen</h5></div>
+    </div>
+    <form [formGroup]="changeContactInfoForm">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="An diese E-Mail werden Bestellungen gesendet">E-Mail-Adresse</label>
+                    <div class="input-group">
+                        <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email"
+                               inputmode="email" required="" id="emailAddress" formControlName="emailAddress"
+                               [ngClass]="{ 'is-invalid': cif.emailAddress.errors }">
+                        <div *ngIf="cif.emailAddress.errors" class="invalid-feedback">
+                            <div *ngIf="cif.emailAddress.errors.required">E-Mail-Adresse wird benötigt</div>
+                            <div *ngIf="cif.emailAddress.errors.pattern">Ungültige E-Mail-Adresse (z.B.
+                                max@mustermann.de)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-input">
+                    <label class="form-label" placement="top"
+                           ngbTooltip="An diese Telefonnummer können sich Kunden bei Fragen wenden">Telefon</label>
+                    <div class="input-group">
+                        <input type="tel" mozactionhint="next" autocapitalize="none" autocomplete="tel" inputmode="tel"
+                               required="" id="phone" formControlName="phone"
+                               [ngClass]="{ 'is-invalid': cif.phone.errors }">
+                        <div *ngIf="cif.phone.errors" class="invalid-feedback">
+                            <div *ngIf="cif.phone.errors.required">Telefonnummer wird benötigt</div>
+                            <div *ngIf="cif.phone.errors.pattern">Ungültige Telefonnummer (z.B. 02871 789012)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-input">
+                    <label class="form-label">Fax</label>
+                    <div class="input-group">
+                        <input type="tel" mozactionhint="next" autocapitalize="none" autocomplete="tel" inputmode="tel"
+                               id="fax" formControlName="fax"
+                               [ngClass]="{ 'is-invalid': cif.fax.errors }">
+                        <div *ngIf="cif.fax.errors" class="invalid-feedback">
+                            <div *ngIf="cif.fax.errors.pattern">Ungültige Faxnummer (z.B. 02871 789013)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top"
+                           ngbTooltip="Die Webseite Ihres Unternehmens (Kein Soziales Medium)">Webseite</label>
+                    <div class="input-group">
+                        <input type="url" mozactionhint="next" autocapitalize="none" autocomplete="url" inputmode="url"
+                               id="webSite" formControlName="webSite"
+                               [ngClass]="{ 'is-invalid': cif.webSite.errors }">
+                        <div *ngIf="cif.webSite.errors" class="invalid-feedback">
+                            <div *ngIf="cif.webSite.errors.pattern">Ungültige Webseite (z.B.
+                                https://www.mein-restaurant.de/)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top"
+                           ngbTooltip="Verantwortlich für den Internetauftritt nach §5 E-Commerce Gesetz">Verantwortliche
+                        Person</label>
+                    <div class="input-group">
+                        <input type="text" mozactionhint="send" autocapitalize="words" autocomplete="name"
+                               inputmode="latin-name" required="" id="responsiblePerson"
+                               formControlName="responsiblePerson"
+                               [ngClass]="{ 'is-invalid': cif.responsiblePerson.errors }">
+                        <div *ngIf="cif.responsiblePerson.errors" class="invalid-feedback">
+                            <div *ngIf="cif.responsiblePerson.errors.required">Verantwortliche Person wird benötigt
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

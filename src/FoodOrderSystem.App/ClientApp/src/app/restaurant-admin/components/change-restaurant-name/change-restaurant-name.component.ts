@@ -53,16 +53,16 @@ export class ChangeRestaurantNameComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.blockUI.stop();
-        this.message = undefined;
-        this.changeRestaurantNameForm.reset();
-        this.activeModal.close(data.name);
-      }, (response: HttpErrorResponse) => {
-        this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
+    // this.restaurantAdminService.changeRestaurantNameAsync(this.restaurant.id, data.name)
+    //   .pipe(take(1))
+    //   .subscribe(() => {
+    //     this.blockUI.stop();
+    //     this.message = undefined;
+    //     this.changeRestaurantNameForm.reset();
+    //     this.activeModal.close(data.name);
+    //   }, (response: HttpErrorResponse) => {
+    //     this.blockUI.stop();
+    //     this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+    //   });
   }
 }

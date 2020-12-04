@@ -7,6 +7,7 @@ using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
 using FoodOrderSystem.Core.Application.Commands.ActivateRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Core.Application.Commands.DeactivateRestaurant;
 using FoodOrderSystem.Core.Application.Commands.DisableSupportForRestaurant;
 using FoodOrderSystem.Core.Application.Commands.EnableSupportForRestaurant;
@@ -77,6 +78,22 @@ namespace FoodOrderSystem.App.Controllers.V1
             var commandResult =
                 await commandDispatcher.PostAsync<AddRestaurantCommand, RestaurantDTO>(
                     new AddRestaurantCommand(addRestaurantModel.Name), new UserId(currentUserId));
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/changename")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeNameAsync(Guid restaurantId,
+            [FromBody] ChangeRestaurantNameModel changeRestaurantNameModel)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantNameCommand, bool>(
+                new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name),
+                new UserId(currentUserId));
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
