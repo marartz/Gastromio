@@ -1,20 +1,31 @@
-<div>
+<div id="admin-restaurant">
     <div class="form-header">
         <div class="col"><h5>Restaurantkategorien</h5></div>
     </div>
-    <form>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="backend-input">
-                    <div class="cuisine" tabindex="-1">
-                        <div class="wrap" *ngFor="let cuisine of cuisines$ | async">
-                            <h6 (click)="onToggleCuisine(cuisine.id)">{{cuisine.name}}</h6>
-                            <ng-container *ngIf="(isCuisineEnabled$(cuisine.id) | async) === true">enabled</ng-container>
-                            <ng-container *ngIf="(isCuisineEnabled$(cuisine.id) | async) === false">disabled</ng-container>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" *ngFor="let cuisine of cuisines$ | async"
+                 (click)="onToggleCuisine(cuisine.id)">
+                <div class="card-body">
+                    <div class="card-container">
+                        <div class="card-wrapper">
+                            <div class="card-content">
+                                <div class="top">
+                                    <div class="col-auto">
+                                        <span class="badge active"
+                                              *ngIf="(isCuisineEnabled$(cuisine.id) | async) === true">Aktiv</span>
+                                        <span class="badge inactive"
+                                              *ngIf="(isCuisineEnabled$(cuisine.id) | async) === false">Inaktiv</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="name">{{cuisine.name}}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>

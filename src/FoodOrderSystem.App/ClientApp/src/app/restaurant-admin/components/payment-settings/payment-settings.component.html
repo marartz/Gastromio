@@ -3,18 +3,14 @@
         <div class="col"><h5>Bezahlungsmöglichkeiten</h5></div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <div class="payment-card" *ngFor="let paymentMethod of paymentMethods$ | async"
+        <div class="col-md-12">
+            <div class="card" *ngFor="let paymentMethod of paymentMethods$ | async"
                  (click)="onTogglePaymentMethod(paymentMethod.id)">
-                <div class="payment-body">
-                    <div class="payment-container">
-                        <div class="payment-wrapper">
-                            <div class="payment-content">
+                <div class="card-body">
+                    <div class="card-container">
+                        <div class="card-wrapper">
+                            <div class="card-content">
                                 <div class="top">
-                                    <div class="col">
-                                        <img src="../../assets/images/icons/brands/{{paymentMethod.imageName}}.svg"
-                                             alt="" style="height: 26px;">
-                                    </div>
                                     <div class="col-auto">
                                         <span class="badge active" *ngIf="(isPaymentMethodEnabled$(paymentMethod.id) | async) === true">Aktiv</span>
                                         <span class="badge inactive" *ngIf="(isPaymentMethodEnabled$(paymentMethod.id) | async) === false">Inaktiv</span>
