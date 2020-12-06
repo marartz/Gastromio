@@ -486,8 +486,6 @@ export class RestaurantAdminFacade {
   }
 
   public addOpeningPeriod(dayOfWeek: number, start: number, end: number): void {
-    console.log('adding opening period: dayOfWeek = ' + dayOfWeek + ', start = ' + start + ', end = ' + end);
-
     this.isUpdating$.next(true);
     this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
       .pipe(take(1))
@@ -510,8 +508,6 @@ export class RestaurantAdminFacade {
   }
 
   public changeOpeningPeriod(openingPeriod: OpeningPeriodModel, start: number, end: number): void {
-    console.log('changing opening period: dayOfWeek = ' + openingPeriod.dayOfWeek + ', start = ' + openingPeriod.start + ', end = ' + openingPeriod.end + ', to new start = ' + start + ', new end = ' + end);
-
     this.isUpdating$.next(true);
     this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
       .pipe(
@@ -536,8 +532,6 @@ export class RestaurantAdminFacade {
   }
 
   public removeOpeningPeriod(openingPeriod: OpeningPeriodModel): void {
-    console.log('removing opening period: dayOfWeek = ' + openingPeriod.dayOfWeek + ', start = ' + openingPeriod.start + ', end = ' + openingPeriod.end);
-
     this.isUpdating$.next(true);
     this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
       .pipe(take(1))
