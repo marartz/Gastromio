@@ -1,1 +1,32 @@
-<p>opening-hours-management works!</p>
+<div id="admin-restaurant">
+    <div class="form-header">
+        <div class="col"><h5>Regelmäßige Öffnungszeiten</h5></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Uhrzeit</th>
+                        <th>Mo</th>
+                        <th>Di</th>
+                        <th>Mi</th>
+                        <th>Do</th>
+                        <th>Fr</th>
+                        <th>Sa</th>
+                        <th>So</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let openingPeriodRow of openingPeriodRows$ | async">
+                        <td>{{openingPeriodRow.time}}</td>
+                        <td *ngFor="let slot of openingPeriodRow.dayOfWeekSlots"
+                            (click)="slot.status ? disableOpeningPeriodSlot(slot.dayOfWeek, openingPeriodRow.slotNo) : enableOpeningPeriodSlot(slot.dayOfWeek, openingPeriodRow.slotNo)">
+                            <ng-container *ngIf="slot.status === true">X</ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
