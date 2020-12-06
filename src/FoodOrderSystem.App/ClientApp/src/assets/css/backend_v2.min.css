@@ -809,7 +809,7 @@ form .form-input .input-group input::placeholder {
     display: -webkit-box;
     display: -webkit-flex;
     flex-direction: column;
-    margin-bottom: 30px;
+    margin-bottom: 14px;
     min-width: 0px;
     position: relative;
     transition: all .2s ease;
