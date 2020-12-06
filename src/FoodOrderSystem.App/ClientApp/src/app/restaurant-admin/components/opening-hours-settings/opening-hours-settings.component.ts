@@ -4,7 +4,7 @@ import {BehaviorSubject, Subscription} from "rxjs";
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 import {OpeningPeriodModel} from "../../../shared/models/restaurant.model";
-import {debounceTime} from "rxjs/operators";
+import {debounceTime, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-opening-hours-settings',
@@ -154,7 +154,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
       this.openingHours$.next(openingHours);
     } else {
-      this.facade.removeOpeningPeriod(openingPeriod$.value.baseModel);
+      this.facade.removeOpeningPeriod(openingPeriod$.value.baseModel)
+        .pipe(take(1))
+        .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
     }
   }
 
@@ -186,9 +188,13 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
         }
 
         if (openingPeriod.baseModel === undefined) {
-          this.facade.addOpeningPeriod(openingPeriod.dayOfWeek, startParseResult.value, endParseResult.value);
+          this.facade.addOpeningPeriod(openingPeriod.dayOfWeek, startParseResult.value, endParseResult.value)
+            .pipe(take(1))
+            .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
-          this.facade.changeOpeningPeriod(openingPeriod.baseModel, startParseResult.value, endParseResult.value);
+          this.facade.changeOpeningPeriod(openingPeriod.baseModel, startParseResult.value, endParseResult.value)
+            .pipe(take(1))
+            .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         }
       });
 
@@ -286,6 +292,7 @@ export class OpeningPeriodViewModel {
   public dayOfWeek: number;
   public start: string;
   public end: string;
+  public failure: boolean = false;
 
 }
 

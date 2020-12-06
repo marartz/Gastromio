@@ -26,7 +26,7 @@
                             <div *ngIf="openingPeriod$.value !== undefined" class="form-input">
                                 <div class="input-group">
                                     <input type="time" mozactionhint="next" autocapitalize="none" autocomplete="off"
-                                           inputmode="numeric" class="form-control"
+                                           inputmode="numeric" class="form-control" [class.failure]="openingPeriod$.value.failure"
                                            [value]="openingPeriod$.value.start"
                                            (change)="changeStart(openingPeriod$, $event.target.value)">
                                 </div>
@@ -36,7 +36,7 @@
                             <div *ngIf="openingPeriod$.value !== undefined" class="form-input">
                                 <div class="input-group">
                                     <input type="time" mozactionhint="next" autocapitalize="none" autocomplete="off"
-                                           inputmode="numeric" class="form-control"
+                                           inputmode="numeric" class="form-control" [class.failure]="openingPeriod$.value.failure"
                                            [value]="openingPeriod$.value.end"
                                            (change)="changeEnd(openingPeriod$, $event.target.value)">
                                 </div>

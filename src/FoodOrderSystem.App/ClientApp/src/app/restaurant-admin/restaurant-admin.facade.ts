@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 
-import {BehaviorSubject, combineLatest, Observable} from "rxjs";
-import {concatMap, map, take, tap} from "rxjs/operators";
+import {BehaviorSubject, combineLatest, Observable, throwError} from "rxjs";
+import {catchError, map, take, tap} from "rxjs/operators";
 
 import {CuisineModel} from "../shared/models/cuisine.model";
 import {DishCategoryModel} from "../shared/models/dish-category.model";
@@ -485,69 +485,75 @@ export class RestaurantAdminFacade {
       });
   }
 
-  public addOpeningPeriod(dayOfWeek: number, start: number, end: number): void {
+  public addOpeningPeriod(dayOfWeek: number, start: number, end: number): Observable<boolean> {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
-
-        const openingHours = this.restaurant$.value.openingHours;
-        openingHours.push(new OpeningPeriodModel({
-          dayOfWeek: dayOfWeek,
-          start: start,
-          end: end
-        }));
-
-        this.restaurant$.next(this.restaurant$.value)
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
-      });
-  }
-
-  public changeOpeningPeriod(openingPeriod: OpeningPeriodModel, start: number, end: number): void {
-    this.isUpdating$.next(true);
-    this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
+    return this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
       .pipe(
-        concatMap(() =>
-          this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, start, end)
-        )
-      )
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        const openingHours = this.restaurant$.value.openingHours;
-        const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
-        openingHours[index].start = start;
-        openingHours[index].end = end;
+          const openingHours = this.restaurant$.value.openingHours;
+          openingHours.push(new OpeningPeriodModel({
+            dayOfWeek: dayOfWeek,
+            start: start,
+            end: end
+          }));
 
-        this.restaurant$.next(this.restaurant$.value)
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
-      });
+          this.restaurant$.next(this.restaurant$.value)
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
   }
 
-  public removeOpeningPeriod(openingPeriod: OpeningPeriodModel): void {
+  public changeOpeningPeriod(openingPeriod: OpeningPeriodModel, start: number, end: number): Observable<boolean> {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    return this.restaurantAdminService.changeOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start, start, end)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        const openingHours = this.restaurant$.value.openingHours;
-        const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
-        openingHours.splice(index, 1);
+          const openingHours = this.restaurant$.value.openingHours;
+          const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
+          openingHours[index].start = start;
+          openingHours[index].end = end;
 
-        this.restaurant$.next(this.restaurant$.value)
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
-      });
+          this.restaurant$.next(this.restaurant$.value)
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public removeOpeningPeriod(openingPeriod: OpeningPeriodModel): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
+      .pipe(
+        tap(() => {
+            this.isUpdating$.next(false);
+            this.updateError$.next(undefined);
+
+            const openingHours = this.restaurant$.value.openingHours;
+            const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
+            openingHours.splice(index, 1);
+
+            this.restaurant$.next(this.restaurant$.value)
+          }
+        ),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
   }
 
 }

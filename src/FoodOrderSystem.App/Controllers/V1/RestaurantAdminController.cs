@@ -14,6 +14,7 @@ using FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantContactInfo;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantImage;
@@ -292,6 +293,27 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<AddOpeningPeriodToRestaurantCommand, bool>(
                 new AddOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/changeopeningperiod")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] ChangeOpeningPeriodOfRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var oldStart = TimeSpan.FromMinutes(model.OldStart);
+            var newStart = TimeSpan.FromMinutes(model.NewStart);
+            var newEnd = TimeSpan.FromMinutes(model.NewEnd);
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeOpeningPeriodOfRestaurantCommand, bool>(
+                new ChangeOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, oldStart, newStart, newEnd),
                 new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);

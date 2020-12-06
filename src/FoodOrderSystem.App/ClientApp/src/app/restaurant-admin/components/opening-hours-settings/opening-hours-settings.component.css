@@ -103,3 +103,7 @@
     padding: 8px;
     text-align: right;
 }
+
+input.failure {
+    background-color: indianred;
+}
