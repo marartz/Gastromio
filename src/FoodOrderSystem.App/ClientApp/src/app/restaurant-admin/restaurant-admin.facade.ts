@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 
 import {BehaviorSubject, combineLatest, Observable} from "rxjs";
-import {map, take, tap} from "rxjs/operators";
+import {concatMap, map, take, tap} from "rxjs/operators";
 
 import {CuisineModel} from "../shared/models/cuisine.model";
 import {DishCategoryModel} from "../shared/models/dish-category.model";
@@ -251,15 +251,13 @@ export class RestaurantAdminFacade {
   }
 
 
-
-
   // actions
 
   public selectTab(tab: string): void {
     this.selectedTab$.next(tab);
   }
 
-  changeAddress(address: AddressModel): void {
+  public changeAddress(address: AddressModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantAddressAsync(this.restaurant$.value.id, address)
       .pipe(take(1))
@@ -276,7 +274,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  changeContactInfo(contactInfo: ContactInfoModel): void {
+  public changeContactInfo(contactInfo: ContactInfoModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantContactInfoAsync(this.restaurant$.value.id, contactInfo)
       .pipe(take(1))
@@ -291,7 +289,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  changeLogo(logo: string): void {
+  public changeLogo(logo: string): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', logo)
       .pipe(take(1))
@@ -313,7 +311,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  removeLogo(): void {
+  public removeLogo(): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', undefined)
       .pipe(take(1))
@@ -330,7 +328,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  changeBanner(banner: string): void {
+  public changeBanner(banner: string): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', banner)
       .pipe(take(1))
@@ -352,7 +350,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  removeBanner(): void {
+  public removeBanner(): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', undefined)
       .pipe(take(1))
@@ -369,7 +367,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  changeServiceInfo(serviceInfo: ServiceInfoModel): void {
+  public changeServiceInfo(serviceInfo: ServiceInfoModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantServiceInfoAsync(this.restaurant$.value.id, serviceInfo)
       .pipe(take(1))
@@ -405,7 +403,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  toggleCuisine(cuisineId: string): void {
+  public toggleCuisine(cuisineId: string): void {
     this.isUpdating$.next(true);
 
     let observable: Observable<boolean>;
@@ -446,7 +444,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  togglePaymentMethod(paymentMethodId: string): void {
+  public togglePaymentMethod(paymentMethodId: string): void {
     this.isUpdating$.next(true);
 
     let observable: Observable<boolean>;
@@ -487,212 +485,70 @@ export class RestaurantAdminFacade {
       });
   }
 
-  enableOpeningDaySlot(dayOfWeek: number, slotNo: number): void {
-    if (dayOfWeek < 0 || dayOfWeek >= 7 || slotNo < 0 || slotNo >= 96) {
-      return;
-    }
+  public addOpeningPeriod(dayOfWeek: number, start: number, end: number): void {
+    console.log('adding opening period: dayOfWeek = ' + dayOfWeek + ', start = ' + start + ', end = ' + end);
 
-    const slots = RestaurantAdminFacade.getOpeningSlots(this.restaurant$.value);
-    const curOpeningPeriod = slots[dayOfWeek][slotNo];
-
-    if (curOpeningPeriod !== undefined)
-      return;
-
-    const prevOpeningPeriod = slotNo >= 1 ? slots[dayOfWeek][slotNo - 1] : undefined;
-    const nextOpeningPeriod = slotNo < 95 ? slots[dayOfWeek][slotNo + 1] : undefined;
-
-    const observables = new Array<Observable<boolean>>();
-
-    if (prevOpeningPeriod === undefined && nextOpeningPeriod === undefined) {
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo),
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo + 1)
-      ));
-    } else if (prevOpeningPeriod !== undefined && nextOpeningPeriod === undefined) {
-      observables.push(this.removeOpeningPeriod(prevOpeningPeriod));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        prevOpeningPeriod.start,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo + 1)
-      ));
-    } else if (prevOpeningPeriod === undefined && nextOpeningPeriod !== undefined) {
-      observables.push(this.removeOpeningPeriod(nextOpeningPeriod));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo),
-        nextOpeningPeriod.end
-      ));
-    } else if (prevOpeningPeriod !== undefined && nextOpeningPeriod !== undefined) {
-      observables.push(this.removeOpeningPeriod(prevOpeningPeriod));
-      observables.push(this.removeOpeningPeriod(nextOpeningPeriod));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        prevOpeningPeriod.start,
-        nextOpeningPeriod.end
-      ));
-    }
-
-    this.sendOpeningPeriodChanges(observables);
-  }
-
-  disableOpeningDaySlot(dayOfWeek: number, slotNo: number): void {
-    if (dayOfWeek < 0 || dayOfWeek >= 7 || slotNo < 0 || slotNo >= 96) {
-      return;
-    }
-
-    const slots = RestaurantAdminFacade.getOpeningSlots(this.restaurant$.value);
-    const curOpeningPeriod = slots[dayOfWeek][slotNo];
-
-    if (curOpeningPeriod === undefined)
-      return;
-
-    const prevOpeningPeriod = slotNo >= 1 ? slots[dayOfWeek][slotNo - 1] : undefined;
-    const nextOpeningPeriod = slotNo < 95 ? slots[dayOfWeek][slotNo + 1] : undefined;
-
-    const observables = new Array<Observable<boolean>>();
-
-    if (prevOpeningPeriod !== curOpeningPeriod && nextOpeningPeriod !== curOpeningPeriod) {
-      observables.push(this.removeOpeningPeriod(curOpeningPeriod));
-    } else if (prevOpeningPeriod === curOpeningPeriod && nextOpeningPeriod !== curOpeningPeriod) {
-      observables.push(this.removeOpeningPeriod(prevOpeningPeriod));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        prevOpeningPeriod.start,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo)
-      ));
-    } else if (prevOpeningPeriod !== curOpeningPeriod && nextOpeningPeriod === curOpeningPeriod) {
-      observables.push(this.removeOpeningPeriod(nextOpeningPeriod));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo + 1),
-        nextOpeningPeriod.end
-      ));
-    } else if (prevOpeningPeriod === curOpeningPeriod && nextOpeningPeriod === curOpeningPeriod) {
-      observables.push(this.removeOpeningPeriod(curOpeningPeriod));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        prevOpeningPeriod.start,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo)
-      ));
-
-      observables.push(this.addOpeningPeriod(
-        dayOfWeek,
-        RestaurantAdminFacade.calcTimeFromSlotNo(slotNo + 1),
-        nextOpeningPeriod.end
-      ));
-    }
-
-    this.sendOpeningPeriodChanges(observables);
-  }
-
-
-
-
-
-  // static functions
-
-  static getOpeningSlots(restaurant: RestaurantModel): Array<Array<OpeningPeriodModel>> {
-    const result: Array<Array<OpeningPeriodModel>> = new Array<Array<OpeningPeriodModel>>(7);
-    for (let i = 0; i < 7; i++) {
-      result[i] = new Array<OpeningPeriodModel>(96);
-    }
-
-    const openingPeriods = restaurant.openingHours;
-    for (let openingPeriod of openingPeriods) {
-      const startSlotNo = this.calcSlotNoFromTime(openingPeriod.start);
-      const endSlotNo = this.calcSlotNoFromTime(openingPeriod.end);
-      let slotCount = endSlotNo - startSlotNo;
-      if (slotCount === 0)
-        slotCount = 1;
-
-      for (let i = 0; i < slotCount; i++) {
-        result[openingPeriod.dayOfWeek][startSlotNo + i] = openingPeriod;
-      }
-    }
-
-    return result;
-  }
-
-  static calcSlotNoFromTime(time: number): number {
-    if (time < this.earliestOpeningTime) {
-      time += 24 * 60;
-    }
-    time -= this.earliestOpeningTime;
-    return Math.floor(time / 15);
-  }
-
-  static calcTimeFromSlotNo(slotNo: number): number {
-    let time = this.earliestOpeningTime + slotNo * 15;
-    if (time >= 24 * 60) {
-      time -= 24 * 60;
-    }
-    return time;
-  }
-
-
-
-
-
-  // private functions
-
-  private removeOpeningPeriod(openingPeriod: OpeningPeriodModel): Observable<boolean> {
-    // return this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
-    //   .pipe(
-    //     tap(() => {
-    //       const index = this.restaurant$.value.openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
-    //       this.restaurant$.value.openingHours.splice(index, 1);
-    //     })
-    //   );
-
-    return new Observable<boolean>(subscriber => {
-      const index = this.restaurant$.value.openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
-      this.restaurant$.value.openingHours.splice(index, 1);
-      subscriber.next(true);
-      console.log('removed opening period for day ' + openingPeriod.dayOfWeek + ' start ' + openingPeriod.start);
-      subscriber.complete();
-    });
-  }
-
-  private addOpeningPeriod(dayOfWeek: number, start: number, end: number): Observable<boolean> {
-    // return this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
-    //   .pipe(
-    //     tap(() => {
-    //       const openingPeriod = new OpeningPeriodModel({
-    //         dayOfWeek: dayOfWeek,
-    //         start: start,
-    //         end: end
-    //       });
-    //       this.restaurant$.value.openingHours.push(openingPeriod);
-    //     })
-    //   );
-
-    return new Observable<boolean>(subscriber => {
-      const openingPeriod = new OpeningPeriodModel({
-        dayOfWeek: dayOfWeek,
-        start: start,
-        end: end
-      });
-      this.restaurant$.value.openingHours.push(openingPeriod);
-      subscriber.next(true);
-      console.log('added opening period for day ' + openingPeriod.dayOfWeek + ' start ' + openingPeriod.start + ' end ' + openingPeriod.end);
-      subscriber.complete();
-    });
-  }
-
-  private sendOpeningPeriodChanges(observables: Array<Observable<boolean>>): void {
     this.isUpdating$.next(true);
-    combineLatest(observables)
+    this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
       .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
+
+        const openingHours = this.restaurant$.value.openingHours;
+        openingHours.push(new OpeningPeriodModel({
+          dayOfWeek: dayOfWeek,
+          start: start,
+          end: end
+        }));
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public changeOpeningPeriod(openingPeriod: OpeningPeriodModel, start: number, end: number): void {
+    console.log('changing opening period: dayOfWeek = ' + openingPeriod.dayOfWeek + ', start = ' + openingPeriod.start + ', end = ' + openingPeriod.end + ', to new start = ' + start + ', new end = ' + end);
+
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
+      .pipe(
+        concatMap(() =>
+          this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, start, end)
+        )
+      )
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const openingHours = this.restaurant$.value.openingHours;
+        const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
+        openingHours[index].start = start;
+        openingHours[index].end = end;
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public removeOpeningPeriod(openingPeriod: OpeningPeriodModel): void {
+    console.log('removing opening period: dayOfWeek = ' + openingPeriod.dayOfWeek + ', start = ' + openingPeriod.start + ', end = ' + openingPeriod.end);
+
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const openingHours = this.restaurant$.value.openingHours;
+        const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
+        openingHours.splice(index, 1);
+
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
