@@ -1,18 +1,14 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
+import {Observable} from "rxjs";
 import {take} from 'rxjs/operators';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
-import {DishCategoryModel} from '../../../shared/models/dish-category.model';
-
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
-
-import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
+import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
 @Component({
   selector: 'app-add-dish-category',
@@ -24,19 +20,17 @@ import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.s
   ]
 })
 export class AddDishCategoryComponent implements OnInit {
-  @Input() public restaurantId: string;
   @Input() public afterCategoryId: string;
   @BlockUI() blockUI: NgBlockUI;
 
   addDishCategoryForm: FormGroup;
-  message: string;
+  message$: Observable<string>;
   submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private restaurantAdminService: RestaurantRestAdminService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private facade: RestaurantAdminFacade
   ) {
     this.addDishCategoryForm = this.formBuilder.group({
       name: ['', Validators.required]
@@ -44,6 +38,7 @@ export class AddDishCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.message$ = this.facade.getUpdateError$();
   }
 
   get f() {
@@ -56,17 +51,11 @@ export class AddDishCategoryComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start('Verarbeite Daten...');
-    this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurantId, data.name, this.afterCategoryId)
+    this.facade.addDishCategory(data.name, this.afterCategoryId)
       .pipe(take(1))
-      .subscribe((id) => {
-        this.blockUI.stop();
-        this.message = undefined;
+      .subscribe(id => {
         this.addDishCategoryForm.reset();
-        this.activeModal.close(new DishCategoryModel({id, name: data.name}));
-      }, (response: HttpErrorResponse) => {
-        this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.activeModal.close(id);
       });
   }
 }

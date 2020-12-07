@@ -1,5 +1,4 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
 
 import {take} from 'rxjs/operators';
 
@@ -9,9 +8,7 @@ import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
-
-import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
+import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
 @Component({
   selector: 'app-remove-dish-category',
@@ -23,7 +20,6 @@ import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.s
   ]
 })
 export class RemoveDishCategoryComponent implements OnInit {
-  @Input() public restaurantId: string;
   @Input() public dishCategory: DishCategoryModel;
   @BlockUI() blockUI: NgBlockUI;
 
@@ -31,8 +27,7 @@ export class RemoveDishCategoryComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private restaurantAdminService: RestaurantRestAdminService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    public facade: RestaurantAdminFacade
   ) {
   }
 
@@ -40,16 +35,10 @@ export class RemoveDishCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-    this.blockUI.start('Verarbeite Daten...');
-    this.restaurantAdminService.removeDishCategoryFromRestaurantAsync(this.restaurantId, this.dishCategory.id)
+    this.facade.removeDishCategory(this.dishCategory.id)
       .pipe(take(1))
       .subscribe(() => {
-        this.blockUI.stop();
-        this.message = undefined;
-        this.activeModal.close('Close click');
-      }, (response: HttpErrorResponse) => {
-        this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.activeModal.close();
       });
   }
 }

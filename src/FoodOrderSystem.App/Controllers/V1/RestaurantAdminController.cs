@@ -461,7 +461,7 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<AddDishCategoryToRestaurantCommand, Guid>(
                 new AddDishCategoryToRestaurantCommand(new RestaurantId(restaurantId), model.Name,
-                    new DishCategoryId(model.AfterCategoryId)),
+                    model.AfterCategoryId.HasValue ? new DishCategoryId(model.AfterCategoryId.Value) : null),
                 new UserId(currentUserId)
             );
 

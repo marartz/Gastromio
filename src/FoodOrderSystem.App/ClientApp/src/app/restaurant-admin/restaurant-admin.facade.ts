@@ -20,6 +20,7 @@ import {PaymentMethodModel} from "../shared/models/payment-method.model";
 import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
 
 import {RestaurantRestAdminService} from "./services/restaurant-rest-admin.service";
+import {DishModel} from "../shared/models/dish.model";
 
 @Injectable()
 export class RestaurantAdminFacade {
@@ -554,6 +555,132 @@ export class RestaurantAdminFacade {
           return throwError(response);
         })
       );
+  }
+
+  public isFirstDishCategory(dishCategory: DishCategoryModel): boolean {
+    const pos = this.dishCategories$.value.findIndex(en => en.id === dishCategory.id);
+    return pos === 0;
+  }
+
+  public isLastDishCategory(dishCategory: DishCategoryModel): boolean {
+    const pos = this.dishCategories$.value.findIndex(en => en.id === dishCategory.id);
+    return pos === this.dishCategories$.value.length - 1;
+  }
+
+  public addDishCategory(name: string, afterCategoryId: string): Observable<string> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurant$.value.id, name, afterCategoryId)
+      .pipe(
+        tap(id => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const index = this.dishCategories$.value.findIndex(en => en.id === afterCategoryId);
+          const dishCategory = new DishCategoryModel({
+            id: id,
+            name: name,
+            dishes: new Array<DishModel>()
+          });
+          this.dishCategories$.value.splice(index + 1, 0, dishCategory);
+
+          this.dishCategories$.next(this.dishCategories$.value);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public changeDishCategory(dishCategoryId: string, name: string): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.changeDishCategoryOfRestaurantAsync(this.restaurant$.value.id, dishCategoryId, name)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const index = this.dishCategories$.value.findIndex(en => en.id === dishCategoryId);
+          this.dishCategories$.value[index].name = name;
+
+          this.dishCategories$.next(this.dishCategories$.value);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public removeDishCategory(dishCategoryId: string): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.removeDishCategoryFromRestaurantAsync(this.restaurant$.value.id, dishCategoryId)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const index = this.dishCategories$.value.findIndex(en => en.id === dishCategoryId);
+          this.dishCategories$.value.splice(index, 1);
+
+          this.dishCategories$.next(this.dishCategories$.value);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public decOrderOfDishCategory(dishCategory: DishCategoryModel): void {
+    const dishCategories = this.dishCategories$.value;
+
+    const pos = dishCategories.findIndex(en => en.id === dishCategory.id);
+    if (pos < 1) {
+      return;
+    }
+
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.decOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategory.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        [dishCategories[pos - 1], dishCategories[pos]] = [dishCategories[pos], dishCategories[pos - 1]];
+
+        this.dishCategories$.next(this.dishCategories$.value);
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public incOrderOfDishCategory(dishCategory: DishCategoryModel): void {
+    const dishCategories = this.dishCategories$.value;
+
+    const pos = dishCategories.findIndex(en => en.id === dishCategory.id);
+    if (pos >= dishCategories.length - 1) {
+      return;
+    }
+
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.incOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategory.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        [dishCategories[pos], dishCategories[pos + 1]] = [dishCategories[pos + 1], dishCategories[pos]];
+
+        this.dishCategories$.next(this.dishCategories$.value);
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
   }
 
 }

@@ -156,41 +156,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 //       });
 //   }
 //
-//   openAddDishCategoryForm(): void {
-//     const modalRef = this.modalService.open(AddDishCategoryComponent);
-//     modalRef.componentInstance.restaurantId = this.restaurant.id;
-//     if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
-//       modalRef.componentInstance.afterCategoryId = this.dishCategories[this.dishCategories.length - 1].id;
-//     }
-//     modalRef.result.then((result: DishCategoryModel) => {
-//       this.dishCategories.push(result);
-//       this.activeDishCategoryId = result.id;
-//     }, () => {
-//       // TODO
-//     });
-//   }
-//
-//   openChangeDishCategoryForm(dishCategory: DishCategoryModel): void {
-//     const modalRef = this.modalService.open(ChangeDishCategoryComponent);
-//     modalRef.componentInstance.restaurantId = this.restaurant.id;
-//     modalRef.componentInstance.dishCategory = dishCategory;
-//     modalRef.result.then((result: DishCategoryModel) => {
-//       dishCategory.name = result.name;
-//     }, () => {
-//       // TODO
-//     });
-//   }
-//
-//   isFirstDishCategory(dishCategory: DishCategoryModel): boolean {
-//     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
-//     return pos === 0;
-//   }
-//
-//   isLastDishCategory(dishCategory: DishCategoryModel): boolean {
-//     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
-//     return pos === this.dishCategories.length - 1;
-//   }
-//
 //   incOrderOfDishCategory(dishCategory: DishCategoryModel): void {
 //     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
 //     if (pos >= this.dishCategories.length - 1) {
@@ -225,20 +190,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 //         this.blockUI.stop();
 //         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
 //       });
-//   }
-//
-//   openRemoveDishCategoryForm(dishCategory: DishCategoryModel): void {
-//     const modalRef = this.modalService.open(RemoveDishCategoryComponent);
-//     modalRef.componentInstance.restaurantId = this.restaurant.id;
-//     modalRef.componentInstance.dishCategory = dishCategory;
-//     modalRef.result.then(() => {
-//       const index = this.dishCategories.findIndex(en => en.id === dishCategory.id);
-//       if (index > -1) {
-//         this.dishCategories.splice(index, 1);
-//       }
-//     }, () => {
-//       // TODO
-//     });
 //   }
 //
 //   openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {

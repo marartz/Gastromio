@@ -1,4 +1,4 @@
-<block-ui>
+<block-ui delayStart="500">
     <div class="modal-overlay">
         <div class="modal_v3">
             <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div *ngIf="dish.variants.length >= 2">
-                            
+
                                 <table class="table-sm">
                                     <thead>
                                         <tr>
@@ -94,8 +94,8 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            
-                            
+
+
                         </div>
                     </div>
                     <div id="feedback">
