@@ -60,23 +60,43 @@ export class DishManagementComponent implements OnInit, OnDestroy {
 
 
   public isFirstDishCategory(dishCategory: DishCategoryModel): boolean {
-    return this.facade.isFirstDishCategory(dishCategory);
+    const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
+    return pos === 0;
   }
 
   public isLastDishCategory(dishCategory: DishCategoryModel): boolean {
-    return this.facade.isLastDishCategory(dishCategory);
+    const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
+    return pos === this.dishCategories.length - 1;
   }
 
   public isFirstDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
-    return false;
+    const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
+    return pos === 0;
   }
 
   public isLastDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
-    return false;
+    const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
+    return pos === dishCategory.dishes.length - 1;
   }
 
   public getPricesOfDish(dish: DishModel): string {
-    return "";
+    if (!dish.variants || dish.variants.length === 0) {
+      return '';
+    }
+
+    if (dish.variants.length === 1) {
+      return '€' + dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
+    }
+
+    let result = '';
+    for (const variant of dish.variants) {
+      if (result.length > 0) {
+        result += '; ';
+      }
+      result += variant.name + ' €' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
+    }
+
+    return result;
   }
 
 
@@ -107,11 +127,11 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   }
 
   public decOrderOfDishCategory(dishCategory: DishCategoryModel): void {
-    this.facade.decOrderOfDishCategory(dishCategory);
+    this.facade.decOrderOfDishCategory(dishCategory.id);
   }
 
   public incOrderOfDishCategory(dishCategory: DishCategoryModel): void {
-    this.facade.incOrderOfDishCategory(dishCategory);
+    this.facade.incOrderOfDishCategory(dishCategory.id);
   }
 
   public openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
@@ -123,11 +143,11 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   }
 
   public decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
-
+    this.facade.decOrderOfDish(dishCategory.id, dish.id);
   }
 
   public incOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
-
+    this.facade.incOrderOfDish(dishCategory.id, dish.id);
   }
 
 }

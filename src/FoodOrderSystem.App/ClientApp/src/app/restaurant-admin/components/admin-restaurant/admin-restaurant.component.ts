@@ -156,42 +156,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 //       });
 //   }
 //
-//   incOrderOfDishCategory(dishCategory: DishCategoryModel): void {
-//     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
-//     if (pos >= this.dishCategories.length - 1) {
-//       return;
-//     }
-//
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.incOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         [this.dishCategories[pos], this.dishCategories[pos + 1]] = [this.dishCategories[pos + 1], this.dishCategories[pos]];
-//         this.blockUI.stop();
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
-//
-//   decOrderOfDishCategory(dishCategory: DishCategoryModel): void {
-//     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);
-//     if (pos < 1) {
-//       return;
-//     }
-//
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.decOrderOfDishCategoryAsync(this.restaurant.id, dishCategory.id)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         [this.dishCategories[pos - 1], this.dishCategories[pos]] = [this.dishCategories[pos], this.dishCategories[pos - 1]];
-//         this.blockUI.stop();
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
-//
 //   openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
 //     const isNew = dish === undefined;
 //
@@ -211,71 +175,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 //     });
 //   }
 //
-//   isFirstDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
-//     const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
-//     return pos === 0;
-//   }
-//
-//   getPricesOfDish(dish: DishModel): string {
-//     if (!dish.variants || dish.variants.length === 0) {
-//       return '';
-//     }
-//
-//     if (dish.variants.length === 1) {
-//       return '€' + dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
-//     }
-//
-//     let result = '';
-//     for (const variant of dish.variants) {
-//       if (result.length > 0) {
-//         result += '; ';
-//       }
-//       result += variant.name + ' €' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
-//     }
-//
-//     return result;
-//   }
-//
-//   isLastDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
-//     const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
-//     return pos === dishCategory.dishes.length - 1;
-//   }
-//
-//   incOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
-//     const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
-//     if (pos >= dishCategory.dishes.length - 1) {
-//       return;
-//     }
-//
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.incOrderOfDishAsync(this.restaurant.id, dish.id)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         [dishCategory.dishes[pos], dishCategory.dishes[pos + 1]] = [dishCategory.dishes[pos + 1], dishCategory.dishes[pos]];
-//         this.blockUI.stop();
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
-//
-//   decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
-//     const pos = dishCategory.dishes.findIndex(en => en.id === dish.id);
-//     if (pos < 1) {
-//       return;
-//     }
-//
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.decOrderOfDishAsync(this.restaurant.id, dish.id)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         [dishCategory.dishes[pos - 1], dishCategory.dishes[pos]] = [dishCategory.dishes[pos], dishCategory.dishes[pos - 1]];
-//         this.blockUI.stop();
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
 //
 //   openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
 //     const modalRef = this.modalService.open(RemoveDishComponent);
