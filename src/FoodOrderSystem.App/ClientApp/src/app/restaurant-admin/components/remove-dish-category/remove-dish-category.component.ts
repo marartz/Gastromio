@@ -9,6 +9,7 @@ import {BlockUI, NgBlockUI} from 'ng-block-ui';
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-remove-dish-category',
@@ -22,8 +23,6 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 export class RemoveDishCategoryComponent implements OnInit {
   @Input() public dishCategory: DishCategoryModel;
   @BlockUI() blockUI: NgBlockUI;
-
-  message: string;
 
   constructor(
     public activeModal: NgbActiveModal,

@@ -674,6 +674,60 @@ export class RestaurantAdminFacade {
       });
   }
 
+  public addOrChangedDish(dishCategoryId: string, dish: DishModel): Observable<string> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurant$.value.id, dishCategoryId, dish)
+      .pipe(
+        tap(dishId => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const dishCategories = this.dishCategories$.value;
+          const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+          const dishCategory = dishCategories[dishCategoryIndex];
+
+          if (dish.id === undefined) {
+            dish.id = dishId;
+            dishCategory.dishes.push(dish);
+          } else {
+            const dishIndex = dishCategory.dishes.findIndex(en => en.id === dish.id);
+            dishCategory.dishes[dishIndex] = dish;
+          }
+
+          this.dishCategories$.next(this.dishCategories$.value);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      )
+  }
+
+  public removeDish(dishCategoryId: string, dishId: string): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.removeDishFromRestaurantAsync(this.restaurant$.value.id, dishCategoryId, dishId)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const dishCategories = this.dishCategories$.value;
+          const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+          const dishCategory = dishCategories[dishCategoryIndex];
+          const dishIndex = dishCategory.dishes.findIndex(en => en.id === dishId);
+          dishCategory.dishes.splice(dishIndex, 1);
+
+          this.dishCategories$.next(this.dishCategories$.value);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      )
+  }
+
   public decOrderOfDish(dishCategoryId: string, dishId: string): void {
     const dishCategories = this.dishCategories$.value;
     const indexDishCategory = dishCategories.findIndex(en => en.id === dishCategoryId);

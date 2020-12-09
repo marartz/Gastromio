@@ -100,7 +100,7 @@
                     </div>
                     <div id="feedback">
                         <div class="help-text" *ngIf="submitted && f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für das Gericht an.</span></div>
-                        <div class="help-text" *ngIf="message !== undefined">{{message}}</div>
+                        <div class="help-text" *ngIf="(message$ | async) !== undefined">{{message$ | async}}</div>
                     </div>
                     <div id="submit" style="margin-bottom: 0px;">
                         <button type="button" (click)="onAddVariant()" style="border: 2px solid #ADCCCB; background-color: #FFF; color: #ADCCCB;">Neue Variante</button>

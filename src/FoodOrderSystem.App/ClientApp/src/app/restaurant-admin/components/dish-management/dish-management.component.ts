@@ -10,8 +10,10 @@ import {DishModel} from "../../../shared/models/dish.model";
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
 import {AddDishCategoryComponent} from "../add-dish-category/add-dish-category.component";
-import {RemoveDishCategoryComponent} from "../remove-dish-category/remove-dish-category.component";
 import {ChangeDishCategoryComponent} from "../change-dish-category/change-dish-category.component";
+import {EditDishComponent} from "../edit-dish/edit-dish.component";
+import {RemoveDishCategoryComponent} from "../remove-dish-category/remove-dish-category.component";
+import {RemoveDishComponent} from "../remove-dish/remove-dish.component";
 
 @Component({
   selector: 'app-dish-management',
@@ -135,11 +137,17 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   }
 
   public openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
-
+    const modalRef = this.modalService.open(EditDishComponent);
+    modalRef.componentInstance.dishCategoryId = dishCategory.id;
+    modalRef.componentInstance.dish = dish;
+    modalRef.result.then(() => {}, () => {});
   }
 
   public openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
-
+    const modalRef = this.modalService.open(RemoveDishComponent);
+    modalRef.componentInstance.dishCategoryId = dishCategory.id;
+    modalRef.componentInstance.dish = dish;
+    modalRef.result.then(() => {}, () => {});
   }
 
   public decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {

@@ -36,6 +36,8 @@ export class ChangeDishCategoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.message$ = this.facade.getUpdateError$();
+
     this.changeDishCategoryForm = this.formBuilder.group({
       name: [this.dishCategory.name, Validators.required]
     });
