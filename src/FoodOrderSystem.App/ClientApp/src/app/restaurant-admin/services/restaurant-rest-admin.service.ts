@@ -196,28 +196,6 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
-  public addCuisineToRestaurantAsync(id: string, cuisineId: string): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addcuisine', {cuisineId}, httpOptions);
-  }
-
-  public removeCuisineFromRestaurantAsync(id: string, cuisineId: string): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removecuisine', {cuisineId}, httpOptions);
-  }
-
   public addPaymentMethodToRestaurantAsync(id: string, paymentMethodId: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({

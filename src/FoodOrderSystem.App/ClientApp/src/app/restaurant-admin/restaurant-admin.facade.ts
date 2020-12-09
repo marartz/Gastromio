@@ -6,6 +6,7 @@ import {catchError, map, take, tap} from "rxjs/operators";
 
 import {CuisineModel} from "../shared/models/cuisine.model";
 import {DishCategoryModel} from "../shared/models/dish-category.model";
+import {DishModel} from "../shared/models/dish.model";
 import {
   AddressModel,
   ContactInfoModel,
@@ -20,7 +21,6 @@ import {PaymentMethodModel} from "../shared/models/payment-method.model";
 import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
 
 import {RestaurantRestAdminService} from "./services/restaurant-rest-admin.service";
-import {DishModel} from "../shared/models/dish.model";
 
 @Injectable()
 export class RestaurantAdminFacade {
@@ -225,19 +225,6 @@ export class RestaurantAdminFacade {
       );
   }
 
-  public getCuisineStatus$(): Observable<{}> {
-    return this.restaurant$.asObservable()
-      .pipe(
-        map(restaurant => {
-          const result = {};
-          for (let cuisine of this.cuisines$.value) {
-            result[cuisine.id] = restaurant.cuisines.some(en => en.id === cuisine.id);
-          }
-          return result;
-        })
-      );
-  }
-
   public getPaymentMethodStatus$(): Observable<{}> {
     return this.restaurant$.asObservable()
       .pipe(
@@ -396,47 +383,6 @@ export class RestaurantAdminFacade {
         });
 
         this.restaurant$.value.hygienicHandling = serviceInfo.hygienicHandling;
-
-        this.restaurant$.next(this.restaurant$.value)
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
-      });
-  }
-
-  public toggleCuisine(cuisineId: string): void {
-    this.isUpdating$.next(true);
-
-    let observable: Observable<boolean>;
-
-    const isCurrentlyEnabled = this.restaurant$.value.cuisines.some(en => en.id === cuisineId);
-    if (isCurrentlyEnabled) {
-      observable = this.restaurantAdminService.removeCuisineFromRestaurantAsync(this.restaurant$.value.id, cuisineId);
-    } else {
-      observable = this.restaurantAdminService.addCuisineToRestaurantAsync(this.restaurant$.value.id, cuisineId);
-    }
-
-    observable
-      .pipe(take(1))
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
-
-        if (isCurrentlyEnabled) {
-          this.restaurant$.value.cuisines = this.restaurant$.value.cuisines.filter(en => en.id !== cuisineId);
-        } else {
-          const cuisine = this.cuisines$.value.find(en => en.id === cuisineId);
-          this.restaurant$.value.cuisines.push(cuisine);
-          this.restaurant$.value.cuisines.sort((a, b) => {
-            if (a.name < b.name) {
-              return -1;
-            }
-            if (a.name > b.name) {
-              return 1;
-            }
-            return 0;
-          });
-        }
 
         this.restaurant$.next(this.restaurant$.value)
       }, (response: HttpErrorResponse) => {

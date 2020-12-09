@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
-using FoodOrderSystem.Core.Application.Commands.ActivateRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddAdminToRestaurant;
-using FoodOrderSystem.Core.Application.Commands.AddCuisineToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
@@ -18,15 +16,12 @@ using FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantContactInfo;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantImage;
-using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantServiceInfo;
-using FoodOrderSystem.Core.Application.Commands.DeactivateRestaurant;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.RemoveAdminFromRestaurant;
-using FoodOrderSystem.Core.Application.Commands.RemoveCuisineFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant;
@@ -40,7 +35,6 @@ using FoodOrderSystem.Core.Application.Queries.GetRestaurantById;
 using FoodOrderSystem.Core.Application.Queries.RestAdminMyRestaurants;
 using FoodOrderSystem.Core.Application.Queries.SearchForUsers;
 using FoodOrderSystem.Core.Application.Services;
-using FoodOrderSystem.Core.Domain.Model.Cuisine;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.DishCategory;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
@@ -333,42 +327,6 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<RemoveOpeningPeriodFromRestaurantCommand, bool>(
                 new RemoveOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/addcuisine")]
-        [HttpPost]
-        public async Task<IActionResult> PostAddCuisineAsync(Guid restaurantId,
-            [FromBody] AddCuisineToRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<AddCuisineToRestaurantCommand, bool>(
-                new AddCuisineToRestaurantCommand(new RestaurantId(restaurantId), new CuisineId(model.CuisineId)),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/removecuisine")]
-        [HttpPost]
-        public async Task<IActionResult> PostRemoveCuisineAsync(Guid restaurantId,
-            [FromBody] RemoveCuisineFromRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<RemoveCuisineFromRestaurantCommand, bool>(
-                new RemoveCuisineFromRestaurantCommand(new RestaurantId(restaurantId), new CuisineId(model.CuisineId)),
                 new UserId(currentUserId)
             );
 

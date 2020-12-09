@@ -43,6 +43,18 @@ export class RestaurantSysAdminService {
     return this.http.post<RestaurantModel>(this.baseUrl + '/restaurants', {name}, httpOptions);
   }
 
+  public changeRestaurantNameAsync(id: string, name: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changename',
+      {name}, httpOptions);
+  }
+
   public activateRestaurantAsync(id: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -65,6 +77,28 @@ export class RestaurantSysAdminService {
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/deactivate',
       {}, httpOptions);
+  }
+
+  public addCuisineToRestaurantAsync(id: string, cuisineId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addcuisine', {cuisineId}, httpOptions);
+  }
+
+  public removeCuisineFromRestaurantAsync(id: string, cuisineId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removecuisine', {cuisineId}, httpOptions);
   }
 
   public enableSupportForRestaurantAsync(restaurantId: string): Observable<void> {

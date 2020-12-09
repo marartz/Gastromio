@@ -15,8 +15,6 @@ import {AddDishCategoryComponent} from './components/add-dish-category/add-dish-
 import {AdminMyRestaurantsComponent} from './components/admin-my-restaurants/admin-my-restaurants.component';
 import {AdminRestaurantComponent} from './components/admin-restaurant/admin-restaurant.component';
 import {ChangeDishCategoryComponent} from './components/change-dish-category/change-dish-category.component';
-import {ChangeRestaurantNameComponent} from './components/change-restaurant-name/change-restaurant-name.component';
-import {CuisineSettingsComponent} from './components/cuisine-settings/cuisine-settings.component';
 import {DishManagementComponent} from './components/dish-management/dish-management.component';
 import {EditDishComponent} from './components/edit-dish/edit-dish.component';
 import {GeneralSettingsComponent} from "./components/general-settings/general-settings.component";
@@ -47,8 +45,6 @@ import {RestaurantRestAdminService} from './services/restaurant-rest-admin.servi
     AdminMyRestaurantsComponent,
     AdminRestaurantComponent,
     ChangeDishCategoryComponent,
-    ChangeRestaurantNameComponent,
-    CuisineSettingsComponent,
     EditDishComponent,
     GeneralSettingsComponent,
     ImageSettingsComponent,

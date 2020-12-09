@@ -15,6 +15,7 @@ import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.ser
 
 import {AddRestaurantComponent} from '../add-restaurant/add-restaurant.component';
 import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.component';
+import {ChangeRestaurantGeneralSettingsComponent} from "../change-restaurant-general-settings/change-restaurant-general-settings.component";
 
 @Component({
   selector: 'app-admin-restaurants',
@@ -73,6 +74,15 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   openAddRestaurantForm(): void {
     const modalRef = this.modalService.open(AddRestaurantComponent);
+    modalRef.result.then(() => {
+      this.pagingComponent.triggerFetchPage();
+    }, () => {
+    });
+  }
+
+  openChangeRestaurantGeneralSettingsForm(restaurant: RestaurantModel): void {
+    const modalRef = this.modalService.open(ChangeRestaurantGeneralSettingsComponent);
+    modalRef.componentInstance.restaurant = restaurant;
     modalRef.result.then(() => {
       this.pagingComponent.triggerFetchPage();
     }, () => {
