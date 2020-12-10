@@ -24,6 +24,7 @@ import {AdminRestaurantImportComponent} from './components/admin-restaurant-impo
 import {AdminRestaurantsComponent} from './components/admin-restaurants/admin-restaurants.component';
 import {AdminUsersComponent} from './components/admin-users/admin-users.component';
 import {ChangeCuisineComponent} from './components/change-cuisine/change-cuisine.component';
+import {ChangeRestaurantAccessSettingsComponent} from "./components/change-restaurant-access-settings/change-restaurant-access-settings.component";
 import {ChangeRestaurantGeneralSettingsComponent} from "./components/change-restaurant-general-settings/change-restaurant-general-settings.component";
 import {ChangeUserDetailsComponent} from './components/change-user-details/change-user-details.component';
 import {ChangeUserPasswordComponent} from './components/change-user-password/change-user-password.component';
@@ -52,6 +53,7 @@ import {RemoveUserComponent} from './components/remove-user/remove-user.componen
     AdminRestaurantsComponent,
     AdminUsersComponent,
     ChangeCuisineComponent,
+    ChangeRestaurantAccessSettingsComponent,
     ChangeRestaurantGeneralSettingsComponent,
     ChangeUserDetailsComponent,
     ChangeUserPasswordComponent,

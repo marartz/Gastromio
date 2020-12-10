@@ -24,7 +24,7 @@ namespace FoodOrderSystem.Core.Application.Commands.RemoveAdminFromRestaurant
             if (currentUser == null)
                 return FailureResult<bool>.Unauthorized();
 
-            if (currentUser.Role < Role.RestaurantAdmin)
+            if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<bool>.Forbidden();
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);

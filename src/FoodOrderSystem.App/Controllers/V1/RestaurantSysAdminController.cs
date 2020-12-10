@@ -6,6 +6,7 @@ using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
 using FoodOrderSystem.Core.Application.Commands.ActivateRestaurant;
+using FoodOrderSystem.Core.Application.Commands.AddAdminToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddCuisineToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantName;
@@ -14,10 +15,12 @@ using FoodOrderSystem.Core.Application.Commands.DisableSupportForRestaurant;
 using FoodOrderSystem.Core.Application.Commands.EnableSupportForRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ImportDishData;
 using FoodOrderSystem.Core.Application.Commands.ImportRestaurantData;
+using FoodOrderSystem.Core.Application.Commands.RemoveAdminFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveCuisineFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveRestaurant;
 using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Application.Queries;
+using FoodOrderSystem.Core.Application.Queries.SearchForUsers;
 using FoodOrderSystem.Core.Application.Queries.SysAdminSearchForRestaurants;
 using FoodOrderSystem.Core.Application.Services;
 using FoodOrderSystem.Core.Domain.Model.Cuisine;
@@ -130,6 +133,42 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<RemoveCuisineFromRestaurantCommand, bool>(
                 new RemoveCuisineFromRestaurantCommand(new RestaurantId(restaurantId), new CuisineId(model.CuisineId)),
+                new UserId(currentUserId)
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/addadmin")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddAdminAsync(Guid restaurantId,
+            [FromBody] AddAdminToRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<AddAdminToRestaurantCommand, bool>(
+                new AddAdminToRestaurantCommand(new RestaurantId(restaurantId), new UserId(model.UserId)),
+                new UserId(currentUserId)
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/removeadmin")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveAdminAsync(Guid restaurantId,
+            [FromBody] RemoveAdminFromRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<RemoveAdminFromRestaurantCommand, bool>(
+                new RemoveAdminFromRestaurantCommand(new RestaurantId(restaurantId), new UserId(model.UserId)),
                 new UserId(currentUserId)
             );
 

@@ -77,17 +77,6 @@ export class RestaurantRestAdminService {
     return this.http.get<PaymentMethodModel[]>(this.baseUrl + '/paymentmethods', httpOptions);
   }
 
-  public searchForUsersAsync(search: string): Observable<UserModel[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.get<UserModel[]>(this.baseUrl + '/users?search=' + encodeURIComponent(search), httpOptions);
-  }
-
   public changeRestaurantImageAsync(id: string, type: string, image: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -218,28 +207,6 @@ export class RestaurantRestAdminService {
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removepaymentmethod',
       {paymentMethodId}, httpOptions);
-  }
-
-  public addAdminToRestaurantAsync(id: string, userId: string): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addadmin', {userId}, httpOptions);
-  }
-
-  public removeAdminFromRestaurantAsync(id: string, userId: string): Observable<boolean> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeadmin', {userId}, httpOptions);
   }
 
   public addDishCategoryToRestaurantAsync(id: string, name: string, afterCategoryId: string): Observable<string> {

@@ -2,8 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
+import {map} from "rxjs/operators";
 
 import {RestaurantModel} from '../../shared/models/restaurant.model';
+import {UserModel} from "../../shared/models/user.model";
+
 import {PagingModel} from '../../shared/components/pagination/paging.model';
 
 import {AuthService} from '../../auth/services/auth.service';
@@ -30,6 +33,22 @@ export class RestaurantSysAdminService {
     };
     return this.http.get<PagingModel<RestaurantModel>>(this.baseUrl + '/restaurants?search=' + encodeURIComponent(search)
       + '&skip=' + skip + '&take=' + take, httpOptions);
+  }
+
+  public searchForUsersAsync(search: string): Observable<UserModel[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.get<PagingModel<UserModel>>(this.baseUrl + '/users?search=' + encodeURIComponent(search), httpOptions)
+      .pipe(
+        map(pagingModel => {
+          return pagingModel.items;
+        })
+      );
   }
 
   public addRestaurantAsync(name: string): Observable<RestaurantModel> {
@@ -99,6 +118,28 @@ export class RestaurantSysAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removecuisine', {cuisineId}, httpOptions);
+  }
+
+  public addAdminToRestaurantAsync(id: string, userId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addadmin', {userId}, httpOptions);
+  }
+
+  public removeAdminFromRestaurantAsync(id: string, userId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeadmin', {userId}, httpOptions);
   }
 
   public enableSupportForRestaurantAsync(restaurantId: string): Observable<void> {

@@ -26,7 +26,7 @@ namespace FoodOrderSystem.Core.Application.Queries.SearchForUsers
             if (currentUser == null)
                 return FailureResult<PagingDTO<UserDTO>>.Unauthorized();
 
-            if (currentUser.Role < Role.RestaurantAdmin)
+            if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<PagingDTO<UserDTO>>.Forbidden();
 
             var (total, items) = await userRepository.SearchPagedAsync(query.SearchPhrase, query.Role, query.Skip,

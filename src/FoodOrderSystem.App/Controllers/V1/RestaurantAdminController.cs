@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
-using FoodOrderSystem.Core.Application.Commands.AddAdminToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
@@ -21,7 +20,6 @@ using FoodOrderSystem.Core.Application.Commands.DecOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDishCategory;
-using FoodOrderSystem.Core.Application.Commands.RemoveAdminFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant;
@@ -33,7 +31,6 @@ using FoodOrderSystem.Core.Application.Queries.GetAllPaymentMethods;
 using FoodOrderSystem.Core.Application.Queries.GetDishesOfRestaurant;
 using FoodOrderSystem.Core.Application.Queries.GetRestaurantById;
 using FoodOrderSystem.Core.Application.Queries.RestAdminMyRestaurants;
-using FoodOrderSystem.Core.Application.Queries.SearchForUsers;
 using FoodOrderSystem.Core.Application.Services;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.DishCategory;
@@ -140,27 +137,6 @@ namespace FoodOrderSystem.App.Controllers.V1
                 await queryDispatcher.PostAsync<GetAllPaymentMethodsQuery, ICollection<PaymentMethodDTO>>(
                     new GetAllPaymentMethodsQuery(), new UserId(currentUserId));
             return ResultHelper.HandleResult(queryResult, failureMessageService);
-        }
-
-        [Route("users")]
-        [HttpGet]
-        public async Task<IActionResult> SearchForUsersAsync(string search)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var query = new SearchForUsersQuery(search, Role.RestaurantAdmin, 0, 20);
-
-            var queryResult =
-                await queryDispatcher
-                    .PostAsync<SearchForUsersQuery, PagingDTO<UserDTO>>(query, new UserId(currentUserId));
-
-            if (queryResult.IsFailure)
-                return ResultHelper.HandleResult(queryResult, failureMessageService);
-
-            return Ok(queryResult.Value.Items);
         }
 
         [Route("restaurants/{restaurantId}/changeimage")]
@@ -365,42 +341,6 @@ namespace FoodOrderSystem.App.Controllers.V1
             var commandResult = await commandDispatcher.PostAsync<RemovePaymentMethodFromRestaurantCommand, bool>(
                 new RemovePaymentMethodFromRestaurantCommand(new RestaurantId(restaurantId),
                     new PaymentMethodId(model.PaymentMethodId)),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/addadmin")]
-        [HttpPost]
-        public async Task<IActionResult> PostAddAdminAsync(Guid restaurantId,
-            [FromBody] AddAdminToRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<AddAdminToRestaurantCommand, bool>(
-                new AddAdminToRestaurantCommand(new RestaurantId(restaurantId), new UserId(model.UserId)),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/removeadmin")]
-        [HttpPost]
-        public async Task<IActionResult> PostRemoveAdminAsync(Guid restaurantId,
-            [FromBody] RemoveAdminFromRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<RemoveAdminFromRestaurantCommand, bool>(
-                new RemoveAdminFromRestaurantCommand(new RestaurantId(restaurantId), new UserId(model.UserId)),
                 new UserId(currentUserId)
             );
 

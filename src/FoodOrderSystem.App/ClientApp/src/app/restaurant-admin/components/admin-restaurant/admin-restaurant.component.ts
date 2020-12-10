@@ -57,8 +57,6 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       const restaurantId = params.get('restaurantId');
       this.facade.initialize(restaurantId);
     });
-
-    //         this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
   }
 
   ngOnDestroy() {
@@ -67,65 +65,5 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   selectTab(tab: string): void {
     this.facade.selectTab(tab);
   }
-
-//   searchForUser = (text: Observable<string>) =>
-//     text.pipe(
-//       debounceTime(200),
-//       distinctUntilChanged(),
-//       switchMap(term => term.length < 2 ? of([]) : this.restaurantRestAdminService.searchForUsersAsync(term)),
-//       take(10)
-//     )
-//
-//   formatUser(user: UserModel): string {
-//     return user.email;
-//   }
-//
-//   addSelectedUser(): void {
-//     if (this.userToBeAdded === undefined) {
-//       return;
-//     }
-//
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.addAdminToRestaurantAsync(this.restaurant.id, this.userToBeAdded.id)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         this.blockUI.stop();
-//         this.formError = undefined;
-//
-//         if (this.restaurant.administrators.findIndex(en => en.id === this.userToBeAdded.id) > -1) {
-//           return;
-//         }
-//
-//         this.restaurant.administrators.push(this.userToBeAdded);
-//         this.restaurant.administrators.sort((a, b) => {
-//           if (a.email < b.email) {
-//             return -1;
-//           }
-//           if (a.email > b.email) {
-//             return 1;
-//           }
-//           return 0;
-//         });
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
-//
-//   removeUser(user: UserModel): void {
-//     this.blockUI.start('Verarbeite Daten...');
-//     this.restaurantRestAdminService.removeAdminFromRestaurantAsync(this.restaurant.id, user.id)
-//       .pipe(take(1))
-//       .subscribe(() => {
-//         this.blockUI.stop();
-//         this.formError = undefined;
-//         const index = this.restaurant.administrators.findIndex(en => en.id === user.id);
-//         this.restaurant.administrators.splice(index, 1);
-//       }, (response: HttpErrorResponse) => {
-//         this.blockUI.stop();
-//         this.formError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-//       });
-//   }
-//
 
 }
