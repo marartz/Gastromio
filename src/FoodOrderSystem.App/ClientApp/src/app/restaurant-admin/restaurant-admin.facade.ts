@@ -10,7 +10,7 @@ import {DishModel} from "../shared/models/dish.model";
 import {
   AddressModel,
   ContactInfoModel,
-  DeliveryInfoModel, OpeningPeriodModel,
+  DeliveryInfoModel, ExternalMenu, OpeningPeriodModel,
   PickupInfoModel,
   ReservationInfoModel,
   RestaurantModel,
@@ -355,6 +355,23 @@ export class RestaurantAdminFacade {
       });
   }
 
+  public changeSupportedOrderMode(supportedOrderMode: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.changeSupportedOrderMode(this.restaurant$.value.id, supportedOrderMode)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        this.restaurant$.value.supportedOrderMode = supportedOrderMode;
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
   public changeServiceInfo(serviceInfo: ServiceInfoModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantServiceInfoAsync(this.restaurant$.value.id, serviceInfo)
@@ -501,6 +518,58 @@ export class RestaurantAdminFacade {
           return throwError(response);
         })
       );
+  }
+
+  public addOrChangeExternalMenu(externalMenuId: string, name: string, description: string, url: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.addOrChangeExternalMenu(this.restaurant$.value.id, externalMenuId, name, description, url)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const index = this.restaurant$.value.externalMenus?.findIndex(en => en.id === externalMenuId) ?? -1;
+        if (index < 0) {
+          if (!this.restaurant$.value.externalMenus)
+            this.restaurant$.value.externalMenus = new Array<ExternalMenu>();
+          this.restaurant$.value.externalMenus.push(new ExternalMenu({
+            id: externalMenuId,
+            name: name,
+            description: description,
+            url: url
+          }));
+        } else {
+          const externalMenu = this.restaurant$.value.externalMenus[index];
+          externalMenu.name = name;
+          externalMenu.description = description;
+          externalMenu.url = url;
+        }
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public removeExternalMenu(externalMenuId: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.removeExternalMenu(this.restaurant$.value.id, externalMenuId)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const index = this.restaurant$.value.externalMenus?.findIndex(en => en.id === externalMenuId) ?? -1;
+        if (index >= 0) {
+          this.restaurant$.value.externalMenus.splice(index, 1);
+        }
+
+        this.restaurant$.next(this.restaurant$.value)
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
   }
 
   public addDishCategory(name: string, afterCategoryId: string): Observable<string> {

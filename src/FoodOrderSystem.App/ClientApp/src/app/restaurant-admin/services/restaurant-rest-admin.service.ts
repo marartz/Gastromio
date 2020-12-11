@@ -322,4 +322,47 @@ export class RestaurantRestAdminService {
       dishId
     }, httpOptions);
   }
+
+  public changeSupportedOrderMode(id: string, supportedOrderMode: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changesupportedordermode', {
+      supportedOrderMode,
+    }, httpOptions);
+  }
+
+  public addOrChangeExternalMenu(id: string, externalMenuId: string, name: string, description: string, url: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addorchangeexternalmenu', {
+      externalMenuId,
+      name,
+      description,
+      url
+    }, httpOptions);
+  }
+
+  public removeExternalMenu(id: string, externalMenuId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeexternalmenu', {
+      externalMenuId,
+    }, httpOptions);
+  }
+
 }

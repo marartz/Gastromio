@@ -9,6 +9,7 @@ using FoodOrderSystem.Core.Application.Commands;
 using FoodOrderSystem.Core.Application.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
+using FoodOrderSystem.Core.Application.Commands.AddOrChangeExternalMenuOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaurant;
@@ -16,12 +17,14 @@ using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantContactInfo;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantImage;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantServiceInfo;
+using FoodOrderSystem.Core.Application.Commands.ChangeSupportedOrderModeOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishFromRestaurant;
+using FoodOrderSystem.Core.Application.Commands.RemoveExternalMenuFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemovePaymentMethodFromRestaurant;
 using FoodOrderSystem.Core.Application.DTOs;
@@ -524,6 +527,66 @@ namespace FoodOrderSystem.App.Controllers.V1
                     new DishCategoryId(model.DishCategoryId), new DishId(model.DishId)),
                 new UserId(currentUserId)
             );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
+        [Route("restaurants/{restaurantId}/changesupportedordermode")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeSupportedOrderModeAsync(Guid restaurantId,
+            [FromBody] ChangeSupportedOrderModeOfRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var supportedOrderMode = model.SupportedOrderMode.ToSupportedOrderMode();
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeSupportedOrderModeOfRestaurantCommand, bool>(
+                new ChangeSupportedOrderModeOfRestaurantCommand(new RestaurantId(restaurantId), supportedOrderMode),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
+        [Route("restaurants/{restaurantId}/addorchangeexternalmenu")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddOrChangeExternalMenuAsync(Guid restaurantId,
+            [FromBody] AddOrChangeExternalMenuOfRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var externalMenu = new ExternalMenu(
+                model.ExternalMenuId,
+                model.Name,
+                model.Description,
+                model.Url
+            );
+
+            var commandResult = await commandDispatcher.PostAsync<AddOrChangeExternalMenuOfRestaurantCommand, bool>(
+                new AddOrChangeExternalMenuOfRestaurantCommand(new RestaurantId(restaurantId), externalMenu),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
+        [Route("restaurants/{restaurantId}/removeexternalmenu")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveExternalMenuAsync(Guid restaurantId,
+            [FromBody] RemoveExternalMenuFromRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<RemoveExternalMenuFromRestaurantCommand, bool>(
+                new RemoveExternalMenuFromRestaurantCommand(new RestaurantId(restaurantId), model.ExternalMenuId),
+                new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
