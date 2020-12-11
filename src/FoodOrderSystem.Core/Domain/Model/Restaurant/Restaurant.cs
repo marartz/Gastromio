@@ -453,6 +453,9 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 
         public Result<bool> RemovePaymentMethod(PaymentMethodId paymentMethodId, UserId changedBy)
         {
+            if (paymentMethodId == PaymentMethodId.Cash)
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantWithoutCashPaymentNotAllowed);
+            
             if (paymentMethods == null || !paymentMethods.Contains(paymentMethodId))
                 return SuccessResult<bool>.Create(true);
             paymentMethods.Remove(paymentMethodId);
