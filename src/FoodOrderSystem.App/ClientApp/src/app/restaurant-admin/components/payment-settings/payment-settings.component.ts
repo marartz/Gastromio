@@ -38,6 +38,10 @@ export class PaymentSettingsComponent implements OnInit {
   }
 
   onTogglePaymentMethod(paymentMethodId: string): void {
+    const cashPaymentMethodId = '8DBBC822-E4FF-47B6-8CA2-68F4F0C51AA3'.toLocaleLowerCase();
+    if (paymentMethodId === cashPaymentMethodId) {
+      return;
+    }
     this.facade.togglePaymentMethod(paymentMethodId);
   }
 
