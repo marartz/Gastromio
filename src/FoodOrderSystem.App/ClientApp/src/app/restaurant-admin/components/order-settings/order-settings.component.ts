@@ -17,6 +17,7 @@ import {ServiceInfoModel} from "../../../shared/models/restaurant.model";
 })
 export class OrderSettingsComponent implements OnInit, OnDestroy {
 
+  changeSupportedOrderModeForm: FormGroup;
   changeServiceInfoForm: FormGroup;
 
   subscription: Subscription;
@@ -25,6 +26,18 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
     private facade: RestaurantAdminFacade,
     private formBuilder: FormBuilder
   ) {
+    this.changeSupportedOrderModeForm = this.formBuilder.group({
+      supportedOrderMode: ['', Validators.required],
+    });
+    this.changeSupportedOrderModeForm.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(value => {
+        if (this.changeSupportedOrderModeForm.dirty && this.changeSupportedOrderModeForm.valid) {
+          this.facade.changeSupportedOrderMode(value.supportedOrderMode);
+        }
+        this.changeSupportedOrderModeForm.markAsPristine();
+      });
+
     this.changeServiceInfoForm = this.formBuilder.group({
       pickupEnabled: [false, [Validators.required]],
       pickupAverageTime: [null],
@@ -50,6 +63,11 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.facade.getRestaurant$().subscribe(restaurant => {
+      this.changeSupportedOrderModeForm.patchValue({
+        supportedOrderMode: restaurant.supportedOrderMode
+      });
+      this.changeSupportedOrderModeForm.markAsPristine();
+
       this.changeServiceInfoForm.patchValue({
         pickupEnabled: restaurant.pickupInfo?.enabled ?? false,
         pickupAverageTime: restaurant.pickupInfo?.averageTime ?? null,

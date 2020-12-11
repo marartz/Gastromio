@@ -1,4 +1,25 @@
 <div id="admin-restaurant">
+
+    <div class="form-header">
+        <div class="col"><h5>Bestellabwicklung</h5></div>
+    </div>
+    <form [formGroup]="changeSupportedOrderModeForm">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="">Unterstützte Bestellabwicklung</label>
+                    <div class="input-group">
+                        <select autocomplete="off" mozactionhint="next" required="" id="supportedOrderMode" formControlName="supportedOrderMode">
+                            <option value="phone">Nur telefon. Bestellung</option>
+                            <option value="shift">Telefon. Bestellung & Online-Vorbestellung</option>
+                            <option value="anytime">Telefon. Bestellung & Online-Bestellung</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <div class="form-header">
         <div class="col"><h5>Bestellmöglichkeiten</h5></div>
     </div>
@@ -145,4 +166,5 @@
             </div>
         </div>
     </form>
+
 </div>
