@@ -14,6 +14,8 @@ import {ChangeDishCategoryComponent} from "../change-dish-category/change-dish-c
 import {EditDishComponent} from "../edit-dish/edit-dish.component";
 import {RemoveDishCategoryComponent} from "../remove-dish-category/remove-dish-category.component";
 import {RemoveDishComponent} from "../remove-dish/remove-dish.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {debounceTime} from "rxjs/operators";
 
 @Component({
   selector: 'app-dish-management',
@@ -26,6 +28,8 @@ import {RemoveDishComponent} from "../remove-dish/remove-dish.component";
 })
 export class DishManagementComponent implements OnInit, OnDestroy {
 
+  public externalMenuForm: FormGroup;
+
   public dishCategories: DishCategoryModel[];
 
   public activeDishCategoryId$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
@@ -33,13 +37,60 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   private restaurantSubscription: Subscription;
   private dishCategoriesSubscription: Subscription;
 
+  private externalMenuId: string = "EA9D3F69-4709-4F4A-903C-7EA68C0A36C7".toLocaleLowerCase();
+
   constructor(
     private facade: RestaurantAdminFacade,
+    private formBuilder: FormBuilder,
     private modalService: NgbModal
   ) {
   }
 
   ngOnInit(): void {
+    this.externalMenuForm = this.formBuilder.group({
+      enabled: [false, Validators.required],
+      name: [''],
+      description: [''],
+      url: ['']
+    });
+    this.externalMenuForm.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(value => {
+        if (this.externalMenuForm.dirty && this.externalMenuForm.valid) {
+          if (this.externalMenuForm.value.enabled) {
+            this.facade.addOrChangeExternalMenu(
+              this.externalMenuId,
+              value.name,
+              value.description,
+              value.url
+            );
+          } else {
+            this.facade.removeExternalMenu(this.externalMenuId);
+          }
+        }
+        this.externalMenuForm.markAsPristine();
+      });
+
+    this.restaurantSubscription = this.facade.getRestaurant$().subscribe(
+      restaurant => {
+        const index = restaurant.externalMenus?.findIndex(en => en.id === this.externalMenuId) ?? -1;
+        if (index >= 0) {
+          const externalMenu = restaurant.externalMenus[index];
+          this.externalMenuForm.patchValue({
+            enabled: true,
+            name: externalMenu.name,
+            description: externalMenu.description,
+            url: externalMenu.url
+          });
+          this.externalMenuForm.markAsPristine();
+        } else {
+          this.externalMenuForm.patchValue({
+            enabled: false
+          });
+        }
+      }
+    );
+
     this.dishCategoriesSubscription = this.facade.getDishCategories$().subscribe(
       dishCategories => {
         this.dishCategories = dishCategories;
@@ -113,19 +164,24 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     }
     modalRef.result.then(id => {
       this.activeDishCategoryId$.next(id);
-    }, () => {});
+    }, () => {
+    });
   }
 
   public openChangeDishCategoryForm(dishCategory: DishCategoryModel): void {
     const modalRef = this.modalService.open(ChangeDishCategoryComponent);
     modalRef.componentInstance.dishCategory = dishCategory;
-    modalRef.result.then(() => {}, () => {});
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   public openRemoveDishCategoryForm(dishCategory: DishCategoryModel): void {
     const modalRef = this.modalService.open(RemoveDishCategoryComponent);
     modalRef.componentInstance.dishCategory = dishCategory;
-    modalRef.result.then(() => {}, () => {});
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   public decOrderOfDishCategory(dishCategory: DishCategoryModel): void {
@@ -140,14 +196,18 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(EditDishComponent);
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
     modalRef.componentInstance.dish = dish;
-    modalRef.result.then(() => {}, () => {});
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   public openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
     const modalRef = this.modalService.open(RemoveDishComponent);
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
     modalRef.componentInstance.dish = dish;
-    modalRef.result.then(() => {}, () => {});
+    modalRef.result.then(() => {
+    }, () => {
+    });
   }
 
   public decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {

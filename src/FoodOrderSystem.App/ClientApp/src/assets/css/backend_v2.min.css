@@ -233,7 +233,7 @@
     background-image: url('../../assets/images/rough/blue.png');
     background-repeat: repeat;
     padding-bottom: 32px;
-    padding-top: 32px;
+    padding-top: 16px;
     position: relative;
     width: 100%;
     z-index: 20;
@@ -564,6 +564,7 @@
     -moz-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     -webkit-flex-wrap: wrap;
+    margin-top: 16px;
     margin-bottom: 24px;
     margin-left: -16px;
     margin-right: -16px;
