@@ -3,6 +3,7 @@
 
         <div id="notice" class="warning" *ngIf="(initializationError$ | async) !== undefined"><p>Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div>
         <div id="notice" class="warning" *ngIf="(updateError$ | async) !== undefined"><p>{{(updateError$ | async)}}</p></div>
+        <div id="notice" *ngIf="(isUpdated$ | async) === true"><p>Änderungen wurden gespeichert.</p></div>
 
         <div id="backend" *ngIf="isInitialized$ | async">
 

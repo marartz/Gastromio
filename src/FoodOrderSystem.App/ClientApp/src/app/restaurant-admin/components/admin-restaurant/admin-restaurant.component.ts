@@ -1,10 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
+import {merge, Observable, of} from "rxjs";
+import {delay, switchMap} from "rxjs/operators";
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
-import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
-import {Observable} from "rxjs";
+
 import {RestaurantModel} from "../../../shared/models/restaurant.model";
+
+import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -22,6 +25,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   public initializationError$: Observable<string>;
   public restaurant$: Observable<RestaurantModel>;
   public selectedTab$: Observable<string>;
+  public isUpdated$: Observable<boolean>;
   public updateError$: Observable<string>;
 
   constructor(
@@ -48,9 +52,27 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
 
     this.isInitialized$ = this.facade.getIsInitialized$();
+
     this.initializationError$ = this.facade.getInitializationError$();
+
     this.restaurant$ = this.facade.getRestaurant$();
+
     this.selectedTab$ = this.facade.getSelectedTab$();
+
+    this.isUpdated$ = this.facade.getIsUpdated$()
+      .pipe(
+        switchMap(isUpdated => {
+          if (isUpdated) {
+            return merge(
+              of(true),
+              of(false).pipe(delay(2000))
+            );
+          } else {
+            return of(false);
+          }
+        })
+      );
+
     this.updateError$ = this.facade.getUpdateError$();
 
     this.route.paramMap.subscribe(params => {
