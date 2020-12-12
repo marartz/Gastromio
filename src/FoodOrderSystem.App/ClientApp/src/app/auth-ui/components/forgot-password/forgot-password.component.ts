@@ -18,6 +18,7 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm: FormGroup;
   message: string;
   submitted: boolean = false;
+  sending: boolean = false;
   sent: boolean = false;
 
   constructor(
@@ -46,14 +47,17 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
 
+    this.sending = true;
     this.authService.requestPasswordChangeAsync(data.email)
       .pipe(take(1))
       .subscribe(
         () => {
+          this.sending = false;
           this.sent = true;
           this.message = undefined;
         },
         (response: HttpErrorResponse) => {
+          this.sending = false;
           this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         }
       );
