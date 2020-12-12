@@ -89,8 +89,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Dish
         {
             if (string.IsNullOrEmpty(name))
                 return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
-            if (name.Length > 100)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
+            if (name.Length > 40)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 40);
 
             Name = name;
             UpdatedOn = DateTime.UtcNow;
@@ -194,8 +194,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Dish
             if (variants.Any(en => en.VariantId == variantId))
                 throw new InvalidOperationException("variant already exists");
 
-            if (name != null && name.Length > 20)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 20);
+            if (name != null && name.Length > 40)
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 40);
 
             if (!(price > 0))
                 return FailureResult<bool>.Create(FailureResultCode.DishVariantPriceIsNegativeOrZero);
