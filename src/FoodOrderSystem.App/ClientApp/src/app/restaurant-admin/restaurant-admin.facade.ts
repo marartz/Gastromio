@@ -409,17 +409,21 @@ export class RestaurantAdminFacade {
   }
 
   public togglePaymentMethod(paymentMethodId: string): void {
-    this.isUpdating$.next(true);
-
     let observable: Observable<boolean>;
 
     const isCurrentlyEnabled = this.restaurant$.value.paymentMethods.some(en => en.id === paymentMethodId);
     if (isCurrentlyEnabled) {
+      const cashPaymentMethodId = '8DBBC822-E4FF-47B6-8CA2-68F4F0C51AA3'.toLocaleLowerCase();
+      if (paymentMethodId === cashPaymentMethodId) {
+        this.updateError$.next("Barzahlung kann nicht deaktiviert werden.");
+        return;
+      }
       observable = this.restaurantAdminService.removePaymentMethodFromRestaurantAsync(this.restaurant$.value.id, paymentMethodId);
     } else {
       observable = this.restaurantAdminService.addPaymentMethodToRestaurantAsync(this.restaurant$.value.id, paymentMethodId);
     }
 
+    this.isUpdating$.next(true);
     observable
       .pipe(take(1))
       .subscribe(() => {
