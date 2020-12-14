@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
+using FoodOrderSystem.Core.Application.Commands.AddDeviatingOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeExternalMenuOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddRegularOpeningPeriodToRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantAddress;
@@ -22,6 +24,7 @@ using FoodOrderSystem.Core.Application.Commands.DecOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDishCategory;
+using FoodOrderSystem.Core.Application.Commands.RemoveDeviatingOpeningPeriodFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveExternalMenuFromRestaurant;
@@ -253,8 +256,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("restaurants/{restaurantId}/addregularopeningperiod")]
         [HttpPost]
-        public async Task<IActionResult> PostAddOpeningPeriodAsync(Guid restaurantId,
-            [FromBody] AddOpeningPeriodToRestaurantModel model)
+        public async Task<IActionResult> PostAddRegularOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] AddRegularOpeningPeriodToRestaurantModel model)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -273,8 +276,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("restaurants/{restaurantId}/changeregularopeningperiod")]
         [HttpPost]
-        public async Task<IActionResult> PostChangeOpeningPeriodAsync(Guid restaurantId,
-            [FromBody] ChangeOpeningPeriodOfRestaurantModel model)
+        public async Task<IActionResult> PostChangeRegularOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] ChangeRegularOpeningPeriodOfRestaurantModel model)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -294,8 +297,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
         [Route("restaurants/{restaurantId}/removeregularopeningperiod")]
         [HttpPost]
-        public async Task<IActionResult> PostRemoveOpeningPeriodAsync(Guid restaurantId,
-            [FromBody] RemoveOpeningPeriodFromRestaurantModel model)
+        public async Task<IActionResult> PostRemoveRegularOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] RemoveRegularOpeningPeriodFromRestaurantModel model)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -306,6 +309,67 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<RemoveRegularOpeningPeriodFromRestaurantCommand, bool>(
                 new RemoveRegularOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
+                new UserId(currentUserId)
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/adddeviatingopeningperiod")]
+        [HttpPost]
+        public async Task<IActionResult> PostAddDeviatingOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] AddDeviatingOpeningPeriodToRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var start = TimeSpan.FromMinutes(model.Start);
+            var end = TimeSpan.FromMinutes(model.End);
+
+            var commandResult = await commandDispatcher.PostAsync<AddDeviatingOpeningPeriodToRestaurantCommand, bool>(
+                new AddDeviatingOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId), model.Date, start, end),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/changedeviatingopeningperiod")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeDeviatingOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] ChangeDeviatingOpeningPeriodOfRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var oldStart = TimeSpan.FromMinutes(model.OldStart);
+            var newStart = TimeSpan.FromMinutes(model.NewStart);
+            var newEnd = TimeSpan.FromMinutes(model.NewEnd);
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeDeviatingOpeningPeriodOfRestaurantCommand, bool>(
+                new ChangeDeviatingOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.Date, oldStart, newStart, newEnd),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/removedeviatingopeningperiod")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveDeviatingOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] RemoveDeviatingOpeningPeriodFromRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var start = TimeSpan.FromMinutes(model.Start);
+
+            var commandResult = await commandDispatcher.PostAsync<RemoveDeviatingOpeningPeriodFromRestaurantCommand, bool>(
+                new RemoveDeviatingOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.Date, start),
                 new UserId(currentUserId)
             );
 

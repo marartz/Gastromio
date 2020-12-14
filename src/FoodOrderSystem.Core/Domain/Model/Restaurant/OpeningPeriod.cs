@@ -24,24 +24,4 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         
         public TimeSpan End { get; }
     }
-
-    public class RegularOpeningPeriod : OpeningPeriod
-    {
-        public RegularOpeningPeriod(int dayOfWeek, TimeSpan start, TimeSpan end) : base(start, end)
-        {
-            DayOfWeek = dayOfWeek;
-        }
-        
-        public int DayOfWeek { get; }
-    }
-
-    public class DeviatingOpeningPeriod : OpeningPeriod
-    {
-        public DeviatingOpeningPeriod(DateTime date, TimeSpan start, TimeSpan end) : base(start, end)
-        {
-            Date = date;
-        }
-        
-        public DateTime Date { get; }
-    }
 }

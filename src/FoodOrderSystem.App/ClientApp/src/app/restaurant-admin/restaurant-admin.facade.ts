@@ -10,7 +10,7 @@ import {DishModel} from "../shared/models/dish.model";
 import {
   AddressModel,
   ContactInfoModel,
-  DeliveryInfoModel, ExternalMenu, OpeningPeriodModel,
+  DeliveryInfoModel, DeviatingOpeningDayModel, ExternalMenu, OpeningPeriodModel,
   PickupInfoModel, RegularOpeningDayModel,
   ReservationInfoModel,
   RestaurantModel,
@@ -467,7 +467,7 @@ export class RestaurantAdminFacade {
       });
   }
 
-  public addOpeningPeriod(dayOfWeek: number, start: number, end: number): Observable<boolean> {
+  public addRegularOpeningPeriod(dayOfWeek: number, start: number, end: number): Observable<boolean> {
     this.isUpdating$.next(true);
     return this.restaurantAdminService.addRegularOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
       .pipe(
@@ -500,7 +500,7 @@ export class RestaurantAdminFacade {
       );
   }
 
-  public changeOpeningPeriod(dayOfWeek: number, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
+  public changeRegularOpeningPeriod(dayOfWeek: number, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
     this.isUpdating$.next(true);
     return this.restaurantAdminService.changeRegularOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, dayOfWeek, oldStart, newStart, newEnd)
       .pipe(
@@ -524,7 +524,7 @@ export class RestaurantAdminFacade {
       );
   }
 
-  public removeOpeningPeriod(dayOfWeek: number, start: number): Observable<boolean> {
+  public removeRegularOpeningPeriod(dayOfWeek: number, start: number): Observable<boolean> {
     this.isUpdating$.next(true);
     return this.restaurantAdminService.removeRegularOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start)
       .pipe(
@@ -535,6 +535,87 @@ export class RestaurantAdminFacade {
             const regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
             const index = regularOpeningDay.openingPeriods.findIndex(en => en.start === start);
             regularOpeningDay.openingPeriods.splice(index, 1);
+
+            this.restaurant$.next(this.restaurant$.value)
+            this.isUpdated$.next(true);
+          }
+        ),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public addDeviatingOpeningPeriod(date: Date, start: number, end: number): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.addDeviatingOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, date, start, end)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
+          let deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => en.date === date);
+          if (deviatingOpeningDay === undefined) {
+            deviatingOpeningDay = new DeviatingOpeningDayModel({
+              date: date,
+              openingPeriods: new Array<OpeningPeriodModel>()
+            })
+            deviatingOpeningDays.push(deviatingOpeningDay);
+          }
+          deviatingOpeningDay.openingPeriods.push(new OpeningPeriodModel({
+            start: start,
+            end: end
+          }));
+
+          this.restaurant$.next(this.restaurant$.value)
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public changeDeviatingOpeningPeriod(date: Date, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.changeDeviatingOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, date, oldStart, newStart, newEnd)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => en.date === date);
+          const openingPeriod = deviatingOpeningDay.openingPeriods.find(en => en.start === oldStart);
+          openingPeriod.start = newStart;
+          openingPeriod.end = newEnd;
+
+          this.restaurant$.next(this.restaurant$.value)
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public removeDeviatingOpeningPeriod(date: Date, start: number): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.removeDeviatingOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, date, start)
+      .pipe(
+        tap(() => {
+            this.isUpdating$.next(false);
+            this.updateError$.next(undefined);
+
+            const deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => en.date === date);
+            const index = deviatingOpeningDay.openingPeriods.findIndex(en => en.start === start);
+            deviatingOpeningDay.openingPeriods.splice(index, 1);
 
             this.restaurant$.next(this.restaurant$.value)
             this.isUpdated$.next(true);

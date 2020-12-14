@@ -1,6 +1,6 @@
 ﻿namespace FoodOrderSystem.App.Models
 {
-    public class AddOpeningPeriodToRestaurantModel
+    public class AddRegularOpeningPeriodToRestaurantModel
     {
         public int DayOfWeek { get; set; }
         public int Start { get; set; }

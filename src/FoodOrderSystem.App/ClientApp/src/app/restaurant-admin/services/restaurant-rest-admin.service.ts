@@ -162,6 +162,51 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
+  public addDeviatingOpeningPeriodToRestaurantAsync(id: string, date: Date, start: number, end: number): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddeviatingopeningperiod', {
+      date,
+      start,
+      end
+    }, httpOptions);
+  }
+
+  public changeDeviatingOpeningPeriodOfRestaurantAsync(id: string, date: Date, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changedeviatingopeningperiod', {
+      date,
+      oldStart,
+      newStart,
+      newEnd
+    }, httpOptions);
+  }
+
+  public removeDeviatingOpeningPeriodFromRestaurantAsync(id: string, date: Date, start: number): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedeviatingopeningperiod', {
+      date,
+      start
+    }, httpOptions);
+  }
+
   public changeRestaurantServiceInfoAsync(id: string, serviceInfo: ServiceInfoModel): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({

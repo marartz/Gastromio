@@ -159,7 +159,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
       this.regularOpeningHours$.next(openingHours);
     } else {
-      this.facade.removeOpeningPeriod(openingPeriod$.value.dayOfWeek, openingPeriod$.value.baseModel.start)
+      this.facade.removeRegularOpeningPeriod(openingPeriod$.value.dayOfWeek, openingPeriod$.value.baseModel.start)
         .pipe(take(1))
         .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
     }
@@ -193,11 +193,11 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
         }
 
         if (openingPeriod.baseModel === undefined) {
-          this.facade.addOpeningPeriod(openingPeriod.dayOfWeek, startParseResult.value, endParseResult.value)
+          this.facade.addRegularOpeningPeriod(openingPeriod.dayOfWeek, startParseResult.value, endParseResult.value)
             .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
-          this.facade.changeOpeningPeriod(openingPeriod.dayOfWeek, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
+          this.facade.changeRegularOpeningPeriod(openingPeriod.dayOfWeek, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
             .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         }
