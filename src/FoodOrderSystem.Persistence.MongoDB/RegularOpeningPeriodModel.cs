@@ -1,6 +1,6 @@
 ﻿namespace FoodOrderSystem.Persistence.MongoDB
 {
-    public class OpeningPeriodModel
+    public class RegularOpeningPeriodModel
     {
         public int DayOfWeek { get; set; }
 

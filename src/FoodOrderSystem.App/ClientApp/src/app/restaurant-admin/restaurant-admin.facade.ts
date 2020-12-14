@@ -11,7 +11,7 @@ import {
   AddressModel,
   ContactInfoModel,
   DeliveryInfoModel, ExternalMenu, OpeningPeriodModel,
-  PickupInfoModel,
+  PickupInfoModel, RegularOpeningDayModel,
   ReservationInfoModel,
   RestaurantModel,
   ServiceInfoModel
@@ -469,15 +469,22 @@ export class RestaurantAdminFacade {
 
   public addOpeningPeriod(dayOfWeek: number, start: number, end: number): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.addOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
+    return this.restaurantAdminService.addRegularOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const openingHours = this.restaurant$.value.openingHours;
-          openingHours.push(new OpeningPeriodModel({
-            dayOfWeek: dayOfWeek,
+          const regularOpeningDays = this.restaurant$.value.regularOpeningDays;
+          let regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
+          if (regularOpeningDay === undefined) {
+            regularOpeningDay = new RegularOpeningDayModel({
+              dayOfWeek: dayOfWeek,
+              openingPeriods: new Array<OpeningPeriodModel>()
+            })
+            regularOpeningDays.push(regularOpeningDay);
+          }
+          regularOpeningDay.openingPeriods.push(new OpeningPeriodModel({
             start: start,
             end: end
           }));
@@ -493,18 +500,18 @@ export class RestaurantAdminFacade {
       );
   }
 
-  public changeOpeningPeriod(openingPeriod: OpeningPeriodModel, start: number, end: number): Observable<boolean> {
+  public changeOpeningPeriod(dayOfWeek: number, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.changeOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start, start, end)
+    return this.restaurantAdminService.changeRegularOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, dayOfWeek, oldStart, newStart, newEnd)
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const openingHours = this.restaurant$.value.openingHours;
-          const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
-          openingHours[index].start = start;
-          openingHours[index].end = end;
+          const regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
+          const openingPeriod = regularOpeningDay.openingPeriods.find(en => en.start === oldStart);
+          openingPeriod.start = newStart;
+          openingPeriod.end = newEnd;
 
           this.restaurant$.next(this.restaurant$.value)
           this.isUpdated$.next(true);
@@ -517,17 +524,17 @@ export class RestaurantAdminFacade {
       );
   }
 
-  public removeOpeningPeriod(openingPeriod: OpeningPeriodModel): Observable<boolean> {
+  public removeOpeningPeriod(dayOfWeek: number, start: number): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.removeOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, openingPeriod.dayOfWeek, openingPeriod.start)
+    return this.restaurantAdminService.removeRegularOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start)
       .pipe(
         tap(() => {
             this.isUpdating$.next(false);
             this.updateError$.next(undefined);
 
-            const openingHours = this.restaurant$.value.openingHours;
-            const index = openingHours.findIndex(en => en.dayOfWeek === openingPeriod.dayOfWeek && en.start === openingPeriod.start);
-            openingHours.splice(index, 1);
+            const regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
+            const index = regularOpeningDay.openingPeriods.findIndex(en => en.start === start);
+            regularOpeningDay.openingPeriods.splice(index, 1);
 
             this.restaurant$.next(this.restaurant$.value)
             this.isUpdated$.next(true);

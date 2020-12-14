@@ -17,7 +17,7 @@ import {debounceTime, take} from "rxjs/operators";
 })
 export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
-  public openingHours$: BehaviorSubject<OpeningHoursViewModel>;
+  public regularOpeningHours$: BehaviorSubject<OpeningHoursViewModel>;
 
   private subscriptions: Array<Subscription>;
 
@@ -25,66 +25,71 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     private facade: RestaurantAdminFacade
   ) {
     const openingHours = OpeningHoursSettingsComponent.createOpeningHoursViewModel();
-    this.openingHours$ = new BehaviorSubject<OpeningHoursViewModel>(openingHours);
+    this.regularOpeningHours$ = new BehaviorSubject<OpeningHoursViewModel>(openingHours);
   }
 
   public ngOnInit(): void {
     this.facade.getRestaurant$()
       .subscribe(restaurant => {
-        if (restaurant === undefined || restaurant.openingHours === undefined)
+        if (restaurant === undefined)
           return;
 
         this.subscriptions = new Array<Subscription>();
 
-        const openingHours = OpeningHoursSettingsComponent.createOpeningHoursViewModel();
-        for (let openingPeriod of restaurant.openingHours) {
-          let column = openingHours.weekDays[openingPeriod.dayOfWeek].openingPeriods.length
+        const regularOpeningHours = OpeningHoursSettingsComponent.createOpeningHoursViewModel();
 
-          const openingPeriodViewModel = new OpeningPeriodViewModel();
-          openingPeriodViewModel.column = column;
-          openingPeriodViewModel.baseModel = openingPeriod;
-          openingPeriodViewModel.dayOfWeek = openingPeriod.dayOfWeek;
-          openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
-          openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
+        if (restaurant.regularOpeningDays) {
+          for (let regularOpeningDay of restaurant.regularOpeningDays) {
+            for (let openingPeriod of regularOpeningDay.openingPeriods) {
+              let column = regularOpeningHours.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.length
 
-          const openingPeriodViewModel$ = new BehaviorSubject<OpeningPeriodViewModel>(openingPeriodViewModel);
-          this.addSubscription(openingPeriodViewModel$);
+              const openingPeriodViewModel = new OpeningPeriodViewModel();
+              openingPeriodViewModel.column = column;
+              openingPeriodViewModel.baseModel = openingPeriod;
+              openingPeriodViewModel.dayOfWeek = regularOpeningDay.dayOfWeek;
+              openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
+              openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
 
-          openingHours.weekDays[openingPeriod.dayOfWeek].openingPeriods.push(openingPeriodViewModel$);
-        }
+              const openingPeriodViewModel$ = new BehaviorSubject<OpeningPeriodViewModel>(openingPeriodViewModel);
+              this.addSubscription(openingPeriodViewModel$);
 
-        for (let weekDayOpeningPeriods of openingHours.weekDays) {
-          weekDayOpeningPeriods.openingPeriods.sort((a, b) => {
-            if (a.value.start < b.value.start)
-              return -1;
-            else if (a.value.start > b.value.start)
-              return +1;
-            else
-              return 0;
-          })
-        }
-
-        let maxOpeningPeriodCount = 0;
-        for (let i = 0; i < openingHours.weekDays.length; i++) {
-          if (openingHours.weekDays[i].openingPeriods.length > maxOpeningPeriodCount) {
-            maxOpeningPeriodCount = openingHours.weekDays[i].openingPeriods.length;
+              regularOpeningHours.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.push(openingPeriodViewModel$);
+            }
           }
-        }
 
-        for (let i = 0; i < openingHours.weekDays.length; i++) {
-          while (openingHours.weekDays[i].openingPeriods.length < maxOpeningPeriodCount) {
-            const openingPeriod$ = new BehaviorSubject<OpeningPeriodViewModel>(undefined);
-            this.addSubscription(openingPeriod$);
-            openingHours.weekDays[i].openingPeriods.push(openingPeriod$);
+          for (let weekDayOpeningPeriods of regularOpeningHours.weekDays) {
+            weekDayOpeningPeriods.openingPeriods.sort((a, b) => {
+              if (a.value.start < b.value.start)
+                return -1;
+              else if (a.value.start > b.value.start)
+                return +1;
+              else
+                return 0;
+            })
           }
-        }
 
-        openingHours.columns = new Array<number>();
-        for (let i = 0; i < maxOpeningPeriodCount; i++) {
-          openingHours.columns.push(i);
-        }
+          let maxOpeningPeriodCount = 0;
+          for (let i = 0; i < regularOpeningHours.weekDays.length; i++) {
+            if (regularOpeningHours.weekDays[i].openingPeriods.length > maxOpeningPeriodCount) {
+              maxOpeningPeriodCount = regularOpeningHours.weekDays[i].openingPeriods.length;
+            }
+          }
 
-        this.openingHours$.next(openingHours);
+          for (let i = 0; i < regularOpeningHours.weekDays.length; i++) {
+            while (regularOpeningHours.weekDays[i].openingPeriods.length < maxOpeningPeriodCount) {
+              const openingPeriod$ = new BehaviorSubject<OpeningPeriodViewModel>(undefined);
+              this.addSubscription(openingPeriod$);
+              regularOpeningHours.weekDays[i].openingPeriods.push(openingPeriod$);
+            }
+          }
+
+          regularOpeningHours.columns = new Array<number>();
+          for (let i = 0; i < maxOpeningPeriodCount; i++) {
+            regularOpeningHours.columns.push(i);
+          }
+
+          this.regularOpeningHours$.next(regularOpeningHours);
+        }
       });
   }
 
@@ -93,7 +98,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
   }
 
   public add(dayOfWeek: number): void {
-    const openingHours = this.openingHours$.value;
+    const openingHours = this.regularOpeningHours$.value;
 
     let index = openingHours.weekDays[dayOfWeek].openingPeriods.findIndex(en => en !== undefined && en.value !== undefined && en.value.baseModel === undefined);
     if (index >= 0)
@@ -122,7 +127,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       openingHours.weekDays[dayOfWeek].openingPeriods[index].next(openingPeriodViewModel);
     }
 
-    this.openingHours$.next(openingHours);
+    this.regularOpeningHours$.next(openingHours);
   }
 
   public changeStart(openingPeriod$: BehaviorSubject<OpeningPeriodViewModel>, newValue: string): void {
@@ -136,7 +141,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
   }
 
   public remove(dayOfWeek: number, column: number): void {
-    const openingHours = this.openingHours$.value;
+    const openingHours = this.regularOpeningHours$.value;
     const openingPeriod$ = openingHours.weekDays[dayOfWeek].openingPeriods[column];
     if (openingPeriod$.value === undefined)
       return;
@@ -152,9 +157,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
         openingHours.columns.splice(openingHours.columns.length - 1, 1);
       }
 
-      this.openingHours$.next(openingHours);
+      this.regularOpeningHours$.next(openingHours);
     } else {
-      this.facade.removeOpeningPeriod(openingPeriod$.value.baseModel)
+      this.facade.removeOpeningPeriod(openingPeriod$.value.dayOfWeek, openingPeriod$.value.baseModel.start)
         .pipe(take(1))
         .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
     }
@@ -192,7 +197,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
             .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
-          this.facade.changeOpeningPeriod(openingPeriod.baseModel, startParseResult.value, endParseResult.value)
+          this.facade.changeOpeningPeriod(openingPeriod.dayOfWeek, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
             .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         }

@@ -8,7 +8,7 @@
                 <thead>
                 <tr>
                     <th scope="col" style="min-width: 120px;">Wochentag</th>
-                    <ng-container *ngFor="let column of (openingHours$ | async).columns">
+                    <ng-container *ngFor="let column of (regularOpeningHours$ | async).columns">
                         <th scope="col">Beginn</th>
                         <th scope="col">Ende</th>
                         <th scope="col"></th>
@@ -17,7 +17,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let weekDayOpeningPeriods of (openingHours$ | async).weekDays">
+                <tr *ngFor="let weekDayOpeningPeriods of (regularOpeningHours$ | async).weekDays">
                     <th scope="row">
                         <p class="email">{{weekDayOpeningPeriods.dayOfWeekText}}</p>
                     </th>

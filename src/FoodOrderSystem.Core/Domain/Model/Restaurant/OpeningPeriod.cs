@@ -2,19 +2,46 @@
 
 namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 {
-    public class OpeningPeriod
+    public abstract class OpeningPeriod
     {
-        public OpeningPeriod(int dayOfWeek, TimeSpan start, TimeSpan end)
+        public const double EarliestOpeningTime = 4d;
+
+        protected OpeningPeriod(TimeSpan start, TimeSpan end)
         {
-            DayOfWeek = dayOfWeek;
-            Start = start;
-            End = end;
+            if (end.TotalHours >= EarliestOpeningTime)
+            {
+                Start = start;
+                End = end;
+            }
+            else
+            {
+                Start = start;
+                End = TimeSpan.FromHours(end.TotalHours + 24d);
+            }
         }
 
-        public int DayOfWeek { get; }
-        
         public TimeSpan Start { get; }
         
         public TimeSpan End { get; }
+    }
+
+    public class RegularOpeningPeriod : OpeningPeriod
+    {
+        public RegularOpeningPeriod(int dayOfWeek, TimeSpan start, TimeSpan end) : base(start, end)
+        {
+            DayOfWeek = dayOfWeek;
+        }
+        
+        public int DayOfWeek { get; }
+    }
+
+    public class DeviatingOpeningPeriod : OpeningPeriod
+    {
+        public DeviatingOpeningPeriod(DateTime date, TimeSpan start, TimeSpan end) : base(start, end)
+        {
+            Date = date;
+        }
+        
+        public DateTime Date { get; }
     }
 }

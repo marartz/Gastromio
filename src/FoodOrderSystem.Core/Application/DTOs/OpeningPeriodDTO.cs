@@ -4,24 +4,27 @@ namespace FoodOrderSystem.Core.Application.DTOs
 {
     public class OpeningPeriodDTO
     {
-        public OpeningPeriodDTO(int dayOfWeek, int start, int end)
+        public OpeningPeriodDTO(int start, int end)
         {
-            DayOfWeek = dayOfWeek;
             Start = start;
             End = end;
         }
 
-        public OpeningPeriodDTO(OpeningPeriod openingPeriod)
+        public OpeningPeriodDTO(RegularOpeningPeriod regularOpeningPeriod)
         {
-            DayOfWeek = openingPeriod.DayOfWeek;
-            Start = (int)openingPeriod.Start.TotalMinutes;
-            End = (int) openingPeriod.End.TotalMinutes;
+            Start = (int) regularOpeningPeriod.Start.TotalMinutes;
+            End = (int) regularOpeningPeriod.End.TotalMinutes;
         }
         
-        public int DayOfWeek { get; }
-
+        public OpeningPeriodDTO(DeviatingOpeningPeriod deviatingOpeningPeriod)
+        {
+            Start = (int) deviatingOpeningPeriod.Start.TotalMinutes;
+            End = (int) deviatingOpeningPeriod.End.TotalMinutes;
+        }
+        
         public int Start { get; }
         
         public int End { get; }
+        
     }
 }

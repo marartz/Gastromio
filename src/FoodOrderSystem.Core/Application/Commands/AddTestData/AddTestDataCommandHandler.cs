@@ -269,7 +269,7 @@ namespace FoodOrderSystem.Core.Application.Commands.AddTestData
 
             for (var i = 0; i < 7; i++)
             {
-                boolResult = restaurant.AddOpeningPeriod(new OpeningPeriod(i,
+                boolResult = restaurant.AddRegularOpeningPeriod(new RegularOpeningPeriod(i,
                         TimeSpan.FromHours(10 + (index % 4) * 0.5), TimeSpan.FromHours(20 + (index % 4) * 0.5)),
                     currentUser.Id);
                 if (boolResult.IsFailure)

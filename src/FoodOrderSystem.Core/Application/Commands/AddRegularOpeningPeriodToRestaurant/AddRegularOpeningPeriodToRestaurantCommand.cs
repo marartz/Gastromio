@@ -1,11 +1,11 @@
 ﻿using System;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 
-namespace FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.AddRegularOpeningPeriodToRestaurant
 {
-    public class AddOpeningPeriodToRestaurantCommand : ICommand<bool>
+    public class AddRegularOpeningPeriodToRestaurantCommand : ICommand<bool>
     {
-        public AddOpeningPeriodToRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan start, TimeSpan end)
+        public AddRegularOpeningPeriodToRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan start, TimeSpan end)
         {
             RestaurantId = restaurantId;
             DayOfWeek = dayOfWeek;

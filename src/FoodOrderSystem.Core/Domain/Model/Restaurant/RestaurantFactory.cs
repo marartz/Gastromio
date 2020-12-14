@@ -13,7 +13,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             string name,
             Address address,
             ContactInfo contactInfo,
-            IList<OpeningPeriod> openingHours,
+            IList<RegularOpeningPeriod> regularOpeningPeriods,
+            IList<DeviatingOpeningPeriod> deviatingOpeningPeriods,
             PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo,
             ReservationInfo reservationInfo,
@@ -44,11 +45,21 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (tempResult.IsFailure)
                 return tempResult.Cast<Restaurant>();
 
-            if (openingHours != null)
+            if (regularOpeningPeriods != null)
             {
-                foreach (var openingPeriod in openingHours)
+                foreach (var openingPeriod in regularOpeningPeriods)
                 {
-                    tempResult = restaurant.AddOpeningPeriod(openingPeriod, createdBy);
+                    tempResult = restaurant.AddRegularOpeningPeriod(openingPeriod, createdBy);
+                    if (tempResult.IsFailure)
+                        return tempResult.Cast<Restaurant>();
+                }
+            }
+
+            if (deviatingOpeningPeriods != null)
+            {
+                foreach (var openingPeriod in deviatingOpeningPeriods)
+                {
+                    tempResult = restaurant.AddDeviatingOpeningPeriod(openingPeriod, createdBy);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Restaurant>();
                 }

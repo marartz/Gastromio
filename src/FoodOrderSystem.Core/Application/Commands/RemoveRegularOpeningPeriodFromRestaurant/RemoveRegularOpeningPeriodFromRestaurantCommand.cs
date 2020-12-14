@@ -1,11 +1,11 @@
 ﻿using System;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 
-namespace FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.RemoveRegularOpeningPeriodFromRestaurant
 {
-    public class RemoveOpeningPeriodFromRestaurantCommand : ICommand<bool>
+    public class RemoveRegularOpeningPeriodFromRestaurantCommand : ICommand<bool>
     {
-        public RemoveOpeningPeriodFromRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan start)
+        public RemoveRegularOpeningPeriodFromRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan start)
         {
             RestaurantId = restaurantId;
             DayOfWeek = dayOfWeek;

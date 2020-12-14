@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
@@ -6,18 +6,18 @@ using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 
-namespace FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant
 {
-    public class AddOpeningPeriodToRestaurantCommandHandler : ICommandHandler<AddOpeningPeriodToRestaurantCommand, bool>
+    public class ChangeRegularOpeningPeriodOfRestaurantCommandHandler : ICommandHandler<ChangeRegularOpeningPeriodOfRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public AddOpeningPeriodToRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRegularOpeningPeriodOfRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(AddOpeningPeriodToRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangeRegularOpeningPeriodOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -35,9 +35,13 @@ namespace FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var openingPeriod = new OpeningPeriod(command.DayOfWeek, command.Start, command.End);
+            var result = restaurant.RemoveRegularOpeningPeriod(command.DayOfWeek, command.OldStart, currentUser.Id);
+            if (result.IsFailure)
+                return result;
 
-            var result = restaurant.AddOpeningPeriod(openingPeriod, currentUser.Id);
+            var openingPeriod = new RegularOpeningPeriod(command.DayOfWeek, command.NewStart, command.NewEnd);
+            
+            result = restaurant.AddRegularOpeningPeriod(openingPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

@@ -7,12 +7,12 @@ using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
 using FoodOrderSystem.Core.Application.Commands.AddDishCategoryToRestaurant;
-using FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeExternalMenuOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddPaymentMethodToRestaurant;
+using FoodOrderSystem.Core.Application.Commands.AddRegularOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
-using FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantContactInfo;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantImage;
@@ -25,8 +25,8 @@ using FoodOrderSystem.Core.Application.Commands.IncOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveExternalMenuFromRestaurant;
-using FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemovePaymentMethodFromRestaurant;
+using FoodOrderSystem.Core.Application.Commands.RemoveRegularOpeningPeriodFromRestaurant;
 using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Application.Queries;
 using FoodOrderSystem.Core.Application.Queries.GetAllCuisines;
@@ -251,7 +251,7 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/addopeningperiod")]
+        [Route("restaurants/{restaurantId}/addregularopeningperiod")]
         [HttpPost]
         public async Task<IActionResult> PostAddOpeningPeriodAsync(Guid restaurantId,
             [FromBody] AddOpeningPeriodToRestaurantModel model)
@@ -264,14 +264,14 @@ namespace FoodOrderSystem.App.Controllers.V1
             var start = TimeSpan.FromMinutes(model.Start);
             var end = TimeSpan.FromMinutes(model.End);
 
-            var commandResult = await commandDispatcher.PostAsync<AddOpeningPeriodToRestaurantCommand, bool>(
-                new AddOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
+            var commandResult = await commandDispatcher.PostAsync<AddRegularOpeningPeriodToRestaurantCommand, bool>(
+                new AddRegularOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
                 new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/changeopeningperiod")]
+        [Route("restaurants/{restaurantId}/changeregularopeningperiod")]
         [HttpPost]
         public async Task<IActionResult> PostChangeOpeningPeriodAsync(Guid restaurantId,
             [FromBody] ChangeOpeningPeriodOfRestaurantModel model)
@@ -285,14 +285,14 @@ namespace FoodOrderSystem.App.Controllers.V1
             var newStart = TimeSpan.FromMinutes(model.NewStart);
             var newEnd = TimeSpan.FromMinutes(model.NewEnd);
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeOpeningPeriodOfRestaurantCommand, bool>(
-                new ChangeOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, oldStart, newStart, newEnd),
+            var commandResult = await commandDispatcher.PostAsync<ChangeRegularOpeningPeriodOfRestaurantCommand, bool>(
+                new ChangeRegularOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, oldStart, newStart, newEnd),
                 new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/removeopeningperiod")]
+        [Route("restaurants/{restaurantId}/removeregularopeningperiod")]
         [HttpPost]
         public async Task<IActionResult> PostRemoveOpeningPeriodAsync(Guid restaurantId,
             [FromBody] RemoveOpeningPeriodFromRestaurantModel model)
@@ -304,8 +304,8 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var start = TimeSpan.FromMinutes(model.Start);
 
-            var commandResult = await commandDispatcher.PostAsync<RemoveOpeningPeriodFromRestaurantCommand, bool>(
-                new RemoveOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
+            var commandResult = await commandDispatcher.PostAsync<RemoveRegularOpeningPeriodFromRestaurantCommand, bool>(
+                new RemoveRegularOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
                 new UserId(currentUserId)
             );
 

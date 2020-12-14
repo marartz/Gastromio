@@ -3,20 +3,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Common;
+using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 
-namespace FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.AddRegularOpeningPeriodToRestaurant
 {
-    public class RemoveOpeningPeriodFromRestaurantCommandHandler : ICommandHandler<RemoveOpeningPeriodFromRestaurantCommand, bool>
+    public class
+        AddRegularOpeningPeriodToRestaurantCommandHandler : ICommandHandler<AddRegularOpeningPeriodToRestaurantCommand,
+            bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public RemoveOpeningPeriodFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public AddRegularOpeningPeriodToRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveOpeningPeriodFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(AddRegularOpeningPeriodToRestaurantCommand command,
+            User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -27,18 +31,23 @@ namespace FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromResta
             if (currentUser.Role < Role.RestaurantAdmin)
                 return FailureResult<bool>.Forbidden();
 
-            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            var restaurant =
+                await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.RemoveOpeningPeriod(command.DayOfWeek, command.Start, currentUser.Id);
+            var openingPeriod = new RegularOpeningPeriod(command.DayOfWeek, command.Start, command.End);
+
+            var result = restaurant.AddRegularOpeningPeriod(openingPeriod, currentUser.Id);
+            if (result.IsFailure)
+                return result;
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<bool>.Create(true);
+            return result;
         }
     }
 }

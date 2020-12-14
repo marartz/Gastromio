@@ -183,7 +183,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var collection = GetCollection();
 
             var filter = Builders<RestaurantModel>.Filter.Where(en => en.Name.ToLower() == restaurantName.ToLower())
-                         | Builders<RestaurantModel>.Filter.Where(en => en.Alias != null && en.Alias.ToLower() == restaurantName.ToLower());
+                         | Builders<RestaurantModel>.Filter.Where(en =>
+                             en.Alias != null && en.Alias.ToLower() == restaurantName.ToLower());
 
             var cursor = await collection.FindAsync(filter, cancellationToken: cancellationToken);
             return cursor.ToEnumerable().Select(FromDocument);
@@ -323,15 +324,27 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
             logger.LogDebug($"Filter: DayOfWeek = {filterDayOfWeek}, FilterMinutes = {filterMinutes}");
 
-            var openingPeriodModelFilter = Builders<OpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
-                                           Builders<OpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
-                                           Builders<OpeningPeriodModel>.Filter.Gte(m => m.EndTime, filterMinutes);
+            var openingPeriodModelFilter =
+                Builders<RegularOpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
+                Builders<RegularOpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
+                Builders<RegularOpeningPeriodModel>.Filter.Gte(m => m.EndTime, filterMinutes);
 
             return Builders<RestaurantModel>.Filter.ElemMatch(m => m.OpeningHours, openingPeriodModelFilter);
         }
 
         private static Restaurant FromDocument(RestaurantModel document)
         {
+            IDictionary<int, IList<RegularOpeningPeriod>> regularOpeningPeriods = document.OpeningHours
+                ?.Select(en => new RegularOpeningPeriod(en.DayOfWeek, TimeSpan.FromMinutes(en.StartTime),
+                    TimeSpan.FromMinutes(en.EndTime))).GroupBy(en => en.DayOfWeek, en => en)
+                .ToDictionary(en => en.Key, en => en.ToList() as IList<RegularOpeningPeriod>);
+
+            IDictionary<DateTime, IList<DeviatingOpeningPeriod>> deviatingOpeningPeriods = document
+                .DeviatingOpeningHours
+                ?.Select(en => new DeviatingOpeningPeriod(en.Date, TimeSpan.FromMinutes(en.StartTime),
+                    TimeSpan.FromMinutes(en.EndTime))).GroupBy(en => en.Date, en => en)
+                .ToDictionary(en => en.Key, en => en.ToList() as IList<DeviatingOpeningPeriod>);
+
             return new Restaurant(
                 new RestaurantId(document.Id),
                 document.Name,
@@ -352,10 +365,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         document.ContactInfo.EmailAddress
                     )
                     : null,
-                document.OpeningHours?.Select(en => new OpeningPeriod(
-                    en.DayOfWeek,
-                    TimeSpan.FromMinutes(en.StartTime),
-                    TimeSpan.FromMinutes(en.EndTime))).ToList(),
+                regularOpeningPeriods,
+                deviatingOpeningPeriods,
                 document.PickupInfo != null
                     ? new PickupInfo(
                         document.PickupInfo.Enabled,
@@ -399,6 +410,24 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         private static RestaurantModel ToDocument(Restaurant obj)
         {
+            var openingHours = obj.RegularOpeningPeriods?.SelectMany(keyValuePair => keyValuePair.Value.Select(en =>
+                new RegularOpeningPeriodModel
+                {
+                    DayOfWeek = en.DayOfWeek,
+                    StartTime = (int) en.Start.TotalMinutes,
+                    EndTime = (int) en.End.TotalMinutes
+                }
+            )).ToList();
+
+            var deviatingOpeningHours = obj.DeviatingOpeningPeriods?.SelectMany(keyValuePair => keyValuePair.Value.Select(en =>
+                new DeviatingOpeningPeriodModel
+                {
+                    Date = en.Date,
+                    StartTime = (int) en.Start.TotalMinutes,
+                    EndTime = (int) en.End.TotalMinutes
+                }
+            )).ToList();
+
             return new RestaurantModel
             {
                 Id = obj.Id.Value,
@@ -421,12 +450,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         EmailAddress = obj.ContactInfo.EmailAddress
                     }
                     : null,
-                OpeningHours = obj.OpeningHours?.Select(en => new OpeningPeriodModel
-                {
-                    DayOfWeek = en.DayOfWeek,
-                    StartTime = (int) en.Start.TotalMinutes,
-                    EndTime = (int) en.End.TotalMinutes
-                }).ToList(),
+                OpeningHours = openingHours,
+                DeviatingOpeningHours = deviatingOpeningHours,
                 PickupInfo = obj.PickupInfo != null
                     ? new PickupInfoModel
                     {
@@ -521,7 +546,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 return null;
 
             name = name.ToLowerInvariant();
-            
+
             var sb = new StringBuilder();
 
             for (var pos = 0; pos < name.Length; pos++)

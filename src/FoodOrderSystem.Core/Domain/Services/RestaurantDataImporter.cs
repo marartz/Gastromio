@@ -288,8 +288,8 @@ namespace FoodOrderSystem.Core.Domain.Services
                 if (parseEndTimeResult.IsFailure)
                     return parseEndTimeResult.Cast<bool>();
 
-                var addOpeningPeriodResult = restaurant.AddOpeningPeriod(
-                    new OpeningPeriod(dayOfWeek, parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
+                var addOpeningPeriodResult = restaurant.AddRegularOpeningPeriod(
+                    new RegularOpeningPeriod(dayOfWeek, parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
                 if (addOpeningPeriodResult.IsFailure)
                     return addOpeningPeriodResult;
             }
