@@ -1,11 +1,12 @@
 using System;
+using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 
 namespace FoodOrderSystem.Core.Application.Commands.RemoveDeviatingOpeningPeriodFromRestaurant
 {
     public class RemoveDeviatingOpeningPeriodFromRestaurantCommand : ICommand<bool>
     {
-        public RemoveDeviatingOpeningPeriodFromRestaurantCommand(RestaurantId restaurantId, DateTime date, TimeSpan start)
+        public RemoveDeviatingOpeningPeriodFromRestaurantCommand(RestaurantId restaurantId, Date date, TimeSpan start)
         {
             RestaurantId = restaurantId;
             Date = date;
@@ -13,7 +14,7 @@ namespace FoodOrderSystem.Core.Application.Commands.RemoveDeviatingOpeningPeriod
         }
 
         public RestaurantId RestaurantId { get; }
-        public DateTime Date { get; }
+        public Date Date { get; }
         public TimeSpan Start { get; }
     }
 }

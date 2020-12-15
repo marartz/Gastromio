@@ -110,7 +110,7 @@
                 <tr *ngFor="let deviatingOpeningDay of (deviatingOpeningHoursViewModel$ | async).dates">
                     <th scope="row">
                         <p class="email">
-                            {{deviatingOpeningDay.date.toLocaleDateString()}}
+                            {{deviatingOpeningDay.dateText}}
                             <ng-container *ngIf="isDeviatingDateClosed(deviatingOpeningDay.date)">
                                 (geschlossen)
                             </ng-container>

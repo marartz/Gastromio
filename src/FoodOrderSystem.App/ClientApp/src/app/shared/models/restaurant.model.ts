@@ -1,6 +1,7 @@
 import {PaymentMethodModel} from './payment-method.model';
 import {UserModel} from './user.model';
 import {CuisineModel} from './cuisine.model';
+import {DateModel} from "./date.model";
 
 export class RestaurantModel {
 
@@ -166,8 +167,8 @@ export class RestaurantModel {
     }
 
     if (this.deviatingOpeningDays) {
-      const date = new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
-      const deviatingOpeningDay = this.deviatingOpeningDays.find(en => en.date === date);
+      const date = new DateModel(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate());
+      const deviatingOpeningDay = this.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
       if (deviatingOpeningDay) {
         return deviatingOpeningDay?.openingPeriods.find(en => en.start <= time && time <= en.end);
       }
@@ -182,6 +183,7 @@ export class RestaurantModel {
 
     return undefined;
   }
+
 }
 
 export class AddressModel {
@@ -247,7 +249,7 @@ export class DeviatingOpeningDayModel {
     }
   }
 
-  public date: Date;
+  public date: DateModel;
 
   public openingPeriods: Array<OpeningPeriodModel>;
 }

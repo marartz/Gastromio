@@ -17,7 +17,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         public List<RegularOpeningPeriodModel> OpeningHours { get; set; }
 
-        public List<DeviatingOpeningPeriodModel> DeviatingOpeningHours { get; set; }
+        public List<DeviatingOpeningDayModel> DeviatingOpeningHours { get; set; }
 
         public PickupInfoModel PickupInfo { get; set; }
         

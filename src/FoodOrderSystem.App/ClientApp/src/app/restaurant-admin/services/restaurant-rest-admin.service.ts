@@ -8,9 +8,9 @@ import {DishCategoryModel} from '../../shared/models/dish-category.model';
 import {DishModel} from '../../shared/models/dish.model';
 import {RestaurantModel,AddressModel,ContactInfoModel,ServiceInfoModel} from '../../shared/models/restaurant.model';
 import {PaymentMethodModel} from '../../shared/models/payment-method.model';
-import {UserModel} from '../../shared/models/user.model';
 
 import {AuthService} from '../../auth/services/auth.service';
+import {DateModel} from "../../shared/models/date.model";
 
 @Injectable()
 export class RestaurantRestAdminService {
@@ -162,7 +162,33 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
-  public addDeviatingOpeningPeriodToRestaurantAsync(id: string, date: Date, start: number, end: number): Observable<boolean> {
+  public addDeviatingOpeningDayToRestaurantAsync(id: string, date: DateModel): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddeviatingopeningday', {
+      date
+    }, httpOptions);
+  }
+
+  public removeDeviatingOpeningDayFromRestaurantAsync(id: string, date: DateModel): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedeviatingopeningday', {
+      date
+    }, httpOptions);
+  }
+
+  public addDeviatingOpeningPeriodToRestaurantAsync(id: string, date: DateModel, start: number, end: number): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -177,7 +203,7 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
-  public changeDeviatingOpeningPeriodOfRestaurantAsync(id: string, date: Date, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
+  public changeDeviatingOpeningPeriodOfRestaurantAsync(id: string, date: DateModel, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -193,7 +219,7 @@ export class RestaurantRestAdminService {
     }, httpOptions);
   }
 
-  public removeDeviatingOpeningPeriodFromRestaurantAsync(id: string, date: Date, start: number): Observable<boolean> {
+  public removeDeviatingOpeningPeriodFromRestaurantAsync(id: string, date: DateModel, start: number): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

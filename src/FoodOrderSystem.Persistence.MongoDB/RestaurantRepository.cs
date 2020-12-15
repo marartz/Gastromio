@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
+using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Cuisine;
 using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
@@ -339,11 +340,13 @@ namespace FoodOrderSystem.Persistence.MongoDB
                     TimeSpan.FromMinutes(en.EndTime))).GroupBy(en => en.DayOfWeek, en => en)
                 .ToDictionary(en => en.Key, en => en.ToList() as IList<RegularOpeningPeriod>);
 
-            IDictionary<DateTime, IList<DeviatingOpeningPeriod>> deviatingOpeningPeriods = document
-                .DeviatingOpeningHours
-                ?.Select(en => new DeviatingOpeningPeriod(en.Date, TimeSpan.FromMinutes(en.StartTime),
-                    TimeSpan.FromMinutes(en.EndTime))).GroupBy(en => en.Date, en => en)
-                .ToDictionary(en => en.Key, en => en.ToList() as IList<DeviatingOpeningPeriod>);
+            IDictionary<Date, IList<DeviatingOpeningPeriod>> deviatingOpeningPeriods =
+                document.DeviatingOpeningHours?.ToDictionary(
+                    day => new Date(day.Date.Year, day.Date.Month, day.Date.Day),
+                    day => day.OpeningPeriods.Select(period =>
+                            new DeviatingOpeningPeriod(new Date(day.Date.Year, day.Date.Month, day.Date.Day),
+                                TimeSpan.FromMinutes(period.StartTime), TimeSpan.FromMinutes(period.EndTime)))
+                        .ToList() as IList<DeviatingOpeningPeriod>);
 
             return new Restaurant(
                 new RestaurantId(document.Id),
@@ -419,14 +422,20 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 }
             )).ToList();
 
-            var deviatingOpeningHours = obj.DeviatingOpeningPeriods?.SelectMany(keyValuePair => keyValuePair.Value.Select(en =>
-                new DeviatingOpeningPeriodModel
+            var deviatingOpeningHours = obj.DeviatingOpeningPeriods?.Select(keyValuePair => new DeviatingOpeningDayModel
+            {
+                Date = new DateModel
                 {
-                    Date = en.Date,
+                    Year = keyValuePair.Key.Year,
+                    Month = keyValuePair.Key.Month,
+                    Day = keyValuePair.Key.Day
+                },
+                OpeningPeriods = keyValuePair.Value.Select(en => new DeviatingOpeningPeriodModel
+                {
                     StartTime = (int) en.Start.TotalMinutes,
                     EndTime = (int) en.End.TotalMinutes
-                }
-            )).ToList();
+                }).ToList()
+            }).ToList();
 
             return new RestaurantModel
             {

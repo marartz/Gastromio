@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace FoodOrderSystem.App.Models
+﻿namespace FoodOrderSystem.App.Models
 {
     public class RemoveDeviatingOpeningPeriodFromRestaurantModel
     {
-        public DateTime Date { get; set; }
+        public DateModel Date { get; set; }
         public int Start { get; set; }
     }
 }

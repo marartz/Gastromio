@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
+using Address = FoodOrderSystem.Core.Domain.Model.Restaurant.Address;
 
 namespace FoodOrderSystem.Core.Application.DTOs
 {
@@ -177,6 +179,33 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 if (!first)
                     sb.Append("; ");
                 WriteOpeningPeriodsForDays(sb, startDayOfWeek, 6, openingPeriods);
+                first = false;
+            }
+
+            var now = DateTime.Now;
+            var today = new Date(now.Year, now.Month, now.Day);
+            var keyValuePairs = restaurant.DeviatingOpeningPeriods.Where(en => en.Key >= today).OrderBy(en => en.Key);
+            foreach (var keyValuePair in keyValuePairs)
+            {
+                var date = keyValuePair.Key;
+                
+                if (!first)
+                    sb.Append("; ");
+
+                sb.Append(date.Day);
+                sb.Append(".");
+                sb.Append(date.Month);
+                sb.Append(". ");
+                if (keyValuePair.Value?.Count == 0)
+                {
+                    sb.Append("geschlossen");
+                }
+                else
+                {
+                    WriteOpeningPeriods(sb, keyValuePair.Value);
+                }
+
+                first = false;
             }
 
             return sb.ToString();
@@ -203,7 +232,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 }
             }
 
-            if (restaurant.DeviatingOpeningPeriods.TryGetValue(now.Date, out var deviatingOpeningPeriods))
+            var today = new Date(now.Year, now.Month, now.Day);
+            if (restaurant.DeviatingOpeningPeriods.TryGetValue(today, out var deviatingOpeningPeriods))
             {
                 if (deviatingOpeningPeriods.Count == 0)
                 {

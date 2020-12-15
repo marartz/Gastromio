@@ -9,6 +9,7 @@ import {OpeningPeriodModel, RestaurantModel} from "../../../shared/models/restau
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 import {AddDeviatingDateComponent} from "../add-deviating-date/add-deviating-date.component";
+import {DateModel} from "../../../shared/models/date.model";
 
 @Component({
   selector: 'app-opening-hours-settings',
@@ -122,68 +123,54 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
   public openAddDeviatingDateDialog(): void {
     const modalRef = this.modalService.open(AddDeviatingDateComponent);
     modalRef.result.then((date: NgbDateStruct) => {
-      const d = new Date(date.year, date.month - 1, date.day);
+      const d = new DateModel(date.year, date.month, date.day);
 
       const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
-
-      const index = deviatingOpeningHoursViewModel.dates.findIndex(en => OpeningHoursSettingsComponent.areDatesEqual(en.date, d));
+      const index = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, d));
       if (index >= 0)
         return;
 
-      const deviatingOpeningDayViewModel = new DeviatingOpeningDayViewModel();
-      deviatingOpeningDayViewModel.date = d;
-      deviatingOpeningDayViewModel.openingPeriods = new Array<BehaviorSubject<OpeningPeriodViewModel>>();
-
-      deviatingOpeningHoursViewModel.dates.push(deviatingOpeningDayViewModel);
-
-      deviatingOpeningHoursViewModel.dates.sort((a, b) => {
-        if (a.date < b.date)
-          return -1;
-        else if (a.date > b.date)
-          return 1;
-        return 0;
-      });
-
-      this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
+      this.facade.addDeviatingOpeningDay(d).subscribe(() => { }, () => { });
     }, () => {
     });
   }
 
-  public removeDeviatingDate(date: Date): void {
-    const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
-
-    const index = deviatingOpeningHoursViewModel.dates.findIndex(en => OpeningHoursSettingsComponent.areDatesEqual(en.date, date));
-    if (index < 0)
-      return;
-
-    deviatingOpeningHoursViewModel.dates.splice(index, 1);
-
-    let allUndefined = deviatingOpeningHoursViewModel.dates.every(en => en.openingPeriods[deviatingOpeningHoursViewModel.columns.length - 1].value === undefined);
-    while (deviatingOpeningHoursViewModel.columns.length > 0 && allUndefined) {
-      for (let openingDay of deviatingOpeningHoursViewModel.dates) {
-        openingDay.openingPeriods.splice(deviatingOpeningHoursViewModel.columns.length - 1, 1);
-      }
-      deviatingOpeningHoursViewModel.columns.splice(deviatingOpeningHoursViewModel.columns.length - 1, 1);
-      allUndefined = deviatingOpeningHoursViewModel.dates.every(en => en.openingPeriods[deviatingOpeningHoursViewModel.columns.length - 1].value === undefined);
-    }
-
-    this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
+  public removeDeviatingDate(date: DateModel): void {
+    this.facade.removeDeviatingOpeningDay(date).subscribe(() => { }, () => { });
+    // const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
+    //
+    // const index = deviatingOpeningHoursViewModel.dates.findIndex(en => RestaurantAdminFacade.areDatesEqual(en.date, date));
+    // if (index < 0)
+    //   return;
+    //
+    // deviatingOpeningHoursViewModel.dates.splice(index, 1);
+    //
+    // let allUndefined = deviatingOpeningHoursViewModel.dates.every(en => en.openingPeriods[deviatingOpeningHoursViewModel.columns.length - 1].value === undefined);
+    // while (deviatingOpeningHoursViewModel.columns.length > 0 && allUndefined) {
+    //   for (let openingDay of deviatingOpeningHoursViewModel.dates) {
+    //     openingDay.openingPeriods.splice(deviatingOpeningHoursViewModel.columns.length - 1, 1);
+    //   }
+    //   deviatingOpeningHoursViewModel.columns.splice(deviatingOpeningHoursViewModel.columns.length - 1, 1);
+    //   allUndefined = deviatingOpeningHoursViewModel.dates.every(en => en.openingPeriods[deviatingOpeningHoursViewModel.columns.length - 1].value === undefined);
+    // }
+    //
+    // this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
   }
 
-  public isDeviatingDateClosed(date: Date): boolean {
+  public isDeviatingDateClosed(date: DateModel): boolean {
     const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
 
-    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => OpeningHoursSettingsComponent.areDatesEqual(en.date, date));
+    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, date));
     if (dateIndex < 0)
       return false;
 
     return deviatingOpeningHoursViewModel.dates[dateIndex].openingPeriods.every(en => en !== undefined && en.value === undefined);
   }
 
-  public addToDeviating(date: Date): void {
+  public addToDeviating(date: DateModel): void {
     const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
 
-    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => OpeningHoursSettingsComponent.areDatesEqual(en.date, date));
+    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, date));
     if (dateIndex < 0)
       return;
 
@@ -226,10 +213,10 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     openingPeriod$.next(openingPeriod$.value);
   }
 
-  public removeFromDeviating(date: Date, column: number): void {
+  public removeFromDeviating(date: DateModel, column: number): void {
     const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
 
-    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => OpeningHoursSettingsComponent.areDatesEqual(en.date, date));
+    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, date));
     if (dateIndex < 0)
       return;
 
@@ -250,9 +237,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
       this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
     } else {
-      // this.facade.removeDeviatingOpeningPeriod(date, openingPeriod$.value.baseModel.start)
-      //   .pipe(take(1))
-      //   .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
+      this.facade.removeDeviatingOpeningPeriod(date, openingPeriod$.value.baseModel.start)
+         .pipe(take(1))
+         .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
     }
   }
 
@@ -316,6 +303,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
         regularOpeningHoursViewModel.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.push(openingPeriodViewModel$);
       }
     }
+
     for (let weekDayOpeningPeriods of regularOpeningHoursViewModel.weekDays) {
       weekDayOpeningPeriods.openingPeriods.sort((a, b) => {
         if (a.value.start < b.value.start)
@@ -326,12 +314,14 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
           return 0;
       })
     }
+
     let maxOpeningPeriodCount = 0;
     for (let i = 0; i < regularOpeningHoursViewModel.weekDays.length; i++) {
       if (regularOpeningHoursViewModel.weekDays[i].openingPeriods.length > maxOpeningPeriodCount) {
         maxOpeningPeriodCount = regularOpeningHoursViewModel.weekDays[i].openingPeriods.length;
       }
     }
+
     for (let i = 0; i < regularOpeningHoursViewModel.weekDays.length; i++) {
       while (regularOpeningHoursViewModel.weekDays[i].openingPeriods.length < maxOpeningPeriodCount) {
         const openingPeriod$ = new BehaviorSubject<OpeningPeriodViewModel>(undefined);
@@ -339,6 +329,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
         regularOpeningHoursViewModel.weekDays[i].openingPeriods.push(openingPeriod$);
       }
     }
+
     regularOpeningHoursViewModel.columns = new Array<number>();
     for (let i = 0; i < maxOpeningPeriodCount; i++) {
       regularOpeningHoursViewModel.columns.push(i);
@@ -377,36 +368,6 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
-  private addSubscriptionForDeviating(date: Date, openingPeriod$: BehaviorSubject<OpeningPeriodViewModel>): void {
-    const subscription = openingPeriod$
-      .pipe(
-        debounceTime(1000)
-      )
-      .subscribe(openingPeriod => {
-        if (openingPeriod === undefined)
-          return;
-
-        const startParseResult = OpeningHoursSettingsComponent.parseTimeValue(openingPeriod.start);
-        const endParseResult = OpeningHoursSettingsComponent.parseTimeValue(openingPeriod.end);
-
-        if (!startParseResult.isValid || !endParseResult.isValid) {
-          return;
-        }
-
-        if (openingPeriod.baseModel === undefined) {
-          // this.facade.addDeviatingOpeningPeriod(date, startParseResult.value, endParseResult.value)
-          //   .pipe(take(1))
-          //   .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
-        } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
-          // this.facade.changeDeviatingOpeningPeriod(date, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
-          //   .pipe(take(1))
-          //   .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
-        }
-      });
-
-    this.subscriptions.push(subscription);
-  }
-
 
   private static createDeviatingOpeningHoursViewModel(): DeviatingOpeningHoursViewModel {
     const deviatingOpeningHoursViewModel = new DeviatingOpeningHoursViewModel();
@@ -425,16 +386,96 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    for (let deviatingOpeningDay of restaurant.deviatingOpeningDays) {
+      const deviatingOpeningDayViewModel = new DeviatingOpeningDayViewModel();
+      deviatingOpeningDayViewModel.date = deviatingOpeningDay.date;
+      const date = deviatingOpeningDay.date;
+      deviatingOpeningDayViewModel.dateText = `${date.day}.${date.month}.${date.year}`;
+      deviatingOpeningDayViewModel.openingPeriods = new Array<BehaviorSubject<OpeningPeriodViewModel>>();
+      deviatingOpeningHoursViewModel.dates.push(deviatingOpeningDayViewModel);
+
+      for (let openingPeriod of deviatingOpeningDay.openingPeriods) {
+        let column = deviatingOpeningDayViewModel.openingPeriods.length
+
+        const openingPeriodViewModel = new OpeningPeriodViewModel();
+        openingPeriodViewModel.column = column;
+        openingPeriodViewModel.baseModel = openingPeriod;
+        openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
+        openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
+
+        const openingPeriodViewModel$ = new BehaviorSubject<OpeningPeriodViewModel>(openingPeriodViewModel);
+        this.addSubscriptionForDeviating(deviatingOpeningDay.date, openingPeriodViewModel$);
+
+        deviatingOpeningDayViewModel.openingPeriods.push(openingPeriodViewModel$);
+      }
+    }
+
+    for (let deviatingOpeningDayViewModel of deviatingOpeningHoursViewModel.dates) {
+      deviatingOpeningDayViewModel.openingPeriods.sort((a, b) => {
+        if (a.value.start < b.value.start)
+          return -1;
+        else if (a.value.start > b.value.start)
+          return +1;
+        else
+          return 0;
+      })
+    }
+
+    let maxOpeningPeriodCount = 0;
+    for (let i = 0; i < deviatingOpeningHoursViewModel.dates.length; i++) {
+      if (deviatingOpeningHoursViewModel.dates[i].openingPeriods.length > maxOpeningPeriodCount) {
+        maxOpeningPeriodCount = deviatingOpeningHoursViewModel.dates[i].openingPeriods.length;
+      }
+    }
+
+    for (let i = 0; i < deviatingOpeningHoursViewModel.dates.length; i++) {
+      while (deviatingOpeningHoursViewModel.dates[i].openingPeriods.length < maxOpeningPeriodCount) {
+        const openingPeriod$ = new BehaviorSubject<OpeningPeriodViewModel>(undefined);
+        this.addSubscriptionForDeviating(deviatingOpeningHoursViewModel.dates[i].date, openingPeriod$);
+        deviatingOpeningHoursViewModel.dates[i].openingPeriods.push(openingPeriod$);
+      }
+    }
+
+    deviatingOpeningHoursViewModel.columns = new Array<number>();
+    for (let i = 0; i < maxOpeningPeriodCount; i++) {
+      deviatingOpeningHoursViewModel.columns.push(i);
+    }
+
+    deviatingOpeningHoursViewModel.dates.sort((a, b) => {
+      return DateModel.compare(a.date, b.date);
+    });
+
     this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
   }
 
-  private static areDatesEqual(a: Date, b: Date) {
-    if (a.getFullYear() !== b.getFullYear())
-      return false;
-    if (a.getMonth() !== b.getMonth())
-      return false;
-    return a.getDate() === b.getDate();
+  private addSubscriptionForDeviating(date: DateModel, openingPeriod$: BehaviorSubject<OpeningPeriodViewModel>): void {
+    const subscription = openingPeriod$
+      .pipe(
+        debounceTime(1000)
+      )
+      .subscribe(openingPeriod => {
+        if (openingPeriod === undefined)
+          return;
 
+        const startParseResult = OpeningHoursSettingsComponent.parseTimeValue(openingPeriod.start);
+        const endParseResult = OpeningHoursSettingsComponent.parseTimeValue(openingPeriod.end);
+
+        if (!startParseResult.isValid || !endParseResult.isValid) {
+          return;
+        }
+
+        if (openingPeriod.baseModel === undefined) {
+          this.facade.addDeviatingOpeningPeriod(date, startParseResult.value, endParseResult.value)
+            .pipe(take(1))
+            .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
+        } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
+          this.facade.changeDeviatingOpeningPeriod(date, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
+            .pipe(take(1))
+            .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
+        }
+      });
+
+    this.subscriptions.push(subscription);
   }
 
   private static totalMinutesToString(totalMinutes: number): string {
@@ -507,7 +548,8 @@ export class DeviatingOpeningHoursViewModel {
 
 export class DeviatingOpeningDayViewModel {
 
-  public date: Date;
+  public date: DateModel;
+  public dateText: string;
   public openingPeriods: Array<BehaviorSubject<OpeningPeriodViewModel>>
 
 }
