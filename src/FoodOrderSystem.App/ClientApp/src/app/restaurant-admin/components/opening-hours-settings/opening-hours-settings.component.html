@@ -8,7 +8,7 @@
                 <thead>
                 <tr>
                     <th scope="col" style="min-width: 120px;">Wochentag</th>
-                    <ng-container *ngFor="let column of (regularOpeningHours$ | async).columns">
+                    <ng-container *ngFor="let column of (regularOpeningHoursViewModel$ | async).columns">
                         <th scope="col">Beginn</th>
                         <th scope="col">Ende</th>
                         <th scope="col"></th>
@@ -17,18 +17,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let weekDayOpeningPeriods of (regularOpeningHours$ | async).weekDays">
+                <tr *ngFor="let regularOpeningDay of (regularOpeningHoursViewModel$ | async).weekDays">
                     <th scope="row">
-                        <p class="email">{{weekDayOpeningPeriods.dayOfWeekText}}</p>
+                        <p class="email">{{regularOpeningDay.dayOfWeekText}}</p>
                     </th>
-                    <ng-container *ngFor="let openingPeriod$ of weekDayOpeningPeriods.openingPeriods">
+                    <ng-container *ngFor="let openingPeriod$ of regularOpeningDay.openingPeriods">
                         <th scope="row">
                             <div *ngIf="openingPeriod$.value !== undefined" class="form-input">
                                 <div class="input-group">
                                     <input type="time" mozactionhint="next" autocapitalize="none" autocomplete="off"
                                            inputmode="numeric" class="form-control" [class.failure]="openingPeriod$.value.failure"
                                            [value]="openingPeriod$.value.start"
-                                           (change)="changeStart(openingPeriod$, $event.target.value)">
+                                           (change)="changeStartOfRegular(openingPeriod$, $event.target.value)">
                                 </div>
                             </div>
                         </th>
@@ -38,13 +38,13 @@
                                     <input type="time" mozactionhint="next" autocapitalize="none" autocomplete="off"
                                            inputmode="numeric" class="form-control" [class.failure]="openingPeriod$.value.failure"
                                            [value]="openingPeriod$.value.end"
-                                           (change)="changeEnd(openingPeriod$, $event.target.value)">
+                                           (change)="changeEndOfRegular(openingPeriod$, $event.target.value)">
                                 </div>
                             </div>
                         </th>
                         <td class="actions">
                             <a *ngIf="openingPeriod$.value !== undefined"
-                               (click)="remove(weekDayOpeningPeriods.dayOfWeek, openingPeriod$.value.column)"
+                               (click)="removeFromRegular(regularOpeningDay.dayOfWeek, openingPeriod$.value.column)"
                                class="action-item red" placement="top" ngbTooltip="Löschen" style="width: 16px; display:block;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -59,7 +59,7 @@
                         </td>
                     </ng-container>
                     <td class="actions">
-                        <a (click)="add(weekDayOpeningPeriods.dayOfWeek)" class="action-item green" placement="top"
+                        <a (click)="addToRegular(regularOpeningDay.dayOfWeek)" class="action-item green" placement="top"
                            ngbTooltip="Hinzufügen" style="width: 16px; display: block;">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
