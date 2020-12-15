@@ -11,6 +11,7 @@ import {RestaurantAdminRoutingModule} from './restaurant-admin.routing.module';
 import {AuthModule} from '../auth/auth.module';
 import {SharedModule} from '../shared/shared.module';
 
+import {AddDeviatingDateComponent} from "./components/add-deviating-date/add-deviating-date.component";
 import {AddDishCategoryComponent} from './components/add-dish-category/add-dish-category.component';
 import {AdminMyRestaurantsComponent} from './components/admin-my-restaurants/admin-my-restaurants.component';
 import {AdminRestaurantComponent} from './components/admin-restaurant/admin-restaurant.component';
@@ -41,6 +42,7 @@ import {RestaurantRestAdminService} from './services/restaurant-rest-admin.servi
     AuthModule
   ],
   declarations: [
+    AddDeviatingDateComponent,
     AddDishCategoryComponent,
     AdminMyRestaurantsComponent,
     AdminRestaurantComponent,

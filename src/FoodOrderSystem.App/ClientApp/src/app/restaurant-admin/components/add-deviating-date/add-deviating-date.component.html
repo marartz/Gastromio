@@ -1,0 +1,20 @@
+<block-ui delayStart="500">
+    <div class="modal-overlay">
+        <div class="modal_v3">
+            <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
+            <header id="header">
+                <div class="left"></div>
+                <div class="middle"><h1 class="title" tabindex="-1">Abweichenden Öffnungstag hinzufügen</h1></div>
+                <div class="right"></div>
+            </header>
+            <div id="body" tabindex="0">
+                <div class="wrapper">
+                    <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
+                </div>
+                <div id="feedback">
+                </div>
+                <div id="submit"><button (click)="onSubmit()">Hinzufügen</button></div>
+            </div>
+        </div>
+    </div>
+</block-ui>
