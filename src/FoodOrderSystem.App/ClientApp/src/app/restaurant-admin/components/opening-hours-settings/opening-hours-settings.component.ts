@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subscription} from "rxjs";
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
-import {OpeningPeriodModel} from "../../../shared/models/restaurant.model";
+import {OpeningPeriodModel, RestaurantModel} from "../../../shared/models/restaurant.model";
 import {debounceTime, take} from "rxjs/operators";
 
 @Component({
@@ -18,6 +18,7 @@ import {debounceTime, take} from "rxjs/operators";
 export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
   public regularOpeningHoursViewModel$: BehaviorSubject<RegularOpeningHoursViewModel>;
+  public deviatingOpeningHoursViewModel$: BehaviorSubject<DeviatingOpeningHoursViewModel>;
 
   private subscriptions: Array<Subscription>;
 
@@ -26,6 +27,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
   ) {
     const regularOpeningHoursViewModel = OpeningHoursSettingsComponent.createRegularOpeningHoursViewModel();
     this.regularOpeningHoursViewModel$ = new BehaviorSubject<RegularOpeningHoursViewModel>(regularOpeningHoursViewModel);
+
+    const deviatingOpeningHoursViewModel = OpeningHoursSettingsComponent.createDeviatingOpeningHoursViewModel();
+    this.deviatingOpeningHoursViewModel$ = new BehaviorSubject<DeviatingOpeningHoursViewModel>(deviatingOpeningHoursViewModel);
   }
 
   public ngOnInit(): void {
@@ -33,62 +37,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       .subscribe(restaurant => {
         if (restaurant === undefined)
           return;
-
         this.subscriptions = new Array<Subscription>();
-
-        const regularOpeningHoursViewModel = OpeningHoursSettingsComponent.createRegularOpeningHoursViewModel();
-
-        if (restaurant.regularOpeningDays) {
-          for (let regularOpeningDay of restaurant.regularOpeningDays) {
-            for (let openingPeriod of regularOpeningDay.openingPeriods) {
-              let column = regularOpeningHoursViewModel.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.length
-
-              const openingPeriodViewModel = new OpeningPeriodViewModel();
-              openingPeriodViewModel.column = column;
-              openingPeriodViewModel.baseModel = openingPeriod;
-              openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
-              openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
-
-              const openingPeriodViewModel$ = new BehaviorSubject<OpeningPeriodViewModel>(openingPeriodViewModel);
-              this.addSubscriptionForRegular(regularOpeningDay.dayOfWeek, openingPeriodViewModel$);
-
-              regularOpeningHoursViewModel.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.push(openingPeriodViewModel$);
-            }
-          }
-
-          for (let weekDayOpeningPeriods of regularOpeningHoursViewModel.weekDays) {
-            weekDayOpeningPeriods.openingPeriods.sort((a, b) => {
-              if (a.value.start < b.value.start)
-                return -1;
-              else if (a.value.start > b.value.start)
-                return +1;
-              else
-                return 0;
-            })
-          }
-
-          let maxOpeningPeriodCount = 0;
-          for (let i = 0; i < regularOpeningHoursViewModel.weekDays.length; i++) {
-            if (regularOpeningHoursViewModel.weekDays[i].openingPeriods.length > maxOpeningPeriodCount) {
-              maxOpeningPeriodCount = regularOpeningHoursViewModel.weekDays[i].openingPeriods.length;
-            }
-          }
-
-          for (let i = 0; i < regularOpeningHoursViewModel.weekDays.length; i++) {
-            while (regularOpeningHoursViewModel.weekDays[i].openingPeriods.length < maxOpeningPeriodCount) {
-              const openingPeriod$ = new BehaviorSubject<OpeningPeriodViewModel>(undefined);
-              this.addSubscriptionForRegular(regularOpeningHoursViewModel.weekDays[i].dayOfWeek, openingPeriod$);
-              regularOpeningHoursViewModel.weekDays[i].openingPeriods.push(openingPeriod$);
-            }
-          }
-
-          regularOpeningHoursViewModel.columns = new Array<number>();
-          for (let i = 0; i < maxOpeningPeriodCount; i++) {
-            regularOpeningHoursViewModel.columns.push(i);
-          }
-
-          this.regularOpeningHoursViewModel$.next(regularOpeningHoursViewModel);
-        }
+        this.initializeRegularOpeningHoursViewModel(restaurant);
+        this.initializeDeviatingOpeningHoursViewModel(restaurant);
       });
   }
 
@@ -163,6 +114,18 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  public addToDeviating(date: Date): void {
+  }
+
+  public changeStartOfDeviating(openingPeriod$: BehaviorSubject<OpeningPeriodViewModel>, newValue: string): void {
+  }
+
+  public changeEndOfDeviating(openingPeriod$: BehaviorSubject<OpeningPeriodViewModel>, newValue: string): void {
+  }
+
+  public removeFromDeviating(date: Date, column: number): void {
+  }
+
   private removeSubscriptions(): void {
     if (this.subscriptions === undefined)
       return;
@@ -172,6 +135,86 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptions = new Array<Subscription>();
+  }
+
+
+
+  private static createRegularOpeningHoursViewModel(): RegularOpeningHoursViewModel {
+    const regularOpeningHoursViewModel = new RegularOpeningHoursViewModel();
+
+    regularOpeningHoursViewModel.weekDays = new Array<RegularOpeningDayViewModel>(7);
+    regularOpeningHoursViewModel.weekDays[0] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(0, "Montag");
+    regularOpeningHoursViewModel.weekDays[1] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(1, "Dienstag");
+    regularOpeningHoursViewModel.weekDays[2] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(2, "Mittwoch");
+    regularOpeningHoursViewModel.weekDays[3] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(3, "Donnerstag");
+    regularOpeningHoursViewModel.weekDays[4] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(4, "Freitag");
+    regularOpeningHoursViewModel.weekDays[5] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(5, "Samstag");
+    regularOpeningHoursViewModel.weekDays[6] = OpeningHoursSettingsComponent.createRegularOpeningDayViewModel(6, "Sonntag");
+
+    return regularOpeningHoursViewModel;
+  }
+
+  private static createRegularOpeningDayViewModel(dayOfWeek: number, dayOfWeekText: string): RegularOpeningDayViewModel {
+    const weekDayOpeningPeriods = new RegularOpeningDayViewModel();
+    weekDayOpeningPeriods.dayOfWeek = dayOfWeek;
+    weekDayOpeningPeriods.dayOfWeekText = dayOfWeekText;
+    weekDayOpeningPeriods.openingPeriods = new Array<BehaviorSubject<OpeningPeriodViewModel>>();
+    return weekDayOpeningPeriods;
+  }
+
+  private initializeRegularOpeningHoursViewModel(restaurant: RestaurantModel): void {
+    const regularOpeningHoursViewModel = OpeningHoursSettingsComponent.createRegularOpeningHoursViewModel();
+
+    if (!restaurant.regularOpeningDays) {
+      this.regularOpeningHoursViewModel$.next(regularOpeningHoursViewModel);
+      return;
+    }
+
+    for (let regularOpeningDay of restaurant.regularOpeningDays) {
+      for (let openingPeriod of regularOpeningDay.openingPeriods) {
+        let column = regularOpeningHoursViewModel.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.length
+
+        const openingPeriodViewModel = new OpeningPeriodViewModel();
+        openingPeriodViewModel.column = column;
+        openingPeriodViewModel.baseModel = openingPeriod;
+        openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
+        openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
+
+        const openingPeriodViewModel$ = new BehaviorSubject<OpeningPeriodViewModel>(openingPeriodViewModel);
+        this.addSubscriptionForRegular(regularOpeningDay.dayOfWeek, openingPeriodViewModel$);
+
+        regularOpeningHoursViewModel.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.push(openingPeriodViewModel$);
+      }
+    }
+    for (let weekDayOpeningPeriods of regularOpeningHoursViewModel.weekDays) {
+      weekDayOpeningPeriods.openingPeriods.sort((a, b) => {
+        if (a.value.start < b.value.start)
+          return -1;
+        else if (a.value.start > b.value.start)
+          return +1;
+        else
+          return 0;
+      })
+    }
+    let maxOpeningPeriodCount = 0;
+    for (let i = 0; i < regularOpeningHoursViewModel.weekDays.length; i++) {
+      if (regularOpeningHoursViewModel.weekDays[i].openingPeriods.length > maxOpeningPeriodCount) {
+        maxOpeningPeriodCount = regularOpeningHoursViewModel.weekDays[i].openingPeriods.length;
+      }
+    }
+    for (let i = 0; i < regularOpeningHoursViewModel.weekDays.length; i++) {
+      while (regularOpeningHoursViewModel.weekDays[i].openingPeriods.length < maxOpeningPeriodCount) {
+        const openingPeriod$ = new BehaviorSubject<OpeningPeriodViewModel>(undefined);
+        this.addSubscriptionForRegular(regularOpeningHoursViewModel.weekDays[i].dayOfWeek, openingPeriod$);
+        regularOpeningHoursViewModel.weekDays[i].openingPeriods.push(openingPeriod$);
+      }
+    }
+    regularOpeningHoursViewModel.columns = new Array<number>();
+    for (let i = 0; i < maxOpeningPeriodCount; i++) {
+      regularOpeningHoursViewModel.columns.push(i);
+    }
+
+    this.regularOpeningHoursViewModel$.next(regularOpeningHoursViewModel);
   }
 
   private addSubscriptionForRegular(dayOfWeek: number, openingPeriod$: BehaviorSubject<OpeningPeriodViewModel>): void {
@@ -204,27 +247,25 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
-  private static createRegularOpeningHoursViewModel(): RegularOpeningHoursViewModel {
-    const regularOpeningHoursViewModel = new RegularOpeningHoursViewModel();
 
-    regularOpeningHoursViewModel.weekDays = new Array<RegularOpeningDayViewModel>(7);
-    regularOpeningHoursViewModel.weekDays[0] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(0, "Montag");
-    regularOpeningHoursViewModel.weekDays[1] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(1, "Dienstag");
-    regularOpeningHoursViewModel.weekDays[2] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(2, "Mittwoch");
-    regularOpeningHoursViewModel.weekDays[3] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(3, "Donnerstag");
-    regularOpeningHoursViewModel.weekDays[4] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(4, "Freitag");
-    regularOpeningHoursViewModel.weekDays[5] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(5, "Samstag");
-    regularOpeningHoursViewModel.weekDays[6] = OpeningHoursSettingsComponent.createWeekDayOpeningPeriod(6, "Sonntag");
+  private static createDeviatingOpeningHoursViewModel(): DeviatingOpeningHoursViewModel {
+    const deviatingOpeningHoursViewModel = new DeviatingOpeningHoursViewModel();
 
-    return regularOpeningHoursViewModel;
+    deviatingOpeningHoursViewModel.columns = new Array<number>();
+    deviatingOpeningHoursViewModel.dates = new Array<DeviatingOpeningDayViewModel>();
+
+    return deviatingOpeningHoursViewModel;
   }
 
-  private static createWeekDayOpeningPeriod(dayOfWeek: number, dayOfWeekText: string): RegularOpeningDayViewModel {
-    const weekDayOpeningPeriods = new RegularOpeningDayViewModel();
-    weekDayOpeningPeriods.dayOfWeek = dayOfWeek;
-    weekDayOpeningPeriods.dayOfWeekText = dayOfWeekText;
-    weekDayOpeningPeriods.openingPeriods = new Array<BehaviorSubject<OpeningPeriodViewModel>>();
-    return weekDayOpeningPeriods;
+  private initializeDeviatingOpeningHoursViewModel(restaurant: RestaurantModel): void {
+    const deviatingOpeningHoursViewModel = OpeningHoursSettingsComponent.createDeviatingOpeningHoursViewModel();
+
+    if (!restaurant.deviatingOpeningDays) {
+      this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
+      return;
+    }
+
+    this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
   }
 
   private static totalMinutesToString(totalMinutes: number): string {
@@ -291,6 +332,7 @@ export class RegularOpeningDayViewModel {
 export class DeviatingOpeningHoursViewModel {
 
   public columns: Array<number>;
+  public dates: Array<DeviatingOpeningDayViewModel>;
 
 }
 
