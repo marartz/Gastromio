@@ -49,7 +49,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 : new List<UserDTO>();
             IsActive = restaurant.IsActive;
             NeedsSupport = restaurant.NeedsSupport;
-            SupportedOrderMode = ConvertSupportedOrderMode(restaurant.SupportedOrderMode);
+            SupportedOrderMode = restaurant.SupportedOrderMode.ToModel();
             ExternalMenus = restaurant.ExternalMenus != null
                 ? restaurant.ExternalMenus.Select(menu => new ExternalMenuDTO(
                         menu.Id,
@@ -302,21 +302,6 @@ namespace FoodOrderSystem.Core.Application.DTOs
             }
 
             return true;
-        }
-
-        private static string ConvertSupportedOrderMode(SupportedOrderMode supportedOrderMode)
-        {
-            switch (supportedOrderMode)
-            {
-                case Domain.Model.Restaurant.SupportedOrderMode.OnlyPhone:
-                    return "phone";
-                case Domain.Model.Restaurant.SupportedOrderMode.AtNextShift:
-                    return "shift";
-                case Domain.Model.Restaurant.SupportedOrderMode.Anytime:
-                    return "anytime";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(supportedOrderMode), supportedOrderMode, null);
-            }
         }
     }
 }

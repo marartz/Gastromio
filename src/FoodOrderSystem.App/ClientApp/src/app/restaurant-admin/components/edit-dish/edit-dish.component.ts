@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {HttpErrorResponse} from '@angular/common/http';
 
+import {Observable} from "rxjs";
 import {take} from 'rxjs/operators';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -13,9 +13,7 @@ import {Guid} from 'guid-typescript';
 import {DishModel} from '../../../shared/models/dish.model';
 import {DishVariantModel} from '../../../shared/models/dish-variant.model';
 
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
-
-import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
+import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
 @Component({
   selector: 'app-edit-dish',
@@ -27,14 +25,13 @@ import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.s
   ]
 })
 export class EditDishComponent implements OnInit {
-  @Input() public restaurantId: string;
   @Input() public dishCategoryId: string;
   @Input() public dish: DishModel;
   @BlockUI() blockUI: NgBlockUI;
 
   isNew: boolean;
   editDishForm: FormGroup;
-  message: string;
+  message$: Observable<string>;
   submitted = false;
 
   price: number;
@@ -42,12 +39,13 @@ export class EditDishComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private restaurantAdminService: RestaurantRestAdminService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private facade: RestaurantAdminFacade
   ) {
   }
 
   ngOnInit() {
+    this.message$ = this.facade.getUpdateError$();
+
     if (this.dish === undefined) {
       this.dish = new DishModel();
       this.dish.variants = new Array<DishVariantModel>();
@@ -97,8 +95,6 @@ export class EditDishComponent implements OnInit {
       return;
     }
 
-    this.blockUI.start('Verarbeite Daten...');
-
     this.dish.name = data.name;
     this.dish.description = data.description;
     this.dish.productInfo = data.productInfo;
@@ -114,19 +110,11 @@ export class EditDishComponent implements OnInit {
       this.dish.variants[0].price = this.price;
     }
 
-    this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurantId, this.dishCategoryId, this.dish)
+    this.facade.addOrChangedDish(this.dishCategoryId, this.dish)
       .pipe(take(1))
-      .subscribe((newDishId) => {
-        this.blockUI.stop();
-
-        this.dish.id = newDishId;
-
-        this.message = undefined;
-        this.editDishForm.reset();
-        this.activeModal.close(this.dish);
-      }, (response: HttpErrorResponse) => {
-        this.blockUI.stop();
-        this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
+      .subscribe(() => {
+        this.activeModal.close();
+      })
   }
+
 }

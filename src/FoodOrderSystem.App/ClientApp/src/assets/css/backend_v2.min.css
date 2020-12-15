@@ -233,7 +233,7 @@
     background-image: url('../../assets/images/rough/blue.png');
     background-repeat: repeat;
     padding-bottom: 32px;
-    padding-top: 32px;
+    padding-top: 16px;
     position: relative;
     width: 100%;
     z-index: 20;
@@ -564,6 +564,7 @@
     -moz-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     -webkit-flex-wrap: wrap;
+    margin-top: 16px;
     margin-bottom: 24px;
     margin-left: -16px;
     margin-right: -16px;
@@ -798,7 +799,7 @@ form .form-input .input-group input::placeholder {
     font-weight: 500;
 }
 
-#admin-restaurant .payment-card {
+#admin-restaurant .card {
     background-clip: border-box;
     background-color: #ADCCCB;
     border: 0px;
@@ -809,7 +810,7 @@ form .form-input .input-group input::placeholder {
     display: -webkit-box;
     display: -webkit-flex;
     flex-direction: column;
-    margin-bottom: 30px;
+    margin-bottom: 14px;
     min-width: 0px;
     position: relative;
     transition: all .2s ease;
@@ -817,9 +818,10 @@ form .form-input .input-group input::placeholder {
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     -webkit-transition: all .2s ease;
+    cursor: pointer;
 }
 
-#admin-restaurant .payment-card .payment-body {
+#admin-restaurant .card .card-body {
     color: #718096;
     flex: 1 1 auto;
     -moz-flex: 1 1 auto;
@@ -827,10 +829,10 @@ form .form-input .input-group input::placeholder {
     -webkit-box-flex: 1 1 auto;
     -webkit-flex: 1 1 auto;
     min-height: 1px;
-    padding: 28px;
+    padding: 14px;
 }
 
-#admin-restaurant .payment-card .payment-container {
+#admin-restaurant .card .card-container {
     list-style: none;
     margin-left: auto;
     margin-right: auto;
@@ -840,7 +842,7 @@ form .form-input .input-group input::placeholder {
     z-index: 1;
 }
 
-#admin-restaurant .payment-card .payment-wrapper {
+#admin-restaurant .card .card-wrapper {
     box-sizing: content-box;
     display: flex;
     height: 100%;
@@ -850,7 +852,7 @@ form .form-input .input-group input::placeholder {
     -webkit-box-sizing: content-box;
 }
 
-#admin-restaurant .payment-card .payment-content {
+#admin-restaurant .card .card-content {
     flex-shrink: 0;
     -webkit-flex-shrink: 0;
     height: 100%;
@@ -866,7 +868,7 @@ form .form-input .input-group input::placeholder {
 
 }
 
-#admin-restaurant .payment-card .payment-content .top {
+#admin-restaurant .card .card-content .top {
     align-items: center;
     display: flex;
     display: -moz-box;
@@ -882,14 +884,14 @@ form .form-input .input-group input::placeholder {
     margin-right: -16px;
 }
 
-#admin-restaurant .payment-card .payment-content .top img {
+#admin-restaurant .card .card-content .top img {
     border-radius: 4px;
     border-style: none;
     vertical-align: middle;
     width: unset;
 }
 
-#admin-restaurant .payment-card .payment-content .top .badge {
+#admin-restaurant .card .card-content .top .badge {
     border-radius: 6px;
     display: inline;
     font-family: "Apercu", sans-serif;
@@ -908,21 +910,21 @@ form .form-input .input-group input::placeholder {
     white-space: nowrap;
 }
 
-#admin-restaurant .payment-card .payment-content .top .badge.active {
+#admin-restaurant .card .card-content .top .badge.active {
     background-color: #5cc9a7;
     color: #fff;
 }
 
-#admin-restaurant .payment-card .payment-content .top .badge.inactive {
+#admin-restaurant .card .card-content .top .badge.inactive {
     background-color: #f25767;
     color: #fff;
 }
 
-#admin-restaurant .payment-card .payment-content .bottom {
+#admin-restaurant .card .card-content .bottom {
     margin-top: 24px;
 }
 
-#admin-restaurant .payment-card .payment-content .bottom .name {
+#admin-restaurant .card .card-content .bottom .name {
     color: #fff;
     display: flex;
     display: -moz-box;
@@ -936,7 +938,7 @@ form .form-input .input-group input::placeholder {
     line-height: 1.5;
 }
 
-#admin-restaurant .payment-card .payment-content .bottom .description {
+#admin-restaurant .card .card-content .bottom .description {
     color: #eff2f7;
     font-family: "Apercu", sans-serif;
     font-size: 14px;

@@ -1,0 +1,170 @@
+<div id="admin-restaurant">
+
+    <div class="form-header">
+        <div class="col"><h5>Bestellabwicklung</h5></div>
+    </div>
+    <form [formGroup]="changeSupportedOrderModeForm">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="">Unterstützte Bestellabwicklung</label>
+                    <div class="input-group">
+                        <select autocomplete="off" mozactionhint="next" required="" id="supportedOrderMode" formControlName="supportedOrderMode">
+                            <option value="phone">Nur telefon. Bestellung</option>
+                            <option value="shift">Telefon. Bestellung & Online-Vorbestellung</option>
+                            <option value="anytime">Telefon. Bestellung & Online-Bestellung</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="form-header">
+        <div class="col"><h5>Bestellmöglichkeiten</h5></div>
+    </div>
+    <form [formGroup]="changeServiceInfoForm">
+        <div class="form-header">
+            <div class="col"><h3>Abholung</h3></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label">Aktiviert</label>
+                    <div class="input-group">
+                        <input type="checkbox" id="pickupEnabled" formControlName="pickupEnabled"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top"
+                           ngbTooltip="Durchschnittliche Zeit für die Zubereitung (in Minuten)">Durchschnittl.
+                        Zubereitungszeit</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" maxlength="3" id="pickupAverageTime"
+                               formControlName="pickupAverageTime"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="Minimaler Bestellwert (in Euro)">Min.
+                        Bestellwert</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" id="pickupMinimumOrderValue"
+                               formControlName="pickupMinimumOrderValue"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="Maximaler Bestellwert (in Euro)">Max.
+                        Bestellwert</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="send" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" id="pickupMaximumOrderValue"
+                               formControlName="pickupMaximumOrderValue"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-header">
+            <div class="col"><h3>Lieferung</h3></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label">Aktiviert</label>
+                    <div class="input-group">
+                        <input type="checkbox" id="deliveryEnabled" formControlName="deliveryEnabled"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top"
+                           ngbTooltip="Durchschnittliche Zeit für die Zubereitung inkl. Lieferzeit (in Minuten)">Durchschnittl.
+                        Zubereitungszeit</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" maxlength="3" id="deliveryAverageTime"
+                               formControlName="deliveryAverageTime"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="Lieferkosten pro Bestellung (in Euro)">Lieferkosten</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" id="deliveryCosts" formControlName="deliveryCosts"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="Minimaler Bestellwert (in Euro)">Min.
+                        Bestellwert</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="next" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" id="deliveryMinimumOrderValue"
+                               formControlName="deliveryMinimumOrderValue"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top" ngbTooltip="Maximaler Bestellwert (in Euro)">Max.
+                        Bestellwert</label>
+                    <div class="input-group">
+                        <input type="number" mozactionhint="send" autocapitalize="none" autocomplete="off"
+                               inputmode="numeric" id="deliveryMaximumOrderValue"
+                               formControlName="deliveryMaximumOrderValue"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--        <div class="form-header">-->
+<!--            <div class="col"><h3>Tischreservierung</h3></div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-6">-->
+<!--                <div class="form-input">-->
+<!--                    <label class="form-label">Aktiviert</label>-->
+<!--                    <div class="input-group">-->
+<!--                        <input type="checkbox" id="reservationEnabled" formControlName="reservationEnabled"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="row">-->
+<!--            <div class="col-lg-6">-->
+<!--                <div class="form-input">-->
+<!--                    <label class="form-label" placement="top"-->
+<!--                           ngbTooltip="Was haben Sie für Coronabedingte Maßnamen ergriffen?">Hygienische-->
+<!--                        Abwicklung</label>-->
+<!--                    <div class="input-group">-->
+<!--                        <input type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off"-->
+<!--                               inputmode="verbatim" maxlength="1000" minlength="100" spellcheck="true"-->
+<!--                               id="hygienicHandling" formControlName="hygienicHandling"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </form>
+
+</div>

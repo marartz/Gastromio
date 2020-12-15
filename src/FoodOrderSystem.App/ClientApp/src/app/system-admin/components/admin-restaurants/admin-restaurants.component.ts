@@ -14,6 +14,8 @@ import {HttpErrorHandlingService} from '../../../shared/services/http-error-hand
 import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.service';
 
 import {AddRestaurantComponent} from '../add-restaurant/add-restaurant.component';
+import {ChangeRestaurantAccessSettingsComponent} from "../change-restaurant-access-settings/change-restaurant-access-settings.component";
+import {ChangeRestaurantGeneralSettingsComponent} from "../change-restaurant-general-settings/change-restaurant-general-settings.component";
 import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.component';
 
 @Component({
@@ -73,6 +75,24 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   openAddRestaurantForm(): void {
     const modalRef = this.modalService.open(AddRestaurantComponent);
+    modalRef.result.then(() => {
+      this.pagingComponent.triggerFetchPage();
+    }, () => {
+    });
+  }
+
+  openChangeRestaurantGeneralSettingsForm(restaurant: RestaurantModel): void {
+    const modalRef = this.modalService.open(ChangeRestaurantGeneralSettingsComponent);
+    modalRef.componentInstance.restaurant = restaurant;
+    modalRef.result.then(() => {
+      this.pagingComponent.triggerFetchPage();
+    }, () => {
+    });
+  }
+
+  openChangeRestaurantAccessSettingsForm(restaurant: RestaurantModel): void {
+    const modalRef = this.modalService.open(ChangeRestaurantAccessSettingsComponent);
+    modalRef.componentInstance.restaurant = restaurant;
     modalRef.result.then(() => {
       this.pagingComponent.triggerFetchPage();
     }, () => {

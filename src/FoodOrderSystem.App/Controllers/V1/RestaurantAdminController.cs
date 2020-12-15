@@ -6,28 +6,25 @@ using System.Threading.Tasks;
 using FoodOrderSystem.App.Helper;
 using FoodOrderSystem.App.Models;
 using FoodOrderSystem.Core.Application.Commands;
-using FoodOrderSystem.Core.Application.Commands.ActivateRestaurant;
-using FoodOrderSystem.Core.Application.Commands.AddAdminToRestaurant;
-using FoodOrderSystem.Core.Application.Commands.AddCuisineToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddDishCategoryToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOpeningPeriodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
+using FoodOrderSystem.Core.Application.Commands.AddOrChangeExternalMenuOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantAddress;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantContactInfo;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantImage;
-using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantName;
 using FoodOrderSystem.Core.Application.Commands.ChangeRestaurantServiceInfo;
-using FoodOrderSystem.Core.Application.Commands.DeactivateRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeSupportedOrderModeOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.DecOrderOfDishCategory;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDish;
 using FoodOrderSystem.Core.Application.Commands.IncOrderOfDishCategory;
-using FoodOrderSystem.Core.Application.Commands.RemoveAdminFromRestaurant;
-using FoodOrderSystem.Core.Application.Commands.RemoveCuisineFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishCategoryFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveDishFromRestaurant;
+using FoodOrderSystem.Core.Application.Commands.RemoveExternalMenuFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant;
 using FoodOrderSystem.Core.Application.Commands.RemovePaymentMethodFromRestaurant;
 using FoodOrderSystem.Core.Application.DTOs;
@@ -37,9 +34,7 @@ using FoodOrderSystem.Core.Application.Queries.GetAllPaymentMethods;
 using FoodOrderSystem.Core.Application.Queries.GetDishesOfRestaurant;
 using FoodOrderSystem.Core.Application.Queries.GetRestaurantById;
 using FoodOrderSystem.Core.Application.Queries.RestAdminMyRestaurants;
-using FoodOrderSystem.Core.Application.Queries.SearchForUsers;
 using FoodOrderSystem.Core.Application.Services;
-using FoodOrderSystem.Core.Domain.Model.Cuisine;
 using FoodOrderSystem.Core.Domain.Model.Dish;
 using FoodOrderSystem.Core.Domain.Model.DishCategory;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
@@ -145,43 +140,6 @@ namespace FoodOrderSystem.App.Controllers.V1
                 await queryDispatcher.PostAsync<GetAllPaymentMethodsQuery, ICollection<PaymentMethodDTO>>(
                     new GetAllPaymentMethodsQuery(), new UserId(currentUserId));
             return ResultHelper.HandleResult(queryResult, failureMessageService);
-        }
-
-        [Route("users")]
-        [HttpGet]
-        public async Task<IActionResult> SearchForUsersAsync(string search)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var query = new SearchForUsersQuery(search, Role.RestaurantAdmin, 0, 20);
-
-            var queryResult =
-                await queryDispatcher
-                    .PostAsync<SearchForUsersQuery, PagingDTO<UserDTO>>(query, new UserId(currentUserId));
-
-            if (queryResult.IsFailure)
-                return ResultHelper.HandleResult(queryResult, failureMessageService);
-
-            return Ok(queryResult.Value.Items);
-        }
-
-        [Route("restaurants/{restaurantId}/changename")]
-        [HttpPost]
-        public async Task<IActionResult> PostChangeNameAsync(Guid restaurantId,
-            [FromBody] ChangeRestaurantNameModel changeRestaurantNameModel)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantNameCommand, bool>(
-                new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name),
-                new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
         [Route("restaurants/{restaurantId}/changeimage")]
@@ -313,6 +271,27 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
+        [Route("restaurants/{restaurantId}/changeopeningperiod")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeOpeningPeriodAsync(Guid restaurantId,
+            [FromBody] ChangeOpeningPeriodOfRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var oldStart = TimeSpan.FromMinutes(model.OldStart);
+            var newStart = TimeSpan.FromMinutes(model.NewStart);
+            var newEnd = TimeSpan.FromMinutes(model.NewEnd);
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeOpeningPeriodOfRestaurantCommand, bool>(
+                new ChangeOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, oldStart, newStart, newEnd),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
         [Route("restaurants/{restaurantId}/removeopeningperiod")]
         [HttpPost]
         public async Task<IActionResult> PostRemoveOpeningPeriodAsync(Guid restaurantId,
@@ -327,42 +306,6 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<RemoveOpeningPeriodFromRestaurantCommand, bool>(
                 new RemoveOpeningPeriodFromRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/addcuisine")]
-        [HttpPost]
-        public async Task<IActionResult> PostAddCuisineAsync(Guid restaurantId,
-            [FromBody] AddCuisineToRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<AddCuisineToRestaurantCommand, bool>(
-                new AddCuisineToRestaurantCommand(new RestaurantId(restaurantId), new CuisineId(model.CuisineId)),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/removecuisine")]
-        [HttpPost]
-        public async Task<IActionResult> PostRemoveCuisineAsync(Guid restaurantId,
-            [FromBody] RemoveCuisineFromRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<RemoveCuisineFromRestaurantCommand, bool>(
-                new RemoveCuisineFromRestaurantCommand(new RestaurantId(restaurantId), new CuisineId(model.CuisineId)),
                 new UserId(currentUserId)
             );
 
@@ -407,42 +350,6 @@ namespace FoodOrderSystem.App.Controllers.V1
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
-        [Route("restaurants/{restaurantId}/addadmin")]
-        [HttpPost]
-        public async Task<IActionResult> PostAddAdminAsync(Guid restaurantId,
-            [FromBody] AddAdminToRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<AddAdminToRestaurantCommand, bool>(
-                new AddAdminToRestaurantCommand(new RestaurantId(restaurantId), new UserId(model.UserId)),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurantId}/removeadmin")]
-        [HttpPost]
-        public async Task<IActionResult> PostRemoveAdminAsync(Guid restaurantId,
-            [FromBody] RemoveAdminFromRestaurantModel model)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var commandResult = await commandDispatcher.PostAsync<RemoveAdminFromRestaurantCommand, bool>(
-                new RemoveAdminFromRestaurantCommand(new RestaurantId(restaurantId), new UserId(model.UserId)),
-                new UserId(currentUserId)
-            );
-
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
-        }
-
         [Route("restaurants/{restaurantId}/adddishcategory")]
         [HttpPost]
         public async Task<IActionResult> PostAddDishCategoryAsync(Guid restaurantId,
@@ -455,7 +362,7 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<AddDishCategoryToRestaurantCommand, Guid>(
                 new AddDishCategoryToRestaurantCommand(new RestaurantId(restaurantId), model.Name,
-                    new DishCategoryId(model.AfterCategoryId)),
+                    model.AfterCategoryId.HasValue ? new DishCategoryId(model.AfterCategoryId.Value) : null),
                 new UserId(currentUserId)
             );
 
@@ -623,37 +530,63 @@ namespace FoodOrderSystem.App.Controllers.V1
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
-
-        [Route("restaurants/{restaurantId}/activate")]
+        
+        [Route("restaurants/{restaurantId}/changesupportedordermode")]
         [HttpPost]
-        public async Task<IActionResult> PostActivateAsync(Guid restaurantId)
+        public async Task<IActionResult> PostChangeSupportedOrderModeAsync(Guid restaurantId,
+            [FromBody] ChangeSupportedOrderModeOfRestaurantModel model)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var commandResult = await commandDispatcher.PostAsync<ActivateRestaurantCommand, bool>(
-                new ActivateRestaurantCommand(new RestaurantId(restaurantId)),
-                new UserId(currentUserId)
-            );
+            var supportedOrderMode = model.SupportedOrderMode.ToSupportedOrderMode();
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeSupportedOrderModeOfRestaurantCommand, bool>(
+                new ChangeSupportedOrderModeOfRestaurantCommand(new RestaurantId(restaurantId), supportedOrderMode),
+                new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
-
-        [Route("restaurants/{restaurantId}/deactivate")]
+        
+        [Route("restaurants/{restaurantId}/addorchangeexternalmenu")]
         [HttpPost]
-        public async Task<IActionResult> PostDeactivateAsync(Guid restaurantId)
+        public async Task<IActionResult> PostAddOrChangeExternalMenuAsync(Guid restaurantId,
+            [FromBody] AddOrChangeExternalMenuOfRestaurantModel model)
         {
             var identityName = (User.Identity as ClaimsIdentity).Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var commandResult = await commandDispatcher.PostAsync<DeactivateRestaurantCommand, bool>(
-                new DeactivateRestaurantCommand(new RestaurantId(restaurantId)),
-                new UserId(currentUserId)
+            var externalMenu = new ExternalMenu(
+                model.ExternalMenuId,
+                model.Name,
+                model.Description,
+                model.Url
             );
+
+            var commandResult = await commandDispatcher.PostAsync<AddOrChangeExternalMenuOfRestaurantCommand, bool>(
+                new AddOrChangeExternalMenuOfRestaurantCommand(new RestaurantId(restaurantId), externalMenu),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+        
+        [Route("restaurants/{restaurantId}/removeexternalmenu")]
+        [HttpPost]
+        public async Task<IActionResult> PostRemoveExternalMenuAsync(Guid restaurantId,
+            [FromBody] RemoveExternalMenuFromRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<RemoveExternalMenuFromRestaurantCommand, bool>(
+                new RemoveExternalMenuFromRestaurantCommand(new RestaurantId(restaurantId), model.ExternalMenuId),
+                new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }

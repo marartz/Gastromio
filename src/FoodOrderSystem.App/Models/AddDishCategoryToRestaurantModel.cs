@@ -6,6 +6,6 @@ namespace FoodOrderSystem.App.Models
     {
         public string Name { get; set; }
         
-        public Guid AfterCategoryId { get; set; }
+        public Guid? AfterCategoryId { get; set; }
     }
 }
