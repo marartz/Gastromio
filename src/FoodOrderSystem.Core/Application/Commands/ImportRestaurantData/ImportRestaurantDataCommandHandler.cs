@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Core.Application.DTOs;
 using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.User;
 using FoodOrderSystem.Core.Domain.Services;
@@ -136,6 +135,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
 
                     cell = row.GetCell(25);
                     restaurantRow.OpeningHoursSunday = cell?.StringCellValue;
+
+                    cell = row.GetCell(39);
+                    restaurantRow.DeviatingOpeningHours = cell?.StringCellValue;
 
                     cell = row.GetCell(26);
                     restaurantRow.HygienicHandling = cell?.StringCellValue;
