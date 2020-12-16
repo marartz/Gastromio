@@ -26,6 +26,8 @@ namespace FoodOrderSystem.Core.Domain.Services
         public string OpeningHoursSaturday { get; set; }
         public string OpeningHoursSunday { get; set; }
         
+        public string DeviatingOpeningHours { get; set; }
+        
         public string OrderTypes { get; set; }
         public TimeSpan? AverageTime { get; set; }
         public double? MinimumOrderValuePickup { get; set; }

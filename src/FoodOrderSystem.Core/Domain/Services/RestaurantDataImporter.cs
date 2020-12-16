@@ -154,6 +154,13 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
+            boolResult = AddDeviatingOpeningHours(restaurant, restaurantRow.DeviatingOpeningHours, curUserId);
+            if (boolResult.IsFailure)
+            {
+                AddFailureMessageToLog(log, rowIndex, boolResult);
+                return;
+            }
+
             var minimumOrderValuePickup = restaurantRow.MinimumOrderValuePickup.HasValue
                 ? (decimal?) restaurantRow.MinimumOrderValuePickup.Value
                 : null;
@@ -292,6 +299,67 @@ namespace FoodOrderSystem.Core.Domain.Services
                     new RegularOpeningPeriod(dayOfWeek, parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
                 if (addOpeningPeriodResult.IsFailure)
                     return addOpeningPeriodResult;
+            }
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        private Result<bool> AddDeviatingOpeningHours(Restaurant restaurant, string openingHoursText,
+            UserId curUserId)
+        {
+            if (string.IsNullOrWhiteSpace(openingHoursText))
+                return SuccessResult<bool>.Create(true);
+
+            openingHoursText = openingHoursText.Replace(",", ";");
+
+            var openingDays = openingHoursText.Split('|');
+            foreach (var openingDay in openingDays)
+            {
+                var tempOpeningDay = openingDay.Trim();
+
+                if (tempOpeningDay.Length < 11)
+                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+
+                var dateText = tempOpeningDay.Substring(0, 10);
+                if (!DateTime.TryParse(dateText, out var dateTime))
+                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+
+                var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
+
+                tempOpeningDay = tempOpeningDay.Substring(11).Trim();
+
+                if (tempOpeningDay == "geschlossen")
+                {
+                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, curUserId);
+                    if (addOpeningDayResult.IsFailure)
+                        return addOpeningDayResult;
+                }
+                else
+                {
+                    var openingPeriodTexts = tempOpeningDay.Split(';');
+                    foreach (var openingPeriodText in openingPeriodTexts)
+                    {
+                        var trimmedOpeningPeriodText = openingPeriodText.Trim();
+                        var openingPeriodParts = trimmedOpeningPeriodText.Split('-');
+                        if (openingPeriodParts.Length != 2)
+                            return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid,
+                                openingHoursText);
+
+                        var parseStartTimeResult = ParseTime(openingPeriodParts[0]);
+                        if (parseStartTimeResult.IsFailure)
+                            return parseStartTimeResult.Cast<bool>();
+
+                        var parseEndTimeResult = ParseTime(openingPeriodParts[1]);
+                        if (parseEndTimeResult.IsFailure)
+                            return parseEndTimeResult.Cast<bool>();
+
+                        var addOpeningPeriodResult = restaurant.AddDeviatingOpeningPeriod(
+                            new DeviatingOpeningPeriod(date, parseStartTimeResult.Value, parseEndTimeResult.Value),
+                            curUserId);
+                        if (addOpeningPeriodResult.IsFailure)
+                            return addOpeningPeriodResult;
+                    }
+                }
             }
 
             return SuccessResult<bool>.Create(true);
