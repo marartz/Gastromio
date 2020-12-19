@@ -136,7 +136,7 @@ namespace FoodOrderSystem.Core.Application.Commands.ImportRestaurantData
                     cell = row.GetCell(25);
                     restaurantRow.OpeningHoursSunday = cell?.StringCellValue;
 
-                    cell = row.GetCell(39);
+                    cell = row.GetCell(29);
                     restaurantRow.DeviatingOpeningHours = cell?.StringCellValue;
 
                     cell = row.GetCell(26);

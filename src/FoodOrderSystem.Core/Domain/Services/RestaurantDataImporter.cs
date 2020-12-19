@@ -317,17 +317,45 @@ namespace FoodOrderSystem.Core.Domain.Services
             {
                 var tempOpeningDay = openingDay.Trim();
 
-                if (tempOpeningDay.Length < 11)
+                if (tempOpeningDay.Length == 0)
+                    continue;
+
+                var index = tempOpeningDay.IndexOf(':');
+                if (index < 1)
                     return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                var dateText = tempOpeningDay.Substring(0, index);
+                var dateTextParts = dateText.Split('.');
 
-                var dateText = tempOpeningDay.Substring(0, 10);
-                if (!DateTime.TryParse(dateText, out var dateTime))
+                if (dateTextParts.Length == 0)
                     return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                
+                var dateParts = new int[dateTextParts.Length];
+                for (var partIdx = 0; partIdx < dateParts.Length; partIdx++)
+                {
+                    var dateTextPart = dateTextParts[partIdx];
+                    if (!int.TryParse(dateTextPart, out var datePart))
+                        return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                    dateParts[partIdx] = datePart;
+                }
 
-                var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
+                Date date;
+                if (dateParts.Length == 3)
+                {
+                    date = new Date(dateParts[2], dateParts[1], dateParts[0]);
+                }
+                else if (dateParts.Length == 2)
+                {
+                    date = dateParts[1] >= DateTime.Today.Month
+                        ? new Date(DateTime.Today.Year, dateParts[1], dateParts[0])
+                        : new Date(DateTime.Today.Year + 1, dateParts[1], dateParts[0]);
+                }
+                else
+                {
+                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                }
 
-                tempOpeningDay = tempOpeningDay.Substring(11).Trim();
-
+                tempOpeningDay = tempOpeningDay.Substring(index + 1).Trim();
+                
                 if (tempOpeningDay == "geschlossen")
                 {
                     var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.Closed, curUserId);
