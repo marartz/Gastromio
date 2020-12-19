@@ -16,7 +16,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 new ReadOnlyCollection<OpeningPeriodDTO>(openingPeriods?.ToList() ?? new List<OpeningPeriodDTO>());
         }
 
-        public DeviatingOpeningDayDTO(Date date, IEnumerable<DeviatingOpeningPeriod> openingPeriods)
+        public DeviatingOpeningDayDTO(Date date, IEnumerable<OpeningPeriod> openingPeriods)
         {
             Date = date;
             OpeningPeriods = new ReadOnlyCollection<OpeningPeriodDTO>(

@@ -10,16 +10,10 @@ namespace FoodOrderSystem.Core.Application.DTOs
             End = end;
         }
 
-        public OpeningPeriodDTO(RegularOpeningPeriod regularOpeningPeriod)
+        public OpeningPeriodDTO(OpeningPeriod regularOpeningPeriod)
         {
             Start = (int) regularOpeningPeriod.Start.TotalMinutes;
             End = (int) regularOpeningPeriod.End.TotalMinutes;
-        }
-        
-        public OpeningPeriodDTO(DeviatingOpeningPeriod deviatingOpeningPeriod)
-        {
-            Start = (int) deviatingOpeningPeriod.Start.TotalMinutes;
-            End = (int) deviatingOpeningPeriod.End.TotalMinutes;
         }
         
         public int Start { get; }

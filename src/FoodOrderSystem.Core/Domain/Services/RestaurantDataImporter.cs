@@ -98,7 +98,7 @@ namespace FoodOrderSystem.Core.Domain.Services
                 return;
             }
 
-            boolResult = restaurant.RemoveAllOpeningPeriods(curUserId);
+            boolResult = restaurant.RemoveAllOpeningDays(curUserId);
             if (boolResult.IsFailure)
             {
                 AddFailureMessageToLog(log, rowIndex, boolResult);
@@ -295,8 +295,8 @@ namespace FoodOrderSystem.Core.Domain.Services
                 if (parseEndTimeResult.IsFailure)
                     return parseEndTimeResult.Cast<bool>();
 
-                var addOpeningPeriodResult = restaurant.AddRegularOpeningPeriod(
-                    new RegularOpeningPeriod(dayOfWeek, parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
+                var addOpeningPeriodResult = restaurant.AddRegularOpeningPeriod(dayOfWeek,
+                    new OpeningPeriod(parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
                 if (addOpeningPeriodResult.IsFailure)
                     return addOpeningPeriodResult;
             }
@@ -353,9 +353,8 @@ namespace FoodOrderSystem.Core.Domain.Services
                         if (parseEndTimeResult.IsFailure)
                             return parseEndTimeResult.Cast<bool>();
 
-                        var addOpeningPeriodResult = restaurant.AddDeviatingOpeningPeriod(
-                            new DeviatingOpeningPeriod(date, parseStartTimeResult.Value, parseEndTimeResult.Value),
-                            curUserId);
+                        var addOpeningPeriodResult = restaurant.AddDeviatingOpeningPeriod(date,
+                            new OpeningPeriod(parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
                         if (addOpeningPeriodResult.IsFailure)
                             return addOpeningPeriodResult;
                     }

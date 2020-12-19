@@ -14,7 +14,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
                 new ReadOnlyCollection<OpeningPeriodDTO>(openingPeriods?.ToList() ?? new List<OpeningPeriodDTO>());
         }
 
-        public RegularOpeningDayDTO(int dayOfWeek, IEnumerable<RegularOpeningPeriod> openingPeriods)
+        public RegularOpeningDayDTO(int dayOfWeek, IEnumerable<OpeningPeriod> openingPeriods)
         {
             DayOfWeek = dayOfWeek;
             OpeningPeriods = new ReadOnlyCollection<OpeningPeriodDTO>(

@@ -39,9 +39,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangeDeviatingOpeningPeriod
             if (result.IsFailure)
                 return result;
 
-            var openingPeriod = new DeviatingOpeningPeriod(command.Date, command.NewStart, command.NewEnd);
+            var openingPeriod = new OpeningPeriod(command.NewStart, command.NewEnd);
             
-            result = restaurant.AddDeviatingOpeningPeriod(openingPeriod, currentUser.Id);
+            result = restaurant.AddDeviatingOpeningPeriod(command.Date, openingPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

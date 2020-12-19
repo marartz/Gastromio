@@ -30,7 +30,6 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
         private readonly RestaurantDataImporter target;
 
         private readonly UserId mockUserId;
-        private readonly RestaurantId mockRestaurantId;
         
         private readonly RestaurantRow mockRestaurantRow = new RestaurantRow
         {
@@ -70,23 +69,22 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
 
 
         private Restaurant storedRestaurant;
-        private List<Cuisine> storedCuisines = new List<Cuisine>();
-        private List<User> storedUsers = new List<User>();
+        private readonly List<Cuisine> storedCuisines = new List<Cuisine>();
+        private readonly List<User> storedUsers = new List<User>();
 
         
         public RestaurantDataImporterTests()
         {
             mockUserId = new UserId(Guid.NewGuid());
-            mockRestaurantId = new RestaurantId(Guid.NewGuid());
 
             failureMessageService
-                .Setup(m => m.GetTranslatedMessage<bool>(It.IsAny<FailureResult<bool>>(),
+                .Setup(m => m.GetTranslatedMessage(It.IsAny<FailureResult<bool>>(),
                     It.IsAny<CultureInfo>()))
                 .Returns((FailureResult<bool> failureResult, CultureInfo cultureInfo) =>
                 {
                     var sb = new StringBuilder();
                     var first = true;
-                    foreach (var (key, invariantErrors) in failureResult.Errors)
+                    foreach (var (_, invariantErrors) in failureResult.Errors)
                     {
                         foreach (var invariantError in invariantErrors)
                         {
@@ -174,13 +172,13 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
             using (new AssertionScope())
             {
                 storedRestaurant.Should().NotBeNull();
-                storedRestaurant?.DeviatingOpeningPeriods.Should().NotBeNull();
+                storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
                 
-                IReadOnlyCollection<DeviatingOpeningPeriod> deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEmpty();
+                DeviatingOpeningDay deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEmpty();
             }
         }
         
@@ -200,14 +198,14 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
             using (new AssertionScope())
             {
                 storedRestaurant.Should().NotBeNull();
-                storedRestaurant?.DeviatingOpeningPeriods.Should().NotBeNull();
+                storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
                 
-                IReadOnlyCollection<DeviatingOpeningPeriod> deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEquivalentTo(
-                    new DeviatingOpeningPeriod(date, TimeSpan.FromHours(10), TimeSpan.FromHours(14))
+                DeviatingOpeningDay deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                    new OpeningPeriod(TimeSpan.FromHours(10), TimeSpan.FromHours(14))
                 );
             }
         }
@@ -228,15 +226,15 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
             using (new AssertionScope())
             {
                 storedRestaurant.Should().NotBeNull();
-                storedRestaurant?.DeviatingOpeningPeriods.Should().NotBeNull();
+                storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
                 
-                IReadOnlyCollection<DeviatingOpeningPeriod> deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEquivalentTo(
-                    new DeviatingOpeningPeriod(date, TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
-                    new DeviatingOpeningPeriod(date, TimeSpan.FromHours(17), TimeSpan.FromHours(20))
+                DeviatingOpeningDay deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                    new OpeningPeriod(TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
+                    new OpeningPeriod(TimeSpan.FromHours(17), TimeSpan.FromHours(20))
                 );
             }
         }
@@ -258,19 +256,19 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
             using (new AssertionScope())
             {
                 storedRestaurant.Should().NotBeNull();
-                storedRestaurant?.DeviatingOpeningPeriods.Should().NotBeNull();
+                storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
                 
-                IReadOnlyCollection<DeviatingOpeningPeriod> deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date1,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEmpty();
+                DeviatingOpeningDay deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date1, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date1);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEmpty();
                 
-                deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date2,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEmpty();
+                deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date2, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date2);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEmpty();
             }
         }
         
@@ -291,24 +289,24 @@ namespace FoodOrderSystem.Domain.Tests.Domain.Services
             using (new AssertionScope())
             {
                 storedRestaurant.Should().NotBeNull();
-                storedRestaurant?.DeviatingOpeningPeriods.Should().NotBeNull();
+                storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
                 
-                IReadOnlyCollection<DeviatingOpeningPeriod> deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date1,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEquivalentTo(
-                    new DeviatingOpeningPeriod(date1, TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
-                    new DeviatingOpeningPeriod(date1, TimeSpan.FromHours(22), TimeSpan.FromHours(26))
+                DeviatingOpeningDay deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date1, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date1);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                    new OpeningPeriod(TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
+                    new OpeningPeriod(TimeSpan.FromHours(22), TimeSpan.FromHours(26))
                 );
                
-                deviatingOpeningPeriods = null;
-                storedRestaurant?.DeviatingOpeningPeriods?.TryGetValue(date2,
-                    out deviatingOpeningPeriods);
-                deviatingOpeningPeriods.Should().NotBeNull();
-                deviatingOpeningPeriods.Should().BeEquivalentTo(
-                    new DeviatingOpeningPeriod(date2, TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
-                    new DeviatingOpeningPeriod(date2, TimeSpan.FromHours(22), TimeSpan.FromHours(26))
+                deviatingOpeningDay = null;
+                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date2, out deviatingOpeningDay);
+                deviatingOpeningDay.Should().NotBeNull();
+                deviatingOpeningDay?.Date.Should().BeEquivalentTo(date2);
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                    new OpeningPeriod(TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
+                    new OpeningPeriod(TimeSpan.FromHours(22), TimeSpan.FromHours(26))
                 );
             }
         }

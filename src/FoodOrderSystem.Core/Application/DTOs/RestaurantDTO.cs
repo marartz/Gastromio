@@ -28,13 +28,17 @@ namespace FoodOrderSystem.Core.Application.DTOs
             ContactInfo = restaurant.ContactInfo;
             ImageTypes = RetrieveImageTypes(restaurantImageTypes, restaurant.Id);
             RegularOpeningDays = new ReadOnlyCollection<RegularOpeningDayDTO>(
-                restaurant.RegularOpeningPeriods
-                    ?.Select(keyValuePair => new RegularOpeningDayDTO(keyValuePair.Key, keyValuePair.Value)).ToList() ??
-                new List<RegularOpeningDayDTO>());
+                restaurant.RegularOpeningDays?
+                    .Select(keyValuePair =>
+                        new RegularOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.OpeningPeriods))
+                    .ToList() ?? new List<RegularOpeningDayDTO>()
+            );
             DeviatingOpeningDays = new ReadOnlyCollection<DeviatingOpeningDayDTO>(
-                restaurant.DeviatingOpeningPeriods
-                    ?.Select(keyValuePair => new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value)).ToList() ??
-                new List<DeviatingOpeningDayDTO>());
+                restaurant.DeviatingOpeningDays?
+                    .Select(keyValuePair =>
+                        new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.OpeningPeriods))
+                    .ToList() ?? new List<DeviatingOpeningDayDTO>()
+            );
             OpeningHoursText = openingHoursText;
             OpeningHoursTodayText = openingHoursTodayText;
             PickupInfo = restaurant.PickupInfo;
@@ -140,72 +144,76 @@ namespace FoodOrderSystem.Core.Application.DTOs
 
         private static string GenerateOpeningHoursText(Restaurant restaurant)
         {
-            if (restaurant.RegularOpeningPeriods == null)
-                return string.Empty;
-
             var sb = new StringBuilder();
+            var first = true;
 
-            var openingPeriodsPerDay = new List<List<OpeningPeriod>>();
-            for (var dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
+            if (restaurant.RegularOpeningDays != null)
             {
-                openingPeriodsPerDay.Add(restaurant.RegularOpeningPeriods.TryGetValue(dayOfWeek, out var temp)
-                    ? temp.Select(en => en as OpeningPeriod).OrderBy(en => en.Start).ToList()
-                    : new List<OpeningPeriod>());
+                var openingPeriodsPerDay = new List<List<OpeningPeriod>>();
+                for (var dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
+                {
+                    openingPeriodsPerDay.Add(restaurant.RegularOpeningDays.TryGetValue(dayOfWeek, out var regularOpeningDay)
+                        ? regularOpeningDay.OpeningPeriods.Select(en => en as OpeningPeriod).OrderBy(en => en.Start).ToList()
+                        : new List<OpeningPeriod>());
+                }
+
+                var startDayOfWeek = 0;
+                var openingPeriods = openingPeriodsPerDay[startDayOfWeek];
+
+                for (var dayOfWeek = 1; dayOfWeek < 7; dayOfWeek++)
+                {
+                    if (!OpeningPeriodsEquals(openingPeriods, openingPeriodsPerDay[dayOfWeek]))
+                    {
+                        if (openingPeriods.Count > 0)
+                        {
+                            if (!first)
+                                sb.Append("; ");
+                            WriteOpeningPeriodsForDays(sb, startDayOfWeek, dayOfWeek - 1, openingPeriods);
+                            first = false;
+                        }
+
+                        startDayOfWeek = dayOfWeek;
+                        openingPeriods = openingPeriodsPerDay[dayOfWeek];
+                    }
+                }
+
+                if (openingPeriods.Count > 0)
+                {
+                    if (!first)
+                        sb.Append("; ");
+                    WriteOpeningPeriodsForDays(sb, startDayOfWeek, 6, openingPeriods);
+                    first = false;
+                }
             }
 
-            var first = true;
-            var startDayOfWeek = 0;
-            var openingPeriods = openingPeriodsPerDay[startDayOfWeek];
-
-            for (var dayOfWeek = 1; dayOfWeek < 7; dayOfWeek++)
+            if (restaurant.DeviatingOpeningDays != null)
             {
-                if (!OpeningPeriodsEquals(openingPeriods, openingPeriodsPerDay[dayOfWeek]))
+                var now = DateTime.Now;
+                var today = new Date(now.Year, now.Month, now.Day);
+                var keyValuePairs = restaurant.DeviatingOpeningDays.Where(en => en.Key >= today)
+                    .OrderBy(en => en.Key);
+                foreach (var keyValuePair in keyValuePairs)
                 {
-                    if (openingPeriods.Count > 0)
+                    var date = keyValuePair.Key;
+
+                    if (!first)
+                        sb.Append("; ");
+
+                    sb.Append(date.Day);
+                    sb.Append(".");
+                    sb.Append(date.Month);
+                    sb.Append(". ");
+                    if (keyValuePair.Value.OpeningPeriods?.Count == 0)
                     {
-                        if (!first)
-                            sb.Append("; ");
-                        WriteOpeningPeriodsForDays(sb, startDayOfWeek, dayOfWeek - 1, openingPeriods);
-                        first = false;
+                        sb.Append("geschlossen");
+                    }
+                    else
+                    {
+                        WriteOpeningPeriods(sb, keyValuePair.Value.OpeningPeriods);
                     }
 
-                    startDayOfWeek = dayOfWeek;
-                    openingPeriods = openingPeriodsPerDay[dayOfWeek];
+                    first = false;
                 }
-            }
-
-            if (openingPeriods.Count > 0)
-            {
-                if (!first)
-                    sb.Append("; ");
-                WriteOpeningPeriodsForDays(sb, startDayOfWeek, 6, openingPeriods);
-                first = false;
-            }
-
-            var now = DateTime.Now;
-            var today = new Date(now.Year, now.Month, now.Day);
-            var keyValuePairs = restaurant.DeviatingOpeningPeriods.Where(en => en.Key >= today).OrderBy(en => en.Key);
-            foreach (var keyValuePair in keyValuePairs)
-            {
-                var date = keyValuePair.Key;
-                
-                if (!first)
-                    sb.Append("; ");
-
-                sb.Append(date.Day);
-                sb.Append(".");
-                sb.Append(date.Month);
-                sb.Append(". ");
-                if (keyValuePair.Value?.Count == 0)
-                {
-                    sb.Append("geschlossen");
-                }
-                else
-                {
-                    WriteOpeningPeriods(sb, keyValuePair.Value);
-                }
-
-                first = false;
             }
 
             return sb.ToString();
@@ -213,9 +221,6 @@ namespace FoodOrderSystem.Core.Application.DTOs
 
         private static string GenerateOpeningHoursTodayText(Restaurant restaurant)
         {
-            if (restaurant.RegularOpeningPeriods == null)
-                return null;
-
             var now = DateTime.Now;
             var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
             if (dayOfWeek < 0)
@@ -233,32 +238,31 @@ namespace FoodOrderSystem.Core.Application.DTOs
             }
 
             var today = new Date(now.Year, now.Month, now.Day);
-            if (restaurant.DeviatingOpeningPeriods.TryGetValue(today, out var deviatingOpeningPeriods))
+            if (restaurant.DeviatingOpeningDays != null && restaurant.DeviatingOpeningDays.TryGetValue(today, out var deviatingOpeningDay))
             {
-                if (deviatingOpeningPeriods.Count == 0)
+                if (deviatingOpeningDay.OpeningPeriods.Count == 0)
                 {
                     return null;
                 }
-                
+
                 var sb = new StringBuilder();
-                WriteOpeningPeriods(sb, deviatingOpeningPeriods.OrderBy(en => en.Start));
+                WriteOpeningPeriods(sb, deviatingOpeningDay.OpeningPeriods.OrderBy(en => en.Start));
                 return sb.ToString();
             }
-            else if (restaurant.RegularOpeningPeriods.TryGetValue(dayOfWeek, out var regularOpeningPeriods))
+            
+            if (restaurant.RegularOpeningDays != null && restaurant.RegularOpeningDays.TryGetValue(dayOfWeek, out var regularOpeningDay))
             {
-                if (regularOpeningPeriods.Count == 0)
+                if (regularOpeningDay.OpeningPeriods.Count == 0)
                 {
                     return null;
                 }
-                
+
                 var sb = new StringBuilder();
-                WriteOpeningPeriods(sb, regularOpeningPeriods.OrderBy(en => en.Start));
+                WriteOpeningPeriods(sb, regularOpeningDay.OpeningPeriods.OrderBy(en => en.Start));
                 return sb.ToString();
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private static void WriteOpeningPeriodsForDays(StringBuilder sb, int startDayOfWeek, int endDayOfWeek,

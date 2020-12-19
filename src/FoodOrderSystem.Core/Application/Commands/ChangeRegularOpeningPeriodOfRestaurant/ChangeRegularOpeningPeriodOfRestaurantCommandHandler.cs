@@ -39,9 +39,9 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangeRegularOpeningPeriodOf
             if (result.IsFailure)
                 return result;
 
-            var openingPeriod = new RegularOpeningPeriod(command.DayOfWeek, command.NewStart, command.NewEnd);
+            var openingPeriod = new OpeningPeriod(command.NewStart, command.NewEnd);
             
-            result = restaurant.AddRegularOpeningPeriod(openingPeriod, currentUser.Id);
+            result = restaurant.AddRegularOpeningPeriod(command.DayOfWeek, openingPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

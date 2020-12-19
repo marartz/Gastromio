@@ -13,8 +13,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             string name,
             Address address,
             ContactInfo contactInfo,
-            IList<RegularOpeningPeriod> regularOpeningPeriods,
-            IList<DeviatingOpeningPeriod> deviatingOpeningPeriods,
+            IEnumerable<RegularOpeningDay> regularOpeningDays,
+            IEnumerable<DeviatingOpeningDay> deviatingOpeningDays,
             PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo,
             ReservationInfo reservationInfo,
@@ -45,23 +45,32 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (tempResult.IsFailure)
                 return tempResult.Cast<Restaurant>();
 
-            if (regularOpeningPeriods != null)
+            if (regularOpeningDays != null)
             {
-                foreach (var openingPeriod in regularOpeningPeriods)
+                foreach (var openingDay in regularOpeningDays)
                 {
-                    tempResult = restaurant.AddRegularOpeningPeriod(openingPeriod, createdBy);
-                    if (tempResult.IsFailure)
-                        return tempResult.Cast<Restaurant>();
+                    foreach (var openingPeriod in openingDay.OpeningPeriods)
+                    {
+                        tempResult = restaurant.AddRegularOpeningPeriod(openingDay.DayOfWeek, openingPeriod, createdBy);
+                        if (tempResult.IsFailure)
+                            return tempResult.Cast<Restaurant>();
+                    }
                 }
             }
 
-            if (deviatingOpeningPeriods != null)
+            if (deviatingOpeningDays != null)
             {
-                foreach (var openingPeriod in deviatingOpeningPeriods)
+                foreach (var openingDay in deviatingOpeningDays)
                 {
-                    tempResult = restaurant.AddDeviatingOpeningPeriod(openingPeriod, createdBy);
+                    tempResult = restaurant.AddDeviatingOpeningDay(openingDay.Date, createdBy);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Restaurant>();
+                    foreach (var openingPeriod in openingDay.OpeningPeriods)
+                    {
+                        tempResult = restaurant.AddDeviatingOpeningPeriod(openingDay.Date, openingPeriod, createdBy);
+                        if (tempResult.IsFailure)
+                            return tempResult.Cast<Restaurant>();
+                    }
                 }
             }
 

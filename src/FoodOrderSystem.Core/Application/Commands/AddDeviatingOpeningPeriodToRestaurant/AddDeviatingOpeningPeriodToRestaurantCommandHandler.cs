@@ -37,9 +37,9 @@ namespace FoodOrderSystem.Core.Application.Commands.AddDeviatingOpeningPeriodToR
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var openingPeriod = new DeviatingOpeningPeriod(command.Date, command.Start, command.End);
+            var openingPeriod = new OpeningPeriod(command.Start, command.End);
 
-            var result = restaurant.AddDeviatingOpeningPeriod(openingPeriod, currentUser.Id);
+            var result = restaurant.AddDeviatingOpeningPeriod(command.Date, openingPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

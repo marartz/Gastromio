@@ -39,9 +39,9 @@ namespace FoodOrderSystem.Core.Application.Commands.AddRegularOpeningPeriodToRes
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var openingPeriod = new RegularOpeningPeriod(command.DayOfWeek, command.Start, command.End);
+            var openingPeriod = new OpeningPeriod(command.Start, command.End);
 
-            var result = restaurant.AddRegularOpeningPeriod(openingPeriod, currentUser.Id);
+            var result = restaurant.AddRegularOpeningPeriod(command.DayOfWeek, openingPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 
