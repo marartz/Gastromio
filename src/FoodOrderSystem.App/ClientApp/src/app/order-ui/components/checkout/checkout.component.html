@@ -19,7 +19,7 @@
 
                         <ng-container *ngIf="!restaurant.isOpen(undefined)">
                             <h4 class="subtitle">
-                                <span>{{restaurant.name}} hat im Moment geschlossen.</span>
+                                <span>{{restaurant.name}} ist im Moment {{restaurant.getRestaurantClosedReason(undefined)}}.</span>
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'">
                                     <span> Bitte rufe das Restaurant zur nächsten Öffnungzeit an.</span>
                                 </ng-container>

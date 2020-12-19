@@ -1,12 +1,12 @@
-using System;
 using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 
-namespace FoodOrderSystem.Core.Application.Commands.AddDeviatingOpeningDayToRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.ChangeDeviatingOpeningDayStatusOfRestaurant
 {
-    public class AddDeviatingOpeningDayToRestaurantCommand : ICommand<bool>
+    public class ChangeDeviatingOpeningDayStatusOfRestaurantCommand : ICommand<bool>
     {
-        public AddDeviatingOpeningDayToRestaurantCommand(RestaurantId restaurantId, Date date, DeviatingOpeningDayStatus status)
+        public ChangeDeviatingOpeningDayStatusOfRestaurantCommand(RestaurantId restaurantId, Date date,
+            DeviatingOpeningDayStatus status)
         {
             RestaurantId = restaurantId;
             Date = date;

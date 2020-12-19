@@ -116,6 +116,21 @@ export class RestaurantModel {
     return this.findOpeningPeriod(dateTime) !== undefined;
   }
 
+  public getRestaurantClosedReason(dateTime: Date): string {
+    if (dateTime === undefined || dateTime < new Date())
+      dateTime = new Date();
+    const date = new DateModel(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate());
+    const deviatingOpeningDay = this.deviatingOpeningDays?.find(en => DateModel.isEqual(en.date, date));
+    if (!deviatingOpeningDay)
+      return "geschlossen";
+
+    if (deviatingOpeningDay.status === "fully-booked") {
+      return "ausgebucht";
+    } else {
+      return "geschlossen";
+    }
+  }
+
   public isOrderPossibleAt(orderDateTime: Date): boolean {
     const now = new Date();
 
@@ -250,6 +265,8 @@ export class DeviatingOpeningDayModel {
   }
 
   public date: DateModel;
+
+  public status: string;
 
   public openingPeriods: Array<OpeningPeriodModel>;
 }

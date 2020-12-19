@@ -36,7 +36,7 @@ namespace FoodOrderSystem.Core.Application.DTOs
             DeviatingOpeningDays = new ReadOnlyCollection<DeviatingOpeningDayDTO>(
                 restaurant.DeviatingOpeningDays?
                     .Select(keyValuePair =>
-                        new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.OpeningPeriods))
+                        new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.Status, keyValuePair.Value.OpeningPeriods))
                     .ToList() ?? new List<DeviatingOpeningDayDTO>()
             );
             OpeningHoursText = openingHoursText;
@@ -205,7 +205,14 @@ namespace FoodOrderSystem.Core.Application.DTOs
                     sb.Append(". ");
                     if (keyValuePair.Value.OpeningPeriods?.Count == 0)
                     {
-                        sb.Append("geschlossen");
+                        if (keyValuePair.Value.Status == DeviatingOpeningDayStatus.FullyBooked)
+                        {
+                            sb.Append("ausgebucht");
+                        }
+                        else
+                        {
+                            sb.Append("geschlossen");
+                        }
                     }
                     else
                     {

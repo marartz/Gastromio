@@ -330,12 +330,22 @@ namespace FoodOrderSystem.Core.Domain.Services
 
                 if (tempOpeningDay == "geschlossen")
                 {
-                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, curUserId);
+                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.Closed, curUserId);
+                    if (addOpeningDayResult.IsFailure)
+                        return addOpeningDayResult;
+                }
+                else if (tempOpeningDay == "ausgebucht")
+                {
+                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.FullyBooked, curUserId);
                     if (addOpeningDayResult.IsFailure)
                         return addOpeningDayResult;
                 }
                 else
                 {
+                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.Open, curUserId);
+                    if (addOpeningDayResult.IsFailure)
+                        return addOpeningDayResult;
+
                     var openingPeriodTexts = tempOpeningDay.Split(';');
                     foreach (var openingPeriodText in openingPeriodTexts)
                     {

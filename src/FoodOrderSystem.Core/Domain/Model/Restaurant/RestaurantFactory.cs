@@ -62,7 +62,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             {
                 foreach (var openingDay in deviatingOpeningDays)
                 {
-                    tempResult = restaurant.AddDeviatingOpeningDay(openingDay.Date, createdBy);
+                    tempResult = restaurant.AddDeviatingOpeningDay(openingDay.Date, openingDay.Status, createdBy);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Restaurant>();
                     foreach (var openingPeriod in openingDay.OpeningPeriods)

@@ -549,22 +549,48 @@ export class RestaurantAdminFacade {
       );
   }
 
-  public addDeviatingOpeningDay(date: DateModel): Observable<boolean> {
+  public addDeviatingOpeningDay(date: DateModel, status: string): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.addDeviatingOpeningDayToRestaurantAsync(this.restaurant$.value.id, date)
+    return this.restaurantAdminService.addDeviatingOpeningDayToRestaurantAsync(this.restaurant$.value.id, date, status)
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
           const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          let deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          let deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
           if (deviatingOpeningDay === undefined) {
             deviatingOpeningDay = new DeviatingOpeningDayModel({
               date: date,
+              status: status,
               openingPeriods: new Array<OpeningPeriodModel>()
             })
             deviatingOpeningDays.push(deviatingOpeningDay);
+          }
+
+          this.restaurant$.next(this.restaurant$.value)
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public changeDeviatingOpeningDayStatus(date: DateModel, status: string): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService.changeDeviatingOpeningDayStatusOfRestaurantAsync(this.restaurant$.value.id, date, status)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
+          const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          if (deviatingOpeningDay) {
+            deviatingOpeningDay.status = status;
           }
 
           this.restaurant$.next(this.restaurant$.value)
@@ -587,7 +613,7 @@ export class RestaurantAdminFacade {
           this.updateError$.next(undefined);
 
           const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          const index = this.restaurant$.value.deviatingOpeningDays.findIndex(en => DateModel.isEqual(en.date, date));
+          const index = deviatingOpeningDays.findIndex(en => DateModel.isEqual(en.date, date));
           if (index >= 0) {
             deviatingOpeningDays.splice(index, 1);
           }
@@ -612,10 +638,11 @@ export class RestaurantAdminFacade {
           this.updateError$.next(undefined);
 
           const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          let deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          let deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
           if (deviatingOpeningDay === undefined) {
             deviatingOpeningDay = new DeviatingOpeningDayModel({
               date: date,
+              status: "open",
               openingPeriods: new Array<OpeningPeriodModel>()
             })
             deviatingOpeningDays.push(deviatingOpeningDay);
@@ -644,7 +671,8 @@ export class RestaurantAdminFacade {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
+          const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
           const openingPeriod = deviatingOpeningDay.openingPeriods.find(en => en.start === oldStart);
           openingPeriod.start = newStart;
           openingPeriod.end = newEnd;
@@ -668,9 +696,14 @@ export class RestaurantAdminFacade {
             this.isUpdating$.next(false);
             this.updateError$.next(undefined);
 
-            const deviatingOpeningDay = this.restaurant$.value.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+            const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
+            const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
             const index = deviatingOpeningDay.openingPeriods.findIndex(en => en.start === start);
             deviatingOpeningDay.openingPeriods.splice(index, 1);
+            if (deviatingOpeningDay.openingPeriods.length === 0)
+            {
+              deviatingOpeningDay.status = "closed";
+            }
 
             this.restaurant$.next(this.restaurant$.value)
             this.isUpdated$.next(true);

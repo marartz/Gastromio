@@ -13,6 +13,7 @@ using FoodOrderSystem.Core.Application.Commands.AddOrChangeDishOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddOrChangeExternalMenuOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddPaymentMethodToRestaurant;
 using FoodOrderSystem.Core.Application.Commands.AddRegularOpeningPeriodToRestaurant;
+using FoodOrderSystem.Core.Application.Commands.ChangeDeviatingOpeningDayStatusOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
 using FoodOrderSystem.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant;
@@ -328,7 +329,24 @@ namespace FoodOrderSystem.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<AddDeviatingOpeningDayToRestaurantCommand, bool>(
-                new AddDeviatingOpeningDayToRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain()),
+                new AddDeviatingOpeningDayToRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain(), model.Status.ToDeviatingOpeningDayStatus()),
+                new UserId(currentUserId));
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/changedeviatingopeningdaystatus")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangeDeviatingOpeningDayStatusAsync(Guid restaurantId,
+            [FromBody] ChangeDeviatingOpeningDayStatusOfRestaurantModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool>(
+                new ChangeDeviatingOpeningDayStatusOfRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain(), model.Status.ToDeviatingOpeningDayStatus()),
                 new UserId(currentUserId));
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);

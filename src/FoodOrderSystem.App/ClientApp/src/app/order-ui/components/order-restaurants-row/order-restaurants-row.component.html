@@ -9,7 +9,7 @@
     <h2 class="restaurant-name">{{restaurant.name}}</h2>
     <p class="restaurant-address">
         <ng-container *ngIf="!isRestaurantOpen(restaurant)">
-            <span style="font-weight: 500;">Im Moment geschlossen</span>
+            <span style="font-weight: 500;">Im Moment {{getRestaurantClosedReason(restaurant)}}</span>
         </ng-container>
         <ng-container *ngIf="isRestaurantOpen(restaurant)">
             <ng-container *ngIf="orderType === 'pickup'"><span>{{restaurant.address.street}}, {{restaurant.address.city}}</span></ng-container>

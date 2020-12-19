@@ -51,4 +51,10 @@ export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
     const date = this.selectedOpeningHourFilter ?? new Date();
     return restaurant.isOpen(date);
   }
+
+  getRestaurantClosedReason(restaurant: RestaurantModel): string {
+    const date = this.selectedOpeningHourFilter ?? new Date();
+    return restaurant.getRestaurantClosedReason(date);
+  }
+
 }

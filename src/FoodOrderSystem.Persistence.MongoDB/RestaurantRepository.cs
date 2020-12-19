@@ -354,6 +354,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                             deviatingOpeningDayModel.Date.Month,
                             deviatingOpeningDayModel.Date.Day
                         ),
+                        FromDbDeviatingOpeningDayStatus(deviatingOpeningDayModel.Status),
                         deviatingOpeningDayModel.OpeningPeriods.Select(openingPeriodModel => new OpeningPeriod(
                                 TimeSpan.FromMinutes(openingPeriodModel.StartTime),
                                 TimeSpan.FromMinutes(openingPeriodModel.EndTime)
@@ -449,6 +450,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                             Month = keyValuePair.Key.Month,
                             Day = keyValuePair.Key.Day
                         },
+                        Status = ToDbDeviatingOpeningDayStatus(keyValuePair.Value.Status),
                         OpeningPeriods = keyValuePair.Value.OpeningPeriods
                             .Select(en => new DeviatingOpeningPeriodModel
                                 {
@@ -595,5 +597,40 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
             return sb.ToString();
         }
-    }
+        
+        private static string ToDbDeviatingOpeningDayStatus(DeviatingOpeningDayStatus deviatingOpeningDayStatus)
+        {
+            switch (deviatingOpeningDayStatus)
+            {
+                case DeviatingOpeningDayStatus.Open:
+                    return "open";
+                case DeviatingOpeningDayStatus.Closed:
+                    return "closed";
+                case DeviatingOpeningDayStatus.FullyBooked:
+                    return "fully-booked";
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {deviatingOpeningDayStatus}");
+            }
+        }
+
+        private static DeviatingOpeningDayStatus FromDbDeviatingOpeningDayStatus(string deviatingOpeningDayStatus)
+        {
+            if (string.IsNullOrWhiteSpace(deviatingOpeningDayStatus))
+            {
+                return DeviatingOpeningDayStatus.Open;
+            }
+
+            switch (deviatingOpeningDayStatus)
+            {
+                case "open":
+                    return DeviatingOpeningDayStatus.Open;
+                case "closed":
+                    return DeviatingOpeningDayStatus.Closed;
+                case "fully-booked":
+                    return DeviatingOpeningDayStatus.FullyBooked;
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {deviatingOpeningDayStatus}");
+            }
+        }
+   }
 }

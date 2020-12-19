@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subscription} from "rxjs";
 import {debounceTime, take} from "rxjs/operators";
 
-import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {OpeningPeriodModel, RestaurantModel} from "../../../shared/models/restaurant.model";
 
@@ -122,49 +122,23 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
   public openAddDeviatingDateDialog(): void {
     const modalRef = this.modalService.open(AddDeviatingDateComponent);
-    modalRef.result.then((date: NgbDateStruct) => {
-      const d = new DateModel(date.year, date.month, date.day);
-
+    modalRef.result.then((date: DateModel) => {
       const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
-      const index = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, d));
+      const index = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, date));
       if (index >= 0)
         return;
 
-      this.facade.addDeviatingOpeningDay(d).subscribe(() => { }, () => { });
+      this.facade.addDeviatingOpeningDay(date, "closed").subscribe(() => { }, () => { });
     }, () => {
     });
   }
 
-  public removeDeviatingDate(date: DateModel): void {
-    this.facade.removeDeviatingOpeningDay(date).subscribe(() => { }, () => { });
-    // const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
-    //
-    // const index = deviatingOpeningHoursViewModel.dates.findIndex(en => RestaurantAdminFacade.areDatesEqual(en.date, date));
-    // if (index < 0)
-    //   return;
-    //
-    // deviatingOpeningHoursViewModel.dates.splice(index, 1);
-    //
-    // let allUndefined = deviatingOpeningHoursViewModel.dates.every(en => en.openingPeriods[deviatingOpeningHoursViewModel.columns.length - 1].value === undefined);
-    // while (deviatingOpeningHoursViewModel.columns.length > 0 && allUndefined) {
-    //   for (let openingDay of deviatingOpeningHoursViewModel.dates) {
-    //     openingDay.openingPeriods.splice(deviatingOpeningHoursViewModel.columns.length - 1, 1);
-    //   }
-    //   deviatingOpeningHoursViewModel.columns.splice(deviatingOpeningHoursViewModel.columns.length - 1, 1);
-    //   allUndefined = deviatingOpeningHoursViewModel.dates.every(en => en.openingPeriods[deviatingOpeningHoursViewModel.columns.length - 1].value === undefined);
-    // }
-    //
-    // this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
+  public changeStatusOfDeviatingDate(date: DateModel, status: string): void {
+    this.facade.changeDeviatingOpeningDayStatus(date, status).subscribe(() => { }, () => { });
   }
 
-  public isDeviatingDateClosed(date: DateModel): boolean {
-    const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
-
-    const dateIndex = deviatingOpeningHoursViewModel.dates.findIndex(en => DateModel.isEqual(en.date, date));
-    if (dateIndex < 0)
-      return false;
-
-    return deviatingOpeningHoursViewModel.dates[dateIndex].openingPeriods.every(en => en !== undefined && en.value === undefined);
+  public removeDeviatingDate(date: DateModel): void {
+    this.facade.removeDeviatingOpeningDay(date).subscribe(() => { }, () => { });
   }
 
   public addToDeviating(date: DateModel): void {
@@ -391,6 +365,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       deviatingOpeningDayViewModel.date = deviatingOpeningDay.date;
       const date = deviatingOpeningDay.date;
       deviatingOpeningDayViewModel.dateText = `${date.day}.${date.month}.${date.year}`;
+      deviatingOpeningDayViewModel.status = deviatingOpeningDay.status;
       deviatingOpeningDayViewModel.openingPeriods = new Array<BehaviorSubject<OpeningPeriodViewModel>>();
       deviatingOpeningHoursViewModel.dates.push(deviatingOpeningDayViewModel);
 
@@ -550,6 +525,7 @@ export class DeviatingOpeningDayViewModel {
 
   public date: DateModel;
   public dateText: string;
+  public status: string;
   public openingPeriods: Array<BehaviorSubject<OpeningPeriodViewModel>>
 
 }

@@ -89,6 +89,7 @@
                 <thead>
                 <tr>
                     <th scope="col" style="min-width: 120px;">Tag</th>
+                    <th scope="col"></th>
                     <ng-container *ngFor="let column of (deviatingOpeningHoursViewModel$ | async).columns">
                         <th scope="col">Beginn</th>
                         <th scope="col">Ende</th>
@@ -109,12 +110,16 @@
                 <tbody>
                 <tr *ngFor="let deviatingOpeningDay of (deviatingOpeningHoursViewModel$ | async).dates">
                     <th scope="row">
-                        <p class="email">
-                            {{deviatingOpeningDay.dateText}}
-                            <ng-container *ngIf="isDeviatingDateClosed(deviatingOpeningDay.date)">
-                                (geschlossen)
-                            </ng-container>
-                        </p>
+                        <p class="email">{{deviatingOpeningDay.dateText}}</p>
+                    </th>
+                    <th>
+                        <ng-container *ngIf="deviatingOpeningDay.openingPeriods.length > 0"><p class="email">Geöffnet</p></ng-container>
+                        <ng-container *ngIf="deviatingOpeningDay.openingPeriods.length === 0">
+                            <select [ngModel]="deviatingOpeningDay.status" (change)="changeStatusOfDeviatingDate(deviatingOpeningDay.date, $event.target.value)">
+                                <option value="closed">Geschlossen</option>
+                                <option value="fully-booked">Ausgebucht</option>
+                            </select>
+                        </ng-container>
                     </th>
                     <ng-container *ngFor="let openingPeriod$ of deviatingOpeningDay.openingPeriods">
                         <th scope="row">

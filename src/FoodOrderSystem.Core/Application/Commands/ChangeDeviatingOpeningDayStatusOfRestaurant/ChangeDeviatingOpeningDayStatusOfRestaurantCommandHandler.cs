@@ -5,19 +5,19 @@ using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.User;
 
-namespace FoodOrderSystem.Core.Application.Commands.AddDeviatingOpeningDayToRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.ChangeDeviatingOpeningDayStatusOfRestaurant
 {
-    public class AddDeviatingOpeningDayToRestaurantCommandHandler : ICommandHandler<AddDeviatingOpeningDayToRestaurantCommand, bool>
+    public class ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler : ICommandHandler<ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public AddDeviatingOpeningDayToRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
-
-        public async Task<Result<bool>> HandleAsync(AddDeviatingOpeningDayToRestaurantCommand command,
-            User currentUser, CancellationToken cancellationToken = default)
+        
+        public async Task<Result<bool>> HandleAsync(ChangeDeviatingOpeningDayStatusOfRestaurantCommand command, User currentUser,
+            CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -28,15 +28,14 @@ namespace FoodOrderSystem.Core.Application.Commands.AddDeviatingOpeningDayToRest
             if (currentUser.Role < Role.RestaurantAdmin)
                 return FailureResult<bool>.Forbidden();
 
-            var restaurant =
-                await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.AddDeviatingOpeningDay(command.Date, command.Status, currentUser.Id);
+            var result = restaurant.ChangeDeviatingOpeningDayStatus(command.Date, command.Status, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

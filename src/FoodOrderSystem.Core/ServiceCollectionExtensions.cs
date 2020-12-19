@@ -77,6 +77,8 @@ namespace FoodOrderSystem.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.NoRestaurantReservationInfosSpecified, "Keine Informationen über die Reservierung spezifiziert");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantWithoutCashPaymentNotAllowed, "Das Deaktivieren von Barzahlung ist nicht möglich");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodIntersects, "Die Öffnungsperiode überschneidet sich mit einer bereits eingetragenen Öffnungsperiode");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeviatingOpeningDayDoesNotExist, "Der abweichende Öffnungstag ist nicht bekannt");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDeviatingOpeningDayHasStillOpenPeriods, "Der abweichende Öffnungstag hat noch registrierte Öffnungszeiten");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodBeginsTooEarly, "Die Öffnungsperiode darf nicht vor 4 Uhr morgens beginnen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantOpeningPeriodEndsBeforeStart, "Das Ende der Öffnungsperiode muss nach dem Start liegen");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantDoesNotExist, "Restaurant existiert nicht");

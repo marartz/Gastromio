@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,16 +8,10 @@ namespace FoodOrderSystem.Core.Application.DTOs
 {
     public class DeviatingOpeningDayDTO
     {
-        public DeviatingOpeningDayDTO(Date date, IEnumerable<OpeningPeriodDTO> openingPeriods)
+        public DeviatingOpeningDayDTO(Date date, DeviatingOpeningDayStatus status, IEnumerable<OpeningPeriod> openingPeriods)
         {
             Date = date;
-            OpeningPeriods =
-                new ReadOnlyCollection<OpeningPeriodDTO>(openingPeriods?.ToList() ?? new List<OpeningPeriodDTO>());
-        }
-
-        public DeviatingOpeningDayDTO(Date date, IEnumerable<OpeningPeriod> openingPeriods)
-        {
-            Date = date;
+            Status = status.ToModel();
             OpeningPeriods = new ReadOnlyCollection<OpeningPeriodDTO>(
                 openingPeriods
                     ?.Select(en => new OpeningPeriodDTO(en))
@@ -26,6 +19,8 @@ namespace FoodOrderSystem.Core.Application.DTOs
         }
 
         public Date Date { get; }
+        
+        public string Status { get; }
 
         public IReadOnlyCollection<OpeningPeriodDTO> OpeningPeriods { get; }
     }
