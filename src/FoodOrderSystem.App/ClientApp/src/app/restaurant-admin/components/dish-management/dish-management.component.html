@@ -184,7 +184,10 @@
                     <label class="form-label" placement="top"
                            ngbTooltip="Unter welchem Namen soll die externe Karte angezeigt werden?">Name</label>
                     <div class="input-group">
-                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="off" id="name" formControlName="name"/>
+                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="off" id="name" formControlName="name" [ngClass]="{ 'is-invalid': emf.name.errors }"/>
+                        <div *ngIf="emf.name.errors" class="invalid-feedback">
+                            <div *ngIf="emf.name.errors.required">Name wird benötigt.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,7 +198,10 @@
                     <label class="form-label" placement="top"
                            ngbTooltip="Mit welcher Beschreibung soll die externe Karte angezeigt werden?">Beschreibung</label>
                     <div class="input-group">
-                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="off" id="description" formControlName="description"/>
+                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="off" id="description" formControlName="description" [ngClass]="{ 'is-invalid': emf.description.errors }"/>
+                        <div *ngIf="emf.description.errors" class="invalid-feedback">
+                            <div *ngIf="emf.description.errors.required">Beschreibung wird benötigt.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,7 +212,11 @@
                     <label class="form-label" placement="top"
                            ngbTooltip="Unter welcher Adresse ist die Speisekarte im Internet aufrufbar?">Url der Speisekarte</label>
                     <div class="input-group">
-                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="off" id="url" formControlName="url"/>
+                        <input type="text" mozactionhint="next" autocapitalize="none" autocomplete="off" id="url" formControlName="url" [ngClass]="{ 'is-invalid': emf.url.errors }"/>
+                        <div *ngIf="emf.url.errors" class="invalid-feedback">
+                            <div *ngIf="emf.url.errors.required">URL der Speisekarte wird benötigt.</div>
+                            <div *ngIf="emf.url.errors.pattern">Ungültige Webseite (z.B. https://www.mein-restaurant.de/speiskarte)</div>
+                        </div>
                     </div>
                 </div>
             </div>
