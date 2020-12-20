@@ -82,7 +82,9 @@ export class RestaurantModel {
 
   public deviatingOpeningDays: Array<DeviatingOpeningDayModel>;
 
-  public openingHoursText: string;
+  public regularOpeningHoursText: string;
+
+  public deviatingOpeningHoursText: string;
 
   public openingHoursTodayText: string;
 

@@ -28,7 +28,13 @@
                                     <span *ngIf="getCart().isDelivery()"> Wann möchtest Du dein Essen erhalten?</span>
                                 </ng-container>
                                 <br /><br />
-                                <span>{{restaurant.name}} hat für Dich geöffnet: {{restaurant.openingHoursText}}.</span>
+                                <span>{{restaurant.name}} hat für Dich geöffnet:</span>
+                                <br /><br />
+                                <span>{{restaurant.regularOpeningHoursText}}.</span>
+                                <ng-container *ngIf="restaurant.deviatingOpeningHoursText && restaurant.deviatingOpeningHoursText.length > 0">
+                                    <br />
+                                    <span>{{restaurant.deviatingOpeningHoursText}}.</span>
+                                </ng-container>
                             </h4>
 
                             <button *ngIf="restaurant.supportedOrderMode !== 'phone'" type="button" class="pill" [class.active]="serviceTime" (click)="onSelectServiceTime()">
@@ -51,7 +57,13 @@
                                     <span *ngIf="restaurant.supportedOrderMode === 'shift'">In der aktuellen Öffnungszeit nimmt {{restaurant.name}} keine elektronischen Bestellungen entgegen.</span>
                                 </ng-container>
                                 <br /><br />
-                                <span>{{restaurant.name}} hat für Dich geöffnet: {{restaurant.openingHoursText}}.</span>
+                                <span>{{restaurant.name}} hat für Dich geöffnet:</span>
+                                <br /><br />
+                                <span>{{restaurant.regularOpeningHoursText}}.</span>
+                                <ng-container *ngIf="restaurant.deviatingOpeningHoursText && restaurant.deviatingOpeningHoursText.length > 0">
+                                    <br />
+                                    <span>{{restaurant.deviatingOpeningHoursText}}.</span>
+                                </ng-container>
                             </h4>
 
                             <button type="button" class="pill" [class.active]="!serviceTime" (click)="onAsFastAsPossible()" style="background-color: #FFF !important;">

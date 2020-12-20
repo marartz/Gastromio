@@ -12,7 +12,11 @@
                 <ng-container><br />Telefax: {{restaurant.contactInfo.fax}}</ng-container>
                 <ng-container><br />Webseite: <a class="link" href="{{restaurant.contactInfo.webSite}}" target="_blank">{{restaurant.contactInfo.webSite}}</a></ng-container>
                 <br /><br />
-                Öffnungszeiten: {{restaurant.openingHoursText}}
+                Öffnungszeiten: {{restaurant.regularOpeningHoursText}}
+                <ng-container *ngIf="restaurant.deviatingOpeningHoursText && restaurant.deviatingOpeningHoursText.length > 0">
+                    <br />
+                    Sonderzeiten: {{restaurant.deviatingOpeningHoursText}}
+                </ng-container>
                 <br />
                 <br />Diverse Marken sind im Besitz der jeweiligen Eigentümer.
                 <br />
