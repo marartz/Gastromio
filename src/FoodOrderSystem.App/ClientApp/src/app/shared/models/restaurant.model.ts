@@ -70,6 +70,8 @@ export class RestaurantModel {
 
   public name: string;
 
+  public importId: string;
+
   public alias: string;
 
   public address: AddressModel;
