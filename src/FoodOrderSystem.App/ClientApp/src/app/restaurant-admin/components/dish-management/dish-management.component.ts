@@ -65,7 +65,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
           nameControl.updateValueAndValidity();
           descriptionControl.setValidators([Validators.required]);
           descriptionControl.updateValueAndValidity();
-          urlControl.setValidators([Validators.required, Validators.pattern(/^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/)]);
+          urlControl.setValidators([Validators.required, Validators.pattern(/^(https?:\/\/){1,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/)]);
           urlControl.updateValueAndValidity();
         } else {
           nameControl.setValidators(null);
