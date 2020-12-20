@@ -751,6 +751,10 @@ export class RestaurantAdminFacade {
   }
 
   public removeExternalMenu(externalMenuId: string): void {
+    const index = this.restaurant$.value.externalMenus?.findIndex(en => en.id === externalMenuId) ?? -1;
+    if (index < 0)
+      return;
+
     this.isUpdating$.next(true);
     this.restaurantAdminService.removeExternalMenu(this.restaurant$.value.id, externalMenuId)
       .pipe(take(1))
