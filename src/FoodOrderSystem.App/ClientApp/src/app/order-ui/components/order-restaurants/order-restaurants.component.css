@@ -1,3 +1,86 @@
+#hero.cuisine-all {
+	background-image: url('../../../../assets/images/hero/default.jpg') !important;
+	background-repeat: no-repeat !important;
+}
+
+@-webkit-keyframes fadeUpTitle {
+ 0% {
+  opacity:0;
+ }
+ to {
+  opacity:1;
+ }
+}
+@keyframes fadeUpTitle {
+ 0% {
+  opacity:0;
+ }
+ to {
+  opacity:1;
+ }
+}
+
+#hero[class^="cuisine"] {
+	-webkit-animation-name: fadeUpTitle!important;
+	 animation-name: fadeUpTitle!important;
+	 -webkit-animation-duration: 1.6s;
+	 animation-duration: 1.6s;
+	 transition: opacity 1.6s ease!important
+}
+
+#hero.cuisine-c24cf09b-aee0-46d8-bf77-6bb244e0a901 {
+	background-image: url('../../../../assets/images/hero/asiatisch.jpg') !important;
+}
+
+#hero.cuisine-bcab7144-6a08-4d13-ac64-51f2ad77c32f {
+	background-image: url('../../../../assets/images/hero/burger.jpg') !important;
+}
+
+#hero.cuisine-c804ee31-b733-4911-877b-9484bcb5b641 {
+	background-image: url('../../../../assets/images/hero/griechisch.jpg') !important;
+}
+
+#hero.cuisine-f4c25c60-9c70-45d7-8282-69a2a5f2f93b {
+	background-image: url('../../../../assets/images/hero/gut-bürgerlich.jpg') !important;
+}
+
+#hero.cuisine-8b8b5dfd-3148-471a-94f6-7d9a4384d698 {
+	background-image: url('../../../../assets/images/hero/indisch.jpg') !important;
+}
+
+#hero.cuisine-9e64ca0a-4463-4332-aafb-a12b46ac4b30 {
+	background-image: url('../../../../assets/images/hero/italienisch.jpg') !important;
+}
+
+#hero.cuisine-e65954c0-21cc-4fdf-920e-f046a0eb5a98 {
+	background-image: url('../../../../assets/images/hero/japanisch.jpg') !important;
+}
+
+#hero.cuisine-3264ce6a-e996-4c3f-b021-c75cf9801d3b {
+	background-image: url('../../../../assets/images/hero/kuchen.jpg') !important;
+}
+
+#hero.cuisine-156cba29-3034-4093-aa77-f9e5a9241d87 {
+	background-image: url('../../../../assets/images/hero/nudeln.jpg') !important;
+}
+
+#hero.cuisine-d3f119d3-4f48-47a4-b60f-5e80c31119c5 {
+	background-image: url('../../../../assets/images/hero/pizza.jpg') !important;
+}
+
+#hero.cuisine-6c07a87f-feb8-4926-9b6a-f0528ea315fa {
+	background-image: url('../../../../assets/images/hero/salat.jpg') !important;
+}
+
+#hero.cuisine-9ad8acb3-554d-4c8b-8e48-687de55cbcfa {
+	background-image: url('../../../../assets/images/hero/spareribs.jpg') !important;
+}
+
+#hero.cuisine-d855181b-1043-4da5-acdc-5d6fb9e09d4e {
+	background-image: url('../../../../assets/images/hero/vietnamesisch.jpg') !important;
+}
+
+
 .preorder {
     align-items: center;
     justify-content: center;
