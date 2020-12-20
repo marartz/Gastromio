@@ -54,7 +54,10 @@
                                 </ng-container>
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'">
                                     <br /><br />
-                                    <span *ngIf="restaurant.supportedOrderMode === 'shift'">In der aktuellen Öffnungszeit nimmt {{restaurant.name}} keine elektronischen Bestellungen entgegen.</span>
+                                    <span *ngIf="restaurant.supportedOrderMode === 'shift'">
+                                        In der aktuellen Öffnungszeit nimmt {{restaurant.name}} keine elektronischen Bestellungen für die jetzige Öffnungszeit entgegen, aber Du kannst jetzt entweder
+                                        telefonisch für die aktuelle Öffnungszeit bestellen, oder elektronisch für eine spätere Öffnungszeit vorbestellen!.
+                                    </span>
                                 </ng-container>
                                 <br /><br />
                                 <span>{{restaurant.name}} hat für Dich geöffnet:</span>
