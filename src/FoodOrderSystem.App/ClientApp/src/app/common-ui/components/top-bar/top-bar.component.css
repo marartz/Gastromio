@@ -1,3 +1,132 @@
+#top-bar {
+    background-color: transparent;
+    position: relative;
+    z-index: 30;
+}
+
+#top-bar .wrapper {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    height: 72px;
+    justify-content: space-between;
+    margin: 0px auto;
+    padding: 0px 20px;
+}
+
+@media only screen and (min-width: 768px) {
+    #top-bar .wrapper {
+        padding: 16px 40px;
+    }
+}
+
+#top-bar #logo {
+    cursor: pointer;
+    flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    outline: none;
+    text-transform: none;
+}
+
+#top-bar #logo img {
+    display: inline;
+    height: 48px;
+    transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -ms-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    vertical-align: middle;
+    width: 48px;
+}
+
+#top-bar #logo a {
+    color: #FFF;
+    cursor: pointer;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 0px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+#top-bar #logo a span {
+    font-weight: 300;
+}
+
+@media only screen and (max-width: 767px) {
+    #top-bar #logo a span {
+        display: none;
+    }
+    #top-bar #logo img {
+        margin-right: 6px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #top-bar #logo img {
+        margin-right: 6px;
+    }
+}
+
+#top-bar #menu {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    justify-content: flex-end;
+}
+
+#top-bar #menu .link {
+    background-color: transparent;
+    color: #FFF;
+    cursor: pointer;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 48px;
+    padding: 0px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+#top-bar #menu .link:not(:first-of-type) {
+    margin-left: 24px;
+}
+
+#top-bar #userDropDown {
+    background-color: #ADCCCB;
+    border: 0px;
+    border-radius: 23px;
+    padding: 8px;
+}
+
+
+
+
+
+
+
+
+
+
 #beta-banner {
     background-color: #363636;
     color: #FFF;
@@ -62,4 +191,23 @@
     #beta-banner a svg {
         display: none;
     }
+}
+
+.menu--heading {
+    color: #363636;
+    font-size: 12.8px;
+    padding: 6px 12px 12px 6px;
+}
+
+.menu--content {
+    display: block;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0px 12px 10px 6px;
+    color: #363636;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

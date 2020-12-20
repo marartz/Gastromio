@@ -1237,6 +1237,11 @@ form .form-input .input-group input::placeholder {
     border-color: #b44448 !important;
 }
 
+#notice.success {
+    background-color: #81B67C !important;
+    border-color: #81B67C !important;
+}
+
 #notice.warning {
     background-color: #eb9605 !important;
     border-color: #eb9605 !important;
@@ -1244,6 +1249,6 @@ form .form-input .input-group input::placeholder {
 
 #notice p {
     color: #fff;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Apercu", sans-serif;
     font-weight: 500;
 }
