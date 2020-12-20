@@ -1,0 +1,1254 @@
+/*
+    Inhalt
+
+    1.  #backend
+
+        #backend > #admin-restaurant
+
+    80.  #login
+    80.1 #login > left
+    80.2 #login > right
+
+    90.  #modal
+    90.1 #modal > #modal-header
+    90.2 #modal > #modal-body
+    90.3 #modal > #modal-footer
+
+    99. #notice
+*/
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+#backend {
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    font-family: "Apercu", sans-serif !important;
+    margin-top: -72px !important;
+    position: relative;
+    width: 100%;
+    z-index: 20;
+}
+
+/* #backend */
+#backend .wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+}
+
+@media screen and (min-width: 576px) {
+    #backend .wrapper {
+        max-width: 540px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #backend .wrapper {
+        max-width: 720px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    #backend .wrapper {
+        max-width: 960px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #backend .wrapper {
+        max-width: 1140px;
+    }
+}
+
+/* #backend > #hero */
+#backend #hero {
+    background-color: #363636;
+    display: block;
+    padding-top: 48px;
+    position: relative;
+    width: 100%;
+    z-index: 20;
+}
+
+#backend #hero .wrapper .inner {
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    justify-content: center;
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+#backend #hero .wrapper .inner .inner-wrapper {
+    padding-right: 16px;
+    padding-left: 16px;
+    position: relative;
+    width: 100%;
+}
+
+@media screen and (min-width: 992px) {
+    #backend #hero .wrapper .inner .inner-wrapper {
+        flex: 0 0 75%;
+        -moz-flex: 0 0 75%;
+        -ms-flex: 0 0 75%;
+        -webkit-box-flex: 0 0 75%;
+        -webkit-flex: 0 0 75%;
+        max-width: 75%;
+    }
+}
+
+/* #backend > #hero > #title */
+#backend #hero #title {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+#backend #hero #title span {
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#backend #hero #title h1 {
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+/* #backend > #hero > #links */
+#backend #hero #links {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-top: 24px;
+}
+
+#backend #hero #links .nav-tabs {
+    border-bottom: 1px solid #fff;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    list-style: none;
+    margin-bottom: 0px;
+    overflow-x: auto;
+    padding-bottom: 1px;
+    padding-left: 0px;
+}
+
+#backend #hero #links .nav-tabs .tab {
+    flex: 0 0 auto;
+    -moz-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    -webkit-box-flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+    margin-bottom: -1px;
+    margin-left: 16px;
+    margin-right: 16px;
+    max-width: 100%;
+    width: auto;
+}
+
+#backend #hero #links .nav-tabs .tab:first-child {
+    margin-left: 0px;
+}
+
+#backend #hero #links .nav-tabs .tab:last-child {
+    margin-right: 0px;
+}
+
+#backend #hero #links .nav-tabs .tab a {
+    background-color: transparent;
+    border-bottom: 3px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    padding: 15px 0px;
+    text-decoration: none;
+    transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+}
+
+#backend #hero #links .nav-tabs .tab a:hover {
+    border-color: transparent transparent transparent;
+    opacity: .9;
+}
+
+#backend #hero #links .nav-tabs .tab a.active {
+    opacity: .9;
+    background-color: transparent;
+    border-color: transparent transparent #ADCCCB;
+}
+
+/* #backend > #content */
+#backend #content {
+    background-color: #ADCCCB;
+    background-image: url('../../assets/images/rough/blue.png');
+    background-repeat: repeat;
+    padding-bottom: 32px;
+    padding-top: 16px;
+    position: relative;
+    width: 100%;
+    z-index: 20;
+}
+
+#backend #content .inner {
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    justify-content: center;
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+#backend #content .inner-wrapper {
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    width: 100%;
+}
+
+@media screen and (min-width: 992px) {
+    #backend #content .inner-wrapper {
+        flex: 0 0 75%;
+        -moz-flex: 0 0 75%;
+        -ms-flex: 0 0 75%;
+        -webkit-box-flex: 0 0 75%;
+        -webkit-flex: 0 0 75%;
+        max-width: 75%;
+    }
+}
+
+/* #backend > #content > #admin-users */
+#backend #content #manage-users {
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-top: 24px;
+}
+
+/* #backend > #content > #admin-users > #title */
+#backend #content #admin-users #title {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    margin-bottom: 24px;
+}
+
+#backend #content .add {
+    align-items: center;
+    background-color: #ADCCCB;
+    border: 1px solid transparent;
+    border-color: #ADCCCB;
+    border-radius: 50% !important;
+    box-shadow: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    display: -moz-inline-box;
+    display: -ms-inline-flexbox;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    font-size: 14px;
+    font-weight: 600;
+    height: 40px;
+    justify-content: center;
+    line-height: 1.5;
+    margin: 0px;
+    overflow: visible;
+    padding: 0px;
+    position: relative;
+    text-align: center;
+    transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+    user-select: none;
+    vertical-align: middle;
+    width: 40px;
+}
+
+#backend #content .add:focus,
+#backend #content .add:hover {
+    color: #fff;
+}
+
+#backend #content .add svg {
+    fill: none;
+    height: 16px;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3px;
+    width: 16px;
+}
+
+#backend #content #admin-users #title h3 {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-left: -15px;
+}
+
+#backend #content #admin-users #title p {
+    box-sizing: border-box;
+    color: #718096;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-left: -15px;
+}
+
+#backend #content #admin-users #title .search {
+    border-radius: 6px;
+    transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
+#backend #content #admin-users #title .search input {
+    background-color: #f9f9fb;
+    background-image: url(/assets/images/icons/search.svg);
+    background-position: center right 20px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    border: none;
+    border-radius: 48px;
+    font-family: "Apercu", sans-serif;
+    font-weight: 500;
+    height: 40px;
+    line-height: 21px;
+    margin-right: 20px;
+    outline: none;
+    padding: 0px 30px;
+    transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+    width: 250px;
+}
+
+#backend #content #admin-users #title .search input:focus-within {
+    background-color: #fff;
+}
+
+/* #backend > #content > #admin-users > #table */
+#backend #content #table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+#backend #content #table table {
+    align-items: center;
+    background-color: transparent;
+    border-collapse: separate;
+    border-spacing: 0px 16px;
+    color: #363636;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+#backend #content #table table > * {
+    animation: showTable 0.3s ease 1 700ms both;
+    -moz-animation: showTable 0.3s ease 1 700ms both;
+    -ms-animation: showTable 0.3s ease 1 700ms both;
+    -o-animation: showTable 0.3s ease 1 700ms both;
+    -webkit-animation: showTable 0.3s ease 1 700ms both;
+}
+
+#backend #content #table table thead th {
+    background-color: transparent;
+    border: 0px;
+    font-family: "Apercu", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0px;
+    padding: 0px 16px;
+    position: relative;
+    text-transform: none;
+}
+
+#backend #content #table table th {
+    font-size: 13px;
+    font-weight: 600;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#backend #content #table table tbody tr {
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px rgba(31, 45, 61, .05);
+}
+
+#backend #content #table table tbody th {
+    background-color: #ADCCCB;
+    border: 0px;
+    padding: 16px;
+    position: relative;
+}
+
+#backend #content #table table tbody td {
+    border: 0px;
+    position: relative;
+}
+
+#backend #content #table table tbody tr th {
+    border-radius: 12px 0px 0px 12px;
+}
+
+#backend #content #table table tbody tr td {
+    background-color: #ADCCCB;
+}
+
+#backend #content #table table tbody tr th .email {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0px;
+}
+
+#backend #content #table table tbody tr td .role {
+    color: #718096;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0px;
+}
+
+#backend #content #table table tbody tr td:last-child {
+    border-radius: 0px 12px 12px 0px;
+}
+
+#backend #content #table table tbody .actions {
+    margin-left: 16px;
+    padding: 16px;
+    text-align: right;
+}
+
+#backend #content .action-item {
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    color: #718096;
+    background: transparent;
+    border: 0px;
+    margin-right: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
+    text-decoration: none;
+    transition: color .3s;
+    -moz-transition: color .3s;
+    -ms-transition: color .3s;
+    -o-transition: color .3s;
+    -webkit-transition: color .3s;
+}
+
+#backend #content .action-item.red {
+    color: #f25767;
+}
+
+#backend #content .action-item.green {
+    color: #65b32e;
+}
+
+#backend #content .action-item svg {
+    fill: none;
+    height: 16px;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3px;
+    width: 16px;
+}
+
+/* #admin-restaurant */
+#admin-restaurant {
+    margin-bottom: 48px;
+}
+
+#admin-restaurant .divider {
+    border: 0px;
+    border-top: 1px solid #e2e8f0;
+    margin-bottom: 48px;
+    margin-top: 48px;
+}
+
+#admin-restaurant .form-header {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    margin-top: 16px;
+    margin-bottom: 24px;
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+#admin-restaurant .form-header h3,
+#admin-restaurant .form-header h5 {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0px;
+}
+
+#admin-restaurant .form-header h3 {
+    font-size: 16px;
+}
+
+form .form-input {
+    margin-bottom: 16px;
+}
+
+form .form-input label {
+    color: #363636;
+    display: inline-block;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    text-transform: none;
+}
+
+#admin-restaurant form .status {
+    background-color: #fff;
+    border: 2px solid #FFF;
+    border-color: #65b32e;
+    border-radius: 23px;
+    box-shadow: none;
+    color: #65b32e !important;
+    cursor: pointer;
+    display: inline-block;
+    flex: 1 1 auto;
+    -moz-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    -webkit-box-flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+    font-family: "Quicksand", sans-serif;
+    font-size: 14px !important;
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1.5;
+    margin-bottom: 0px;
+    padding: 12px 20px;
+    position: relative;
+    text-align: center;
+    transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+    user-select: none;
+    vertical-align: middle;
+    width: 100%;
+}
+
+#admin-restaurant form .status.inactive {
+    border-color: #f25767;
+    color: #f25767 !important;
+}
+
+#admin-restaurant form .status svg {
+    display: inline-block;
+    fill: none;
+    height: 16px;
+    margin-left: 16px;
+    margin-right: 8px;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3px;
+    width: 16px;
+}
+
+@media screen and (min-width: 576px) {
+    #admin-restaurant form .status svg {
+        margin-right: 16px;
+    }
+}
+
+#admin-restaurant form .status input {
+    box-sizing: border-box;
+    clip: rect(0, 0, 0, 0);
+    padding: 0px;
+    pointer-events: none;
+    position: absolute;
+}
+
+form .form-input .input-group {
+    align-items: stretch;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+}
+
+form .form-input .input-group input,
+form .form-input .input-group select {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 23px;
+    box-shadow: none;
+    color: #4a5568;
+    display: block;
+    flex: 1 1 0%;
+    -moz-flex: 1 1 0%;
+    -ms-flex: 1 1 0%;
+    -webkit-box-flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: calc(24px + 24px + 2px);
+    line-height: 1.5;
+    margin: 0px;
+    min-width: 0px;
+    overflow: visible;
+    padding: 12px 20px;
+    position: relative;
+    transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+    width: 100%;
+}
+
+form .form-input .input-group input:focus,
+form .form-input .input-group select:focus {
+    background-color: #fff;
+    border-color: #ADCCCB;
+    color: #363636;
+    outline: none;
+}
+
+form .form-input .input-group input::placeholder {
+    margin-left: 16px;
+}
+
+#admin-restaurant form .form-submit {
+    background-color: #DECF80;
+    border-radius: 23px;
+    box-shadow: 0px 5px 10px rgba(darken(dodgerblue, 40%));
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 40px;
+    letter-spacing: 0px;
+    position: relative;
+    text-align: center;
+    transition: all .3s;
+    width: 200px;
+}
+
+#admin-restaurant form .form-submit:active {
+    box-shadow: 0px 4px 8px rgba(darken(dodgerblue, 30%));
+    transform: scale(.98);
+}
+
+#admin-restaurant form .form-submit:hover {
+    box-shadow: 0px 15px 25px -5px rgba(darken(dodgerblue, 40%));
+    transform: scale(1.03);
+}
+
+#admin-restaurant form .file-input {
+    width: .1px !important;
+    height: .1px !important;
+    opacity: 0 !important;
+    outline: none !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -1 !important;
+}
+
+#admin-restaurant form .file-upload {
+    background-color: #ADCCCB;
+    border: 1px solid #ADCCCB;
+    border-color: #ADCCCB;
+    border-radius: 6px;
+    color: #363636 !important;
+    cursor: pointer;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    margin: 0px;
+    outline: none;
+    overflow: hidden;
+    padding: 10px 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#admin-restaurant form .file-upload svg {
+    display: inline-block;
+    fill: none;
+    height: 16px;
+    margin-right: 8px;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3px;
+    width: 16px;
+}
+
+#admin-restaurant .nav-tabs {
+    border: 0px solid #ADCCCB;
+}
+
+#admin-restaurant .nav-tabs .nav-link {
+    border: 0px solid #ADCCCB;
+    border-radius: 6px !important;
+    font-family: "Apercu", sans-serif;
+    font-weight: 500;
+}
+
+#admin-restaurant .card {
+    background-clip: border-box;
+    background-color: #ADCCCB;
+    border: 0px;
+    border-radius: 12px;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+    min-width: 0px;
+    position: relative;
+    transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+    cursor: pointer;
+}
+
+#admin-restaurant .card .card-body {
+    color: #718096;
+    flex: 1 1 auto;
+    -moz-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    -webkit-box-flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+    min-height: 1px;
+    padding: 14px;
+}
+
+#admin-restaurant .card .card-container {
+    list-style: none;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    padding: 0px;
+    position: relative;
+    z-index: 1;
+}
+
+#admin-restaurant .card .card-wrapper {
+    box-sizing: content-box;
+    display: flex;
+    height: 100%;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    -webkit-box-sizing: content-box;
+}
+
+#admin-restaurant .card .card-content {
+    flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    height: 100%;
+    opacity: 1;
+    position: relative;
+    transition: opacity .3s;
+    -moz-transition: opacity .3s;
+    -ms-transition: opacity .3s;
+    -o-transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+    width: 342px;
+    -ms-flex-negative: 0;
+
+}
+
+#admin-restaurant .card .card-content .top {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+#admin-restaurant .card .card-content .top img {
+    border-radius: 4px;
+    border-style: none;
+    vertical-align: middle;
+    width: unset;
+}
+
+#admin-restaurant .card .card-content .top .badge {
+    border-radius: 6px;
+    display: inline;
+    font-family: "Apercu", sans-serif;
+    font-size: 80%;
+    font-weight: 500;
+    line-height: 1;
+    padding: 6px 8px;
+    text-align: center;
+    text-transform: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -moz-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -ms-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -o-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+#admin-restaurant .card .card-content .top .badge.active {
+    background-color: #5cc9a7;
+    color: #fff;
+}
+
+#admin-restaurant .card .card-content .top .badge.inactive {
+    background-color: #f25767;
+    color: #fff;
+}
+
+#admin-restaurant .card .card-content .bottom {
+    margin-top: 24px;
+}
+
+#admin-restaurant .card .card-content .bottom .name {
+    color: #fff;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    font-family: "Apercu", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    justify-content: space-between;
+    line-height: 1.5;
+}
+
+#admin-restaurant .card .card-content .bottom .description {
+    color: #eff2f7;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* #modal */
+#modal {
+    animation: easeInModal 0.2s ease 1 both;
+    -moz-animation: easeInModal 0.2s ease 1 both;
+    -ms-animation: easeInModal 0.2s ease 1 both;
+    -o-animation: easeInModal 0.2s ease 1 both;
+    -webkit-animation: easeInModal 0.2s ease 1 both;
+    display: block;
+    height: 100%;
+    left: 0px;
+    outline: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1072;
+    z-index: 999999 !important;
+}
+
+#modal .wrapper {
+    align-items: center;
+    animation: fadeDownModal 0.3s ease 1 both;
+    -moz-animation: fadeDownModal 0.3s ease 1 both;
+    -ms-animation: fadeDownModal 0.3s ease 1 both;
+    -o-animation: fadeDownModal 0.3s ease 1 both;
+    -webkit-animation: fadeDownModal 0.3s ease 1 both;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    margin: 8px;
+    min-height: calc(100% - 16px);
+    pointer-events: none;
+    position: relative;
+    transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    -webkit-transform-origin: 50% 50%;
+    width: auto;
+}
+
+#modal .wrapper:before {
+    content: "";
+    display: block;
+    height: calc(100vh - 16px);
+}
+
+@media screen and (min-width: 576px) {
+    #modal .wrapper {
+        min-height: calc(100% - 56px);
+        margin: 28px auto;
+        max-width: 500px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    #modal .wrapper::before {
+        height: calc(100vh - 56px);
+    }
+}
+
+#modal .content {
+    align-items: center;
+    background-color: #ADCCCB;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 20px;
+    color: #363636;
+    display: flex;
+    flex-direction: column;
+    outline: 0;
+    padding: 32px;
+    pointer-events: auto;
+    position: relative;
+    width: 100%;
+}
+
+@media screen and (max-width: 576px) {
+    #modal .content {
+        padding: 21px 48px;
+    }
+}
+
+#modal .content .icon {
+    margin-bottom: 38px;
+}
+
+#modal form .form-input {
+    width: 100%;
+}
+
+#modal .content a.link {
+    color: #363636;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#modal .content .title {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    #modal .content .title {
+        font-size: 26px;
+    }
+}
+
+#modal .content .title.add-edit {
+    color: #363636;
+    font-size: 32px;
+    margin-bottom: 32px;
+    margin-top: 0px;
+}
+
+#modal .content .title.add-edit.dish {
+    margin-bottom: 0px;
+}
+
+#modal .content .description {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 32px;
+    margin-top: 8px;
+    text-align: left;
+}
+
+#modal form .form-input {
+    width: 100%;
+}
+
+#modal .content .btns-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    #modal .content .btns-container {
+        flex-wrap: wrap-reverse;
+    }
+}
+
+#modal .content .btns-container button {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 3rem;
+    color: #363636;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Apercu", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    height: 48px;
+    letter-spacing: .7px;
+    line-height: 18px;
+    min-width: 140px;
+    padding: 0px 30px;
+    text-align: center;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    vertical-align: middle;
+    width: 100% !important;
+}
+
+#modal .content .btns-container button.cancel {
+    background-color: #f7f7fa;
+    border: #f7f7fa;
+    color: rgba(43, 44, 67, .7);
+}
+
+#modal .content .btns-container button.submit {
+    background-color: #65b32e;
+    border-color: #65b32e;
+    color: #fff;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    #modal .content .btns-container button.submit {
+        margin: 0 0 10px;
+    }
+}
+
+#modal #modal-body .modal-message {
+    color: #5d6164;
+    font-size: 16px;
+    text-align: center;
+}
+
+#modal #modal-body .modal-message span {
+    display: block;
+    font-size: 12px;
+    margin-top: 16px;
+}
+
+#modal #modal-body .modal-input {
+    margin-bottom: 20px;
+    margin-top: 48px;
+    position: relative;
+}
+
+#modal #modal-body .modal-input:first-of-type {
+    margin-bottom: 0px;
+    margin-top: 25px;
+}
+
+#admin-restaurant form .form-input .input-group input,
+#admin-restaurant form .form-input .input-group select {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 23px;
+    box-shadow: none;
+    color: #4a5568;
+    display: block;
+    flex: 1 1 0%;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: calc(24px + 24px + 2px);
+    line-height: 1.5;
+    margin: 0px;
+    min-width: 0px;
+    overflow: visible;
+    padding: 12px 20px;
+    position: relative;
+    transition: all .2s ease;
+    width: 100%;
+}
+
+#admin-restaurant form .form-input .input-group input:focus,
+#admin-restaurant form .form-input .input-group select:focus {
+    background-color: #fff;
+    border-color: #65b32e;
+    color: #4a5568;
+    outline: none;
+}
+
+#admin-restaurant form .form-input .input-group input::placeholder {
+    margin-left: 16px;
+}
+
+#modal #modal-body .modal-input label {
+    clip: initial;
+    color: #6d6d6d;
+    display: block;
+    font-family: "Quicksand", sans-serif;
+    font-size: 12px;
+    height: 18px;
+    margin: -1px;
+    opacity: 1;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    -ms-transform: translateY(0);
+    width: auto;
+	z-index: 2;
+}
+
+/* 99. #notice */
+#notice {
+    background-color: #65b32e;
+    border: 1px solid #65b32e;
+    border-radius: 23px;
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, .05);
+    left: 50%;
+    padding: 6px 30px;
+    position: fixed;
+    top: 15px;
+    transform: translateX(-50%) translateY(0);
+    transition: all .2s ease-out;
+    z-index: 99;
+}
+
+#notice.error {
+    background-color: #b44448 !important;
+    border-color: #b44448 !important;
+}
+
+#notice.success {
+    background-color: #81B67C !important;
+    border-color: #81B67C !important;
+}
+
+#notice.warning {
+    background-color: #eb9605 !important;
+    border-color: #eb9605 !important;
+}
+
+#notice p {
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-weight: 500;
+}

@@ -1,14 +1,14 @@
-<h1 align="center">FoodOrderSystem</h1>
+<h1 align="center">Gastromio</h1>
 
 <p align="center">
-    <a href="https://github.com/marartz/FoodOrderSystem/blob/develop/LICENSE" target="_blank">
-        <img src="https://img.shields.io/github/license/marartz/FoodOrderSystem?style=flat-square" alt="FoodOrderSystem licence" />
+    <a href="https://github.com/marartz/Gastromio/blob/develop/LICENSE" target="_blank">
+        <img src="https://img.shields.io/github/license/marartz/Gastromio?style=flat-square" alt="Gastromio licence" />
     </a>
-    <a href="https://github.com/marartz/FoodOrderSystem/issues" target="_blank">
-        <img src="https://img.shields.io/github/issues/marartz/FoodOrderSystem?style=flat-square" alt="FoodOrderSystem issues" />
+    <a href="https://github.com/marartz/Gastromio/issues" target="_blank">
+        <img src="https://img.shields.io/github/issues/marartz/Gastromio?style=flat-square" alt="Gastromio issues" />
     </a>
     <a href="https://www.gastromio.de/" target="blank">
-        <img src="https://img.shields.io/website?url=https%3A%2F%2Fwww.gastromio.de%2FFoodOrderSystem&logo=github&style=flat-square" />
+        <img src="https://img.shields.io/website?url=https%3A%2F%2Fwww.gastromio.de%2FGastromio&logo=github&style=flat-square" />
     </a>
 
 </p>
