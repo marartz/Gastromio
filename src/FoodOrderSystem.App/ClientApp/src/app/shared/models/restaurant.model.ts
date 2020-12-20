@@ -1,6 +1,7 @@
 import {PaymentMethodModel} from './payment-method.model';
 import {UserModel} from './user.model';
 import {CuisineModel} from './cuisine.model';
+import {DateModel} from "./date.model";
 
 export class RestaurantModel {
 
@@ -19,11 +20,19 @@ export class RestaurantModel {
       this.contactInfo = new ContactInfoModel(this.contactInfo);
     }
 
-    if (!this.openingHours) {
-      this.openingHours = new Array<OpeningPeriodModel>();
+    if (!this.regularOpeningDays) {
+      this.regularOpeningDays = new Array<RegularOpeningDayModel>();
     } else {
-      for (let i = 0; i < this.openingHours.length; i++) {
-        this.openingHours[i] = new OpeningPeriodModel(this.openingHours[i]);
+      for (let i = 0; i < this.regularOpeningDays.length; i++) {
+        this.regularOpeningDays[i] = new RegularOpeningDayModel(this.regularOpeningDays[i]);
+      }
+    }
+
+    if (!this.deviatingOpeningDays) {
+      this.deviatingOpeningDays = new Array<DeviatingOpeningDayModel>();
+    } else {
+      for (let i = 0; i < this.deviatingOpeningDays.length; i++) {
+        this.deviatingOpeningDays[i] = new DeviatingOpeningDayModel(this.deviatingOpeningDays[i]);
       }
     }
 
@@ -69,7 +78,9 @@ export class RestaurantModel {
 
   public imageTypes: string[];
 
-  public openingHours: OpeningPeriodModel[];
+  public regularOpeningDays: Array<RegularOpeningDayModel>;
+
+  public deviatingOpeningDays: Array<DeviatingOpeningDayModel>;
 
   public openingHoursText: string;
 
@@ -100,21 +111,27 @@ export class RestaurantModel {
   public externalMenus: ExternalMenu[];
 
   public isOpen(dateTime: Date): boolean {
-    if (!this.openingHours) {
-      return false;
-    }
-
-    if (dateTime === undefined)
+    if (dateTime === undefined || dateTime < new Date())
       dateTime = new Date();
+    return this.findOpeningPeriod(dateTime) !== undefined;
+  }
 
-    return this.findOpeningPeriodIndex(dateTime) > -1;
+  public getRestaurantClosedReason(dateTime: Date): string {
+    if (dateTime === undefined || dateTime < new Date())
+      dateTime = new Date();
+    const date = new DateModel(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate());
+    const deviatingOpeningDay = this.deviatingOpeningDays?.find(en => DateModel.isEqual(en.date, date));
+    if (!deviatingOpeningDay)
+      return "geschlossen";
+
+    if (deviatingOpeningDay.status === "fully-booked") {
+      return "ausgebucht";
+    } else {
+      return "geschlossen";
+    }
   }
 
   public isOrderPossibleAt(orderDateTime: Date): boolean {
-    if (!this.openingHours) {
-      return false;
-    }
-
     const now = new Date();
 
     if (orderDateTime === undefined || orderDateTime < now)
@@ -129,24 +146,28 @@ export class RestaurantModel {
       return false;
     }
 
-    let indexOrder = this.findOpeningPeriodIndex(orderDateTime);
-    if (indexOrder < 0) {
+    const openingPeriodOfOrderDateTime = this.findOpeningPeriod(orderDateTime);
+    if (openingPeriodOfOrderDateTime === undefined) {
       return false;
     }
 
-    if (this.supportedOrderMode === 'shift') {
-      if (orderDate > today) {
-        return true;
-      }
-
-      let indexNow = this.findOpeningPeriodIndex(now);
-      return indexNow < 0 || indexOrder > indexNow;
+    if (this.supportedOrderMode !== 'shift') {
+      return true;
     }
 
-    return true;
+    if (orderDate > today) {
+      return true;
+    }
+
+    const openingPeriodOfNow = this.findOpeningPeriod(now);
+    if (openingPeriodOfNow === undefined) {
+      return true;
+    }
+
+    return openingPeriodOfNow !== openingPeriodOfOrderDateTime;
   }
 
-  private findOpeningPeriodIndex(dateTime: Date): number {
+  private findOpeningPeriod(dateTime: Date): OpeningPeriodModel {
     let dayOfWeek = (dateTime.getDay() - 1) % 7; // DayOfWeek starts with Sunday
     if (dayOfWeek < 0) {
       dayOfWeek += 7;
@@ -160,8 +181,24 @@ export class RestaurantModel {
       time += 24 * 60;
     }
 
-    return this.openingHours.findIndex(en => en.dayOfWeek === dayOfWeek && en.start <= time && time <= en.end);
+    if (this.deviatingOpeningDays) {
+      const date = new DateModel(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate());
+      const deviatingOpeningDay = this.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+      if (deviatingOpeningDay) {
+        return deviatingOpeningDay?.openingPeriods.find(en => en.start <= time && time <= en.end);
+      }
+    }
+
+    if (this.regularOpeningDays) {
+      const regularOpeningDay = this.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
+      if (regularOpeningDay) {
+        return regularOpeningDay?.openingPeriods.find(en => en.start <= time && time <= en.end);
+      }
+    }
+
+    return undefined;
   }
+
 }
 
 export class AddressModel {
@@ -203,11 +240,35 @@ export class OpeningPeriodModel {
     }
   }
 
+  start: number;
+
+  end: number;
+}
+
+export class RegularOpeningDayModel {
+  constructor(init?: Partial<RegularOpeningDayModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
   public dayOfWeek: number;
 
-  public start: number;
+  public openingPeriods: Array<OpeningPeriodModel>;
+}
 
-  public end: number;
+export class DeviatingOpeningDayModel {
+  constructor(init?: Partial<DeviatingOpeningDayModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
+  public date: DateModel;
+
+  public status: string;
+
+  public openingPeriods: Array<OpeningPeriodModel>;
 }
 
 export class PickupInfoModel {

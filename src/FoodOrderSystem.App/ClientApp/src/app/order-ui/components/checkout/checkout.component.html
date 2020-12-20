@@ -19,7 +19,7 @@
 
                         <ng-container *ngIf="!restaurant.isOpen(undefined)">
                             <h4 class="subtitle">
-                                <span>{{restaurant.name}} hat im Moment geschlossen.</span>
+                                <span>{{restaurant.name}} ist im Moment {{restaurant.getRestaurantClosedReason(undefined)}}.</span>
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'">
                                     <span> Bitte rufe das Restaurant zur nächsten Öffnungzeit an.</span>
                                 </ng-container>
@@ -28,7 +28,7 @@
                                     <span *ngIf="getCart().isDelivery()"> Wann möchtest Du dein Essen erhalten?</span>
                                 </ng-container>
                                 <br /><br />
-                                <span>{{restaurant.name}} hat von {{restaurant.openingHoursText}} für dich geöffnet.</span>
+                                <span>{{restaurant.name}} hat für Dich geöffnet: {{restaurant.openingHoursText}}.</span>
                             </h4>
 
                             <button *ngIf="restaurant.supportedOrderMode !== 'phone'" type="button" class="pill" [class.active]="serviceTime" (click)="onSelectServiceTime()">
@@ -51,7 +51,7 @@
                                     <span *ngIf="restaurant.supportedOrderMode === 'shift'">In der aktuellen Öffnungszeit nimmt {{restaurant.name}} keine elektronischen Bestellungen entgegen.</span>
                                 </ng-container>
                                 <br /><br />
-                                <span>{{restaurant.name}} hat von {{restaurant.openingHoursText}} für dich geöffnet.</span>
+                                <span>{{restaurant.name}} hat für Dich geöffnet: {{restaurant.openingHoursText}}.</span>
                             </h4>
 
                             <button type="button" class="pill" [class.active]="!serviceTime" (click)="onAsFastAsPossible()" style="background-color: #FFF !important;">

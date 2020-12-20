@@ -13,7 +13,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             string name,
             Address address,
             ContactInfo contactInfo,
-            IList<OpeningPeriod> openingHours,
+            IEnumerable<RegularOpeningDay> regularOpeningDays,
+            IEnumerable<DeviatingOpeningDay> deviatingOpeningDays,
             PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo,
             ReservationInfo reservationInfo,
@@ -44,13 +45,32 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             if (tempResult.IsFailure)
                 return tempResult.Cast<Restaurant>();
 
-            if (openingHours != null)
+            if (regularOpeningDays != null)
             {
-                foreach (var openingPeriod in openingHours)
+                foreach (var openingDay in regularOpeningDays)
                 {
-                    tempResult = restaurant.AddOpeningPeriod(openingPeriod, createdBy);
+                    foreach (var openingPeriod in openingDay.OpeningPeriods)
+                    {
+                        tempResult = restaurant.AddRegularOpeningPeriod(openingDay.DayOfWeek, openingPeriod, createdBy);
+                        if (tempResult.IsFailure)
+                            return tempResult.Cast<Restaurant>();
+                    }
+                }
+            }
+
+            if (deviatingOpeningDays != null)
+            {
+                foreach (var openingDay in deviatingOpeningDays)
+                {
+                    tempResult = restaurant.AddDeviatingOpeningDay(openingDay.Date, openingDay.Status, createdBy);
                     if (tempResult.IsFailure)
                         return tempResult.Cast<Restaurant>();
+                    foreach (var openingPeriod in openingDay.OpeningPeriods)
+                    {
+                        tempResult = restaurant.AddDeviatingOpeningPeriod(openingDay.Date, openingPeriod, createdBy);
+                        if (tempResult.IsFailure)
+                            return tempResult.Cast<Restaurant>();
+                    }
                 }
             }
 

@@ -6,18 +6,18 @@ using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Restaurant;
 using FoodOrderSystem.Core.Domain.Model.User;
 
-namespace FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant
 {
-    public class ChangeOpeningPeriodOfRestaurantCommandHandler : ICommandHandler<ChangeOpeningPeriodOfRestaurantCommand, bool>
+    public class ChangeRegularOpeningPeriodOfRestaurantCommandHandler : ICommandHandler<ChangeRegularOpeningPeriodOfRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public ChangeOpeningPeriodOfRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public ChangeRegularOpeningPeriodOfRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeOpeningPeriodOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(ChangeRegularOpeningPeriodOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -35,13 +35,13 @@ namespace FoodOrderSystem.Core.Application.Commands.ChangeOpeningPeriodOfRestaur
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.RemoveOpeningPeriod(command.DayOfWeek, command.OldStart, currentUser.Id);
+            var result = restaurant.RemoveRegularOpeningPeriod(command.DayOfWeek, command.OldStart, currentUser.Id);
             if (result.IsFailure)
                 return result;
 
-            var openingPeriod = new OpeningPeriod(command.DayOfWeek, command.NewStart, command.NewEnd);
+            var openingPeriod = new OpeningPeriod(command.NewStart, command.NewEnd);
             
-            result = restaurant.AddOpeningPeriod(openingPeriod, currentUser.Id);
+            result = restaurant.AddRegularOpeningPeriod(command.DayOfWeek, openingPeriod, currentUser.Id);
             if (result.IsFailure)
                 return result;
 

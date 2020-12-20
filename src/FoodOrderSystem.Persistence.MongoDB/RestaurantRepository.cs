@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FoodOrderSystem.Core.Application.Ports.Persistence;
+using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.Cuisine;
 using FoodOrderSystem.Core.Domain.Model.Order;
 using FoodOrderSystem.Core.Domain.Model.PaymentMethod;
@@ -183,7 +184,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
             var collection = GetCollection();
 
             var filter = Builders<RestaurantModel>.Filter.Where(en => en.Name.ToLower() == restaurantName.ToLower())
-                         | Builders<RestaurantModel>.Filter.Where(en => en.Alias != null && en.Alias.ToLower() == restaurantName.ToLower());
+                         | Builders<RestaurantModel>.Filter.Where(en =>
+                             en.Alias != null && en.Alias.ToLower() == restaurantName.ToLower());
 
             var cursor = await collection.FindAsync(filter, cancellationToken: cancellationToken);
             return cursor.ToEnumerable().Select(FromDocument);
@@ -323,15 +325,44 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
             logger.LogDebug($"Filter: DayOfWeek = {filterDayOfWeek}, FilterMinutes = {filterMinutes}");
 
-            var openingPeriodModelFilter = Builders<OpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
-                                           Builders<OpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
-                                           Builders<OpeningPeriodModel>.Filter.Gte(m => m.EndTime, filterMinutes);
+            var openingPeriodModelFilter =
+                Builders<RegularOpeningPeriodModel>.Filter.Eq(m => m.DayOfWeek, filterDayOfWeek) &
+                Builders<RegularOpeningPeriodModel>.Filter.Lte(m => m.StartTime, filterMinutes) &
+                Builders<RegularOpeningPeriodModel>.Filter.Gte(m => m.EndTime, filterMinutes);
 
             return Builders<RestaurantModel>.Filter.ElemMatch(m => m.OpeningHours, openingPeriodModelFilter);
         }
 
         private static Restaurant FromDocument(RestaurantModel document)
         {
+            var regularOpeningDays = document.OpeningHours?
+                .GroupBy(en => en.DayOfWeek)
+                .Select(group => new RegularOpeningDay(
+                        group.Key,
+                        group.Select(openingPeriodModel => new OpeningPeriod(
+                                TimeSpan.FromMinutes(openingPeriodModel.StartTime),
+                                TimeSpan.FromMinutes(openingPeriodModel.EndTime)
+                            )
+                        )
+                    )
+                ) ?? Enumerable.Empty<RegularOpeningDay>();
+
+            var deviatingOpeningDays = document.DeviatingOpeningHours?
+                .Select(deviatingOpeningDayModel => new DeviatingOpeningDay(
+                        new Date(
+                            deviatingOpeningDayModel.Date.Year,
+                            deviatingOpeningDayModel.Date.Month,
+                            deviatingOpeningDayModel.Date.Day
+                        ),
+                        FromDbDeviatingOpeningDayStatus(deviatingOpeningDayModel.Status),
+                        deviatingOpeningDayModel.OpeningPeriods.Select(openingPeriodModel => new OpeningPeriod(
+                                TimeSpan.FromMinutes(openingPeriodModel.StartTime),
+                                TimeSpan.FromMinutes(openingPeriodModel.EndTime)
+                            )
+                        )
+                    )
+                ) ?? Enumerable.Empty<DeviatingOpeningDay>();
+
             return new Restaurant(
                 new RestaurantId(document.Id),
                 document.Name,
@@ -352,10 +383,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         document.ContactInfo.EmailAddress
                     )
                     : null,
-                document.OpeningHours?.Select(en => new OpeningPeriod(
-                    en.DayOfWeek,
-                    TimeSpan.FromMinutes(en.StartTime),
-                    TimeSpan.FromMinutes(en.EndTime))).ToList(),
+                regularOpeningDays,
+                deviatingOpeningDays,
                 document.PickupInfo != null
                     ? new PickupInfo(
                         document.PickupInfo.Enabled,
@@ -399,6 +428,40 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
         private static RestaurantModel ToDocument(Restaurant obj)
         {
+            var openingHours = obj.RegularOpeningDays?
+                .SelectMany(keyValuePair => keyValuePair.Value.OpeningPeriods
+                    .Select(en =>
+                        new RegularOpeningPeriodModel
+                        {
+                            DayOfWeek = keyValuePair.Key,
+                            StartTime = (int) en.Start.TotalMinutes,
+                            EndTime = (int) en.End.TotalMinutes
+                        }
+                    )
+                )
+                .ToList() ?? new List<RegularOpeningPeriodModel>();
+
+            var deviatingOpeningHours = obj.DeviatingOpeningDays?
+                .Select(keyValuePair => new DeviatingOpeningDayModel
+                    {
+                        Date = new DateModel
+                        {
+                            Year = keyValuePair.Key.Year,
+                            Month = keyValuePair.Key.Month,
+                            Day = keyValuePair.Key.Day
+                        },
+                        Status = ToDbDeviatingOpeningDayStatus(keyValuePair.Value.Status),
+                        OpeningPeriods = keyValuePair.Value.OpeningPeriods
+                            .Select(en => new DeviatingOpeningPeriodModel
+                                {
+                                    StartTime = (int) en.Start.TotalMinutes,
+                                    EndTime = (int) en.End.TotalMinutes
+                                }
+                            ).ToList()
+                    }
+                )
+                .ToList() ?? new List<DeviatingOpeningDayModel>();
+
             return new RestaurantModel
             {
                 Id = obj.Id.Value,
@@ -421,12 +484,8 @@ namespace FoodOrderSystem.Persistence.MongoDB
                         EmailAddress = obj.ContactInfo.EmailAddress
                     }
                     : null,
-                OpeningHours = obj.OpeningHours?.Select(en => new OpeningPeriodModel
-                {
-                    DayOfWeek = en.DayOfWeek,
-                    StartTime = (int) en.Start.TotalMinutes,
-                    EndTime = (int) en.End.TotalMinutes
-                }).ToList(),
+                OpeningHours = openingHours,
+                DeviatingOpeningHours = deviatingOpeningHours,
                 PickupInfo = obj.PickupInfo != null
                     ? new PickupInfoModel
                     {
@@ -521,7 +580,7 @@ namespace FoodOrderSystem.Persistence.MongoDB
                 return null;
 
             name = name.ToLowerInvariant();
-            
+
             var sb = new StringBuilder();
 
             for (var pos = 0; pos < name.Length; pos++)
@@ -538,5 +597,40 @@ namespace FoodOrderSystem.Persistence.MongoDB
 
             return sb.ToString();
         }
-    }
+        
+        private static string ToDbDeviatingOpeningDayStatus(DeviatingOpeningDayStatus deviatingOpeningDayStatus)
+        {
+            switch (deviatingOpeningDayStatus)
+            {
+                case DeviatingOpeningDayStatus.Open:
+                    return "open";
+                case DeviatingOpeningDayStatus.Closed:
+                    return "closed";
+                case DeviatingOpeningDayStatus.FullyBooked:
+                    return "fully-booked";
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {deviatingOpeningDayStatus}");
+            }
+        }
+
+        private static DeviatingOpeningDayStatus FromDbDeviatingOpeningDayStatus(string deviatingOpeningDayStatus)
+        {
+            if (string.IsNullOrWhiteSpace(deviatingOpeningDayStatus))
+            {
+                return DeviatingOpeningDayStatus.Open;
+            }
+
+            switch (deviatingOpeningDayStatus)
+            {
+                case "open":
+                    return DeviatingOpeningDayStatus.Open;
+                case "closed":
+                    return DeviatingOpeningDayStatus.Closed;
+                case "fully-booked":
+                    return DeviatingOpeningDayStatus.FullyBooked;
+                default:
+                    throw new InvalidOperationException($"unknown supported order mode: {deviatingOpeningDayStatus}");
+            }
+        }
+   }
 }

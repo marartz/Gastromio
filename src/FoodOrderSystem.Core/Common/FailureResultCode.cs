@@ -41,6 +41,8 @@
         RestaurantOpeningPeriodBeginsTooEarly,
         RestaurantOpeningPeriodEndsBeforeStart,
         RestaurantOpeningPeriodIntersects,
+        RestaurantDeviatingOpeningDayDoesNotExist,
+        RestaurantDeviatingOpeningDayHasStillOpenPeriods,
         RestaurantDoesNotExist,
         RestaurantNotActive,
         DishCategoryDoesNotBelongToRestaurant,
@@ -61,6 +63,6 @@
         ExternalMenuDoesNotExist,
         ExternalMenuHasNoName,
         ExternalMenuHasNoDescription,
-        ExternalMenuHasNoUrl
+        ExternalMenuHasNoUrl,
     }
 }

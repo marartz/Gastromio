@@ -12,7 +12,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 {
     public class Restaurant
     {
-        private IList<OpeningPeriod> openingHours;
+        private IDictionary<int, RegularOpeningDay> regularOpeningDays;
+        private IDictionary<Date, DeviatingOpeningDay> deviatingOpeningDays;
         private ISet<CuisineId> cuisines;
         private ISet<PaymentMethodId> paymentMethods;
         private ISet<UserId> administrators;
@@ -33,7 +34,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             UpdatedBy = updatedBy;
             Address = new Address(null, null, null);
             ContactInfo = new ContactInfo(null, null, null, null, null);
-            openingHours = new List<OpeningPeriod>();
+            regularOpeningDays = new Dictionary<int, RegularOpeningDay>();
+            deviatingOpeningDays = new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = new PickupInfo(false, 0, null, null);
             DeliveryInfo = new DeliveryInfo(false, 0, null, null, null);
             ReservationInfo = new ReservationInfo(false);
@@ -49,7 +51,8 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             string alias,
             Address address,
             ContactInfo contactInfo,
-            IList<OpeningPeriod> openingHours,
+            IEnumerable<RegularOpeningDay> regularOpeningDays,
+            IEnumerable<DeviatingOpeningDay> deviatingOpeningDays,
             PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo,
             ReservationInfo reservationInfo,
@@ -73,7 +76,10 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             Alias = alias;
             Address = address ?? new Address(null, null, null);
             ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
-            this.openingHours = openingHours ?? new List<OpeningPeriod>();
+            this.regularOpeningDays = regularOpeningDays?.ToDictionary(en => en.DayOfWeek, en => en) ??
+                                      new Dictionary<int, RegularOpeningDay>();
+            this.deviatingOpeningDays = deviatingOpeningDays?.ToDictionary(en => en.Date, en => en) ??
+                                        new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = pickupInfo ?? new PickupInfo(false, 0, null, null);
             DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, 0, null, null, null);
             ReservationInfo = reservationInfo ?? new ReservationInfo(false);
@@ -96,15 +102,18 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         public RestaurantId Id { get; }
 
         public string Name { get; private set; }
-        
+
         public string Alias { get; }
 
         public Address Address { get; private set; }
 
         public ContactInfo ContactInfo { get; private set; }
 
-        public IReadOnlyCollection<OpeningPeriod> OpeningHours =>
-            openingHours != null ? new ReadOnlyCollection<OpeningPeriod>(openingHours) : null;
+        public IReadOnlyDictionary<int, RegularOpeningDay> RegularOpeningDays =>
+            new ReadOnlyDictionary<int, RegularOpeningDay>(regularOpeningDays);
+
+        public IReadOnlyDictionary<Date, DeviatingOpeningDay> DeviatingOpeningDays =>
+            new ReadOnlyDictionary<Date, DeviatingOpeningDay>(deviatingOpeningDays);
 
         public PickupInfo PickupInfo { get; private set; }
 
@@ -222,94 +231,161 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
 
             return SuccessResult<bool>.Create(true);
         }
-
+        
         public bool IsOpen(DateTime dateTime)
         {
-            if (openingHours == null)
-            {
-                return false;
-            }
-
-            return FindOpeningPeriodIndex(dateTime) > -1;
+            return FindOpeningPeriod(dateTime) != null;
         }
 
-        public Result<bool> AddOpeningPeriod(OpeningPeriod openingPeriod, UserId changedBy)
+        public Result<bool> AddRegularOpeningPeriod(int dayOfWeek, OpeningPeriod openingPeriod, UserId changedBy)
         {
-            const double earliestOpeningTime = 4d;
-
-            if (openingPeriod.End.TotalHours < earliestOpeningTime)
+            if (!regularOpeningDays.TryGetValue(dayOfWeek, out var openingDay))
             {
-                openingPeriod = new OpeningPeriod(openingPeriod.DayOfWeek, openingPeriod.Start,
-                    TimeSpan.FromHours(openingPeriod.End.TotalHours + 24d));
+                openingDay = new RegularOpeningDay(dayOfWeek, new []{openingPeriod});
+                regularOpeningDays.Add(dayOfWeek, openingDay);
+            }
+            else
+            {
+                var result = openingDay.AddPeriod(openingPeriod);
+                if (result.IsFailure)
+                    return result.Cast<bool>();
+                regularOpeningDays[dayOfWeek] = new RegularOpeningDay(dayOfWeek, result.Value);
             }
 
-            if (openingHours.Any(en =>
-                en.DayOfWeek == openingPeriod.DayOfWeek && en.Start == openingPeriod.Start &&
-                en.End == openingPeriod.End))
-            {
-                return SuccessResult<bool>.Create(true);
-            }
-
-            if (openingPeriod.Start.TotalHours < earliestOpeningTime)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodBeginsTooEarly);
-            if (!(openingPeriod.End.TotalHours > openingPeriod.Start.TotalHours))
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodEndsBeforeStart);
-
-            var anyOverlapping = openingHours?
-                .Where(p => p.DayOfWeek == openingPeriod.DayOfWeek)
-                .Any(period => PeriodsOverlapping(openingPeriod, period));
-
-            if (anyOverlapping == true)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantOpeningPeriodIntersects);
-
-            if (openingHours == null)
-            {
-                openingHours = new List<OpeningPeriod>();
-            }
-
-            openingHours.Add(openingPeriod);
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
-
-            bool PeriodsOverlapping(OpeningPeriod x, OpeningPeriod y)
-            {
-                if (x.Start.TotalHours <= y.End.TotalHours && y.Start.TotalHours <= x.End.TotalHours)
-                    return true;
-                return false;
-            }
         }
 
-        public Result<bool> RemoveAllOpeningPeriods(UserId changedBy)
+        public Result<bool> RemoveRegularOpeningPeriod(int dayOfWeek, TimeSpan start, UserId changedBy)
         {
-            openingHours = new List<OpeningPeriod>();
-            UpdatedOn = DateTime.UtcNow;
-            UpdatedBy = changedBy;
-            return SuccessResult<bool>.Create(true);
-        }
-
-        public Result<bool> RemoveOpeningPeriod(int dayOfWeek, TimeSpan start, UserId changedBy)
-        {
-            if (openingHours == null)
+            if (!regularOpeningDays.TryGetValue(dayOfWeek, out var openingDay) || openingDay == null)
             {
                 return SuccessResult<bool>.Create(true);
             }
 
-            openingHours = openingHours.Where(en => en.DayOfWeek != dayOfWeek || en.Start != start).ToList();
+            var changedOpeningPeriods = openingDay.RemovePeriod(start).ToList();
+            if (changedOpeningPeriods.Count > 0)
+            {
+                regularOpeningDays[dayOfWeek] = new RegularOpeningDay(dayOfWeek, changedOpeningPeriods);
+            }
+            else
+            {
+                regularOpeningDays.Remove(dayOfWeek);
+            }
+
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> AddDeviatingOpeningDay(Date date, DeviatingOpeningDayStatus status, UserId changedBy)
+        {
+            if (!deviatingOpeningDays.TryGetValue(date, out var openingDay))
+            {
+                openingDay = new DeviatingOpeningDay(date, status, Enumerable.Empty<OpeningPeriod>());
+                deviatingOpeningDays.Add(date, openingDay);
+            }
+
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeDeviatingOpeningDayStatus(Date date, DeviatingOpeningDayStatus status, UserId changedBy)
+        {
+            if (!deviatingOpeningDays.TryGetValue(date, out var openingDay))
+            {
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDeviatingOpeningDayDoesNotExist);
+            }
+
+            if (openingDay.OpeningPeriods?.Count > 0)
+            {
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDeviatingOpeningDayHasStillOpenPeriods);
+            }
+
+            deviatingOpeningDays[date] = new DeviatingOpeningDay(
+                date,
+                status,
+                openingDay.OpeningPeriods
+            );
+
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RemoveDeviatingOpeningDay(Date date, UserId changedBy)
+        {
+            if (!deviatingOpeningDays.ContainsKey(date))
+            {
+                return SuccessResult<bool>.Create(true);
+            }
+
+            deviatingOpeningDays.Remove(date);
+
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> AddDeviatingOpeningPeriod(Date date, OpeningPeriod openingPeriod, UserId changedBy)
+        {
+            if (!deviatingOpeningDays.TryGetValue(date, out var openingDay))
+            {
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantDeviatingOpeningDayDoesNotExist);
+            }
+
+            var result = openingDay.AddPeriod(openingPeriod);
+            if (result.IsFailure)
+                return result.Cast<bool>();
+            deviatingOpeningDays[date] = new DeviatingOpeningDay(date, DeviatingOpeningDayStatus.Open, result.Value);
+
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RemoveDeviatingOpeningPeriod(Date date, TimeSpan start, UserId changedBy)
+        {
+            if (!deviatingOpeningDays.TryGetValue(date, out var openingDay))
+            {
+                return SuccessResult<bool>.Create(true);
+            }
+
+            var changedOpeningPeriods = openingDay.RemovePeriod(start).ToList();
+            if (changedOpeningPeriods.Count > 0)
+            {
+                deviatingOpeningDays[date] = new DeviatingOpeningDay(date, DeviatingOpeningDayStatus.Open, changedOpeningPeriods);
+            }
+            else
+            {
+                deviatingOpeningDays[date] = new DeviatingOpeningDay(date, DeviatingOpeningDayStatus.Closed, changedOpeningPeriods);
+            }
+
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RemoveAllOpeningDays(UserId changedBy)
+        {
+            regularOpeningDays = new Dictionary<int, RegularOpeningDay>();
+            deviatingOpeningDays = new Dictionary<Date, DeviatingOpeningDay>();
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
         public bool IsOrderPossibleAt(DateTime orderDateTime)
         {
-            if (openingHours == null)
-            {
-                return false;
-            }
-
             if (orderDateTime < DateTime.Now)
             {
                 orderDateTime = DateTime.Now;
@@ -320,24 +396,31 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 return false;
             }
 
-            var indexOrder = FindOpeningPeriodIndex(orderDateTime);
-            if (indexOrder < 0)
+            var openingPeriodOfOrderDateTime = FindOpeningPeriod(orderDateTime);
+            if (openingPeriodOfOrderDateTime == null)
             {
                 return false;
             }
 
-            if (SupportedOrderMode == SupportedOrderMode.AtNextShift)
+            if (SupportedOrderMode != SupportedOrderMode.AtNextShift)
             {
-                if (orderDateTime.Date > DateTime.Today)
-                {
-                    return true;
-                }
-
-                var indexNow = FindOpeningPeriodIndex(DateTime.Now);
-                return indexNow < 0 || indexOrder > indexNow;
+                return true;
+            }
+            
+            if (orderDateTime.Date > DateTime.Today)
+            {
+                return true;
             }
 
-            return true;
+            var openingPeriodOfNow = FindOpeningPeriod(DateTime.Now);
+
+            var restaurantIsCurrentlyNotOpen = openingPeriodOfNow == null;
+            if (restaurantIsCurrentlyNotOpen)
+            {
+                return true;
+            }
+            
+            return openingPeriodOfNow != openingPeriodOfOrderDateTime;
         }
 
         public Result<bool> ChangePickupInfo(PickupInfo pickupInfo, UserId changedBy)
@@ -455,7 +538,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
         {
             if (paymentMethodId == PaymentMethodId.Cash)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantWithoutCashPaymentNotAllowed);
-            
+
             if (paymentMethods == null || !paymentMethods.Contains(paymentMethodId))
                 return SuccessResult<bool>.Create(true);
             paymentMethods.Remove(paymentMethodId);
@@ -565,6 +648,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             {
                 externalMenus[menu.Id] = menu;
             }
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -578,7 +662,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        private int FindOpeningPeriodIndex(DateTime dateTime)
+        private (int DayOfWeek, TimeSpan Time) GetDayOfWeekAndTimeInfoFromDateTime(DateTime dateTime)
         {
             var dayOfWeek = ((int) dateTime.DayOfWeek - 1) % 7;
             if (dayOfWeek < 0)
@@ -587,7 +671,7 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
             }
 
             var time = dateTime.Hour * 60 + dateTime.Minute;
-            if (dateTime.Hour < 4)
+            if (dateTime.Hour < OpeningPeriod.EarliestOpeningTime)
             {
                 dayOfWeek = (dayOfWeek - 1) % 7;
                 if (dayOfWeek < 0)
@@ -598,10 +682,27 @@ namespace FoodOrderSystem.Core.Domain.Model.Restaurant
                 time += 24 * 60;
             }
 
-            var openingHoursList = openingHours.ToList();
-
-            return openingHoursList.FindIndex(en =>
-                en.DayOfWeek == dayOfWeek && en.Start.TotalMinutes <= time && time <= en.End.TotalMinutes);
+            return (dayOfWeek, TimeSpan.FromMinutes(time));
         }
-    }
+
+        private OpeningPeriod FindOpeningPeriod(DateTime dateTime)
+        {
+            var (dayOfWeek, time) = GetDayOfWeekAndTimeInfoFromDateTime(dateTime);
+
+            var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
+            if (deviatingOpeningDays != null &&
+                deviatingOpeningDays.TryGetValue(date, out var deviatingOpeningDay))
+            {
+                return deviatingOpeningDay.FindPeriodAtTime(time);
+            }
+
+            if (regularOpeningDays != null &&
+                regularOpeningDays.TryGetValue(dayOfWeek, out var regularOpeningDay))
+            {
+                return regularOpeningDay.FindPeriodAtTime(time);
+            }
+
+            return null;
+        }
+   }
 }

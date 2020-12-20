@@ -5,18 +5,18 @@ using FoodOrderSystem.Core.Application.Ports.Persistence;
 using FoodOrderSystem.Core.Common;
 using FoodOrderSystem.Core.Domain.Model.User;
 
-namespace FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromRestaurant
+namespace FoodOrderSystem.Core.Application.Commands.RemoveRegularOpeningPeriodFromRestaurant
 {
-    public class RemoveOpeningPeriodFromRestaurantCommandHandler : ICommandHandler<RemoveOpeningPeriodFromRestaurantCommand, bool>
+    public class RemoveRegularOpeningPeriodFromRestaurantCommandHandler : ICommandHandler<RemoveRegularOpeningPeriodFromRestaurantCommand, bool>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
-        public RemoveOpeningPeriodFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
+        public RemoveRegularOpeningPeriodFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveOpeningPeriodFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> HandleAsync(RemoveRegularOpeningPeriodFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -34,7 +34,7 @@ namespace FoodOrderSystem.Core.Application.Commands.RemoveOpeningPeriodFromResta
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            restaurant.RemoveOpeningPeriod(command.DayOfWeek, command.Start, currentUser.Id);
+            restaurant.RemoveRegularOpeningPeriod(command.DayOfWeek, command.Start, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

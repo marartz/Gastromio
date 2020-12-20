@@ -15,7 +15,9 @@ namespace FoodOrderSystem.Persistence.MongoDB
         
         public ContactInfoModel ContactInfo { get; set; }
 
-        public List<OpeningPeriodModel> OpeningHours { get; set; }
+        public List<RegularOpeningPeriodModel> OpeningHours { get; set; }
+
+        public List<DeviatingOpeningDayModel> DeviatingOpeningHours { get; set; }
 
         public PickupInfoModel PickupInfo { get; set; }
         

@@ -56,8 +56,29 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     this.externalMenuForm.valueChanges
       .pipe(debounceTime(1000))
       .subscribe(value => {
+        const nameControl = this.externalMenuForm.get('name');
+        const descriptionControl = this.externalMenuForm.get('description');
+        const urlControl = this.externalMenuForm.get('url');
+
+        if (this.externalMenuForm.value.enabled) {
+          nameControl.setValidators([Validators.required]);
+          nameControl.updateValueAndValidity();
+          descriptionControl.setValidators([Validators.required]);
+          descriptionControl.updateValueAndValidity();
+          urlControl.setValidators([Validators.required, Validators.pattern(/^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/)]);
+          urlControl.updateValueAndValidity();
+        } else {
+          nameControl.setValidators(null);
+          nameControl.updateValueAndValidity();
+          descriptionControl.setValidators(null);
+          descriptionControl.updateValueAndValidity();
+          urlControl.setValidators(null);
+          urlControl.updateValueAndValidity();
+        }
+
         if (this.externalMenuForm.dirty && this.externalMenuForm.valid) {
           if (this.externalMenuForm.value.enabled) {
+
             this.facade.addOrChangeExternalMenu(
               this.externalMenuId,
               value.name,
@@ -111,6 +132,9 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     this.dishCategoriesSubscription?.unsubscribe();
   }
 
+  get emf() {
+    return this.externalMenuForm.controls;
+  }
 
   public isFirstDishCategory(dishCategory: DishCategoryModel): boolean {
     const pos = this.dishCategories.findIndex(en => en.id === dishCategory.id);

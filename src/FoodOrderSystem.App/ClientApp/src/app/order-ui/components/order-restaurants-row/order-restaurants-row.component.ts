@@ -51,4 +51,26 @@ export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
     const date = this.selectedOpeningHourFilter ?? new Date();
     return restaurant.isOpen(date);
   }
+
+  getRestaurantClosedText(restaurant: RestaurantModel): string {
+    const now = new Date();
+
+    if (!this.selectedOpeningHourFilter) {
+      return "Im Moment " + restaurant.getRestaurantClosedReason(now);
+    } else {
+      const nowDay = now.getDate();
+      const nowMonth = now.getMonth() + 1;
+      const day = this.selectedOpeningHourFilter.getDate();
+      const month = this.selectedOpeningHourFilter.getMonth() + 1;
+      const hour = this.selectedOpeningHourFilter.getHours();
+      const minute = this.selectedOpeningHourFilter.getMinutes();
+
+      if (day !== nowDay || month !== nowMonth) {
+        return "Am " + day + "." + month + ". " + hour + ":" + minute + " Uhr " + restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter);
+      } else {
+        return "Um " + hour + ":" + minute + " Uhr " + restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter);
+      }
+    }
+  }
+
 }

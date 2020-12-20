@@ -207,7 +207,7 @@ namespace FoodOrderSystem.Template.DotLiquid
             sb.Append("</p>");
 
             sb.Append("<p>");
-            sb.Append("Wir haben über Gastromio die Aufforderung erhalten, Dein Passwort zurückzusetzen!");
+            sb.Append("wir haben über Gastromio die Aufforderung erhalten, Dein Passwort zurückzusetzen!");
             sb.Append("<br/>");
             sb.Append("Wenn das ein Versehen war oder nicht von Dir veranlasst worden ist, kannst Du diese E-Mail einfach ignorieren. Dein Passwort wurde nicht geändert!");
             sb.Append("</p>");
