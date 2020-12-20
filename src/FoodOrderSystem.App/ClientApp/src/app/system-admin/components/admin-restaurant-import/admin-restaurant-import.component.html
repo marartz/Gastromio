@@ -48,7 +48,7 @@
                                         <form>
                                             <div class="form-input">
                                                 <div class="input-group">
-                                                    <input type="file" id="import-file" mozactionhint="send"
+                                                    <input #fileInput type="file" id="import-file" mozactionhint="send"
                                                            autocomplete="off" capture="" class="file-input"
                                                            (change)="handleRestaurantImportFileInput($event.target)">
                                                     <label class="file-upload" for="import-file">

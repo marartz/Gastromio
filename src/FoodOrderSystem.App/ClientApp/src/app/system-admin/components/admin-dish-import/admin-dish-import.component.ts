@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 
 import {take} from 'rxjs/operators';
@@ -18,6 +18,7 @@ import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.ser
 })
 export class AdminDishImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
+  @ViewChild('fileInput') fileInputVariable: ElementRef;
 
   error: string;
 
@@ -40,6 +41,11 @@ export class AdminDishImportComponent implements OnInit {
   }
 
   onSimulateDishes(): void {
+    if (!this.dishImportFile) {
+      this.error = "Bitte wähle erst eine Importdatei aus.";
+      return;
+    }
+
     this.error = undefined;
     this.logLines = undefined;
 
@@ -50,14 +56,23 @@ export class AdminDishImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
+        this.dishImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
+        this.dishImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       });
   }
 
   onImportDishes(): void {
+    if (!this.dishImportFile) {
+      this.error = "Bitte wähle erst eine Importdatei aus.";
+      return;
+    }
+
     this.error = undefined;
     this.logLines = undefined;
 
@@ -68,10 +83,14 @@ export class AdminDishImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
+        this.dishImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
+        this.dishImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       });
   }
 

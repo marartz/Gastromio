@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 
 import {take} from 'rxjs/operators';
@@ -18,6 +18,7 @@ import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.ser
 })
 export class AdminRestaurantImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
+  @ViewChild('fileInput') fileInputVariable: ElementRef;
 
   error: string;
 
@@ -40,6 +41,11 @@ export class AdminRestaurantImportComponent implements OnInit {
   }
 
   onSimulateRestaurants(): void {
+    if (!this.restaurantImportFile) {
+      this.error = "Bitte wähle erst eine Importdatei aus.";
+      return;
+    }
+
     this.error = undefined;
     this.logLines = undefined;
 
@@ -50,14 +56,23 @@ export class AdminRestaurantImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
+        this.restaurantImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
+        this.restaurantImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       });
   }
 
   onImportRestaurants(): void {
+    if (!this.restaurantImportFile) {
+      this.error = "Bitte wähle erst eine Importdatei aus.";
+      return;
+    }
+
     this.error = undefined;
     this.logLines = undefined;
 
@@ -68,10 +83,14 @@ export class AdminRestaurantImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
+        this.restaurantImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
+        this.restaurantImportFile = undefined;
+        this.fileInputVariable.nativeElement.value = "";
       });
   }
 
