@@ -48,7 +48,7 @@
                         </table>
                     </div>
                     <div>Hinzufügen</div>
-                    <input id="userToBeAdded" #input type="text" class="form-control" [focusFirst]="true" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' (selectItem)="onUserSelected($event, input)" />
+                    <input id="userToBeAdded" #input type="text" class="form-control" autocomplete="nope" [focusFirst]="true" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' (selectItem)="onUserSelected($event, input)" />
                 </div>
                 <div id="feedback">
                     <div class="help-text" *ngIf="message !== undefined">{{message}}</div>
@@ -60,18 +60,3 @@
         </div>
     </div>
 </block-ui>
-
-
-<!--                                &lt;!&ndash; /// &ndash;&gt;-->
-<!--                                <div>-->
-<!--                                    <div class="backend-input">-->
-<!--                                        <table>-->
-<!--                                            <tbody>-->
-<!--                                                <tr>-->
-<!--                                                    <td></td>-->
-<!--                                                    <td><button class="text-link-small add-administrator" (click)="addSelectedUser()">+ Hinzufügen</button></td>-->
-<!--                                                </tr>-->
-<!--                                            </tbody>-->
-<!--                                        </table>-->
-<!--                                    </div>-->
-<!--                                </div>-->
