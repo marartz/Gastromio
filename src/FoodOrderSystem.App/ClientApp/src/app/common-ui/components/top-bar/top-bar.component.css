@@ -13,28 +13,38 @@
     display: -webkit-flex;
     height: 72px;
     justify-content: space-between;
-    margin: 0px auto;
-}
-
-#top-bar .wrapper {
-    margin-left: auto;
+	margin-left: auto;
     margin-right: auto;
     padding-left: 16px;
     padding-right: 16px;
     width: 100%;
+    margin: 0px auto;
 }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 570px) {
     #top-bar .wrapper {
-        max-width: 960px;
+        max-width: 1280px;
     }
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1004px) {
     #top-bar .wrapper {
-        max-width: 1400px;
+        max-width: 1280px;
     }
 }
+
+@media only screen and (min-width: 1030px) {
+    #top-bar .wrapper {
+        max-width: 1320px;
+    }
+}
+
+@media only screen and (max-width: 569px) {
+    #top-bar .wrapper {
+        max-width: 1275px;
+    }
+}
+
 
 #top-bar #logo {
     cursor: pointer;

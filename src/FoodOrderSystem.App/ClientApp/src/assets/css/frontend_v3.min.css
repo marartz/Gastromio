@@ -491,57 +491,43 @@ button {
 }
 
 #order-restaurant #hero .wrapper {
-    height: 100%;
-    position: relative;
+	margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+	height: 100%;
+	position: relative;
+    width: 100%;
 }
 
 @media only screen and (min-width: 570px) {
-    #order-restaurant .wrapper {
-        margin-left: 20px;
-        margin-right: 10px;
+    #order-restaurant #hero .wrapper {
         max-width: 1280px;
-        width: calc(100% - 20px);
     }
 }
 
 @media only screen and (min-width: 1004px) {
-    #order-restaurant .wrapper {
-        margin-left: 20px;
-        margin-right: auto;
+    #order-restaurant #hero .wrapper {
         max-width: 1280px;
-        width: 100%;
     }
 }
 
 @media only screen and (min-width: 1030px) {
-    #order-restaurant .wrapper {
-        margin-left: auto;
-        margin-right: auto;
+    #order-restaurant #hero .wrapper {
         max-width: 1320px;
-        width: 100%;
     }
 }
 
 @media only screen and (max-width: 569px) {
-    #order-restaurant .wrapper {
-        margin-left: 15px;
-        margin-right: 15px;
+    #order-restaurant #hero .wrapper {
         max-width: 1275px;
-        width: calc(100% - 20px);
     }
 }
 
 /* 3.1.1 #order-restaurant > #hero > #text */
 #order-restaurant #hero #text {
     bottom: 16px;
-    left: 0px;
     position: absolute;
-}
-
-@media only screen and (min-width: 1030px) {
-    #order-restaurant #hero #text {
-        margin-left: 52px;
-    }
 }
 
 #order-restaurant #hero #text .name {
@@ -617,6 +603,8 @@ button {
 }
 
 #order-restaurant #order .wrapper {
+	padding-left: 16px;
+    padding-right: 16px;
     position: relative;
 }
 
@@ -679,18 +667,15 @@ button {
     #order-restaurant #order aside {
         display: block;
         float: left;
-        margin-left: 20px;
         margin-bottom: 60px;
-        padding: 0px 0px 0px 32px;
-        width: calc(25% - 25px);
+        width: 25%;
     }
 }
 
 @media screen and (min-width: 1280px) {
     #order-restaurant #order aside {
         float: left;
-        margin-left: 20px;
-        width: calc(25% - 25px);
+        width: 25%;
     }
 }
 
@@ -1214,11 +1199,14 @@ button {
     min-height: 126px;
     overflow: hidden;
     position: relative;
-    transition: all .3s ease;
+	transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
     -webkit-transition: all .3s ease;
 }
+
+
+
 
 @keyframes fadeDownContent {
     0% {
