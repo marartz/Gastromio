@@ -113,8 +113,8 @@
                         <p class="email">{{deviatingOpeningDay.dateText}}</p>
                     </th>
                     <th>
-                        <ng-container *ngIf="deviatingOpeningDay.openingPeriods.length > 0"><p class="email">Geöffnet</p></ng-container>
-                        <ng-container *ngIf="deviatingOpeningDay.openingPeriods.length === 0">
+                        <ng-container *ngIf="hasDeviatingDateOpeningPeriods(deviatingOpeningDay)"><p class="email">Geöffnet</p></ng-container>
+                        <ng-container *ngIf="!hasDeviatingDateOpeningPeriods(deviatingOpeningDay)">
                             <select [ngModel]="deviatingOpeningDay.status" (change)="changeStatusOfDeviatingDate(deviatingOpeningDay.date, $event.target.value)">
                                 <option value="closed">Geschlossen</option>
                                 <option value="fully-booked">Ausgebucht</option>

@@ -141,6 +141,12 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
     this.facade.removeDeviatingOpeningDay(date).subscribe(() => { }, () => { });
   }
 
+  public hasDeviatingDateOpeningPeriods(deviatingOpeningDayViewModel: DeviatingOpeningDayViewModel): boolean {
+    if (deviatingOpeningDayViewModel === undefined)
+      return false;
+    return deviatingOpeningDayViewModel.openingPeriods.some(en => en.value !== undefined);
+  }
+
   public addToDeviating(date: DateModel): void {
     const deviatingOpeningHoursViewModel = this.deviatingOpeningHoursViewModel$.value;
 
