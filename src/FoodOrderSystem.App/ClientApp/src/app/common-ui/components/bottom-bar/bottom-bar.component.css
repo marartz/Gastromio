@@ -28,6 +28,11 @@
 }
 
 #bottom-bar #infos {
+	animation-name: moveUpTitle;
+	animation-delay: .075s;
+	animation-duration: 0.8s;
+	animation-fill-mode: both;
+	animation-iteration-count: 1;
     margin-top: 40px;
     order: 2;
     -moz-box-ordinal-group: 2 + 1;
@@ -37,6 +42,8 @@
     padding-left: 40px;
     padding-right: 40px;
     position: relative;
+	transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.26, 0.8, 0.3, 1.275);
+	visibility: hidden;
     width: 100%;
 }
 
@@ -129,6 +136,33 @@
     line-height: 28px;
 }
 
+#bottom-bar #links .title {
+	animation-name: moveUpTitle;
+	animation-delay: .075s;
+	animation-duration: 0.8s;
+	animation-fill-mode: both;
+	animation-iteration-count: 1;
+	transition: opacity 0.8s ease,transform 0.8s cubic-bezier(0.26, 0.8, 0.3, 1.275);
+	visibility: hidden;
+}
+
+#bottom-bar #links ul li {
+	animation-name: moveUpTitle;
+	animation-duration: 0.8s;
+	animation-fill-mode: both;
+	animation-iteration-count: 1;
+	transition: opacity 0.8s ease,transform 0.8s cubic-bezier(0.26, 0.8, 0.3, 1.275);
+	visibility: hidden;
+}
+
+#bottom-bar #links ul li:nth-child(1) {
+	animation-delay: .15s;
+}
+
+#bottom-bar #links ul li:nth-child(2) {
+	animation-delay: .225s;
+}
+
 @media only screen and (min-width: 768px) {
     #bottom-bar {
         padding-bottom: 60px;
@@ -207,5 +241,17 @@
 @media only screen and (min-width: 1200px) {
     #bottom-bar .wrapper {
         max-width: 1400px;
+    }
+}
+
+@keyframes moveUpTitle {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+        visibility: inherit;
     }
 }
