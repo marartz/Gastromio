@@ -103,7 +103,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
         public string Name { get; private set; }
 
-        public string Alias { get; }
+        public string Alias { get; private set; }
 
         public Address Address { get; private set; }
 
@@ -569,6 +569,14 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (administrators == null || !administrators.Contains(userId))
                 return SuccessResult<bool>.Create(true);
             administrators.Remove(userId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeAlias(string alias, UserId changedBy)
+        {
+            Alias = alias;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);

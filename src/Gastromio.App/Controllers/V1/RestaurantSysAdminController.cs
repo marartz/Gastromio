@@ -18,6 +18,7 @@ using Gastromio.Core.Application.Commands.ImportRestaurantData;
 using Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant;
 using Gastromio.Core.Application.Commands.RemoveCuisineFromRestaurant;
 using Gastromio.Core.Application.Commands.RemoveRestaurant;
+using Gastromio.Core.Application.Commands.SetAliasOfRestaurant;
 using Gastromio.Core.Application.Commands.SetImportIdOfRestaurant;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
@@ -99,6 +100,22 @@ namespace Gastromio.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantNameCommand, bool>(
                 new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name),
+                new UserId(currentUserId));
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/setalias")]
+        [HttpPost]
+        public async Task<IActionResult> PostSetAliasAsync(Guid restaurantId,
+            [FromBody] SetAliasOfRestaurantModel setAliasOfRestaurantModel)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<SetAliasOfRestaurantCommand, bool>(
+                new SetAliasOfRestaurantCommand(new RestaurantId(restaurantId), setAliasOfRestaurantModel.Alias),
                 new UserId(currentUserId));
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }

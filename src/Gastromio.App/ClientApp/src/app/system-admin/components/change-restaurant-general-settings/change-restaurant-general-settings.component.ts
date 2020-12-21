@@ -71,6 +71,7 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
 
     this.changeSettingsForm = this.formBuilder.group({
       name: [this.restaurant.name, Validators.required],
+      alias: [this.restaurant.alias, Validators.required],
       importId: [this.restaurant.importId]
     });
   }
@@ -123,6 +124,15 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
         } else {
           curObservable = nextChangeCuisineObservable;
         }
+      }
+    }
+
+    if (this.restaurant.alias !== data.alias) {
+      const nextObservable = this.restaurantAdminService.setRestaurantAliasAsync(this.restaurant.id, data.alias)
+      if (curObservable !== undefined) {
+        curObservable = curObservable.pipe(concatMap(() => nextObservable));
+      } else {
+        curObservable = nextObservable;
       }
     }
 
