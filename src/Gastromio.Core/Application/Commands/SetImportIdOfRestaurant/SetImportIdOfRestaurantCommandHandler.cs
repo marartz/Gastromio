@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using FoodOrderSystem.Core.Application.Ports.Persistence;
-using FoodOrderSystem.Core.Common;
-using FoodOrderSystem.Core.Domain.Model.User;
+using Gastromio.Core.Application.Ports.Persistence;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model.User;
 
-namespace FoodOrderSystem.Core.Application.Commands.SetImportIdOfRestaurant
+namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
 {
     public class SetImportIdOfRestaurantCommandHandler : ICommandHandler<SetImportIdOfRestaurantCommand, bool>
     {

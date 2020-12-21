@@ -31,7 +31,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace FoodOrderSystem.App.Controllers.V1
+namespace Gastromio.App.Controllers.V1
 {
     [Route("api/v1/systemadmin")]
     [ApiController]

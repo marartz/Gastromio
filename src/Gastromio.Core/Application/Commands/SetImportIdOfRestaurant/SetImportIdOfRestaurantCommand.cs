@@ -1,6 +1,6 @@
-using FoodOrderSystem.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Restaurant;
 
-namespace FoodOrderSystem.Core.Application.Commands.SetImportIdOfRestaurant
+namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
 {
     public class SetImportIdOfRestaurantCommand : ICommand<bool>
     {

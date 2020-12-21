@@ -1,4 +1,4 @@
-namespace FoodOrderSystem.App.Models
+namespace Gastromio.App.Models
 {
     public class SetImportIdOfRestaurantModel
     {
