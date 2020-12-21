@@ -31,7 +31,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Gastromio.App.Controllers.V1
+namespace FoodOrderSystem.App.Controllers.V1
 {
     [Route("api/v1/systemadmin")]
     [ApiController]
@@ -99,6 +99,22 @@ namespace Gastromio.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<ChangeRestaurantNameCommand, bool>(
                 new ChangeRestaurantNameCommand(new RestaurantId(restaurantId), changeRestaurantNameModel.Name),
+                new UserId(currentUserId));
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/setimportid")]
+        [HttpPost]
+        public async Task<IActionResult> PostSetImportIdAsync(Guid restaurantId,
+            [FromBody] SetImportIdOfRestaurantModel setImportIdOfRestaurantModel)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<SetImportIdOfRestaurantCommand, bool>(
+                new SetImportIdOfRestaurantCommand(new RestaurantId(restaurantId), setImportIdOfRestaurantModel.ImportId),
                 new UserId(currentUserId));
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }

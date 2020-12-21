@@ -74,6 +74,18 @@ export class RestaurantSysAdminService {
       {name}, httpOptions);
   }
 
+  public setRestaurantImportIdAsync(id: string, importId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/setimportid',
+      {importId}, httpOptions);
+  }
+
   public activateRestaurantAsync(id: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({

@@ -70,7 +70,8 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
       });
 
     this.changeSettingsForm = this.formBuilder.group({
-      name: [this.restaurant.name, Validators.required]
+      name: [this.restaurant.name, Validators.required],
+      importId: [this.restaurant.importId]
     });
   }
 
@@ -103,7 +104,7 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
 
     this.blockUI.start('Verarbeite Daten...');
 
-    let curChangeCuisineObservable: Observable<boolean> = undefined;
+    let curObservable: Observable<boolean> = undefined;
 
     const cuisineStatusArray = this.cuisineStatusArray$.value;
     for (let index = cuisineStatusArray.length - 1; index >= 0; index--) {
@@ -117,11 +118,20 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
           nextChangeCuisineObservable = this.restaurantAdminService.removeCuisineFromRestaurantAsync(this.restaurant.id, cuisineStatus.id);
         }
 
-        if (curChangeCuisineObservable !== undefined) {
-          curChangeCuisineObservable = curChangeCuisineObservable.pipe(concatMap(() => nextChangeCuisineObservable));
+        if (curObservable !== undefined) {
+          curObservable = curObservable.pipe(concatMap(() => nextChangeCuisineObservable));
         } else {
-          curChangeCuisineObservable = nextChangeCuisineObservable;
+          curObservable = nextChangeCuisineObservable;
         }
+      }
+    }
+
+    if (this.restaurant.importId !== data.importId) {
+      const nextObservable = this.restaurantAdminService.setRestaurantImportIdAsync(this.restaurant.id, data.importId)
+      if (curObservable !== undefined) {
+        curObservable = curObservable.pipe(concatMap(() => nextObservable));
+      } else {
+        curObservable = nextObservable;
       }
     }
 
@@ -133,10 +143,10 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
           tap(() => {
             this.changeSettingsForm.reset();
           }),
-          concatMap(() => curChangeCuisineObservable ?? of(true))
+          concatMap(() => curObservable ?? of(true))
         )
     } else {
-      observable = curChangeCuisineObservable ?? of(true);
+      observable = curObservable ?? of(true);
     }
 
     observable.subscribe(() => {

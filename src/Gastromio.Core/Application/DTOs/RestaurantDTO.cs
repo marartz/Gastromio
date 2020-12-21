@@ -24,6 +24,7 @@ namespace Gastromio.Core.Application.DTOs
 
             Id = restaurant.Id.Value;
             Name = restaurant.Name;
+            ImportId = restaurant.ImportId;
             Alias = restaurant.Alias;
             Address = restaurant.Address;
             ContactInfo = restaurant.ContactInfo;
@@ -77,6 +78,8 @@ namespace Gastromio.Core.Application.DTOs
         public Guid Id { get; }
 
         public string Name { get; }
+        
+        public string ImportId { get; }
 
         public string Alias { get; }
 

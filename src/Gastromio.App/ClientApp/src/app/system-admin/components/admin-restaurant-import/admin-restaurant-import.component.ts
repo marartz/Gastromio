@@ -56,14 +56,14 @@ export class AdminRestaurantImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
-        this.restaurantImportFile = undefined;
-        this.fileInputVariable.nativeElement.value = "";
+        //this.restaurantImportFile = undefined;
+        //this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
-        this.restaurantImportFile = undefined;
-        this.fileInputVariable.nativeElement.value = "";
+        //this.restaurantImportFile = undefined;
+        //this.fileInputVariable.nativeElement.value = "";
       });
   }
 
@@ -83,14 +83,14 @@ export class AdminRestaurantImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
-        this.restaurantImportFile = undefined;
-        this.fileInputVariable.nativeElement.value = "";
+        //this.restaurantImportFile = undefined;
+        //this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
-        this.restaurantImportFile = undefined;
-        this.fileInputVariable.nativeElement.value = "";
+        //this.restaurantImportFile = undefined;
+        //this.fileInputVariable.nativeElement.value = "";
       });
   }
 
