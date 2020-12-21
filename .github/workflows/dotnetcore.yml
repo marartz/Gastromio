@@ -72,7 +72,7 @@ jobs:
       run: echo "${TAG_NAME}"
 
     - name: Build docker image
-      run: docker build --no-cache --tag marartz/food_order_system:${TAG_NAME} .
+      run: docker build --no-cache --tag marartz/gastromio:${TAG_NAME} .
 
     - name: Login to docker
       run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
@@ -81,4 +81,4 @@ jobs:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
 
     - name: Push docker image
-      run: docker push marartz/food_order_system
+      run: docker push marartz/gastromio
