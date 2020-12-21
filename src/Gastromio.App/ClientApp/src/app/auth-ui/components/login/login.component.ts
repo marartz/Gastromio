@@ -7,6 +7,7 @@ import {take} from 'rxjs/operators';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
+import {UserModel} from "../../../shared/models/user.model";
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
 
 import {AuthService} from '../../../auth/services/auth.service';
@@ -58,11 +59,23 @@ export class LoginComponent implements OnInit {
     this.blockUI.start('Verarbeite Daten...');
     this.authService.loginAsync(loginData.Email, loginData.Password)
       .pipe(take(1))
-      .subscribe(() => {
+      .subscribe((user: UserModel) => {
         this.generalError = undefined;
         this.loginForm.reset();
+
         this.blockUI.stop();
-        this.router.navigateByUrl(this.returnUrl);
+
+        if (this.returnUrl && this.returnUrl.trim() !== '') {
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          if (user.role === 'SystemAdmin') {
+            this.router.navigateByUrl('admin/users');
+          } else if (user.role === 'RestaurantAdmin') {
+            this.router.navigateByUrl('admin/myrestaurants');
+          } else {
+            this.router.navigateByUrl('');
+          }
+        }
       }, (error: HttpErrorResponse) => {
         const errors = this.httpErrorHandlingService.handleError(error);
         this.generalError = errors.getJoinedGeneralErrors();

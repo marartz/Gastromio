@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-import {Observable, Observer} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map, take, tap} from 'rxjs/operators';
 
 import {UserModel} from '../../shared/models/user.model';
 
@@ -39,33 +39,28 @@ export class AuthService {
     return JSON.parse(userJSON);
   }
 
-  public loginAsync(email: string, password: string): Observable<{}> {
-    return new Observable((observer: Observer<{}>) => {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+  public loginAsync(email: string, password: string): Observable<UserModel> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      })
+    };
+
+    return this.http.post<LoginResultModel>(this.loginUrl, {email, password}, httpOptions)
+      .pipe(
+        take(1),
+        tap((loginResult: LoginResultModel) => {
+          console.log('loginResult: ', loginResult);
+          localStorage.setItem('token', loginResult.token);
+          localStorage.setItem('user', JSON.stringify(loginResult.user));
+        }),
+        map((loginResult: LoginResultModel) => loginResult.user),
+        catchError(error => {
+          console.log('error: ', error);
+          return throwError(error);
         })
-      };
-
-      this.http.post<LoginResultModel>(this.loginUrl, {email, password}, httpOptions)
-        .pipe(take(1))
-        .subscribe(
-          (loginResult: LoginResultModel) => {
-            localStorage.setItem('token', loginResult.token);
-            localStorage.setItem('user', JSON.stringify(loginResult.user));
-            observer.next({});
-          },
-          (err: HttpErrorResponse) => {
-            observer.error(err);
-          },
-          () => {
-            observer.complete();
-          });
-
-      return () => {
-      };
-    });
+      );
   }
 
   public requestPasswordChangeAsync(email: string): Observable<void> {
