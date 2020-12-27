@@ -33,7 +33,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
             Address = new Address(null, null, null);
-            ContactInfo = new ContactInfo(null, null, null, null, null);
+            ContactInfo = new ContactInfo(null, null, null, null, null, null, false);
             regularOpeningDays = new Dictionary<int, RegularOpeningDay>();
             deviatingOpeningDays = new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = new PickupInfo(false, 0, null, null);
@@ -75,7 +75,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             Name = name;
             Alias = alias;
             Address = address ?? new Address(null, null, null);
-            ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
+            ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null, null, false);
             this.regularOpeningDays = regularOpeningDays?.ToDictionary(en => en.DayOfWeek, en => en) ??
                                       new Dictionary<int, RegularOpeningDay>();
             this.deviatingOpeningDays = deviatingOpeningDays?.ToDictionary(en => en.Date, en => en) ??
@@ -225,6 +225,10 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.EmailAddress),
                     contactInfo.EmailAddress);
 
+            if (!Validators.IsValidPhoneNumber(contactInfo.Mobile))
+                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Mobile),
+                    contactInfo.Mobile);
+            
             ContactInfo = contactInfo;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;

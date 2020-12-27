@@ -211,7 +211,9 @@ namespace Gastromio.App.Controllers.V1
                 changeRestaurantContactInfoModel.Fax,
                 changeRestaurantContactInfoModel.WebSite,
                 changeRestaurantContactInfoModel.ResponsiblePerson,
-                changeRestaurantContactInfoModel.EmailAddress
+                changeRestaurantContactInfoModel.EmailAddress,
+                changeRestaurantContactInfoModel.Mobile,
+                changeRestaurantContactInfoModel.OrderNotificationByMobile
             );
 
             var commandResult =

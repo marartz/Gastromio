@@ -235,6 +235,10 @@ export class ContactInfoModel {
   public responsiblePerson: string;
 
   public emailAddress: string;
+
+  public mobile: string;
+
+  public orderNotificationByMobile: boolean;
 }
 
 export class OpeningPeriodModel {

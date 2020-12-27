@@ -11,5 +11,9 @@
         public string ResponsiblePerson { get; set; }
         
         public string EmailAddress { get; set; }
+        
+        public string Mobile { get; set; }
+        
+        public bool OrderNotificationByMobile { get; set; }
     }
 }

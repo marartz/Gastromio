@@ -36,7 +36,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantContactInfo
                 return FailureResult<bool>.Forbidden();
 
             var contactInfo = new ContactInfo(command.Phone, command.Fax, command.WebSite, command.ResponsiblePerson,
-                command.EmailAddress);
+                command.EmailAddress, command.Mobile, command.OrderNotificationByMobile);
 
             var result = restaurant.ChangeContactInfo(contactInfo, currentUser.Id);
             if (result.IsFailure)
