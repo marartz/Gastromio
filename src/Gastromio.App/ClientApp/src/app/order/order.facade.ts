@@ -9,7 +9,7 @@ import {OrderType} from "./models/cart.model";
 export class OrderFacade {
 
   private selectedOrderType$: BehaviorSubject<OrderType> = new BehaviorSubject<OrderType>(OrderType.Pickup);
-  private selectedOpeningHour$: BehaviorSubject<Date> = new BehaviorSubject<Date>(undefined);
+  private selectedOrderTime$: BehaviorSubject<Date> = new BehaviorSubject<Date>(undefined);
   private selectedCuisine$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
 
   constructor(
@@ -29,16 +29,16 @@ export class OrderFacade {
     this.selectedOrderType$.next(selectedOrderType);
   }
 
-  public getSelectedOpeningHour$(): Observable<Date> {
-    return this.selectedOpeningHour$;
+  public getSelectedOrderTime$(): Observable<Date> {
+    return this.selectedOrderTime$;
   }
 
-  public getSelectedOpeningHour(): Date {
-    return this.selectedOpeningHour$.value;
+  public getSelectedOrderTime(): Date {
+    return this.selectedOrderTime$.value;
   }
 
-  public setSelectedOpeningHour(selectedOpeningHourFilter: Date): void {
-    this.selectedOpeningHour$.next(selectedOpeningHourFilter);
+  public setSelectedOrderTime(selectedOpeningHourFilter: Date): void {
+    this.selectedOrderTime$.next(selectedOpeningHourFilter);
   }
 
   public getSelectedCuisine$(): Observable<string> {

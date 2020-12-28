@@ -44,8 +44,8 @@
                                 </div>
                                 <div id="mobile-opening-hour-filter">
                                     <p class="title">Für wann möchtest du bestellen?</p>
-                                    <button *ngIf="!(selectedOpeningHour$ | async)" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
-                                    <button *ngIf="(selectedOpeningHour$ | async)" type="button" (click)="openOpeningHourFilter()">{{selectedOpeningHourText$ | async}}</button>
+                                    <button *ngIf="!(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
+                                    <button *ngIf="(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">{{selectedOrderTimeText$ | async}}</button>
                                 </div>
                                 <div id="mobile-cuisine-filter">
                                     <p class="title">Filter</p>
@@ -90,8 +90,8 @@
                                     </div>
                                     <div id="opening-hour-filter">
                                         <p class="title">Für wann möchtest du bestellen?</p>
-                                        <button *ngIf="!(selectedOpeningHour$ | async)" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
-                                        <button *ngIf="(selectedOpeningHour$ | async)" type="button" (click)="openOpeningHourFilter()">{{selectedOpeningHourText$ | async}}</button>
+                                        <button *ngIf="!(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
+                                        <button *ngIf="(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">{{selectedOrderTimeText$ | async}}</button>
                                     </div>
                                     <div id="cuisine-filter">
                                         <p class="title">Filter</p>
@@ -114,7 +114,7 @@
                                     <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                                 </div>
 
-                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOpeningHour$ | async)"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
                                 <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
                                     <h3>
@@ -128,7 +128,7 @@
                                     </p>
                                 </div>
 
-                                <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOpeningHour$ | async)"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
                             </div>
 

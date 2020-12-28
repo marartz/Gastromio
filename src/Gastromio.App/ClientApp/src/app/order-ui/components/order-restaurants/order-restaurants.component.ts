@@ -30,8 +30,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   cuisines: CuisineModel[];
 
   selectedOrderType$: Observable<string>;
-  selectedOpeningHour$: Observable<Date>;
-  selectedOpeningHourText$: Observable<string>;
+  selectedOrderTime$: Observable<Date>;
+  selectedOrderTimeText$: Observable<string>;
 
   showMobileFilterDetails: boolean;
 
@@ -65,21 +65,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
         map(selectedOrderType => OrderService.translateFromOrderType(selectedOrderType))
       );
 
-    this.selectedOpeningHour$ = this.orderFacade.getSelectedOpeningHour$();
+    this.selectedOrderTime$ = this.orderFacade.getSelectedOrderTime$();
 
-    this.selectedOpeningHourText$ = this.selectedOpeningHour$
+    this.selectedOrderTimeText$ = this.selectedOrderTime$
       .pipe(
-        map(selectedOpeningHourFilter => {
-          if (!selectedOpeningHourFilter)
+        map(selectedOrderTime => {
+          if (!selectedOrderTime)
             return undefined;
 
-          let hoursText = selectedOpeningHourFilter.getHours().toString();
+          let hoursText = selectedOrderTime.getHours().toString();
           hoursText = ('0' + hoursText).slice(-2);
 
-          let minutesText = selectedOpeningHourFilter.getMinutes().toString();
+          let minutesText = selectedOrderTime.getMinutes().toString();
           minutesText = ('0' + minutesText).slice(-2);
 
-          return selectedOpeningHourFilter.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
+          return selectedOrderTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
         })
       );
 
@@ -109,9 +109,9 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   openOpeningHourFilter(): void {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
-    modalRef.componentInstance.value = this.orderFacade.getSelectedOpeningHour() ?? new Date();
+    modalRef.componentInstance.value = this.orderFacade.getSelectedOrderTime() ?? new Date();
     modalRef.result.then((value: Date) => {
-      this.orderFacade.setSelectedOpeningHour(value);
+      this.orderFacade.setSelectedOrderTime(value);
       this.updateSearch();
     }, () => {
     });
@@ -141,11 +141,11 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   isCuisineSelected(cuisine: CuisineModel): boolean {
-    const selectedCuisineFilter = this.orderFacade.getSelectedCuisine();
+    const selectedCuisine = this.orderFacade.getSelectedCuisine();
     if (cuisine) {
-      return selectedCuisineFilter === cuisine.id;
+      return selectedCuisine === cuisine.id;
     } else {
-      return selectedCuisineFilter === '';
+      return selectedCuisine === '';
     }
   }
 
@@ -177,12 +177,12 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
           restaurants[i] = new RestaurantModel(result[i]);
         }
 
-        const selectedOpeningHourFilter = this.orderFacade.getSelectedOpeningHour();
+        const selectedOrderTime = this.orderFacade.getSelectedOrderTime();
 
         let openedRestaurants = new Array<RestaurantModel>();
         let closedRestaurants = new Array<RestaurantModel>();
         for (let restaurant of restaurants) {
-          if (restaurant.isOpen(selectedOpeningHourFilter)) {
+          if (restaurant.isOpen(selectedOrderTime)) {
             openedRestaurants.push(restaurant);
           } else {
             closedRestaurants.push(restaurant);
