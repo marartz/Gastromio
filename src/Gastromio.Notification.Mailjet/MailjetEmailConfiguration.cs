@@ -1,6 +1,6 @@
 ﻿namespace Gastromio.Notification.Mailjet
 {
-    public class MailjetConfiguration
+    public class MailjetEmailConfiguration
     {
         public string ApiKey { get; set; }
         

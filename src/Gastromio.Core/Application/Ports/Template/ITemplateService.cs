@@ -10,5 +10,7 @@ namespace Gastromio.Core.Application.Ports.Template
         EmailData GetRestaurantEmail(Order order);
 
         EmailData GetRequestPasswordChangeEmail(string email, string url);
+
+        string GetRestaurantMobileMessage(Order order);
     }
 }

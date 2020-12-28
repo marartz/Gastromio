@@ -12,7 +12,9 @@ namespace Gastromio.Core.Application.Ports.Persistence
 
         Task<IEnumerable<Order>> FindByPendingCustomerNotificationAsync(CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<Order>> FindByPendingRestaurantNotificationAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Order>> FindByPendingRestaurantEmailNotificationAsync(CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Order>> FindByPendingRestaurantMobileNotificationAsync(CancellationToken cancellationToken = default);
 
         Task<Order> FindByOrderIdAsync(OrderId orderId, CancellationToken cancellationToken = default);
 

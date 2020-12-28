@@ -53,7 +53,7 @@ namespace Gastromio.Persistence.MongoDB
             return cursor.ToEnumerable().Select(FromDocument);
         }
 
-        public async Task<IEnumerable<Order>> FindByPendingRestaurantNotificationAsync(
+        public async Task<IEnumerable<Order>> FindByPendingRestaurantEmailNotificationAsync(
             CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
@@ -61,6 +61,23 @@ namespace Gastromio.Persistence.MongoDB
             var filter = Builders<OrderModel>.Filter.Exists(en => en.RestaurantNotificationInfo, false) |
                          Builders<OrderModel>.Filter.Exists(en => en.RestaurantNotificationInfo.Status, false) |
                          Builders<OrderModel>.Filter.Eq(en => en.RestaurantNotificationInfo.Status, false);
+
+            var cursor = await collection.FindAsync(filter, new FindOptions<OrderModel>
+                {
+                    Sort = Builders<OrderModel>.Sort.Ascending(en => en.Id)
+                },
+                cancellationToken);
+            return cursor.ToEnumerable().Select(FromDocument);
+        }
+
+        public async Task<IEnumerable<Order>> FindByPendingRestaurantMobileNotificationAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+
+            var filter = Builders<OrderModel>.Filter.Exists(en => en.RestaurantMobileNotificationInfo, false) |
+                         Builders<OrderModel>.Filter.Exists(en => en.RestaurantMobileNotificationInfo.Status, false) |
+                         Builders<OrderModel>.Filter.Eq(en => en.RestaurantMobileNotificationInfo.Status, false);
 
             var cursor = await collection.FindAsync(filter, new FindOptions<OrderModel>
                 {
@@ -148,6 +165,7 @@ namespace Gastromio.Persistence.MongoDB
                         row.CartInfo.RestaurantInfo,
                         row.CartInfo.RestaurantPhone,
                         row.CartInfo.RestaurantEmail,
+                        row.CartInfo.RestaurantMobile,
                         row.CartInfo.RestaurantNeedsSupport,
                         row.CartInfo.OrderedDishes?.Select(en => new OrderedDishInfo(
                             en.ItemId,
@@ -182,6 +200,14 @@ namespace Gastromio.Persistence.MongoDB
                         row.RestaurantNotificationInfo.Attempt,
                         row.RestaurantNotificationInfo.Message,
                         row.RestaurantNotificationInfo.Timestamp
+                    )
+                    : null,
+                row.RestaurantMobileNotificationInfo != null
+                    ? new NotificationInfo(
+                        row.RestaurantMobileNotificationInfo.Status,
+                        row.RestaurantMobileNotificationInfo.Attempt,
+                        row.RestaurantMobileNotificationInfo.Message,
+                        row.RestaurantMobileNotificationInfo.Timestamp
                     )
                     : null,
                 row.CreatedOn,
@@ -232,6 +258,7 @@ namespace Gastromio.Persistence.MongoDB
                         RestaurantInfo = obj.CartInfo.RestaurantInfo,
                         RestaurantEmail = obj.CartInfo.RestaurantEmail,
                         RestaurantPhone = obj.CartInfo.RestaurantPhone,
+                        RestaurantMobile = obj.CartInfo.RestaurantMobile,
                         RestaurantNeedsSupport = obj.CartInfo.RestaurantNeedsSupport,
                         OrderedDishes = obj.CartInfo.OrderedDishes?.Select(en => new OrderedDishInfoModel
                         {
@@ -262,13 +289,22 @@ namespace Gastromio.Persistence.MongoDB
                         Timestamp = obj.CustomerNotificationInfo.Timestamp
                     }
                     : null,
-                RestaurantNotificationInfo = obj.RestaurantNotificationInfo != null
+                RestaurantNotificationInfo = obj.RestaurantEmailNotificationInfo != null
                     ? new NotificationInfoModel
                     {
-                        Status = obj.RestaurantNotificationInfo.Status,
-                        Attempt = obj.RestaurantNotificationInfo.Attempt,
-                        Message = obj.RestaurantNotificationInfo.Message,
-                        Timestamp = obj.RestaurantNotificationInfo.Timestamp
+                        Status = obj.RestaurantEmailNotificationInfo.Status,
+                        Attempt = obj.RestaurantEmailNotificationInfo.Attempt,
+                        Message = obj.RestaurantEmailNotificationInfo.Message,
+                        Timestamp = obj.RestaurantEmailNotificationInfo.Timestamp
+                    }
+                    : null,
+                RestaurantMobileNotificationInfo = obj.RestaurantMobileNotificationInfo != null
+                    ? new NotificationInfoModel
+                    {
+                        Status = obj.RestaurantMobileNotificationInfo.Status,
+                        Attempt = obj.RestaurantMobileNotificationInfo.Attempt,
+                        Message = obj.RestaurantMobileNotificationInfo.Message,
+                        Timestamp = obj.RestaurantMobileNotificationInfo.Timestamp
                     }
                     : null,
                 CreatedOn = obj.CreatedOn,

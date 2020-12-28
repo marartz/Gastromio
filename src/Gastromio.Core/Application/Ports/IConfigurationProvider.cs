@@ -5,5 +5,7 @@ namespace Gastromio.Core.Application.Ports
         bool IsTestSystem { get; }
         
         string EmailRecipientForTest { get; }
+        
+        string MobileRecipientForTest { get; }
     }
 }

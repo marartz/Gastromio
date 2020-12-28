@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Gastromio.Core.Application.Ports.Notification
 {
-    public interface INotificationService
+    public interface IEmailNotificationService
     {
-        Task<NotificationResponse> SendNotificationAsync(NotificationRequest notificationRequest,
+        Task<EmailNotificationResponse> SendEmailNotificationAsync(EmailNotificationRequest emailNotificationRequest,
             CancellationToken cancellationToken = default);
     }
 }

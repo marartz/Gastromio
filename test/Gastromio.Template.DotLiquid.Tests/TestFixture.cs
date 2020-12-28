@@ -30,6 +30,7 @@ namespace Gastromio.Template.DotLiquid.Tests
                     "Pizzeria Parma (Pizzastr. 1, 12345 Musterstadt)",
                     "012345/67890",
                     "bestellung@pizzeria-parma.de",
+                    null,
                     false,
                     new List<OrderedDishInfo>
                     {
