@@ -239,13 +239,15 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
         private async Task TriggerRestaurantMobileNotificationAsync(Order order,
             CancellationToken cancellationToken)
         {
-            if (order.CartInfo == null || !Validators.IsValidPhoneNumber(order.CartInfo.RestaurantMobile))
+            if (order.CartInfo == null || string.IsNullOrWhiteSpace(order.CartInfo.RestaurantMobile) ||
+                !Validators.IsValidPhoneNumber(order.CartInfo.RestaurantMobile))
             {
-                order.RegisterRestaurantMobileNotificationAttempt(true, "empty or invalid mobile number => skipping notification");
+                order.RegisterRestaurantMobileNotificationAttempt(true,
+                    "empty or invalid mobile number => skipping notification");
                 await orderRepository.StoreAsync(order, cancellationToken);
                 return;
             }
-            
+
             if (order.RestaurantMobileNotificationInfo != null && order.RestaurantMobileNotificationInfo.Attempt > 0)
             {
                 var delay = CalculateDelay(order.RestaurantMobileNotificationInfo);

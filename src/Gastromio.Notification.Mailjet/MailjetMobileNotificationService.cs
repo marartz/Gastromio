@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -22,43 +23,68 @@ namespace Gastromio.Notification.Mailjet
             this.logger = logger;
             this.configuration = configuration;
         }
-        
-        public async Task<MobileNotificationResponse> SendMobileNotificationAsync(MobileNotificationRequest mobileNotificationRequest,
+
+        public async Task<MobileNotificationResponse> SendMobileNotificationAsync(
+            MobileNotificationRequest mobileNotificationRequest,
             CancellationToken cancellationToken = default)
         {
-            var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
-
-            var phoneNumber = phoneNumberUtil.Parse(mobileNotificationRequest.To, "DE");
-            if (!phoneNumberUtil.IsValidNumberForRegion(phoneNumber, "DE"))
+            if (string.IsNullOrEmpty(configuration.ApiToken))
             {
-                return new MobileNotificationResponse(true, "Mobile number is not valid");
+                logger.LogWarning("Skipped sending mobile notification due to missing SMS configuration");
+                return new MobileNotificationResponse(true, "skipped due to missing SMS configuration");
             }
 
-            var requestObj = new JObject
+            try
             {
-                {"From", mobileNotificationRequest.From},
-                {"To", mobileNotificationRequest.To},
-                {"Text", mobileNotificationRequest.Text}
-            };
-            var json = requestObj.ToString();
+                logger.LogInformation("Sending SMS from {0} to {1} with text: {2}",
+                    mobileNotificationRequest.From,
+                    mobileNotificationRequest.To,
+                    mobileNotificationRequest.Text
+                );
 
-            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+                var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
 
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", configuration.ApiToken);
-            
-            var response = await httpClient.PostAsync(ApiUrl, requestContent, cancellationToken);
+                var phoneNumber = phoneNumberUtil.Parse(mobileNotificationRequest.To, "DE");
+                if (!phoneNumberUtil.IsValidNumberForRegion(phoneNumber, "DE"))
+                {
+                    logger.LogWarning($"Number '{mobileNotificationRequest.To}' is not valid => skipping sending notification via SMS");
+                    return new MobileNotificationResponse(true, "Mobile number is not valid");
+                }
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return new MobileNotificationResponse(false, response.ReasonPhrase);
+                var requestObj = new JObject
+                {
+                    {"From", mobileNotificationRequest.From},
+                    {"To", mobileNotificationRequest.To},
+                    {"Text", mobileNotificationRequest.Text}
+                };
+                var json = requestObj.ToString();
+
+                var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", configuration.ApiToken);
+
+                var response = await httpClient.PostAsync(ApiUrl, requestContent, cancellationToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    logger.LogWarning($"Could not send SMS to {mobileNotificationRequest.To} due to: {response.ReasonPhrase}");
+                    return new MobileNotificationResponse(false, response.ReasonPhrase);
+                }
+
+                var responseText = await response.Content.ReadAsStringAsync();
+                var responseObj = JObject.Parse(responseText);
+                var smsCount = responseObj.Value<int>("SmsCount");
+
+                logger.LogInformation($"Successfully sent (SMS count: {smsCount})");
+                return new MobileNotificationResponse(true, null);
             }
-
-            var responseText = await response.Content.ReadAsStringAsync();
-            var responseObj = JObject.Parse(responseText);
-
-            return new MobileNotificationResponse(true, null);
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error during sending mobile notification via Mailjet");
+                return new MobileNotificationResponse(false, e.Message);
+            }
         }
     }
 }
