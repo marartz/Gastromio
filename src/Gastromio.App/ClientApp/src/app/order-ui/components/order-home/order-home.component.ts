@@ -17,7 +17,6 @@ import {OrderService} from '../../../order/services/order.service';
   ]
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
-  selectedRestaurant: RestaurantModel;
 
   private searchPhrase: string;
   private searchPhraseUpdated: Subject<string> = new Subject<string>();
