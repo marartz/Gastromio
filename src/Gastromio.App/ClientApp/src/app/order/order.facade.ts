@@ -156,10 +156,6 @@ export class OrderFacade {
     return this.isSearching$;
   }
 
-  public getIsSearching(): boolean {
-    return this.isSearching$.value;
-  }
-
   public getSelectedSearchPhrase$(): Observable<string> {
     return this.selectedSearchPhrase$;
   }
@@ -174,10 +170,6 @@ export class OrderFacade {
 
   public getSelectedOrderType$(): Observable<OrderType> {
     return this.selectedOrderType$;
-  }
-
-  public getSelectedOrderType(): OrderType {
-    return this.selectedOrderType$.value;
   }
 
   public setSelectedOrderType(selectedOrderType: OrderType): void {
@@ -227,16 +219,8 @@ export class OrderFacade {
     return this.openedRestaurants$;
   }
 
-  public getOpenedRestaurants(): RestaurantModel[] {
-    return this.openedRestaurants$.value;
-  }
-
   public getClosedRestaurants$(): Observable<RestaurantModel[]> {
     return this.closedRestaurants$;
-  }
-
-  public getClosedRestaurants(): RestaurantModel[] {
-    return this.closedRestaurants$.value;
   }
 
 
@@ -593,7 +577,7 @@ export class OrderFacade {
           closedRestaurants.sort(OrderFacade.restaurantSortFunc);
           this.closedRestaurants$.next(closedRestaurants);
         },
-        error => {
+        () => {
           this.isSearching$.next(false);
           this.restaurants$.next(new Array<RestaurantModel>());
           this.openedRestaurants$.next(new Array<RestaurantModel>());
