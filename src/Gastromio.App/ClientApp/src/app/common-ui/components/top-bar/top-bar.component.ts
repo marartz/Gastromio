@@ -30,14 +30,7 @@ export class TopBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orderFacade.initialize$()
-      .pipe(take(1))
-      .subscribe(
-        () => {
-        }, error => {
-          console.log('error: ', error);
-        }
-      );
+    this.orderFacade.initialize();
   }
 
   getUserEmail(): string {

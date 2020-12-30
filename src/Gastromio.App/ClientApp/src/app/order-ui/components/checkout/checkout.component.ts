@@ -68,11 +68,20 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.initialized = false;
 
-    this.blockUI.start();
-    this.orderFacade.initialize$()
-      .pipe(take(1))
-      .subscribe(() => {
-        this.blockUI.stop();
+    this.orderFacade.getIsInitializing$()
+      .subscribe(isInitializing => {
+        if (isInitializing) {
+          this.blockUI.start();
+        } else {
+          this.blockUI.stop();
+        }
+      })
+
+    this.orderFacade.getIsInitialized$()
+      .subscribe(isInitialized => {
+        this.initialized = isInitialized;
+        if (!isInitialized)
+          return;
 
         const cart = this.orderFacade.getCart();
         if (!cart) {
@@ -83,20 +92,18 @@ export class CheckoutComponent implements OnInit {
         }
 
         this.restaurant = this.orderFacade.getSelectedRestaurant();
-
         this.dishCategories = this.orderFacade.getDishCategoriesOfSelectedRestaurant();
-
         this.serviceTime = this.orderFacade.getCart().getServiceTime();
 
         if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
           this.serviceTime = CheckoutComponent.roundOnQuarterHours(new Date());
         }
-
-        this.initialized = true;
       }, error => {
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
       });
+
+    this.orderFacade.initialize();
   }
 
   getBannerStyle(

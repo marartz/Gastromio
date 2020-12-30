@@ -81,9 +81,9 @@ export class OrderFacade {
     return this.initializationError$;
   }
 
-  public initialize$(): Observable<void> {
+  public initialize(): void {
     if (this.isInitialized$.value !== undefined) {
-      return of(void 0);
+      return;
     }
 
     const observables = new Array<Observable<void>>();
@@ -123,25 +123,23 @@ export class OrderFacade {
 
     this.isInitialized$.next(undefined);
     this.isInitializing$.next(true);
-    return combineLatest(observables)
-      .pipe(
-        map(() => {
+    combineLatest(observables)
+      .subscribe(
+        () => {
           this.updateCartModel();
           this.isInitializing$.next(false);
           this.isInitialized$.next(true);
-        }),
-        catchError((error: HttpErrorResponse | Error) => {
+        },
+        (error: HttpErrorResponse | Error) => {
           this.isInitializing$.next(false);
           this.isInitialized$.next(false);
           if (error instanceof HttpErrorResponse) {
             const errorText = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
             this.initializationError$.next(errorText);
-            return throwError(errorText);
           } else if (error instanceof Error) {
             this.initializationError$.next(error.message);
-            return throwError(error.message);
           }
-        })
+        }
       );
   }
 
