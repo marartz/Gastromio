@@ -251,7 +251,7 @@ export class OrderFacade {
   }
 
   public selectRestaurant$(restaurant: RestaurantModel): Observable<void> {
-    if (this.selectedRestaurant$.value.id === restaurant.id) {
+    if (this.selectedRestaurant$.value !== undefined && this.selectedRestaurant$.value.id === restaurant.id) {
       return of(void 0);
     }
 
@@ -516,6 +516,7 @@ export class OrderFacade {
   }
 
   public checkout(checkoutModel: CheckoutModel): void {
+    this.isCheckedOut$.next(undefined);
     this.isCheckingOut$.next(true);
     this.orderService.sendCheckoutAsync(checkoutModel)
       .pipe(take(1))
