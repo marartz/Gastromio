@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 
 import {BehaviorSubject, combineLatest, Observable, of, throwError} from "rxjs";
-import {catchError, map, switchMap, take} from "rxjs/operators";
+import {catchError, debounceTime, distinctUntilChanged, map, switchMap, take} from "rxjs/operators";
 
 import {CuisineModel} from "../shared/models/cuisine.model";
 import {DishCategoryModel} from "../shared/models/dish-category.model";
@@ -31,12 +31,16 @@ export class OrderFacade {
   private isInitializing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private isInitialized$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
   private initializationError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-
   private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(new Array<CuisineModel>());
 
+  private isSearching$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private selectedSearchPhrase$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private selectedOrderType$: BehaviorSubject<OrderType> = new BehaviorSubject<OrderType>(OrderType.Pickup);
   private selectedOrderTime$: BehaviorSubject<Date> = new BehaviorSubject<Date>(undefined);
   private selectedCuisine$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  private restaurants$: BehaviorSubject<RestaurantModel[]> = new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
+  private openedRestaurants$: BehaviorSubject<RestaurantModel[]> = new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
+  private closedRestaurants$: BehaviorSubject<RestaurantModel[]> = new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
 
   private storedCart$: BehaviorSubject<StoredCartModel> = new BehaviorSubject<StoredCartModel>(undefined);
   private selectedRestaurant$: BehaviorSubject<RestaurantModel> = new BehaviorSubject<RestaurantModel>(undefined);
@@ -56,6 +60,13 @@ export class OrderFacade {
     private storedCartService: StoredCartService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
+    combineLatest([
+      this.selectedSearchPhrase$.pipe(debounceTime(500), distinctUntilChanged()),
+      this.selectedOrderType$.pipe(distinctUntilChanged()),
+      this.selectedOrderTime$.pipe(distinctUntilChanged()),
+      this.selectedCuisine$.pipe(distinctUntilChanged())
+    ])
+      .subscribe(() => this.updateRestaurantSearchResult());
   }
 
   public getIsInitializing$(): Observable<boolean> {
@@ -142,9 +153,25 @@ export class OrderFacade {
     return this.cuisines$.value;
   }
 
-  public searchForRestaurants$(search: string, orderType: OrderType, cuisineId: string,
-                                   openingHourFilter: string | undefined): Observable<RestaurantModel[]> {
-    return this.orderService.searchForRestaurantsAsync(search, orderType, cuisineId, openingHourFilter);
+
+  public getIsSearching$(): Observable<boolean> {
+    return this.isSearching$;
+  }
+
+  public getIsSearching(): boolean {
+    return this.isSearching$.value;
+  }
+
+  public getSelectedSearchPhrase$(): Observable<string> {
+    return this.selectedSearchPhrase$;
+  }
+
+  public getSelectedSearchPhrase(): string {
+    return this.selectedSearchPhrase$.value;
+  }
+
+  public setSelectedSearchPhrase(selectedSearchPhrase: string): void {
+    this.selectedSearchPhrase$.next(selectedSearchPhrase);
   }
 
   public getSelectedOrderType$(): Observable<OrderType> {
@@ -184,10 +211,36 @@ export class OrderFacade {
   }
 
   public resetFilters(): void {
+    this.selectedSearchPhrase$.next('');
     this.selectedOrderType$.next(OrderType.Pickup);
     this.selectedOrderTime$.next(undefined);
     this.selectedCuisine$.next(undefined);
   }
+
+  public getRestaurants$(): Observable<RestaurantModel[]> {
+    return this.restaurants$;
+  }
+
+  public getRestaurants(): RestaurantModel[] {
+    return this.restaurants$.value;
+  }
+
+  public getOpenedRestaurants$(): Observable<RestaurantModel[]> {
+    return this.openedRestaurants$;
+  }
+
+  public getOpenedRestaurants(): RestaurantModel[] {
+    return this.openedRestaurants$.value;
+  }
+
+  public getClosedRestaurants$(): Observable<RestaurantModel[]> {
+    return this.closedRestaurants$;
+  }
+
+  public getClosedRestaurants(): RestaurantModel[] {
+    return this.closedRestaurants$.value;
+  }
+
 
   public getSelectedRestaurant$(): Observable<RestaurantModel> {
     return this.selectedRestaurant$;
@@ -505,6 +558,51 @@ export class OrderFacade {
       );
   }
 
+  private updateRestaurantSearchResult() {
+    this.isSearching$.next(true);
+    this.orderService.searchForRestaurantsAsync(this.selectedSearchPhrase$.value, this.selectedOrderType$.value, this.selectedCuisine$.value, undefined)
+      .pipe(take(1))
+      .subscribe(result => {
+          this.isSearching$.next(false);
+
+          if (result === undefined) {
+            this.restaurants$.next(new Array<RestaurantModel>());
+            this.openedRestaurants$.next(new Array<RestaurantModel>());
+            this.closedRestaurants$.next(new Array<RestaurantModel>());
+            return;
+          }
+
+          const restaurants = new Array<RestaurantModel>(result.length);
+          for (let i = 0; i < result.length; i++) {
+            restaurants[i] = new RestaurantModel(result[i]);
+          }
+          restaurants.sort(OrderFacade.restaurantSortFunc);
+          this.restaurants$.next(restaurants);
+
+          const selectedOrderTime = this.selectedOrderTime$.value;
+
+          const openedRestaurants = new Array<RestaurantModel>();
+          const closedRestaurants = new Array<RestaurantModel>();
+          for (let restaurant of restaurants) {
+            if (restaurant.isOpen(selectedOrderTime)) {
+              openedRestaurants.push(restaurant);
+            } else {
+              closedRestaurants.push(restaurant);
+            }
+          }
+          openedRestaurants.sort(OrderFacade.restaurantSortFunc);
+          this.openedRestaurants$.next(openedRestaurants);
+          closedRestaurants.sort(OrderFacade.restaurantSortFunc);
+          this.closedRestaurants$.next(closedRestaurants);
+        },
+        error => {
+          this.isSearching$.next(false);
+          this.restaurants$.next(new Array<RestaurantModel>());
+          this.openedRestaurants$.next(new Array<RestaurantModel>());
+          this.closedRestaurants$.next(new Array<RestaurantModel>());
+        });
+  }
+
   private updateCartModel() {
     const cart = OrderFacade.generateCartModel(
       this.storedCart$.value,
@@ -604,4 +702,15 @@ export class OrderFacade {
       serviceTime
     );
   }
+
+  private static restaurantSortFunc(a: RestaurantModel, b: RestaurantModel): number {
+    if (a.name < b.name) {
+      return -1;
+    } else if (a.name > b.name) {
+      return +1;
+    } else {
+      return 0;
+    }
+  }
+
 }

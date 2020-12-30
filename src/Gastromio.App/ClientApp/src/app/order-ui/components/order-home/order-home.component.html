@@ -15,7 +15,7 @@
                         </div>
                         <div id="results" class="visibleonsearch">
                             <div class="rest">
-                                <div *ngFor="let restaurant of restaurants">
+                                <div *ngFor="let restaurant of restaurants$ | async">
                                     <span class="restaurant-name">{{restaurant.name}}</span>
                                     <div class="order-type">
                                         <ng-container *ngIf="restaurant.pickupInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>

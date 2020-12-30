@@ -63,7 +63,7 @@
                     </ng-container>
                     <div class="mobile-info">
                         <div class="restaurant-count">
-                            {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants
+                            {{openedRestaurantCount$ | async}} von {{totalRestaurantCount$ | async}} Restaurants
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
                             <aside>
                                 <div class="filter-wrapper">
                                     <div id="restaurant-count">
-                                        {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants
+                                        {{openedRestaurantCount$ | async}} von {{totalRestaurantCount$ | async}} Restaurants
                                     </div>
                                     <div id="ordertype-filter">
                                         <p class="title">Wie kommt das Essen zu dir?</p>
@@ -114,9 +114,9 @@
                                     <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                                 </div>
 
-                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants$ | async" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
-                                <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
+                                <div class="preorder" *ngIf="(closedRestaurantCount$ | async) > 0">
                                     <h3>
                                         Für
                                         <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">Abholung</ng-container>
@@ -128,7 +128,7 @@
                                     </p>
                                 </div>
 
-                                <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants$ | async" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
                             </div>
 
