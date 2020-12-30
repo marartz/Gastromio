@@ -3,7 +3,7 @@ import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {combineLatest} from 'rxjs';
-import {take, tap} from 'rxjs/operators';
+import {filter, take, tap} from 'rxjs/operators';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -76,6 +76,9 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     let serviceTime: Date;
 
     const observables = [
+      this.orderFacade.getIsInitialized$().pipe(
+        filter(isInitialized => isInitialized === true)
+      ),
       this.route.paramMap.pipe(tap(params => {
         this.restaurantId = params.get('restaurantId');
       })),
