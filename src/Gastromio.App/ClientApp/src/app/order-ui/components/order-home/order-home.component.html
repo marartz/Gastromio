@@ -1,5 +1,5 @@
 <div id="order-home">
-    
+
     <section id="landing" class="bg-rough-blue">
         <div class="wrapper">
             <div class="inner">
@@ -11,7 +11,7 @@
                             <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                         </div>
                         <div class="button-wrapper">
-                            <button type="button" [routerLink]="['/restaurants']"><span>Alle anzeigen</span></button>
+                            <button type="button" (click)="onShowAll()"><span>Alle anzeigen</span></button>
                         </div>
                         <div id="results" class="visibleonsearch">
                             <div class="rest">

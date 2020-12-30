@@ -6,7 +6,8 @@ import {Subject} from 'rxjs';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
+import {OrderType} from "../../../order/models/order-type";
 
 @Component({
   selector: 'app-order-home',
@@ -24,7 +25,7 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   restaurants: RestaurantModel[];
 
   constructor(
-    private orderService: OrderService,
+    private orderFacade: OrderFacade,
     public router: Router
   ) {
     this.searchPhraseUpdated.asObservable()
@@ -53,7 +54,7 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(): void {
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase, undefined, '', undefined)
+    this.orderFacade.searchForRestaurants$(this.searchPhrase, undefined, '', undefined)
       .pipe(take(1))
       .subscribe((result) => {
         let count = Math.min(result.length, 6);
@@ -67,6 +68,11 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
         this.sortRestaurants();
       }, () => {
       });
+  }
+
+  onShowAll(): void {
+    this.orderFacade.resetFilters();
+    this.router.navigate(['/restaurants']);
   }
 
   onRestaurantSelected(restaurant: RestaurantModel, orderType: string): void {

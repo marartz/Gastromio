@@ -143,6 +143,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
           }
         }
       }, error => {
+        console.log('error: ', error);
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
       });

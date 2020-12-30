@@ -58,6 +58,18 @@ export class OrderFacade {
   ) {
   }
 
+  public getIsInitializing$(): Observable<boolean> {
+    return this.isInitializing$;
+  }
+
+  public getIsInitialized$(): Observable<boolean> {
+    return this.isInitialized$;
+  }
+
+  public getInitializationError$(): Observable<string> {
+    return this.initializationError$;
+  }
+
   public initialize$(): Observable<void> {
     if (this.isInitialized$.value !== undefined) {
       return of(void 0);
@@ -122,24 +134,17 @@ export class OrderFacade {
       );
   }
 
-  public getIsInitializing$(): Observable<boolean> {
-    return this.isInitializing$;
-  }
-
-  public getIsInitialized$(): Observable<boolean> {
-    return this.isInitialized$;
-  }
-
-  public getInitializationError$(): Observable<string> {
-    return this.initializationError$;
-  }
-
   public getCuisines$(): Observable<CuisineModel[]> {
     return this.cuisines$;
   }
 
   public getCuisines(): CuisineModel[] {
     return this.cuisines$.value;
+  }
+
+  public searchForRestaurants$(search: string, orderType: OrderType, cuisineId: string,
+                                   openingHourFilter: string | undefined): Observable<RestaurantModel[]> {
+    return this.orderService.searchForRestaurantsAsync(search, orderType, cuisineId, openingHourFilter);
   }
 
   public getSelectedOrderType$(): Observable<OrderType> {
@@ -176,6 +181,12 @@ export class OrderFacade {
 
   public setSelectedCuisine(selectedCuisineFilter: string): void {
     this.selectedCuisine$.next(selectedCuisineFilter);
+  }
+
+  public resetFilters(): void {
+    this.selectedOrderType$.next(OrderType.Pickup);
+    this.selectedOrderTime$.next(undefined);
+    this.selectedCuisine$.next(undefined);
   }
 
   public getSelectedRestaurant$(): Observable<RestaurantModel> {

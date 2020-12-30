@@ -13,7 +13,6 @@ import {CuisineModel} from '../../../shared/models/cuisine.model';
 import {OrderFacade} from "../../../order/order.facade";
 import {OrderType} from '../../../order/models/order-type';
 import {OrderTypeConverter} from "../../../order/models/order-type-converter";
-import {OrderService} from '../../../order/services/order.service';
 
 import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
 
@@ -50,7 +49,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   constructor(
     private orderFacade: OrderFacade,
-    private orderService: OrderService,
     private modalService: NgbModal,
   ) {
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
@@ -84,8 +82,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
         })
       );
 
-    this.orderService.getAllCuisinesAsync()
-      .pipe(take(1))
+    this.orderFacade.getCuisines$()
       .subscribe((cuisines) => {
         this.cuisines = cuisines;
       });
@@ -168,7 +165,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
     this.blockUI.start('Suche läuft');
 
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase, this.orderFacade.getSelectedOrderType(), this.orderFacade.getSelectedCuisine(), null)
+    this.orderFacade.searchForRestaurants$(this.searchPhrase, this.orderFacade.getSelectedOrderType(), this.orderFacade.getSelectedCuisine(), null)
       .pipe(take(1))
       .subscribe((result) => {
         let restaurants = new Array<RestaurantModel>(result.length);
