@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
-
-import {take} from 'rxjs/operators';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
@@ -101,6 +98,32 @@ export class CheckoutComponent implements OnInit {
       }, error => {
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+      });
+
+    this.orderFacade.getInitializationError$()
+      .subscribe(initializationError => {
+        this.generalError = initializationError;
+      })
+
+    this.orderFacade.getIsCheckingOut$()
+      .subscribe(isCheckingOut => {
+        if (isCheckingOut) {
+          this.blockUI.start('Bestellung wird verarbeitet...');
+        } else {
+          this.blockUI.stop();
+        }
+      })
+
+    this.orderFacade.getIsCheckedOut$()
+      .subscribe(isCheckedOut => {
+        if (!isCheckedOut)
+          return;
+        this.router.navigateByUrl('/order-summary');
+      })
+
+    this.orderFacade.getCheckoutError$()
+      .subscribe(checkoutError => {
+        this.generalError = checkoutError;
       });
 
     this.orderFacade.initialize();
@@ -294,17 +317,7 @@ export class CheckoutComponent implements OnInit {
 
     console.log('Checkout Model: ', checkoutModel);
 
-    this.blockUI.start('Bestellung wird verarbeitet...');
-    this.orderFacade.checkout$(checkoutModel)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.blockUI.stop();
-        this.generalError = undefined;
-        this.router.navigateByUrl('/order-summary');
-      }, (response: HttpErrorResponse) => {
-        this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-      });
+    this.orderFacade.checkout(checkoutModel);
   }
 
   private static roundOnQuarterHours(date: Date): Date {

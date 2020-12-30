@@ -516,27 +516,21 @@ export class OrderFacade {
   }
 
   public checkout(checkoutModel: CheckoutModel): void {
-    this.checkout$(checkoutModel).subscribe(() => {
-    });
-  }
-
-  public checkout$(checkoutModel: CheckoutModel): Observable<void> {
     this.isCheckingOut$.next(true);
-    return this.orderService.sendCheckoutAsync(checkoutModel)
-      .pipe(
-        take(1),
-        map(order => {
+    this.orderService.sendCheckoutAsync(checkoutModel)
+      .pipe(take(1))
+      .subscribe(order => {
           this.isCheckingOut$.next(false);
           this.isCheckedOut$.next(true);
           this.order$.next(order);
           this.discardCart();
-        }),
-        catchError((response: HttpErrorResponse) => {
+        },
+        (response: HttpErrorResponse) => {
           this.isCheckingOut$.next(false);
           this.isCheckedOut$.next(false);
           this.checkoutError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
           return throwError(response);
-        })
+        }
       );
   }
 
