@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {debounceTime, distinctUntilChanged, filter, take} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';

@@ -18,9 +18,10 @@ import {HttpErrorHandlingService} from '../../../shared/services/http-error-hand
 import {CartDishModel} from '../../../order/models/cart-dish.model';
 import {CartModel} from '../../../order/models/cart.model';
 import {CheckoutModel} from '../../../order/models/checkout.model';
+import {OrderTypeConverter} from "../../../order/models/order-type-converter";
 import {StoredCartDishModel} from '../../../order/models/stored-cart-dish.model';
 
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
 
 import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
 import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
@@ -56,7 +57,7 @@ export class CheckoutComponent implements OnInit {
   serviceTime: Date;
 
   constructor(
-    private orderService: OrderService,
+    private orderFacade: OrderFacade,
     private modalService: NgbModal,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private router: Router,
@@ -68,12 +69,12 @@ export class CheckoutComponent implements OnInit {
     this.initialized = false;
 
     this.blockUI.start();
-    this.orderService.initializeAsync()
+    this.orderFacade.initialize$()
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
 
-        const cart = this.orderService.getCart();
+        const cart = this.orderFacade.getCart();
         if (!cart) {
           this.generalError = 'Sie haben keine Gerichte im Warenkorb';
           return;
@@ -81,11 +82,11 @@ export class CheckoutComponent implements OnInit {
           this.generalError = undefined;
         }
 
-        this.restaurant = this.orderService.getRestaurant();
+        this.restaurant = this.orderFacade.getSelectedRestaurant();
 
-        this.dishCategories = this.orderService.getDishCategories();
+        this.dishCategories = this.orderFacade.getDishCategoriesOfSelectedRestaurant();
 
-        this.serviceTime = this.orderService.getCart().getServiceTime();
+        this.serviceTime = this.orderFacade.getCart().getServiceTime();
 
         if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
           this.serviceTime = CheckoutComponent.roundOnQuarterHours(new Date());
@@ -96,23 +97,6 @@ export class CheckoutComponent implements OnInit {
         this.blockUI.stop();
         this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
       });
-  }
-
-  hasLogo(): boolean {
-    return this.restaurant?.imageTypes.some(en => en === 'logo');
-  }
-
-  getLogoUrl(): string {
-    if (!this.restaurant) {
-      return undefined;
-    }
-    return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
-  }
-
-  hasBanner(
-    restaurant: RestaurantModel
-  ): boolean {
-    return restaurant.imageTypes.some(en => en === 'banner');
   }
 
   getBannerStyle(
@@ -230,7 +214,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getCart(): CartModel {
-    return this.orderService.getCart();
+    return this.orderFacade.getCart();
   }
 
   onBack(): void {
@@ -249,7 +233,7 @@ export class CheckoutComponent implements OnInit {
     if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
+    this.orderFacade.removeCartDishFromCart(cartDishVariant.getItemId());
   }
 
   isValid(): boolean {
@@ -283,7 +267,7 @@ export class CheckoutComponent implements OnInit {
     checkoutModel.phone = this.phone;
     checkoutModel.email = this.email;
     checkoutModel.addAddressInfo = this.comments;
-    checkoutModel.orderType = OrderService.translateFromOrderType(cart.getOrderType());
+    checkoutModel.orderType = OrderTypeConverter.convertToString(cart.getOrderType());
     checkoutModel.restaurantId = cart.getRestaurantId();
     checkoutModel.cartDishes = new Array<StoredCartDishModel>();
 
@@ -304,7 +288,7 @@ export class CheckoutComponent implements OnInit {
     console.log('Checkout Model: ', checkoutModel);
 
     this.blockUI.start('Bestellung wird verarbeitet...');
-    this.orderService.checkoutAsync(checkoutModel)
+    this.orderFacade.checkout$(checkoutModel)
       .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();

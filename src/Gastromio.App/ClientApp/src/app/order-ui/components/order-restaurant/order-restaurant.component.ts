@@ -15,9 +15,11 @@ import {RestaurantModel} from '../../../shared/models/restaurant.model';
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 import {DishModel} from '../../../shared/models/dish.model';
 
-import {OrderService} from '../../../order/services/order.service';
-import {CartModel, OrderType} from '../../../order/models/cart.model';
+import {CartModel} from '../../../order/models/cart.model';
 import {CartDishModel} from '../../../order/models/cart-dish.model';
+import {OrderType} from "../../../order/models/order-type";
+
+import {OrderFacade} from '../../../order/order.facade';
 
 import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.component';
 import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
@@ -52,15 +54,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   searchPhrase: string;
   filteredDishCategories: DishCategoryModel[];
 
-  currentDishCategoryDivId: string;
-
   proceedError: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private titleService: Title,
-    private orderService: OrderService,
+    private orderFacade: OrderFacade,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private modalService: NgbModal,
   ) {
@@ -112,20 +112,20 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     ];
 
     combineLatest(observables).pipe(take(1)).subscribe(() => {
-      this.orderService.selectRestaurantAsync(this.restaurantId).pipe(take(1)).subscribe(() => {
+      this.orderFacade.selectRestaurantId$(this.restaurantId).pipe(take(1)).subscribe(() => {
         this.blockUI.stop();
 
         try {
-          this.restaurant = this.orderService.getRestaurant();
-          this.dishCategories = this.orderService.getDishCategories();
+          this.restaurant = this.orderFacade.getSelectedRestaurant();
+          this.dishCategories = this.orderFacade.getDishCategoriesOfSelectedRestaurant();
           this.openingHours = this.restaurant.openingHoursTodayText;
 
-          const cart = this.orderService.getCart();
+          const cart = this.orderFacade.getCart();
 
           if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
-            this.orderService.startOrder(orderType, serviceTime);
+            this.orderFacade.startOrder(orderType, serviceTime);
           } else {
-            this.orderService.showCart();
+            this.orderFacade.showCart();
           }
 
           this.filterDishCategories();
@@ -152,30 +152,11 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  hasLogo(): boolean {
-    return this.restaurant?.imageTypes.some(en => en === 'logo');
-  }
-
-  getLogoUrl(): string {
-    if (!this.restaurant) {
-      return undefined;
-    }
-    return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
-  }
-
-  hasBanner(): boolean {
-    return this.restaurant?.imageTypes.some(en => en === 'banner');
-  }
-
   getBannerStyle(): string {
     if (!this.restaurant) {
       return undefined;
     }
     return 'url(\'/api/v1/restaurants/' + this.restaurant.id + '/images/banner' + '\')';
-  }
-
-  onDishCategoryChange(dishCategoryDivId: string): void {
-    this.currentDishCategoryDivId = dishCategoryDivId;
   }
 
   scrollToDishCategory(dishCategoryId: string): void {
@@ -194,26 +175,17 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     element.scrollIntoView();
   }
 
-  isCartEmpty(): boolean {
-    const cart = this.orderService.getCart();
-    return cart ? !cart.hasOrders() : false;
-  }
-
   isCartVisible(): boolean {
-    const cart = this.orderService.getCart();
+    const cart = this.orderFacade.getCart();
     return cart ? cart.isVisible() : false;
   }
 
   hideCart() {
-    this.orderService.hideCart();
-  }
-
-  showCart() {
-    this.orderService.showCart();
+    this.orderFacade.hideCart();
   }
 
   getCart(): CartModel {
-    return this.orderService.getCart();
+    return this.orderFacade.getCart();
   }
 
   openOpeningHoursModal(): void {
@@ -279,13 +251,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     return dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
   }
 
-  getRestaurantSubText(restaurant: RestaurantModel): string {
-    if (restaurant === undefined || restaurant.cuisines === undefined || restaurant.cuisines.length === 0) {
-      return '';
-    }
-    return restaurant.cuisines.map(en => en.name).join(', ');
-  }
-
   public onAddDishToCart(dish: DishModel): void {
     if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
       return;
@@ -311,7 +276,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.incrementCountOfCartDish(cartDishVariant.getItemId());
+    this.orderFacade.incrementCountOfCartDish(cartDishVariant.getItemId());
     this.proceedError = undefined;
   }
 
@@ -319,7 +284,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.decrementCountOfCartDish(cartDishVariant.getItemId());
+    this.orderFacade.decrementCountOfCartDish(cartDishVariant.getItemId());
     this.proceedError = undefined;
   }
 
@@ -327,7 +292,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (cartDishVariant === undefined) {
       return;
     }
-    this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
+    this.orderFacade.removeCartDishFromCart(cartDishVariant.getItemId());
     this.proceedError = undefined;
   }
 
@@ -341,14 +306,14 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   toggleCartVisibility(): void {
-    const cart = this.orderService.getCart();
+    const cart = this.orderFacade.getCart();
     if (!cart) {
       return;
     }
     if (cart.isVisible()) {
-      this.orderService.hideCart();
+      this.orderFacade.hideCart();
     } else {
-      this.orderService.showCart();
+      this.orderFacade.showCart();
     }
   }
 }

@@ -120,12 +120,6 @@ export class RestaurantAdminFacade {
     combineLatest(observables)
       .subscribe(
         () => {
-
-          //         this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
-
-          //               if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
-          //                 this.activeDishCategoryId = this.dishCategories[0].id;
-
           this.isInitializing$.next(false);
           this.isInitialized$.next(true);
         },

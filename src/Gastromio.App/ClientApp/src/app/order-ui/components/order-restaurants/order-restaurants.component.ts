@@ -11,7 +11,8 @@ import {RestaurantModel} from '../../../shared/models/restaurant.model';
 import {CuisineModel} from '../../../shared/models/cuisine.model';
 
 import {OrderFacade} from "../../../order/order.facade";
-import {OrderType} from '../../../order/models/cart.model';
+import {OrderType} from '../../../order/models/order-type';
+import {OrderTypeConverter} from "../../../order/models/order-type-converter";
 import {OrderService} from '../../../order/services/order.service';
 
 import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
@@ -62,7 +63,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedOrderType$ = this.orderFacade.getSelectedOrderType$()
       .pipe(
-        map(selectedOrderType => OrderService.translateFromOrderType(selectedOrderType))
+        map(selectedOrderType => OrderTypeConverter.convertToString(selectedOrderType))
       );
 
     this.selectedOrderTime$ = this.orderFacade.getSelectedOrderTime$();

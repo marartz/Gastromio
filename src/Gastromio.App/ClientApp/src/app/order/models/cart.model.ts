@@ -1,4 +1,5 @@
 import {CartDishModel} from './cart-dish.model';
+import {OrderType} from "./order-type";
 
 export class CartModel {
   constructor(
@@ -180,8 +181,3 @@ export class CartModel {
   }
 }
 
-export enum OrderType {
-  Pickup,
-  Delivery,
-  Reservation
-}
