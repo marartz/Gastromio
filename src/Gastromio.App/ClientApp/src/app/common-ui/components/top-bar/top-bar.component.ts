@@ -3,8 +3,6 @@ import {Router} from '@angular/router';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {take} from 'rxjs/operators';
-
 import {UserModel} from '../../../shared/models/user.model';
 
 import {AuthService} from '../../../auth/services/auth.service';

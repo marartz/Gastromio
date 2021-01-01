@@ -29,6 +29,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   cuisines: CuisineModel[];
 
+  selectedSearchPhrase$: Observable<string>;
   selectedOrderType$: Observable<string>;
   selectedOrderTime$: Observable<Date>;
   selectedOrderTimeText$: Observable<string>;
@@ -57,6 +58,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
           this.blockUI.stop();
         }
       });
+
+    this.selectedSearchPhrase$ = this.orderFacade.getSelectedSearchPhrase$();
 
     this.selectedOrderType$ = this.orderFacade.getSelectedOrderType$()
       .pipe(

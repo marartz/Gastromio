@@ -18,7 +18,7 @@
                         <button type="button" class="filtern" (click)="onToggleMobileFilterDetails()">Filtern</button>
                         <div class="search">
                             <div class="icon-wrapper"><div class="icon"></div></div>
-                            <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchType($event.target.value)">
+                            <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." [value]="selectedSearchPhrase$ | async" (keyup)="onSearchType($event.target.value)">
                         </div>
                     </div>
                     <ng-container *ngIf="showMobileFilterDetails">
@@ -111,7 +111,7 @@
                             <div id="restaurants">
                                 <div id="search">
                                     <div class="icon-wrapper"><div class="icon"></div></div>
-                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
+                                    <input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Restaurant suchen ..." [value]="selectedSearchPhrase$ | async" (keyup)="onSearchType($event.target.value)">
                                 </div>
 
                                 <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants$ | async" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
