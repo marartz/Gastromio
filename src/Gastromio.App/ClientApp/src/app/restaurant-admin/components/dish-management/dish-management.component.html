@@ -100,8 +100,15 @@
                                         <p class="email">{{dish.name}} <br/><span
                                             style="font-size: 80%">{{dish.description}}</span></p>
                                     </th>
-                                    <th><p class="email">{{getPricesOfDish(dish)}}</p></th>
-                                    <td class="actions">
+                                    <th>
+                                        <ng-container *ngIf="dish.variants?.length === 1">
+                                            <p class="email">{{getPriceOfVariant(dish.variants[0])}}</p>
+                                        </ng-container>
+                                        <ng-container *ngIf="dish.variants?.length > 1">
+                                            <p class="email" *ngFor="let variant of dish.variants" style="font-size: 80%">{{variant.name}}: {{getPriceOfVariant(dish.variants[0])}}</p>
+                                        </ng-container>
+                                    </th>
+                                    <td class="actions" style="min-width: 8em;">
                                         <button (click)="openEditDishForm(dishCategory, dish)" class="action-item"
                                            placement="top" ngbTooltip="Bearbeiten">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"

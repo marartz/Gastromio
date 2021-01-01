@@ -6,6 +6,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {DishCategoryModel} from "../../../shared/models/dish-category.model";
 import {DishModel} from "../../../shared/models/dish.model";
+import {DishVariantModel} from "../../../shared/models/dish-variant.model";
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 
@@ -156,26 +157,9 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     return pos === dishCategory.dishes.length - 1;
   }
 
-  public getPricesOfDish(dish: DishModel): string {
-    if (!dish.variants || dish.variants.length === 0) {
-      return '';
-    }
-
-    if (dish.variants.length === 1) {
-      return '€' + dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
-    }
-
-    let result = '';
-    for (const variant of dish.variants) {
-      if (result.length > 0) {
-        result += '; ';
-      }
-      result += variant.name + ' €' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
-    }
-
-    return result;
+  public getPriceOfVariant(variant: DishVariantModel): string {
+    return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
   }
-
 
   public onChangeActiveDishCategoryId(dishCategoryId: string): void {
     this.activeDishCategoryId$.next(dishCategoryId);
