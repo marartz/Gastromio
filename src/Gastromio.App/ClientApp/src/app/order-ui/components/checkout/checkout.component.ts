@@ -76,7 +76,6 @@ export class CheckoutComponent implements OnInit {
 
     this.orderFacade.getIsInitialized$()
       .subscribe(isInitialized => {
-        this.initialized = isInitialized;
         if (!isInitialized)
           return;
 
@@ -87,6 +86,8 @@ export class CheckoutComponent implements OnInit {
         } else {
           this.generalError = undefined;
         }
+
+        this.initialized = isInitialized;
 
         this.restaurant = this.orderFacade.getSelectedRestaurant();
         this.dishCategories = this.orderFacade.getDishCategoriesOfSelectedRestaurant();
