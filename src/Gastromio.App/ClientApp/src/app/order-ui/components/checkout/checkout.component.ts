@@ -55,6 +55,8 @@ export class CheckoutComponent implements OnInit {
   paymentMethodId: string;
   serviceTime: Date;
 
+  isPhoneNumberVisible: boolean = false;
+
   constructor(
     private orderService: OrderService,
     private modalService: NgbModal,
@@ -250,6 +252,10 @@ export class CheckoutComponent implements OnInit {
       return;
     }
     this.orderService.removeCartDishFromCart(cartDishVariant.getItemId());
+  }
+
+  public showPhone(): void {
+    this.isPhoneNumberVisible = true;
   }
 
   isValid(): boolean {
