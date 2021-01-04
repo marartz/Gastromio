@@ -33,6 +33,8 @@ namespace Gastromio.Persistence.MongoDB
         
         public List<Guid> Administrators { get; set; }
         
+        public List<Guid> Communities { get; set; }
+        
         public string ImportId { get; set; }
         
         public bool IsActive { get; set; }

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model.Community;
 using Gastromio.Core.Domain.Model.Cuisine;
 using Gastromio.Core.Domain.Model.PaymentMethod;
 using Gastromio.Core.Domain.Model.User;
@@ -17,6 +18,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         private ISet<CuisineId> cuisines;
         private ISet<PaymentMethodId> paymentMethods;
         private ISet<UserId> administrators;
+        private ISet<CommunityId> communities;
         private readonly IDictionary<Guid, ExternalMenu> externalMenus;
 
         public Restaurant(
@@ -43,6 +45,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             paymentMethods = new HashSet<PaymentMethodId>();
             administrators = new HashSet<UserId>();
             externalMenus = new Dictionary<Guid, ExternalMenu>();
+            communities = new HashSet<CommunityId>();
         }
 
         public Restaurant(
@@ -60,6 +63,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             ISet<CuisineId> cuisines,
             ISet<PaymentMethodId> paymentMethods,
             ISet<UserId> administrators,
+            ISet<CommunityId> communities,
             string importId,
             bool isActive,
             bool needsSupport,
@@ -97,6 +101,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             this.cuisines = cuisines ?? new HashSet<CuisineId>();
             this.paymentMethods = paymentMethods ?? new HashSet<PaymentMethodId>();
             this.administrators = administrators ?? new HashSet<UserId>();
+            this.communities = communities ?? new HashSet<CommunityId>();
         }
 
         public RestaurantId Id { get; }
@@ -131,6 +136,9 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
         public IReadOnlyCollection<UserId> Administrators =>
             administrators != null ? new ReadOnlyCollection<UserId>(administrators.ToList()) : null;
+
+        public IReadOnlyCollection<CommunityId> Communities =>
+            communities != null ? new ReadOnlyCollection<CommunityId>(communities.ToList()) : null;
 
         public string ImportId { get; private set; }
 
@@ -569,6 +577,28 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (administrators == null || !administrators.Contains(userId))
                 return SuccessResult<bool>.Create(true);
             administrators.Remove(userId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> AddCommunity(CommunityId communityId, UserId changedBy)
+        {
+            if (communities != null && communities.Contains(communityId))
+                return SuccessResult<bool>.Create(true);
+            if (communities == null)
+                communities = new HashSet<CommunityId>();
+            communities.Add(communityId);
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RemoveCommunity(CommunityId communityId, UserId changedBy)
+        {
+            if (communities == null || !communities.Contains(communityId))
+                return SuccessResult<bool>.Create(true);
+            communities.Remove(communityId);
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);

@@ -3,6 +3,7 @@
     public static class Constants
     {
         public static string DatabaseName = "gastromio";
+        public static string CommunityCollectionName = "communities";
         public static string CuisineCollectionName = "cuisines";
         public static string DishCategoryCollectionName = "dish_categories";
         public static string DishCollectionName = "dishes";

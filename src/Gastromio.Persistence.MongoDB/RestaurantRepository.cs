@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model.Community;
 using Gastromio.Core.Domain.Model.Cuisine;
 using Gastromio.Core.Domain.Model.Order;
 using Gastromio.Core.Domain.Model.PaymentMethod;
@@ -409,6 +410,7 @@ namespace Gastromio.Persistence.MongoDB
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
                 new HashSet<PaymentMethodId>(document.PaymentMethods.Select(en => new PaymentMethodId(en))),
                 new HashSet<UserId>(document.Administrators.Select(en => new UserId(en))),
+                new HashSet<CommunityId>(document.Communities.Select(en => new CommunityId(en))),
                 document.ImportId,
                 document.IsActive,
                 document.NeedsSupport,
@@ -518,6 +520,9 @@ namespace Gastromio.Persistence.MongoDB
                     : new List<Guid>(),
                 Administrators = obj.Administrators != null
                     ? obj.Administrators.Select(en => en.Value).ToList()
+                    : new List<Guid>(),
+                Communities = obj.Communities != null
+                    ? obj.Communities.Select(en => en.Value).ToList()
                     : new List<Guid>(),
                 ImportId = obj.ImportId,
                 IsActive = obj.IsActive,
