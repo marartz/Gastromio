@@ -53,6 +53,9 @@
                         font-style: normal;
                         width: 14.285714%;
                     }
+					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week {
+                        border-radius: 0px;
+                    }
                     :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week:not(.ngb-dp-weekdays) {
                         background-color: #DECF80;
                     }
@@ -98,7 +101,7 @@
                 <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
                 <ngb-timepicker class="timepicker" [(ngModel)]="time" [minuteStep]="15" (ngModelChange)="onTimeChanged()" style="margin-left: auto; margin-right: auto; display: flex; justify-content: center;"></ngb-timepicker>
             </div>
-            <div id="submit"><button class="bg-blue" type="button" (click)="onClose()">Uhrzeit wählen</button></div>
+            <div id="submit"><button class="bg-grey" type="button" (click)="onClose()">Uhrzeit wählen</button></div>
         </div>
     </div>
 </div>

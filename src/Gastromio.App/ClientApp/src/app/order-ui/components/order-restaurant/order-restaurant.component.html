@@ -1,88 +1,281 @@
 <div id="root">
-    <div class="layout">
+	<div class="layout">
+	
         <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
-        <div id="order-restaurant" *ngIf="generalError === undefined && initialized">
-
-            <section id="hero" class="hasrestaurantbanner" [style.background-image]="getBannerStyle()"
-                     style="background-repeat: no-repeat; background-size: cover;">
-                <div class="wrapper">
-                    <div id="text">
-                        <h1 class="name restrip" (click)="openImprintModal()">{{restaurant.name}}</h1>
-                        <h2 class="info">
-                            <span>{{restaurant.address.street}}, {{restaurant.address.city}}<br /></span>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> (Nur telefonische Bestellung)</span></ng-container>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> (Telefonische Bestellung & Online-Vorbestellung)</span></ng-container>
-                            <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> (Telefonische Bestellung & Online-Bestellung)</span></ng-container>
-                            <span *ngIf="restaurant.openingHoursTodayText !== null"><br />Heute von {{restaurant.openingHoursTodayText}} geöffnet</span>
-                            <span *ngIf="!restaurant.isOpen(undefined)"><br />Heute {{restaurant.getRestaurantClosedReason(undefined)}}</span>
-                        </h2>
-                    </div>
-                </div>
-            </section>
-
+		<main id="order-restaurant" *ngIf="generalError === undefined && initialized">
+			
+			<header 
+					 class="overlay"
+					 id="hero"
+					 style="background-repeat: no-repeat; background-size: cover;"
+					 [style.background-image]="getBannerStyle()"
+					 >
+				<div class="common-container">
+					<div id="text">
+						<h1
+							class="restaurant-name"
+							data-aos="gm-move-up"
+							data-aos-anchor="#order"
+							data-aos-delay="100"
+							data-aos-duration="800"
+							data-aos-once="true"
+							(click)="openImprintModal()"
+							>
+							{{restaurant.name}}
+						</h1>
+						<h2
+							class="restaurant-address"
+							data-aos="gm-move-up"
+							data-aos-anchor="#order"
+							data-aos-delay="200"
+							data-aos-duration="800"
+							data-aos-once="true"
+							>
+							{{restaurant.address.street}}, {{restaurant.address.city}}
+						</h2>
+						<h2
+							class="restaurant-hours"
+							data-aos="gm-move-up"
+							data-aos-anchor="#order"
+							data-aos-delay="300"
+							data-aos-duration="800"
+							data-aos-once="true"
+							>
+							<ng-container *ngIf="restaurant.openingHoursTodayText !== null">
+								<span>Geöffnet von {{restaurant.openingHoursTodayText}} Uhr</span>
+							</ng-container>
+							<ng-container *ngIf="!restaurant.isOpen(undefined)">
+								<span style="text-transform: capitalize">{{restaurant.getRestaurantClosedReason(undefined)}}</span>
+							</ng-container>
+						</h2>
+						<h2
+							class="restaurant-info"
+							data-aos="gm-move-up"
+							data-aos-anchor="#order"
+							data-aos-delay="400"
+							data-aos-duration="800"
+							data-aos-once="true"
+							>
+							<ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span>Telefonische Bestellung</span></ng-container>
+							<ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span>Online-Vorbestellung</span></ng-container>
+							<ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span>Online-Bestellung</span></ng-container>
+						</h2>
+					</div>
+				</div>
+			</header>
+		
             <section id="order">
+				
+				<!-- START: _3_advanced-filter -->
+				<section
+					 data-aos="gm-move-down"
+					 data-aos-anchor="#order"
+					 data-aos-delay="300"
+					 data-aos-duration="800"
+					 data-aos-once="true"
+					 id="filter-mobile"
+					 >
+					<button class="cart-open" type="button" (click)="toggleCartVisibility()">Warenkorb</button>
+					<div class="search">
+						<div class="icon-wrapper"><div class="icon"></div></div>
+						<input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchTextChanged($event.target.value)">
+					</div>
+				</section>
+				<!-- ENDE: _3_advanced-filter -->
+				
                 <div class="wrapper">
                     <div class="inner">
 
-                        <aside>
-                            <div class="filter-wrapper">
-                                <div id="restaurant-count">Speisekarte</div>
-                                <div id="cuisine-filter">
-                                    <p class="title">Filter</p>
-                                    <div class="cuisine-container">
-                                        <div class="cuisine" *ngFor="let dishCategory of dishCategories">
-                                            <button type="button"
-                                                    (click)="scrollToDishCategory(dishCategory.id)">{{dishCategory.name}}</button>
-                                        </div>
-                                        <div class="cuisine" *ngFor="let externalMenu of restaurant.externalMenus">
-                                            <button type="button"
-                                                    (click)="scrollToExternalMenu(externalMenu.id)">{{externalMenu.name}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+						<section
+								 data-aos="gm-move-down"
+								 data-aos-anchor="#order"
+								 data-aos-delay="300"
+								 data-aos-duration="800"
+								 data-aos-once="true"
+								 id="actions"
+								 >
+							<h2 class="title">Speisekarte</h2>
+							<div class="restaurant-actions">
+								<div class="restaurant-search">
+									<div class="icon-wrapper"><div class="icon"></div></div>
+									<input
+										   autocomplete="off"
+										   inputmode="latin"
+										   maxlength="100"
+										   placeholder="Gericht suchen ..."
+										   spellcheck="false"
+										   type="text"
+										   (keyup)="onSearchTextChanged($event.target.value)"
+										   >
+								</div>
+								<div class="restaurant-open-cart" (click)="toggleCartVisibility()">
+									<div class="cart-icon"><span></span></div>
+								</div>
+							</div>
+						</section>
+						
+						<!-- START: Filter -->
+                        <aside id="filter">
+							<section id="categories">
+								<p
+								   class="title"
+								   data-aos="gm-move-down"
+								   data-aos-anchor="#order"
+								   data-aos-delay="500"
+								   data-aos-duration="800"
+								   data-aos-once="true"
+								   >
+									Filter
+								</p>
+								<div class="category-container">
+									<div class="category" *ngFor="let dishCategory of dishCategories">
+										<button 
+												data-aos="gm-move-down"
+												data-aos-anchor="#order"
+												data-aos-delay="900"
+												data-aos-duration="800"
+												data-aos-once="true"
+												type="button"
+												(click)="scrollToDishCategory(dishCategory.id)"
+												>
+											{{dishCategory.name}}
+										</button>
+									</div>
+									<div class="category" *ngFor="let externalMenu of restaurant.externalMenus">
+										<button
+												data-aos="gm-move-down"
+												data-aos-anchor="#order"
+												data-aos-delay="1000"
+												data-aos-duration="800"
+												data-aos-once="true"
+												type="button"
+												(click)="scrollToExternalMenu(externalMenu.id)"
+												>
+											{{externalMenu.name}}
+										</button>
+									</div>
+								</div>
+							</section>
                         </aside>
+						<!-- ENDE: Filter -->
 
-                        <div id="restaurants">
-                            <div id="search">
-                                <div class="icon-wrapper">
-                                    <div class="icon"></div>
-                                </div>
-                                <input type="text" autocomplete="off" inputmode="latin" maxlength="100"
-                                       spellcheck="false" placeholder="Gericht suchen ..."
-                                       (keyup)="onSearchTextChanged($event.target.value)">
-                            </div>
+						<!-- START: Restaurant-Speisen -->
+                        <section id="menu">
                             <div *ngFor="let dishCategory of filteredDishCategories">
-                                <p class="dish-category" id="dc{{dishCategory.id}}">{{dishCategory.name}}</p>
-                                <a id="restaurant" class="dish" (click)="onAddDishToCart(dish)"
-                                   *ngFor="let dish of dishCategory.dishes">
-                                    <div id="infos">
-                                        <h2 class="dish-name" id="{{dish.name}}">
-                                            <span class="dish-n">{{dish.name}}</span>
-                                            <span class="dish-price">{{getFirstDishVariant(dish)}} &euro;</span>
-                                        </h2>
-                                        <p class="dish-description" style="margin-bottom: 0px;">{{dish.description}}</p>
+                                <p
+								   class="dish-category"
+								   data-aos="gm-move-down"
+								   data-aos-anchor="#order"
+								   data-aos-delay="500"
+								   data-aos-duration="800"
+								   data-aos-once="true"
+								   id="dc{{dishCategory.id}}"
+								   >
+									{{dishCategory.name}}
+								</p>
+                                <a
+								   class="dish"
+								   itemscope=""
+								   itemtype="http://schema.org/Product"
+								   (click)="onAddDishToCart(dish)"
+								   *ngFor="let dish of dishCategory.dishes"
+								   >
+                                    <div class="dish-body">
+										<div class="dish-information">
+											<h2
+												class="dish-name"
+												data-aos="gm-move-down"
+												data-aos-anchor="#order"
+												data-aos-delay="900"
+												data-aos-duration="800"
+												data-aos-once="true"
+												id="{{dish.name}}"
+												itemprop="name"
+												>
+												{{dish.name}}
+											</h2>
+											<p
+											   class="dish-description"
+											   data-aos="gm-move-down"
+											   data-aos-anchor="#order"
+											   data-aos-delay="1000"
+											   data-aos-duration="800"
+											   data-aos-once="true"
+											   itemprop="description"
+											   >
+												{{dish.description}}
+											</p>
+										</div>
+										<div
+											 class="dish-price"
+											 data-aos="gm-move-down"
+											 data-aos-anchor="#order"
+											 data-aos-delay="900"
+											 data-aos-duration="800"
+											 data-aos-once="true"
+											 itemprop="price"
+											 >
+											{{getFirstDishVariant(dish)}} &euro;
+										</div>
                                     </div>
                                 </a>
                             </div>
                             <div *ngFor="let externalMenu of restaurant.externalMenus">
-                                <p class="dish-category" id="em{{externalMenu.id}}">{{externalMenu.name}}</p>
-                                <a id="restaurant" class="dish" href="{{externalMenu.url}}" target="_blank">
-                                    <div id="infos">
-                                        <h2 class="dish-name external">{{externalMenu.name}}</h2>
-                                        <p class="dish-description" style="margin-bottom: 0px;">{{externalMenu.description}}</p>
+                                <p
+								   class="dish-category"
+								   data-aos="gm-move-down"
+								   data-aos-delay="500"
+								   data-aos-duration="800"
+								   data-aos-once="true"
+								   id="em{{externalMenu.id}}"
+								   >
+									{{externalMenu.name}}
+								</p>
+                                <a
+								   class="dish"
+								   data-aos="gm-move-down"
+								   data-aos-delay="800"
+								   data-aos-duration="800"
+								   data-aos-once="true"
+								   href="{{externalMenu.url}}"
+								   rel="nofollow noreferrer"
+								   target="_blank"
+								   >
+                                    <div class="dish-body">
+										<div class="dish-information">
+											<h2
+												class="dish-name"
+												data-aos="gm-move-down"
+												data-aos-anchor="#order"
+												data-aos-delay="900"
+												data-aos-duration="800"
+												data-aos-once="true"
+												>
+												{{externalMenu.name}}
+											</h2>
+											<p
+											   class="dish-description"
+											   data-aos="gm-move-down"
+											   data-aos-anchor="#order"
+											   data-aos-delay="1000"
+											   data-aos-duration="800"
+											   data-aos-once="true"
+											   >
+												{{externalMenu.description}}
+											</p>
+										</div>
                                     </div>
                                 </a>
                             </div>
-                        </div>
+                        </section>
+						<!-- ENDE: Restaurant-Speisen -->
 
                     </div>
                 </div>
             </section>
 
-        </div>
-    </div>
-
+        </main>
+</div>
     <div id="checkout" role="complementary" [class.visible]="isCartVisible()" *ngIf="restaurant !== undefined">
         <div id="close"><button (click)="toggleCartVisibility()" type="button" aria-label="Schließen"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
         <section id="cart">

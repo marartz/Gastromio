@@ -14,7 +14,7 @@ import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.ser
 @Component({
   selector: 'app-admin-dish-import',
   templateUrl: './admin-dish-import.component.html',
-  styleUrls: ['./admin-dish-import.component.css', '../../../../assets/css/frontend_v2.min.css', '../../../../assets/css/backend_v2.min.css']
+  styleUrls: ['./admin-dish-import.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css']
 })
 export class AdminDishImportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;

@@ -11,7 +11,7 @@ import {ServiceInfoModel} from "../../../shared/models/restaurant.model";
   templateUrl: './order-settings.component.html',
   styleUrls: [
     './order-settings.component.css',
-    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css'
   ]
 })

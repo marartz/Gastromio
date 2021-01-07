@@ -17,7 +17,7 @@ import {RemoveCuisineComponent} from '../remove-cuisine/remove-cuisine.component
   templateUrl: './admin-cuisines.component.html',
   styleUrls: [
     './admin-cuisines.component.css',
-    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css'
   ]
 })

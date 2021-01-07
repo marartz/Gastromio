@@ -9,7 +9,7 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
   templateUrl: './image-settings.component.html',
   styleUrls: [
     './image-settings.component.css',
-    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css'
   ]
 })
