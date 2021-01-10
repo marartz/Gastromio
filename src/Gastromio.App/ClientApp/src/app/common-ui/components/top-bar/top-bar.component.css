@@ -75,6 +75,12 @@
 	z-index: 160;
 }
 
+@media screen and (max-width: 768px) {
+	#top-bar .links ul {
+		left: -140px !important;
+	}
+}
+
 #top-bar .links ul li {
 	display: list-item;
 	opacity: 0.85;
