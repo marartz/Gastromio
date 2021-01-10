@@ -1,56 +1,217 @@
 <block-ui delayStart="500">
+	<main id="backend" *ngIf="isInitialized$ | async">
+		
+		<header id="header">
+			<div class="common-container">
+				<h1
+					data-aos="gm-move-down"
+					data-aos-anchor="#backend"
+					data-aos-delay="100"
+					data-aos-duration="800"
+					data-aos-once="true"
+					>
+					Admin Bereich
+				</h1>
+				<h3
+					data-aos="gm-move-down"
+					data-aos-anchor="#backend"
+					data-aos-delay="400"
+					data-aos-duration="800"
+					data-aos-once="true"
+					>
+					Hier können Sie Ihre Daten verwalten, um Gastromio <br>
+					optimal an Ihre Bedürfnisse anzupassen.
+				</h3>
+			</div>
+		</header>
+
+		<div class="common-container">
+			<aside id="drawer-mobile">
+			<nav class="links">
+				<ul>
+					<li
+						class="drawer-item"
+						data-aos="gm-move-down"
+						data-aos-anchor="#backend"
+						data-aos-delay="500"
+						data-aos-duration="800"
+						data-aos-once="true"
+						[class.active]="(selectedTab$ | async) === 'general'"
+						(click)="selectTab('general')"
+						>
+						<a>Allgemeines</a>
+					</li>
+					<li
+						class="drawer-item disabled"
+						data-aos="gm-move-down"
+						data-aos-anchor="#backend"
+						data-aos-delay="600"
+						data-aos-duration="800"
+						data-aos-once="true"
+						>
+						<a>Passwort</a>
+					</li>
+					<li
+						class="drawer-item"
+						data-aos="gm-move-down"
+						data-aos-anchor="#backend"
+						data-aos-delay="700"
+						data-aos-duration="800"
+						data-aos-once="true"
+						[class.active]="(selectedTab$ | async) === 'order'"
+						(click)="selectTab('order')"
+						>
+						<a>Bestellung</a>
+					</li>
+					<li
+						class="drawer-item"
+						data-aos="gm-move-down"
+						data-aos-anchor="#backend"
+						data-aos-delay="800"
+						data-aos-duration="800"
+						data-aos-once="true"
+						[class.active]="(selectedTab$ | async) === 'payment'"
+						(click)="selectTab('payment')"
+						>
+						<a>Zahlung</a>
+					</li>
+					<li
+						class="drawer-item"
+						data-aos="gm-move-down"
+						data-aos-anchor="#backend"
+						data-aos-delay="900"
+						data-aos-duration="800"
+						data-aos-once="true"
+						[class.active]="(selectedTab$ | async) === 'opening-hours'"
+						(click)="selectTab('opening-hours')"
+						>
+						<a>Zeiten</a>
+					</li>
+					<li
+						class="drawer-item"
+						data-aos="gm-move-down"
+						data-aos-anchor="#backend"
+						data-aos-delay="1000"
+						data-aos-duration="800"
+						data-aos-once="true"
+						[class.active]="(selectedTab$ | async) === 'dishes'"
+						(click)="selectTab('dishes')"
+						>
+						<a>Speisen</a>
+					</li>
+				</ul>
+			</nav>
+		</aside>
+			<section id="body">
+				
+				<aside id="drawer">
+					<ul class="links">
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="500"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'general'"
+							(click)="selectTab('general')"
+							>
+							<div><a>Allgemeine Daten</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item disabled"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="600"
+							data-aos-duration="800"
+							data-aos-once="true"
+							>
+							<div><a>Passwort</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="700"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'order'"
+							(click)="selectTab('order')"
+							>
+							<div><a>Bestellabwicklung</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="800"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'payment'"
+							(click)="selectTab('payment')"
+							>
+							<div><a>Zahlungsmethoden</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="900"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'opening-hours'"
+							(click)="selectTab('opening-hours')"
+							>
+							<div><a>Öffnungszeiten</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="1000"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'dishes'"
+							(click)="selectTab('dishes')"
+							>
+							<div><a>Speisekarte</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+					</ul>
+				</aside>
+				
+				<section
+						 data-aos="fade"
+						 data-aos-delay="800"
+						 data-aos-duration="1200"
+						 data-aos-once="false"
+						 id="page"
+						 >
+					<app-general-settings *ngIf="(selectedTab$ | async) === 'general'"></app-general-settings>
+					<app-image-settings *ngIf="(selectedTab$ | async) === 'image'"></app-image-settings>
+					<app-order-settings *ngIf="(selectedTab$ | async) === 'order'"></app-order-settings>
+					<app-payment-settings *ngIf="(selectedTab$ | async) === 'payment'"></app-payment-settings>
+					<app-opening-hours-settings *ngIf="(selectedTab$ | async) === 'opening-hours'"></app-opening-hours-settings>
+					<app-dish-management *ngIf="(selectedTab$ | async) === 'dishes'"></app-dish-management>
+				</section>
+					
+			</section>
+		</div>
+		
+	</main>
+	
+	
+	
     <div id="app">
 
         <div id="notice" class="warning" *ngIf="(initializationError$ | async) !== undefined"><p>Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p></div>
         <div id="notice" class="warning" *ngIf="(updateError$ | async) !== undefined"><p>{{(updateError$ | async)}}</p></div>
         <div id="notice" class="success" *ngIf="(isUpdated$ | async) === true"><p>Änderungen wurden gespeichert.</p></div>
 
-        <div id="backend" *ngIf="isInitialized$ | async">
-
-            <section id="hero">
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="inner-wrapper">
-                            <div id="title">
-                                <div class="col">
-                                    <span>Verwaltung</span>
-                                    <h1>{{(restaurant$ | async).name}}</h1>
-                                </div>
-                            </div>
-                            <div id="links">
-                                <div class="col">
-                                    <ul class="nav-tabs">
-                                        <li class="tab"><a [class.active]="(selectedTab$ | async) === 'general'" (click)="selectTab('general')">Allgemein</a></li>
-                                        <li class="tab"><a [class.active]="(selectedTab$ | async) === 'image'" (click)="selectTab('image')">Grafiken</a></li>
-                                        <li class="tab"><a [class.active]="(selectedTab$ | async) === 'order'" (click)="selectTab('order')">Bestellung</a></li>
-                                        <li class="tab"><a [class.active]="(selectedTab$ | async) === 'payment'" (click)="selectTab('payment')">Bezahlung</a></li>
-                                        <li class="tab"><a [class.active]="(selectedTab$ | async) === 'opening-hours'" (click)="selectTab('opening-hours')">Öffnungszeiten</a></li>
-                                        <li class="tab"><a [class.active]="(selectedTab$ | async) === 'dishes'" (click)="selectTab('dishes')">Speisen</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="content">
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="inner-wrapper">
-                            <div>
-                                <app-general-settings *ngIf="(selectedTab$ | async) === 'general'"></app-general-settings>
-                                <app-image-settings *ngIf="(selectedTab$ | async) === 'image'"></app-image-settings>
-                                <app-order-settings *ngIf="(selectedTab$ | async) === 'order'"></app-order-settings>
-                                <app-payment-settings *ngIf="(selectedTab$ | async) === 'payment'"></app-payment-settings>
-                                <app-opening-hours-settings *ngIf="(selectedTab$ | async) === 'opening-hours'"></app-opening-hours-settings>
-                                <app-dish-management *ngIf="(selectedTab$ | async) === 'dishes'"></app-dish-management>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </div>
     </div>
 </block-ui>
