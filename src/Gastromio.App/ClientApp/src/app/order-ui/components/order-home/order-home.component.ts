@@ -54,17 +54,6 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
     this.orderFacade.setSelectedSearchPhrase(value);
   }
 
-  updateSearch(): void {
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase, undefined, '', undefined)
-      .subscribe((result) => {
-        let count = Math.min(result.length, 6);
-
-        this.restaurants = new Array<RestaurantModel>(count);
-
-        for (let i = 0; i < count; i++) {
-          this.restaurants[i] = new RestaurantModel(result[i]);
-        }
-
   onShowAll(): void {
     this.orderFacade.resetFilters();
     this.router.navigate(['/restaurants']);
