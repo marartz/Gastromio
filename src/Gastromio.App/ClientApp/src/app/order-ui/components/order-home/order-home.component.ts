@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {map, take} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
@@ -53,6 +53,17 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   onSearchType(value: string) {
     this.orderFacade.setSelectedSearchPhrase(value);
   }
+
+  updateSearch(): void {
+    this.orderService.searchForRestaurantsAsync(this.searchPhrase, undefined, '', undefined)
+      .subscribe((result) => {
+        let count = Math.min(result.length, 6);
+
+        this.restaurants = new Array<RestaurantModel>(count);
+
+        for (let i = 0; i < count; i++) {
+          this.restaurants[i] = new RestaurantModel(result[i]);
+        }
 
   onShowAll(): void {
     this.orderFacade.resetFilters();

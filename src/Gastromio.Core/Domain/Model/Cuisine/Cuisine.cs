@@ -52,9 +52,9 @@ namespace Gastromio.Core.Domain.Model.Cuisine
         public Result<bool> ChangeName(string name, UserId updatedBy)
         {
             if (string.IsNullOrEmpty(name))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
+                return FailureResult<bool>.Create(FailureResultCode.CuisineNameIsRequired);
             if (name.Length > 100)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
+                return FailureResult<bool>.Create(FailureResultCode.CuisineNameTooLong, 100);
 
             Name = name;
             UpdatedOn = DateTime.UtcNow;

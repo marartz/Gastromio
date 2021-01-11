@@ -44,7 +44,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
                 return FailureResult<bool>.Forbidden();
 
             if (string.IsNullOrWhiteSpace(command.Type))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, "Type");
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageTypeRequired);
 
             if (command.Image == null)
             {

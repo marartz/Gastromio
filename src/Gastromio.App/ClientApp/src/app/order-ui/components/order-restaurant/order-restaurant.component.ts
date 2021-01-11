@@ -115,7 +115,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     ];
 
     combineLatest(observables).pipe(take(1)).subscribe(() => {
-      this.orderFacade.selectRestaurantId$(this.restaurantId).pipe(take(1)).subscribe(() => {
+      this.orderFacade.selectRestaurantId$(this.restaurantId).subscribe(() => {
         this.blockUI.stop();
 
         try {

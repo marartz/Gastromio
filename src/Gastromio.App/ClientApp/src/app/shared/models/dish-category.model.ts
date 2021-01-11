@@ -1,8 +1,12 @@
 import {DishModel} from './dish.model';
 
 export class DishCategoryModel {
+
   constructor(init?: Partial<DishCategoryModel>) {
-    Object.assign(this, init);
+    if (init) {
+      Object.assign(this, init);
+    }
+    this.dishes = this.dishes?.map(dish => new DishModel(dish));
   }
 
   public id: string;
@@ -10,4 +14,13 @@ export class DishCategoryModel {
   public name: string;
 
   public dishes: Array<DishModel>;
+
+  public clone(): DishCategoryModel {
+    return new DishCategoryModel({
+      id: this.id,
+      name: this.name,
+      dishes: this.dishes?.map(dish => dish?.clone())
+    });
+  }
+
 }

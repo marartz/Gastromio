@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
+import {take} from "rxjs/operators";
 
 import {CuisineModel} from '../../shared/models/cuisine.model';
 
@@ -25,7 +26,8 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions);
+    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions)
+      .pipe(take(1));
   }
 
   public addCuisineAsync(name: string): Observable<CuisineModel> {
@@ -36,7 +38,8 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', {name}, httpOptions);
+    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', {name}, httpOptions)
+      .pipe(take(1));
   }
 
   public changeCuisineAsync(cuisineId: string, name: string): Observable<boolean> {
@@ -47,7 +50,8 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', {name}, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', {name}, httpOptions)
+      .pipe(take(1));
   }
 
   public removeCuisineAsync(cuisineId: string): Observable<void> {
@@ -58,6 +62,7 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.delete<void>(this.baseUrl + '/cuisines/' + cuisineId, httpOptions);
+    return this.http.delete<void>(this.baseUrl + '/cuisines/' + cuisineId, httpOptions)
+      .pipe(take(1));
   }
 }

@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {take} from 'rxjs/operators';
-
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
@@ -54,7 +52,6 @@ export class AddRestaurantComponent implements OnInit {
 
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantAdminService.addRestaurantAsync(data.name)
-      .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
         this.message = undefined;

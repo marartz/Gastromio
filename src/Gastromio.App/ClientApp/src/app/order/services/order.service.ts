@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 import {AuthService} from '../../auth/services/auth.service';
 
@@ -33,7 +34,8 @@ export class OrderService {
       })
     };
 
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/cuisines', httpOptions);
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/cuisines', httpOptions)
+      .pipe(take(1));
   }
 
   public searchForRestaurantsAsync(search: string, orderType: OrderType, cuisineId: string,
@@ -75,7 +77,8 @@ export class OrderService {
       }
     }
 
-    return this.http.get<RestaurantModel[]>(url, httpOptions);
+    return this.http.get<RestaurantModel[]>(url, httpOptions)
+      .pipe(take(1));
   }
 
   public getRestaurantAsync(id: string): Observable<RestaurantModel> {
@@ -86,7 +89,8 @@ export class OrderService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions);
+    return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions)
+      .pipe(take(1));
   }
 
   public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
@@ -97,7 +101,8 @@ export class OrderService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
+    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions)
+      .pipe(take(1));
   }
 
   public sendCheckoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
@@ -107,7 +112,8 @@ export class OrderService {
         Accept: 'application/json'
       })
     };
-    return this.http.post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions);
+    return this.http.post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions)
+      .pipe(take(1));
   }
 
 }
