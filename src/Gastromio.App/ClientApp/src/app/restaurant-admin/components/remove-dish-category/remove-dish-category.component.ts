@@ -1,7 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 
-import {take} from 'rxjs/operators';
-
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
@@ -9,7 +7,6 @@ import {BlockUI, NgBlockUI} from 'ng-block-ui';
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-remove-dish-category',
@@ -35,7 +32,6 @@ export class RemoveDishCategoryComponent implements OnInit {
 
   onSubmit() {
     this.facade.removeDishCategory(this.dishCategory.id)
-      .pipe(take(1))
       .subscribe(() => {
         this.activeModal.close();
       });

@@ -1,4 +1,5 @@
 export class FailureResult {
+
   constructor(generalErrors: string[], componentErrors: object) {
     this.generalErrors = generalErrors || [];
     this.componentErrors = componentErrors || {};
@@ -56,4 +57,5 @@ export class FailureResult {
   public getJoinedErrors(collectionsSep: string = ', ', generalSep: string = ', ', componentSep: string = ', '): string {
     return [this.getJoinedGeneralErrors(generalSep), this.getJoinedComponentErrors(componentSep)].filter(Boolean).join(collectionsSep);
   }
+
 }

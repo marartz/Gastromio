@@ -3,8 +3,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {DishVariantModel} from '../../../shared/models/dish-variant.model';
 
-import {OrderService} from '../../../order/services/order.service';
 import {CartDishModel} from '../../../order/models/cart-dish.model';
+import {OrderFacade} from "../../../order/order.facade";
 
 @Component({
   selector: 'app-edit-cart-dish',
@@ -23,7 +23,7 @@ export class EditCartDishComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private orderService: OrderService
+    private orderFacade: OrderFacade
   ) {
   }
 
@@ -34,10 +34,6 @@ export class EditCartDishComponent implements OnInit {
 
   getVariantPrice(variant: DishVariantModel): string {
     return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
-  }
-
-  getVariantText(variant: DishVariantModel): string {
-    return variant.name + ' ' + this.getVariantPrice(variant);
   }
 
   incCount(): void {
@@ -52,13 +48,13 @@ export class EditCartDishComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderService.setCountOfCartDish(this.cartDish.getItemId(), this.count);
-    this.orderService.changeRemarksOfCartDish(this.cartDish.getItemId(), this.remarks);
+    this.orderFacade.setCountOfCartDish(this.cartDish.getItemId(), this.count);
+    this.orderFacade.changeRemarksOfCartDish(this.cartDish.getItemId(), this.remarks);
     this.activeModal.close();
   }
 
   onRemove(): void {
-    this.orderService.removeCartDishFromCart(this.cartDish.getItemId());
+    this.orderFacade.removeCartDishFromCart(this.cartDish.getItemId());
     this.activeModal.close();
   }
 

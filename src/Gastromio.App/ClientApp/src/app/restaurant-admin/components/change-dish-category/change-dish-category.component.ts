@@ -2,7 +2,6 @@ import {Component, OnInit, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Observable} from "rxjs";
-import {take} from 'rxjs/operators';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -53,7 +52,6 @@ export class ChangeDishCategoryComponent implements OnInit {
     }
 
     this.facade.changeDishCategory(this.dishCategory.id, data.name)
-      .pipe(take(1))
       .subscribe(() => {
         this.changeDishCategoryForm.reset();
         this.activeModal.close();

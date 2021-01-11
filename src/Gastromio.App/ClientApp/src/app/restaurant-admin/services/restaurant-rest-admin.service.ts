@@ -6,11 +6,12 @@ import {Observable} from 'rxjs';
 import {CuisineModel} from '../../shared/models/cuisine.model';
 import {DishCategoryModel} from '../../shared/models/dish-category.model';
 import {DishModel} from '../../shared/models/dish.model';
-import {RestaurantModel,AddressModel,ContactInfoModel,ServiceInfoModel} from '../../shared/models/restaurant.model';
+import {RestaurantModel, AddressModel, ContactInfoModel, ServiceInfoModel} from '../../shared/models/restaurant.model';
 import {PaymentMethodModel} from '../../shared/models/payment-method.model';
 
 import {AuthService} from '../../auth/services/auth.service';
 import {DateModel} from "../../shared/models/date.model";
+import {map, take} from "rxjs/operators";
 
 @Injectable()
 export class RestaurantRestAdminService {
@@ -30,7 +31,11 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/myrestaurants', httpOptions);
+    return this.http.get<RestaurantModel[]>(this.baseUrl + '/myrestaurants', httpOptions)
+      .pipe(
+        take(1),
+        map(myRestaurants => myRestaurants?.map(restaurant => restaurant ? new RestaurantModel(restaurant) : undefined))
+      );
   }
 
   public getRestaurantAsync(id: string): Observable<RestaurantModel> {
@@ -41,7 +46,11 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions);
+    return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions)
+      .pipe(
+        take(1),
+        map(restaurant => restaurant ? new RestaurantModel(restaurant) : undefined)
+      );
   }
 
   public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
@@ -52,7 +61,11 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions);
+    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions)
+      .pipe(
+        take(1),
+        map(dishCategories => dishCategories?.map(dishCategory => dishCategory ? new DishCategoryModel(dishCategory) : undefined))
+      );
   }
 
   public getCuisinesAsync(): Observable<CuisineModel[]> {
@@ -63,7 +76,11 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions);
+    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions)
+      .pipe(
+        take(1),
+        map(cuisines => cuisines?.map(cuisine => cuisine ? new CuisineModel(cuisine) : undefined))
+      );
   }
 
   public getPaymentMethodsAsync(): Observable<PaymentMethodModel[]> {
@@ -74,7 +91,11 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.get<PaymentMethodModel[]>(this.baseUrl + '/paymentmethods', httpOptions);
+    return this.http.get<PaymentMethodModel[]>(this.baseUrl + '/paymentmethods', httpOptions)
+      .pipe(
+        take(1),
+        map(paymentMethods => paymentMethods?.map(paymentMethod => paymentMethod ? new PaymentMethodModel(paymentMethod) : undefined))
+      );
   }
 
   public changeRestaurantImageAsync(id: string, type: string, image: string): Observable<boolean> {
@@ -86,7 +107,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeimage',
-      {type, image}, httpOptions);
+      {type, image}, httpOptions)
+      .pipe(take(1));
   }
 
   public changeRestaurantAddressAsync(id: string, address: AddressModel): Observable<boolean> {
@@ -97,7 +119,8 @@ export class RestaurantRestAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeaddress', address, httpOptions);
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changeaddress', address, httpOptions)
+      .pipe(take(1));
   }
 
   public changeRestaurantContactInfoAsync(id: string, contactInfo: ContactInfoModel): Observable<boolean> {
@@ -116,7 +139,8 @@ export class RestaurantRestAdminService {
       emailAddress: contactInfo.emailAddress,
       mobile: contactInfo.mobile,
       orderNotificationByMobile: contactInfo.orderNotificationByMobile
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public addRegularOpeningPeriodToRestaurantAsync(id: string, dayOfWeek: number, start: number, end: number): Observable<boolean> {
@@ -131,7 +155,8 @@ export class RestaurantRestAdminService {
       dayOfWeek,
       start,
       end
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public changeRegularOpeningPeriodOfRestaurantAsync(id: string, dayOfWeek: number, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
@@ -147,7 +172,8 @@ export class RestaurantRestAdminService {
       oldStart,
       newStart,
       newEnd
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public removeRegularOpeningPeriodFromRestaurantAsync(id: string, dayOfWeek: number, start: number): Observable<boolean> {
@@ -161,7 +187,8 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeregularopeningperiod', {
       dayOfWeek,
       start
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public addDeviatingOpeningDayToRestaurantAsync(id: string, date: DateModel, status: string): Observable<boolean> {
@@ -175,7 +202,8 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddeviatingopeningday', {
       date,
       status
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public changeDeviatingOpeningDayStatusOfRestaurantAsync(id: string, date: DateModel, status: string): Observable<boolean> {
@@ -189,7 +217,8 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changedeviatingopeningdaystatus', {
       date,
       status
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public removeDeviatingOpeningDayFromRestaurantAsync(id: string, date: DateModel): Observable<boolean> {
@@ -202,7 +231,8 @@ export class RestaurantRestAdminService {
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedeviatingopeningday', {
       date
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public addDeviatingOpeningPeriodToRestaurantAsync(id: string, date: DateModel, start: number, end: number): Observable<boolean> {
@@ -217,7 +247,8 @@ export class RestaurantRestAdminService {
       date,
       start,
       end
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public changeDeviatingOpeningPeriodOfRestaurantAsync(id: string, date: DateModel, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
@@ -233,7 +264,8 @@ export class RestaurantRestAdminService {
       oldStart,
       newStart,
       newEnd
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public removeDeviatingOpeningPeriodFromRestaurantAsync(id: string, date: DateModel, start: number): Observable<boolean> {
@@ -247,7 +279,8 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedeviatingopeningperiod', {
       date,
       start
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public changeRestaurantServiceInfoAsync(id: string, serviceInfo: ServiceInfoModel): Observable<boolean> {
@@ -270,7 +303,8 @@ export class RestaurantRestAdminService {
       deliveryCosts: serviceInfo.deliveryCosts,
       reservationEnabled: serviceInfo.reservationEnabled,
       hygienicHandling: serviceInfo.hygienicHandling
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public addPaymentMethodToRestaurantAsync(id: string, paymentMethodId: string): Observable<boolean> {
@@ -282,7 +316,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addpaymentmethod',
-      {paymentMethodId}, httpOptions);
+      {paymentMethodId}, httpOptions)
+      .pipe(take(1));
   }
 
   public removePaymentMethodFromRestaurantAsync(id: string, paymentMethodId: string): Observable<boolean> {
@@ -294,7 +329,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removepaymentmethod',
-      {paymentMethodId}, httpOptions);
+      {paymentMethodId}, httpOptions)
+      .pipe(take(1));
   }
 
   public addDishCategoryToRestaurantAsync(id: string, name: string, afterCategoryId: string): Observable<string> {
@@ -306,7 +342,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/adddishcategory',
-      {name, afterCategoryId}, httpOptions);
+      {name, afterCategoryId}, httpOptions)
+      .pipe(take(1));
   }
 
   public changeDishCategoryOfRestaurantAsync(id: string, dishCategoryId: string, name: string): Observable<boolean> {
@@ -320,7 +357,8 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changedishcategory', {
       dishCategoryId,
       name
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public incOrderOfDishCategoryAsync(id: string, dishCategoryId: string): Observable<boolean> {
@@ -332,7 +370,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/incorderofdishcategory',
-      {dishCategoryId}, httpOptions);
+      {dishCategoryId}, httpOptions)
+      .pipe(take(1));
   }
 
   public decOrderOfDishCategoryAsync(id: string, dishCategoryId: string): Observable<boolean> {
@@ -344,7 +383,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/decorderofdishcategory',
-      {dishCategoryId}, httpOptions);
+      {dishCategoryId}, httpOptions)
+      .pipe(take(1));
   }
 
   public removeDishCategoryFromRestaurantAsync(id: string, dishCategoryId: string): Observable<boolean> {
@@ -356,7 +396,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedishcategory',
-      {dishCategoryId}, httpOptions);
+      {dishCategoryId}, httpOptions)
+      .pipe(take(1));
   }
 
   public addOrChangeDishOfRestaurantAsync(id: string, dishCategoryId: string, dish: DishModel): Observable<string> {
@@ -370,7 +411,8 @@ export class RestaurantRestAdminService {
     return this.http.post<string>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/addoreditdish', {
       dishCategoryId,
       dish
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public incOrderOfDishAsync(id: string, dishId: string): Observable<boolean> {
@@ -382,7 +424,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/incorderofdish',
-      {dishId}, httpOptions);
+      {dishId}, httpOptions)
+      .pipe(take(1));
   }
 
   public decOrderOfDishAsync(id: string, dishId: string): Observable<boolean> {
@@ -394,7 +437,8 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/decorderofdish',
-      {dishId}, httpOptions);
+      {dishId}, httpOptions)
+      .pipe(take(1));
   }
 
   public removeDishFromRestaurantAsync(id: string, dishCategoryId: string, dishId: string): Observable<boolean> {
@@ -408,7 +452,8 @@ export class RestaurantRestAdminService {
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removedish', {
       dishCategoryId,
       dishId
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public changeSupportedOrderMode(id: string, supportedOrderMode: string): Observable<boolean> {
@@ -421,7 +466,8 @@ export class RestaurantRestAdminService {
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/changesupportedordermode', {
       supportedOrderMode,
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public addOrChangeExternalMenu(id: string, externalMenuId: string, name: string, description: string, url: string): Observable<boolean> {
@@ -437,7 +483,8 @@ export class RestaurantRestAdminService {
       name,
       description,
       url
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
   public removeExternalMenu(id: string, externalMenuId: string): Observable<boolean> {
@@ -450,7 +497,8 @@ export class RestaurantRestAdminService {
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/removeexternalmenu', {
       externalMenuId,
-    }, httpOptions);
+    }, httpOptions)
+      .pipe(take(1));
   }
 
 }

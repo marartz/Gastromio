@@ -3,13 +3,11 @@ import {Router} from '@angular/router';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {take} from 'rxjs/operators';
-
 import {UserModel} from '../../../shared/models/user.model';
 
 import {AuthService} from '../../../auth/services/auth.service';
 
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
 
 @Component({
   selector: 'app-top-bar',
@@ -25,16 +23,12 @@ export class TopBarComponent implements OnInit {
     private modalService: NgbModal,
     private authService: AuthService,
     private router: Router,
-    private orderService: OrderService
+    private orderFacade: OrderFacade
   ) {
   }
 
   ngOnInit() {
-    this.orderService.initializeAsync()
-      .pipe(take(1))
-      .subscribe(() => {
-      }, response => {
-      });
+    this.orderFacade.initialize();
   }
 
   getUserEmail(): string {
@@ -62,32 +56,24 @@ export class TopBarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  getDishCountOfOrderText(): string {
-    const count = this.orderService.getCart()?.getDishCountOfOrder();
-    if (!count) {
-      return '0';
-    }
-    return count.toString();
-  }
-
   isOnOrderPage(): boolean {
     return this.router.url.startsWith('/restaurants/');
   }
 
   getCurRestaurantId(): string {
-    const cart = this.orderService.getCart();
+    const cart = this.orderFacade.getCart();
     return cart?.getRestaurantId();
   }
 
   toggleCartVisibility(): void {
-    const cart = this.orderService.getCart();
+    const cart = this.orderFacade.getCart();
     if (!cart) {
       return;
     }
     if (cart.isVisible()) {
-      this.orderService.hideCart();
+      this.orderFacade.hideCart();
     } else {
-      this.orderService.showCart();
+      this.orderFacade.showCart();
     }
   }
 }

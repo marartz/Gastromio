@@ -9,60 +9,22 @@ export class RestaurantModel {
     if (init) {
       Object.assign(this, init);
     }
-
-    if (!this.address) {
-      this.address = new AddressModel();
-    } else {
-      this.address = new AddressModel(init.address);
-    }
-
-    if (this.contactInfo) {
-      this.contactInfo = new ContactInfoModel(this.contactInfo);
-    }
-
-    if (!this.regularOpeningDays) {
-      this.regularOpeningDays = new Array<RegularOpeningDayModel>();
-    } else {
-      for (let i = 0; i < this.regularOpeningDays.length; i++) {
-        this.regularOpeningDays[i] = new RegularOpeningDayModel(this.regularOpeningDays[i]);
-      }
-    }
-
-    if (!this.deviatingOpeningDays) {
-      this.deviatingOpeningDays = new Array<DeviatingOpeningDayModel>();
-    } else {
-      for (let i = 0; i < this.deviatingOpeningDays.length; i++) {
-        this.deviatingOpeningDays[i] = new DeviatingOpeningDayModel(this.deviatingOpeningDays[i]);
-      }
-    }
-
-    if (this.pickupInfo) {
-      this.pickupInfo = new PickupInfoModel(this.pickupInfo);
-    }
-
-    if (this.deliveryInfo) {
-      this.deliveryInfo = new DeliveryInfoModel(this.deliveryInfo);
-    }
-
-    if (this.reservationInfo) {
-      this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
-    }
-
-    if (this.externalMenus) {
-      for (let i = 0; i < this.externalMenus.length; i++) {
-        this.externalMenus[i] = new ExternalMenu(this.externalMenus[i]);
-      }
-    }
-
-    if (this.paymentMethods) {
-      this.paymentMethods.sort((a, b) => {
+    this.address = new AddressModel(this.address);
+    this.contactInfo = new ContactInfoModel(this.contactInfo);
+    this.regularOpeningDays = this.regularOpeningDays?.map(day => new RegularOpeningDayModel(day)) ?? new Array<RegularOpeningDayModel>();
+    this.deviatingOpeningDays = this.deviatingOpeningDays?.map(day => new DeviatingOpeningDayModel(day)) ?? new Array<DeviatingOpeningDayModel>();
+    this.pickupInfo = new PickupInfoModel(this.pickupInfo);
+    this.deliveryInfo = new DeliveryInfoModel(this.deliveryInfo);
+    this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
+    this.externalMenus = this.externalMenus?.map(menu => new ExternalMenu(menu)) ?? new Array<ExternalMenu>();
+    this.paymentMethods = this.paymentMethods?.map(paymentMethod => new PaymentMethodModel(paymentMethod))
+      .sort((a, b) => {
         if (a.name < b.name)
           return -1
         else if (a.name > b.name)
           return 1;
         return 0;
-      })
-    }
+      });
   }
 
 
@@ -113,6 +75,35 @@ export class RestaurantModel {
   public supportedOrderMode: string;
 
   public externalMenus: ExternalMenu[];
+
+  public clone(): RestaurantModel {
+    return new RestaurantModel({
+      id: this.id,
+      name: this.name,
+      importId: this.importId,
+      alias: this.alias,
+      address: this.address?.clone(),
+      contactInfo: this.contactInfo?.clone(),
+      imageTypes: this.imageTypes?.map(imageType => imageType),
+      regularOpeningDays: this.regularOpeningDays?.map(day => day?.clone()),
+      deviatingOpeningDays: this.deviatingOpeningDays?.map(day => day?.clone()),
+      regularOpeningHoursText: this.regularOpeningHoursText,
+      deviatingOpeningHoursText: this.deviatingOpeningHoursText,
+      openingHoursTodayText: this.openingHoursTodayText,
+      pickupInfo: this.pickupInfo?.clone(),
+      deliveryInfo: this.deliveryInfo?.clone(),
+      reservationInfo: this.reservationInfo?.clone(),
+      hygienicHandling: this.hygienicHandling,
+      cuisines: this.cuisines?.map(cuisine => cuisine?.clone()),
+      cuisinesText: this.cuisinesText,
+      paymentMethods: this.paymentMethods?.map(paymentMethod => paymentMethod?.clone()),
+      administrators: this.administrators?.map(administrator => administrator?.clone()),
+      isActive: this.isActive,
+      needsSupport: this.needsSupport,
+      supportedOrderMode: this.supportedOrderMode,
+      externalMenus: this.externalMenus?.map(menu => menu?.clone())
+    });
+  }
 
   public isOpen(dateTime: Date): boolean {
     if (dateTime === undefined || dateTime < new Date())
@@ -206,6 +197,7 @@ export class RestaurantModel {
 }
 
 export class AddressModel {
+
   constructor(init?: Partial<AddressModel>) {
     if (init) {
       Object.assign(this, init);
@@ -217,9 +209,19 @@ export class AddressModel {
   public zipCode: string;
 
   public city: string;
+
+  public clone(): AddressModel {
+    return new AddressModel({
+      street: this.street,
+      zipCode: this.zipCode,
+      city: this.city
+    });
+  }
+
 }
 
 export class ContactInfoModel {
+
   constructor(init?: Partial<ContactInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -239,37 +241,71 @@ export class ContactInfoModel {
   public mobile: string;
 
   public orderNotificationByMobile: boolean;
+
+  public clone(): ContactInfoModel {
+    return new ContactInfoModel({
+      phone: this.phone,
+      fax: this.fax,
+      webSite: this.webSite,
+      responsiblePerson: this.responsiblePerson,
+      emailAddress: this.emailAddress,
+      mobile: this.mobile,
+      orderNotificationByMobile: this.orderNotificationByMobile
+    });
+  }
+
 }
 
 export class OpeningPeriodModel {
+
   constructor(init?: Partial<OpeningPeriodModel>) {
     if (init) {
       Object.assign(this, init);
     }
   }
 
-  start: number;
+  public start: number;
 
-  end: number;
+  public end: number;
+
+  public clone(): OpeningPeriodModel {
+    return new OpeningPeriodModel({
+      start: this.start,
+      end: this.end
+    });
+  }
+
 }
 
 export class RegularOpeningDayModel {
+
   constructor(init?: Partial<RegularOpeningDayModel>) {
     if (init) {
       Object.assign(this, init);
     }
+    this.openingPeriods = this.openingPeriods?.map(period => new OpeningPeriodModel(period)) ?? new Array<OpeningPeriodModel>();
   }
 
   public dayOfWeek: number;
 
   public openingPeriods: Array<OpeningPeriodModel>;
+
+  public clone(): RegularOpeningDayModel {
+    return new RegularOpeningDayModel({
+      dayOfWeek: this.dayOfWeek,
+      openingPeriods: this.openingPeriods?.map(period => period?.clone())
+    })
+  }
+
 }
 
 export class DeviatingOpeningDayModel {
+
   constructor(init?: Partial<DeviatingOpeningDayModel>) {
     if (init) {
       Object.assign(this, init);
     }
+    this.openingPeriods = this.openingPeriods?.map(period => new OpeningPeriodModel(period)) ?? new Array<OpeningPeriodModel>();
   }
 
   public date: DateModel;
@@ -277,9 +313,19 @@ export class DeviatingOpeningDayModel {
   public status: string;
 
   public openingPeriods: Array<OpeningPeriodModel>;
+
+  public clone(): DeviatingOpeningDayModel {
+    return new DeviatingOpeningDayModel({
+      date: this.date?.clone(),
+      status: this.status,
+      openingPeriods: this.openingPeriods?.map(period => period?.clone())
+    });
+  }
+
 }
 
 export class PickupInfoModel {
+
   constructor(init?: Partial<PickupInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -297,9 +343,22 @@ export class PickupInfoModel {
   public maximumOrderValue: number;
 
   public maximumOrderValueText: string;
+
+  public clone(): PickupInfoModel {
+    return new PickupInfoModel({
+      enabled: this.enabled,
+      averageTime: this.averageTime,
+      minimumOrderValue: this.minimumOrderValue,
+      minimumOrderValueText: this.minimumOrderValueText,
+      maximumOrderValue: this.maximumOrderValue,
+      maximumOrderValueText: this.maximumOrderValueText
+    });
+  }
+
 }
 
 export class DeliveryInfoModel {
+
   constructor(init?: Partial<DeliveryInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -320,6 +379,17 @@ export class DeliveryInfoModel {
 
   public costs: number;
 
+  public clone(): DeliveryInfoModel {
+    return new DeliveryInfoModel({
+      enabled: this.enabled,
+      averageTime: this.averageTime,
+      minimumOrderValue: this.minimumOrderValue,
+      minimumOrderValueText: this.minimumOrderValueText,
+      maximumOrderValue: this.maximumOrderValue,
+      maximumOrderValueText: this.maximumOrderValueText
+    });
+  }
+
   public getCostsText(): string {
     const val = this.costs;
     if (val === undefined) {
@@ -330,9 +400,11 @@ export class DeliveryInfoModel {
       return 'Gratis';
     }
   }
+
 }
 
 export class ReservationInfoModel {
+
   constructor(init?: Partial<ReservationInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -340,9 +412,17 @@ export class ReservationInfoModel {
   }
 
   public enabled: boolean;
+
+  public clone(): ReservationInfoModel {
+    return new ReservationInfoModel({
+      enabled: this.enabled
+    });
+  }
+
 }
 
 export class ServiceInfoModel {
+
   constructor(init?: Partial<ServiceInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -369,9 +449,27 @@ export class ServiceInfoModel {
   public reservationEnabled: boolean;
 
   public hygienicHandling: string;
+
+  public clone(): ServiceInfoModel {
+    return new ServiceInfoModel({
+      pickupEnabled: this.pickupEnabled,
+      pickupAverageTime: this.pickupAverageTime,
+      pickupMinimumOrderValue: this.pickupMinimumOrderValue,
+      pickupMaximumOrderValue: this.pickupMaximumOrderValue,
+      deliveryEnabled: this.deliveryEnabled,
+      deliveryAverageTime: this.deliveryAverageTime,
+      deliveryMinimumOrderValue: this.deliveryMinimumOrderValue,
+      deliveryMaximumOrderValue: this.deliveryMaximumOrderValue,
+      deliveryCosts: this.deliveryCosts,
+      reservationEnabled: this.reservationEnabled,
+      hygienicHandling: this.hygienicHandling
+    });
+  }
+
 }
 
 export class ExternalMenu {
+
   constructor(init?: Partial<ExternalMenu>) {
     if (init) {
       Object.assign(this, init);
@@ -385,4 +483,14 @@ export class ExternalMenu {
   public description: string;
 
   public url: string;
+
+  public clone(): ExternalMenu {
+    return new ExternalMenu({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      url: this.url
+    });
+  }
+
 }

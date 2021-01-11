@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {take} from 'rxjs/operators';
-
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
@@ -53,7 +51,7 @@ export class AddCuisineComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    this.cuisineAdminService.addCuisineAsync(data.name).pipe(take(1))
+    this.cuisineAdminService.addCuisineAsync(data.name)
       .subscribe(() => {
         this.blockUI.stop();
         this.message = undefined;

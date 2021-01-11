@@ -21,9 +21,9 @@ namespace Gastromio.Core.Domain.Model.Dish
         )
         {
             if (restaurantId.Value == Guid.Empty)
-                return FailureResult<Dish>.Create(FailureResultCode.RequiredFieldEmpty, nameof(restaurantId));
+                return FailureResult<Dish>.Create(FailureResultCode.DishRestaurantIdRequired, nameof(restaurantId));
             if (categoryId.Value == Guid.Empty)
-                return FailureResult<Dish>.Create(FailureResultCode.RequiredFieldEmpty, nameof(categoryId));
+                return FailureResult<Dish>.Create(FailureResultCode.DishCategoryIdRequired, nameof(categoryId));
 
             var dish = new Dish(
                 new DishId(Guid.NewGuid()),

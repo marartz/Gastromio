@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,8 +10,9 @@ import {BlockUI, NgBlockUI} from 'ng-block-ui';
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 import {CuisineModel} from '../../../shared/models/cuisine.model';
 
-import {OrderType} from '../../../order/models/cart.model';
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
+import {OrderType} from '../../../order/models/order-type';
+import {OrderTypeConverter} from "../../../order/models/order-type-converter";
 
 import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
 
@@ -28,54 +29,85 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   cuisines: CuisineModel[];
 
+  selectedSearchPhrase$: Observable<string>;
+  selectedOrderType$: Observable<string>;
+  selectedOrderTime$: Observable<Date>;
+  selectedOrderTimeText$: Observable<string>;
+
   showMobileFilterDetails: boolean;
 
-  selectedOpeningHourFilter: Date;
-  selectedCuisineFilter: string;
+  totalRestaurantCount$: Observable<number>;
 
-  totalRestaurantCount: number;
-
-  openedRestaurants: RestaurantModel[];
-  openedRestaurantCount: number;
-  closedRestaurants: RestaurantModel[];
-  closedRestaurantCount: number;
-
-  orderType: string;
-
-  private searchPhrase: string;
-  private searchPhraseUpdated: Subject<string> = new Subject<string>();
-
-  private updateSearchSubscription: Subscription;
+  openedRestaurants$: Observable<RestaurantModel[]>;
+  openedRestaurantCount$: Observable<number>;
+  closedRestaurants$: Observable<RestaurantModel[]>;
+  closedRestaurantCount$: Observable<number>;
 
   constructor(
-    private orderService: OrderService,
+    private orderFacade: OrderFacade,
     private modalService: NgbModal,
   ) {
-    this.orderType = OrderService.translateFromOrderType(OrderType.Pickup);
-    this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
-      .subscribe((value: string) => {
-        this.searchPhrase = value;
-        this.updateSearch();
-      });
   }
 
   ngOnInit() {
-    this.selectedCuisineFilter = '';
+    this.orderFacade.getIsSearching$()
+      .subscribe(isSearching => {
+        if (isSearching) {
+          this.blockUI.start('Suche läuft');
+        } else {
+          this.blockUI.stop();
+        }
+      });
 
-    this.orderService.getAllCuisinesAsync()
-      .pipe(take(1))
+    this.selectedSearchPhrase$ = this.orderFacade.getSelectedSearchPhrase$();
+
+    this.selectedOrderType$ = this.orderFacade.getSelectedOrderType$()
+      .pipe(
+        map(selectedOrderType => OrderTypeConverter.convertToString(selectedOrderType))
+      );
+
+    this.selectedOrderTime$ = this.orderFacade.getSelectedOrderTime$();
+
+    this.selectedOrderTimeText$ = this.selectedOrderTime$
+      .pipe(
+        map(selectedOrderTime => {
+          if (!selectedOrderTime)
+            return undefined;
+
+          let hoursText = selectedOrderTime.getHours().toString();
+          hoursText = ('0' + hoursText).slice(-2);
+
+          let minutesText = selectedOrderTime.getMinutes().toString();
+          minutesText = ('0' + minutesText).slice(-2);
+
+          return selectedOrderTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
+        })
+      );
+
+    this.orderFacade.getCuisines$()
       .subscribe((cuisines) => {
         this.cuisines = cuisines;
       });
 
-    this.searchPhrase = '';
-    this.updateSearch();
+    this.totalRestaurantCount$ = this.orderFacade.getRestaurants$()
+      .pipe(
+        map(restaurants => restaurants?.length ?? 0)
+      )
+
+    this.openedRestaurants$ = this.orderFacade.getOpenedRestaurants$();
+    this.openedRestaurantCount$ = this.orderFacade.getOpenedRestaurants$()
+      .pipe(
+        map(openedRestaurants => openedRestaurants?.length ?? 0)
+      );
+
+    this.closedRestaurants$ = this.orderFacade.getClosedRestaurants$();
+    this.closedRestaurantCount$ = this.orderFacade.getClosedRestaurants$()
+      .pipe(
+        map(closedRestaurants => closedRestaurants?.length ?? 0)
+      );
   }
 
   ngOnDestroy() {
-    if (this.updateSearchSubscription !== undefined) {
-      this.updateSearchSubscription.unsubscribe();
-    }
   }
 
   onToggleMobileFilterDetails(): void {
@@ -88,46 +120,11 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   openOpeningHourFilter(): void {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
-    modalRef.componentInstance.value = this.selectedOpeningHourFilter ?? new Date();
+    modalRef.componentInstance.value = this.orderFacade.getSelectedOrderTime() ?? new Date();
     modalRef.result.then((value: Date) => {
-      this.selectedOpeningHourFilter = value;
-      this.updateSearch();
+      this.orderFacade.setSelectedOrderTime(value);
     }, () => {
     });
-  }
-
-  getOpeningHourFilterText(): string {
-    if (!this.selectedOpeningHourFilter)
-      return undefined;
-
-    let hoursText = this.selectedOpeningHourFilter.getHours().toString();
-    hoursText = ('0' + hoursText).slice(-2);
-
-    let minutesText = this.selectedOpeningHourFilter.getMinutes().toString();
-    minutesText = ('0' + minutesText).slice(-2);
-
-    return this.selectedOpeningHourFilter.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
-  }
-
-  hasLogo(
-    restaurant: RestaurantModel
-  ): boolean {
-    return restaurant.imageTypes.some(en => en === 'logo');
-  }
-
-  getLogoUrl(
-    restaurant: RestaurantModel
-  ): string {
-    if (!restaurant) {
-      return undefined;
-    }
-    return '/api/v1/restaurants/' + restaurant.id + '/images/logo';
-  }
-
-  hasBanner(
-    restaurant: RestaurantModel
-  ): boolean {
-    return restaurant.imageTypes.some(en => en === 'banner');
   }
 
   getBannerStyle(
@@ -140,116 +137,34 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   onDeliverySelected(): void {
-    this.orderType = 'delivery';
-    this.updateSearch();
+    this.orderFacade.setSelectedOrderType(OrderType.Delivery);
   }
 
   onPickupSelected(): void {
-    this.orderType = 'pickup';
-    this.updateSearch();
-  }
-
-  onReservationSelected(): void {
-    this.orderType = 'reservation';
-    this.updateSearch();
+    this.orderFacade.setSelectedOrderType(OrderType.Pickup);
   }
 
   onSearchType(value: string) {
-    this.searchPhraseUpdated.next(value);
+    this.orderFacade.setSelectedSearchPhrase(value);
   }
 
   isCuisineSelected(cuisine: CuisineModel): boolean {
+    const selectedCuisine = this.orderFacade.getSelectedCuisine();
     if (cuisine) {
-      return this.selectedCuisineFilter === cuisine.id;
+      return selectedCuisine === cuisine.id;
     } else {
-      return this.selectedCuisineFilter === '';
+      return selectedCuisine === '';
     }
   }
 
   selectCuisine(cuisine: CuisineModel): void {
     if (!cuisine) {
-      this.selectedCuisineFilter = '';
+      this.orderFacade.setSelectedCuisine('');
     }
     else
     {
-      this.selectedCuisineFilter = cuisine.id;
-    }
-    this.updateSearch();
-  }
-
-  updateSearch(): void {
-    if (this.updateSearchSubscription !== undefined) {
-      this.updateSearchSubscription.unsubscribe();
-    }
-
-    this.blockUI.start('Suche läuft');
-
-    const date = this.selectedOpeningHourFilter ?? new Date();
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
-      this.selectedCuisineFilter, null)
-      .pipe(take(1))
-      .subscribe((result) => {
-
-        let restaurants = new Array<RestaurantModel>(result.length);
-        this.totalRestaurantCount = result.length;
-
-        for (let i = 0; i < result.length; i++) {
-          restaurants[i] = new RestaurantModel(result[i]);
-        }
-
-        let openedRestaurants = new Array<RestaurantModel>();
-        let closedRestaurants = new Array<RestaurantModel>();
-        for (let restaurant of restaurants) {
-          if (restaurant.isOpen(this.selectedOpeningHourFilter)) {
-            openedRestaurants.push(restaurant);
-          } else {
-            closedRestaurants.push(restaurant);
-          }
-        }
-
-        this.openedRestaurants = openedRestaurants;
-        this.openedRestaurantCount = openedRestaurants.length;
-
-        this.closedRestaurants = closedRestaurants;
-        this.closedRestaurantCount = closedRestaurants.length;
-
-        this.sortRestaurants();
-
-        this.blockUI.stop();
-      }, () => {
-          this.blockUI.stop();
-      });
-  }
-
-  getRestaurantSubText(restaurant: RestaurantModel): string {
-    if (restaurant === undefined || restaurant.cuisines === undefined || restaurant.cuisines.length === 0) {
-      return '';
-    }
-    return restaurant.cuisines.map(en => en.name).join(', ');
-  }
-
-  isRestaurantOpen(restaurant: RestaurantModel): boolean {
-    const date = this.selectedOpeningHourFilter ?? new Date();
-    return restaurant.isOpen(date);
-  }
-
-  sortRestaurants(): void {
-    const compareFn = (a: RestaurantModel, b: RestaurantModel) => {
-      if (a.name < b.name) {
-        return -1;
-      } else if (a.name > b.name) {
-        return +1;
-      } else {
-        return 0;
-      }
-    };
-
-    if (this.openedRestaurants) {
-      this.openedRestaurants.sort(compareFn);
-    }
-
-    if (this.closedRestaurants) {
-      this.closedRestaurants.sort(compareFn);
+      this.orderFacade.setSelectedCuisine(cuisine.id);
     }
   }
+
 }
