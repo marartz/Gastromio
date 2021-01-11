@@ -36,7 +36,7 @@ namespace Gastromio.Core.Application.Commands.AddCuisine
 
             if (string.IsNullOrWhiteSpace(command.Name))
             {
-                return FailureResult<CuisineDTO>.Create(FailureResultCode.RequiredFieldEmpty, "Name");
+                return FailureResult<CuisineDTO>.Create(FailureResultCode.CuisineNameIsRequired);
             }
 
             var cuisine = await cuisineRepository.FindByNameAsync(command.Name, cancellationToken);
