@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {debounceTime, distinctUntilChanged, filter, take} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
 
 @Component({
   selector: 'app-order-home',
@@ -17,76 +17,50 @@ import {OrderService} from '../../../order/services/order.service';
   ]
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
-  selectedRestaurant: RestaurantModel;
 
-  private searchPhrase: string;
-  private searchPhraseUpdated: Subject<string> = new Subject<string>();
-
-  restaurants: RestaurantModel[];
+  restaurants$: Observable<RestaurantModel[]>;
 
   constructor(
-    private orderService: OrderService,
+    private orderFacade: OrderFacade,
     public router: Router
   ) {
-    this.searchPhraseUpdated.asObservable()
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-      .subscribe((value: string) => {
-        if (value.length >= 3) {
-          this.searchPhrase = value;
-          this.updateSearch();
-        } else {
-          this.restaurants = new Array<RestaurantModel>();
-        }
-      });
   }
 
   ngOnInit() {
+    this.orderFacade.resetFilters();
+
+    this.restaurants$ = this.orderFacade.getRestaurants$()
+      .pipe(
+        map(restaurants => {
+          if (this.orderFacade.getSelectedSearchPhrase().length === 0 || restaurants === undefined) {
+            return new Array<RestaurantModel>();
+          }
+
+          const count = Math.min(6, restaurants.length);
+          const result = new Array<RestaurantModel>(count);
+          for (let i = 0; i < count; i++) {
+            result[i] = restaurants[i];
+          }
+
+          return result;
+        })
+      );
   }
 
   ngOnDestroy() {
   }
 
   onSearchType(value: string) {
-    this.searchPhraseUpdated.next(value);
+    this.orderFacade.setSelectedSearchPhrase(value);
   }
 
-  updateSearch(): void {
-    this.orderService.searchForRestaurantsAsync(this.searchPhrase, undefined, '', undefined)
-      .pipe(take(1))
-      .subscribe((result) => {
-        let count = Math.min(result.length, 6);
-
-        this.restaurants = new Array<RestaurantModel>(count);
-
-        for (let i = 0; i < count; i++) {
-          this.restaurants[i] = new RestaurantModel(result[i]);
-        }
-
-        this.sortRestaurants();
-      }, () => {
-      });
+  onShowAll(): void {
+    this.orderFacade.resetFilters();
+    this.router.navigate(['/restaurants']);
   }
 
   onRestaurantSelected(restaurant: RestaurantModel, orderType: string): void {
     this.router.navigate(['/restaurants', restaurant.alias], { queryParams: { orderType: orderType } });
   }
 
-  sortRestaurants(): void {
-    if (!this.restaurants) {
-      return;
-    }
-
-    this.restaurants.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      } else if (a.name > b.name) {
-        return +1;
-      } else {
-        return 0;
-      }
-    });
-  }
 }

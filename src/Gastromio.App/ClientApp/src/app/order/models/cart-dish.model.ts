@@ -2,6 +2,7 @@ import {DishModel} from '../../shared/models/dish.model';
 import {DishVariantModel} from '../../shared/models/dish-variant.model';
 
 export class CartDishModel {
+
   constructor(
     private itemId: string,
     private dish: DishModel,
@@ -39,4 +40,15 @@ export class CartDishModel {
     const val = this.getPrice();
     return val.toLocaleString('de', {minimumFractionDigits: 2});
   }
+
+  public clone(): CartDishModel {
+    return new CartDishModel(
+      this.itemId,
+      this.dish?.clone(),
+      this.variant?.clone(),
+      this.count,
+      this.remarks
+    );
+  }
+
 }

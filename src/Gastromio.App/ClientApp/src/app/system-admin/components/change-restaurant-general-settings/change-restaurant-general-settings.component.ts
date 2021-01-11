@@ -3,7 +3,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {BehaviorSubject, Observable, of} from "rxjs";
-import {concatMap, take, tap} from "rxjs/operators";
+import {concatMap, tap} from "rxjs/operators";
 
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
@@ -45,7 +45,6 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.cuisineAdminService.getAllCuisinesAsync()
-      .pipe(take(1))
       .subscribe(cuisines => {
         cuisines.sort((a, b) => {
           if (a.name < b.name)

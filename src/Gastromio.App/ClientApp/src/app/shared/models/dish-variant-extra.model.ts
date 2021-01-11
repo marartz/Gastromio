@@ -1,6 +1,9 @@
 export class DishVariantExtraModel {
+
   constructor(init?: Partial<DishVariantExtraModel>) {
-    Object.assign(this, init);
+    if (init) {
+      Object.assign(this, init);
+    }
   }
 
   public extraId: string;
@@ -10,4 +13,14 @@ export class DishVariantExtraModel {
   public productInfo: string;
 
   public price: number;
+
+  public clone(): DishVariantExtraModel {
+    return new DishVariantExtraModel({
+      extraId: this.extraId,
+      name: this.name,
+      productInfo: this.productInfo,
+      price: this.price
+    });
+  }
+
 }

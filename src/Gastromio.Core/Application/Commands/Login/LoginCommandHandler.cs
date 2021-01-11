@@ -23,10 +23,10 @@ namespace Gastromio.Core.Application.Commands.Login
                 throw new ArgumentNullException(nameof(command));
             
             if (string.IsNullOrWhiteSpace(command.Email))
-                return FailureResult<UserDTO>.Create(FailureResultCode.RequiredFieldEmpty, "Email");
+                return FailureResult<UserDTO>.Create(FailureResultCode.LoginEmailRequired);
 
             if (string.IsNullOrWhiteSpace(command.Password))
-                return FailureResult<UserDTO>.Create(FailureResultCode.RequiredFieldEmpty, "Password");
+                return FailureResult<UserDTO>.Create(FailureResultCode.LoginPasswordRequired);
 
             var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user == null)

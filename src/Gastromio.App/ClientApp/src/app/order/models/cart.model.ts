@@ -1,6 +1,8 @@
 import {CartDishModel} from './cart-dish.model';
+import {OrderType} from "./order-type";
 
 export class CartModel {
+
   constructor(
     private orderType: OrderType,
     private restaurantId: string,
@@ -178,10 +180,21 @@ export class CartModel {
 
     return undefined;
   }
+
+  public clone(): CartModel {
+    return new CartModel(
+      this.orderType,
+      this.restaurantId,
+      this.averageTime,
+      this.minimumOrderValue,
+      this.maximumOrderValue,
+      this.costs,
+      this.hygienicHandling,
+      this.cartDishes?.map(dish => dish?.clone()),
+      this.visible,
+      this.serviceTime
+    )
+  }
+
 }
 
-export enum OrderType {
-  Pickup,
-  Delivery,
-  Reservation
-}

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {AuthService} from './auth.service';
-import {take} from 'rxjs/operators';
 
 @Injectable()
 export class CustomerAuthGuardService implements CanActivate {
@@ -26,7 +25,6 @@ export class CustomerAuthGuardService implements CanActivate {
       return false;
     } else {
       this.auth.pingAsync()
-        .pipe(take(1))
         .subscribe(() => {
         }, () => {
           this.auth.logout();

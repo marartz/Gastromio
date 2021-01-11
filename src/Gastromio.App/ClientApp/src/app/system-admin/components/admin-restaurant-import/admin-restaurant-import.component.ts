@@ -1,8 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 
-import {take} from 'rxjs/operators';
-
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
@@ -51,7 +49,6 @@ export class AdminRestaurantImportComponent implements OnInit {
 
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantSysAdminService.importRestaurantsAsync(this.restaurantImportFile, true)
-      .pipe(take(1))
       .subscribe((log) => {
         this.blockUI.stop();
         this.error = undefined;
@@ -78,7 +75,6 @@ export class AdminRestaurantImportComponent implements OnInit {
 
     this.blockUI.start('Verarbeite Daten...');
     this.restaurantSysAdminService.importRestaurantsAsync(this.restaurantImportFile, false)
-      .pipe(take(1))
       .subscribe((log) => {
         this.blockUI.stop();
         this.error = undefined;

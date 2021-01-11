@@ -4,7 +4,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {DishModel} from '../../../shared/models/dish.model';
 import {DishVariantModel} from '../../../shared/models/dish-variant.model';
 
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
 
 @Component({
   selector: 'app-add-dish-to-cart',
@@ -24,7 +24,7 @@ export class AddDishToCartComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private orderService: OrderService
+    private orderFacade: OrderFacade
   ) {
     this.count = 1;
   }
@@ -58,7 +58,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderService.addDishToCart(this.dish, this.selectedVariant, this.count, this.remarks);
+    this.orderFacade.addDishToCart(this.dish, this.selectedVariant, this.count, this.remarks);
     this.activeModal.close();
   }
 
