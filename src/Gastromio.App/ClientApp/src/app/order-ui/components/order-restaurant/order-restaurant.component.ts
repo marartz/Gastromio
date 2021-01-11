@@ -112,7 +112,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     ];
 
     combineLatest(observables).pipe(take(1)).subscribe(() => {
-      this.orderService.selectRestaurantAsync(this.restaurantId).pipe(take(1)).subscribe(() => {
+      this.orderService.selectRestaurantAsync(this.restaurantId).subscribe(() => {
         this.blockUI.stop();
 
         try {

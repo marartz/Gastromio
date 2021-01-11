@@ -1,8 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 
-import {take} from 'rxjs/operators';
-
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
@@ -41,7 +39,6 @@ export class RemoveCuisineComponent implements OnInit {
   onSubmit() {
     this.blockUI.start('Verarbeite Daten...');
     this.cuisineAdminService.removeCuisineAsync(this.cuisine.id)
-      .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
         this.message = undefined;

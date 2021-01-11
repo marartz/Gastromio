@@ -3,8 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {take} from 'rxjs/operators';
-
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
 import {UserModel} from "../../../shared/models/user.model";
@@ -58,7 +56,6 @@ export class LoginComponent implements OnInit {
 
     this.blockUI.start('Verarbeite Daten...');
     this.authService.loginAsync(loginData.Email, loginData.Password)
-      .pipe(take(1))
       .subscribe((user: UserModel) => {
         this.generalError = undefined;
         this.loginForm.reset();

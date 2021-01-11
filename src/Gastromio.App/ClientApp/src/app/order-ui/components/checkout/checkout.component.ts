@@ -7,8 +7,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
-import {take} from 'rxjs/operators';
-
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 import {PaymentMethodModel} from '../../../shared/models/payment-method.model';
@@ -69,7 +67,6 @@ export class CheckoutComponent implements OnInit {
 
     this.blockUI.start();
     this.orderService.initializeAsync()
-      .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
 
@@ -305,7 +302,6 @@ export class CheckoutComponent implements OnInit {
 
     this.blockUI.start('Bestellung wird verarbeitet...');
     this.orderService.checkoutAsync(checkoutModel)
-      .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
         this.generalError = undefined;

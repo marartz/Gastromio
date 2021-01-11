@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {debounceTime, distinctUntilChanged, filter, take} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
@@ -17,7 +17,6 @@ import {OrderService} from '../../../order/services/order.service';
   ]
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
-  selectedRestaurant: RestaurantModel;
 
   private searchPhrase: string;
   private searchPhraseUpdated: Subject<string> = new Subject<string>();
@@ -55,7 +54,6 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
 
   updateSearch(): void {
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, undefined, '', undefined)
-      .pipe(take(1))
       .subscribe((result) => {
         let count = Math.min(result.length, 6);
 

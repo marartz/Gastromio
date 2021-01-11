@@ -1,8 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 
-import {Observable} from "rxjs";
-import {take} from 'rxjs/operators';
-
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
@@ -36,7 +33,6 @@ export class RemoveDishComponent implements OnInit {
 
   onSubmit() {
     this.facade.removeDish(this.dishCategoryId, this.dish.id)
-      .pipe(take(1))
       .subscribe(() => {
         this.activeModal.close();
       })

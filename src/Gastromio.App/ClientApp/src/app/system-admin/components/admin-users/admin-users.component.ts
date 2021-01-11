@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -62,7 +62,6 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onFetchPage(info: FetchPageInfo) {
     this.userAdminService.searchForUsersAsync(this.searchPhrase, info.skip, info.take)
-      .pipe(take(1))
       .subscribe((result) => {
         this.pageOfUsers = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);

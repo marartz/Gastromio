@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -63,7 +63,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.selectedCuisineFilter = '';
 
     this.orderService.getAllCuisinesAsync()
-      .pipe(take(1))
       .subscribe((cuisines) => {
         this.cuisines = cuisines;
       });
@@ -187,7 +186,6 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     const date = this.selectedOpeningHourFilter ?? new Date();
     this.orderService.searchForRestaurantsAsync(this.searchPhrase, OrderService.translateToOrderType(this.orderType),
       this.selectedCuisineFilter, null)
-      .pipe(take(1))
       .subscribe((result) => {
 
         let restaurants = new Array<RestaurantModel>(result.length);
