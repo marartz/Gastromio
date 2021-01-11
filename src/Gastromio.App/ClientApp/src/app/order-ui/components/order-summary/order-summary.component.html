@@ -1,0 +1,19 @@
+<block-ui [delayStart]="0">
+<div *ngIf="initialized" id="root">
+    <div class="layout">
+        <div  id="confirmation">
+            <div  class="text">
+                <span *ngIf="!order" >
+                    <span class="top">Eine neu abgesendete Bestellung liegt aktuell nicht vor!</span><br />
+                </span>
+                <span *ngIf="order">
+                    <span class="top">Vielen Dank für Deine Bestellung!</span><br />
+                    <span class="middle">Deine Bestellung wurde an {{restaurant?.name}} übermittelt!<br />Eine Bestellübersicht wurde an deine hinterlegte E-Mail-Adresse gesendet.</span><br />
+                    <span class="bottom">{{restaurant?.name}} und das Gastromio-Team wünschen Euch einen Guten Appetit!</span>
+                </span>
+                <button [routerLink]="['/']" target="_blank">Zurück zur Startseite ...</button>
+            </div>
+        </div>
+    </div>
+</div>
+</block-ui>

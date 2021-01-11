@@ -1,0 +1,236 @@
+#top-bar {
+    background-color: transparent;
+    position: relative;
+    z-index: 30;
+}
+
+#top-bar .wrapper {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    height: 72px;
+    justify-content: space-between;
+	margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    width: 100%;
+    margin: 0px auto;
+}
+
+@media only screen and (min-width: 570px) {
+    #top-bar .wrapper {
+        max-width: 1280px;
+    }
+}
+
+@media only screen and (min-width: 1004px) {
+    #top-bar .wrapper {
+        max-width: 1280px;
+    }
+}
+
+@media only screen and (min-width: 1030px) {
+    #top-bar .wrapper {
+        max-width: 1320px;
+    }
+}
+
+@media only screen and (max-width: 569px) {
+    #top-bar .wrapper {
+        max-width: 1275px;
+    }
+}
+
+
+#top-bar #logo {
+    cursor: pointer;
+    flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    outline: none;
+    text-transform: none;
+}
+
+#top-bar #logo img {
+    display: inline;
+    height: 48px;
+    transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -ms-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    vertical-align: middle;
+    width: 48px;
+}
+
+#top-bar #logo a {
+    color: #FFF;
+    cursor: pointer;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 0px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+#top-bar #logo a span {
+    font-weight: 300;
+}
+
+@media only screen and (max-width: 767px) {
+    #top-bar #logo a span {
+        display: none;
+    }
+    #top-bar #logo img {
+        margin-right: 6px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #top-bar #logo img {
+        margin-right: 6px;
+    }
+}
+
+#top-bar #menu {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    justify-content: flex-end;
+}
+
+#top-bar #menu .link {
+    background-color: transparent;
+    color: #FFF;
+    cursor: pointer;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 48px;
+    padding: 0px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+#top-bar #menu .link:not(:first-of-type) {
+    margin-left: 24px;
+}
+
+#top-bar #userDropDown {
+    background-color: #ADCCCB;
+    border: 0px;
+    border-radius: 23px;
+    padding: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+#beta-banner {
+    background-color: #363636;
+    color: #FFF;
+    display: block;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 16px 20px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+#beta-banner svg {
+    display: none;
+}
+
+#beta-banner a {
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: none;
+    transform: translateY(0);
+    transition: color 0.3s;
+}
+
+#beta-banner a:hover {
+    color: #f2f3f6;
+}
+
+#beta-banner a svg {
+    display: inline-block;
+    height: 24px;
+    margin: 0px 6px 0px 0px;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    transform-origin: 50% 50%;
+    vertical-align: top;
+    width: 24px;
+}
+
+@media only screen and (max-width: 767px) {
+    #beta-banner {
+        padding: 6px 16px;
+    }
+    #beta-banner svg {
+        display: block;
+        height: 26px;
+        position: absolute;
+        top: calc(50% - 11px);
+        transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+        transform-origin: 50% 50%;
+        width: 26px;
+    }
+    #beta-banner a {
+        font-size: 15px;
+        margin: 0px 24px;
+        text-align: center;
+    }
+    #beta-banner a svg {
+        display: none;
+    }
+}
+
+.menu--heading {
+    color: #363636;
+    font-size: 12.8px;
+    padding: 6px 12px 12px 6px;
+}
+
+.menu--content {
+    display: block;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0px 12px 10px 6px;
+    color: #363636;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

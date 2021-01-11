@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DotLiquid" Version="2.0.358" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="CustomerTemplate.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Gastromio.Core\Gastromio.Core.csproj" />
+    </ItemGroup>
+
+</Project>

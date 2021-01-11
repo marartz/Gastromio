@@ -1,0 +1,31 @@
+<div id="modal">
+    <div class="wrapper">
+        <div class="content">
+            <h1 class="title">Impressum</h1>
+            <p class="description">
+                {{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}
+                <br />{{restaurant.address.street}}
+                <br />{{restaurant.address.zipCode}} {{restaurant.address.city}}
+                <br />Deutschland
+                <br /><br />
+                Telefon: {{restaurant.contactInfo.phone}}
+                <ng-container><br />Telefax: {{restaurant.contactInfo.fax}}</ng-container>
+                <ng-container><br />Webseite: <a class="link" href="{{restaurant.contactInfo.webSite}}" target="_blank">{{restaurant.contactInfo.webSite}}</a></ng-container>
+                <br /><br />
+                Öffnungszeiten: {{restaurant.regularOpeningHoursText}}
+                <ng-container *ngIf="restaurant.deviatingOpeningHoursText && restaurant.deviatingOpeningHoursText.length > 0">
+                    <br />
+                    Sonderzeiten: {{restaurant.deviatingOpeningHoursText}}
+                </ng-container>
+                <br />
+                <br />Diverse Marken sind im Besitz der jeweiligen Eigentümer.
+                <br />
+                <br />Wichtige Informationen zum Thema Datenschutz finden Sie in unserer <a class="link" [routerLink]="['/privacy-policy']" target="_blank">Datenschutzerklärung</a>. Das Impressum und Ansprechpartner von Gastromio finden Sie <a class="link" [routerLink]="['/imprint']" target="_blank">hier</a>.
+                <br />
+                <br />Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a class="link" href="https://ec.europa.eu/consumers/odr" target="_blank">https://ec.europa.eu/consumers/odr</a>.
+                <br />
+            </p>
+            <a href="javascript:" class="back-to-menu" aria-label="Close" (click)="activeModal.dismiss('Cross click')" style="font-family: 'Apercu', sans-serif; font-weight: 500;">Zurück zum Menü →</a>
+        </div>
+    </div>
+</div>

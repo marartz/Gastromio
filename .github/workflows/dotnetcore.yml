@@ -19,16 +19,16 @@ jobs:
         dotnet-version: 3.1.101
     
     - name: Install dependencies
-      run: dotnet restore ./src/FoodOrderSystem.App
+      run: dotnet restore ./src/Gastromio.App
     
     - name: Build
-      run: dotnet build --configuration Release --no-restore ./src/FoodOrderSystem.App
+      run: dotnet build --configuration Release --no-restore ./src/Gastromio.App
     
     - name: Test
-      run: dotnet test --no-restore --verbosity normal ./src/FoodOrderSystem.App
+      run: dotnet test --no-restore --verbosity normal ./src/Gastromio.App
     
     - name: Publish
-      run: dotnet publish --configuration Release --no-restore --no-build ./src/FoodOrderSystem.App
+      run: dotnet publish --configuration Release --no-restore --no-build ./src/Gastromio.App
       
 #    - name: Copy to S3 bucket
 #      uses: jakejarvis/s3-sync-action@master
@@ -37,14 +37,14 @@ jobs:
 #        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
 #        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #        AWS_REGION: 'eu-central-1'
-#        SOURCE_DIR: './src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/'
+#        SOURCE_DIR: './src/Gastromio.App/bin/Release/netcoreapp3.1/publish/'
 #        DEST_DIR: $(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')
         
     - name: Stash package
       uses: actions/upload-artifact@v1
       with:
         name: package
-        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/
+        path: ./src/Gastromio.App/bin/Release/netcoreapp3.1/publish/
 
   
   build-docker:
@@ -58,7 +58,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: package
-        path: ./src/FoodOrderSystem.App/bin/Release/netcoreapp3.1/publish/
+        path: ./src/Gastromio.App/bin/Release/netcoreapp3.1/publish/
       
     - if: ${{ github.event_name == 'push' }}
       shell: bash
@@ -72,7 +72,7 @@ jobs:
       run: echo "${TAG_NAME}"
 
     - name: Build docker image
-      run: docker build --no-cache --tag marartz/food_order_system:${TAG_NAME} .
+      run: docker build --no-cache --tag marartz/gastromio:${TAG_NAME} .
 
     - name: Login to docker
       run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
@@ -81,4 +81,4 @@ jobs:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
 
     - name: Push docker image
-      run: docker push marartz/food_order_system
+      run: docker push marartz/gastromio
