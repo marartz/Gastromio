@@ -217,8 +217,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantEmailInvalid, contactInfo.EmailAddress);
 
             if (!string.IsNullOrEmpty(contactInfo.Mobile) && !Validators.IsValidPhoneNumber(contactInfo.Mobile))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Mobile),
-                    contactInfo.Mobile);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantMobileInvalid, contactInfo.Mobile);
             
             ContactInfo = contactInfo;
             UpdatedOn = DateTime.UtcNow;
