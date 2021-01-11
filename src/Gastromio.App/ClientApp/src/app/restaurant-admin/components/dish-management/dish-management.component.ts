@@ -178,7 +178,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
 
   public openChangeDishCategoryForm(dishCategory: DishCategoryModel): void {
     const modalRef = this.modalService.open(ChangeDishCategoryComponent);
-    modalRef.componentInstance.dishCategory = dishCategory;
+    modalRef.componentInstance.dishCategory = dishCategory.clone();
     modalRef.result.then(() => {
     }, () => {
     });
@@ -186,7 +186,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
 
   public openRemoveDishCategoryForm(dishCategory: DishCategoryModel): void {
     const modalRef = this.modalService.open(RemoveDishCategoryComponent);
-    modalRef.componentInstance.dishCategory = dishCategory;
+    modalRef.componentInstance.dishCategory = dishCategory.clone();
     modalRef.result.then(() => {
     }, () => {
     });
@@ -203,7 +203,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   public openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
     const modalRef = this.modalService.open(EditDishComponent);
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
-    modalRef.componentInstance.dish = dish;
+    modalRef.componentInstance.dish = dish.clone();
     modalRef.result.then(() => {
     }, () => {
     });
@@ -212,7 +212,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   public openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
     const modalRef = this.modalService.open(RemoveDishComponent);
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
-    modalRef.componentInstance.dish = dish;
+    modalRef.componentInstance.dish = dish.clone();
     modalRef.result.then(() => {
     }, () => {
     });
