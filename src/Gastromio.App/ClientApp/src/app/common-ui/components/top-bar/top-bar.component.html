@@ -13,7 +13,7 @@
 					<a class="login" [routerLink]="['/login']">Anmelden</a>
 				</ng-container>
 				<!-- ENDE: Benutzer abgemeldet -->
-				
+
 				<!-- START: Benutzer angemeldet -->
 				<ng-container *ngIf="getUserEmail() !== undefined" ngbDropdown>
 					<a class="login logged_in" id="userDropDown" ngbDropdownToggle>
@@ -21,7 +21,7 @@
                     	<ng-container *ngIf="isRestaurantAdmin()">Meine Restaurants&nbsp;</ng-container>
 					</a>
 					<ul class="dropdown-menu" id="userDropDown" ngbDropdownMenu>
-						
+
 						<ng-container *ngIf="isSystemAdmin()">
 							<li><a [routerLink]="['/admin/users']"><span><strong>Benutzer verwalten</strong><p>Verwalte Benutzerkonten</p></span></a></li>
 							<li><a [routerLink]="['/admin/cuisines']"><span><strong>Cuisines verwalten</strong><p>Verwalte Kategorien</p></span></a></li>
@@ -29,22 +29,17 @@
 							<li><a [routerLink]="['/admin/restaurantimport']"><span><strong>Restaurantimport</strong></span></a></li>
 							<li><a [routerLink]="['/admin/dishimport']"><span><strong>Speisenimport</strong></span></a></li>
 						</ng-container>
-						
+
 						<ng-container *ngIf="isRestaurantAdmin()">
 							<li><a [routerLink]="['/admin/myrestaurants']"><span><strong>Meine Restaurants</strong><p>Restaurantverwaltung</p></span></a></li>
 						</ng-container>
-						
+
 						<li><a (click)="logout()"><span><strong>Abmelden</strong></span></a></li>
 					</ul>
 				</ng-container>
 				<!-- ENDE: Benutzer angemeldet -->
-				
+
 			</ul>
 		</nav>
 	</div>
 </header>
-
-<!--div id="logo">
-            <a class="link" *ngIf="isOnOrderPage()" (click)="toggleCartVisibility()">Warenkorb</a>
-            <a class="link" *ngIf="!isOnOrderPage() && getCurRestaurantId() !== undefined" [routerLink]="['/restaurants', getCurRestaurantId()]">Warenkorb</a>
-        </div-->

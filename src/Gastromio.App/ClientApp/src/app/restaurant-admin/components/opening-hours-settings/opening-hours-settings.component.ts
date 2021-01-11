@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {BehaviorSubject, Subscription} from "rxjs";
-import {debounceTime, take} from "rxjs/operators";
+import {debounceTime} from "rxjs/operators";
 
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
@@ -115,7 +115,6 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       this.regularOpeningHoursViewModel$.next(regularOpeningHoursViewModel);
     } else {
       this.facade.removeRegularOpeningPeriod(dayOfWeek, openingPeriod$.value.baseModel.start)
-        .pipe(take(1))
         .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
     }
   }
@@ -218,7 +217,6 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       this.deviatingOpeningHoursViewModel$.next(deviatingOpeningHoursViewModel);
     } else {
       this.facade.removeDeviatingOpeningPeriod(date, openingPeriod$.value.baseModel.start)
-         .pipe(take(1))
          .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
     }
   }
@@ -336,11 +334,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
         if (openingPeriod.baseModel === undefined) {
           this.facade.addRegularOpeningPeriod(dayOfWeek, startParseResult.value, endParseResult.value)
-            .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
           this.facade.changeRegularOpeningPeriod(dayOfWeek, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
-            .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         }
       });
@@ -447,11 +443,9 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
         if (openingPeriod.baseModel === undefined) {
           this.facade.addDeviatingOpeningPeriod(date, startParseResult.value, endParseResult.value)
-            .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         } else if (openingPeriod.baseModel.start !== startParseResult.value || openingPeriod.baseModel.end !== endParseResult.value) {
           this.facade.changeDeviatingOpeningPeriod(date, openingPeriod.baseModel.start, startParseResult.value, endParseResult.value)
-            .pipe(take(1))
             .subscribe(() => { }, () => { openingPeriod$.value.failure = true; });
         }
       });

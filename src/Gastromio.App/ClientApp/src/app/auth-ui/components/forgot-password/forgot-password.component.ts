@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse} from '@angular/common/http';
 
-import {take} from 'rxjs/operators';
-
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
 
 import {AuthService} from '../../../auth/services/auth.service';
@@ -49,7 +47,6 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.sending = true;
     this.authService.requestPasswordChangeAsync(data.email)
-      .pipe(take(1))
       .subscribe(
         () => {
           this.sending = false;

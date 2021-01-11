@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 
+import {filter} from "rxjs/operators";
+
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 
 import {OrderModel} from '../../../order/models/order.model';
 
-import {OrderService} from '../../../order/services/order.service';
+import {OrderFacade} from "../../../order/order.facade";
+import {BlockUI, NgBlockUI} from "ng-block-ui";
 
 @Component({
   selector: 'app-order-summary',
@@ -12,31 +15,36 @@ import {OrderService} from '../../../order/services/order.service';
   styleUrls: ['./order-summary.component.css', '../../../../assets/css/frontend_v3.min.css']
 })
 export class OrderSummaryComponent implements OnInit {
+
+  @BlockUI() blockUI: NgBlockUI;
+
+  initialized: boolean = false;
   restaurant: RestaurantModel;
   order: OrderModel;
 
   constructor(
-    private orderService: OrderService
+    private orderFacade: OrderFacade
   ) {
   }
 
   ngOnInit() {
-    this.restaurant = this.orderService.getRestaurant();
-    this.order = this.orderService.getOrder();
-  }
+    this.orderFacade.getIsInitializing$()
+      .subscribe(isInitializing => {
+        if (isInitializing) {
+          this.blockUI.start();
+        } else {
+          this.blockUI.stop();
+        }
+      });
 
-  formatNumber(value: number): string {
-    return value.toLocaleString('de', {minimumFractionDigits: 2});
-  }
-
-  hasLogo(): boolean {
-    return this.restaurant?.imageTypes.some(en => en === 'logo');
-  }
-
-  getLogoUrl(): string {
-    if (!this.restaurant) {
-      return undefined;
-    }
-    return '/api/v1/restaurants/' + this.restaurant.id + '/images/logo';
+    this.orderFacade.getIsInitialized$()
+      .pipe(
+        filter(isInitialized => isInitialized === true)
+      )
+      .subscribe(() => {
+        this.initialized = true;
+        this.restaurant = this.orderFacade.getSelectedRestaurant();
+        this.order = this.orderFacade.getOrder();
+      });
   }
 }

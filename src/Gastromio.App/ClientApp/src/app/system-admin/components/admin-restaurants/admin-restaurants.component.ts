@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, take} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -65,7 +65,6 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   onFetchPage(info: FetchPageInfo) {
     this.restaurantSysAdminService.searchForRestaurantsAsync(this.searchPhrase, info.skip, info.take)
-      .pipe(take(1))
       .subscribe((result) => {
         this.pageOfRestaurants = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);
@@ -110,7 +109,6 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   onActivate(restaurant: RestaurantModel): void {
     this.restaurantSysAdminService.activateRestaurantAsync(restaurant.id)
-      .pipe(take(1))
       .subscribe(() => {
         restaurant.isActive = true;
       }, response => {
@@ -120,7 +118,6 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   onDeactivate(restaurant: RestaurantModel): void {
     this.restaurantSysAdminService.deactivateRestaurantAsync(restaurant.id)
-      .pipe(take(1))
       .subscribe(() => {
         restaurant.isActive = false;
       }, response => {
@@ -130,7 +127,6 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   onEnableSupport(restaurant: RestaurantModel): void {
     this.restaurantSysAdminService.enableSupportForRestaurantAsync(restaurant.id)
-      .pipe(take(1))
       .subscribe(() => {
         restaurant.needsSupport = true;
       }, response => {
@@ -140,7 +136,6 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
 
   onDisableSupport(restaurant: RestaurantModel): void {
     this.restaurantSysAdminService.disableSupportForRestaurantAsync(restaurant.id)
-      .pipe(take(1))
       .subscribe(() => {
         restaurant.needsSupport = false;
       }, response => {

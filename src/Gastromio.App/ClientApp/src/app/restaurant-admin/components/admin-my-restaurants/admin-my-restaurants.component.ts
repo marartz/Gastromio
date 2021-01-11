@@ -1,8 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {take} from 'rxjs/operators';
-
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
 
 import {AuthService} from '../../../auth/services/auth.service';
@@ -42,7 +40,6 @@ export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
 
   updateSearch(): void {
     this.restaurantAdminService.getMyRestaurantsAsync()
-      .pipe(take(1))
       .subscribe((result) => {
         this.restaurants = result;
       }, (error) => {

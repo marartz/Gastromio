@@ -88,9 +88,9 @@ namespace Gastromio.Core.Domain.Model.Dish
         public Result<bool> ChangeName(string name, UserId changedBy)
         {
             if (string.IsNullOrEmpty(name))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
+                return FailureResult<bool>.Create(FailureResultCode.DishNameRequired);
             if (name.Length > 40)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 40);
+                return FailureResult<bool>.Create(FailureResultCode.DishNameTooLong, 40);
 
             Name = name;
             UpdatedOn = DateTime.UtcNow;
@@ -102,7 +102,7 @@ namespace Gastromio.Core.Domain.Model.Dish
         public Result<bool> ChangeDescription(string description, UserId changedBy)
         {
             if (description != null && description.Length > 200)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(description), 200);
+                return FailureResult<bool>.Create(FailureResultCode.DishDescriptionTooLong,  200);
 
             Description = description;
             UpdatedOn = DateTime.UtcNow;
@@ -114,7 +114,7 @@ namespace Gastromio.Core.Domain.Model.Dish
         public Result<bool> ChangeProductInfo(string productInfo, UserId changedBy)
         {
             if (productInfo != null && productInfo.Length > 200)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(productInfo), 200);
+                return FailureResult<bool>.Create(FailureResultCode.DishProductInfoTooLong,  200);
 
             ProductInfo = productInfo;
             UpdatedOn = DateTime.UtcNow;
@@ -126,7 +126,7 @@ namespace Gastromio.Core.Domain.Model.Dish
         public Result<bool> ChangeOrderNo(int orderNo, UserId changedBy)
         {
             if (orderNo < 0)
-                return FailureResult<bool>.Create(FailureResultCode.DishInvalidOrderNo, nameof(orderNo));
+                return FailureResult<bool>.Create(FailureResultCode.DishInvalidOrderNo);
 
             OrderNo = orderNo;
             UpdatedOn = DateTime.UtcNow;
@@ -195,7 +195,7 @@ namespace Gastromio.Core.Domain.Model.Dish
                 throw new InvalidOperationException("variant already exists");
 
             if (name != null && name.Length > 40)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 40);
+                return FailureResult<bool>.Create(FailureResultCode.DishVariantNameTooLong, 40);
 
             if (!(price > 0))
                 return FailureResult<bool>.Create(FailureResultCode.DishVariantPriceIsNegativeOrZero);

@@ -74,7 +74,7 @@ export class AuthService {
     return this.http.post(this.requestPasswordChangeUrl, {userEmail: email}, httpOptions)
       .pipe(
         take(1),
-        map(m => {})
+        map(() => {})
       );
   }
 
@@ -89,7 +89,7 @@ export class AuthService {
     return this.http.post(this.validatePasswordResetCodeUrl, {userId, passwordResetCode}, httpOptions)
       .pipe(
         take(1),
-        map(m => {})
+        map(() => {})
       );
   }
 
@@ -104,11 +104,11 @@ export class AuthService {
     return this.http.post(this.changePasswordWithResetCodeUrl, {userId, passwordResetCode, password}, httpOptions)
       .pipe(
         take(1),
-        map(m => {})
+        map(() => {})
       );
   }
 
-  public pingAsync(): Observable<{}> {
+  public pingAsync(): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -117,7 +117,11 @@ export class AuthService {
       })
     };
 
-    return this.http.get<{}>(this.pingUrl, httpOptions);
+    return this.http.get<{}>(this.pingUrl, httpOptions)
+      .pipe(
+        take(1),
+        map(() => {})
+      );
   }
 
   public logout(): void {

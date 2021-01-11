@@ -1,7 +1,7 @@
 <div id="root">
     <div class="layout">
         <main id="order-restaurant">
-			
+
 			<header id="hero" style="background-image: url('../../assets/images/hero/pizza-2.jpg');">
 				<div class="common-container">
 					<div id="text">
@@ -31,7 +31,7 @@
 
             <block-ui [delayStart]="1500">
                 <section id="order">
-                    
+
 					<!-- START: _3_advanced-filter -->
 					<section
 							 data-aos="gm-move-down"
@@ -44,7 +44,7 @@
 						<button class="filtern" type="button" (click)="onToggleMobileFilterDetails()">Filtern</button>
 						<div class="search">
 							<div class="icon-wrapper"><div class="icon"></div></div>
-							<input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchType($event.target.value)">
+							<input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." [value]="selectedSearchPhrase$ | async" (keyup)="onSearchType($event.target.value)">
 						</div>
 					</section>
 
@@ -59,11 +59,11 @@
                                 <div id="ordertype-filter">
                                     <p class="title">Wie kommt das Essen zu dir?</p>
                                     <div class="filter">
-                                        <ng-container *ngIf="orderType === 'pickup'">
+                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
                                             <button type="button" class="switch active"><span>Abholung</span></button>
                                             <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
                                         </ng-container>
-                                        <ng-container *ngIf="orderType === 'delivery'">
+                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
                                             <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
                                             <button type="button" class="switch active"><span>Lieferung</span></button>
                                         </ng-container>
@@ -71,8 +71,8 @@
                                 </div>
                                 <div id="opening-hour-filter">
                                     <p class="title">Für wann möchtest du bestellen?</p>
-                                    <button *ngIf="!selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
-                                    <button *ngIf="selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">{{getOpeningHourFilterText()}}</button>
+                                    <button *ngIf="!(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
+                                    <button *ngIf="(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">{{selectedOrderTimeText$ | async}}</button>
                                 </div>
                                 <div id="categories">
                                     <p class="title">Filter</p>
@@ -88,9 +88,9 @@
                             </div>
                         </section>
                     </ng-container>
-					
+
                     <div id="mobile-info">
-                        <div 
+                        <div
 							 class="restaurant-count"
 							 data-aos="gm-move-down"
 							 data-aos-anchor="#order"
@@ -98,7 +98,7 @@
 							 data-aos-duration="800"
 							 data-aos-once="true"
 							 >
-                            {{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants
+                            {{openedRestaurantCount$ | async}} von {{totalRestaurantCount$ | async}} Restaurants
                         </div>
                     </div>
 
@@ -131,7 +131,7 @@
 								</div>
 							</aside>
 							<!-- ENDE: _2_action-bar -->
-							
+
 							<!-- START: _3_advanced-filter -->
 							<aside id="filter">
 								<div class="filter-wrapper">
@@ -235,7 +235,7 @@
 
                             <div id="restaurants">
 
-                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants$ | async" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
                                 <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
                                     <h3
@@ -259,7 +259,7 @@
                                     </p>
                                 </div>
 
-                                <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants" [restaurant]="restaurant" [orderType]="orderType" [selectedOpeningHourFilter]="selectedOpeningHourFilter"></app-order-restaurants-row>
+                                <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants$ | async" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
                             </div>
 

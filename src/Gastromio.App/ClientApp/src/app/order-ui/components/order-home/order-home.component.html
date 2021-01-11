@@ -1,5 +1,5 @@
 <div id="order-home">
-    
+
     <section id="landing" class="bg-rough-blue">
         <div class="wrapper">
             <div class="inner">
@@ -34,11 +34,11 @@
                             <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
                         </div>
                         <div class="button-wrapper">
-                            <button type="button" [routerLink]="['/restaurants']"><span>Alle anzeigen</span></button>
+                            <button type="button" (click)="onShowAll()"><span>Alle anzeigen</span></button>
                         </div>
                         <div id="results" class="visibleonsearch">
                             <div class="rest">
-                                <div *ngFor="let restaurant of restaurants" data-aos="gm-move-down"
+                                <div *ngFor="let restaurant of restaurants$ | async" data-aos="gm-move-down"
 										 data-aos-delay="300"
 										 data-aos-duration="800"
 										 data-aos-once="false">
@@ -137,7 +137,7 @@
 						Teile unsere Initiative mit Deinen Freunden und Bekannten, <br>sei es in sozialen Medien, lokalen Zeitungen oder in <br>deinem persönlichen Netzwerk.
 					</p>
                     <noscript>
-						<a 
+						<a
 						   href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.gastromio.de%2F&display=popup&app_id=929536154183982"
 						   target="_blank"
 						   rel="nofollow noreferrer"

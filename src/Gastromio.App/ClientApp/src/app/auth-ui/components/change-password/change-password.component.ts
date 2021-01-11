@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 
-import {concatMap, take} from 'rxjs/operators';
+import {concatMap} from 'rxjs/operators';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
@@ -79,7 +79,6 @@ export class ChangePasswordComponent implements OnInit {
 
     this.blockUI.start('Ändere Dein Passwort...');
     this.authService.changePasswordWithResetCodeAsync(this.userId, this.passwordResetCode, data.password)
-      .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
         this.submitted = false;
