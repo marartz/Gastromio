@@ -2,7 +2,7 @@
     <div class="layout">
         <main id="order-restaurant">
 
-			<header id="hero" style="background-image: url('../../assets/images/hero/pizza-2.jpg');">
+			<header id="hero" style="background-image: url('../../../../assets/images/hero/pizza-2.jpg');">
 				<div class="common-container">
 					<div id="text">
 						<h2
@@ -114,7 +114,7 @@
 								   data-aos-once="true"
 								   id="actions"
 								   >
-								<h2 class="title">{{openedRestaurantCount}} von {{totalRestaurantCount}} Restaurants</h2>
+								<h2 class="title">{{openedRestaurantCount$ | async}} von {{totalRestaurantCount$ | async}} Restaurants</h2>
 								<div class="restaurant-actions">
 									<div class="restaurant-search" style="margin-right: 0px">
 										<div class="icon-wrapper"><div class="icon"></div></div>
@@ -154,11 +154,11 @@
 											 data-aos-duration="800"
 											 data-aos-once="true"
 											 >
-											<ng-container *ngIf="orderType === 'pickup'">
+											<ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
 												<button type="button" class="switch active"><span>Abholung</span></button>
 												<button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
 											</ng-container>
-											<ng-container *ngIf="orderType === 'delivery'">
+											<ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
 												<button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
 												<button type="button" class="switch active"><span>Lieferung</span></button>
 											</ng-container>
@@ -182,12 +182,12 @@
 												data-aos-duration="800"
 												data-aos-once="true"
 												type="button"
-												*ngIf="!selectedOpeningHourFilter"
+												*ngIf="!(selectedOrderTime$ | async)"
 												(click)="openOpeningHourFilter()"
 												>
 											Zeit wählen
 										</button>
-										<button *ngIf="selectedOpeningHourFilter" type="button" (click)="openOpeningHourFilter()">{{getOpeningHourFilterText()}}</button>
+										<button *ngIf="(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">{{(selectedOrderTimeText$ | async)}}</button>
 									</section>
 									<section id="categories">
 										<p
@@ -237,7 +237,7 @@
 
                                 <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants$ | async" [restaurant]="restaurant" [orderType]="(selectedOrderType$ | async)" [selectedOpeningHourFilter]="(selectedOrderTime$ | async)"></app-order-restaurants-row>
 
-                                <div class="preorder" *ngIf="closedRestaurants !== undefined && closedRestaurants.length > 0">
+                                <div class="preorder" *ngIf="(closedRestaurants$ | async) !== undefined && (closedRestaurants$ | async).length > 0">
                                     <h3
 										data-aos="gm-move-down"
 										data-aos-anchor="#order"
@@ -245,8 +245,8 @@
 										data-aos-duration="800"
 										data-aos-once="true"
 										>
-                                        <ng-container *ngIf="orderType === 'pickup'">Für Abholung geschlossen</ng-container>
-                                        <ng-container *ngIf="orderType === 'delivery'">Für Lieferung geschlossen</ng-container>
+                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">Für Abholung geschlossen</ng-container>
+                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">Für Lieferung geschlossen</ng-container>
                                     </h3>
                                     <p
 									   data-aos="gm-move-down"
