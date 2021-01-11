@@ -1,25 +1,5 @@
 <block-ui>
-	<main id="auth" role="main">
-		<div class="wrapper">
-			<section id="content">
-				<div class="content-wrapper">
-					<h1>Willkommen zurück 👋</h1>
-					<p>Melde dich an, um fortzufahren</p>
-					<form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-						<div class="form-group">
-						  	<input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" autofocus="" inputmode="email" spellcheck="off" id="email" name="email" formControlName="Email" placeholder="bernd@mustermann.de">
-						</div>
-						<div class="form-group">
-						  	<input type="password" mozactionhint="send" autocapitalize="none" autocomplete="password" spellcheck="off" id="password" name="password" formControlName="Password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
-						</div>
-						<button class="login-register" type="submit">Anmelden</button>
-					</form>
-				</div>
-			</section>
-		</div>
-	</main>
-</block-ui>
-    <!--div id="login">
+    <div id="forgot-password">
 
         <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Email.errors">
             <span style="align-items: center; display: inline-flex;">
@@ -74,12 +54,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="login-register" type="submit">Anmelden</button>
+                            <button class="forgot-password-register" type="submit">Anmelden</button>
                             <div class="disclaimer">
-                                Mit Klick auf "Anmelden" stimmst Du den <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzbestimmungen</a> von Gastromio zu. Diese Website ist durch Cloudflare geschützt und es gelten die <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank">Cloudflare-Datenschutzbestimmungen</a> und <a href="https://www.cloudflare.com/de-de/terms/" target="_blank">Nutzungsbedingungen</a>.
+                                Mit Klick auf "Anmelden" stimmst Du den <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzbestimmungen</a> von Gastromio zu. Diese Website ist durch Cloudflare gesch�tzt und es gelten die <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank">Cloudflare-Datenschutzbestimmungen</a> und <a href="https://www.cloudflare.com/de-de/terms/" target="_blank">Nutzungsbedingungen</a>.
                             </div>
-                            <div class="forgot-password">
-                                Wenn Du Dein Passwort vergessen hast, kannst Du <a [routerLink]="['/forgotpassword']">hier Dein Passwort zurücksetzen</a>.
+                            <div class="disclaimer">
+                                Wenn Du Dein Passwort vergessen hast, kannst Du <a [routerLink]="['/forgotpassword']">hier Dein Passwort zur�cksetzen</a>.
                             </div>
                         </form>
                     </div>
@@ -87,5 +67,5 @@
             </div>
 
         </div>
-    </div-->
-
+    </div>
+</block-ui>
