@@ -30,7 +30,7 @@ export class CuisineAdminService {
       .pipe(take(1));
   }
 
-  public addCuisineAsync(name: string): Observable<CuisineModel> {
+  public addCuisineAsync(name: string, image: string): Observable<CuisineModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -38,11 +38,11 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', {name}, httpOptions)
+    return this.http.post<CuisineModel>(this.baseUrl + '/cuisines', {name, image}, httpOptions)
       .pipe(take(1));
   }
 
-  public changeCuisineAsync(cuisineId: string, name: string): Observable<boolean> {
+  public changeCuisineAsync(cuisineId: string, name: string, image: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export class CuisineAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       })
     };
-    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', {name}, httpOptions)
+    return this.http.post<boolean>(this.baseUrl + '/cuisines/' + cuisineId + '/change', {name, image}, httpOptions)
       .pipe(take(1));
   }
 

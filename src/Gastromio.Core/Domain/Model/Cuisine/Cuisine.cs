@@ -24,6 +24,7 @@ namespace Gastromio.Core.Domain.Model.Cuisine
         public Cuisine(
             CuisineId id,
             string name,
+            string image,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -32,23 +33,27 @@ namespace Gastromio.Core.Domain.Model.Cuisine
         {
             Id = id;
             Name = name;
+            Image = image;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
         }
-        
+
         public CuisineId Id { get; }
+
         public string Name { get; private set; }
 
+        public string Image { get; private set; }
+
         public DateTime CreatedOn { get; }
-        
+
         public UserId CreatedBy { get; }
-        
+
         public DateTime UpdatedOn { get; private set; }
-        
+
         public UserId UpdatedBy { get; private set; }
-        
+
         public Result<bool> ChangeName(string name, UserId updatedBy)
         {
             if (string.IsNullOrEmpty(name))
@@ -59,7 +64,21 @@ namespace Gastromio.Core.Domain.Model.Cuisine
             Name = name;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = updatedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeImage(string image, UserId updatedBy)
+        {
+            image = !string.IsNullOrWhiteSpace(image) ? image.ToLowerInvariant() : null;
             
+            if (image != null && image.Length > 50)
+                return FailureResult<bool>.Create(FailureResultCode.CuisineImageTooLong, 50);
+
+            Image = image;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = updatedBy;
+
             return SuccessResult<bool>.Create(true);
         }
     }

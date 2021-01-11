@@ -33,7 +33,8 @@ export class AddCuisineComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     this.addCuisineForm = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      image: ['']
     });
   }
 
@@ -51,7 +52,7 @@ export class AddCuisineComponent implements OnInit {
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    this.cuisineAdminService.addCuisineAsync(data.name)
+    this.cuisineAdminService.addCuisineAsync(data.name, data.image)
       .subscribe(() => {
         this.blockUI.stop();
         this.message = undefined;

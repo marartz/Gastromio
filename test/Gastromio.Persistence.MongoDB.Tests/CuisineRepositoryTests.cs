@@ -53,6 +53,7 @@ namespace Gastromio.Persistence.MongoDB.Tests
             await target.StoreAsync(new Cuisine(
                 new CuisineId(cuisineId),
                 "test",
+                "italienisch",
                 DateTime.UtcNow,
                 userId,
                 DateTime.UtcNow,

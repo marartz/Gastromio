@@ -76,6 +76,7 @@ namespace Gastromio.Persistence.MongoDB
             return new Cuisine(
                 new CuisineId(row.Id),
                 row.Name,
+                row.Image,
                 row.CreatedOn,
                 new UserId(row.CreatedBy),
                 row.UpdatedOn,
@@ -89,6 +90,7 @@ namespace Gastromio.Persistence.MongoDB
             {
                 Id = obj.Id.Value,
                 Name = obj.Name,
+                Image = obj.Image,
                 CreatedOn = obj.CreatedOn,
                 CreatedBy = obj.CreatedBy.Value,
                 UpdatedOn = obj.UpdatedOn,

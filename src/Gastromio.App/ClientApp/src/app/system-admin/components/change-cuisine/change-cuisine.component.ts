@@ -38,7 +38,8 @@ export class ChangeCuisineComponent implements OnInit {
 
   ngOnInit() {
     this.changeCuisineForm = this.formBuilder.group({
-      name: [this.cuisine.name, Validators.required]
+      name: [this.cuisine.name, Validators.required],
+      image: [this.cuisine.image]
     });
   }
 
@@ -47,12 +48,13 @@ export class ChangeCuisineComponent implements OnInit {
   }
 
   onSubmit(data) {
+    console.log('submint');
     if (this.changeCuisineForm.invalid) {
       return;
     }
 
     this.blockUI.start('Verarbeite Daten...');
-    this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name)
+    this.cuisineAdminService.changeCuisineAsync(this.cuisine.id, data.name, data.image)
       .subscribe(() => {
         this.blockUI.stop();
         this.message = undefined;

@@ -142,77 +142,77 @@ namespace Gastromio.Core.Application.Commands.AddTestData
         {
             logger.LogInformation("creating test cuisines");
             
-            var tempResult = cuisineFactory.Create("Chinesisch", currentUser.Id);
+            var tempResult = cuisineFactory.Create("Chinesisch", "asiatisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             var cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Griechisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Griechisch", "griechisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Italienisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Italienisch", "italienisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Amerikanisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Amerikanisch", "burger", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Mexikanisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Mexikanisch", null, currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Französisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Französisch", null, currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Indisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Indisch", "indisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Mediterran", currentUser.Id);
+            tempResult = cuisineFactory.Create("Mediterran", "nudeln", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Japnisch", currentUser.Id);
+            tempResult = cuisineFactory.Create("Japnisch", "japanisch", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Regional", currentUser.Id);
+            tempResult = cuisineFactory.Create("Regional", "gut-bürgerlich-2", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
             cuisines.Add(cuisine);
 
-            tempResult = cuisineFactory.Create("Deutsch (gut bürgerlich)", currentUser.Id);
+            tempResult = cuisineFactory.Create("Deutsch (gut bürgerlich)", "gut-bürgerlich", currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult.Cast<bool>();
             cuisine = ((SuccessResult<Cuisine>) tempResult).Value;

@@ -21,6 +21,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="wrapper">
+                        <div class="input-wrapper">
+                            <div class="input-inner">
+                                <div style="background: none; border-radius: 8px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
+                                <label>
+                                    <div class="label">Bildname der Cuisine</div>
+                                    <input type="text" mozactionhint="send" autocomplete="off" inputmode="latin" maxlength="50" minlength="3" id="image" formControlName="image">
+                                </label>
+                                <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 8px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="feedback">
                         <div class="help-text" *ngIf="f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für die Cuisine an.</span></div>
                         <div class="help-text" *ngIf="message !== undefined">{{message}}</div>

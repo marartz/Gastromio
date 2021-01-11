@@ -43,7 +43,7 @@ namespace Gastromio.Core.Application.Commands.AddCuisine
             if (cuisine != null)
                 return FailureResult<CuisineDTO>.Create(FailureResultCode.CuisineAlreadyExists);
 
-            var createResult = cuisineFactory.Create(command.Name, currentUser.Id);
+            var createResult = cuisineFactory.Create(command.Name, command.Image, currentUser.Id);
             if (createResult.IsFailure)
                 return createResult.Cast<CuisineDTO>();
 

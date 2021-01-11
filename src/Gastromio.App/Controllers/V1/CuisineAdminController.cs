@@ -66,7 +66,7 @@ namespace Gastromio.App.Controllers.V1
 
             var commandResult =
                 await commandDispatcher.PostAsync<AddCuisineCommand, CuisineDTO>(
-                    new AddCuisineCommand(addCuisineModel.Name), new UserId(currentUserId));
+                    new AddCuisineCommand(addCuisineModel.Name, addCuisineModel.Image), new UserId(currentUserId));
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 
@@ -81,7 +81,8 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<ChangeCuisineCommand, bool>(
-                new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name), new UserId(currentUserId));
+                new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name, changeCuisineModel.Image),
+                new UserId(currentUserId));
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
 

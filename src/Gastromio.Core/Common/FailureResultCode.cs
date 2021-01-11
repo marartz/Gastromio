@@ -16,6 +16,7 @@
         UserIsRestaurantAdmin,
         CuisineNameIsRequired,
         CuisineNameTooLong,
+        CuisineImageTooLong,
         CuisineDoesNotExist,
         CuisineAlreadyExists,
         PaymentMethodDoesNotExist,
