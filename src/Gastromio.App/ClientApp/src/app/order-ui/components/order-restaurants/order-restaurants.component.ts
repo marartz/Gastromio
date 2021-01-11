@@ -110,6 +110,13 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  getCuisineClass(): string {
+    if (!this.orderFacade.getSelectedCuisine()) {
+      return 'cuisine-all';
+    }
+    return 'cuisine-' + this.orderFacade.getSelectedCuisine();
+  }
+
   onToggleMobileFilterDetails(): void {
     this.showMobileFilterDetails = !this.showMobileFilterDetails;
   }
