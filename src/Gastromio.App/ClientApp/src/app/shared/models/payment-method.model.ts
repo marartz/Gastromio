@@ -1,5 +1,9 @@
 export class PaymentMethodModel {
-  constructor() {
+
+  constructor(init?: Partial<PaymentMethodModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
   }
 
   public id: string;
@@ -9,4 +13,14 @@ export class PaymentMethodModel {
   public description: string;
 
   public imageName: string;
+
+  public clone(): PaymentMethodModel {
+    return new PaymentMethodModel({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      imageName: this.imageName
+    });
+  }
+
 }
