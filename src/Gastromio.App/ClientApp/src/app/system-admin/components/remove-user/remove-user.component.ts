@@ -4,8 +4,6 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
-import {take} from 'rxjs/operators';
-
 import {UserModel} from '../../../shared/models/user.model';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
@@ -40,7 +38,6 @@ export class RemoveUserComponent implements OnInit {
   onSubmit() {
     this.blockUI.start('Verarbeite Daten...');
     this.userAdminService.removeUserAsync(this.user.id)
-      .pipe(take(1))
       .subscribe(() => {
         this.blockUI.stop();
         this.message = undefined;

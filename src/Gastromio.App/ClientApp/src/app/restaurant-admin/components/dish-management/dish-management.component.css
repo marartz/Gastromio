@@ -38,8 +38,7 @@
 #table table th {
     font-size: 13px;
     font-weight: 600;
-    vertical-align: middle;
-    white-space: nowrap;
+    vertical-align: top;
 }
 
 #table table tbody tr {

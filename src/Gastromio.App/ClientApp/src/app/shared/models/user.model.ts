@@ -1,5 +1,9 @@
 export class UserModel {
-  constructor() {
+
+  constructor(init?: Partial<UserModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
   }
 
   public id: string;
@@ -7,4 +11,13 @@ export class UserModel {
   public role: string;
 
   public email: string;
+
+  public clone(): UserModel {
+    return new UserModel({
+      id: this.id,
+      role: this.role,
+      email: this.email
+    });
+  }
+
 }

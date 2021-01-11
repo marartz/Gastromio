@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 
 import {BehaviorSubject, combineLatest, Observable, throwError} from "rxjs";
-import {catchError, map, take, tap} from "rxjs/operators";
+import {catchError, map, tap} from "rxjs/operators";
 
 import {CuisineModel} from "../shared/models/cuisine.model";
 import {DishCategoryModel} from "../shared/models/dish-category.model";
@@ -64,15 +64,17 @@ export class RestaurantAdminFacade {
     const getPaymentMethods$ = this.restaurantAdminService.getPaymentMethodsAsync()
       .pipe(
         tap(paymentMethods => {
-          this.paymentMethods$.next(paymentMethods.sort((a, b) => {
-            if (a.name < b.name) {
-              return -1;
-            }
-            if (a.name > b.name) {
-              return 1;
-            }
-            return 0;
-          }));
+          this.paymentMethods$.next(paymentMethods
+            .sort((a, b) => {
+              if (a.name < b.name) {
+                return -1;
+              }
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            })
+          );
         })
       );
 
@@ -120,12 +122,6 @@ export class RestaurantAdminFacade {
     combineLatest(observables)
       .subscribe(
         () => {
-
-          //         this.openingPeriodVMs = OpeningPeriodViewModel.vmArrayFromModels(this.restaurant.openingHours);
-
-          //               if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
-          //                 this.activeDishCategoryId = this.dishCategories[0].id;
-
           this.isInitializing$.next(false);
           this.isInitialized$.next(true);
         },
@@ -254,7 +250,6 @@ export class RestaurantAdminFacade {
   public changeAddress(address: AddressModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantAddressAsync(this.restaurant$.value.id, address)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -272,7 +267,6 @@ export class RestaurantAdminFacade {
   public changeContactInfo(contactInfo: ContactInfoModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantContactInfoAsync(this.restaurant$.value.id, contactInfo)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -288,7 +282,6 @@ export class RestaurantAdminFacade {
   public changeLogo(logo: string): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', logo)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -311,7 +304,6 @@ export class RestaurantAdminFacade {
   public removeLogo(): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', undefined)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -329,7 +321,6 @@ export class RestaurantAdminFacade {
   public changeBanner(banner: string): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', banner)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -352,7 +343,6 @@ export class RestaurantAdminFacade {
   public removeBanner(): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', undefined)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -370,7 +360,6 @@ export class RestaurantAdminFacade {
   public changeSupportedOrderMode(supportedOrderMode: string): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeSupportedOrderMode(this.restaurant$.value.id, supportedOrderMode)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -388,7 +377,6 @@ export class RestaurantAdminFacade {
   public changeServiceInfo(serviceInfo: ServiceInfoModel): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.changeRestaurantServiceInfoAsync(this.restaurant$.value.id, serviceInfo)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -439,7 +427,6 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     observable
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -700,8 +687,7 @@ export class RestaurantAdminFacade {
             const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
             const index = deviatingOpeningDay.openingPeriods.findIndex(en => en.start === start);
             deviatingOpeningDay.openingPeriods.splice(index, 1);
-            if (deviatingOpeningDay.openingPeriods.length === 0)
-            {
+            if (deviatingOpeningDay.openingPeriods.length === 0) {
               deviatingOpeningDay.status = "closed";
             }
 
@@ -720,7 +706,6 @@ export class RestaurantAdminFacade {
   public addOrChangeExternalMenu(externalMenuId: string, name: string, description: string, url: string): void {
     this.isUpdating$.next(true);
     this.restaurantAdminService.addOrChangeExternalMenu(this.restaurant$.value.id, externalMenuId, name, description, url)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -757,7 +742,6 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService.removeExternalMenu(this.restaurant$.value.id, externalMenuId)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -858,7 +842,6 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService.decOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -882,7 +865,6 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService.incOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -967,7 +949,6 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService.decOrderOfDishAsync(this.restaurant$.value.id, dishId)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
@@ -996,7 +977,6 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService.incOrderOfDishAsync(this.restaurant$.value.id, dishId)
-      .pipe(take(1))
       .subscribe(() => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);

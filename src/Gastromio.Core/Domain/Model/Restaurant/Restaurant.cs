@@ -153,9 +153,9 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeName(string name, UserId changedBy)
         {
             if (string.IsNullOrEmpty(name))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(name));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantNameRequired);
             if (name.Length > 100)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(name), 100);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantNameTooLong, 100);
 
             Name = name;
             UpdatedOn = DateTime.UtcNow;
@@ -167,29 +167,26 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeAddress(Address address, UserId changedBy)
         {
             if (address == null)
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantAddressRequired);
 
             if (string.IsNullOrEmpty(address.Street))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.Street));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantStreetRequired);
             if (address.Street.Length > 100)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(address.Street), 100);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantStreetTooLong, 100);
             if (!Validators.IsValidStreet(address.Street))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.Street),
-                    address.Street);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantStreetInvalid, address.Street);
 
             if (string.IsNullOrEmpty(address.ZipCode))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.ZipCode));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantZipCodeRequired);
             if (address.ZipCode.Length != 5 || address.ZipCode.Any(en => !char.IsDigit(en)))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode),
-                    address.ZipCode);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantZipCodeInvalid, address.ZipCode);
             if (!Validators.IsValidZipCode(address.ZipCode))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(address.ZipCode),
-                    address.ZipCode);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantZipCodeInvalid, address.ZipCode);
 
             if (string.IsNullOrEmpty(address.City))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(address.City));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantCityRequired);
             if (address.City.Length > 50)
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueTooLong, nameof(address.City), 50);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantCityTooLong, 50);
 
             Address = address;
             UpdatedOn = DateTime.UtcNow;
@@ -201,29 +198,23 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeContactInfo(ContactInfo contactInfo, UserId changedBy)
         {
             if (string.IsNullOrEmpty(contactInfo.Phone))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, nameof(contactInfo.Phone));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantPhoneRequired);
             if (!Validators.IsValidPhoneNumber(contactInfo.Phone))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Phone),
-                    contactInfo.Phone);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantPhoneInvalid, contactInfo.Phone);
 
             if (!string.IsNullOrEmpty(contactInfo.Fax) && !Validators.IsValidPhoneNumber(contactInfo.Fax))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.Fax),
-                    contactInfo.Fax);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantFaxInvalid, contactInfo.Fax);
 
             if (!string.IsNullOrEmpty(contactInfo.WebSite) && !Validators.IsValidWebsite(contactInfo.WebSite))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.WebSite),
-                    contactInfo.WebSite);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantWebSiteInvalid, contactInfo.WebSite);
 
             if (string.IsNullOrEmpty(contactInfo.ResponsiblePerson))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty,
-                    nameof(contactInfo.ResponsiblePerson));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantResponsiblePersonRequired);
 
             if (string.IsNullOrEmpty(contactInfo.EmailAddress))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty,
-                    nameof(contactInfo.EmailAddress));
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantEmailRequired);
             if (!Validators.IsValidEmailAddress(contactInfo.EmailAddress))
-                return FailureResult<bool>.Create(FailureResultCode.FieldValueInvalid, nameof(contactInfo.EmailAddress),
-                    contactInfo.EmailAddress);
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantEmailInvalid, contactInfo.EmailAddress);
 
             ContactInfo = contactInfo;
             UpdatedOn = DateTime.UtcNow;

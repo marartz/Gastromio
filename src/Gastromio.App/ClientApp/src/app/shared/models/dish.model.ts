@@ -1,9 +1,12 @@
 import {DishVariantModel} from './dish-variant.model';
 
 export class DishModel {
+
   constructor(init?: Partial<DishModel>) {
-    Object.assign(this, init);
-    this.id = undefined;
+    if (init) {
+      Object.assign(this, init);
+    }
+    this.variants = this.variants?.map(variant => new DishVariantModel(variant));
   }
 
   public id: string;
@@ -15,4 +18,15 @@ export class DishModel {
   public productInfo: string;
 
   public variants: Array<DishVariantModel>;
+
+  public clone(): DishModel {
+    return new DishModel({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      productInfo: this.productInfo,
+      variants: this.variants?.map(variant => variant?.clone())
+    });
+  }
+
 }

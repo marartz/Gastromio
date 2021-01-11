@@ -496,7 +496,7 @@ namespace Gastromio.Core.Domain.Services
             string cuisinesText, bool dryRun, UserId curUserId)
         {
             if (string.IsNullOrWhiteSpace(cuisinesText))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, "Cuisines");
+                return FailureResult<bool>.Create(FailureResultCode.ImportCuisinesNotFound, "Cuisines");
 
             var cuisineNames = cuisinesText.Split(',');
             foreach (var cuisineName in cuisineNames)
@@ -543,7 +543,7 @@ namespace Gastromio.Core.Domain.Services
             UserId curUserId)
         {
             if (string.IsNullOrWhiteSpace(paymentMethodsText))
-                return FailureResult<bool>.Create(FailureResultCode.RequiredFieldEmpty, "PaymentMethods");
+                return FailureResult<bool>.Create(FailureResultCode.ImportPaymentMethodsNotFound);
 
             var paymentMethodNames = paymentMethodsText.Split(',');
             foreach (var paymentMethodName in paymentMethodNames)

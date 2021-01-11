@@ -32,4 +32,8 @@ export class DateModel {
     return 0;
   }
 
+  public clone(): DateModel {
+    return new DateModel(this.year, this.month, this.day);
+  }
+
 }
