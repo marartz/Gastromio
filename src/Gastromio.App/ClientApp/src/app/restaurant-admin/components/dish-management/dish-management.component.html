@@ -105,7 +105,7 @@
                                             <p class="email">{{getPriceOfVariant(dish.variants[0])}}</p>
                                         </ng-container>
                                         <ng-container *ngIf="dish.variants?.length > 1">
-                                            <p class="email" *ngFor="let variant of dish.variants" style="font-size: 80%">{{variant.name}}: {{getPriceOfVariant(dish.variants[0])}}</p>
+                                            <p class="email" *ngFor="let variant of dish.variants" style="font-size: 80%">{{variant.name}}: {{getPriceOfVariant(variant)}}</p>
                                         </ng-container>
                                     </th>
                                     <td class="actions" style="min-width: 8em;">
