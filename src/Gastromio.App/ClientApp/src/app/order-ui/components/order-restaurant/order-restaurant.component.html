@@ -14,7 +14,7 @@
                             <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> (Telefonische Bestellung & Online-Vorbestellung)</span></ng-container>
                             <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> (Telefonische Bestellung & Online-Bestellung)</span></ng-container>
                             <span *ngIf="restaurant.openingHoursTodayText !== null"><br />Heute von {{restaurant.openingHoursTodayText}} geöffnet</span>
-                            <span *ngIf="!restaurant.isOpen(undefined)"><br />Heute {{restaurant.getRestaurantClosedReason(undefined)}}</span>
+                            <span *ngIf="!restaurant.isOpen(undefined)"><br />Im Moment {{restaurant.getRestaurantClosedReason(undefined)}}</span>
                         </h2>
                     </div>
                 </div>
