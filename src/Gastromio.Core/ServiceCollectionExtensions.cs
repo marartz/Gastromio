@@ -116,7 +116,7 @@ namespace Gastromio.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishNameRequired, "Name des Gerichts ist ein Pflichtfeld");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishNameTooLong, "Der Name des Gerichts ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishDescriptionTooLong, "Die Beschreibung des Gerichts ist zu lang (maximum {0} Zeichen)");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishProductInfoTooLong, "Die Beschreibung des Gerichts ist zu lang (maximum {0} Zeichen)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishProductInfoTooLong, "Die Produktinformation des Gerichts ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishInvalidOrderNo, "Gericht hat eine ungültige Reihenfolgenkennzahl");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantNameTooLong, "Der Name der Variante ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantPriceIsNegativeOrZero, "Das Gericht / die Variante muss einen Preis > 0 besitzen");

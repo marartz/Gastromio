@@ -34,7 +34,7 @@ export class OrderService {
       })
     };
 
-    return this.http.get<RestaurantModel[]>(this.baseUrl + '/cuisines', httpOptions)
+    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions)
       .pipe(take(1));
   }
 
