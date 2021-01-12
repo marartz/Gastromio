@@ -1,8 +1,8 @@
 ﻿namespace Gastromio.Core.Application.Ports.Notification
 {
-    public class NotificationResponse
+    public class EmailNotificationResponse
     {
-        public NotificationResponse(
+        public EmailNotificationResponse(
             bool success,
             string message
         )

@@ -238,13 +238,19 @@ export class ContactInfoModel {
 
   public emailAddress: string;
 
+  public mobile: string;
+
+  public orderNotificationByMobile: boolean;
+
   public clone(): ContactInfoModel {
     return new ContactInfoModel({
       phone: this.phone,
       fax: this.fax,
       webSite: this.webSite,
       responsiblePerson: this.responsiblePerson,
-      emailAddress: this.emailAddress
+      emailAddress: this.emailAddress,
+      mobile: this.mobile,
+      orderNotificationByMobile: this.orderNotificationByMobile
     });
   }
 

@@ -136,7 +136,9 @@ export class RestaurantRestAdminService {
       fax: contactInfo.fax,
       webSite: contactInfo.webSite,
       responsiblePerson: contactInfo.responsiblePerson,
-      emailAddress: contactInfo.emailAddress
+      emailAddress: contactInfo.emailAddress,
+      mobile: contactInfo.mobile,
+      orderNotificationByMobile: contactInfo.orderNotificationByMobile
     }, httpOptions)
       .pipe(take(1));
   }

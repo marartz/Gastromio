@@ -241,6 +241,19 @@ namespace Gastromio.Template.DotLiquid
             };
         }
 
+        public string GetRestaurantMobileMessage(Order order)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Liebes Restaurant ");
+            sb.Append(order.CartInfo.RestaurantName);
+            sb.Append(", wir haben eine Bestellung von ");
+            sb.Append(order.CustomerInfo.GivenName);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.LastName);
+            sb.Append(" für Dich. Details in Deinen Emails.");
+            return sb.ToString();
+        }
+
         private static void AppendOrderDetails(StringBuilder sb, Order order)
         {
             sb.Append("<p>");

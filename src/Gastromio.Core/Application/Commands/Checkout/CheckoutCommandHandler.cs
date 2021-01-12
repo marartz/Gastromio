@@ -202,6 +202,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     restaurantInfo,
                     restaurant.ContactInfo.Phone,
                     restaurant.ContactInfo.EmailAddress,
+                    restaurant.ContactInfo.Mobile,
                     restaurant.NeedsSupport,
                     command.CartDishes?.Select(en => new OrderedDishInfo(
                         en.ItemId,
@@ -222,6 +223,12 @@ namespace Gastromio.Core.Application.Commands.Checkout
                 totalPrice,
                 command.ServiceTime
             );
+
+            var shouldInformByMobile = restaurant.ContactInfo?.OrderNotificationByMobile ?? false;
+            if (!shouldInformByMobile)
+            {
+                order.RegisterRestaurantMobileNotificationAttempt(true, "mobile notification not requested");
+            }
 
             await orderRepository.StoreAsync(order, cancellationToken);
 

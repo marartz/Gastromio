@@ -5,9 +5,9 @@ namespace Gastromio.Notification.Smtp
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddSmtp(this IServiceCollection services)
+        public static void AddEmailNotificationViaSmtp(this IServiceCollection services)
         {
-            services.AddTransient<INotificationService, SmtpNotificationService>();
+            services.AddTransient<IEmailNotificationService, SmtpEmailNotificationService>();
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Gastromio.App.BackgroundServices;
 using Gastromio.Core;
+using Gastromio.Notification.Mailjet;
 using Gastromio.Notification.Smtp;
 using Gastromio.Persistence.MongoDB;
 using Gastromio.Template.DotLiquid;
@@ -41,7 +42,8 @@ namespace Gastromio.App
             var configurationProvider = new ConfigurationProvider
             {
                 IsTestSystem = Configuration.GetValue("IsTestSystem", true),
-                EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net")
+                EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net"),
+                MobileRecipientForTest = Configuration.GetValue("MobileRecipientForTest", "+4915165119020")
             };
 
             Log.Information($"IsTestSystem: {configurationProvider.IsTestSystem}");
@@ -52,7 +54,7 @@ namespace Gastromio.App
 
             services.AddSingleton<Gastromio.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
 
-            var smtpConfiguration = new SmtpConfiguration()
+            var smtpConfiguration = new SmtpEmailConfiguration
             {
                 ServerName = Configuration.GetValue<string>("Smtp:ServerName"),
                 Port = Configuration.GetValue<int>("Smtp:Port"),
@@ -60,7 +62,14 @@ namespace Gastromio.App
                 Password = Configuration.GetValue<string>("Smtp:Password")
             };
             services.AddSingleton(smtpConfiguration);
-            services.AddSmtp();
+            services.AddEmailNotificationViaSmtp();
+
+            var mailjetMobileConfiguration = new MailjetMobileConfiguration
+            {
+                ApiToken = Configuration.GetValue<string>("Mailjet:SMS:ApiToken")
+            };
+            services.AddSingleton(mailjetMobileConfiguration);
+            services.AddMobileNotificationViaMailjet();
 
             services.AddDotLiquid();
             

@@ -89,7 +89,9 @@ namespace Gastromio.Core.Domain.Services
                 restaurantRow.Fax,
                 restaurantRow.WebSite,
                 restaurantRow.ResponsiblePerson,
-                restaurantRow.OrderEmailAddress
+                restaurantRow.OrderEmailAddress,
+                null,
+                false
             );
             boolResult = restaurant.ChangeContactInfo(contactInfo, curUserId);
             if (boolResult.IsFailure)

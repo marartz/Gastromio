@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gastromio.Core\Gastromio.Core.csproj" />
+    <ProjectReference Include="..\Gastromio.Notification.Mailjet\Gastromio.Notification.Mailjet.csproj" />
     <ProjectReference Include="..\Gastromio.Notification.Smtp\Gastromio.Notification.Smtp.csproj" />
     <ProjectReference Include="..\Gastromio.Persistence.MongoDB\Gastromio.Persistence.MongoDB.csproj" />
     <ProjectReference Include="..\Gastromio.Template.DotLiquid\Gastromio.Template.DotLiquid.csproj" />
