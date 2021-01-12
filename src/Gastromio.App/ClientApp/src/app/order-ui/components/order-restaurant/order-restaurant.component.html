@@ -2,6 +2,23 @@
 	<div class="layout">
 	
         <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
+		
+		<div
+			 class="warning"
+			 data-aos="gm-move-up"
+			 data-aos-anchor="body"
+			 data-aos-delay="200"
+			 data-aos-duration="400"
+			 id="flash-message"
+			 role="status"
+			 *ngIf="!restaurant.isOpen(undefined)"
+			 >
+			<span>
+				<svg class="icon" width="32" height="32" viewBox="0 0 50 50"><path d="M 14.40625 13 L 13 14.40625 L 23.625 25 L 13 35.59375 L 14.40625 37 L 25.0625 26.40625 L 35.6875 37 L 37.09375 35.59375 L 26.46875 25 L 37.09375 14.40625 L 35.6875 13 L 25.0625 23.59375 Z"></path></svg>
+				<p>{{restaurant.name}} hat im Moment <b>{{restaurant.getRestaurantClosedReason(undefined)}}</b></p>
+			</span>
+		</div>
+		
 		<main id="order-restaurant" *ngIf="generalError === undefined && initialized">
 			
 			<header 
@@ -45,7 +62,7 @@
 								<span>Geöffnet von {{restaurant.openingHoursTodayText}} Uhr</span>
 							</ng-container>
 							<ng-container *ngIf="!restaurant.isOpen(undefined)">
-								<span style="text-transform: capitalize">{{restaurant.getRestaurantClosedReason(undefined)}}</span>
+								<span> ({{restaurant.getRestaurantClosedReason(undefined)}})</span>
 							</ng-container>
 						</h2>
 						<h2
@@ -109,7 +126,7 @@
 										   >
 								</div>
 								<div class="restaurant-open-cart" (click)="toggleCartVisibility()">
-									<div class="cart-icon"><span></span></div>
+									<div class="cart-icon"><span>{{getCart().getDishCountOfOrder()}}</span></div>
 								</div>
 							</div>
 						</section>

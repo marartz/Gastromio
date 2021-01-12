@@ -422,3 +422,75 @@ button {
     min-height: 80vh;
     width: 100%;
 }
+
+
+
+
+#fp-alert {
+    align-items: center;
+    background-color: #363636;
+    background-image: url("../../assets/images/rough/grey.png");
+    background-repeat: repeat;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    margin-top: -90px;
+    padding: 16px;
+    position: relative;
+    width: 100%;
+}
+
+#fp-alert p {
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 46px;
+    font-weight: 700;
+}
+
+#flash-message {
+    position: fixed;
+    bottom: 16px;
+    left: 24px;
+    z-index: 9999;
+    font-family: "Apercu", sans-serif;
+    background-color: #ADCCCB;
+    padding: 10px 30px;
+    border-radius: 23px;
+    color: #363636;
+    font-size: 16px;
+	font-weight: 400;
+}
+
+#flash-message span {
+	align-items: center;
+	display: inline-flex;
+}
+
+#flash-message.success {
+	background-color: #81B67C;
+}
+
+#flash-message.warning {
+	background-color: #DECF80;
+}
+
+#flash-message .icon {
+    display: inline-block;
+    color: inherit;
+    fill: currentColor;
+    height: 1em;
+    width: 1em;
+    line-height: 1;
+    flex-shrink: 0;
+    max-width: initial;
+    margin-right: 14px;
+}
+
+#flash-message p {
+	color: #363636;
+    font-family: "Apercu", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	margin: 0px;
+	line-height: 1.75;
+}

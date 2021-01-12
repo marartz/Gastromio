@@ -54,11 +54,21 @@
                         width: 14.285714%;
                     }
 					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week {
-                        border-radius: 0px;
+                        border-radius: 0 0 23px 23px;
                     }
                     :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week:not(.ngb-dp-weekdays) {
-                        background-color: #DECF80;
+                        background-color: transparent;
                     }
+					:host /deep/ ngb-datepicker [ngbDatepickerDayView] {
+						border-radius: 23px;
+						transition: all .3s ease;
+					}
+					:host /deep/ ngb-datepicker .btn-light:hover,
+					:host /deep/ ngb-datepicker .btn-light:active {
+						color: #fff !important;
+						background-color: #363636 !important;
+						border-color: #363636 !important;
+					}
                     :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day {
                         font-family: "Apercu", sans-serif;
                         font-style: normal;

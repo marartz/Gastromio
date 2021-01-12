@@ -1,5 +1,5 @@
 #top-bar {
-    background-color: var(--transparent);
+    background-color: transparent;
 	min-height: 90px;
     position: relative;
 	transition: opacity 0.25s ease, transform 0.5s cubic-bezier(0.18, 0.8, 0.4, 1);
