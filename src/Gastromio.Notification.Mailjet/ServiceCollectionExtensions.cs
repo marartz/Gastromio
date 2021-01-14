@@ -1,5 +1,8 @@
-﻿using Gastromio.Core.Application.Ports.Notification;
+﻿using System.Runtime.CompilerServices;
+using Gastromio.Core.Application.Ports.Notification;
 using Microsoft.Extensions.DependencyInjection;
+
+[assembly:InternalsVisibleTo("Gastromio.Notification.Mailjet.Tests")]
 
 namespace Gastromio.Notification.Mailjet
 {

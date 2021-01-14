@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Notification;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using PhoneNumbers;
 
 namespace Gastromio.Notification.Mailjet
 {
@@ -42,10 +43,7 @@ namespace Gastromio.Notification.Mailjet
                     mobileNotificationRequest.Text
                 );
 
-                var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
-
-                var phoneNumber = phoneNumberUtil.Parse(mobileNotificationRequest.To, "DE");
-                if (!phoneNumberUtil.IsValidNumberForRegion(phoneNumber, "DE"))
+                if (!GetUnifiedPhoneNumber(mobileNotificationRequest.To, out var unifiedPhoneNumber))
                 {
                     logger.LogWarning($"Number '{mobileNotificationRequest.To}' is not valid => skipping sending notification via SMS");
                     return new MobileNotificationResponse(true, "Mobile number is not valid");
@@ -54,7 +52,7 @@ namespace Gastromio.Notification.Mailjet
                 var requestObj = new JObject
                 {
                     {"From", mobileNotificationRequest.From},
-                    {"To", mobileNotificationRequest.To},
+                    {"To", unifiedPhoneNumber},
                     {"Text", mobileNotificationRequest.Text}
                 };
                 var json = requestObj.ToString();
@@ -69,7 +67,7 @@ namespace Gastromio.Notification.Mailjet
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    logger.LogWarning($"Could not send SMS to {mobileNotificationRequest.To} due to: {response.ReasonPhrase}");
+                    logger.LogWarning($"Could not send SMS to {unifiedPhoneNumber} due to: {response.ReasonPhrase}");
                     return new MobileNotificationResponse(false, response.ReasonPhrase);
                 }
 
@@ -84,6 +82,28 @@ namespace Gastromio.Notification.Mailjet
             {
                 logger.LogError(e, "Error during sending mobile notification via Mailjet");
                 return new MobileNotificationResponse(false, e.Message);
+            }
+        }
+
+        internal bool GetUnifiedPhoneNumber(string phoneNumberText, out string unifiedPhoneNumber)
+        {
+            try
+            {
+                var phoneNumberUtil = PhoneNumberUtil.GetInstance();
+                var phoneNumber = phoneNumberUtil.Parse(phoneNumberText, "DE");
+                if (!phoneNumberUtil.IsValidNumberForRegion(phoneNumber, "DE"))
+                {
+                    unifiedPhoneNumber = null;
+                    return false;
+                }
+
+                unifiedPhoneNumber = phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.E164);
+                return true;
+            }
+            catch (Exception)
+            {
+                unifiedPhoneNumber = null;
+                return false;
             }
         }
     }
