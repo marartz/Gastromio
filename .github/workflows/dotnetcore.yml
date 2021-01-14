@@ -25,7 +25,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore ./src/Gastromio.App
 
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov .
 
     - name: Publish
       run: dotnet publish --configuration Release --no-restore --no-build ./src/Gastromio.App
