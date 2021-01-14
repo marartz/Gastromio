@@ -19,7 +19,7 @@ namespace Gastromio.Notification.Mailjet.Tests
         [InlineData("015165119020", true, "+4915165119020")]
         [InlineData("+4915165119020", true, "+4915165119020")]
         [InlineData("004915165119020", true, "+4915165119020")]
-        [InlineData("+48123456789", true, null)]
+        [InlineData("+48123456789", false, null)]
         [InlineData("abc", false, null)]
         public void GetUnifiedPhoneNumber_ProducesAndReturnsCorrectResults(string phoneNumber, bool expectedReturnValue,
             string expectedUnifiedPhoneNumber)
