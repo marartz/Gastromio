@@ -17,6 +17,8 @@ namespace Gastromio.Notification.Mailjet.Tests
 
         [Theory]
         [InlineData("015165119020", true, "+4915165119020")]
+        [InlineData("0151/65119020", true, "+4915165119020")]
+        [InlineData("0151-65119020", true, "+4915165119020")]
         [InlineData("+4915165119020", true, "+4915165119020")]
         [InlineData("004915165119020", true, "+4915165119020")]
         [InlineData("+48123456789", false, null)]
