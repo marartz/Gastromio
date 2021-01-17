@@ -2,9 +2,9 @@
 
 namespace Gastromio.Core.Application.Ports.Notification
 {
-    public class NotificationRequest
+    public class EmailNotificationRequest
     {
-        public NotificationRequest(
+        public EmailNotificationRequest(
             EmailAddress sender,
             ICollection<EmailAddress> recipientsTo,
             ICollection<EmailAddress> recipientsCc,

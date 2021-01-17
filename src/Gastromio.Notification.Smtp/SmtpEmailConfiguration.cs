@@ -1,6 +1,6 @@
 ﻿namespace Gastromio.Notification.Smtp
 {
-    public class SmtpConfiguration
+    public class SmtpEmailConfiguration
     {
         public string ServerName { get; set; }
         

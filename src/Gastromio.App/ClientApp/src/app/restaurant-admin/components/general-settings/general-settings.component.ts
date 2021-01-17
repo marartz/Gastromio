@@ -55,7 +55,9 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
       fax: ['', Validators.pattern(/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/)],
       webSite: ['', Validators.pattern(/^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/)],
       responsiblePerson: ['', Validators.required],
-      emailAddress: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]]
+      emailAddress: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      mobile: ['', Validators.pattern(/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/)],
+      orderNotificationByMobile: [false]
     });
     this.changeContactInfoForm.valueChanges
       .pipe(debounceTime(1000))
@@ -97,6 +99,8 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
         webSite: restaurant.contactInfo?.webSite ?? '',
         responsiblePerson: restaurant.contactInfo?.responsiblePerson ?? '',
         emailAddress: restaurant.contactInfo?.emailAddress ?? '',
+        mobile: restaurant.contactInfo?.mobile ?? '',
+        orderNotificationByMobile: restaurant.contactInfo?.orderNotificationByMobile ?? false
       });
       this.changeContactInfoForm.markAsPristine();
     });

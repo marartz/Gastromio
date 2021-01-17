@@ -535,6 +535,11 @@ export class OrderFacade {
       );
   }
 
+  public resetCheckout(): void {
+    this.isCheckedOut$.next(false);
+    this.order$.next(undefined);
+  }
+
   private updateRestaurantSearchResult() {
     this.isSearching$.next(true);
     this.orderService.searchForRestaurantsAsync(this.selectedSearchPhrase$.value, this.selectedOrderType$.value, this.selectedCuisine$.value, undefined)

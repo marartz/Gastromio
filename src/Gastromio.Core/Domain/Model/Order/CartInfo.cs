@@ -13,6 +13,7 @@ namespace Gastromio.Core.Domain.Model.Order
             string restaurantInfo,
             string restaurantPhone,
             string restaurantEmail,
+            string restaurantMobile,
             bool restaurantNeedsSupport,
             IEnumerable<OrderedDishInfo> orderedDishes
         )
@@ -23,6 +24,7 @@ namespace Gastromio.Core.Domain.Model.Order
             RestaurantInfo = restaurantInfo;
             RestaurantPhone = restaurantPhone;
             RestaurantEmail = restaurantEmail;
+            RestaurantMobile = restaurantMobile;
             RestaurantNeedsSupport = restaurantNeedsSupport;
             OrderedDishes = orderedDishes.ToList();
         }
@@ -33,6 +35,7 @@ namespace Gastromio.Core.Domain.Model.Order
         public string RestaurantInfo { get; }
         public string RestaurantPhone { get; }
         public string RestaurantEmail { get; }
+        public string RestaurantMobile { get; }
         public bool RestaurantNeedsSupport { get; }
         public IReadOnlyCollection<OrderedDishInfo> OrderedDishes { get; }
     }

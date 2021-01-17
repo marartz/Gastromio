@@ -1,8 +1,8 @@
 <div id="root">
 	<div class="layout">
-	
+
         <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
-		
+
 		<div
 			 class="warning"
 			 data-aos="gm-move-up"
@@ -18,10 +18,10 @@
 				<p>{{restaurant.name}} hat im Moment <b>{{restaurant.getRestaurantClosedReason(undefined)}}</b></p>
 			</span>
 		</div>
-		
+
 		<main id="order-restaurant" *ngIf="generalError === undefined && initialized">
-			
-			<header 
+
+			<header
 					 class="overlay"
 					 id="hero"
 					 style="background-repeat: no-repeat; background-size: cover;"
@@ -80,9 +80,9 @@
 					</div>
 				</div>
 			</header>
-		
+
             <section id="order">
-				
+
 				<!-- START: _3_advanced-filter -->
 				<section
 					 data-aos="gm-move-down"
@@ -99,7 +99,7 @@
 					</div>
 				</section>
 				<!-- ENDE: _3_advanced-filter -->
-				
+
                 <div class="wrapper">
                     <div class="inner">
 
@@ -130,7 +130,7 @@
 								</div>
 							</div>
 						</section>
-						
+
 						<!-- START: Filter -->
                         <aside id="filter">
 							<section id="categories">
@@ -146,7 +146,7 @@
 								</p>
 								<div class="category-container">
 									<div class="category" *ngFor="let dishCategory of dishCategories">
-										<button 
+										<button
 												data-aos="gm-move-down"
 												data-aos-anchor="#order"
 												data-aos-delay="900"

@@ -28,6 +28,8 @@ namespace Gastromio.Persistence.MongoDB
         
         public NotificationInfoModel RestaurantNotificationInfo { get; set; }
 
+        public NotificationInfoModel RestaurantMobileNotificationInfo { get; set; }
+
         public DateTime CreatedOn { get; set; }
         
         public DateTime? UpdatedOn { get; set; }

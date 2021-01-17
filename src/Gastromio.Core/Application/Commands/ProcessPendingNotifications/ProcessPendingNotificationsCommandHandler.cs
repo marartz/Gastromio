@@ -7,6 +7,7 @@ using Gastromio.Core.Application.Ports.Notification;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Application.Ports.Template;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model;
 using Gastromio.Core.Domain.Model.Order;
 using Gastromio.Core.Domain.Model.User;
 using Microsoft.Extensions.Logging;
@@ -18,21 +19,24 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
         private readonly ILogger<ProcessPendingNotificationsCommandHandler> logger;
         private readonly IOrderRepository orderRepository;
         private readonly ITemplateService templateService;
-        private readonly INotificationService notificationService;
+        private readonly IEmailNotificationService emailNotificationService;
+        private readonly IMobileNotificationService mobileNotificationService;
         private readonly IConfigurationProvider configurationProvider;
 
         public ProcessPendingNotificationsCommandHandler(
             ILogger<ProcessPendingNotificationsCommandHandler> logger,
             IOrderRepository orderRepository,
             ITemplateService templateService,
-            INotificationService notificationService,
+            IEmailNotificationService emailNotificationService,
+            IMobileNotificationService mobileNotificationService,
             IConfigurationProvider configurationProvider
         )
         {
             this.logger = logger;
             this.orderRepository = orderRepository;
             this.templateService = templateService;
-            this.notificationService = notificationService;
+            this.emailNotificationService = emailNotificationService;
+            this.mobileNotificationService = mobileNotificationService;
             this.configurationProvider = configurationProvider;
         }
 
@@ -50,14 +54,24 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                 await TriggerCustomerNotificationAsync(order, cancellationToken);
             }
 
-            var pendingRestaurantNotificationOrders =
-                await orderRepository.FindByPendingRestaurantNotificationAsync(cancellationToken);
+            var pendingRestaurantEmailNotificationOrders =
+                await orderRepository.FindByPendingRestaurantEmailNotificationAsync(cancellationToken);
 
-            foreach (var order in pendingRestaurantNotificationOrders)
+            foreach (var order in pendingRestaurantEmailNotificationOrders)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
-                await TriggerRestaurantNotificationAsync(order, cancellationToken);
+                await TriggerRestaurantEmailNotificationAsync(order, cancellationToken);
+            }
+
+            var pendingRestaurantMobileNotificationOrders =
+                await orderRepository.FindByPendingRestaurantMobileNotificationAsync(cancellationToken);
+
+            foreach (var order in pendingRestaurantMobileNotificationOrders)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+                await TriggerRestaurantMobileNotificationAsync(order, cancellationToken);
             }
 
             return SuccessResult<bool>.Create(true);
@@ -96,7 +110,7 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                     order.CustomerInfo.Email);
             }
 
-            var notificationRequest = new NotificationRequest(
+            var notificationRequest = new EmailNotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
                 new List<EmailAddress> {recipient},
                 new List<EmailAddress>(),
@@ -106,18 +120,18 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                 emailData.HtmlPart
             );
 
-            var (success, info) = await TriggerNotificationAsync(notificationRequest, cancellationToken);
+            var (success, info) = await TriggerEmailNotificationAsync(notificationRequest, cancellationToken);
             order.RegisterCustomerNotificationAttempt(success, info);
             await orderRepository.StoreAsync(order, cancellationToken);
         }
 
-        private async Task TriggerRestaurantNotificationAsync(Order order,
+        private async Task TriggerRestaurantEmailNotificationAsync(Order order,
             CancellationToken cancellationToken)
         {
-            if (order.RestaurantNotificationInfo != null && order.RestaurantNotificationInfo.Attempt > 0)
+            if (order.RestaurantEmailNotificationInfo != null && order.RestaurantEmailNotificationInfo.Attempt > 0)
             {
-                var delay = CalculateDelay(order.RestaurantNotificationInfo);
-                var delta = DateTime.UtcNow - order.RestaurantNotificationInfo.Timestamp;
+                var delay = CalculateDelay(order.RestaurantEmailNotificationInfo);
+                var delta = DateTime.UtcNow - order.RestaurantEmailNotificationInfo.Timestamp;
                 if (delta < delay)
                 {
                     logger.LogDebug("Delay sending restaurant email of order {0} by further {1} seconds",
@@ -153,7 +167,7 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                 }
             }
 
-            var notificationRequest = new NotificationRequest(
+            var notificationRequest = new EmailNotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
                 recipientsTo,
                 new List<EmailAddress>(),
@@ -163,13 +177,13 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                 emailData.HtmlPart
             );
 
-            var (success, info) = await TriggerNotificationAsync(notificationRequest, cancellationToken);
+            var (success, info) = await TriggerEmailNotificationAsync(notificationRequest, cancellationToken);
 
             if (success)
             {
                 foreach (var recipientCc in recipientsCc)
                 {
-                    notificationRequest = new NotificationRequest(
+                    notificationRequest = new EmailNotificationRequest(
                         new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
                         new List<EmailAddress> {recipientCc},
                         new List<EmailAddress>(),
@@ -179,21 +193,23 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                         emailData.HtmlPart
                     );
 
-                    await TriggerNotificationAsync(notificationRequest, cancellationToken); // don't break if sending notification failed
+                    await TriggerEmailNotificationAsync(notificationRequest,
+                        cancellationToken); // don't break if sending notification failed
                 }
             }
 
-            order.RegisterRestaurantNotificationAttempt(success, info);
+            order.RegisterRestaurantEmailNotificationAttempt(success, info);
             await orderRepository.StoreAsync(order, cancellationToken);
         }
 
-        private async Task<(bool success, string info)> TriggerNotificationAsync(
-            NotificationRequest notificationRequest, CancellationToken cancellationToken)
+        private async Task<(bool success, string info)> TriggerEmailNotificationAsync(
+            EmailNotificationRequest notificationRequest, CancellationToken cancellationToken)
         {
             try
             {
                 var notificationResponse =
-                    await notificationService.SendNotificationAsync(notificationRequest, cancellationToken);
+                    await emailNotificationService.SendEmailNotificationAsync(notificationRequest,
+                        cancellationToken);
                 return notificationResponse.Success
                     ? (true, notificationResponse.Message)
                     : (false, notificationResponse.Message);
@@ -201,11 +217,11 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
             catch (Exception e)
             {
                 var from = notificationRequest?.Sender?.Email ?? "";
-                
+
                 var to = notificationRequest?.RecipientsTo != null
                     ? string.Join(", ", notificationRequest.RecipientsTo)
                     : "";
-                
+
                 var cc = notificationRequest?.RecipientsCc != null
                     ? string.Join(", ", notificationRequest.RecipientsCc)
                     : "";
@@ -215,7 +231,76 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                     : "";
 
                 logger.LogWarning(e,
-                    $"exception while sending notification from {from} to {to} (Cc: {cc}, Bcc: {bcc})");
+                    $"exception while sending email notification from {from} to {to} (Cc: {cc}, Bcc: {bcc})");
+                return (false, "Exception: " + e);
+            }
+        }
+
+        private async Task TriggerRestaurantMobileNotificationAsync(Order order,
+            CancellationToken cancellationToken)
+        {
+            if (order.CartInfo == null || string.IsNullOrWhiteSpace(order.CartInfo.RestaurantMobile) ||
+                !Validators.IsValidPhoneNumber(order.CartInfo.RestaurantMobile))
+            {
+                order.RegisterRestaurantMobileNotificationAttempt(true,
+                    "empty or invalid mobile number => skipping notification");
+                await orderRepository.StoreAsync(order, cancellationToken);
+                return;
+            }
+
+            if (order.RestaurantMobileNotificationInfo != null && order.RestaurantMobileNotificationInfo.Attempt > 0)
+            {
+                var delay = CalculateDelay(order.RestaurantMobileNotificationInfo);
+                var delta = DateTime.UtcNow - order.RestaurantMobileNotificationInfo.Timestamp;
+                if (delta < delay)
+                {
+                    logger.LogDebug("Delay sending restaurant mobile of order {0} by further {1} seconds",
+                        order.Id.Value, (delay - delta).TotalSeconds);
+                    return;
+                }
+            }
+            
+            var mobileMessage = templateService.GetRestaurantMobileMessage(order);
+            if (mobileMessage == null)
+            {
+                logger.LogError("Could not retrieve message for mobile");
+                throw new InvalidOperationException("could not retrieve message for mobile");
+            }
+
+            var to = configurationProvider.IsTestSystem
+                ? configurationProvider.MobileRecipientForTest
+                : order.CartInfo.RestaurantMobile;
+            
+            var notificationRequest = new MobileNotificationRequest(
+                "Gastromio",
+                to,
+                mobileMessage
+            );
+
+            var (success, info) =
+                await TriggerMobileNotificationAsync(notificationRequest, cancellationToken);
+            order.RegisterRestaurantMobileNotificationAttempt(success, info);
+            await orderRepository.StoreAsync(order, cancellationToken);
+        }
+
+        private async Task<(bool success, string info)> TriggerMobileNotificationAsync(
+            MobileNotificationRequest notificationRequest, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var notificationResponse =
+                    await mobileNotificationService.SendMobileNotificationAsync(notificationRequest,
+                        cancellationToken);
+                return notificationResponse.Success
+                    ? (true, notificationResponse.Message)
+                    : (false, notificationResponse.Message);
+            }
+            catch (Exception e)
+            {
+                var from = notificationRequest?.From ?? "";
+                var to = notificationRequest?.To ?? "";
+                logger.LogWarning(e,
+                    $"exception while sending mobile notification from {from} to {to}");
                 return (false, "Exception: " + e);
             }
         }

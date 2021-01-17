@@ -380,7 +380,9 @@ namespace Gastromio.Persistence.MongoDB
                         document.ContactInfo.Fax,
                         document.ContactInfo.WebSite,
                         document.ContactInfo.ResponsiblePerson,
-                        document.ContactInfo.EmailAddress
+                        document.ContactInfo.EmailAddress,
+                        document.ContactInfo.Mobile,
+                        document.ContactInfo.OrderNotificationByMobile
                     )
                     : null,
                 regularOpeningDays,
@@ -481,7 +483,9 @@ namespace Gastromio.Persistence.MongoDB
                         Fax = obj.ContactInfo.Fax,
                         WebSite = obj.ContactInfo.WebSite,
                         ResponsiblePerson = obj.ContactInfo.ResponsiblePerson,
-                        EmailAddress = obj.ContactInfo.EmailAddress
+                        EmailAddress = obj.ContactInfo.EmailAddress,
+                        Mobile = obj.ContactInfo.Mobile,
+                        OrderNotificationByMobile = obj.ContactInfo.OrderNotificationByMobile
                     }
                     : null,
                 OpeningHours = openingHours,

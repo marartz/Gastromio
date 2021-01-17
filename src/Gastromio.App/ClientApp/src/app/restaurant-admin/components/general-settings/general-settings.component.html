@@ -357,5 +357,29 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label" placement="top"
+                           ngbTooltip="An diese Mobilfunknummer können bei Bestelleingang SMS verschickt werden">Mobilfunknummer</label>
+                    <div class="input-group">
+                        <input type="url" mozactionhint="next" autocapitalize="none" autocomplete="mobile" inputmode="tel"
+                               id="mobile" formControlName="mobile"
+                               [ngClass]="{ 'is-invalid': cif.mobile.errors }">
+                        <div *ngIf="cif.mobile.errors" class="invalid-feedback">
+                            <div *ngIf="cif.mobile.errors.pattern">Ungültige Mobilfunknmmer (z.B. 0171 890123)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-input">
+                    <label class="form-label">Automatischer SMS-Versand bei Bestelleingang</label>
+                    <div class="input-group">
+                        <input type="checkbox" id="orderNotificationByMobile" formControlName="orderNotificationByMobile"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </div-->
