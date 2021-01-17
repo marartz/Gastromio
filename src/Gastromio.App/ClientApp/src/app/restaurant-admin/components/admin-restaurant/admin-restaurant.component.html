@@ -1,5 +1,5 @@
 <block-ui delayStart="500">
-	
+
 	<div
 		 class="success"
 		 data-aos="gm-move-up"
@@ -14,7 +14,7 @@
 			<p>Änderungen wurden gespeichert</p>
 		</span>
 	</div>
-	
+
 	<div
 		 class="warning"
 		 data-aos="gm-move-up"
@@ -29,7 +29,7 @@
 			<p>Fehler {{(updateError$ | async)}}</p>
 		</span>
 	</div>
-	
+
 	<div
 		 class="warning"
 		 data-aos="gm-move-up"
@@ -44,9 +44,9 @@
 			<p>Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</p>
 		</span>
 	</div>
-	
+
 	<main id="backend" *ngIf="isInitialized$ | async">
-		
+
 		<header id="header">
 			<div class="common-container">
 				<h1
@@ -149,7 +149,7 @@
 			</nav>
 		</aside>
 			<section id="body">
-				
+
 				<aside id="drawer">
 					<ul class="links">
 						<li
@@ -230,7 +230,7 @@
 						</li>
 					</ul>
 				</aside>
-				
+
 				<section
 						 data-aos="fade"
 						 data-aos-delay="800"
@@ -239,15 +239,14 @@
 						 id="page"
 						 >
 					<app-general-settings *ngIf="(selectedTab$ | async) === 'general'"></app-general-settings>
-					<app-image-settings *ngIf="(selectedTab$ | async) === 'image'"></app-image-settings>
 					<app-order-settings *ngIf="(selectedTab$ | async) === 'order'"></app-order-settings>
 					<app-payment-settings *ngIf="(selectedTab$ | async) === 'payment'"></app-payment-settings>
 					<app-opening-hours-settings *ngIf="(selectedTab$ | async) === 'opening-hours'"></app-opening-hours-settings>
 					<app-dish-management *ngIf="(selectedTab$ | async) === 'dishes'"></app-dish-management>
 				</section>
-					
+
 			</section>
 		</div>
-		
+
 	</main>
 </block-ui>
