@@ -13,15 +13,11 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { ConfirmPasswordValidator } from '../../../auth/validators/password.validator';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: [
-    './change-password.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/application-ui/forms/sign-in-and-registration.min.css',
-  ],
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.css', '../../../../assets/css/frontend_v2.min.css', '../../../../assets/css/backend_v2.min.css']
 })
-export class ChangePasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   userId: string;
