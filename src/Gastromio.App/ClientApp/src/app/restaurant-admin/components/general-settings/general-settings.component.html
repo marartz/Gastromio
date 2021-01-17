@@ -1,5 +1,5 @@
 <section id="page-general-settings">
-	
+
 	<div
 		 class="warning"
 		 data-aos="gm-move-up"
@@ -15,21 +15,29 @@
 			<p *ngIf="af.street.errors.pattern">Kein gültiger Straßenname (z.B. Musterstraße 11)</p>
 		</span>
 	</div>
-	
-	
+
+
 	<header class="section-header">
 		<h3>Allgemeine Daten</h3>
 		<p>Allgemeine Informationen, wie Name und Logo, die Sie bei Gastromio verwenden möchten.</p>
 	</header>
-	
+
 	<section id="settings">
 		<h3>Kontaktdaten</h3>
-		
-		<label for="">Restaurantname</label>
-		<input class="text-input" placeholder="z.B. Pizzeria Mustermann">
-		
-		<form [formGroup]="changeAddressForm">
-			<label for="street">Straße</label>
+
+        <label for="name">Restaurantname</label>
+        <input
+            class="text-input"
+            formControlName="name"
+            id="name"
+            [value]="restaurantName$ | async"
+            readonly="readonly"
+            placeholder="z.B. Pizzeria Mustermann"
+            type="text"
+        >
+
+        <form [formGroup]="changeAddressForm">
+            <label for="street">Straße</label>
 			<input
 				   autocapitalize="words"
 				   autocomplete="street-address"
@@ -79,10 +87,10 @@
 				</div>
 			</div>
 		</form>
-		
+
 		<form [formGroup]="changeContactInfoForm">
 			<label for="responsiblePerson">Verantwortliche Person</label>
-			<input 
+			<input
 				   autocapitalize="words"
 				   autocomplete="name"
 				   class="text-input"
@@ -95,7 +103,7 @@
 				   type="text"
 				   [ngClass]="{ 'is-invalid': cif.responsiblePerson.errors }"
 				   >
-			
+
 			<label for="webSite">Webseite (optional)</label>
 			<input
 				   autocapitalize="none"
@@ -110,7 +118,7 @@
 				   type="url"
 				   [ngClass]="{ 'is-invalid': cif.webSite.errors }"
 				   >
-			
+
 			<label for="emailAddress">E-Mail Adresse</label>
 			<input
 				   autocapitalize="none"
@@ -125,7 +133,7 @@
 				   type="email"
 				   [ngClass]="{ 'is-invalid': cif.emailAddress.errors }"
 				   >
-			
+
 			<label for="phone">Telefonnummer</label>
 			<input
 				   autocapitalize="none"
@@ -140,7 +148,7 @@
 				   type="tel"
 				   [ngClass]="{ 'is-invalid': cif.phone.errors }"
 				   >
-			
+
 			<label for="fax">Fax (optional)</label>
 			<input
 				   autocapitalize="none"
@@ -154,12 +162,36 @@
 				   type="tel"
 				   [ngClass]="{ 'is-invalid': cif.fax.errors }"
 				   >
+
+            <label for="mobile">Mobilnummer (optional)</label>
+            <input
+                autocapitalize="none"
+                autocomplete="tel"
+                class="text-input"
+                formControlName="mobile"
+                id="mobile"
+                inputmode="tel"
+                mozactionhint="send"
+                placeholder="z.B. 0170 12345678"
+                type="tel"
+                [ngClass]="{ 'is-invalid': cif.mobile.errors }"
+            >
+
+            <label for="orderNotificationByMobile">Automatischer SMS-Versand bei Bestelleingang</label>
+            <input
+                class="text-input"
+                formControlName="orderNotificationByMobile"
+                id="orderNotificationByMobile"
+                mozactionhint="send"
+                type="checkbox"
+                [ngClass]="{ 'is-invalid': cif.orderNotificationByMobile.errors }"
+            >
 		</form>
-		
+
 	</section>
 	<section id="settings">
 		<h3>Bilddaten</h3>
-		
+
 		<label for="logo-file">Logo</label>
 		<div class="logo-input">
 			<!--div class="delete" *ngIf="logoUrl$ | async" (click)="onRemoveLogo()"></div-->
@@ -186,7 +218,7 @@
 				</span>
 			</label>
 		</div>
-		
+
 		<label>Banner</label>
 		<div class="banner-input">
 			<!--div class="delete" *ngIf="bannerUrl$ | async" (click)="onRemoveBanner()"></div-->
@@ -214,7 +246,7 @@
 			</label>
 		</div>
 	</section>
-	
+
 </section>
 
 <!--div id="admin-restaurant">

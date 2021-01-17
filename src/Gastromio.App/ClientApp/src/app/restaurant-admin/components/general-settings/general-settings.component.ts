@@ -2,7 +2,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {Subscription, Observable} from "rxjs";
-import {debounceTime} from "rxjs/operators";
+import {debounceTime, map} from "rxjs/operators";
 
 import {AddressModel, ContactInfoModel} from "../../../shared/models/restaurant.model";
 
@@ -19,6 +19,8 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
 })
 export class GeneralSettingsComponent implements OnInit, OnDestroy {
 
+  restaurantName$: Observable<string>;
+
   hasLogo$: Observable<boolean>;
   logoUrl$: Observable<string>;
   @ViewChild('logo') logoElement: ElementRef;
@@ -26,7 +28,7 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
   hasBanner$: Observable<boolean>;
   bannerUrl$: Observable<string>;
   @ViewChild('banner') bannerElement: ElementRef;
-	
+
   changeAddressForm: FormGroup;
   changeContactInfoForm: FormGroup;
 
@@ -79,12 +81,17 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-	this.hasLogo$ = this.facade.getHasLogo$();
+    this.restaurantName$ = this.facade.getRestaurant$()
+      .pipe(
+        map(restaurant => restaurant.name)
+      );
+
+    this.hasLogo$ = this.facade.getHasLogo$();
     this.logoUrl$ = this.facade.getLogoUrl$();
 
     this.hasBanner$ = this.facade.getHasBanner$();
     this.bannerUrl$ = this.facade.getBannerUrl$();
-	  
+
     this.subscription = this.facade.getRestaurant$().subscribe(restaurant => {
       this.changeAddressForm.patchValue({
         street: restaurant.address?.street ?? '',
@@ -145,7 +152,7 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
     }
     this.facade.removeBanner();
   }
-		  
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
