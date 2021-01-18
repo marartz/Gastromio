@@ -9,7 +9,7 @@ import {UserModel} from '../../../shared/models/user.model';
 
 import {FetchPageInfo, ServerPaginationComponent} from '../../../shared/components/pagination/server-pagination.component';
 
-import {UserAdminService} from '../../services/user-admin.service';
+import {SystemAdminFacade} from "../../system-admin.facade";
 
 import {AddUserComponent} from '../add-user/add-user.component';
 import {ChangeUserDetailsComponent} from '../change-user-details/change-user-details.component';
@@ -26,6 +26,7 @@ import {RemoveUserComponent} from '../remove-user/remove-user.component';
   ]
 })
 export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
+
   @ViewChild(ServerPaginationComponent) pagingComponent: ServerPaginationComponent;
   pageOfUsers: UserModel[];
 
@@ -34,7 +35,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private userAdminService: UserAdminService
+    private facade: SystemAdminFacade
   ) {
     this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value: string) => {
@@ -61,7 +62,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onFetchPage(info: FetchPageInfo) {
-    this.userAdminService.searchForUsersAsync(this.searchPhrase, info.skip, info.take)
+    this.facade.searchForUsers$(this.searchPhrase, info.skip, info.take)
       .subscribe((result) => {
         this.pageOfUsers = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);
@@ -112,4 +113,5 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
         return 'Kunde';
     }
   }
+
 }

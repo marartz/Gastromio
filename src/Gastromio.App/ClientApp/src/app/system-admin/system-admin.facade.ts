@@ -1,11 +1,20 @@
 import {Injectable} from "@angular/core";
+import {Router} from "@angular/router";
 
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, combineLatest, Observable, of, throwError} from "rxjs";
+import {catchError, concatMap, map, tap} from "rxjs/operators";
 
 import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
 
+import {UserModel} from "../shared/models/user.model";
+
+import {CuisineAdminService} from "./services/cuisine-admin.service";
+import {UserAdminService} from "./services/user-admin.service";
 import {RestaurantSysAdminService} from "./services/restaurant-sys-admin.service";
-import {Router} from "@angular/router";
+import {RestaurantModel} from "../shared/models/restaurant.model";
+import {CuisineModel} from "../shared/models/cuisine.model";
+import {HttpErrorResponse} from "@angular/common/http";
+import {PagingModel} from "../shared/components/pagination/paging.model";
 
 @Injectable()
 export class SystemAdminFacade {
@@ -16,6 +25,8 @@ export class SystemAdminFacade {
 
   private selectedTab$: BehaviorSubject<string> = new BehaviorSubject<string>("general");
 
+  private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(undefined);
+
   private isUpdating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
   private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
@@ -25,14 +36,44 @@ export class SystemAdminFacade {
   constructor(
     private sysAdminService: RestaurantSysAdminService,
     private router: Router,
+    private userAdminService: UserAdminService,
+    private cuisineAdminService: CuisineAdminService,
+    private restaurantSysAdminService: RestaurantSysAdminService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
   }
 
   public initialize(tab: string): void {
     this.selectedTab$.next(tab);
-    this.isInitializing$.next(false);
-    this.isInitialized$.next(true);
+
+    const observables = new Array<Observable<void>>();
+
+    observables
+      .push(this.cuisineAdminService.getAllCuisinesAsync()
+        .pipe(
+          map(cuisines => {
+            cuisines.sort(SystemAdminFacade.compareCuisine);
+            this.cuisines$.next(cuisines);
+          }),
+          catchError(response => {
+            return throwError(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          })
+        )
+      );
+
+    combineLatest(observables)
+      .subscribe(
+        () => {
+          this.isInitializing$.next(false);
+          this.initializationError$.next(undefined);
+          this.isInitialized$.next(true);
+        },
+        error => {
+          this.isInitializing$.next(false);
+          this.initializationError$.next(error);
+          this.isInitialized$.next(false);
+        }
+      )
   }
 
   public getIsInitializing$(): Observable<boolean> {
@@ -51,6 +92,14 @@ export class SystemAdminFacade {
     return this.selectedTab$;
   }
 
+  public searchForUsers$(search: string, skipCount: number, takeCount: number): Observable<PagingModel<UserModel>> {
+    return this.userAdminService.searchForUsersAsync(search, skipCount, takeCount);
+  }
+
+  public getCuisines$(): Observable<CuisineModel[]> {
+    return this.cuisines$;
+  }
+
   public getIsUpdating$(): Observable<boolean> {
     return this.isUpdating$;
   }
@@ -67,7 +116,355 @@ export class SystemAdminFacade {
   // actions
 
   public selectTab(tab: string): void {
-    this.router.navigate(['admin', tab], );
+    this.router.navigate(['admin', tab],);
   }
+
+  public addUser$(role: string, email: string, password: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.userAdminService.addUserAsync(role, email, password)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public changeUserDetails$(userId: string, role: string, email: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.userAdminService.changeUserDetailsAsync(userId, role, email)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public changeUserPassword$(userId: string, password: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.userAdminService.changeUserPasswordAsync(userId, password)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public removeUser$(userId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.userAdminService.removeUserAsync(userId)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public addCuisine$(name: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.cuisineAdminService.addCuisineAsync(name)
+      .pipe(
+        map(cuisine => {
+          const cuisines = this.cuisines$.value;
+          cuisines.push(cuisine);
+          cuisines.sort(SystemAdminFacade.compareCuisine);
+          this.cuisines$.next(cuisines);
+
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public changeCuisine$(cuisineId: string, name: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.cuisineAdminService.changeCuisineAsync(cuisineId, name)
+      .pipe(
+        map(() => {
+          const cuisines = this.cuisines$.value;
+          let cuisine = cuisines.find(en => en.id === cuisineId);
+          cuisine.name = name;
+          cuisines.sort(SystemAdminFacade.compareCuisine);
+          this.cuisines$.next(cuisines);
+
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public removeCuisine$(cuisineId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.cuisineAdminService.removeCuisineAsync(cuisineId)
+      .pipe(
+        map(() => {
+          const cuisines = this.cuisines$.value;
+          let cuisineIdx = cuisines.findIndex(en => en.id === cuisineId);
+          cuisines.splice(cuisineIdx, 1);
+          this.cuisines$.next(cuisines);
+
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public addRestaurant$(name: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.addRestaurantAsync(name)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public searchForAdminUsers$(search: string): Observable<UserModel[]> {
+    return this.restaurantSysAdminService.searchForUsersAsync(search);
+  }
+
+  public updateAdministratorsOfRestaurant$(restaurant: RestaurantModel, administrators: Array<UserModel>): void {
+    this.isUpdating$.next(true);
+
+    let curObservable: Observable<boolean> = undefined;
+
+    for (let index = administrators.length - 1; index >= 0; index--) {
+      const administrator = administrators[index];
+
+      const adminIndex = restaurant.administrators !== undefined
+        ? restaurant.administrators.findIndex(en => en.id === administrator.id)
+        : -1;
+
+      if (adminIndex < 0) {
+        const nextObservable = this.restaurantSysAdminService.addAdminToRestaurantAsync(restaurant.id, administrator.id)
+          .pipe(
+            tap(() => {
+              restaurant.administrators.push(administrator);
+            })
+          );
+        if (curObservable !== undefined) {
+          curObservable = curObservable.pipe(concatMap(() => nextObservable));
+        } else {
+          curObservable = nextObservable;
+        }
+      }
+    }
+
+    if (restaurant.administrators !== undefined) {
+      for (let index = restaurant.administrators.length - 1; index >= 0; index--) {
+        const administrator = restaurant.administrators[index];
+
+        const adminIndex = administrators.findIndex(en => en.id === administrator.id);
+        if (adminIndex < 0) {
+          const nextObservable = this.restaurantSysAdminService.removeAdminFromRestaurantAsync(restaurant.id, administrator.id)
+            .pipe(
+              tap(() => {
+                const tempIndex = restaurant.administrators.findIndex(en => en.id === administrator.id);
+                restaurant.administrators.splice(tempIndex, 1);
+              })
+            );
+          if (curObservable !== undefined) {
+            curObservable = curObservable.pipe(concatMap(() => nextObservable));
+          } else {
+            curObservable = nextObservable;
+          }
+        }
+      }
+    }
+
+    if (curObservable === undefined) {
+      curObservable = of(true);
+    }
+
+    curObservable
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        },
+        response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        }
+      );
+  }
+
+  public updateRestaurantGeneralSettings$(restaurant: RestaurantModel, cuisineStatusArray: Array<CuisineStatus>, name: string, importId: string): Observable<void> {
+    if (!cuisineStatusArray.some(en => en.newStatus)) {
+      this.updateError$.next("Bitte wähle mindestens eine Cuisine aus.");
+      return;
+    }
+
+    this.isUpdating$.next(true);
+
+    let curObservable: Observable<boolean> = undefined;
+
+    for (let index = cuisineStatusArray.length - 1; index >= 0; index--) {
+      const cuisineStatus = cuisineStatusArray[index];
+
+      if (cuisineStatus.oldStatus != cuisineStatus.newStatus) {
+        let nextChangeCuisineObservable: Observable<boolean> = undefined;
+        if (cuisineStatus.newStatus) {
+          nextChangeCuisineObservable = this.restaurantSysAdminService.addCuisineToRestaurantAsync(restaurant.id, cuisineStatus.id)
+            .pipe(
+              tap(() => {
+                cuisineStatusArray[index].oldStatus = true;
+                cuisineStatusArray[index].newStatus = true;
+              })
+            );
+        } else {
+          nextChangeCuisineObservable = this.restaurantSysAdminService.removeCuisineFromRestaurantAsync(restaurant.id, cuisineStatus.id)
+            .pipe(
+              tap(() => {
+                cuisineStatusArray[index].oldStatus = false;
+                cuisineStatusArray[index].newStatus = false;
+              })
+            );
+        }
+
+        if (curObservable !== undefined) {
+          curObservable = curObservable.pipe(concatMap(() => nextChangeCuisineObservable));
+        } else {
+          curObservable = nextChangeCuisineObservable;
+        }
+      }
+    }
+
+    if (restaurant.importId !== importId) {
+      const nextObservable = this.restaurantSysAdminService.setRestaurantImportIdAsync(restaurant.id, importId)
+        .pipe(
+          tap(() => {
+            restaurant.importId = importId;
+          })
+        );
+      if (curObservable !== undefined) {
+        curObservable = curObservable.pipe(concatMap(() => nextObservable));
+      } else {
+        curObservable = nextObservable;
+      }
+    }
+
+    let observable: Observable<boolean>;
+
+    if (restaurant.name !== name) {
+      observable = this.restaurantSysAdminService.changeRestaurantNameAsync(restaurant.id, name)
+        .pipe(
+          tap(() => {
+            restaurant.name = name;
+          }),
+          concatMap(() => curObservable ?? of(true))
+        )
+    } else {
+      observable = curObservable ?? of(true);
+    }
+
+    return observable
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      )
+  }
+
+  public removeRestaurant$(restaurantId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.removeRestaurantAsync(restaurantId)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  private static compareCuisine(a: CuisineModel, b: CuisineModel): number {
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return 1;
+    return 0;
+  }
+
+}
+
+export class CuisineStatus {
+
+  constructor(init?: Partial<CuisineStatus>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+
+  id: string;
+  name: string;
+  oldStatus: boolean;
+  newStatus: boolean;
 
 }
