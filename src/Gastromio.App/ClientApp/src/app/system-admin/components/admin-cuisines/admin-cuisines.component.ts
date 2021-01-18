@@ -22,7 +22,8 @@ import {RemoveCuisineComponent} from '../remove-cuisine/remove-cuisine.component
   ]
 })
 export class AdminCuisinesComponent implements OnInit {
-  cuisines: Observable<CuisineModel[]>;
+
+  cuisines$: Observable<CuisineModel[]>;
 
   constructor(
     private modalService: NgbModal,
@@ -61,6 +62,7 @@ export class AdminCuisinesComponent implements OnInit {
   }
 
   updateSearch(): void {
-    this.cuisines = this.cuisineAdminService.getAllCuisinesAsync();
+    this.cuisines$ = this.cuisineAdminService.getAllCuisinesAsync();
   }
+
 }

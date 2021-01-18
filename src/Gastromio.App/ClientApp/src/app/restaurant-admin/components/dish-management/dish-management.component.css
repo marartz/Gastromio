@@ -39,6 +39,7 @@
     font-size: 13px;
     font-weight: 600;
     vertical-align: top;
+    white-space: nowrap;
 }
 
 #table table tbody tr {

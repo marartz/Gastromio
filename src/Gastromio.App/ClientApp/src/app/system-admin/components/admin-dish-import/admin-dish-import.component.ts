@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
@@ -15,8 +15,8 @@ import {RestaurantSysAdminService} from '../../services/restaurant-sys-admin.ser
   styleUrls: ['./admin-dish-import.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css']
 })
 export class AdminDishImportComponent implements OnInit {
+
   @BlockUI() blockUI: NgBlockUI;
-  @ViewChild('fileInput') fileInputVariable: ElementRef;
 
   error: string;
 
@@ -53,14 +53,10 @@ export class AdminDishImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
-        // this.dishImportFile = undefined;
-        // this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
-        // this.dishImportFile = undefined;
-        // this.fileInputVariable.nativeElement.value = "";
       });
   }
 
@@ -79,14 +75,10 @@ export class AdminDishImportComponent implements OnInit {
         this.blockUI.stop();
         this.error = undefined;
         this.logLines = log.lines;
-        // this.dishImportFile = undefined;
-        // this.fileInputVariable.nativeElement.value = "";
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
         this.error = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
         this.logLines = undefined;
-        // this.dishImportFile = undefined;
-        // this.fileInputVariable.nativeElement.value = "";
       });
   }
 
@@ -103,4 +95,5 @@ export class AdminDishImportComponent implements OnInit {
         return '';
     }
   }
+
 }
