@@ -32,6 +32,8 @@ export class SystemAdminFacade {
 
   private restaurantSearchPhrase$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
+  private isSearchingFor$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+
   private isUpdating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
   private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
@@ -109,6 +111,10 @@ export class SystemAdminFacade {
     return this.restaurantSearchPhrase$.pipe(debounceTime(500), distinctUntilChanged());
   }
 
+  public getIsSearchingFor$(): Observable<string> {
+    return this.isSearchingFor$;
+  }
+
   public getIsUpdating$(): Observable<boolean> {
     return this.isUpdating$;
   }
@@ -134,7 +140,17 @@ export class SystemAdminFacade {
 
   public searchForUsers$(skip: number, take: number): Observable<PagingModel<UserModel>> {
     const searchPhrase = this.userSearchPhrase$.value;
-    return this.userAdminService.searchForUsersAsync(searchPhrase, skip, take);
+    this.isSearchingFor$.next('Benutzer');
+    return this.userAdminService.searchForUsersAsync(searchPhrase, skip, take)
+      .pipe(
+        tap(() => {
+          this.isSearchingFor$.next(undefined);
+        }),
+        catchError(error => {
+          this.isSearchingFor$.next(undefined);
+          return throwError(error);
+        })
+      );
   }
 
   public addUser$(role: string, email: string, password: string): Observable<void> {
@@ -278,7 +294,17 @@ export class SystemAdminFacade {
 
   public searchForRestaurants$(skip: number, take: number): Observable<PagingModel<RestaurantModel>> {
     const searchPhrase = this.restaurantSearchPhrase$.value;
-    return this.restaurantSysAdminService.searchForRestaurantsAsync(searchPhrase, skip, take);
+    this.isSearchingFor$.next('Restaurants');
+    return this.restaurantSysAdminService.searchForRestaurantsAsync(searchPhrase, skip, take)
+      .pipe(
+        tap(() => {
+          this.isSearchingFor$.next(undefined);
+        }),
+        catchError(error => {
+          this.isSearchingFor$.next(undefined);
+          return throwError(error);
+        })
+      );
   }
 
   public addRestaurant$(name: string): Observable<void> {

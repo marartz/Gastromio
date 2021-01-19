@@ -50,6 +50,14 @@ export class SystemAdminComponent implements OnInit {
       }
     });
 
+    this.facade.getIsSearchingFor$().subscribe(isSearchingFor => {
+      if (isSearchingFor) {
+        this.blockUI.start('Lade ' + isSearchingFor + '...');
+      } else {
+        this.blockUI.stop();
+      }
+    });
+
     this.isInitialized$ = this.facade.getIsInitialized$();
 
     this.initializationError$ = this.facade.getInitializationError$();
