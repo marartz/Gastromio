@@ -35,7 +35,6 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
     private modalService: NgbModal,
     private facade: SystemAdminFacade
   ) {
-    this.searchPhrase$ = this.facade.getUserSearchPhrase$();
   }
 
   ngOnInit() {

@@ -29,6 +29,8 @@ export class SystemAdminFacade {
 
   private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(undefined);
 
+  private restaurantSearchPhrase$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   private isUpdating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
   private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
@@ -100,6 +102,10 @@ export class SystemAdminFacade {
 
   public getCuisines$(): Observable<CuisineModel[]> {
     return this.cuisines$;
+  }
+
+  public getRestaurantSearchPhrase$(): Observable<string> {
+    return this.restaurantSearchPhrase$.pipe(debounceTime(500), distinctUntilChanged());
   }
 
   public getIsUpdating$(): Observable<boolean> {
@@ -263,6 +269,15 @@ export class SystemAdminFacade {
           return throwError(response);
         })
       );
+  }
+
+  public setRestaurantSearchPhrase(restaurantSearchPhrase: string): void {
+    this.restaurantSearchPhrase$.next(restaurantSearchPhrase);
+  }
+
+  public searchForRestaurants$(skip: number, take: number): Observable<PagingModel<RestaurantModel>> {
+    const searchPhrase = this.restaurantSearchPhrase$.value;
+    return this.restaurantSysAdminService.searchForRestaurantsAsync(searchPhrase, skip, take);
   }
 
   public addRestaurant$(name: string): Observable<void> {
@@ -436,6 +451,74 @@ export class SystemAdminFacade {
           return throwError(response);
         })
       )
+  }
+
+  public activateRestaurant$(restaurantId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.activateRestaurantAsync(restaurantId)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public deactivateRestaurant$(restaurantId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.deactivateRestaurantAsync(restaurantId)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public enableSupportForRestaurant$(restaurantId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.enableSupportForRestaurantAsync(restaurantId)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public disableSupportForRestaurant$(restaurantId: string): Observable<void> {
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.disableSupportForRestaurantAsync(restaurantId)
+      .pipe(
+        map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
   }
 
   public removeRestaurant$(restaurantId: string): Observable<void> {
