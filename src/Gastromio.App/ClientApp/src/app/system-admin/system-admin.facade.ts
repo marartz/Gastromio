@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 
 import {BehaviorSubject, combineLatest, Observable, of, throwError} from "rxjs";
-import {catchError, concatMap, map, tap} from "rxjs/operators";
+import {catchError, concatMap, debounceTime, distinctUntilChanged, map, tap} from "rxjs/operators";
 
 import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
 
@@ -24,6 +24,8 @@ export class SystemAdminFacade {
   private initializationError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
 
   private selectedTab$: BehaviorSubject<string> = new BehaviorSubject<string>("general");
+
+  private userSearchPhrase$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(undefined);
 
@@ -92,8 +94,8 @@ export class SystemAdminFacade {
     return this.selectedTab$;
   }
 
-  public searchForUsers$(search: string, skipCount: number, takeCount: number): Observable<PagingModel<UserModel>> {
-    return this.userAdminService.searchForUsersAsync(search, skipCount, takeCount);
+  public getUserSearchPhrase$(): Observable<string> {
+    return this.userSearchPhrase$.pipe(debounceTime(500), distinctUntilChanged());
   }
 
   public getCuisines$(): Observable<CuisineModel[]> {
@@ -117,6 +119,15 @@ export class SystemAdminFacade {
 
   public selectTab(tab: string): void {
     this.router.navigate(['admin', tab],);
+  }
+
+  public setUserSearchPhrase(userSearchPhrase: string): void {
+    this.userSearchPhrase$.next(userSearchPhrase);
+  }
+
+  public searchForUsers$(skip: number, take: number): Observable<PagingModel<UserModel>> {
+    const searchPhrase = this.userSearchPhrase$.value;
+    return this.userAdminService.searchForUsersAsync(searchPhrase, skip, take);
   }
 
   public addUser$(role: string, email: string, password: string): Observable<void> {

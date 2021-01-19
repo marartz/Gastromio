@@ -1,7 +1,6 @@
 import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -30,22 +29,23 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(ServerPaginationComponent) pagingComponent: ServerPaginationComponent;
   pageOfUsers: UserModel[];
 
-  private searchPhrase: string;
-  private searchPhraseUpdated: Subject<string> = new Subject<string>();
+  public searchPhrase$: Observable<string>;
 
   constructor(
     private modalService: NgbModal,
     private facade: SystemAdminFacade
   ) {
-    this.searchPhraseUpdated.asObservable().pipe(debounceTime(200), distinctUntilChanged())
-      .subscribe((value: string) => {
-        this.searchPhrase = value;
-        this.pagingComponent.triggerFetchPage(1);
-      });
+    this.searchPhrase$ = this.facade.getUserSearchPhrase$();
   }
 
   ngOnInit() {
-    this.searchPhrase = '';
+    this.searchPhrase$ = this.facade.getUserSearchPhrase$();
+    this.searchPhrase$
+      .subscribe(
+        () => {
+          this.pagingComponent.triggerFetchPage(1);
+        }
+      );
   }
 
   ngAfterViewInit() {
@@ -54,15 +54,14 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.searchPhraseUpdated?.unsubscribe();
   }
 
   onUpdateSearch(value: string) {
-    this.searchPhraseUpdated.next(value);
+    this.facade.setUserSearchPhrase(value);
   }
 
   onFetchPage(info: FetchPageInfo) {
-    this.facade.searchForUsers$(this.searchPhrase, info.skip, info.take)
+    this.facade.searchForUsers$(info.skip, info.take)
       .subscribe((result) => {
         this.pageOfUsers = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);
