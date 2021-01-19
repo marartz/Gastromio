@@ -47,7 +47,6 @@
                 <table class="table" role="grid">
                     <thead>
                     <tr role="row">
-                        <th rowspan="1" colspan="1">Zeit</th>
                         <th rowspan="1" colspan="1">Zeile</th>
                         <th rowspan="1" colspan="1">Meldung</th>
                     </tr>
@@ -63,7 +62,6 @@
                     <ng-container *ngIf="logLines && logLines.length > 0">
                         <tr role="row" *ngFor="let line of logLines"
                             [style.color]="getColorForLogLineType(line.type)">
-                            <td>{{line.timestamp}}</td>
                             <td>{{line.rowIndex}}</td>
                             <td>{{line.message}}</td>
                         </tr>

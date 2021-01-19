@@ -15,6 +15,7 @@ import {RestaurantModel} from "../shared/models/restaurant.model";
 import {CuisineModel} from "../shared/models/cuisine.model";
 import {HttpErrorResponse} from "@angular/common/http";
 import {PagingModel} from "../shared/components/pagination/paging.model";
+import {ImportLogModel} from "./models/import-log.model";
 
 @Injectable()
 export class SystemAdminFacade {
@@ -526,6 +527,50 @@ export class SystemAdminFacade {
     return this.restaurantSysAdminService.removeRestaurantAsync(restaurantId)
       .pipe(
         map(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public importRestaurants$(importFile: File, dryRun: boolean): Observable<ImportLogModel> {
+    if (!importFile) {
+      this.updateError$.next('Bitte wähle erst eine Importdatei aus.');
+      return of(undefined);
+    }
+
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.importRestaurantsAsync(importFile, dryRun)
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.isUpdated$.next(true);
+        }),
+        catchError(response => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          return throwError(response);
+        })
+      );
+  }
+
+  public importDishes$(importFile: File, dryRun: boolean): Observable<ImportLogModel> {
+    if (!importFile) {
+      this.updateError$.next('Bitte wähle erst eine Importdatei aus.');
+      return of(undefined);
+    }
+
+    this.isUpdating$.next(true);
+    return this.restaurantSysAdminService.importDishesAsync(importFile, dryRun)
+      .pipe(
+        tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
           this.isUpdated$.next(true);
