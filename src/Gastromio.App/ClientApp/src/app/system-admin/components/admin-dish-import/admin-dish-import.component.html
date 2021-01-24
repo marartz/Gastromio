@@ -12,29 +12,35 @@
         <p>Anlegen und Aktualisieren von Speisendaten per Import.</p>
     </header>
 
-    <section id="settings">
-        <form>
-            <input type="file" id="import-file" mozactionhint="send"
-                   autocomplete="off" capture="" class="file-input"
-                   (change)="handleDishImportFileInput($event.target)">
-            <label class="file-upload" for="import-file">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round"
-                     stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                <span *ngIf="!dishImportFile">Datei auswählen...</span>
-                <span *ngIf="dishImportFile">{{dishImportFile.name}}</span>
-            </label>
-            <div class="inline-button-wrap">
-                <button (click)="onSimulateDishes()">Simulieren</button>
-                <button (click)="onImportDishes()">Importieren</button>
-            </div>
-        </form>
+	<section id="settings">
+		
+		<div class="file-input">
+			<input
+				   autocomplete="off"
+				   capture=""
+				   class="upload-file"
+				   id="import-file"
+				   mozactionhint="send"
+				   type="file"  
+                   (change)="handleDishImportFileInput($event.target)"
+				   >
+			<label class="file-label" for="import-file">
+				<span>
+					<svg viewBox="0 0 64 64">
+						<path fill="currentColor" d="M51,27c-.374,0-.742.025-1.109.056a18,18,0,0,0-35.782,0C13.742,27.025,13.374,27,13,27a13,13,0,0,0,0,26H51a13,13,0,0,0,0-26Z"></path>
+						<path d="M43.764,41.354l-11-13a1.033,1.033,0,0,0-1.526,0l-11,13A1,1,0,0,0,21,43h7V59h8V43h7a1,1,0,0,0,.764-1.646Z" fill="#363636"></path>
+					</svg>
+					<h4>Datei auswählen</h4>
+					<h5 *ngIf="dishImportFile">{{dishImportFile.name}}</h5>
+					<h5 *ngIf="!dishImportFile">XLS oder XLSX<br></h5>
+				</span>
+			</label>
+		</div>
+		<div class="import-footer">
+			<button *ngIf="dishImportFile" (click)="onSimulateDishes()">Simulieren</button>
+        	<button *ngIf="dishImportFile" (click)="onImportDishes()">Importieren</button>
+		</div>
+
     </section>
 
     <header class="section-header">

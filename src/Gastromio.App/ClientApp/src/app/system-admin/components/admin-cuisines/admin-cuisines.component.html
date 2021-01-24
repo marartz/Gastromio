@@ -12,56 +12,50 @@
         <p>Bearbeite Cuisines oder füge neue hinzu.</p>
     </header>
 
-    <section id="settings">
-        <div class="row">
-            <div class="col-md-12" id="table">
-                <table>
-                    <thead>
-                    <tr>
-                        <th scope="col" style="min-width: 240px;">Name</th>
-                        <th scope="col" class="actions">
-                            <button (click)="openAddCuisineForm()" type="button" class="add">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let cuisine of cuisines$ | async">
-                        <th scope="row">
-                            <p class="email">{{cuisine.name}}</p>
-                        </th>
-                        <td class="actions" style="min-width: 3em;">
-                            <button (click)="openChangeCuisineForm(cuisine)" class="action-item" placement="top"
-                               ngbTooltip="Bearbeiten">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" width="16" height="16">
-                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                </svg>
-                            </button>
-                            <button (click)="openRemoveCuisineForm(cuisine)" class="action-item red" placement="top"
-                               ngbTooltip="Löschen">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" width="16" height="16">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path
-                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+	<section id="single-list">
+		<ul>
+			<li class="header-no-eff">
+				<div class="left">
+					
+				</div>
+				<div class="right">
+					<button
+							class="action"
+							type="button"
+							(click)="openAddCuisineForm()">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+							<line x1="12" y1="5" x2="12" y2="19"></line>
+							<line x1="5" y1="12" x2="19" y2="12"></line>
+						</svg>
+					</button>
+				</div>
+			</li>
+			<li *ngFor="let cuisine of cuisines$ | async">
+				<div class="left">
+					<span class="name">{{cuisine.name}}</span>
+				</div>
+				<div class="right">
+					<button class="action"
+							(click)="openChangeCuisineForm(cuisine)"
+							>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentcolor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+							<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+						</svg>
+					</button>
+					<button
+							class="action"
+							(click)="openRemoveCuisineForm(cuisine)"
+							>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentcolor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+							<polyline points="3 6 5 6 21 6"></polyline>
+							<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+							<line x1="10" y1="11" x2="10" y2="17"></line>
+							<line x1="14" y1="11" x2="14" y2="17"></line>
+						</svg>
+					</button>
+				</div>
+			</li>
+		</ul>
+	</section>
 
 </section>
