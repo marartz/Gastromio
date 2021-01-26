@@ -15,27 +15,13 @@
 				<!-- ENDE: Benutzer abgemeldet -->
 
 				<!-- START: Benutzer angemeldet -->
-				<ng-container *ngIf="getUserEmail() !== undefined" ngbDropdown>
-					<a class="login logged_in" id="userDropDown" ngbDropdownToggle>
-						<ng-container *ngIf="isSystemAdmin()">Administration&nbsp;</ng-container>
-                    	<ng-container *ngIf="isRestaurantAdmin()">Meine Restaurants&nbsp;</ng-container>
-					</a>
-					<ul class="dropdown-menu" id="userDropDown" ngbDropdownMenu>
-
-						<ng-container *ngIf="isSystemAdmin()">
-							<li><a [routerLink]="['/admin/users']"><span><strong>Benutzer verwalten</strong><p>Verwalte Benutzerkonten</p></span></a></li>
-							<li><a [routerLink]="['/admin/cuisines']"><span><strong>Cuisines verwalten</strong><p>Verwalte Kategorien</p></span></a></li>
-							<li><a [routerLink]="['/admin/restaurants']"><span><strong>Restaurants verwalten</strong><p>Verwalte Restaurants</p></span></a></li>
-							<li><a [routerLink]="['/admin/restaurantimport']"><span><strong>Restaurantimport</strong></span></a></li>
-							<li><a [routerLink]="['/admin/dishimport']"><span><strong>Speisenimport</strong></span></a></li>
-						</ng-container>
-
-						<ng-container *ngIf="isRestaurantAdmin()">
-							<li><a [routerLink]="['/admin/myrestaurants']"><span><strong>Meine Restaurants</strong><p>Restaurantverwaltung</p></span></a></li>
-						</ng-container>
-
-						<li><a (click)="logout()"><span><strong>Abmelden</strong></span></a></li>
-					</ul>
+				<ng-container *ngIf="getUserEmail() !== undefined">
+					<ng-container *ngIf="isSystemAdmin()">
+						<a class="login logged_in" [routerLink]="['/admin/restaurants']">Meine Restaurants</a>
+					</ng-container>
+					<ng-container *ngIf="isRestaurantAdmin()">
+						<a class="login logged_in" [routerLink]="['/admin/myrestaurants']">Meine Restaurants</a>
+					</ng-container>
 				</ng-container>
 				<!-- ENDE: Benutzer angemeldet -->
 
