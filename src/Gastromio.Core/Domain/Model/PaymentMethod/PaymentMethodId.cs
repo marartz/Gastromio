@@ -14,12 +14,9 @@ namespace Gastromio.Core.Domain.Model.PaymentMethod
         public static readonly PaymentMethodId CreditCard =
             new PaymentMethodId(Guid.Parse("8ACAAEAF-9AE3-41EC-BC5C-8D0333763B78"));
 
-        public static readonly PaymentMethodId PayPal =
-            new PaymentMethodId(Guid.Parse("6B784F68-F912-4754-80E6-F11E3E9FAA40"));
-
         public static readonly PaymentMethodId Invoice =
             new PaymentMethodId(Guid.Parse("64951B66-C4A9-4EE0-A4D9-EA44110B178E"));
-        
+
         public PaymentMethodId(Guid value) : base(value)
         {
         }
