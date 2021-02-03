@@ -23,7 +23,7 @@ import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.
   templateUrl: './admin-restaurants.component.html',
   styleUrls: [
     './admin-restaurants.component.css',
-    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css'
   ]
 })

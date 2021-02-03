@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -32,7 +32,9 @@ import {OrderRestaurantImprintComponent} from '../order-restaurant-imprint/order
   styleUrls: [
     './order-restaurant.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/frontend_v2.min.css'
+    '../../../../assets/css/components/_1_hero.min.css',
+	'../../../../assets/css/components/_2_action-bar.min.css',
+	'../../../../assets/css/components/_3_advanced-filter.min.css'
   ]
 })
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
@@ -65,7 +67,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
   ) {
   }
-
+	
   ngOnInit() {
     this.url = this.router.url;
     this.initialized = false;

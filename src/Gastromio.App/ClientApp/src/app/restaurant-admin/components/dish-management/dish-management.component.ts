@@ -23,7 +23,7 @@ import {debounceTime} from "rxjs/operators";
   templateUrl: './dish-management.component.html',
   styleUrls: [
     './dish-management.component.css',
-    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css'
   ]
 })

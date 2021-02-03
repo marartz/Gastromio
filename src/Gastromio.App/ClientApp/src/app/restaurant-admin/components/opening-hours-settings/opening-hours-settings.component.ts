@@ -16,7 +16,7 @@ import {DateModel} from "../../../shared/models/date.model";
   templateUrl: './opening-hours-settings.component.html',
   styleUrls: [
     './opening-hours-settings.component.css',
-    '../../../../assets/css/frontend_v2.min.css',
+    '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css'
   ]
 })
