@@ -21,7 +21,7 @@ namespace Gastromio.App.Controllers.V1
             this.logger = logger;
             this.queryDispatcher = queryDispatcher;
         }
-        
+
         [Route("restaurants/{restaurantId}/images/{type}")]
         [HttpGet]
         public async Task<IActionResult> GetRestaurantImageAsync(Guid restaurantId, string type)
@@ -36,7 +36,7 @@ namespace Gastromio.App.Controllers.V1
 
             var fileContentResult = new FileContentResult(data, "image/jpeg")
             {
-                LastModified = new DateTimeOffset(updatedOn),
+                LastModified = updatedOn.UtcDateTime,
             };
 
             return fileContentResult;

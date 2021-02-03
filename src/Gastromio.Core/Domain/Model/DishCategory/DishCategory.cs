@@ -10,9 +10,9 @@ namespace Gastromio.Core.Domain.Model.DishCategory
         public DishCategory(
             DishCategoryId id,
             RestaurantId restaurantId,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -23,15 +23,15 @@ namespace Gastromio.Core.Domain.Model.DishCategory
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
         }
-        
+
         public DishCategory(
             DishCategoryId id,
             RestaurantId restaurantId,
             string name,
             int orderNo,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -46,21 +46,21 @@ namespace Gastromio.Core.Domain.Model.DishCategory
         }
 
         public DishCategoryId Id { get; }
-        
+
         public RestaurantId RestaurantId { get; }
-        
+
         public string Name { get; private set; }
-        
+
         public int OrderNo { get; private set; }
 
-        public DateTime CreatedOn { get; }
-        
+        public DateTimeOffset CreatedOn { get; }
+
         public UserId CreatedBy { get; }
-        
-        public DateTime UpdatedOn { get; private set; }
-        
+
+        public DateTimeOffset UpdatedOn { get; private set; }
+
         public UserId UpdatedBy { get; private set; }
-        
+
         public Result<bool> ChangeName(string name, UserId changedBy)
         {
             if (string.IsNullOrEmpty(name))
@@ -69,9 +69,9 @@ namespace Gastromio.Core.Domain.Model.DishCategory
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryNameTooLong, 100);
 
             Name = name;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -79,9 +79,9 @@ namespace Gastromio.Core.Domain.Model.DishCategory
         {
             if (orderNo < 0)
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryInvalidOrderNo, nameof(orderNo));
-            
+
             OrderNo = orderNo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);

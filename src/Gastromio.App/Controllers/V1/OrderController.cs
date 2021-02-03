@@ -58,15 +58,15 @@ namespace Gastromio.App.Controllers.V1
 
             var tempCuisineId = cuisineId != Guid.Empty ? new CuisineId(cuisineId) : null;
 
-            DateTime? openingHourDateTime = null;
+            DateTimeOffset? openingHourDateTime = null;
             if (!string.IsNullOrWhiteSpace(openingHour))
             {
-                if (DateTime.TryParse(openingHour, out var tempOpeningHour))
+                if (DateTimeOffset.TryParse(openingHour, out var tempOpeningHour))
                 {
                     openingHourDateTime = tempOpeningHour;
                 }
             }
-            
+
             var queryResult =
                 await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantDTO>>(
                     new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime), null);
@@ -80,7 +80,7 @@ namespace Gastromio.App.Controllers.V1
             var queryResult =
                 await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
                     new GetRestaurantByIdQuery(restaurant, true), null);
-            
+
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
@@ -102,7 +102,7 @@ namespace Gastromio.App.Controllers.V1
             {
                 checkoutModel.ServiceTime = checkoutModel.ServiceTime.Value.ToLocalTime();
             }
-            
+
             var command = new CheckoutCommand(
                 checkoutModel.GivenName,
                 checkoutModel.LastName,
@@ -125,7 +125,7 @@ namespace Gastromio.App.Controllers.V1
                 new PaymentMethodId(checkoutModel.PaymentMethodId),
                 checkoutModel.ServiceTime
             );
-           
+
             var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(command, null);
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }

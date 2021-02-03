@@ -17,9 +17,9 @@ namespace Gastromio.Core.Domain.Model.Dish
             DishId id,
             RestaurantId restaurantId,
             DishCategoryId categoryId,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -41,9 +41,9 @@ namespace Gastromio.Core.Domain.Model.Dish
             string productInfo,
             int orderNo,
             IList<DishVariant> variants,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -77,11 +77,11 @@ namespace Gastromio.Core.Domain.Model.Dish
 
         public IReadOnlyList<DishVariant> Variants => new ReadOnlyCollection<DishVariant>(variants);
 
-        public DateTime CreatedOn { get; }
+        public DateTimeOffset CreatedOn { get; }
 
         public UserId CreatedBy { get; }
 
-        public DateTime UpdatedOn { get; private set; }
+        public DateTimeOffset UpdatedOn { get; private set; }
 
         public UserId UpdatedBy { get; private set; }
 
@@ -93,9 +93,9 @@ namespace Gastromio.Core.Domain.Model.Dish
                 return FailureResult<bool>.Create(FailureResultCode.DishNameTooLong, 40);
 
             Name = name;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -105,7 +105,7 @@ namespace Gastromio.Core.Domain.Model.Dish
                 return FailureResult<bool>.Create(FailureResultCode.DishDescriptionTooLong,  200);
 
             Description = description;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -117,7 +117,7 @@ namespace Gastromio.Core.Domain.Model.Dish
                 return FailureResult<bool>.Create(FailureResultCode.DishProductInfoTooLong,  200);
 
             ProductInfo = productInfo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -129,7 +129,7 @@ namespace Gastromio.Core.Domain.Model.Dish
                 return FailureResult<bool>.Create(FailureResultCode.DishInvalidOrderNo);
 
             OrderNo = orderNo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -140,10 +140,10 @@ namespace Gastromio.Core.Domain.Model.Dish
             var result = AddVariant(variants, variantId, name, price);
             if (result.IsFailure)
                 return result;
-            
-            UpdatedOn = DateTime.UtcNow;
+
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -154,9 +154,9 @@ namespace Gastromio.Core.Domain.Model.Dish
                 throw new InvalidOperationException("variant does not exist");
 
             variants.Remove(variant);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -178,7 +178,7 @@ namespace Gastromio.Core.Domain.Model.Dish
             }
 
             this.variants = tempVariants;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);

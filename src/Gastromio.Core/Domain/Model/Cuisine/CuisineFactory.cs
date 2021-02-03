@@ -10,9 +10,9 @@ namespace Gastromio.Core.Domain.Model.Cuisine
         {
             var cuisine = new Cuisine(
                 new CuisineId(Guid.NewGuid()),
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy
             );
             var tempResult = cuisine.ChangeName(name, createdBy);

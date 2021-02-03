@@ -44,7 +44,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
             var newOrderId = new OrderId(Guid.NewGuid());
 
             var commandJson = JsonConvert.SerializeObject(command);
-            
+
             logger.LogInformation($"Received order request {newOrderId.Value}: {commandJson}");
 
             Restaurant restaurant;
@@ -160,7 +160,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     throw new ArgumentOutOfRangeException();
             }
 
-            var serviceTime = command.ServiceTime ?? DateTime.Now;
+            var serviceTime = command.ServiceTime ?? DateTimeOffset.UtcNow;
             if (!restaurant.IsOrderPossibleAt(serviceTime))
             {
                 logger.LogInformation($"Declined order {newOrderId.Value}: order at this time is not possible");

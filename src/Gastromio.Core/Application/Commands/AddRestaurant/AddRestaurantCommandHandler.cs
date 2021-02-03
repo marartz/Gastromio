@@ -64,11 +64,13 @@ namespace Gastromio.Core.Application.Commands.AddRestaurant
                 return createResult.Cast<RestaurantDTO>();
 
             var restaurant = ((SuccessResult<Restaurant>) createResult).Value;
-            
+
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            var userIds = restaurant.Administrators;
-            
+            var userIds = restaurant.Administrators
+                .Union(new []{restaurant.CreatedBy, restaurant.UpdatedBy})
+                .Distinct();
+
             var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
 
             var userDict = users != null

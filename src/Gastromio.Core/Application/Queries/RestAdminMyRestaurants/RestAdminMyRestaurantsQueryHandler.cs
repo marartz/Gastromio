@@ -53,8 +53,11 @@ namespace Gastromio.Core.Application.Queries.RestAdminMyRestaurants
 
             var restaurants = (await restaurantRepository.FindByUserIdAsync(currentUser.Id, cancellationToken)).ToList();
 
-            var userIds = restaurants.SelectMany(restaurant => restaurant.Administrators).Distinct();
-            
+            var userIds = restaurants
+                .SelectMany(restaurant =>
+                    restaurant.Administrators.Union(new[] {restaurant.CreatedBy, restaurant.UpdatedBy}))
+                .Distinct();
+
             var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
 
             var userDict = users != null

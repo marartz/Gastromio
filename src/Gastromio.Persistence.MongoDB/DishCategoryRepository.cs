@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
+using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.DishCategory;
 using Gastromio.Core.Domain.Model.Restaurant;
 using Gastromio.Core.Domain.Model.User;
@@ -79,9 +81,9 @@ namespace Gastromio.Persistence.MongoDB
                 new RestaurantId(model.RestaurantId),
                 model.Name,
                 model.OrderNo,
-                model.CreatedOn,
+                model.CreatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(model.CreatedBy),
-                model.UpdatedOn,
+                model.UpdatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(model.UpdatedBy)
             );
         }
@@ -94,9 +96,9 @@ namespace Gastromio.Persistence.MongoDB
                 RestaurantId = obj.RestaurantId.Value,
                 Name = obj.Name,
                 OrderNo = obj.OrderNo,
-                CreatedOn = obj.CreatedOn,
+                CreatedOn = obj.CreatedOn.UtcDateTime,
                 CreatedBy = obj.CreatedBy.Value,
-                UpdatedOn = obj.UpdatedOn,
+                UpdatedOn = obj.UpdatedOn.UtcDateTime,
                 UpdatedBy = obj.UpdatedBy.Value
             };
         }

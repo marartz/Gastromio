@@ -54,10 +54,13 @@ namespace Gastromio.Core.Application.Queries.SysAdminSearchForRestaurants
             var (total, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, null, null, null, null,
                 query.Skip, query.Take, cancellationToken);
 
-            var itemList = items.ToList(); 
+            var itemList = items.ToList();
 
-            var userIds = itemList.SelectMany(restaurant => restaurant.Administrators).Distinct();
-            
+            var userIds = itemList
+                .SelectMany(restaurant =>
+                    restaurant.Administrators.Union(new[] {restaurant.CreatedBy, restaurant.UpdatedBy}))
+                .Distinct();
+
             var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
 
             var userDict = users != null

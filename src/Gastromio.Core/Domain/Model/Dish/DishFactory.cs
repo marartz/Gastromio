@@ -29,9 +29,9 @@ namespace Gastromio.Core.Domain.Model.Dish
                 new DishId(Guid.NewGuid()),
                 restaurantId,
                 categoryId,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy
             );
 

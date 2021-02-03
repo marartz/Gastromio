@@ -21,9 +21,9 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
         public Restaurant(
             RestaurantId id,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -65,9 +65,9 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             bool needsSupport,
             SupportedOrderMode supportedOrderMode,
             IList<ExternalMenu> externalMenus,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -142,11 +142,11 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
         public IReadOnlyCollection<ExternalMenu> ExternalMenus => externalMenus.Values.ToImmutableList();
 
-        public DateTime CreatedOn { get; }
+        public DateTimeOffset CreatedOn { get; }
 
         public UserId CreatedBy { get; }
 
-        public DateTime UpdatedOn { get; private set; }
+        public DateTimeOffset UpdatedOn { get; private set; }
 
         public UserId UpdatedBy { get; private set; }
 
@@ -158,7 +158,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantNameTooLong, 100);
 
             Name = name;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -189,7 +189,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantCityTooLong, 50);
 
             Address = address;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -218,15 +218,15 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
             if (!string.IsNullOrEmpty(contactInfo.Mobile) && !Validators.IsValidPhoneNumber(contactInfo.Mobile))
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMobileInvalid, contactInfo.Mobile);
-            
+
             ContactInfo = contactInfo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
         }
-        
-        public bool IsOpen(DateTime dateTime)
+
+        public bool IsOpen(DateTimeOffset dateTime)
         {
             return FindOpeningPeriod(dateTime) != null;
         }
@@ -246,7 +246,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 regularOpeningDays[dayOfWeek] = new RegularOpeningDay(dayOfWeek, result.Value);
             }
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -269,7 +269,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 regularOpeningDays.Remove(dayOfWeek);
             }
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -283,7 +283,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 deviatingOpeningDays.Add(date, openingDay);
             }
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -307,7 +307,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 openingDay.OpeningPeriods
             );
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -322,7 +322,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
             deviatingOpeningDays.Remove(date);
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -340,7 +340,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return result.Cast<bool>();
             deviatingOpeningDays[date] = new DeviatingOpeningDay(date, DeviatingOpeningDayStatus.Open, result.Value);
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -363,7 +363,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 deviatingOpeningDays[date] = new DeviatingOpeningDay(date, DeviatingOpeningDayStatus.Closed, changedOpeningPeriods);
             }
 
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -373,16 +373,16 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         {
             regularOpeningDays = new Dictionary<int, RegularOpeningDay>();
             deviatingOpeningDays = new Dictionary<Date, DeviatingOpeningDay>();
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
 
-        public bool IsOrderPossibleAt(DateTime orderDateTime)
+        public bool IsOrderPossibleAt(DateTimeOffset orderDateTime)
         {
-            if (orderDateTime < DateTime.Now)
+            if (orderDateTime < DateTimeOffset.UtcNow)
             {
-                orderDateTime = DateTime.Now;
+                orderDateTime = DateTimeOffset.UtcNow;
             }
 
             if (SupportedOrderMode == SupportedOrderMode.OnlyPhone)
@@ -400,20 +400,20 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             {
                 return true;
             }
-            
-            if (orderDateTime.Date > DateTime.Today)
+
+            if (orderDateTime.ToLocalDate() > DateTimeOffset.UtcNow.ToLocalDate())
             {
                 return true;
             }
 
-            var openingPeriodOfNow = FindOpeningPeriod(DateTime.Now);
+            var openingPeriodOfNow = FindOpeningPeriod(DateTimeOffset.UtcNow);
 
             var restaurantIsCurrentlyNotOpen = openingPeriodOfNow == null;
             if (restaurantIsCurrentlyNotOpen)
             {
                 return true;
             }
-            
+
             return openingPeriodOfNow != openingPeriodOfOrderDateTime;
         }
 
@@ -439,7 +439,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMaximumPickupOrderValueTooLow);
 
             PickupInfo = pickupInfo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -472,7 +472,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDeliveryCostsTooHigh);
 
             DeliveryInfo = deliveryInfo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -481,7 +481,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeReservationInfo(ReservationInfo reservationInfo, UserId changedBy)
         {
             ReservationInfo = reservationInfo;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -489,7 +489,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeHygienicHandling(string hygienicHandling, UserId changedBy)
         {
             HygienicHandling = hygienicHandling;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -501,7 +501,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (cuisines == null)
                 cuisines = new HashSet<CuisineId>();
             cuisines.Add(cuisineId);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -511,7 +511,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (cuisines == null || !cuisines.Contains(cuisineId))
                 return SuccessResult<bool>.Create(true);
             cuisines.Remove(cuisineId);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -523,7 +523,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (paymentMethods == null)
                 paymentMethods = new HashSet<PaymentMethodId>();
             paymentMethods.Add(paymentMethodId);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -536,7 +536,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (paymentMethods == null || !paymentMethods.Contains(paymentMethodId))
                 return SuccessResult<bool>.Create(true);
             paymentMethods.Remove(paymentMethodId);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -553,7 +553,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (administrators == null)
                 administrators = new HashSet<UserId>();
             administrators.Add(userId);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -563,7 +563,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (administrators == null || !administrators.Contains(userId))
                 return SuccessResult<bool>.Create(true);
             administrators.Remove(userId);
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -571,7 +571,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeImportId(string importId, UserId changedBy)
         {
             ImportId = importId;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -581,7 +581,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (!IsActive)
                 return SuccessResult<bool>.Create(true);
             IsActive = false;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -591,7 +591,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (IsActive)
                 return SuccessResult<bool>.Create(true);
             IsActive = true;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -601,7 +601,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (!NeedsSupport)
                 return SuccessResult<bool>.Create(true);
             NeedsSupport = false;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -611,7 +611,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (NeedsSupport)
                 return SuccessResult<bool>.Create(true);
             NeedsSupport = true;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -619,7 +619,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         public Result<bool> ChangeSupportedOrderMode(SupportedOrderMode supportedOrderMode, UserId changedBy)
         {
             SupportedOrderMode = supportedOrderMode;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
             return SuccessResult<bool>.Create(true);
         }
@@ -656,7 +656,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             return SuccessResult<bool>.Create(true);
         }
 
-        private (int DayOfWeek, TimeSpan Time) GetDayOfWeekAndTimeInfoFromDateTime(DateTime dateTime)
+        private (int DayOfWeek, TimeSpan Time) GetDayOfWeekAndTimeInfoFromDateTime(DateTimeOffset dateTime)
         {
             var dayOfWeek = ((int) dateTime.DayOfWeek - 1) % 7;
             if (dayOfWeek < 0)
@@ -679,11 +679,11 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             return (dayOfWeek, TimeSpan.FromMinutes(time));
         }
 
-        private OpeningPeriod FindOpeningPeriod(DateTime dateTime)
+        private OpeningPeriod FindOpeningPeriod(DateTimeOffset dateTime)
         {
             var (dayOfWeek, time) = GetDayOfWeekAndTimeInfoFromDateTime(dateTime);
 
-            var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
+            var date = dateTime.ToLocalDate();
             if (deviatingOpeningDays != null &&
                 deviatingOpeningDays.TryGetValue(date, out var deviatingOpeningDay))
             {

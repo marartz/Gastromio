@@ -49,7 +49,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
             if (command.Image == null)
             {
                 await restaurantImageRepository.RemoveByRestaurantIdAndTypeAsync(command.RestaurantId, command.Type,
-                    cancellationToken); 
+                    cancellationToken);
                 return SuccessResult<bool>.Create(true);
             }
 
@@ -74,23 +74,23 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
                         return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
 
                     imageObj.SaveAsJpeg(dstMemoryStream);
-                    
+
                     await dstMemoryStream.FlushAsync(cancellationToken);
-                    
+
                     var restaurantImage = new RestaurantImage(
                         new RestaurantImageId(Guid.NewGuid()),
                         command.RestaurantId,
                         command.Type,
                         dstMemoryStream.GetBuffer(),
-                        DateTime.UtcNow,
+                        DateTimeOffset.UtcNow,
                         currentUser.Id,
-                        DateTime.UtcNow,
+                        DateTimeOffset.UtcNow,
                         currentUser.Id
                     );
 
                     await restaurantImageRepository.StoreAsync(restaurantImage, cancellationToken);
 
-                    return SuccessResult<bool>.Create(true);            
+                    return SuccessResult<bool>.Create(true);
                 }
             }
             catch

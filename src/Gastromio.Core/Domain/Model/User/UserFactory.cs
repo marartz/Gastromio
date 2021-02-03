@@ -15,9 +15,9 @@ namespace Gastromio.Core.Domain.Model.User
         {
             var user = new User(
                 new UserId(Guid.NewGuid()),
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy
             );
 

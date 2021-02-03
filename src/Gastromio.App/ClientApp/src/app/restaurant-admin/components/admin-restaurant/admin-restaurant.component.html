@@ -68,6 +68,9 @@
 					Hier können Sie Ihre Daten verwalten, um Gastromio <br>
 					optimal an Ihre Bedürfnisse anzupassen.
 				</h3>
+                <p>
+                    Letzte Änderung am {{(restaurant$ | async).updatedOnDate.toLocaleString()}} von {{(restaurant$ | async).updatedBy.email}}
+                </p>
 			</div>
 		</header>
 

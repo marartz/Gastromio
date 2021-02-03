@@ -40,13 +40,13 @@ namespace Gastromio.Core.Application.Commands.EnsureAdminUser
                 null,
                 null,
                 null,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 currentUser.Id,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 currentUser.Id
             );
             adminUser.ChangePassword("admin", false, currentUser.Id);
-            
+
             await userRepository.StoreAsync(adminUser, cancellationToken);
 
             return SuccessResult<bool>.Create(true);

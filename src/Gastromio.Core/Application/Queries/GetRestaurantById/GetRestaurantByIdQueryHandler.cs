@@ -67,8 +67,10 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantById
             if (query.OnlyActiveRestaurants && !restaurant.IsActive)
                 return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantDoesNotExist);
 
-            var userIds = restaurant.Administrators;
-            
+            var userIds = restaurant.Administrators
+                .Union(new[] {restaurant.CreatedBy, restaurant.UpdatedBy})
+                .Distinct();
+
             var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
 
             var userDict = users != null
@@ -77,7 +79,7 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantById
 
             var restaurantImageTypes =
                 await restaurantImageRepository.FindTypesByRestaurantIdsAsync(new[] {restaurant.Id}, cancellationToken);
-            
+
             return SuccessResult<RestaurantDTO>.Create(new RestaurantDTO(restaurant, cuisines, paymentMethods,
                 userDict, restaurantImageTypes));
         }

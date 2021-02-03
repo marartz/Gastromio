@@ -15,9 +15,9 @@ namespace Gastromio.Core.Domain.Model.User
 
         public User(
             UserId id,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -35,10 +35,10 @@ namespace Gastromio.Core.Domain.Model.User
             byte[] passwordSalt,
             byte[] passwordHash,
             byte[] passwordResetCode,
-            DateTime? passwordResetExpiration,
-            DateTime createdOn,
+            DateTimeOffset? passwordResetExpiration,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -67,13 +67,13 @@ namespace Gastromio.Core.Domain.Model.User
 
         public byte[] PasswordResetCode { get; private set; }
 
-        public DateTime? PasswordResetExpiration { get; private set; }
+        public DateTimeOffset? PasswordResetExpiration { get; private set; }
 
-        public DateTime CreatedOn { get; }
+        public DateTimeOffset CreatedOn { get; }
 
         public UserId CreatedBy { get; }
 
-        public DateTime UpdatedOn { get; private set; }
+        public DateTimeOffset UpdatedOn { get; private set; }
 
         public UserId UpdatedBy { get; private set; }
 
@@ -81,7 +81,7 @@ namespace Gastromio.Core.Domain.Model.User
         {
             Role = role;
             Email = email;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -109,7 +109,7 @@ namespace Gastromio.Core.Domain.Model.User
 
             PasswordSalt = newPasswordSalt;
             PasswordHash = newPasswordHash;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
@@ -120,14 +120,14 @@ namespace Gastromio.Core.Domain.Model.User
             var resetCode = Guid.NewGuid();
 
             PasswordResetCode = resetCode.ToByteArray();
-            PasswordResetExpiration = DateTime.UtcNow.AddMinutes(30);
+            PasswordResetExpiration = DateTimeOffset.UtcNow.AddMinutes(30);
 
             return SuccessResult<bool>.Create(true);
         }
 
         public Result<bool> ValidatePasswordResetCode(byte[] resetCode)
         {
-            return PasswordResetExpiration.HasValue && DateTime.UtcNow <= PasswordResetExpiration &&
+            return PasswordResetExpiration.HasValue && DateTimeOffset.UtcNow <= PasswordResetExpiration &&
                    SlowEquals(PasswordResetCode, resetCode)
                 ? (Result<bool>) SuccessResult<bool>.Create(true)
                 : FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);

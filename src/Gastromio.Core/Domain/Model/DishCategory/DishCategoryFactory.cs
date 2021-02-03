@@ -17,12 +17,12 @@ namespace Gastromio.Core.Domain.Model.DishCategory
             var dishCategory = new DishCategory(
                 new DishCategoryId(Guid.NewGuid()),
                 restaurantId,
-                DateTime.UtcNow,
-                createdBy,                    
-                DateTime.UtcNow,
-                createdBy                    
+                DateTimeOffset.UtcNow,
+                createdBy,
+                DateTimeOffset.UtcNow,
+                createdBy
             );
-            
+
             var tempResult = dishCategory.ChangeName(name, createdBy);
             if (tempResult.IsFailure)
                 return tempResult.Cast<DishCategory>();

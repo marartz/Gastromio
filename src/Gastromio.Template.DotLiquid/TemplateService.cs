@@ -221,7 +221,7 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("'>");
             sb.Append(url);
             sb.Append("</a>");
-            
+
             sb.AppendLine("<br/>");
 
             sb.Append("<p>");
@@ -347,10 +347,10 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("Gewünschtes Datum / Uhrzeit: ");
             if (order.ServiceTime.HasValue)
             {
-                var localServiceTime = order.ServiceTime.Value.ToLocalTime();
-                sb.Append(localServiceTime.ToLongDateString());
+                var localServiceTime = order.ServiceTime.Value;
+                sb.Append(localServiceTime.LocalDateTime.ToLongDateString());
                 sb.Append(" ");
-                sb.Append(localServiceTime.ToLongTimeString());
+                sb.Append(localServiceTime.LocalDateTime.ToLongTimeString());
             }
             else
             {

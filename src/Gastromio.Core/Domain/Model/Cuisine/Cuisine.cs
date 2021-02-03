@@ -8,9 +8,9 @@ namespace Gastromio.Core.Domain.Model.Cuisine
     {
         public Cuisine(
             CuisineId id,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -24,9 +24,9 @@ namespace Gastromio.Core.Domain.Model.Cuisine
         public Cuisine(
             CuisineId id,
             string name,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -37,18 +37,18 @@ namespace Gastromio.Core.Domain.Model.Cuisine
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
         }
-        
+
         public CuisineId Id { get; }
         public string Name { get; private set; }
 
-        public DateTime CreatedOn { get; }
-        
+        public DateTimeOffset CreatedOn { get; }
+
         public UserId CreatedBy { get; }
-        
-        public DateTime UpdatedOn { get; private set; }
-        
+
+        public DateTimeOffset UpdatedOn { get; private set; }
+
         public UserId UpdatedBy { get; private set; }
-        
+
         public Result<bool> ChangeName(string name, UserId updatedBy)
         {
             if (string.IsNullOrEmpty(name))
@@ -57,9 +57,9 @@ namespace Gastromio.Core.Domain.Model.Cuisine
                 return FailureResult<bool>.Create(FailureResultCode.CuisineNameTooLong, 100);
 
             Name = name;
-            UpdatedOn = DateTime.UtcNow;
+            UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = updatedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
     }

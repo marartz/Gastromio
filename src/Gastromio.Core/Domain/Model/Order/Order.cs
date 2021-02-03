@@ -18,7 +18,7 @@ namespace Gastromio.Core.Domain.Model.Order
             string paymentMethodDescription,
             decimal costs,
             decimal totalPrice,
-            DateTime? serviceTime
+            DateTimeOffset? serviceTime
         )
         {
             Id = id;
@@ -31,7 +31,7 @@ namespace Gastromio.Core.Domain.Model.Order
             Costs = costs;
             TotalPrice = totalPrice;
             ServiceTime = serviceTime;
-            CreatedOn = DateTime.UtcNow;
+            CreatedOn = DateTimeOffset.UtcNow;
         }
 
         public Order(
@@ -44,12 +44,12 @@ namespace Gastromio.Core.Domain.Model.Order
             string paymentMethodDescription,
             decimal costs,
             decimal totalPrice,
-            DateTime? serviceTime,
+            DateTimeOffset? serviceTime,
             NotificationInfo customerNotificationInfo,
             NotificationInfo restaurantEmailNotificationInfo,
             NotificationInfo restaurantMobileNotificationInfo,
-            DateTime createdOn,
-            DateTime? updatedOn,
+            DateTimeOffset createdOn,
+            DateTimeOffset? updatedOn,
             UserId updatedBy
         )
         {
@@ -88,18 +88,18 @@ namespace Gastromio.Core.Domain.Model.Order
         public decimal Costs { get; }
 
         public decimal TotalPrice { get; }
-        
-        public DateTime? ServiceTime { get; }
+
+        public DateTimeOffset? ServiceTime { get; }
 
         public NotificationInfo CustomerNotificationInfo { get; private set; }
 
         public NotificationInfo RestaurantEmailNotificationInfo { get; private set; }
-        
+
         public NotificationInfo RestaurantMobileNotificationInfo { get; private set; }
 
-        public DateTime CreatedOn { get; }
+        public DateTimeOffset CreatedOn { get; }
 
-        public DateTime? UpdatedOn { get; private set; }
+        public DateTimeOffset? UpdatedOn { get; private set; }
 
         public UserId UpdatedBy { get; private set; }
 
@@ -116,9 +116,9 @@ namespace Gastromio.Core.Domain.Model.Order
         public Result<bool> RegisterCustomerNotificationAttempt(bool status, string message)
         {
             CustomerNotificationInfo = CustomerNotificationInfo == null
-                ? new NotificationInfo(status, 1, message, DateTime.UtcNow)
-                : new NotificationInfo(status, CustomerNotificationInfo.Attempt + 1, message, DateTime.UtcNow);
-            UpdatedOn = DateTime.UtcNow;
+                ? new NotificationInfo(status, 1, message, DateTimeOffset.UtcNow)
+                : new NotificationInfo(status, CustomerNotificationInfo.Attempt + 1, message, DateTimeOffset.UtcNow);
+            UpdatedOn = DateTimeOffset.UtcNow;
 
             return SuccessResult<bool>.Create(true);
         }
@@ -126,9 +126,9 @@ namespace Gastromio.Core.Domain.Model.Order
         public Result<bool> RegisterRestaurantEmailNotificationAttempt(bool status, string message)
         {
             RestaurantEmailNotificationInfo = RestaurantEmailNotificationInfo == null
-                ? new NotificationInfo(status, 1, message, DateTime.UtcNow)
-                : new NotificationInfo(status, RestaurantEmailNotificationInfo.Attempt + 1, message, DateTime.UtcNow);
-            UpdatedOn = DateTime.UtcNow;
+                ? new NotificationInfo(status, 1, message, DateTimeOffset.UtcNow)
+                : new NotificationInfo(status, RestaurantEmailNotificationInfo.Attempt + 1, message, DateTimeOffset.UtcNow);
+            UpdatedOn = DateTimeOffset.UtcNow;
 
             return SuccessResult<bool>.Create(true);
         }
@@ -136,9 +136,9 @@ namespace Gastromio.Core.Domain.Model.Order
         public Result<bool> RegisterRestaurantMobileNotificationAttempt(bool status, string message)
         {
             RestaurantMobileNotificationInfo = RestaurantMobileNotificationInfo == null
-                ? new NotificationInfo(status, 1, message, DateTime.UtcNow)
-                : new NotificationInfo(status, RestaurantMobileNotificationInfo.Attempt + 1, message, DateTime.UtcNow);
-            UpdatedOn = DateTime.UtcNow;
+                ? new NotificationInfo(status, 1, message, DateTimeOffset.UtcNow)
+                : new NotificationInfo(status, RestaurantMobileNotificationInfo.Attempt + 1, message, DateTimeOffset.UtcNow);
+            UpdatedOn = DateTimeOffset.UtcNow;
 
             return SuccessResult<bool>.Create(true);
         }

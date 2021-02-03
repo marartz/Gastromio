@@ -27,9 +27,9 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         {
             var restaurant = new Restaurant(
                 new RestaurantId(Guid.NewGuid()),
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy
             );
 
@@ -130,14 +130,14 @@ namespace Gastromio.Core.Domain.Model.Restaurant
         {
             var restaurant = new Restaurant(
                 new RestaurantId(Guid.NewGuid()),
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 createdBy
             );
-            
+
             var tempResult = restaurant.ChangeName(name, createdBy);
-            
+
             return tempResult.IsFailure ? tempResult.Cast<Restaurant>() : SuccessResult<Restaurant>.Create(restaurant);
         }
     }

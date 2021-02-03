@@ -11,9 +11,9 @@ namespace Gastromio.Core.Domain.Model.RestaurantImage
             RestaurantId restaurantId,
             string type,
             byte[] data,
-            DateTime createdOn,
+            DateTimeOffset createdOn,
             UserId createdBy,
-            DateTime updatedOn,
+            DateTimeOffset updatedOn,
             UserId updatedBy
         )
         {
@@ -28,19 +28,19 @@ namespace Gastromio.Core.Domain.Model.RestaurantImage
         }
 
         public RestaurantImageId Id { get; }
-        
+
         public RestaurantId RestaurantId { get; }
-        
+
         public string Type { get; }
 
         public byte[] Data { get; }
-        
-        public DateTime CreatedOn { get; }
-        
+
+        public DateTimeOffset CreatedOn { get; }
+
         public UserId CreatedBy { get; }
-        
-        public DateTime UpdatedOn { get; }
-        
+
+        public DateTimeOffset UpdatedOn { get; }
+
         public UserId UpdatedBy { get; }
     }
 }

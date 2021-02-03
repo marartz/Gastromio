@@ -8,7 +8,7 @@ namespace Gastromio.Core.Domain.Model.Order
             bool status,
             int attempt,
             string message,
-            DateTime timestamp
+            DateTimeOffset timestamp
         )
         {
             Status = status;
@@ -18,11 +18,11 @@ namespace Gastromio.Core.Domain.Model.Order
         }
 
         public bool Status { get; }
-        
+
         public int Attempt { get; }
-        
+
         public string Message { get; }
-        
-        public DateTime Timestamp { get; }
+
+        public DateTimeOffset Timestamp { get; }
     }
 }

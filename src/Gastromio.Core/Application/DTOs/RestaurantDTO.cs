@@ -73,12 +73,16 @@ namespace Gastromio.Core.Application.DTOs
                     )
                     .ToList()
                 : new List<ExternalMenuDTO>();
+            CreatedOn = restaurant.CreatedOn;
+            CreatedBy = RetrieveUserModel(users, restaurant.CreatedBy);
+            UpdatedOn = restaurant.UpdatedOn;
+            UpdatedBy = RetrieveUserModel(users, restaurant.UpdatedBy);
         }
 
         public Guid Id { get; }
 
         public string Name { get; }
-        
+
         public string ImportId { get; }
 
         public string Alias { get; }
@@ -94,7 +98,7 @@ namespace Gastromio.Core.Application.DTOs
         public IReadOnlyCollection<DeviatingOpeningDayDTO> DeviatingOpeningDays { get; }
 
         public string RegularOpeningHoursText { get; }
-        
+
         public string DeviatingOpeningHoursText { get; }
 
         public string OpeningHoursTodayText { get; }
@@ -122,6 +126,14 @@ namespace Gastromio.Core.Application.DTOs
         public string SupportedOrderMode { get; }
 
         public IReadOnlyCollection<ExternalMenuDTO> ExternalMenus { get; }
+
+        public DateTimeOffset CreatedOn { get; }
+
+        public UserDTO CreatedBy { get; }
+
+        public DateTimeOffset UpdatedOn { get; }
+
+        public UserDTO UpdatedBy { get; }
 
         private static CuisineDTO RetrieveCuisineModel(IDictionary<Guid, CuisineDTO> allCuisines,
             Guid cuisineId)
@@ -153,7 +165,7 @@ namespace Gastromio.Core.Application.DTOs
         {
             if (restaurant.RegularOpeningDays == null)
                 return string.Empty;
-            
+
             var sb = new StringBuilder();
             var first = true;
 
@@ -199,12 +211,12 @@ namespace Gastromio.Core.Application.DTOs
         {
             if (restaurant.DeviatingOpeningDays == null)
                 return string.Empty;
-            
+
             var sb = new StringBuilder();
             var first = true;
 
-            var now = DateTime.Now;
-            var today = new Date(now.Year, now.Month, now.Day);
+            var now = DateTimeOffset.UtcNow;
+            var today = now.ToLocalDate();
             var keyValuePairs = restaurant.DeviatingOpeningDays.Where(en => en.Key >= today)
                 .OrderBy(en => en.Key);
             foreach (var keyValuePair in keyValuePairs)
@@ -242,8 +254,8 @@ namespace Gastromio.Core.Application.DTOs
 
         private static string GenerateOpeningHoursTodayText(Restaurant restaurant)
         {
-            var now = DateTime.Now;
-            var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            var now = DateTimeOffset.UtcNow;
+            var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday
             if (dayOfWeek < 0)
             {
                 dayOfWeek += 7;
@@ -258,7 +270,7 @@ namespace Gastromio.Core.Application.DTOs
                 }
             }
 
-            var today = new Date(now.Year, now.Month, now.Day);
+            var today = now.ToLocalDate();
             if (restaurant.DeviatingOpeningDays != null && restaurant.DeviatingOpeningDays.TryGetValue(today, out var deviatingOpeningDay))
             {
                 if (deviatingOpeningDay.OpeningPeriods.Count == 0)
@@ -270,7 +282,7 @@ namespace Gastromio.Core.Application.DTOs
                 WriteOpeningPeriods(sb, deviatingOpeningDay.OpeningPeriods.OrderBy(en => en.Start));
                 return sb.ToString();
             }
-            
+
             if (restaurant.RegularOpeningDays != null && restaurant.RegularOpeningDays.TryGetValue(dayOfWeek, out var regularOpeningDay))
             {
                 if (regularOpeningDay.OpeningPeriods.Count == 0)

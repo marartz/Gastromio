@@ -50,10 +50,11 @@ namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
 
             var itemList = items.ToList();
 
-            var userIds = itemList != null
-                ? itemList.SelectMany(restaurant => restaurant.Administrators).Distinct()
-                : Enumerable.Empty<UserId>();
-            
+            var userIds = itemList
+                .SelectMany(restaurant =>
+                    restaurant.Administrators.Union(new[] {restaurant.CreatedBy, restaurant.UpdatedBy}))
+                .Distinct();
+
             var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
 
             var userDict = users != null
