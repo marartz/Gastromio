@@ -107,6 +107,9 @@ export class OrderFacade {
           take(1),
           map(restaurant => {
             this.selectedRestaurant$.next(new RestaurantModel(restaurant));
+          }),
+          catchError((error: HttpErrorResponse) => {
+            return of(void 0);
           })
         )
       );
