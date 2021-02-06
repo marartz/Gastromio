@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Gastromio.App.BackgroundServices;
 using Gastromio.Core;
-using Gastromio.Notification.Mailjet;
 using Gastromio.Notification.Sms77;
 using Gastromio.Notification.Smtp;
 using Gastromio.Persistence.MongoDB;
@@ -72,13 +71,6 @@ namespace Gastromio.App
             services.AddSingleton(sms77MobileConfiguration);
             services.AddMobileNotificationViaSms77();
 
-            // var mailjetMobileConfiguration = new MailjetMobileConfiguration
-            // {
-            //     ApiToken = Configuration.GetValue<string>("Mailjet:SMS:ApiToken")
-            // };
-            // services.AddSingleton(mailjetMobileConfiguration);
-            // services.AddMobileNotificationViaMailjet();
-
             services.AddDotLiquid();
 
             services.AddHostedService<NotificationBackgroundService>();
@@ -101,7 +93,7 @@ namespace Gastromio.App
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            // Errors caused by request body deserialization or data annonations on DTOs (e.g. '[Required]') are handled automatically.
+            // Errors caused by request body deserialization or data annotations on DTOs (e.g. '[Required]') are handled automatically.
             // In this case controller endpoints are not reached and BadRequest is returned (client validation should catch these cases earlier).
             services.Configure<ApiBehaviorOptions>(options =>
             {
