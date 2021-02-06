@@ -72,7 +72,7 @@ namespace Gastromio.Notification.Sms77
             }
         }
 
-        private bool GetUnifiedPhoneNumber(string phoneNumberText, out string unifiedPhoneNumber)
+        internal bool GetUnifiedPhoneNumber(string phoneNumberText, out string unifiedPhoneNumber)
         {
             try
             {
