@@ -9,6 +9,7 @@ using System.Text;
 using Gastromio.App.BackgroundServices;
 using Gastromio.Core;
 using Gastromio.Notification.Mailjet;
+using Gastromio.Notification.Sms77;
 using Gastromio.Notification.Smtp;
 using Gastromio.Persistence.MongoDB;
 using Gastromio.Template.DotLiquid;
@@ -36,7 +37,7 @@ namespace Gastromio.App
 
             var databaseName = Configuration.GetValue("DatabaseName", Constants.DatabaseName);
             Log.Logger.Information("Using database name: {0}", databaseName);
-            
+
             services.AddMongoDB(connectionString, databaseName);
 
             var configurationProvider = new ConfigurationProvider
@@ -64,15 +65,22 @@ namespace Gastromio.App
             services.AddSingleton(smtpConfiguration);
             services.AddEmailNotificationViaSmtp();
 
-            var mailjetMobileConfiguration = new MailjetMobileConfiguration
+            var sms77MobileConfiguration = new Sms77MobileConfiguration
             {
-                ApiToken = Configuration.GetValue<string>("Mailjet:SMS:ApiToken")
+                ApiToken = Configuration.GetValue<string>("SMS77:ApiToken")
             };
-            services.AddSingleton(mailjetMobileConfiguration);
-            services.AddMobileNotificationViaMailjet();
+            services.AddSingleton(sms77MobileConfiguration);
+            services.AddMobileNotificationViaSms77();
+
+            // var mailjetMobileConfiguration = new MailjetMobileConfiguration
+            // {
+            //     ApiToken = Configuration.GetValue<string>("Mailjet:SMS:ApiToken")
+            // };
+            // services.AddSingleton(mailjetMobileConfiguration);
+            // services.AddMobileNotificationViaMailjet();
 
             services.AddDotLiquid();
-            
+
             services.AddHostedService<NotificationBackgroundService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -133,7 +141,7 @@ namespace Gastromio.App
             }
 
             app.UseSerilogRequestLogging();
-            
+
             app.UseRouting();
 
             app.UseAuthentication();
