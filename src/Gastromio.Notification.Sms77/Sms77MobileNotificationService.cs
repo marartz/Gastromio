@@ -54,7 +54,25 @@ namespace Gastromio.Notification.Sms77
                 httpClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("basic", configuration.ApiToken);
 
-                var response = await httpClient.PostAsync(ApiUrl, requestContent, cancellationToken);
+                var urlBuilder = new StringBuilder();
+                urlBuilder.Append(ApiUrl);
+
+                urlBuilder.Append("?from=");
+                urlBuilder.Append(Uri.EscapeDataString(mobileNotificationRequest.From));
+
+                urlBuilder.Append("&to=");
+                urlBuilder.Append(Uri.EscapeDataString(mobileNotificationRequest.To));
+
+                urlBuilder.Append("&text=");
+                urlBuilder.Append(Uri.EscapeDataString(mobileNotificationRequest.Text));
+
+                urlBuilder.Append("&debug=0");
+
+                urlBuilder.Append("&details=1");
+
+                var url = urlBuilder.ToString();
+
+                var response = await httpClient.PostAsync(url, requestContent, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -62,7 +80,9 @@ namespace Gastromio.Notification.Sms77
                     return new MobileNotificationResponse(false, response.ReasonPhrase);
                 }
 
-                logger.LogInformation($"Successfully sent");
+                var responseText = await response.Content.ReadAsStringAsync();
+
+                logger.LogInformation($"Successfully sent: {responseText}");
                 return new MobileNotificationResponse(true, null);
             }
             catch (Exception e)
@@ -72,7 +92,7 @@ namespace Gastromio.Notification.Sms77
             }
         }
 
-        internal bool GetUnifiedPhoneNumber(string phoneNumberText, out string unifiedPhoneNumber)
+        internal static bool GetUnifiedPhoneNumber(string phoneNumberText, out string unifiedPhoneNumber)
         {
             try
             {
