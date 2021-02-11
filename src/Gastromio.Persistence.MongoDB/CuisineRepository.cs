@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,9 +78,9 @@ namespace Gastromio.Persistence.MongoDB
             return new Cuisine(
                 new CuisineId(row.Id),
                 row.Name,
-                row.CreatedOn,
+                row.CreatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(row.CreatedBy),
-                row.UpdatedOn,
+                row.UpdatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(row.UpdatedBy)
             );
         }
@@ -90,9 +91,9 @@ namespace Gastromio.Persistence.MongoDB
             {
                 Id = obj.Id.Value,
                 Name = obj.Name,
-                CreatedOn = obj.CreatedOn,
+                CreatedOn = obj.CreatedOn.UtcDateTime,
                 CreatedBy = obj.CreatedBy.Value,
-                UpdatedOn = obj.UpdatedOn,
+                UpdatedOn = obj.UpdatedOn.UtcDateTime,
                 UpdatedBy = obj.UpdatedBy.Value
             };
         }

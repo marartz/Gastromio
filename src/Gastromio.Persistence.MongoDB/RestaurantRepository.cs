@@ -421,9 +421,9 @@ namespace Gastromio.Persistence.MongoDB
                     menu.Description,
                     menu.Url
                 )).ToList() ?? new List<ExternalMenu>(),
-                document.CreatedOn,
+                document.CreatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(document.CreatedBy),
-                document.UpdatedOn,
+                document.UpdatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(document.UpdatedBy)
             );
         }
@@ -536,9 +536,9 @@ namespace Gastromio.Persistence.MongoDB
                         Url = en.Url
                     }).ToList()
                     : new List<ExternalMenuModel>(),
-                CreatedOn = obj.CreatedOn,
+                CreatedOn = obj.CreatedOn.UtcDateTime,
                 CreatedBy = obj.CreatedBy.Value,
-                UpdatedOn = obj.UpdatedOn,
+                UpdatedOn = obj.UpdatedOn.UtcDateTime,
                 UpdatedBy = obj.UpdatedBy.Value
             };
         }

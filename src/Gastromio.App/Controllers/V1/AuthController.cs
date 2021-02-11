@@ -183,7 +183,7 @@ namespace Gastromio.App.Controllers.V1
                 config["Jwt:Issuer"],
                 config["Jwt:Issuer"],
                 claims,
-                expires: DateTimeOffset.Now.AddMinutes(120),
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials
             );
 

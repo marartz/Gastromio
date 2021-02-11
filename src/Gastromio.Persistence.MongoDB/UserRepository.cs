@@ -188,10 +188,10 @@ namespace Gastromio.Persistence.MongoDB
                 model.PasswordSalt,
                 model.PasswordHash,
                 model.PasswordResetCode,
-                model.PasswordResetExpiration,
-                model.CreatedOn,
+                model.PasswordResetExpiration?.ToDateTimeOffset(TimeSpan.Zero),
+                model.CreatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(model.CreatedBy),
-                model.UpdatedOn,
+                model.UpdatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(model.UpdatedBy)
             );
         }
@@ -221,10 +221,10 @@ namespace Gastromio.Persistence.MongoDB
                 PasswordSalt = obj.PasswordSalt,
                 PasswordHash = obj.PasswordHash,
                 PasswordResetCode = obj.PasswordResetCode,
-                PasswordResetExpiration = obj.PasswordResetExpiration,
-                CreatedOn = obj.CreatedOn,
+                PasswordResetExpiration = obj.PasswordResetExpiration?.UtcDateTime,
+                CreatedOn = obj.CreatedOn.UtcDateTime,
                 CreatedBy = obj.CreatedBy.Value,
-                UpdatedOn = obj.UpdatedOn,
+                UpdatedOn = obj.UpdatedOn.UtcDateTime,
                 UpdatedBy = obj.UpdatedBy.Value
             };
         }

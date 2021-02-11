@@ -347,9 +347,11 @@ namespace Gastromio.Core.Domain.Services
                 }
                 else if (dateParts.Length == 2)
                 {
-                    date = dateParts[1] >= DateTimeOffset.Today.Month
-                        ? new Date(DateTimeOffset.Today.Year, dateParts[1], dateParts[0])
-                        : new Date(DateTimeOffset.Today.Year + 1, dateParts[1], dateParts[0]);
+                    var today = DateTimeOffset.UtcNow.ToUtcDate();
+
+                    date = dateParts[1] >= today.Month
+                        ? new Date(today.Year, dateParts[1], dateParts[0])
+                        : new Date(today.Year + 1, dateParts[1], dateParts[0]);
                 }
                 else
                 {

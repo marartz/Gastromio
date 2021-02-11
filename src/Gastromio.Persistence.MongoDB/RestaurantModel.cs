@@ -43,11 +43,11 @@ namespace Gastromio.Persistence.MongoDB
 
         public List<ExternalMenuModel> ExternalMenus { get; set; }
 
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public Guid CreatedBy { get; set; }
 
-        public DateTimeOffset UpdatedOn { get; set; }
+        public DateTime UpdatedOn { get; set; }
 
         public Guid UpdatedBy { get; set; }
     }

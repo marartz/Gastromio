@@ -40,7 +40,7 @@ namespace Gastromio.Domain.TestKit.AutoFixture
 
         private object CreateRandomDate(ISpecimenContext context)
         {
-            var dateTime = new DateTimeOffset(GetRandomNumberOfTicks(context));
+            var dateTime = new DateTime(GetRandomNumberOfTicks(context));
             return new Date(dateTime.Year, dateTime.Month, dateTime.Day);
         }
 

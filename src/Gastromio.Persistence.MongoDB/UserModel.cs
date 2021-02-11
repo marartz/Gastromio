@@ -16,13 +16,13 @@ namespace Gastromio.Persistence.MongoDB
 
         public byte[] PasswordResetCode { get; set; }
 
-        public DateTimeOffset? PasswordResetExpiration { get; set; }
+        public DateTime? PasswordResetExpiration { get; set; }
 
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public Guid CreatedBy { get; set; }
 
-        public DateTimeOffset UpdatedOn { get; set; }
+        public DateTime UpdatedOn { get; set; }
 
         public Guid UpdatedBy { get; set; }
     }

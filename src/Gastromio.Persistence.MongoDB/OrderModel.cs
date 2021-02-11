@@ -22,7 +22,7 @@ namespace Gastromio.Persistence.MongoDB
 
         public double TotalPrice { get; set; }
 
-        public DateTimeOffset? ServiceTime { get; set; }
+        public DateTime? ServiceTime { get; set; }
 
         public NotificationInfoModel CustomerNotificationInfo { get; set; }
 
@@ -30,9 +30,9 @@ namespace Gastromio.Persistence.MongoDB
 
         public NotificationInfoModel RestaurantMobileNotificationInfo { get; set; }
 
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
-        public DateTimeOffset? UpdatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; }
 
         public Guid? UpdatedBy { get; set; }
     }

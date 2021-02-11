@@ -10,6 +10,6 @@ namespace Gastromio.Persistence.MongoDB
 
         public string Message { get; set; }
 
-        public DateTimeOffset Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }

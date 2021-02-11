@@ -406,7 +406,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
                 return true;
             }
 
-            if (orderDateTime. > DateTimeOffset.Today)
+            if (orderDateTime.ToUtcDate() > DateTimeOffset.UtcNow.ToUtcDate())
             {
                 return true;
             }
