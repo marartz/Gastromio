@@ -7,11 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,7 +30,7 @@ namespace Gastromio.Persistence.MongoDB
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
-            CuisineId cuisineId, DateTime? openingHour, bool? isActive, CancellationToken cancellationToken = default)
+            CuisineId cuisineId, DateTimeOffset? openingHour, bool? isActive, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
 
@@ -94,7 +94,7 @@ namespace Gastromio.Persistence.MongoDB
         }
 
         public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase,
-            OrderType? orderType, CuisineId cuisineId, DateTime? openingHour, bool? isActive, int skip = 0,
+            OrderType? orderType, CuisineId cuisineId, DateTimeOffset? openingHour, bool? isActive, int skip = 0,
             int take = -1, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
@@ -278,7 +278,7 @@ namespace Gastromio.Persistence.MongoDB
             return database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
         }
 
-        private FilterDefinition<RestaurantModel> GenerateOpeningHourFilterDefinition(DateTime openingHourFilter)
+        private FilterDefinition<RestaurantModel> GenerateOpeningHourFilterDefinition(DateTimeOffset openingHourFilter)
         {
             int filterDayOfWeek;
 
@@ -601,7 +601,7 @@ namespace Gastromio.Persistence.MongoDB
 
             return sb.ToString();
         }
-        
+
         private static string ToDbDeviatingOpeningDayStatus(DeviatingOpeningDayStatus deviatingOpeningDayStatus)
         {
             switch (deviatingOpeningDayStatus)

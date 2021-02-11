@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Gastromio.Core\Gastromio.Core.csproj" />
+      <ProjectReference Include="..\Gastromio.Domain.TestKit\Gastromio.Domain.TestKit.csproj" />
     </ItemGroup>
 
 </Project>

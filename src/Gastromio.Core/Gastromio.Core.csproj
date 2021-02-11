@@ -14,4 +14,38 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Domain\Model\DishCategory\IDishCategoryFactory.cs" />
+    <Compile Remove="Domain\Model\Order\OrderId.cs" />
+    <Compile Remove="Domain\Model\Order\CartInfo.cs" />
+    <Compile Remove="Domain\Model\Order\NotificationInfo.cs" />
+    <Compile Remove="Domain\Model\Order\OrderedDishInfo.cs" />
+    <Compile Remove="Domain\Model\User\UserFactory.cs" />
+    <Compile Remove="Domain\Model\User\User.cs" />
+    <Compile Remove="Domain\Model\User\Role.cs" />
+    <Compile Remove="Domain\Model\User\UserId.cs" />
+    <Compile Remove="Domain\Model\Cuisine\CuisineFactory.cs" />
+    <Compile Remove="Domain\Model\Cuisine\Cuisine.cs" />
+    <Compile Remove="Domain\Model\Cuisine\CuisineId.cs" />
+    <Compile Remove="Domain\Model\Restaurant\RestaurantFactory.cs" />
+    <Compile Remove="Domain\Model\Order\Order.cs" />
+    <Compile Remove="Domain\Model\Order\CustomerInfo.cs" />
+    <Compile Remove="Domain\Model\Order\OrderType.cs" />
+    <Compile Remove="Domain\Model\Restaurant\ExternalMenu.cs" />
+    <Compile Remove="Domain\Model\Restaurant\DeviatingOpeningDayStatus.cs" />
+    <Compile Remove="Domain\Model\Restaurant\ReservationInfo.cs" />
+    <Compile Remove="Domain\Model\Restaurant\PickupInfo.cs" />
+    <Compile Remove="Domain\Model\Restaurant\Restaurant.cs" />
+    <Compile Remove="Domain\Model\Restaurant\RegularOpeningDay.cs" />
+    <Compile Remove="Domain\Model\Restaurant\ContactInfo.cs" />
+    <Compile Remove="Domain\Model\Restaurant\RestaurantId.cs" />
+    <Compile Remove="Domain\Model\Restaurant\SupportedOrderMode.cs" />
+    <Compile Remove="Domain\Model\Restaurant\OpeningPeriod.cs" />
+    <Compile Remove="Domain\Model\Restaurant\DeliveryInfo.cs" />
+    <Compile Remove="Domain\Model\Restaurant\OpeningDay.cs" />
+    <Compile Remove="Domain\Model\Restaurant\Address.cs" />
+    <Compile Remove="Domain\Model\Restaurant\IRestaurantFactory.cs" />
+    <Compile Remove="Domain\Model\Restaurant\DeviatingOpeningDay.cs" />
+  </ItemGroup>
+
 </Project>

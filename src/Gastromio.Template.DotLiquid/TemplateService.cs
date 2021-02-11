@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Gastromio.Core.Application.Ports.Template;
-using Gastromio.Core.Domain.Model.Order;
+using Gastromio.Core.Domain.Model.Orders;
 
 namespace Gastromio.Template.DotLiquid
 {

@@ -3,9 +3,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
-using Gastromio.Core.Domain.Model.DishCategory;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model.DishCategories;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 using MongoDB.Driver;
 
 namespace Gastromio.Persistence.MongoDB

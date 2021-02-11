@@ -13,7 +13,7 @@ using Gastromio.Core.Application.Commands.ValidatePasswordResetCode;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -60,12 +60,12 @@ namespace Gastromio.App.Controllers.V1
                 logger.LogInformation($"Waiting {delay} ms");
                 await Task.Delay(delay);
             }
-            
+
             var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserDTO>(new LoginCommand(loginModel.Email, loginModel.Password), null);
             if (commandResult is SuccessResult<UserDTO> successResult)
             {
                 memoryCache.Remove(cacheKey);
-                
+
                 var tokenString = GenerateJSONWebToken(successResult.Value);
                 return Ok(new { token = tokenString, user = successResult.Value });
             }
@@ -112,7 +112,7 @@ namespace Gastromio.App.Controllers.V1
             [FromBody] ValidatePasswordResetCodeModel validatePasswordResetCodeModel)
         {
             byte[] passwordResetCode;
-            
+
             try
             {
                 passwordResetCode = Convert.FromBase64String(validatePasswordResetCodeModel.PasswordResetCode);
@@ -138,7 +138,7 @@ namespace Gastromio.App.Controllers.V1
             [FromBody] ChangePasswordWithResetCodeModel changePasswordWithResetCodeModel)
         {
             byte[] passwordResetCode;
-            
+
             try
             {
                 passwordResetCode = Convert.FromBase64String(changePasswordWithResetCodeModel.PasswordResetCode);
@@ -168,7 +168,7 @@ namespace Gastromio.App.Controllers.V1
         {
             return $"FailureCount:{userHostAddress}";
         }
-        
+
         private string GenerateJSONWebToken(UserDTO user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
@@ -183,7 +183,7 @@ namespace Gastromio.App.Controllers.V1
                 config["Jwt:Issuer"],
                 config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTimeOffset.Now.AddMinutes(120),
                 signingCredentials: credentials
             );
 

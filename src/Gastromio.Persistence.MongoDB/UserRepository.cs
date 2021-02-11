@@ -5,7 +5,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model.Users;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -23,7 +24,7 @@ namespace Gastromio.Persistence.MongoDB
         public async Task<IEnumerable<User>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
-            
+
             var options = new FindOptions<UserModel>
             {
                 Sort = Builders<UserModel>.Sort.Ascending(en => en.Email),
@@ -51,7 +52,7 @@ namespace Gastromio.Persistence.MongoDB
             var options = new FindOptions<UserModel>
             {
                 Sort = Builders<UserModel>.Sort.Ascending(en => en.Email)
-            };            
+            };
 
             var cursor = await collection.FindAsync(filter, options, cancellationToken);
             return cursor.ToEnumerable().Select(FromDocument);
@@ -135,7 +136,7 @@ namespace Gastromio.Persistence.MongoDB
             {
                 filter |= Builders<UserModel>.Filter.Eq(en => en.Id, userId.Value);
             }
-            
+
             var cursor = await collection.FindAsync(filter, cancellationToken: cancellationToken);
 
             return (await cursor.ToListAsync(cancellationToken)).Select(FromDocument);
@@ -189,9 +190,9 @@ namespace Gastromio.Persistence.MongoDB
                 model.PasswordResetCode,
                 model.PasswordResetExpiration,
                 model.CreatedOn,
-                new UserId(model.CreatedBy), 
+                new UserId(model.CreatedBy),
                 model.UpdatedOn,
-                new UserId(model.UpdatedBy) 
+                new UserId(model.UpdatedBy)
             );
         }
 

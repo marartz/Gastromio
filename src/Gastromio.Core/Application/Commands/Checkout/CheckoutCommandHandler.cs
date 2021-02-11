@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -44,7 +44,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
             var newOrderId = new OrderId(Guid.NewGuid());
 
             var commandJson = JsonConvert.SerializeObject(command);
-            
+
             logger.LogInformation($"Received order request {newOrderId.Value}: {commandJson}");
 
             Restaurant restaurant;
@@ -160,7 +160,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     throw new ArgumentOutOfRangeException();
             }
 
-            var serviceTime = command.ServiceTime ?? DateTime.Now;
+            var serviceTime = command.ServiceTime ?? DateTimeOffset.Now;
             if (!restaurant.IsOrderPossibleAt(serviceTime))
             {
                 logger.LogInformation($"Declined order {newOrderId.Value}: order at this time is not possible");
@@ -221,7 +221,13 @@ namespace Gastromio.Core.Application.Commands.Checkout
                 paymentMethod.Description,
                 costs,
                 totalPrice,
-                command.ServiceTime
+                command.ServiceTime,
+                null,
+                null,
+                null,
+                DateTimeOffset.UtcNow,
+                null,
+                null
             );
 
             var shouldInformByMobile = restaurant.ContactInfo?.OrderNotificationByMobile ?? false;
