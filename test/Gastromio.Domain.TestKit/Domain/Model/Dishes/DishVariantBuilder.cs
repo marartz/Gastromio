@@ -6,10 +6,10 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Dishes
 {
     public class DishVariantBuilder : TestObjectBuilderBase<DishVariant>
     {
-        protected override void AddDefaultConstraints()
+        public DishVariantBuilder WithValidConstrains()
         {
-            WithRangeConstrainedDecimalConstructorArgumentFor("price", 0.01m, 200);
-            base.AddDefaultConstraints();
+            WithPrice(1.23m);
+            return this;
         }
 
         public DishVariantBuilder WithVariantId(Guid variantId)

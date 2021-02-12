@@ -5,11 +5,12 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 {
     public class PickupInfoBuilder : TestObjectBuilderBase<PickupInfo>
     {
-        protected override void AddDefaultConstraints()
+        public PickupInfoBuilder WithValidConstrains()
         {
-            WithRangeConstrainedDecimalConstructorArgumentFor("averageTime", 5, 120);
-            WithRangeConstrainedDecimalConstructorArgumentFor("minimumOrderValue", 0, 50);
-            WithRangeConstrainedDecimalConstructorArgumentFor("maximumOrderValue", 0, 1000);
+            WithAverageTime(15);
+            WithMinimumOrderValue(1.23m);
+            WithMaximumOrderValue(123.45m);
+            return this;
         }
 
         public PickupInfoBuilder WithEnabled(bool enabled)

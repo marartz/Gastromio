@@ -5,11 +5,12 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 {
     public class AddressBuilder : TestObjectBuilderBase<Address>
     {
-        protected override void AddDefaultConstraints()
+        public AddressBuilder WithValidConstrains()
         {
-            WithLengthConstrainedStringConstructorArgumentFor("street", 0, 100);
-            WithLengthConstrainedStringConstructorArgumentFor("zipCode", 5, 5, "0123456789".ToCharArray());
-            WithLengthConstrainedStringConstructorArgumentFor("city", 0, 50);
+            WithStreet("Musterstrasse 1");
+            WithZipCode("12345");
+            WithCity("Musterstadt");
+            return this;
         }
 
         public AddressBuilder WithStreet(string street)

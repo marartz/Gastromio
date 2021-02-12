@@ -8,7 +8,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 {
     public class RegularOpeningDayBuilder : TestObjectBuilderBase<RegularOpeningDay>
     {
-        public RegularOpeningDayBuilder WithDayOfWeek(DayOfWeek dayOfWeek)
+        public RegularOpeningDayBuilder WithDayOfWeek(int dayOfWeek)
         {
             WithConstantConstructorArgumentFor("dayOfWeek", dayOfWeek);
             return this;

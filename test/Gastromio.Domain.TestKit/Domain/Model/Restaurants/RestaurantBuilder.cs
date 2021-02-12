@@ -11,9 +11,46 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 {
     public class RestaurantBuilder : TestObjectBuilderBase<Restaurant>
     {
-        protected override void AddDefaultConstraints()
+        public RestaurantBuilder WithValidConstrains()
         {
             WithLengthConstrainedStringConstructorArgumentFor("name", 0, 100);
+
+            WithConstrainedConstructorArgumentFor("regularOpeningDays", () =>
+            {
+                var regularOpeningDays = new List<RegularOpeningDay>();
+                var randomWeekDay = RandomProvider.Random.Next(0, 6);
+                for (var i = 0; i < 3; i++)
+                {
+                    var weekDay = (randomWeekDay + i) % 7;
+                    regularOpeningDays.Add(new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(weekDay)
+                        .WithOpeningPeriods(new OpeningPeriodBuilder()
+                            .WithValidConstrains()
+                            .CreateMany(1)
+                        )
+                        .Create());
+                }
+                return regularOpeningDays;
+            });
+
+            WithConstrainedConstructorArgumentFor("deviatingOpeningDays", () =>
+            {
+                var deviatingOpeningDays = new List<DeviatingOpeningDay>();
+                var randomDate = new DateBuilder().Create();
+                for (var i = 0; i < 3; i++)
+                {
+                    deviatingOpeningDays.Add(new DeviatingOpeningDayBuilder()
+                        .WithDate(randomDate.AddDays(i))
+                        .WithOpeningPeriods(new OpeningPeriodBuilder()
+                            .WithValidConstrains()
+                            .CreateMany(1)
+                        )
+                        .Create());
+                }
+                return deviatingOpeningDays;
+            });
+
+            return this;
         }
 
         public RestaurantBuilder WithId(RestaurantId id)
@@ -183,6 +220,5 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
             WithConstantConstructorArgumentFor("updatedBy", updatedBy);
             return this;
         }
-
     }
 }

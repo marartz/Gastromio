@@ -12,19 +12,13 @@ namespace Gastromio.Domain.TestKit.Common
             testObjectBuilder = new TestObjectBuilder<T>();
         }
 
-        protected virtual void AddDefaultConstraints()
-        {
-        }
-
         public T Create()
         {
-            AddDefaultConstraints();
             return testObjectBuilder.Create();
         }
 
         public IEnumerable<T> CreateMany(int count)
         {
-            AddDefaultConstraints();
             return testObjectBuilder.CreateMany(count);
         }
 
@@ -35,8 +29,7 @@ namespace Gastromio.Domain.TestKit.Common
 
         protected void WithRangeConstrainedIntegerConstructorArgumentFor(string paramName, int minValue, int maxValue)
         {
-            testObjectBuilder.WithConstrainedConstructorArgumentFor(paramName,
-                () => RandomProvider.Random.Next(minValue, maxValue));
+            testObjectBuilder.WithRangeConstrainedIntegerConstructorArgumentFor(paramName, minValue, maxValue);
         }
 
         protected void WithRangeConstrainedDecimalConstructorArgumentFor(string paramName, decimal minValue,

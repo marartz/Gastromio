@@ -8,11 +8,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.DishCategories
 {
     public class DishCategoryBuilder : TestObjectBuilderBase<DishCategory>
     {
-        protected override void AddDefaultConstraints()
+        public DishCategoryBuilder WithValidConstrains()
         {
-            WithLengthConstrainedStringConstructorArgumentFor("name", 0, 100);
-            WithRangeConstrainedIntegerConstructorArgumentFor("orderNo", 0, 100);
-            base.AddDefaultConstraints();
+            WithName("dish-category-name");
+            WithOrderNo(1);
+            return this;
         }
 
         public DishCategoryBuilder WithId(DishCategoryId id)

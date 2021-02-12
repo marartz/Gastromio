@@ -110,6 +110,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Cuisines
             public Cuisine CreateTestObject()
             {
                 return new CuisineBuilder()
+                    .WithValidConstrains()
                     .Create();
             }
         }

@@ -5,6 +5,16 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 {
     public class ContactInfoBuilder : TestObjectBuilderBase<ContactInfo>
     {
+        public ContactInfoBuilder WithValidConstrains()
+        {
+            WithPhone("+49 1234 56780");
+            WithFax("+49 1234 56781");
+            WithWebSite("http://www.musterrestaurant.de");
+            WithEmailAddress("max@musterrestaurant.de");
+            WithMobile("+49 1234 56782");
+            return this;
+        }
+
         public ContactInfoBuilder WithPhone(string phone)
         {
             WithConstantConstructorArgumentFor("phone", phone);

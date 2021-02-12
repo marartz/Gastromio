@@ -224,7 +224,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
                 Description = RandomStringBuilder.BuildWithLength(200);
                 ProductInfo = RandomStringBuilder.BuildWithLength(200);
                 OrderNo = 1;
-                Variants = new DishVariantBuilder().CreateMany(1).ToList();
+                Variants = new DishVariantBuilder()
+                    .WithValidConstrains()
+                    .CreateMany(1)
+                    .ToList();
                 CreatedBy = new UserIdBuilder().Create();
             }
 
@@ -256,7 +259,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
             {
                 SetupValidParameters();
                 var variantName = RandomStringBuilder.BuildWithLength(41);
-                var variant = new DishVariantBuilder().WithName(variantName).Create();
+                var variant = new DishVariantBuilder()
+                    .WithName(variantName)
+                    .WithValidConstrains()
+                    .Create();
                 Variants = new List<DishVariant> {variant};
             }
 

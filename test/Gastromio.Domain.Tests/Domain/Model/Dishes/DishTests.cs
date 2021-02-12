@@ -542,6 +542,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
 
             var newVariants = new DishVariantBuilder()
                 .WithVariantId(variantId)
+                .WithValidConstrains()
                 .CreateMany(2);
 
             // Act
@@ -559,7 +560,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var newVariants = new DishVariantBuilder().CreateMany(2).ToList();
+            var newVariants = new DishVariantBuilder()
+                .WithValidConstrains()
+                .CreateMany(2)
+                .ToList();
 
             // Act
             var result = testObject.ReplaceVariants(newVariants, fixture.ChangedBy);
@@ -588,13 +592,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
 
             public void SetupRandomVariants()
             {
-                Variants = new DishVariantBuilder().CreateMany(3).ToList();
+                Variants = new DishVariantBuilder()
+                    .WithValidConstrains()
+                    .CreateMany(3)
+                    .ToList();
             }
 
             public Dish CreateTestObject()
             {
                 return new DishBuilder()
                     .WithVariants(Variants)
+                    .WithValidConstrains()
                     .Create();
             }
         }

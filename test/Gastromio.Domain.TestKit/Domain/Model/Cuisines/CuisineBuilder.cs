@@ -7,10 +7,10 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Cuisines
 {
     public class CuisineBuilder : TestObjectBuilderBase<Cuisine>
     {
-        protected override void AddDefaultConstraints()
+        public CuisineBuilder WithValidConstrains()
         {
-            WithLengthConstrainedStringConstructorArgumentFor("name", 0, 100);
-            base.AddDefaultConstraints();
+            WithName("cuisine-name");
+            return this;
         }
 
         public CuisineBuilder WithId(CuisineId id)

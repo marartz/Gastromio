@@ -149,6 +149,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.DishCategories
             public DishCategory CreateTestObject()
             {
                 return new DishCategoryBuilder()
+                    .WithValidConstrains()
                     .Create();
             }
         }

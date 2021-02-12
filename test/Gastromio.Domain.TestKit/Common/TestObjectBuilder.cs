@@ -10,6 +10,8 @@ namespace Gastromio.Domain.TestKit.Common
 {
     public sealed class TestObjectBuilder<T> : Fixture
     {
+        private readonly ConstrainedTypeBuilder<T> constrainedTypeBuilder = new ConstrainedTypeBuilder<T>();
+
         public TestObjectBuilder()
         {
             Customizations.Add(new RandomDateSequenceGenerator());
@@ -19,11 +21,13 @@ namespace Gastromio.Domain.TestKit.Common
 
         public T Create()
         {
+            Customizations.Add(constrainedTypeBuilder);
             return this.Create<T>();
         }
 
         public IEnumerable<T> CreateMany(int count)
         {
+            Customizations.Add(constrainedTypeBuilder);
             return this.CreateMany<T>(count);
         }
 
@@ -60,8 +64,15 @@ namespace Gastromio.Domain.TestKit.Common
         public TestObjectBuilder<T> WithConstrainedConstructorArgumentFor<TValue>(string paramName,
             Func<TValue> createValueFunc)
         {
-            Customizations.Add(
-                new ConstrainedConstructorArgumentRelay<T, TValue>(paramName, createValueFunc));
+            constrainedTypeBuilder.AddConstructorParameterAction((bag, context) =>
+            {
+                if (bag.Contains(paramName))
+                    return;
+                bag.Set(paramName, createValueFunc());
+            });
+
+            // Customizations.Add(
+            //     new ConstrainedConstructorArgumentRelay<T, TValue>(paramName, createValueFunc));
             return this;
         }
 

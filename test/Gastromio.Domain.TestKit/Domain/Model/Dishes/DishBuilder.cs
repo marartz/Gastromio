@@ -10,12 +10,13 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Dishes
 {
     public class DishBuilder : TestObjectBuilderBase<Dish>
     {
-        protected override void AddDefaultConstraints()
+        public DishBuilder WithValidConstrains()
         {
-            WithLengthConstrainedStringConstructorArgumentFor("name", 0, 40);
-            WithLengthConstrainedStringConstructorArgumentFor("description", 0, 200);
-            WithLengthConstrainedStringConstructorArgumentFor("productInfo", 0, 200);
-            WithRangeConstrainedIntegerConstructorArgumentFor("orderNo", 0, 100);
+            WithName("dish-name");
+            WithDescription("dish-description");
+            WithProductInfo("dish-product-info");
+            WithOrderNo(1);
+            return this;
         }
 
         public DishBuilder WithId(DishId id)
@@ -54,7 +55,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Dishes
             return this;
         }
 
-        public DishBuilder WithOrderNo(string orderNo)
+        public DishBuilder WithOrderNo(int orderNo)
         {
             WithConstantConstructorArgumentFor("orderNo", orderNo);
             return this;
