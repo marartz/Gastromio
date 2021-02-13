@@ -716,14 +716,16 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
+            var result =
+                testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should()
+                    .BeTrue();
                 openingDay.Should().NotBeNull();
                 openingDay?.DayOfWeek.Should().Be(0);
                 openingDay?.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
@@ -737,7 +739,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            fixture.SetupRegularOpeningDayNextMondayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
             var openingPeriod = new OpeningPeriodBuilder()
@@ -745,18 +747,21 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddRegularOpeningPeriod(1, openingPeriod, fixture.ChangedBy);
+            var result =
+                testObject.AddRegularOpeningPeriod(1, openingPeriod, fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                testObject.RegularOpeningDays.TryGetValue(0, out var openingDayMonday).Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDayMonday)
+                    .Should().BeTrue();
                 openingDayMonday.Should().NotBeNull();
                 openingDayMonday?.DayOfWeek.Should().Be(0);
                 openingDayMonday?.OpeningPeriods.Should().HaveCount(1);
-                testObject.RegularOpeningDays.TryGetValue(1, out var openingDayTuesday).Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(1, out var openingDayTuesday)
+                    .Should().BeTrue();
                 openingDayTuesday.Should().NotBeNull();
                 openingDayTuesday?.DayOfWeek.Should().Be(1);
                 openingDayTuesday?.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
@@ -770,7 +775,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            fixture.SetupRegularOpeningDayNextMondayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
             var openingPeriod = new OpeningPeriodBuilder()
@@ -779,7 +784,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
+            var result =
+                testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
@@ -794,7 +800,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            fixture.SetupRegularOpeningDayNextMondayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
             var openingPeriod = new OpeningPeriodBuilder()
@@ -808,14 +814,16 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             expectedPeriods.Add(openingPeriod);
 
             // Act
-            var result = testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
+            var result =
+                testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should()
+                    .BeTrue();
                 openingDay.Should().NotBeNull();
                 openingDay?.DayOfWeek.Should().Be(0);
                 openingDay?.OpeningPeriods.Should().BeEquivalentTo(expectedPeriods);
@@ -833,7 +841,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(8), fixture.ChangedBy);
+            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(8),
+                fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
@@ -854,7 +863,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = testObject.RemoveRegularOpeningPeriod(1, TimeSpan.FromHours(8), fixture.ChangedBy);
+            var result = testObject.RemoveRegularOpeningPeriod(1, TimeSpan.FromHours(8),
+                fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
@@ -871,11 +881,12 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            fixture.SetupRegularOpeningDayNextMondayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(16.5), fixture.ChangedBy);
+            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(16.5),
+                fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
@@ -893,18 +904,20 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupRegularOpeningDayOnMondayWithTwoPeriods();
+            fixture.SetupRegularOpeningDayNextMondayWithTwoPeriods();
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(12), fixture.ChangedBy);
+            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(12),
+                fixture.ChangedBy);
 
             // Assert
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should()
+                    .BeTrue();
                 openingDay?.DayOfWeek.Should().Be(0);
                 openingDay?.OpeningPeriods.Should()
                     .BeEquivalentTo(new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22)));
@@ -918,7 +931,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupEmptyDeviatingOpeningDays();
             var testObject = fixture.CreateTestObject();
 
@@ -944,7 +957,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
@@ -970,7 +983,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupEmptyDeviatingOpeningDays();
             var testObject = fixture.CreateTestObject();
 
@@ -992,7 +1005,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
@@ -1014,7 +1027,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithoutPeriods();
             var testObject = fixture.CreateTestObject();
 
@@ -1042,7 +1055,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupEmptyDeviatingOpeningDays();
             var testObject = fixture.CreateTestObject();
 
@@ -1065,7 +1078,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
@@ -1088,7 +1101,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupEmptyDeviatingOpeningDays();
             var testObject = fixture.CreateTestObject();
 
@@ -1113,7 +1126,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
@@ -1139,7 +1152,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
@@ -1177,7 +1190,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupEmptyDeviatingOpeningDays();
             var testObject = fixture.CreateTestObject();
 
@@ -1200,7 +1213,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupEmptyDeviatingOpeningDays();
             var testObject = fixture.CreateTestObject();
 
@@ -1223,7 +1236,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
             var testObject = fixture.CreateTestObject();
 
@@ -1250,7 +1263,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithTwoPeriods();
             var testObject = fixture.CreateTestObject();
 
@@ -1278,8 +1291,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         {
             // Arrange
             fixture.SetupChangedBy();
-            fixture.SetupRegularOpeningDayOnMondayWithTwoPeriods();
-            fixture.SetupDeviatingDayDate();
+            fixture.SetupRegularOpeningDayNextMondayWithTwoPeriods();
+            fixture.SetupDeviatingDayDateOnMonday();
             fixture.SetupDeviatingOpeningDayWithTwoPeriods();
             var testObject = fixture.CreateTestObject();
 
@@ -1298,9 +1311,1003 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             }
         }
 
+        [Fact]
+        public void IsOrderPossible_OnlyPhone_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupOnlyPhoneOrderMode();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_NoRegular_NoDeviating_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupEmptyRegularOpeningDays();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_OutsideEarlyRegular_OnDeviatingWithoutPeriods_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithoutPeriods();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(18);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_OutsideEarlyRegular_OnDeviatingJustBeforePeriodStart_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(16).AddMinutes(29);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_OutsideEarlyRegular_OnDeviatingJustAfterPeriodEnd_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.DeviatingDayDate.ToLocalDateTimeOffset().AddHours(22).AddMinutes(31);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_InsideEarlyRegular_OnDeviatingDayButOutsidePeriod_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(6).AddMinutes(30);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_JustBeforeRegularStart_NotOnDeviatingDay_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnTuesday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(5).AddMinutes(59);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_JustAfterRegularEnd_NotOnDeviatingDay_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnTuesday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(7).AddMinutes(1);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_NowClosed_OpenedInAnHour_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayTodayWithPeriodInAnHourForRestOfDay();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now.AddHours(1).AddMinutes(1));
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_NowOpenedFor2Min_OpenedInAnHour_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayTodayWithPeriodNowFor2MinutesAndInAnHourForRestOfDay();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now.AddHours(1).AddMinutes(1));
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsOrderPossible_AtNextShift_NowOpenedRestOfDay_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAtNextShiftOrderMode();
+            fixture.SetupRegularOpeningDayTodayWithPeriodNowForRestOfDay();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now.AddHours(1).AddMinutes(1));
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_NoRegular_NoDeviating_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupEmptyRegularOpeningDays();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_OutsideEarlyRegular_OnDeviatingWithoutPeriods_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithoutPeriods();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(18);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_OutsideEarlyRegular_OnDeviatingJustBeforePeriodStart_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(16).AddMinutes(29);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_OutsideEarlyRegular_OnDeviatingAtPeriodStart_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(16).AddMinutes(30);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_OutsideEarlyRegular_OnDeviatingAtPeriodEnd_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(22).AddMinutes(30);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_OutsideEarlyRegular_OnDeviatingJustAfterPeriodEnd_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(22).AddMinutes(31);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_InsideEarlyRegular_OnDeviatingDayButOutsidePeriod_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnMonday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(6).AddMinutes(30);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_JustBeforeRegularStart_NotOnDeviatingDay_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnTuesday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(5).AddMinutes(59);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_AtRegularStart_NotOnDeviatingDay_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnTuesday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(6);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_AtRegularEnd_NotOnDeviatingDay_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnTuesday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(7);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsOrderPossible_Anytime_JustAfterRegularEnd_NotOnDeviatingDay_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupAnytimeOrderMode();
+            fixture.SetupRegularOpeningDayNextMondayWithOneEarlyPeriod();
+            fixture.SetupDeviatingDayDateOnTuesday();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var orderDateTime = fixture.NextMonday.ToLocalDateTimeOffset().AddHours(7).AddMinutes(1);
+
+            // Act
+            var result = testObject.IsOrderPossibleAt(orderDateTime);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void ChangePickupInfo_NotEnabled_SavesPickupInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(false)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PickupInfo.Should().BeEquivalentTo(pickupInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_AverageTimeNoValue_SavesPickupInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithAverageTime(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PickupInfo.Should().BeEquivalentTo(pickupInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_AverageTimeBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithAverageTime(4)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_AverageTimeAboveMax_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithAverageTime(121)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_MinimumOrderValueNoValue_SavesPickupInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithMinimumOrderValue(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PickupInfo.Should().BeEquivalentTo(pickupInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_MinimumOrderValueBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithMinimumOrderValue(-0.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_MinimumOrderValueAboveMax_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithMinimumOrderValue(50.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_MaximumOrderValueNoValue_SavesPickupInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithMaximumOrderValue(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PickupInfo.Should().BeEquivalentTo(pickupInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_MaximumOrderValueBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithMaximumOrderValue(-0.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangePickupInfo_Enabled_AllValid_SavesPickupInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var pickupInfo = new PickupInfoBuilder()
+                .WithEnabled(true)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangePickupInfo(pickupInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PickupInfo.Should().BeEquivalentTo(pickupInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_NotEnabled_SavesDeliveryInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(false)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeliveryInfo.Should().BeEquivalentTo(deliveryInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_AverageTimeNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithAverageTime(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeliveryInfo.Should().BeEquivalentTo(deliveryInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_AverageTimeBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithAverageTime(4)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_AverageTimeAboveMax_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithAverageTime(121)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_MinimumOrderValueNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithMinimumOrderValue(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeliveryInfo.Should().BeEquivalentTo(deliveryInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_MinimumOrderValueBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithMinimumOrderValue(-0.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_MinimumOrderValueAboveMax_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithMinimumOrderValue(50.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_MaximumOrderValueNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithMaximumOrderValue(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeliveryInfo.Should().BeEquivalentTo(deliveryInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_MaximumOrderValueBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithMaximumOrderValue(-0.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_AllValid_SavesDeliveryInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeliveryInfo.Should().BeEquivalentTo(deliveryInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_CostsNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithCosts(null)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeliveryInfo.Should().BeEquivalentTo(deliveryInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_CostsBelowMin_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithCosts(-0.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeliveryInfo_Enabled_CostsAboveMax_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var deliveryInfo = new DeliveryInfoBuilder()
+                .WithEnabled(true)
+                .WithCosts(10.01m)
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeDeliveryInfo(deliveryInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
         private sealed class Fixture
         {
+            public Fixture()
+            {
+                NextMonday = CalculateNextMonday();
+                NextTuesday = NextMonday.AddDays(1);
+                Today = Date.Today;
+                TodayDayOfWeekIndex = CalculateDayOfWeekIndex(Today.DayOfWeek);
+            }
+
+            public Date NextMonday { get; }
+
+            public Date NextTuesday { get; }
+
+            public Date Today { get; }
+
+            public int TodayDayOfWeekIndex { get; }
+
             public UserId ChangedBy { get; private set; }
+
+            public SupportedOrderMode? SupportedOrderMode { get; private set; }
 
             public List<RegularOpeningDay> RegularOpeningDays { get; private set; }
 
@@ -1313,38 +2320,110 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 ChangedBy = new UserIdBuilder().Create();
             }
 
+            public void SetupOnlyPhoneOrderMode()
+            {
+                SupportedOrderMode = Core.Domain.Model.Restaurants.SupportedOrderMode.OnlyPhone;
+            }
+
+            public void SetupAtNextShiftOrderMode()
+            {
+                SupportedOrderMode = Core.Domain.Model.Restaurants.SupportedOrderMode.AtNextShift;
+            }
+
+            public void SetupAnytimeOrderMode()
+            {
+                SupportedOrderMode = Core.Domain.Model.Restaurants.SupportedOrderMode.Anytime;
+            }
+
             public void SetupEmptyRegularOpeningDays()
             {
                 RegularOpeningDays = new List<RegularOpeningDay>();
             }
 
-            public void SetupRegularOpeningDayOnMondayWithOneDefaultPeriod()
+            public void SetupRegularOpeningDayNextMondayWithOneDefaultPeriod()
             {
                 RegularOpeningDays = new List<RegularOpeningDay>
                 {
                     new RegularOpeningDayBuilder()
-                        .WithDayOfWeek(0)
+                        .WithDayOfWeek(CalculateDayOfWeekIndex(NextMonday.DayOfWeek))
                         .WithOpeningPeriods(new OpeningPeriodBuilder().WithValidConstrains().CreateMany(1))
                         .Create()
                 };
             }
 
-            public void SetupRegularOpeningDayOnMondayWithTwoPeriods()
+            public void SetupRegularOpeningDayNextMondayWithOneEarlyPeriod()
             {
                 RegularOpeningDays = new List<RegularOpeningDay>
                 {
                     new RegularOpeningDayBuilder()
-                        .WithDayOfWeek(0)
+                        .WithDayOfWeek(CalculateDayOfWeekIndex(NextMonday.DayOfWeek))
+                        .WithOpeningPeriods(new []
+                        {
+                            new OpeningPeriod(TimeSpan.FromHours(6), TimeSpan.FromHours(7))
+                        })
+                        .Create()
+                };
+            }
+
+            public void SetupRegularOpeningDayNextMondayWithTwoPeriods()
+            {
+                RegularOpeningDays = new List<RegularOpeningDay>
+                {
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(CalculateDayOfWeekIndex(NextMonday.DayOfWeek))
                         .WithOpeningPeriods(new[]
                         {
-                            new OpeningPeriodBuilder()
-                                .WithStart(TimeSpan.FromHours(12))
-                                .WithEnd(TimeSpan.FromHours(14))
-                                .Create(),
-                            new OpeningPeriodBuilder()
-                                .WithStart(TimeSpan.FromHours(16))
-                                .WithEnd(TimeSpan.FromHours(22))
-                                .Create()
+                            new OpeningPeriod(TimeSpan.FromHours(12), TimeSpan.FromHours(14)),
+                            new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))
+                        })
+                        .Create()
+                };
+            }
+
+            public void SetupRegularOpeningDayTodayWithPeriodInAnHourForRestOfDay()
+            {
+                var currentTime = DateTimeOffset.Now.TimeOfDay.Add(TimeSpan.FromMinutes(-1));
+
+                RegularOpeningDays = new List<RegularOpeningDay>
+                {
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(TodayDayOfWeekIndex)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriod(currentTime.Add(TimeSpan.FromHours(1)), TimeSpan.FromHours(28))
+                        })
+                        .Create()
+                };
+            }
+
+            public void SetupRegularOpeningDayTodayWithPeriodNowFor2MinutesAndInAnHourForRestOfDay()
+            {
+                var currentTime = DateTimeOffset.Now.TimeOfDay.Add(TimeSpan.FromMinutes(-1));
+
+                RegularOpeningDays = new List<RegularOpeningDay>
+                {
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(TodayDayOfWeekIndex)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriod(currentTime, currentTime.Add(TimeSpan.FromMinutes(2))),
+                            new OpeningPeriod(currentTime.Add(TimeSpan.FromHours(1)), TimeSpan.FromHours(28))
+                        })
+                        .Create()
+                };
+            }
+
+            public void SetupRegularOpeningDayTodayWithPeriodNowForRestOfDay()
+            {
+                var currentTime = DateTimeOffset.Now.TimeOfDay.Add(TimeSpan.FromMinutes(-1));
+
+                RegularOpeningDays = new List<RegularOpeningDay>
+                {
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(TodayDayOfWeekIndex)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriod(currentTime, TimeSpan.FromHours(28))
                         })
                         .Create()
                 };
@@ -1355,9 +2434,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 DeviatingOpeningDays = new List<DeviatingOpeningDay>();
             }
 
-            public void SetupDeviatingDayDate()
+            public void SetupDeviatingDayDateOnMonday()
             {
-                DeviatingDayDate = new Date(2021, 1, 1);
+                DeviatingDayDate = NextMonday;
+            }
+
+            public void SetupDeviatingDayDateOnTuesday()
+            {
+                DeviatingDayDate = NextTuesday;
             }
 
             public void SetupDeviatingOpeningDayWithoutPeriods()
@@ -1365,7 +2449,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 DeviatingOpeningDays = new List<DeviatingOpeningDay>
                 {
                     new DeviatingOpeningDayBuilder()
-                        .WithDate(new Date(2021, 1, 1))
+                        .WithDate(DeviatingDayDate)
                         .WithStatus(DeviatingOpeningDayStatus.Open)
                         .WithoutOpeningPeriods()
                         .Create()
@@ -1377,7 +2461,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 DeviatingOpeningDays = new List<DeviatingOpeningDay>
                 {
                     new DeviatingOpeningDayBuilder()
-                        .WithDate(new Date(2021, 1, 1))
+                        .WithDate(DeviatingDayDate)
                         .WithStatus(DeviatingOpeningDayStatus.Open)
                         .WithOpeningPeriods(new OpeningPeriodBuilder().WithValidConstrains().CreateMany(1))
                         .Create()
@@ -1392,14 +2476,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                         .WithDate(DeviatingDayDate)
                         .WithOpeningPeriods(new[]
                         {
-                            new OpeningPeriodBuilder()
-                                .WithStart(TimeSpan.FromHours(12))
-                                .WithEnd(TimeSpan.FromHours(14))
-                                .Create(),
-                            new OpeningPeriodBuilder()
-                                .WithStart(TimeSpan.FromHours(16))
-                                .WithEnd(TimeSpan.FromHours(22))
-                                .Create()
+                            new OpeningPeriod(TimeSpan.FromHours(12), TimeSpan.FromHours(14)),
+                            new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))
                         })
                         .Create()
                 };
@@ -1408,6 +2486,9 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             public Restaurant CreateTestObject()
             {
                 var builder = new RestaurantBuilder();
+
+                if (SupportedOrderMode != null)
+                    builder = builder.WithSupportedOrderMode(SupportedOrderMode.Value);
 
                 if (RegularOpeningDays != null)
                     builder = builder.WithRegularOpeningDays(RegularOpeningDays);
@@ -1418,6 +2499,26 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 return builder
                     .WithValidConstrains()
                     .Create();
+            }
+
+            private static Date CalculateNextMonday()
+            {
+                var date = Date.Today.AddDays(1);
+                while (date.DayOfWeek != DayOfWeek.Monday)
+                    date = date.AddDays(1);
+                return date;
+            }
+
+            private static int CalculateDayOfWeekIndex(DayOfWeek dayOfWeek)
+            {
+                var dayOfWeekIndex = ((int) dayOfWeek - 1) % 7;
+
+                if (dayOfWeekIndex < 0)
+                {
+                    dayOfWeekIndex += 7;
+                }
+
+                return dayOfWeekIndex;
             }
         }
     }

@@ -427,6 +427,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (!pickupInfo.Enabled)
             {
                 PickupInfo = pickupInfo;
+                UpdatedOn = DateTimeOffset.UtcNow;
+                UpdatedBy = changedBy;
                 return SuccessResult<bool>.Create(true);
             }
 
@@ -455,6 +457,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (!deliveryInfo.Enabled)
             {
                 DeliveryInfo = deliveryInfo;
+                UpdatedOn = DateTimeOffset.UtcNow;
+                UpdatedBy = changedBy;
                 return SuccessResult<bool>.Create(true);
             }
 
@@ -668,6 +672,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             {
                 dayOfWeek += 7;
             }
+
+            dateTime = dateTime.ToLocalTime();
 
             var time = dateTime.Hour * 60 + dateTime.Minute;
             if (dateTime.Hour < OpeningPeriod.EarliestOpeningTime)

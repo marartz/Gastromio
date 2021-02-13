@@ -78,7 +78,13 @@ namespace Gastromio.Core.Common
             return new DateTime(Year, Month, Day, 0, 0, 0, kind);
         }
 
-        public DateTimeOffset ToDateTimeOffset()
+        public DateTimeOffset ToLocalDateTimeOffset()
+        {
+            var offset = TimeZoneInfo.Local.BaseUtcOffset;
+            return new DateTimeOffset(Year, Month, Day, 0, 0, 0, offset);
+        }
+
+        public DateTimeOffset ToUtcDateTimeOffset()
         {
             return new DateTimeOffset(Year, Month, Day, 0, 0, 0, TimeSpan.Zero);
         }
