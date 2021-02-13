@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Common;
@@ -722,9 +723,576 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                var openingDay = testObject.RegularOpeningDays.First().Value;
-                openingDay.DayOfWeek.Should().Be(0);
-                openingDay.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should().BeTrue();
+                openingDay.Should().NotBeNull();
+                openingDay?.DayOfWeek.Should().Be(0);
+                openingDay?.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddRegularOpeningPeriod_OtherDayKnown_AddsDayAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var openingPeriod = new OpeningPeriodBuilder()
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result = testObject.AddRegularOpeningPeriod(1, openingPeriod, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDayMonday).Should().BeTrue();
+                openingDayMonday.Should().NotBeNull();
+                openingDayMonday?.DayOfWeek.Should().Be(0);
+                openingDayMonday?.OpeningPeriods.Should().HaveCount(1);
+                testObject.RegularOpeningDays.TryGetValue(1, out var openingDayTuesday).Should().BeTrue();
+                openingDayTuesday.Should().NotBeNull();
+                openingDayTuesday?.DayOfWeek.Should().Be(1);
+                openingDayTuesday?.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddRegularOpeningPeriod_DayKnownAndPeriodOverlaps_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var openingPeriod = new OpeningPeriodBuilder()
+                .WithStart(TimeSpan.FromHours(6))
+                .WithEnd(TimeSpan.FromHours(23))
+                .Create();
+
+            // Act
+            var result = testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void AddRegularOpeningPeriod_DayKnownAndPeriodDoesNotOverlap_AddsPeriodReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var openingPeriod = new OpeningPeriodBuilder()
+                .WithStart(TimeSpan.FromHours(6))
+                .WithEnd(TimeSpan.FromHours(7))
+                .Create();
+
+            var expectedPeriods = testObject.RegularOpeningDays.First().Value.OpeningPeriods
+                .ToList();
+
+            expectedPeriods.Add(openingPeriod);
+
+            // Act
+            var result = testObject.AddRegularOpeningPeriod(0, openingPeriod, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should().BeTrue();
+                openingDay.Should().NotBeNull();
+                openingDay?.DayOfWeek.Should().Be(0);
+                openingDay?.OpeningPeriods.Should().BeEquivalentTo(expectedPeriods);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveRegularOpeningPeriod_DayNotKnown_DoesNothingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyRegularOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(8), fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveRegularOpeningPeriod_OtherDayKnownWithOnePeriod_DoesNothingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyRegularOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveRegularOpeningPeriod(1, TimeSpan.FromHours(8), fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveRegularOpeningPeriod_DayKnownWithOnePeriod_RemovesDayAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupRegularOpeningDayOnMondayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(16.5), fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.RegularOpeningDays.Should().HaveCount(0);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveRegularOpeningPeriod_DayKnownWithTwoPeriods_RemovesPeriodAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupRegularOpeningDayOnMondayWithTwoPeriods();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveRegularOpeningPeriod(0, TimeSpan.FromHours(12), fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.RegularOpeningDays.TryGetValue(0, out var openingDay).Should().BeTrue();
+                openingDay?.DayOfWeek.Should().Be(0);
+                openingDay?.OpeningPeriods.Should()
+                    .BeEquivalentTo(new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22)));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddDeviatingOpeningDay_DayNotKnown_AddsDayAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddDeviatingOpeningDay(fixture.DeviatingDayDate, DeviatingOpeningDayStatus.Open,
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
+                    .BeTrue();
+                openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddDeviatingOpeningDay_DayKnown_DoesNotChangeAnythingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddDeviatingOpeningDay(fixture.DeviatingDayDate, DeviatingOpeningDayStatus.Open,
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
+                    .BeTrue();
+                openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeDeviatingOpeningDayStatus_DayNotKnown_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.ChangeDeviatingOpeningDayStatus(fixture.DeviatingDayDate,
+                DeviatingOpeningDayStatus.Open,
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeviatingOpeningDayStatus_DayKnownAndHasPeriods_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.ChangeDeviatingOpeningDayStatus(fixture.DeviatingDayDate,
+                DeviatingOpeningDayStatus.Open,
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ChangeDeviatingOpeningDayStatus_DayKnown_ChangesStatusAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithoutPeriods();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.ChangeDeviatingOpeningDayStatus(fixture.DeviatingDayDate,
+                DeviatingOpeningDayStatus.FullyBooked,
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
+                    .BeTrue();
+                openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
+                openingDay?.Status.Should().Be(DeviatingOpeningDayStatus.FullyBooked);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveDeviatingOpeningDay_DayNotKnown_DoesNotChangeAnythingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveDeviatingOpeningDay(fixture.DeviatingDayDate, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.Should().BeEmpty();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveDeviatingOpeningDay_DayKnown_RemovesDayAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveDeviatingOpeningDay(fixture.DeviatingDayDate, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.Should().BeEmpty();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddDeviatingOpeningPeriod_DayNotKnown_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            var openingPeriod = new OpeningPeriodBuilder()
+                .WithValidConstrains()
+                .Create();
+
+            // Act
+            var result =
+                testObject.AddDeviatingOpeningPeriod(fixture.DeviatingDayDate, openingPeriod, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void AddDeviatingOpeningPeriod_DayKnownAndPeriodOverlaps_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var openingPeriod = new OpeningPeriodBuilder()
+                .WithStart(TimeSpan.FromHours(6))
+                .WithEnd(TimeSpan.FromHours(23))
+                .Create();
+
+            // Act
+            var result =
+                testObject.AddDeviatingOpeningPeriod(fixture.DeviatingDayDate, openingPeriod, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void AddDeviatingOpeningPeriod_DayKnownAndPeriodDoesNotOverlap_AddsPeriodReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            var openingPeriod = new OpeningPeriodBuilder()
+                .WithStart(TimeSpan.FromHours(6))
+                .WithEnd(TimeSpan.FromHours(7))
+                .Create();
+
+            var expectedPeriods = testObject.DeviatingOpeningDays.First().Value.OpeningPeriods
+                .ToList();
+
+            expectedPeriods.Add(openingPeriod);
+
+            // Act
+            var result =
+                testObject.AddDeviatingOpeningPeriod(fixture.DeviatingDayDate, openingPeriod, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
+                    .BeTrue();
+                openingDay.Should().NotBeNull();
+                openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
+                openingDay?.OpeningPeriods.Should().BeEquivalentTo(expectedPeriods);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveDeviatingOpeningPeriod_DayNotKnown_DoesNothingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveDeviatingOpeningPeriod(fixture.DeviatingDayDate, TimeSpan.FromHours(8),
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveDeviatingOpeningPeriod_OtherDayKnownWithOnePeriod_DoesNothingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupEmptyDeviatingOpeningDays();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveDeviatingOpeningPeriod(fixture.DeviatingDayDate.AddDays(1),
+                TimeSpan.FromHours(8), fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveDeviatingOpeningPeriod_DayKnownWithOnePeriod_RemovesDayAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithOneDefaultPeriod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveDeviatingOpeningPeriod(fixture.DeviatingDayDate, TimeSpan.FromHours(16.5),
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
+                    .BeTrue();
+                openingDay.Should().NotBeNull();
+                openingDay?.Status.Should().Be(DeviatingOpeningDayStatus.Closed);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveDeviatingOpeningPeriod_DayKnownWithTwoPeriods_RemovesPeriodAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithTwoPeriods();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveDeviatingOpeningPeriod(fixture.DeviatingDayDate, TimeSpan.FromHours(12),
+                fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
+                    .BeTrue();
+                openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
+                openingDay?.OpeningPeriods.Should()
+                    .BeEquivalentTo(new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22)));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveAllOpeningDays_RemovesAllOpeningDays()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupRegularOpeningDayOnMondayWithTwoPeriods();
+            fixture.SetupDeviatingDayDate();
+            fixture.SetupDeviatingOpeningDayWithTwoPeriods();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveAllOpeningDays(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.RegularOpeningDays.Should().BeEmpty();
+                testObject.DeviatingOpeningDays.Should().BeEmpty();
                 testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
@@ -736,6 +1304,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
 
             public List<RegularOpeningDay> RegularOpeningDays { get; private set; }
 
+            public Date DeviatingDayDate { get; private set; }
+
+            public List<DeviatingOpeningDay> DeviatingOpeningDays { get; private set; }
+
             public void SetupChangedBy()
             {
                 ChangedBy = new UserIdBuilder().Create();
@@ -746,12 +1318,102 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 RegularOpeningDays = new List<RegularOpeningDay>();
             }
 
+            public void SetupRegularOpeningDayOnMondayWithOneDefaultPeriod()
+            {
+                RegularOpeningDays = new List<RegularOpeningDay>
+                {
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(0)
+                        .WithOpeningPeriods(new OpeningPeriodBuilder().WithValidConstrains().CreateMany(1))
+                        .Create()
+                };
+            }
+
+            public void SetupRegularOpeningDayOnMondayWithTwoPeriods()
+            {
+                RegularOpeningDays = new List<RegularOpeningDay>
+                {
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(0)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriodBuilder()
+                                .WithStart(TimeSpan.FromHours(12))
+                                .WithEnd(TimeSpan.FromHours(14))
+                                .Create(),
+                            new OpeningPeriodBuilder()
+                                .WithStart(TimeSpan.FromHours(16))
+                                .WithEnd(TimeSpan.FromHours(22))
+                                .Create()
+                        })
+                        .Create()
+                };
+            }
+
+            public void SetupEmptyDeviatingOpeningDays()
+            {
+                DeviatingOpeningDays = new List<DeviatingOpeningDay>();
+            }
+
+            public void SetupDeviatingDayDate()
+            {
+                DeviatingDayDate = new Date(2021, 1, 1);
+            }
+
+            public void SetupDeviatingOpeningDayWithoutPeriods()
+            {
+                DeviatingOpeningDays = new List<DeviatingOpeningDay>
+                {
+                    new DeviatingOpeningDayBuilder()
+                        .WithDate(new Date(2021, 1, 1))
+                        .WithStatus(DeviatingOpeningDayStatus.Open)
+                        .WithoutOpeningPeriods()
+                        .Create()
+                };
+            }
+
+            public void SetupDeviatingOpeningDayWithOneDefaultPeriod()
+            {
+                DeviatingOpeningDays = new List<DeviatingOpeningDay>
+                {
+                    new DeviatingOpeningDayBuilder()
+                        .WithDate(new Date(2021, 1, 1))
+                        .WithStatus(DeviatingOpeningDayStatus.Open)
+                        .WithOpeningPeriods(new OpeningPeriodBuilder().WithValidConstrains().CreateMany(1))
+                        .Create()
+                };
+            }
+
+            public void SetupDeviatingOpeningDayWithTwoPeriods()
+            {
+                DeviatingOpeningDays = new List<DeviatingOpeningDay>
+                {
+                    new DeviatingOpeningDayBuilder()
+                        .WithDate(DeviatingDayDate)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriodBuilder()
+                                .WithStart(TimeSpan.FromHours(12))
+                                .WithEnd(TimeSpan.FromHours(14))
+                                .Create(),
+                            new OpeningPeriodBuilder()
+                                .WithStart(TimeSpan.FromHours(16))
+                                .WithEnd(TimeSpan.FromHours(22))
+                                .Create()
+                        })
+                        .Create()
+                };
+            }
+
             public Restaurant CreateTestObject()
             {
                 var builder = new RestaurantBuilder();
 
                 if (RegularOpeningDays != null)
                     builder = builder.WithRegularOpeningDays(RegularOpeningDays);
+
+                if (DeviatingOpeningDays != null)
+                    builder = builder.WithDeviatingOpeningDays(DeviatingOpeningDays);
 
                 return builder
                     .WithValidConstrains()
