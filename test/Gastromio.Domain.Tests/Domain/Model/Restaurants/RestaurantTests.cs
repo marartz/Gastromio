@@ -2851,6 +2851,260 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             }
         }
 
+        [Fact]
+        public void SetExternalMenu_ExternalMenuNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            Action act = () => testObject.SetExternalMenu(null, fixture.ChangedBy);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void SetExternalMenu_NameNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var externalMenu = new ExternalMenuBuilder()
+                .WithName(null)
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(externalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_NameEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var externalMenu = new ExternalMenuBuilder()
+                .WithName("")
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(externalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_DescriptionNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var externalMenu = new ExternalMenuBuilder()
+                .WithDescription(null)
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(externalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_DescriptionEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var externalMenu = new ExternalMenuBuilder()
+                .WithDescription("")
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(externalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_UrlNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var externalMenu = new ExternalMenuBuilder()
+                .WithUrl(null)
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(externalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_UrlEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var externalMenu = new ExternalMenuBuilder()
+                .WithUrl("")
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(externalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_ExternalMenuNotKnown_AddsExternalMenuAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            var newExternalMenu = new ExternalMenuBuilder()
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(newExternalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.ExternalMenus.Should().BeEquivalentTo(newExternalMenu);
+            }
+        }
+
+        [Fact]
+        public void SetExternalMenu_ExternalMenuKnown_ReplacesExternalMenuAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneExternalMenu();
+            var testObject = fixture.CreateTestObject();
+
+            var newExternalMenu = new ExternalMenuBuilder()
+                .WithId(fixture.ExternalMenu.Id)
+                .Create();
+
+            // Act
+            var result = testObject.SetExternalMenu(newExternalMenu, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.ExternalMenus.Should().BeEquivalentTo(newExternalMenu);
+            }
+        }
+
+        [Fact]
+        public void RemoveExternalMenu_ExternalMenuNull_ThrowsArgumentException()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            Action act = () => testObject.RemoveExternalMenu(Guid.Empty, fixture.ChangedBy);
+
+            // Assert
+            act.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void RemoveExternalMenu_ExternalMenuNotKnown_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyExternalMenus();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveExternalMenu(Guid.NewGuid(), fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void RemoveExternalMenu_ExternalMenuKnown_RemovesExternalMenuAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneExternalMenu();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveExternalMenu(fixture.ExternalMenu.Id, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.ExternalMenus.Should().BeEmpty();
+            }
+        }
+
         private sealed class Fixture
         {
             public Fixture()
@@ -2894,6 +3148,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             public bool? IsActive { get; private set; }
 
             public bool? NeedsSupport { get; private set; }
+
+            public ExternalMenu ExternalMenu { get; private set; }
+
+            public List<ExternalMenu> ExternalMenus { get; private set; }
 
             public void SetupChangedBy()
             {
@@ -3119,6 +3377,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 NeedsSupport = false;
             }
 
+            public void SetupEmptyExternalMenus()
+            {
+                ExternalMenus = new List<ExternalMenu>();
+            }
+
+            public void SetupOneExternalMenu()
+            {
+                ExternalMenu = new ExternalMenuBuilder().Create();
+                ExternalMenus = new List<ExternalMenu> {ExternalMenu};
+            }
+
             public Restaurant CreateTestObject()
             {
                 var builder = new RestaurantBuilder();
@@ -3146,6 +3415,9 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
 
                 if (NeedsSupport.HasValue)
                     builder = builder.WithNeedsSupport(NeedsSupport.Value);
+
+                if (ExternalMenus != null)
+                    builder = builder.WithExternalMenus(ExternalMenus);
 
                 return builder
                     .WithValidConstrains()
