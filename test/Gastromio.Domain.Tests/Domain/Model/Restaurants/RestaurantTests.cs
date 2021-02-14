@@ -4,6 +4,8 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Common;
@@ -2287,6 +2289,568 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             }
         }
 
+        [Fact]
+        public void ChangeReservationInfo_ChangesReservationInfoAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var reservationInfo = new ReservationInfoBuilder()
+                .Create();
+
+            // Act
+            var result = testObject.ChangeReservationInfo(reservationInfo, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.ReservationInfo.Should().BeEquivalentTo(reservationInfo);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeHygienicHandling_ChangesHygienicHandlingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var hygienicHandling = RandomStringBuilder.Build();
+
+            // Act
+            var result = testObject.ChangeHygienicHandling(hygienicHandling, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.HygienicHandling.Should().BeEquivalentTo(hygienicHandling);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddCuisine_CuisineKnown_ReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneCuisine();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddCuisine(fixture.CuisineId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Cuisines.Should().BeEquivalentTo(fixture.Cuisines);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddCuisine_CuisineNotKnown_AddsCuisineAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyCuisines();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddCuisine(fixture.CuisineId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Cuisines.Should().BeEquivalentTo(fixture.CuisineId);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveCuisine_CuisineKnown_RemovesCuisineAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneCuisine();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveCuisine(fixture.CuisineId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Cuisines.Should().BeEmpty();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveCuisine_CuisineNotKnown_ReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyCuisines();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveCuisine(fixture.CuisineId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Cuisines.Should().BeEmpty();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddPaymentMethod_PaymentMethodKnown_ReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOnePaymentMethod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddPaymentMethod(fixture.PaymentMethodId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethods);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddPaymentMethod_PaymentMethodNotKnown_AddsPaymentMethodAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyPaymentMethods();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddPaymentMethod(fixture.PaymentMethodId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethodId);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemovePaymentMethod_PaymentMethodKnown_RemovesPaymentMethodAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOnePaymentMethod();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemovePaymentMethod(fixture.PaymentMethodId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PaymentMethods.Should().BeEmpty();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemovePaymentMethod_PaymentMethodNotKnown_ReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyPaymentMethods();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemovePaymentMethod(fixture.PaymentMethodId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.PaymentMethods.Should().BeEmpty();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void HasAdministrator_AdministratorKnown_ReturnsTrue()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneAdministrator();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.HasAdministrator(fixture.AdministratorId);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void HasAdministrator_AdministratorNotKnown_ReturnsFalse()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyAdministrators();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.HasAdministrator(fixture.AdministratorId);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void AddAdministrator_AdministratorKnown_ReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneAdministrator();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddAdministrator(fixture.AdministratorId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Administrators.Should().BeEquivalentTo(fixture.Administrators);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void AddAdministrator_AdministratorNotKnown_AddsAdministratorAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyAdministrators();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.AddAdministrator(fixture.AdministratorId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Administrators.Should().BeEquivalentTo(fixture.AdministratorId);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveAdministrator_AdministratorKnown_RemovesAdministratorAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupOneAdministrator();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveAdministrator(fixture.AdministratorId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Administrators.Should().BeEmpty();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void RemoveAdministrator_AdministratorNotKnown_ReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupEmptyAdministrators();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.RemoveAdministrator(fixture.AdministratorId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.Administrators.Should().BeEmpty();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeImportId_ChangesImportIdAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            var testObject = fixture.CreateTestObject();
+
+            var importId = RandomStringBuilder.Build();
+
+            // Act
+            var result = testObject.ChangeImportId(importId, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.ImportId.Should().BeEquivalentTo(importId);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void Deactivate_Deactivated_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeactivated();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.Deactivate(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.IsActive.Should().BeFalse();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void Deactivate_Activated_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupActivated();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.Deactivate(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.IsActive.Should().BeFalse();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void Activate_Deactivated_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupDeactivated();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.Activate(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.IsActive.Should().BeTrue();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void Activate_Activated_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupActivated();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.Activate(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.IsActive.Should().BeTrue();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void DisableSupport_WithoutSupport_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupWithoutSupport();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.DisableSupport(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.NeedsSupport.Should().BeFalse();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void DisableSupport_WithSupport_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupWithSupport();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.DisableSupport(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.NeedsSupport.Should().BeFalse();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void EnableSupport_WithoutSupport_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupWithoutSupport();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.EnableSupport(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.NeedsSupport.Should().BeTrue();
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void EnableSupport_WithSupport_DoesNotChangeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupWithSupport();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.EnableSupport(fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.NeedsSupport.Should().BeTrue();
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
+            }
+        }
+
+        [Fact]
+        public void ChangeSupportedOrderMode_ChangesSupportedOrderModeAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupChangedBy();
+            fixture.SetupAtNextShiftOrderMode();
+            var testObject = fixture.CreateTestObject();
+
+            // Act
+            var result = testObject.ChangeSupportedOrderMode(SupportedOrderMode.Anytime, fixture.ChangedBy);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                testObject.SupportedOrderMode.Should().Be(SupportedOrderMode.Anytime);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
+            }
+        }
+
         private sealed class Fixture
         {
             public Fixture()
@@ -2314,6 +2878,22 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             public Date DeviatingDayDate { get; private set; }
 
             public List<DeviatingOpeningDay> DeviatingOpeningDays { get; private set; }
+
+            public CuisineId CuisineId { get; private set; }
+
+            public HashSet<CuisineId> Cuisines { get; private set; }
+
+            public PaymentMethodId PaymentMethodId { get; private set; }
+
+            public HashSet<PaymentMethodId> PaymentMethods { get; private set; }
+
+            public UserId AdministratorId { get; private set; }
+
+            public HashSet<UserId> Administrators { get; private set; }
+
+            public bool? IsActive { get; private set; }
+
+            public bool? NeedsSupport { get; private set; }
 
             public void SetupChangedBy()
             {
@@ -2483,6 +3063,62 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 };
             }
 
+            public void SetupEmptyCuisines()
+            {
+                CuisineId = new CuisineId(Guid.NewGuid());
+                Cuisines = new HashSet<CuisineId>();
+            }
+
+            public void SetupOneCuisine()
+            {
+                CuisineId = new CuisineId(Guid.NewGuid());
+                Cuisines = new HashSet<CuisineId> {CuisineId};
+            }
+
+            public void SetupEmptyPaymentMethods()
+            {
+                PaymentMethodId = new PaymentMethodId(Guid.NewGuid());
+                PaymentMethods = new HashSet<PaymentMethodId>();
+            }
+
+            public void SetupOnePaymentMethod()
+            {
+                PaymentMethodId = new PaymentMethodId(Guid.NewGuid());
+                PaymentMethods = new HashSet<PaymentMethodId> {PaymentMethodId};
+            }
+
+            public void SetupEmptyAdministrators()
+            {
+                AdministratorId = new UserId(Guid.NewGuid());
+                Administrators = new HashSet<UserId>();
+            }
+
+            public void SetupOneAdministrator()
+            {
+                AdministratorId = new UserId(Guid.NewGuid());
+                Administrators = new HashSet<UserId> {AdministratorId};
+            }
+
+            public void SetupActivated()
+            {
+                IsActive = true;
+            }
+
+            public void SetupDeactivated()
+            {
+                IsActive = false;
+            }
+
+            public void SetupWithSupport()
+            {
+                NeedsSupport = true;
+            }
+
+            public void SetupWithoutSupport()
+            {
+                NeedsSupport = false;
+            }
+
             public Restaurant CreateTestObject()
             {
                 var builder = new RestaurantBuilder();
@@ -2495,6 +3131,21 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
 
                 if (DeviatingOpeningDays != null)
                     builder = builder.WithDeviatingOpeningDays(DeviatingOpeningDays);
+
+                if (Cuisines != null)
+                    builder = builder.WithCuisines(Cuisines);
+
+                if (PaymentMethods != null)
+                    builder = builder.WithPaymentMethods(PaymentMethods);
+
+                if (Administrators != null)
+                    builder = builder.WithAdministrators(Administrators);
+
+                if (IsActive.HasValue)
+                    builder = builder.WithIsActive(IsActive.Value);
+
+                if (NeedsSupport.HasValue)
+                    builder = builder.WithNeedsSupport(NeedsSupport.Value);
 
                 return builder
                     .WithValidConstrains()
