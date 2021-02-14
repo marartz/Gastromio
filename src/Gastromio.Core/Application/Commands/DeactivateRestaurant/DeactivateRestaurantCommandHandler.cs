@@ -32,9 +32,6 @@ namespace Gastromio.Core.Application.Commands.DeactivateRestaurant
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
 
-            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
-
             var tempResult = restaurant.Deactivate(currentUser.Id);
             if (tempResult.IsFailure)
                 return tempResult;

@@ -33,9 +33,6 @@ namespace Gastromio.Core.Application.Commands.AddAdminToRestaurant
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
 
-            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
-
             restaurant.AddAdministrator(command.UserId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

@@ -31,9 +31,6 @@ namespace Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
 
-            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
-
             if (command.UserId == currentUser.Id)
                 return FailureResult<bool>.Create(FailureResultCode.CannotRemoveCurrentUserFromRestaurantAdmins);
 

@@ -15,7 +15,7 @@ namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
         {
             this.restaurantRepository = restaurantRepository;
         }
-        
+
         public async Task<Result<bool>> HandleAsync(SetImportIdOfRestaurantCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
@@ -31,9 +31,6 @@ namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
-
-            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
 
             var result = restaurant.ChangeImportId(command.ImportId, currentUser.Id);
             if (result.IsFailure)
