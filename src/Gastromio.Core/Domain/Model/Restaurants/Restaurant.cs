@@ -240,8 +240,11 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         {
             if (!regularOpeningDays.TryGetValue(dayOfWeek, out var openingDay))
             {
-                openingDay = new RegularOpeningDay(dayOfWeek, new []{openingPeriod});
-                regularOpeningDays.Add(dayOfWeek, openingDay);
+                openingDay = new RegularOpeningDay(dayOfWeek, Enumerable.Empty<OpeningPeriod>());
+                var result = openingDay.AddPeriod(openingPeriod);
+                if (result.IsFailure)
+                    return result.Cast<bool>();
+                regularOpeningDays.Add(dayOfWeek, result.Value);
             }
             else
             {
