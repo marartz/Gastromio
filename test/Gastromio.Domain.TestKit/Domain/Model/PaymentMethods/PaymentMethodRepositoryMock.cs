@@ -10,10 +10,6 @@ namespace Gastromio.Domain.TestKit.Domain.Model.PaymentMethods
 {
     public class PaymentMethodRepositoryMock : Mock<IPaymentMethodRepository>
     {
-        public PaymentMethodRepositoryMock()
-        {
-        }
-
         public PaymentMethodRepositoryMock(MockBehavior behavior) : base(behavior)
         {
         }

@@ -115,8 +115,8 @@ namespace Gastromio.Domain.Tests.Application.AddCuisine
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
-                CuisineFactoryMock = new CuisineFactoryMock();
-                CuisineRepositoryMock = new CuisineRepositoryMock();
+                CuisineFactoryMock = new CuisineFactoryMock(MockBehavior.Strict);
+                CuisineRepositoryMock = new CuisineRepositoryMock(MockBehavior.Strict);
             }
 
             public CuisineFactoryMock CuisineFactoryMock { get; }

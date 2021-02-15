@@ -11,6 +11,10 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Cuisines
 {
     public class CuisineRepositoryMock : Mock<ICuisineRepository>
     {
+        public CuisineRepositoryMock(MockBehavior behavior) : base(behavior)
+        {
+        }
+
         public ISetup<ICuisineRepository, Task<IEnumerable<Cuisine>>> SetupFindAllAsync()
         {
             return Setup(m => m.FindAllAsync(It.IsAny<CancellationToken>()));
