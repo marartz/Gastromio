@@ -46,7 +46,7 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsDeviatingDaysReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsDeviatingDaysAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
