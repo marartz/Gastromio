@@ -22,26 +22,27 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
             fixture = new Fixture(Role.SystemAdmin);
         }
 
-        // [Fact]
-        // public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
-        // {
-        //     // Arrange
-        //     fixture.SetupRandomRestaurant();
-        //     fixture.SetupRestaurantRepositoryNotFindingRestaurant();
-        //
-        //     var testObject = fixture.CreateTestObject();
-        //     var command = fixture.CreateSuccessfulCommand();
-        //
-        //     // Act
-        //     var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
-        //
-        //     // Assert
-        //     using (new AssertionScope())
-        //     {
-        //         result.Should().NotBeNull();
-        //         result?.IsFailure.Should().BeTrue();
-        //     }
-        // }
+        [Fact]
+        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupRandomRestaurant();
+            fixture.SetupRandomDeviatingOpeningDay();
+            fixture.SetupRestaurantRepositoryNotFindingRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
 
         [Fact]
         public async Task HandleAsync_AllValid_AddsDeviatingDaysReturnsSuccess()
