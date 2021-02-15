@@ -31,9 +31,9 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Dishes
             return this;
         }
 
-        public DishBuilder WithDishCategoryId(DishCategoryId dishCategoryId)
+        public DishBuilder WithCategoryId(DishCategoryId categoryId)
         {
-            WithConstantConstructorArgumentFor("dishCategoryId", dishCategoryId);
+            WithConstantConstructorArgumentFor("categoryId", categoryId);
             return this;
         }
 
