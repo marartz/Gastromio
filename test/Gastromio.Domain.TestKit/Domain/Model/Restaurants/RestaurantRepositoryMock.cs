@@ -76,6 +76,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
             return Setup(m => m.StoreAsync(restaurant, It.IsAny<CancellationToken>()));
         }
 
+        public void VerifyStoreAsync(Restaurant restaurant, Func<Times> times)
+        {
+            Verify(m => m.StoreAsync(restaurant, It.IsAny<CancellationToken>()), times);
+        }
+
         public ISetup<IRestaurantRepository, Task> SetupRemoveAsync(RestaurantId restaurantId)
         {
             return Setup(m => m.RemoveAsync(restaurantId, It.IsAny<CancellationToken>()));
