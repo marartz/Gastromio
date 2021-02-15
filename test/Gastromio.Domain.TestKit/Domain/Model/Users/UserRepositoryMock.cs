@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,6 +54,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Users
         public ISetup<IUserRepository, Task> SetupStoreAsync(User user)
         {
             return Setup(m => m.StoreAsync(user, It.IsAny<CancellationToken>()));
+        }
+
+        public void VerifyStoreAsync(User user, Func<Times> times)
+        {
+            Verify(m => m.StoreAsync(user, It.IsAny<CancellationToken>()), times);
         }
 
         public ISetup<IUserRepository, Task> SetupRemoveAsync(UserId userId)
