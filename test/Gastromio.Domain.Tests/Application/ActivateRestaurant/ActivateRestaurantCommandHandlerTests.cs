@@ -47,7 +47,7 @@ namespace Gastromio.Domain.Tests.Application.ActivateRestaurant
         public async Task HandleAsync_AllValid_ActivatesRestaurantAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupForSuccessfulCommandExecution();
+            fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -124,7 +124,7 @@ namespace Gastromio.Domain.Tests.Application.ActivateRestaurant
                     .Returns(Task.CompletedTask);
             }
 
-            public override void SetupForSuccessfulCommandExecution()
+            public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupRandomRestaurant();
                 SetupRestaurantRepositoryFindingRestaurant();

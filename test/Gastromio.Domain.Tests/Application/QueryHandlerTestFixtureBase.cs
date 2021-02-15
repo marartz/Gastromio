@@ -54,6 +54,6 @@ namespace Gastromio.Domain.Tests.Application
 
         public abstract TQuery CreateSuccessfulQuery();
 
-        public abstract void SetupForSuccessfulQueryExecution();
+        public abstract void SetupForSuccessfulQueryExecution(Role? role);
     }
 }

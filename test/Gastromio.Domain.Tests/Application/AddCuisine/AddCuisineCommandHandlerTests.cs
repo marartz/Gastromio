@@ -87,7 +87,7 @@ namespace Gastromio.Domain.Tests.Application.AddCuisine
         public async Task HandleAsync_AllValid_CreatesCuisineReturnsSuccess()
         {
             // Arrange
-            fixture.SetupForSuccessfulCommandExecution();
+            fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -170,7 +170,7 @@ namespace Gastromio.Domain.Tests.Application.AddCuisine
                     .Returns(SuccessResult<Cuisine>.Create(CreatedCuisine));
             }
 
-            public override void SetupForSuccessfulCommandExecution()
+            public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupCuisineRepositoryNotFindingCuisineByName();
                 SetupCuisineFactoryCreatingCuisine();

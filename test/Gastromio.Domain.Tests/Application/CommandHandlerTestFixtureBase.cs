@@ -54,6 +54,6 @@ namespace Gastromio.Domain.Tests.Application
 
         public abstract TCommand CreateSuccessfulCommand();
 
-        public abstract void SetupForSuccessfulCommandExecution();
+        public abstract void SetupForSuccessfulCommandExecution(Role? role);
     }
 }

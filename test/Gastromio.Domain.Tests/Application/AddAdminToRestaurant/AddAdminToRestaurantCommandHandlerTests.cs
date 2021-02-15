@@ -48,7 +48,7 @@ namespace Gastromio.Domain.Tests.Application.AddAdminToRestaurant
         public async Task HandleAsync_AllValid_AddsAdminToRestaurantAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupForSuccessfulCommandExecution();
+            fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -131,7 +131,7 @@ namespace Gastromio.Domain.Tests.Application.AddAdminToRestaurant
                     .Returns(Task.CompletedTask);
             }
 
-            public override void SetupForSuccessfulCommandExecution()
+            public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupRandomRestaurant();
                 SetupRandomAdministrator();

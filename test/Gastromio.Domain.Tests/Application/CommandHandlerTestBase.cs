@@ -35,7 +35,7 @@ namespace Gastromio.Domain.Tests.Application
         public async Task HandleAsync_NotAuthorized_ChecksAuthorizationCorrectly()
         {
             // Arrange
-            FixtureBase.SetupForSuccessfulCommandExecution();
+            FixtureBase.SetupForSuccessfulCommandExecution(null);
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
@@ -61,7 +61,7 @@ namespace Gastromio.Domain.Tests.Application
         public async Task HandleAsync_AuthorizedAsCustomer_ChecksAuthorizationCorrectly()
         {
             // Arrange
-            FixtureBase.SetupForSuccessfulCommandExecution();
+            FixtureBase.SetupForSuccessfulCommandExecution(Role.Customer);
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
@@ -87,7 +87,7 @@ namespace Gastromio.Domain.Tests.Application
         public async Task HandleAsync_AuthorizedAsRestaurantAdmin_ChecksAuthorizationCorrectly()
         {
             // Arrange
-            FixtureBase.SetupForSuccessfulCommandExecution();
+            FixtureBase.SetupForSuccessfulCommandExecution(Role.RestaurantAdmin);
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
@@ -113,7 +113,7 @@ namespace Gastromio.Domain.Tests.Application
         public async Task HandleAsync_AuthorizedAsSystemAdmin_ChecksAuthorizationCorrectly()
         {
             // Arrange
-            FixtureBase.SetupForSuccessfulCommandExecution();
+            FixtureBase.SetupForSuccessfulCommandExecution(Role.SystemAdmin);
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
