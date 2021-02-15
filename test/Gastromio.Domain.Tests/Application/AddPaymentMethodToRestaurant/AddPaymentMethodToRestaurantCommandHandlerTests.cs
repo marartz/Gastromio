@@ -1,33 +1,34 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Gastromio.Core.Application.Commands.AddCuisineToRestaurant;
-using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Application.Commands.AddPaymentMethodToRestaurant;
+using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
 
-namespace Gastromio.Domain.Tests.Application.AddCuisineToRestaurant
+namespace Gastromio.Domain.Tests.Application.AddPaymentMethodToRestaurant
 {
-    public class AddCuisineToRestaurantCommandHandlerTests : CommandHandlerTestBase<AddCuisineToRestaurantCommandHandler,
-        AddCuisineToRestaurantCommand, bool>
+    public class AddPaymentMethodToRestaurantCommandHandlerTests : CommandHandlerTestBase<AddPaymentMethodToRestaurantCommandHandler,
+        AddPaymentMethodToRestaurantCommand, bool>
     {
         private readonly Fixture fixture;
 
-        public AddCuisineToRestaurantCommandHandlerTests()
+        public AddPaymentMethodToRestaurantCommandHandlerTests()
         {
-            fixture = new Fixture(Role.SystemAdmin);
+            fixture = new Fixture(Role.RestaurantAdmin);
         }
 
         [Fact]
         public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomRestaurant();
+            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -45,7 +46,7 @@ namespace Gastromio.Domain.Tests.Application.AddCuisineToRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsCuisineToRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsPaymentMethodToRestaurantAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -61,18 +62,18 @@ namespace Gastromio.Domain.Tests.Application.AddCuisineToRestaurant
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Restaurant.Cuisines.Should().Contain(fixture.CuisineId);
+                fixture.Restaurant.PaymentMethods.Should().Contain(fixture.PaymentMethodId);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<AddCuisineToRestaurantCommandHandler, AddCuisineToRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<AddPaymentMethodToRestaurantCommandHandler, AddPaymentMethodToRestaurantCommand, bool> FixtureBase
         {
             get { return fixture; }
         }
 
-        private sealed class Fixture : CommandHandlerTestFixtureBase<AddCuisineToRestaurantCommandHandler,
-            AddCuisineToRestaurantCommand, bool>
+        private sealed class Fixture : CommandHandlerTestFixtureBase<AddPaymentMethodToRestaurantCommandHandler,
+            AddPaymentMethodToRestaurantCommand, bool>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
@@ -83,31 +84,39 @@ namespace Gastromio.Domain.Tests.Application.AddCuisineToRestaurant
 
             public Restaurant Restaurant { get; private set; }
 
-            public CuisineId CuisineId { get; private set; }
+            public PaymentMethodId PaymentMethodId { get; private set; }
 
-            public override AddCuisineToRestaurantCommandHandler CreateTestObject()
+            public override AddPaymentMethodToRestaurantCommandHandler CreateTestObject()
             {
-                return new AddCuisineToRestaurantCommandHandler(
+                return new AddPaymentMethodToRestaurantCommandHandler(
                     RestaurantRepositoryMock.Object
                 );
             }
 
-            public override AddCuisineToRestaurantCommand CreateSuccessfulCommand()
+            public override AddPaymentMethodToRestaurantCommand CreateSuccessfulCommand()
             {
-                return new AddCuisineToRestaurantCommand(Restaurant.Id, CuisineId);
+                return new AddPaymentMethodToRestaurantCommand(Restaurant.Id, PaymentMethodId);
             }
 
-            public void SetupRandomRestaurant()
+            public void SetupRandomRestaurant(Role? role)
             {
-                Restaurant = new RestaurantBuilder()
-                    .WithoutCuisines()
+                var builder = new RestaurantBuilder()
+                    .WithoutPaymentMethods();
+
+                if (role == Role.RestaurantAdmin)
+                {
+                    builder = builder
+                        .WithAdministrators(new HashSet<UserId> {UserId});
+                }
+
+                Restaurant = builder
                     .WithValidConstrains()
                     .Create();
             }
 
-            public void SetupRandomCuisine()
+            public void SetupRandomPaymentMethod()
             {
-                CuisineId = new CuisineId(Guid.NewGuid());
+                PaymentMethodId = new PaymentMethodId(Guid.NewGuid());
             }
 
             public void SetupRestaurantRepositoryFindingRestaurant()
@@ -130,8 +139,8 @@ namespace Gastromio.Domain.Tests.Application.AddCuisineToRestaurant
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomRestaurant();
-                SetupRandomCuisine();
+                SetupRandomRestaurant(role);
+                SetupRandomPaymentMethod();
                 SetupRestaurantRepositoryFindingRestaurant();
                 SetupRestaurantRepositoryStoringRestaurant();
             }
