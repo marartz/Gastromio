@@ -75,7 +75,7 @@ namespace Gastromio.Domain.Tests.Application.AddRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesRestaurantReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesRestaurantAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);

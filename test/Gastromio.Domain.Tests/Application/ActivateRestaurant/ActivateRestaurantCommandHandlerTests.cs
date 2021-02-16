@@ -61,6 +61,7 @@ namespace Gastromio.Domain.Tests.Application.ActivateRestaurant
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.IsActive.Should().BeTrue();
+                fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 

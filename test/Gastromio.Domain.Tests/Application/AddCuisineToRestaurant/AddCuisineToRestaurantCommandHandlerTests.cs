@@ -62,6 +62,7 @@ namespace Gastromio.Domain.Tests.Application.AddCuisineToRestaurant
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.Cuisines.Should().Contain(fixture.CuisineId);
+                fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 

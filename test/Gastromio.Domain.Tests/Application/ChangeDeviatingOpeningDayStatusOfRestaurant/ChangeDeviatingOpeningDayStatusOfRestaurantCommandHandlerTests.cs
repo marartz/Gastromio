@@ -4,21 +4,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Gastromio.Core.Application.Commands.AddDeviatingOpeningDayToRestaurant;
+using Gastromio.Core.Application.Commands.ChangeDeviatingOpeningDayStatusOfRestaurant;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
 
-namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
+namespace Gastromio.Domain.Tests.Application.ChangeDeviatingOpeningDayStatusOfRestaurant
 {
-    public class AddDeviatingOpeningDayToRestaurantCommandHandlerTests : CommandHandlerTestBase<AddDeviatingOpeningDayToRestaurantCommandHandler,
-        AddDeviatingOpeningDayToRestaurantCommand, bool>
+    public class ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandlerTests : CommandHandlerTestBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler,
+        ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool>
     {
         private readonly Fixture fixture;
 
-        public AddDeviatingOpeningDayToRestaurantCommandHandlerTests()
+        public ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandlerTests()
         {
             fixture = new Fixture(Role.RestaurantAdmin);
         }
@@ -27,8 +27,8 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
         public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomDeviatingOpeningDay();
+            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -46,7 +46,7 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsDeviatingDaysAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesDeviatingDayStatusAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -62,20 +62,20 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Restaurant.DeviatingOpeningDays.Select(en => en.Value).Should()
-                    .BeEquivalentTo(fixture.DeviatingOpeningDay);
+                fixture.Restaurant.DeviatingOpeningDays.Select(en => en.Value).First().Status.Should()
+                    .Be(DeviatingOpeningDayStatus.FullyBooked);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<AddDeviatingOpeningDayToRestaurantCommandHandler, AddDeviatingOpeningDayToRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler, ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool> FixtureBase
         {
             get { return fixture; }
         }
 
-        private sealed class Fixture : CommandHandlerTestFixtureBase<AddDeviatingOpeningDayToRestaurantCommandHandler,
-            AddDeviatingOpeningDayToRestaurantCommand, bool>
+        private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler,
+            ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
@@ -84,26 +84,35 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
 
-            public Restaurant Restaurant { get; private set; }
-
             public DeviatingOpeningDay DeviatingOpeningDay { get; private set; }
 
-            public override AddDeviatingOpeningDayToRestaurantCommandHandler CreateTestObject()
+            public Restaurant Restaurant { get; private set; }
+
+            public override ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler CreateTestObject()
             {
-                return new AddDeviatingOpeningDayToRestaurantCommandHandler(
+                return new ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler(
                     RestaurantRepositoryMock.Object
                 );
             }
 
-            public override AddDeviatingOpeningDayToRestaurantCommand CreateSuccessfulCommand()
+            public override ChangeDeviatingOpeningDayStatusOfRestaurantCommand CreateSuccessfulCommand()
             {
-                return new AddDeviatingOpeningDayToRestaurantCommand(Restaurant.Id, DeviatingOpeningDay.Date,
-                    DeviatingOpeningDay.Status);
+                return new ChangeDeviatingOpeningDayStatusOfRestaurantCommand(Restaurant.Id, DeviatingOpeningDay.Date,
+                    DeviatingOpeningDayStatus.FullyBooked);
+            }
+
+            public void SetupRandomDeviatingOpeningDay()
+            {
+                DeviatingOpeningDay = new DeviatingOpeningDayBuilder()
+                    .WithStatus(DeviatingOpeningDayStatus.Closed)
+                    .WithoutOpeningPeriods()
+                    .Create();
             }
 
             public void SetupRandomRestaurant(Role? role)
             {
                 var builder = new RestaurantBuilder()
+                    .WithDeviatingOpeningDays(new[] {DeviatingOpeningDay})
                     .WithoutDeviatingOpeningDays();
 
                 if (role == Role.RestaurantAdmin)
@@ -114,13 +123,6 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
 
                 Restaurant = builder
                     .WithValidConstrains()
-                    .Create();
-            }
-
-            public void SetupRandomDeviatingOpeningDay()
-            {
-                DeviatingOpeningDay = new DeviatingOpeningDayBuilder()
-                    .WithoutOpeningPeriods()
                     .Create();
             }
 
@@ -144,8 +146,8 @@ namespace Gastromio.Domain.Tests.Application.AddDeviatingOpeningDayToRestaurant
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomRestaurant(role);
                 SetupRandomDeviatingOpeningDay();
+                SetupRandomRestaurant(role);
                 SetupRestaurantRepositoryFindingRestaurant();
                 SetupRestaurantRepositoryStoringRestaurant();
             }

@@ -63,6 +63,7 @@ namespace Gastromio.Domain.Tests.Application.AddPaymentMethodToRestaurant
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.PaymentMethods.Should().Contain(fixture.PaymentMethodId);
+                fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
