@@ -87,6 +87,7 @@ namespace Gastromio.Domain.Tests.Application.ChangeDishCategoryOfRestaurant
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
+                fixture.DishCategory.Name.Should().Be("changed");
                 fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategory, Times.Once);
             }
         }
