@@ -84,7 +84,7 @@ namespace Gastromio.Domain.Tests.Application.AddCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesCuisineReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesCuisineAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);

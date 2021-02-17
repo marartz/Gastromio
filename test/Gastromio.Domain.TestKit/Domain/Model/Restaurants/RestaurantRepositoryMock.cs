@@ -50,7 +50,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
             return Setup(m => m.FindByImportIdAsync(importId, It.IsAny<CancellationToken>()));
         }
 
-        public ISetup<IRestaurantRepository, Task<IEnumerable<Restaurant>>> SetupFindByCuisineAsync(CuisineId cuisineId)
+        public ISetup<IRestaurantRepository, Task<IEnumerable<Restaurant>>> SetupFindByCuisineIdAsync(CuisineId cuisineId)
         {
             return Setup(m => m.FindByCuisineIdAsync(cuisineId, It.IsAny<CancellationToken>()));
         }
