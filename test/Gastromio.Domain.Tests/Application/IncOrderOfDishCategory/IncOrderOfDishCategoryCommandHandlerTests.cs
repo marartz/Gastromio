@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Gastromio.Core.Application.Commands.DecOrderOfDishCategory;
+using Gastromio.Core.Application.Commands.IncOrderOfDishCategory;
 using Gastromio.Core.Domain.Model.DishCategories;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
@@ -12,14 +12,14 @@ using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
 using Moq;
 using Xunit;
 
-namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
+namespace Gastromio.Domain.Tests.Application.IncOrderOfDishCategory
 {
-    public class DecOrderOfDishCategoryCommandHandlerTests : CommandHandlerTestBase<
-        DecOrderOfDishCategoryCommandHandler, DecOrderOfDishCategoryCommand, bool>
+    public class IncOrderOfDishCategoryCommandHandlerTests : CommandHandlerTestBase<
+        IncOrderOfDishCategoryCommandHandler, IncOrderOfDishCategoryCommand, bool>
     {
         private readonly Fixture fixture;
 
-        public DecOrderOfDishCategoryCommandHandlerTests()
+        public IncOrderOfDishCategoryCommandHandlerTests()
         {
             fixture = new Fixture(Role.RestaurantAdmin);
         }
@@ -54,35 +54,6 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
             fixture.SetupCurrentDishCategory(0);
             fixture.SetupDishRepositoryFindingDishByDishId();
             fixture.SetupDishRepositoryFindingDishByDishCategoryId();
-
-            var testObject = fixture.CreateTestObject();
-            var command = fixture.CreateSuccessfulCommand();
-
-            // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
-
-            // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategories[0].OrderNo.Should().Be(0);
-                fixture.DishCategories[1].OrderNo.Should().Be(1);
-                fixture.DishCategories[2].OrderNo.Should().Be(2);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Never);
-            }
-        }
-
-        [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex1_ChangesDishOrderAndReturnsSuccess()
-        {
-            // Arrange
-            fixture.SetupDishCategories(3);
-            fixture.SetupCurrentDishCategory(1);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
             fixture.SetupDishRepositoryStoringDish(0);
             fixture.SetupDishRepositoryStoringDish(1);
 
@@ -107,11 +78,11 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex2_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex1_ChangesDishOrderAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupDishCategories(3);
-            fixture.SetupCurrentDishCategory(2);
+            fixture.SetupCurrentDishCategory(1);
             fixture.SetupDishRepositoryFindingDishByDishId();
             fixture.SetupDishRepositoryFindingDishByDishCategoryId();
             fixture.SetupDishRepositoryStoringDish(1);
@@ -134,6 +105,35 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
                 fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
                 fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Once);
                 fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Once);
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex2_ChangesDishOrderAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupDishCategories(3);
+            fixture.SetupCurrentDishCategory(2);
+            fixture.SetupDishRepositoryFindingDishByDishId();
+            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                fixture.DishCategories[0].OrderNo.Should().Be(0);
+                fixture.DishCategories[1].OrderNo.Should().Be(1);
+                fixture.DishCategories[2].OrderNo.Should().Be(2);
+                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
+                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Never);
+                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Never);
             }
         }
 
@@ -163,13 +163,13 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
         }
 
         protected override
-            CommandHandlerTestFixtureBase<DecOrderOfDishCategoryCommandHandler, DecOrderOfDishCategoryCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<IncOrderOfDishCategoryCommandHandler, IncOrderOfDishCategoryCommand, bool> FixtureBase
         {
             get { return fixture; }
         }
 
-        private sealed class Fixture : CommandHandlerTestFixtureBase<DecOrderOfDishCategoryCommandHandler,
-            DecOrderOfDishCategoryCommand, bool>
+        private sealed class Fixture : CommandHandlerTestFixtureBase<IncOrderOfDishCategoryCommandHandler,
+            IncOrderOfDishCategoryCommand, bool>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
@@ -182,16 +182,16 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
 
             public DishCategory CurrentDishCategory { get; private set; }
 
-            public override DecOrderOfDishCategoryCommandHandler CreateTestObject()
+            public override IncOrderOfDishCategoryCommandHandler CreateTestObject()
             {
-                return new DecOrderOfDishCategoryCommandHandler(
+                return new IncOrderOfDishCategoryCommandHandler(
                     DishCategoryRepositoryMock.Object
                 );
             }
 
-            public override DecOrderOfDishCategoryCommand CreateSuccessfulCommand()
+            public override IncOrderOfDishCategoryCommand CreateSuccessfulCommand()
             {
-                return new DecOrderOfDishCategoryCommand(CurrentDishCategory.Id);
+                return new IncOrderOfDishCategoryCommand(CurrentDishCategory.Id);
             }
 
             public void SetupDishCategories(int count)
@@ -245,8 +245,8 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDishCategory
                 SetupCurrentDishCategory(1);
                 SetupDishRepositoryFindingDishByDishId();
                 SetupDishRepositoryFindingDishByDishCategoryId();
-                SetupDishRepositoryStoringDish(0);
                 SetupDishRepositoryStoringDish(1);
+                SetupDishRepositoryStoringDish(2);
             }
         }
     }

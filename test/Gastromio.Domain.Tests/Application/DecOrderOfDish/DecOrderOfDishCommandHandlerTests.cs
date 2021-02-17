@@ -55,8 +55,6 @@ namespace Gastromio.Domain.Tests.Application.DecOrderOfDish
             fixture.SetupCurrentDish(0);
             fixture.SetupDishRepositoryFindingDishByDishId();
             fixture.SetupDishRepositoryFindingDishByDishCategoryId();
-            fixture.SetupDishRepositoryStoringDish(0);
-            fixture.SetupDishRepositoryStoringDish(1);
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
