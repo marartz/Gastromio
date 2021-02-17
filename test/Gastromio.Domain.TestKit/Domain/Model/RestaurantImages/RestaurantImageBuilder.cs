@@ -1,5 +1,6 @@
 using System;
 using Gastromio.Core.Domain.Model.RestaurantImages;
+using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Common;
 
@@ -13,7 +14,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.RestaurantImages
             return this;
         }
 
-        public RestaurantImageBuilder WithRestaurantId(RestaurantImageId restaurantId)
+        public RestaurantImageBuilder WithRestaurantId(RestaurantId restaurantId)
         {
             WithConstantConstructorArgumentFor("restaurantId", restaurantId);
             return this;

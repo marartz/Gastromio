@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,6 +49,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.RestaurantImages
         public ISetup<IRestaurantImageRepository, Task> SetupStoreAsync(RestaurantImage restaurantImage)
         {
             return Setup(m => m.StoreAsync(restaurantImage, It.IsAny<CancellationToken>()));
+        }
+
+        public void VerifyStoreAsync(RestaurantImage restaurantImage, Func<Times> times)
+        {
+            Verify(m => m.StoreAsync(restaurantImage, It.IsAny<CancellationToken>()), times);
         }
 
         public ISetup<IRestaurantImageRepository, Task> SetupRemoveByRestaurantImageId(
