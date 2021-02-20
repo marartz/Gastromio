@@ -301,6 +301,66 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             }
         }
 
+        [Fact]
+        public async Task HandleAsync_CountIsNegative_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurant();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupServiceTime();
+            fixture.SetupOrderedDishWithNegativeCount();
+            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_CountOf101_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurant();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupServiceTime();
+            fixture.SetupOrderedDishWithCountOf101();
+            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
         protected override CommandHandlerTestFixtureBase<CheckoutCommandHandler, CheckoutCommand, OrderDTO> FixtureBase
         {
             get { return fixture; }
@@ -532,6 +592,36 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                         RandomStringBuilder.BuildWithLength(1001)
                     ));
                 }
+            }
+
+            public void SetupOrderedDishWithNegativeCount()
+            {
+                var firstDish = DishesOfRestaurant.First();
+                OrderedDishes = new List<CartDishInfoDTO>
+                {
+                    new CartDishInfoDTO(
+                        Guid.NewGuid(),
+                        firstDish.Id,
+                        firstDish.Variants.First().VariantId,
+                        -1,
+                        "Standard"
+                    )
+                };
+            }
+
+            public void SetupOrderedDishWithCountOf101()
+            {
+                var firstDish = DishesOfRestaurant.First();
+                OrderedDishes = new List<CartDishInfoDTO>
+                {
+                    new CartDishInfoDTO(
+                        Guid.NewGuid(),
+                        firstDish.Id,
+                        firstDish.Variants.First().VariantId,
+                        101,
+                        "Standard"
+                    )
+                };
             }
 
             public void SetupSuccessfulCommandWithRestaurantId()
