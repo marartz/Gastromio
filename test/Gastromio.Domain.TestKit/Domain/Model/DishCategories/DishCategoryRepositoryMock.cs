@@ -43,9 +43,19 @@ namespace Gastromio.Domain.TestKit.Domain.Model.DishCategories
             return Setup(m => m.RemoveByRestaurantIdAsync(restaurantId, It.IsAny<CancellationToken>()));
         }
 
+        public void VerifyRemoveByRestaurantIdAsync(RestaurantId restaurantId, Func<Times> times)
+        {
+            Verify(m => m.RemoveByRestaurantIdAsync(restaurantId, It.IsAny<CancellationToken>()), times);
+        }
+
         public ISetup<IDishCategoryRepository, Task> SetupRemoveAsync(DishCategoryId dishCategoryId)
         {
             return Setup(m => m.RemoveAsync(dishCategoryId, It.IsAny<CancellationToken>()));
+        }
+
+        public void VerifyRemoveAsync(DishCategoryId dishCategoryId, Func<Times> times)
+        {
+            Verify(m => m.RemoveAsync(dishCategoryId, It.IsAny<CancellationToken>()), times);
         }
     }
 }
