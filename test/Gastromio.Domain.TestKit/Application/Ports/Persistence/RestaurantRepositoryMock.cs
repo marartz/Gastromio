@@ -39,10 +39,20 @@ namespace Gastromio.Domain.TestKit.Application.Ports.Persistence
             return Setup(m => m.FindByRestaurantIdAsync(restaurantId, It.IsAny<CancellationToken>()));
         }
 
+        public void VerifyFindByRestaurantIdAsync(RestaurantId restaurantId, Func<Times> times)
+        {
+            Verify(m => m.FindByRestaurantIdAsync(restaurantId, It.IsAny<CancellationToken>()), times);
+        }
+
         public ISetup<IRestaurantRepository, Task<IEnumerable<Restaurant>>> SetupFindByRestaurantNameAsync(
             string restaurantName)
         {
             return Setup(m => m.FindByRestaurantNameAsync(restaurantName, It.IsAny<CancellationToken>()));
+        }
+
+        public void VerifyFindByRestaurantNameAsync(string restaurantName, Func<Times> times)
+        {
+            Verify(m => m.FindByRestaurantNameAsync(restaurantName, It.IsAny<CancellationToken>()), times);
         }
 
         public ISetup<IRestaurantRepository, Task<Restaurant>> SetupFindByImportIdAsync(string importId)
