@@ -47,7 +47,7 @@ namespace Gastromio.Domain.Tests.Application.RemoveCuisineFromRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsAdminToRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesCuisineFromRestaurantAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);

@@ -1,34 +1,33 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant;
+using Gastromio.Core.Application.Commands.RemoveDeviatingOpeningDayFromRestaurant;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
 
-namespace Gastromio.Domain.Tests.Application.RemoveAdminFromRestaurant
+namespace Gastromio.Domain.Tests.Application.RemoveDeviatingOpeningDayFromRestaurant
 {
-    public class RemoveAdminFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveAdminFromRestaurantCommandHandler,
-        RemoveAdminFromRestaurantCommand, bool>
+    public class RemoveDeviatingOpeningDayFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler,
+        RemoveDeviatingOpeningDayFromRestaurantCommand, bool>
     {
         private readonly Fixture fixture;
 
-        public RemoveAdminFromRestaurantCommandHandlerTests()
+        public RemoveDeviatingOpeningDayFromRestaurantCommandHandlerTests()
         {
-            fixture = new Fixture(Role.SystemAdmin);
+            fixture = new Fixture(Role.RestaurantAdmin);
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFound_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomAdministrator();
-            fixture.SetupRandomRestaurant();
+            fixture.SetupRandomDeviatingOpeningDay();
+            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -46,7 +45,7 @@ namespace Gastromio.Domain.Tests.Application.RemoveAdminFromRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesAdminFromRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesDeviatingDaysAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -62,19 +61,19 @@ namespace Gastromio.Domain.Tests.Application.RemoveAdminFromRestaurant
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Restaurant.Administrators.Should().BeEquivalentTo(fixture.UserId);
+                fixture.Restaurant.DeviatingOpeningDays.Should().BeEmpty();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveAdminFromRestaurantCommandHandler, RemoveAdminFromRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler, RemoveDeviatingOpeningDayFromRestaurantCommand, bool> FixtureBase
         {
             get { return fixture; }
         }
 
-        private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveAdminFromRestaurantCommandHandler,
-            RemoveAdminFromRestaurantCommand, bool>
+        private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler,
+            RemoveDeviatingOpeningDayFromRestaurantCommand, bool>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
@@ -83,35 +82,44 @@ namespace Gastromio.Domain.Tests.Application.RemoveAdminFromRestaurant
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
 
+            public DeviatingOpeningDay DeviatingOpeningDay { get; private set; }
+
             public Restaurant Restaurant { get; private set; }
 
-            public UserId AdministratorId { get; private set; }
-
-            public override RemoveAdminFromRestaurantCommandHandler CreateTestObject()
+            public override RemoveDeviatingOpeningDayFromRestaurantCommandHandler CreateTestObject()
             {
-                return new RemoveAdminFromRestaurantCommandHandler(
+                return new RemoveDeviatingOpeningDayFromRestaurantCommandHandler(
                     RestaurantRepositoryMock.Object
                 );
             }
 
-            public override RemoveAdminFromRestaurantCommand CreateSuccessfulCommand()
+            public override RemoveDeviatingOpeningDayFromRestaurantCommand CreateSuccessfulCommand()
             {
-                return new RemoveAdminFromRestaurantCommand(Restaurant.Id, AdministratorId);
+                return new RemoveDeviatingOpeningDayFromRestaurantCommand(Restaurant.Id, DeviatingOpeningDay.Date);
             }
 
-            public void SetupRandomAdministrator()
+            public void SetupRandomDeviatingOpeningDay()
             {
-                AdministratorId = new UserId(Guid.NewGuid());
+                DeviatingOpeningDay = new DeviatingOpeningDayBuilder()
+                    .WithoutOpeningPeriods()
+                    .Create();
             }
 
-            public void SetupRandomRestaurant()
+            public void SetupRandomRestaurant(Role? role)
             {
-                Restaurant = new RestaurantBuilder()
-                    .WithAdministrators(new HashSet<UserId>
+                var builder = new RestaurantBuilder()
+                    .WithDeviatingOpeningDays(new[]
                     {
-                        UserId,
-                        AdministratorId
-                    })
+                        DeviatingOpeningDay
+                    });
+
+                if (role == Role.RestaurantAdmin)
+                {
+                    builder = builder
+                        .WithAdministrators(new HashSet<UserId> {UserId});
+                }
+
+                Restaurant = builder
                     .WithValidConstrains()
                     .Create();
             }
@@ -136,8 +144,8 @@ namespace Gastromio.Domain.Tests.Application.RemoveAdminFromRestaurant
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomAdministrator();
-                SetupRandomRestaurant();
+                SetupRandomDeviatingOpeningDay();
+                SetupRandomRestaurant(role);
                 SetupRestaurantRepositoryFindingRestaurant();
                 SetupRestaurantRepositoryStoringRestaurant();
             }
