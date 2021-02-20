@@ -11,7 +11,7 @@ using Gastromio.Core.Domain.Model.Users;
 using Moq;
 using Moq.Language.Flow;
 
-namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
+namespace Gastromio.Domain.TestKit.Application.Ports.Persistence
 {
     public class RestaurantRepositoryMock : Mock<IRestaurantRepository>
     {

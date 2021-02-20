@@ -5,6 +5,7 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeUserPassword;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
 using Moq;
 using Xunit;

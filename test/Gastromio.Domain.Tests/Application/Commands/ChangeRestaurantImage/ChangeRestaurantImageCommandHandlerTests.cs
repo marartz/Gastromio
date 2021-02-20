@@ -9,6 +9,7 @@ using Gastromio.Core.Application.Commands.ChangeRestaurantImage;
 using Gastromio.Core.Domain.Model.RestaurantImages;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.RestaurantImages;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;

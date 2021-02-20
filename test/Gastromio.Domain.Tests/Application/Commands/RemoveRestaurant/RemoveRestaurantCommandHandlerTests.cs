@@ -5,6 +5,7 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.RemoveRestaurant;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
 using Gastromio.Domain.TestKit.Domain.Model.Dishes;
 using Gastromio.Domain.TestKit.Domain.Model.RestaurantImages;

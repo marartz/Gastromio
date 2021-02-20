@@ -5,6 +5,7 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeCuisine;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Cuisines;
 using Moq;
 using Xunit;

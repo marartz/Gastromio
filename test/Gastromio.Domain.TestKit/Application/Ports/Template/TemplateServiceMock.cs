@@ -4,7 +4,7 @@ using Gastromio.Core.Domain.Model.Orders;
 using Moq;
 using Moq.Language.Flow;
 
-namespace Gastromio.Domain.TestKit.Domain.Ports.Template
+namespace Gastromio.Domain.TestKit.Application.Ports.Template
 {
     public class TemplateServiceMock : Mock<ITemplateService>
     {

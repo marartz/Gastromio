@@ -8,6 +8,7 @@ using Gastromio.Core.Application.Commands.AddDeviatingOpeningPeriodToRestaurant;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Common;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;

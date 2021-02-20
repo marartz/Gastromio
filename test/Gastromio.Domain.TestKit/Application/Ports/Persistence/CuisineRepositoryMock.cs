@@ -7,7 +7,7 @@ using Gastromio.Core.Domain.Model.Cuisines;
 using Moq;
 using Moq.Language.Flow;
 
-namespace Gastromio.Domain.TestKit.Domain.Model.Cuisines
+namespace Gastromio.Domain.TestKit.Application.Ports.Persistence
 {
     public class CuisineRepositoryMock : Mock<ICuisineRepository>
     {

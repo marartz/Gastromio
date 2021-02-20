@@ -9,6 +9,7 @@ using Gastromio.Core.Domain.Model.DishCategories;
 using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Dishes;
 using Moq;
 using Xunit;

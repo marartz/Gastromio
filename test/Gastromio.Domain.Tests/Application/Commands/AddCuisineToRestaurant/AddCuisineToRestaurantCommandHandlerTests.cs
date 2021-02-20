@@ -7,6 +7,7 @@ using Gastromio.Core.Application.Commands.AddCuisineToRestaurant;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;

@@ -8,6 +8,7 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRestaurant;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;

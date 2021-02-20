@@ -9,7 +9,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 using Moq;
 using Moq.Language.Flow;
 
-namespace Gastromio.Domain.TestKit.Domain.Model.Dishes
+namespace Gastromio.Domain.TestKit.Application.Ports.Persistence
 {
     public class DishRepositoryMock : Mock<IDishRepository>
     {

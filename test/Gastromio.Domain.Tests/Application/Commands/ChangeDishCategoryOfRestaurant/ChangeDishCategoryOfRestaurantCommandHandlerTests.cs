@@ -8,6 +8,7 @@ using Gastromio.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
 using Gastromio.Core.Domain.Model.DishCategories;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;

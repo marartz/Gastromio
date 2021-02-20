@@ -5,7 +5,7 @@ using Gastromio.Core.Application.Ports.Notification;
 using Moq;
 using Moq.Language.Flow;
 
-namespace Gastromio.Domain.TestKit.Domain.Ports.Notification
+namespace Gastromio.Domain.TestKit.Application.Ports.Notification
 {
     public class EmailNotificationServiceMock : Mock<IEmailNotificationService>
     {

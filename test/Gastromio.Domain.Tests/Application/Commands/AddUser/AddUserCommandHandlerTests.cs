@@ -6,6 +6,7 @@ using Gastromio.Core.Application.Commands.AddUser;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
 using Moq;
 using Xunit;
