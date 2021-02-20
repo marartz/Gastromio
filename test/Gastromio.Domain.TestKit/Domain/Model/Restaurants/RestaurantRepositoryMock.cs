@@ -85,5 +85,10 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
         {
             return Setup(m => m.RemoveAsync(restaurantId, It.IsAny<CancellationToken>()));
         }
+
+        public void VerifyRemoveAsync(RestaurantId restaurantId, Func<Times> times)
+        {
+            Verify(m => m.RemoveAsync(restaurantId, It.IsAny<CancellationToken>()), times);
+        }
     }
 }
