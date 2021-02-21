@@ -40,13 +40,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_RestaurantNotFoundById_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryNotFindingRestaurantById();
 
             var testObject = fixture.CreateTestObject();
@@ -68,13 +68,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_RestaurantFoundById_ReturnsSuccess()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -99,13 +99,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_RestaurantNotFoundByName_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
-            fixture.SetupSuccessfulCommandWithRestaurantName();
+            fixture.SetupSuccessfulCommandWithRestaurantName(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryNotFindingRestaurantByName();
 
             var testObject = fixture.CreateTestObject();
@@ -127,13 +127,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_RestaurantFoundByName_ReturnsSuccess()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
-            fixture.SetupSuccessfulCommandWithRestaurantName();
+            fixture.SetupSuccessfulCommandWithRestaurantName(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantByName();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -162,9 +162,9 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
 
             var testObject = fixture.CreateTestObject();
@@ -185,13 +185,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_DishThatCannotBeFound_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishThatCannotBeFound();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -215,13 +215,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_DishThatDoesNotBelongToRestaurant_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishThatDoesNotBelongToRestaurant();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -245,13 +245,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_VariantThatDoesNotBelongToDish_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishVariantThatDoesNotBelongToDish();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -275,13 +275,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_RemarkHasLength1001_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishesWithRemarkOfLength1001();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -305,13 +305,43 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_CountIsNegative_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithNegativeCount();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_CountIsZero_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupOrderedDishWithZeroCount();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
@@ -335,16 +365,916 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_CountOf101_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupActiveRestaurant();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
-            fixture.SetupServiceTime();
+            fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithCountOf101();
-            fixture.SetupSuccessfulCommandWithRestaurantId();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_PickupIsDisabled_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_BelowMinimum_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupOrderedDishWithCountOfOne();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_AboveMaximum_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupOrderedDishWithCountOf100();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_GivenNameNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithGivenNameNull(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_GivenNameEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithGivenNameEmpty(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_LastNameNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithLastNameNull(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_LastNameEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithLastNameEmpty(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_EmailNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithEmailNull(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_PhoneNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithPhoneNull(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_PhoneEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithPhoneEmpty(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PickupOrdered_EmailEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithEmailEmpty(OrderType.Pickup);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_DeliveryIsDisabled_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithPickupActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_BelowMinimum_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupOrderedDishWithCountOfOne();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_AboveMaximum_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupOrderedDishWithCountOf100();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_GivenNameNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithGivenNameNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_GivenNameEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithGivenNameEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_LastNameNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithLastNameNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_LastNameEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithLastNameEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_StreetNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithStreetNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_StreetEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithStreetEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_ZipCodeNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithZipCodeNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_ZipCodeEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithZipCodeEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_CityNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithCityNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_CityEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithCityEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_EmailNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithEmailNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_PhoneNull_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithPhoneNull(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_PhoneEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithPhoneEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DeliveryOrdered_EmailEmpty_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupCommandWithEmailEmpty(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_OrderIsNotPossible_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupInvalidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_PaymentMethodUnknown_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryNotFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
             var testObject = fixture.CreateTestObject();
@@ -417,12 +1347,17 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 return SuccessfulCommand;
             }
 
-            public void SetupActiveRestaurant()
+            public void SetupActiveRestaurantWithPickupActivated()
             {
-                var deliveryInfo = new DeliveryInfoBuilder()
+                var pickupInfo = new PickupInfoBuilder()
                     .WithEnabled(true)
-                    .WithMinimumOrderValue(0)
-                    .WithMaximumOrderValue(200)
+                    .WithMinimumOrderValue(5)
+                    .WithMaximumOrderValue(100)
+                    .WithValidConstrains()
+                    .Create();
+
+                var deliveryInfo = new DeliveryInfoBuilder()
+                    .WithEnabled(false)
                     .WithValidConstrains()
                     .Create();
 
@@ -431,14 +1366,48 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 {
                     regularOpeningDays.Add(new RegularOpeningDay(
                         day,
-                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))}
+                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
                     ));
                 }
 
                 Restaurant = new RestaurantBuilder()
                     .WithIsActive(true)
-                    .WithSupportedOrderMode(SupportedOrderMode.Anytime)
+                    .WithSupportedOrderMode(SupportedOrderMode.AtNextShift)
                     .WithRegularOpeningDays(regularOpeningDays)
+                    .WithPickupInfo(pickupInfo)
+                    .WithDeliveryInfo(deliveryInfo)
+                    .WithValidConstrains()
+                    .Create();
+            }
+
+            public void SetupActiveRestaurantWithDeliveryActivated()
+            {
+                var pickupInfo = new PickupInfoBuilder()
+                    .WithEnabled(false)
+                    .WithValidConstrains()
+                    .Create();
+
+                var deliveryInfo = new DeliveryInfoBuilder()
+                    .WithEnabled(true)
+                    .WithMinimumOrderValue(5)
+                    .WithMaximumOrderValue(100)
+                    .WithValidConstrains()
+                    .Create();
+
+                var regularOpeningDays = new List<RegularOpeningDay>();
+                for (var day = 0; day < 7; day++)
+                {
+                    regularOpeningDays.Add(new RegularOpeningDay(
+                        day,
+                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                    ));
+                }
+
+                Restaurant = new RestaurantBuilder()
+                    .WithIsActive(true)
+                    .WithSupportedOrderMode(SupportedOrderMode.AtNextShift)
+                    .WithRegularOpeningDays(regularOpeningDays)
+                    .WithPickupInfo(pickupInfo)
                     .WithDeliveryInfo(deliveryInfo)
                     .WithValidConstrains()
                     .Create();
@@ -489,9 +1458,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 };
             }
 
-            public void SetupServiceTime()
+            public void SetupValidServiceTime()
             {
                 ServiceTime = Date.Today.AddDays(1).ToUtcDateTimeOffset().AddHours(18);
+            }
+
+            public void SetupInvalidServiceTime()
+            {
+                ServiceTime = Date.Today.ToUtcDateTimeOffset().AddHours(23.8);
             }
 
             public void SetupDefaultOrderedDishes()
@@ -609,6 +1583,51 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 };
             }
 
+            public void SetupOrderedDishWithZeroCount()
+            {
+                var firstDish = DishesOfRestaurant.First();
+                OrderedDishes = new List<CartDishInfoDTO>
+                {
+                    new CartDishInfoDTO(
+                        Guid.NewGuid(),
+                        firstDish.Id,
+                        firstDish.Variants.First().VariantId,
+                        0,
+                        "Standard"
+                    )
+                };
+            }
+
+            public void SetupOrderedDishWithCountOfOne()
+            {
+                var firstDish = DishesOfRestaurant.First();
+                OrderedDishes = new List<CartDishInfoDTO>
+                {
+                    new CartDishInfoDTO(
+                        Guid.NewGuid(),
+                        firstDish.Id,
+                        firstDish.Variants.First().VariantId,
+                        1,
+                        "Standard"
+                    )
+                };
+            }
+
+            public void SetupOrderedDishWithCountOf100()
+            {
+                var firstDish = DishesOfRestaurant.First();
+                OrderedDishes = new List<CartDishInfoDTO>
+                {
+                    new CartDishInfoDTO(
+                        Guid.NewGuid(),
+                        firstDish.Id,
+                        firstDish.Variants.First().VariantId,
+                        100,
+                        "Standard"
+                    )
+                };
+            }
+
             public void SetupOrderedDishWithCountOf101()
             {
                 var firstDish = DishesOfRestaurant.First();
@@ -624,7 +1643,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 };
             }
 
-            public void SetupSuccessfulCommandWithRestaurantId()
+            public void SetupSuccessfulCommandWithRestaurantId(OrderType orderType)
             {
                 SuccessfulCommand = new CheckoutCommand(
                     "Max",
@@ -635,7 +1654,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     "Musterstadt",
                     "+491234567890",
                     "max@mustermann.de",
-                    OrderType.Delivery,
+                    orderType,
                     Restaurant.Id.Value.ToString(),
                     OrderedDishes,
                     "Bitte schnell!",
@@ -644,7 +1663,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 );
             }
 
-            public void SetupSuccessfulCommandWithRestaurantName()
+            public void SetupSuccessfulCommandWithRestaurantName(OrderType orderType)
             {
                 SuccessfulCommand = new CheckoutCommand(
                     "Max",
@@ -655,8 +1674,287 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     "Musterstadt",
                     "+491234567890",
                     "max@mustermann.de",
-                    OrderType.Delivery,
+                    orderType,
                     Restaurant.Name,
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithGivenNameNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    null,
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithGivenNameEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithLastNameNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    null,
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithLastNameEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithStreetNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    null,
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithStreetEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithZipCodeNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    null,
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithZipCodeEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "",
+                    "Musterstadt",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithCityNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    null,
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithCityEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "",
+                    "+491234567890",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+            public void SetupCommandWithPhoneNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    null,
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithPhoneEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "",
+                    "max@mustermann.de",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithEmailNull(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    null,
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
+                    OrderedDishes,
+                    "Bitte schnell!",
+                    PaymentMethodId.Cash,
+                    ServiceTime
+                );
+            }
+
+            public void SetupCommandWithEmailEmpty(OrderType orderType)
+            {
+                SuccessfulCommand = new CheckoutCommand(
+                    "Max",
+                    "Mustermann",
+                    "Musterstraße 1",
+                    "4. Stock",
+                    "12345",
+                    "Musterstadt",
+                    "+491234567890",
+                    "",
+                    orderType,
+                    Restaurant.Id.Value.ToString(),
                     OrderedDishes,
                     "Bitte schnell!",
                     PaymentMethodId.Cash,
@@ -697,6 +1995,15 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 }
             }
 
+            public void SetupPaymentMethodRepositoryNotFindingPaymentMethods()
+            {
+                foreach (var paymentMethod in PaymentMethods)
+                {
+                    PaymentMethodRepositoryMock.SetupFindByPaymentMethodIdAsync(paymentMethod.Id)
+                        .ReturnsAsync((PaymentMethod) null);
+                }
+            }
+
             public void SetupPaymentMethodRepositoryFindingPaymentMethods()
             {
                 foreach (var paymentMethod in PaymentMethods)
@@ -714,13 +2021,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupActiveRestaurant();
+                SetupActiveRestaurantWithDeliveryActivated();
                 SetupRandomDishCategories();
                 SetupRandomDishes();
                 SetupPaymentMethods();
-                SetupServiceTime();
+                SetupValidServiceTime();
                 SetupDefaultOrderedDishes();
-                SetupSuccessfulCommandWithRestaurantId();
+                SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
                 SetupRestaurantRepositoryFindingRestaurantById();
                 SetupDishRepositoryFindingDishesById();
                 SetupPaymentMethodRepositoryFindingPaymentMethods();
