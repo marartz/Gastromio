@@ -130,6 +130,11 @@ export class SystemAdminFacade {
 
   // actions
 
+  public ackIsUpdated()
+  {
+    this.isUpdated$.next(undefined);
+  }
+
   public selectTab(tab: string): void {
     this.router.navigate(['admin', tab],);
   }
@@ -577,7 +582,6 @@ export class SystemAdminFacade {
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
-          this.isUpdated$.next(true);
         }),
         catchError(response => {
           this.isUpdating$.next(false);
@@ -599,7 +603,6 @@ export class SystemAdminFacade {
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
-          this.isUpdated$.next(true);
         }),
         catchError(response => {
           this.isUpdating$.next(false);
