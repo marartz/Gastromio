@@ -16,7 +16,7 @@
 		<ul>
 			<li class="header-no-eff">
 				<div class="left">
-					<input type="search" placeholder="Suchen ..." aria-label="Search" [value]="searchPhrase$ | async"
+					<input type="search" placeholder="Suchen ..." style="padding: 5px;" aria-label="Search" [value]="searchPhrase$ | async"
                            (keyup)="onUpdateSearch($event.target.value)"
                            (search)="onUpdateSearch($event?.target?.value)">
 				</div>
@@ -124,7 +124,7 @@
 			</li>
 		</ul>
 	</section>
-	
+
 <app-server-pagination (fetchPage)="onFetchPage($event)"></app-server-pagination>
 
 </section>
