@@ -136,6 +136,14 @@ export class SystemAdminFacade {
   }
 
   public selectTab(tab: string): void {
+    if (this.selectedTab$.value !== 'users') {
+      this.userSearchPhrase$.next('');
+    }
+
+    if (this.selectedTab$.value !== 'restaurants') {
+      this.restaurantSearchPhrase$.next('');
+    }
+
     this.router.navigate(['admin', tab],);
   }
 
