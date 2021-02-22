@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 
-import {delay, switchMap} from "rxjs/operators";
+import {delay, switchMap, tap} from "rxjs/operators";
 import {merge, Observable, of} from "rxjs";
 
 import {BlockUI, NgBlockUI} from "ng-block-ui";
@@ -70,7 +70,13 @@ export class SystemAdminComponent implements OnInit {
           if (isUpdated) {
             return merge(
               of(true),
-              of(false).pipe(delay(2000))
+              of(false)
+                .pipe(
+                  delay(2000),
+                  tap(() => {
+                    this.facade.ackIsUpdated();
+                  })
+                )
             );
           } else {
             return of(false);
