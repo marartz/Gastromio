@@ -75,14 +75,12 @@
 #backend #drawer-mobile .links {
 	display: flex;
 	overflow: auto;
-	justify-content: center;
 }
 
 #backend #drawer-mobile .links ul {
     display: inline-flex;
     position: relative;
 	list-style: none;
-	margin-left: 60%;
 }
 
 #backend #drawer-mobile .links ul .drawer-item {
@@ -266,7 +264,7 @@
 	letter-spacing: 0px;
 	font-size: 22px;
 	color: #363636;
-	margin-bottom: 0px;	
+	margin-bottom: 0px;
 }
 
 [id^=page-] .section-header p {
@@ -275,7 +273,7 @@
 	letter-spacing: 0px;
 	font-size: 18px;
 	color: #363636;
-	margin-bottom: 0px;	
+	margin-bottom: 0px;
 }
 
 [id^=page-] #single-list {
