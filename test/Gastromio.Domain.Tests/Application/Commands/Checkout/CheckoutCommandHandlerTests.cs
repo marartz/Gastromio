@@ -1291,6 +1291,116 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             }
         }
 
+        [Fact]
+        public async Task HandleAsync_EnabledOrderNotificationByMobile_SetsMobileNotificationAttemptToNullAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivatedAndEnabledOrderNotificationByMobile();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                fixture.StoredOrder.Should().NotBeNull();
+                fixture.StoredOrder?.RestaurantMobileNotificationInfo.Should().BeNull();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DisabledOrderNotificationByMobile_SetsMobileNotificationAttemptWithStatusAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                fixture.StoredOrder.Should().NotBeNull();
+                fixture.StoredOrder?.RestaurantMobileNotificationInfo.Should().NotBeNull();
+                fixture.StoredOrder?.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task HandleAsync_DefaultCommand_CreatesOrderWithCorrectData()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
+            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsSuccess.Should().BeTrue();
+                fixture.StoredOrder.Should().NotBeNull();
+                fixture.StoredOrder?.Id.Should().NotBeNull();
+                fixture.StoredOrder?.Id.Value.Should().NotBeEmpty();
+                fixture.StoredOrder?.CustomerInfo.Should().NotBeNull();
+                fixture.StoredOrder?.CustomerInfo?.GivenName.Should().Be(command.GivenName);
+                fixture.StoredOrder?.CustomerInfo?.LastName.Should().Be(command.LastName);
+                fixture.StoredOrder?.CustomerInfo?.Street.Should().Be(command.Street);
+                fixture.StoredOrder?.CustomerInfo?.AddAddressInfo.Should().Be(command.AddAddressInfo);
+                fixture.StoredOrder?.CustomerInfo?.ZipCode.Should().Be(command.ZipCode);
+                fixture.StoredOrder?.CustomerInfo?.City.Should().Be(command.City);
+                fixture.StoredOrder?.CustomerInfo?.Phone.Should().Be(command.Phone);
+                fixture.StoredOrder?.CustomerInfo?.Email.Should().Be(command.Email);
+                fixture.StoredOrder?.CartInfo.Should().NotBeNull();
+                fixture.StoredOrder?.CartInfo?.OrderType.Should().Be(OrderType.Delivery);
+                fixture.StoredOrder?.CartInfo?.RestaurantId.Should().Be(fixture.Restaurant.Id);
+            }
+        }
+
         protected override CommandHandlerTestFixtureBase<CheckoutCommandHandler, CheckoutCommand, OrderDTO> FixtureBase
         {
             get { return fixture; }
@@ -1330,6 +1440,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             public List<CartDishInfoDTO> OrderedDishes { get; private set; }
 
             public CheckoutCommand SuccessfulCommand { get; private set; }
+
+            public Order StoredOrder { get; private set; }
 
             public override CheckoutCommandHandler CreateTestObject()
             {
@@ -1405,6 +1517,86 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
 
                 Restaurant = new RestaurantBuilder()
                     .WithIsActive(true)
+                    .WithSupportedOrderMode(SupportedOrderMode.AtNextShift)
+                    .WithRegularOpeningDays(regularOpeningDays)
+                    .WithPickupInfo(pickupInfo)
+                    .WithDeliveryInfo(deliveryInfo)
+                    .WithValidConstrains()
+                    .Create();
+            }
+
+            public void SetupActiveRestaurantWithDeliveryActivatedAndEnabledOrderNotificationByMobile()
+            {
+                var contactInfo = new ContactInfoBuilder()
+                    .WithMobile("+491234567890")
+                    .WithOrderNotificationByMobile(true)
+                    .WithValidConstrains()
+                    .Create();
+
+                var pickupInfo = new PickupInfoBuilder()
+                    .WithEnabled(false)
+                    .WithValidConstrains()
+                    .Create();
+
+                var deliveryInfo = new DeliveryInfoBuilder()
+                    .WithEnabled(true)
+                    .WithMinimumOrderValue(5)
+                    .WithMaximumOrderValue(100)
+                    .WithValidConstrains()
+                    .Create();
+
+                var regularOpeningDays = new List<RegularOpeningDay>();
+                for (var day = 0; day < 7; day++)
+                {
+                    regularOpeningDays.Add(new RegularOpeningDay(
+                        day,
+                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                    ));
+                }
+
+                Restaurant = new RestaurantBuilder()
+                    .WithIsActive(true)
+                    .WithContactInfo(contactInfo)
+                    .WithSupportedOrderMode(SupportedOrderMode.AtNextShift)
+                    .WithRegularOpeningDays(regularOpeningDays)
+                    .WithPickupInfo(pickupInfo)
+                    .WithDeliveryInfo(deliveryInfo)
+                    .WithValidConstrains()
+                    .Create();
+            }
+
+            public void SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile()
+            {
+                var contactInfo = new ContactInfoBuilder()
+                    .WithMobile("+491234567890")
+                    .WithOrderNotificationByMobile(false)
+                    .WithValidConstrains()
+                    .Create();
+
+                var pickupInfo = new PickupInfoBuilder()
+                    .WithEnabled(false)
+                    .WithValidConstrains()
+                    .Create();
+
+                var deliveryInfo = new DeliveryInfoBuilder()
+                    .WithEnabled(true)
+                    .WithMinimumOrderValue(5)
+                    .WithMaximumOrderValue(100)
+                    .WithValidConstrains()
+                    .Create();
+
+                var regularOpeningDays = new List<RegularOpeningDay>();
+                for (var day = 0; day < 7; day++)
+                {
+                    regularOpeningDays.Add(new RegularOpeningDay(
+                        day,
+                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                    ));
+                }
+
+                Restaurant = new RestaurantBuilder()
+                    .WithIsActive(true)
+                    .WithContactInfo(contactInfo)
                     .WithSupportedOrderMode(SupportedOrderMode.AtNextShift)
                     .WithRegularOpeningDays(regularOpeningDays)
                     .WithPickupInfo(pickupInfo)
@@ -2016,6 +2208,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             public void SetupOrderRepositoryStoringOrder()
             {
                 OrderRepositoryMock.SetupStoreAsync()
+                    .Callback<Order, CancellationToken>((order, token) => StoredOrder = order)
                     .Returns(Task.CompletedTask);
             }
 
