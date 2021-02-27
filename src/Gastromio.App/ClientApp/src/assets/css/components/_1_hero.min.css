@@ -67,7 +67,7 @@ Copyr: gastromio.de/imprint
     cursor: pointer;
     height: 22px;
     width: 22px;
-    position: fixed;
+    position: absolute;
     margin-left: 4px;
 }
 
