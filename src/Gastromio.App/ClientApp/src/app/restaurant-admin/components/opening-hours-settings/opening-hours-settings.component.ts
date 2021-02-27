@@ -267,10 +267,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
 
     for (let regularOpeningDay of restaurant.regularOpeningDays) {
       for (let openingPeriod of regularOpeningDay.openingPeriods) {
-        let column = regularOpeningHoursViewModel.weekDays[regularOpeningDay.dayOfWeek].openingPeriods.length
-
         const openingPeriodViewModel = new OpeningPeriodViewModel();
-        openingPeriodViewModel.column = column;
         openingPeriodViewModel.baseModel = openingPeriod;
         openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
         openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
@@ -290,7 +287,12 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
           return +1;
         else
           return 0;
-      })
+      });
+      let columnIdx = 0;
+      for (let openingPeriod of weekDayOpeningPeriods.openingPeriods) {
+        openingPeriod.value.column = columnIdx;
+        columnIdx++;
+      }
     }
 
     let maxOpeningPeriodCount = 0;
@@ -372,10 +374,7 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
       deviatingOpeningHoursViewModel.dates.push(deviatingOpeningDayViewModel);
 
       for (let openingPeriod of deviatingOpeningDay.openingPeriods) {
-        let column = deviatingOpeningDayViewModel.openingPeriods.length
-
         const openingPeriodViewModel = new OpeningPeriodViewModel();
-        openingPeriodViewModel.column = column;
         openingPeriodViewModel.baseModel = openingPeriod;
         openingPeriodViewModel.start = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.start);
         openingPeriodViewModel.end = OpeningHoursSettingsComponent.totalMinutesToString(openingPeriod.end);
@@ -396,6 +395,11 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
         else
           return 0;
       })
+      let columnIdx = 0;
+      for (let openingPeriod of deviatingOpeningDayViewModel.openingPeriods) {
+        openingPeriod.value.column = columnIdx;
+        columnIdx++;
+      }
     }
 
     let maxOpeningPeriodCount = 0;
