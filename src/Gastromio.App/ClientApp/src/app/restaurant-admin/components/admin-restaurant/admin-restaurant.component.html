@@ -139,11 +139,12 @@
                         class="drawer-item"
                         data-aos="gm-move-down"
                         data-aos-anchor="#backend"
-                        data-aos-delay="1000"
+                        data-aos-delay="1100"
                         data-aos-duration="800"
                         data-aos-once="true"
                         [class.active]="(selectedTab$ | async) === 'dishes'"
                         (click)="selectTab('dishes')"
+						role="button"
                     >
                         <a [routerLink]="['/restaurants', (restaurant$ | async).alias]" class="action" *ngIf="(restaurant$ | async).isActive" target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
