@@ -1,6 +1,7 @@
 @import '~bootstrap/dist/css/bootstrap.css';
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
+/* Snippet aus node_modules/aos/dist/aos.css */
 [data-aos=gm-move-up]{
     opacity: 0;
 	transform: translateY(10px);

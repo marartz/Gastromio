@@ -76,7 +76,7 @@
                                 </svg>
                             </button>
                             <button (click)="onDisableSupport(restaurant)" class="action" *ngIf="restaurant.needsSupport">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green"
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="color: green;"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" width="16" height="16">
                                     <circle cx="12" cy="12" r="10"></circle>
@@ -85,7 +85,7 @@
                                 </svg>
                             </button>
                             <button (click)="onEnableSupport(restaurant)" class="action" *ngIf="!restaurant.needsSupport">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="filter: blur(1.2px);"
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="color: red;"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" width="16" height="16">
                                     <circle cx="12" cy="12" r="10"></circle>
@@ -96,7 +96,7 @@
                             <button (click)="onDeactivate(restaurant)" class="action" *ngIf="restaurant.isActive">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16"
-                                     height="16" viewBox="0 0 32 32">
+                                     height="16" viewBox="0 0 32 32" style="color: green;">
                                     <path
                                         d="M20.533 11.867c0.267-0.267 0.667-0.4 1.067-0.133 0.267 0.267 0.4 0.667 0.133 1.067l-5.867 7.333c-0.133 0.133-0.267 0.267-0.533 0.267 0 0 0 0 0 0-0.133 0-0.4-0.133-0.533-0.267l-3.6-3.6c-0.267-0.267-0.267-0.8 0-1.067s0.8-0.267 1.067 0l3.067 3.067 5.2-6.667zM16 2.8c-7.333 0-13.2 5.867-13.2 13.2s5.867 13.2 13.2 13.2c7.333 0 13.2-5.867 13.2-13.2s-5.867-13.2-13.2-13.2zM16 1.333c8.133 0 14.667 6.533 14.667 14.667s-6.533 14.667-14.667 14.667c-8.133 0-14.667-6.533-14.667-14.667s6.533-14.667 14.667-14.667z"></path>
                                 </svg>
@@ -104,7 +104,7 @@
                             <button (click)="onActivate(restaurant)" class="action" *ngIf="!restaurant.isActive">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16"
-                                     height="16" viewBox="0 0 32 32">
+                                     height="16" viewBox="0 0 32 32" style="color: red;">
                                     <path
                                         d="M16 29.2c-7.333 0-13.2-5.867-13.2-13.2s5.867-13.2 13.2-13.2 13.2 5.867 13.2 13.2c0 7.333-5.867 13.2-13.2 13.2zM16 1.333c-8.133 0-14.667 6.533-14.667 14.667s6.533 14.667 14.667 14.667c8.133 0 14.667-6.533 14.667-14.667s-6.533-14.667-14.667-14.667z"></path>
                                 </svg>
@@ -128,6 +128,3 @@
 <app-server-pagination (fetchPage)="onFetchPage($event)"></app-server-pagination>
 
 </section>
-
-
-<!--                                                <button (click)="openAddRestaurantForm()" type="button" class="add"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>-->
