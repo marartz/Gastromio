@@ -73,71 +73,8 @@
 
 		<div class="common-container">
 			<aside id="drawer-mobile">
-			<nav class="links">
-				<ul>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="500"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'general'"
-						(click)="selectTab('general')"
-						>
-						<a>Allgemeines</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="700"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'order'"
-						(click)="selectTab('order')"
-						>
-						<a>Bestellung</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="800"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'payment'"
-						(click)="selectTab('payment')"
-						>
-						<a>Zahlung</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="900"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'opening-hours'"
-						(click)="selectTab('opening-hours')"
-						>
-						<a>Zeiten</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="1000"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'dishes'"
-						(click)="selectTab('dishes')"
-						>
-						<a>Speisen</a>
-					</li>
-				</ul>
-			</nav>
-		</aside>
+                <scrollable-nav-bar [links]='links' (selected)="selectTab($event)" [current]="(selectedTab$ | async)"></scrollable-nav-bar>
+            </aside>
 			<section id="body">
 
 				<aside id="drawer">

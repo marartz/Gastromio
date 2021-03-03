@@ -73,70 +73,7 @@
 
         <div class="common-container">
             <aside id="drawer-mobile">
-                <nav class="links">
-                    <ul>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="500"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'users'"
-                            (click)="selectTab('users')"
-                        >
-                            <a>Benutzer</a>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="700"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'cuisines'"
-                            (click)="selectTab('cuisines')"
-                        >
-                            <a>Cuisines</a>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="800"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'restaurants'"
-                            (click)="selectTab('restaurants')"
-                        >
-                            <a>Restaurants</a>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="900"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'restaurant-import'"
-                            (click)="selectTab('restaurant-import')"
-                        >
-                            <a>Restaurantimport</a>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="1000"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'dish-import'"
-                            (click)="selectTab('dish-import')"
-                        >
-                            <a>Speisenimport</a>
-                        </li>
-                    </ul>
-                </nav>
+                    <scrollable-nav-bar [links]='links' (selected)="selectTab($event)" [current]="(selectedTab$ | async)"></scrollable-nav-bar>
             </aside>
             <section id="body">
 
