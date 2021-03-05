@@ -302,6 +302,7 @@ export class RestaurantRestAdminService {
       deliveryMaximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
       deliveryCosts: serviceInfo.deliveryCosts,
       reservationEnabled: serviceInfo.reservationEnabled,
+      reservationSystemUrl: serviceInfo.reservationSystemUrl,
       hygienicHandling: serviceInfo.hygienicHandling
     }, httpOptions)
       .pipe(take(1));

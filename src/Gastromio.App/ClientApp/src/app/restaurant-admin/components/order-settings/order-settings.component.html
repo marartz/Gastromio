@@ -31,6 +31,7 @@
 		<form>
 			<button type="button" class="checkbox-input" [class.active]="pickupEnabled" (click)="togglePickupEnabled()">Abholung</button>
 			<button type="button" class="checkbox-input" [class.active]="deliveryEnabled" (click)="toggleDeliveryEnabled()">Lieferung</button>
+            <button type="button" class="checkbox-input" [class.active]="reservationEnabled" (click)="toggleReservationEnabled()">Tischreservierung</button>
 		</form>
 	</section>
 
@@ -136,6 +137,23 @@
                    placeholder="z.B. 0€"
                    type="number"
                    >
+
+        </section>
+
+        <section id="settings">
+            <h3>Angaben zur Tischreservierung</h3>
+
+            <label for="reservationSystemUrl">Link zum Reservierungssystem</label>
+            <input
+                autocapitalize="none"
+                autocomplete="off"
+                class="text-input"
+                formControlName="reservationSystemUrl"
+                id="reservationSystemUrl"
+                mozactionhint="next"
+                placeholder="Link zum externen Reservierungssystem"
+                type="text"
+            >
 
         </section>
 
