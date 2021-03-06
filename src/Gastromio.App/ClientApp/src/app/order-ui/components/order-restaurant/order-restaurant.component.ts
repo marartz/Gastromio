@@ -328,8 +328,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   public proceedToReservation(): void {
-    // TODO
-    // this.router.navigateByUrl('/checkout');
+    this.router.navigateByUrl('/reservation');
   }
 
   toggleCartVisibility(): void {

@@ -48,4 +48,9 @@ export class OrderSummaryComponent implements OnInit {
         this.orderFacade.resetCheckout();
       });
   }
+
+  getOrderTypeText(): string {
+    return this.order.cartInfo.orderType === 'reservation' ? "Rervierungsanfrage" : "Bestellung";
+  }
+
 }
