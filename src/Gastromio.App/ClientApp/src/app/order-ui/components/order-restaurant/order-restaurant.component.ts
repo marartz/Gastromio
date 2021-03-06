@@ -67,7 +67,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
   ) {
   }
-	
+
   ngOnInit() {
     this.url = this.router.url;
     this.initialized = false;
@@ -309,6 +309,20 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     }
     this.proceedError = undefined;
     this.router.navigateByUrl('/checkout');
+  }
+
+  public isReservationEnabled(): boolean {
+    return this.restaurant.reservationInfo?.enabled;
+  }
+
+  public hasExternalReservationSystem(): boolean {
+    return this.restaurant.reservationInfo.reservationSystemUrl &&
+      this.restaurant.reservationInfo.reservationSystemUrl.length > 0;
+  }
+
+  public proceedToReservation(): void {
+    // TODO
+    // this.router.navigateByUrl('/checkout');
   }
 
   toggleCartVisibility(): void {
