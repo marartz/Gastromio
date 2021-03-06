@@ -49,12 +49,19 @@
     }
 }
 
+#order-restaurant #order #menu .cart {
+    cursor: pointer;
+}
+
+#order-restaurant #order #menu .nocart {
+    cursor: default;
+}
+
 #order-restaurant #order #menu .dish {
     background-color: #ADCCCB;
     border: 0px none;
     border-radius: 23px;
 	color: #363636;
-    cursor: pointer;
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;

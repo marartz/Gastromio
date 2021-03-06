@@ -109,7 +109,7 @@
 					 data-aos-once="true"
 					 id="filter-mobile"
 					 >
-					<button class="cart-open" type="button" (click)="toggleCartVisibility()">Warenkorb</button>
+					<button *ngIf="allowCart" class="cart-open" type="button" (click)="toggleCartVisibility()">Warenkorb</button>
 					<div class="search">
 						<div class="icon-wrapper"><div class="icon"></div></div>
 						<input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchTextChanged($event.target.value)">
@@ -142,7 +142,7 @@
 										   (keyup)="onSearchTextChanged($event.target.value)"
 										   >
 								</div>
-								<div class="restaurant-open-cart" (click)="toggleCartVisibility()">
+								<div *ngIf="allowCart" class="restaurant-open-cart" (click)="toggleCartVisibility()">
 									<div class="cart-icon"><span>{{getCart().getDishCountOfOrder()}}</span></div>
 								</div>
 							</div>
@@ -209,6 +209,8 @@
 								</p>
                                 <a
 								   class="dish"
+                                   [class.cart]="allowCart"
+                                   [class.nocart]="!allowCart"
 								   itemscope=""
 								   itemtype="http://schema.org/Product"
 								   (click)="onAddDishToCart(dish)"

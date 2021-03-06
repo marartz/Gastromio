@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, HostListener} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -42,7 +42,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   url: string;
 
-  orderType: string;
+      orderType: string;
 
   generalError: string;
 
@@ -55,6 +55,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   searchPhrase: string;
   filteredDishCategories: DishCategoryModel[];
+
+  allowCart: boolean;
 
   proceedError: string;
 
@@ -105,6 +107,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
           }
         }
 
+        this.allowCart = orderType !== OrderType.Reservation;
+
         const serviceTimeText = params.serviceTime;
         if (serviceTimeText) {
           try {
@@ -129,7 +133,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
           if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
             this.orderFacade.startOrder(orderType, serviceTime);
-          } else {
+          } else if (orderType !== OrderType.Reservation) {
             this.orderFacade.showCart();
           }
 
@@ -258,6 +262,9 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   public onAddDishToCart(dish: DishModel): void {
+    if (!this.allowCart)
+      return;
+
     if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
       return;
     }
