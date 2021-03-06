@@ -1,4 +1,4 @@
-/* -------------------------------- 
+/* --------------------------------
 
 File#: _3_advanced-filter
 Title: Advanced Filter
@@ -49,7 +49,7 @@ Copyr: gastromio.de/imprint
 	display: -webkit-flex;
     height: 42px;
     margin-bottom: 22px;
-    width: 222px;
+    width: 330px;
 }
 
 #filter #ordertype-filter .filter .switch,
@@ -77,11 +77,10 @@ Copyr: gastromio.de/imprint
     height: 42px;
     line-height: 26px;
     outline: none;
-    padding: 8px 18px 8px 18px;
+    padding: 8px 8px 8px 8px;
     position: relative;
     text-align: center;
     vertical-align: baseline;
-    width: 101px;
 }
 
 #filter #ordertype-filter .filter .switch.active,
@@ -90,12 +89,12 @@ Copyr: gastromio.de/imprint
     border: 2px solid #ADCCCB;
     border-radius: 23px;
     line-height: 24px;
-    width: 50%;
+    width: 40%;
 }
 
 #filter #ordertype-filter .filter .switch.active span,
 #filter-details #ordertype-filter .filter .switch.active span {
-    margin-left: 14px;
+    margin-left: 4px;
 }
 
 #filter #ordertype-filter .filter .switch.active::before,
@@ -106,8 +105,7 @@ Copyr: gastromio.de/imprint
     content: " ";
     height: 20px;
     width: 20px;
-    position: absolute;
-    left: 7px;
+    position: relative;
 }
 
 /* #filter > #opening-hour-filter */
