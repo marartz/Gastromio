@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {debounceTime} from "rxjs/operators";
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {ServiceInfoModel} from "../../../shared/models/restaurant.model";
 
 @Component({
@@ -21,6 +21,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
 
   pickupEnabled: boolean;
   deliveryEnabled: boolean;
+  reservationEnabled: boolean;
   changeServiceInfoForm: FormGroup;
 
   subscription: Subscription;
@@ -37,6 +38,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
       deliveryMinimumOrderValue: [null],
       deliveryMaximumOrderValue: [null],
       deliveryCosts: [null],
+      reservationSystemUrl: [null],
       hygienicHandling: ['']
     });
     this.changeServiceInfoForm.valueChanges
@@ -46,6 +48,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
           this.updateData(
             this.pickupEnabled,
             this.deliveryEnabled,
+            this.reservationEnabled,
             value
           );
         }
@@ -60,6 +63,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
 
       this.pickupEnabled = restaurant.pickupInfo?.enabled ?? false;
       this.deliveryEnabled = restaurant.deliveryInfo?.enabled ?? false;
+      this.reservationEnabled = restaurant.reservationInfo?.enabled ?? false;
 
       this.changeServiceInfoForm.patchValue({
         pickupAverageTime: restaurant.pickupInfo?.averageTime ?? null,
@@ -69,6 +73,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
         deliveryMinimumOrderValue: restaurant.deliveryInfo?.minimumOrderValue ?? null,
         deliveryMaximumOrderValue: restaurant.deliveryInfo?.maximumOrderValue ?? null,
         deliveryCosts: restaurant.deliveryInfo?.costs ?? null,
+        reservationSystemUrl: restaurant.reservationInfo.reservationSystemUrl,
         hygienicHandling: restaurant.hygienicHandling
       });
 
@@ -88,6 +93,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
     this.updateData(
       !this.pickupEnabled,
       this.deliveryEnabled,
+      this.reservationEnabled,
       this.changeServiceInfoForm.value
     );
   }
@@ -96,11 +102,21 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
     this.updateData(
       this.pickupEnabled,
       !this.deliveryEnabled,
+      this.reservationEnabled,
       this.changeServiceInfoForm.value
     );
   }
 
-  private updateData(pickupEnabled: boolean, deliveryEnabled: boolean, value: any): void {
+  toggleReservationEnabled() {
+    this.updateData(
+      this.pickupEnabled,
+      this.deliveryEnabled,
+      !this.reservationEnabled,
+      this.changeServiceInfoForm.value
+    );
+  }
+
+  private updateData(pickupEnabled: boolean, deliveryEnabled: boolean, reservationEnabled: boolean, value: any): void {
     this.facade.changeServiceInfo(new ServiceInfoModel({
       pickupEnabled: pickupEnabled,
       pickupAverageTime: value.pickupAverageTime,
@@ -111,7 +127,8 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
       deliveryMinimumOrderValue: value.deliveryMinimumOrderValue,
       deliveryMaximumOrderValue: value.deliveryMaximumOrderValue,
       deliveryCosts: value.deliveryCosts,
-      reservationEnabled: false,
+      reservationEnabled: reservationEnabled,
+      reservationSystemUrl: value.reservationSystemUrl,
       hygienicHandling: value.hygienicHandling
     }));
   }

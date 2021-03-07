@@ -148,6 +148,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     this.orderFacade.setSelectedOrderType(OrderType.Pickup);
   }
 
+  onReservationSelected(): void {
+    this.orderFacade.setSelectedOrderType(OrderType.Reservation);
+  }
+
   onSearchType(value: string) {
     this.orderFacade.setSelectedSearchPhrase(value);
   }

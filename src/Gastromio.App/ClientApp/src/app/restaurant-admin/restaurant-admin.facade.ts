@@ -397,7 +397,8 @@ export class RestaurantAdminFacade {
         });
 
         this.restaurant$.value.reservationInfo = new ReservationInfoModel({
-          enabled: serviceInfo.reservationEnabled
+          enabled: serviceInfo.reservationEnabled,
+          reservationSystemUrl: serviceInfo.reservationSystemUrl
         });
 
         this.restaurant$.value.hygienicHandling = serviceInfo.hygienicHandling;

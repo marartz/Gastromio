@@ -38,7 +38,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             deviatingOpeningDays = new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = new PickupInfo(false, 0, null, null);
             DeliveryInfo = new DeliveryInfo(false, 0, null, null, null);
-            ReservationInfo = new ReservationInfo(false);
+            ReservationInfo = new ReservationInfo(false, null);
             cuisines = new HashSet<CuisineId>();
             paymentMethods = new HashSet<PaymentMethodId>();
             administrators = new HashSet<UserId>();
@@ -82,7 +82,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
                                         new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = pickupInfo ?? new PickupInfo(false, 0, null, null);
             DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, 0, null, null, null);
-            ReservationInfo = reservationInfo ?? new ReservationInfo(false);
+            ReservationInfo = reservationInfo ?? new ReservationInfo(false, null);
             HygienicHandling = hygienicHandling;
             ImportId = importId;
             IsActive = isActive;
@@ -218,14 +218,14 @@ namespace Gastromio.Core.Domain.Model.Restaurant
 
             if (!string.IsNullOrEmpty(contactInfo.Mobile) && !Validators.IsValidPhoneNumber(contactInfo.Mobile))
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantMobileInvalid, contactInfo.Mobile);
-            
+
             ContactInfo = contactInfo;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
         }
-        
+
         public bool IsOpen(DateTime dateTime)
         {
             return FindOpeningPeriod(dateTime) != null;
@@ -400,7 +400,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             {
                 return true;
             }
-            
+
             if (orderDateTime.Date > DateTime.Today)
             {
                 return true;
@@ -413,7 +413,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             {
                 return true;
             }
-            
+
             return openingPeriodOfNow != openingPeriodOfOrderDateTime;
         }
 

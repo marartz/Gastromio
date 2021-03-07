@@ -58,6 +58,7 @@
 										 >
 										<ng-container *ngIf="restaurant.deliveryInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
                                         <ng-container *ngIf="restaurant.pickupInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
+                                        <ng-container *ngIf="restaurant.reservationInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'reservation')">Reservierung</button></ng-container>
                                     </div>
                                     <div class="border" data-aos="gm-move-down"
 										 data-aos-delay="400"

@@ -62,10 +62,17 @@
                                         <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
                                             <button type="button" class="switch active"><span>Abholung</span></button>
                                             <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                            <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
                                         </ng-container>
                                         <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
                                             <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
                                             <button type="button" class="switch active"><span>Lieferung</span></button>
+                                            <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
+                                        </ng-container>
+                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+                                            <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+                                            <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                            <button type="button" class="switch active"><span>Reservierung</span></button>
                                         </ng-container>
                                     </div>
                                 </div>
@@ -157,11 +164,18 @@
 											<ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
 												<button type="button" class="switch active"><span>Abholung</span></button>
 												<button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                                <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
 											</ng-container>
 											<ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
 												<button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
 												<button type="button" class="switch active"><span>Lieferung</span></button>
+                                                <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
 											</ng-container>
+                                            <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+                                                <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+                                                <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                                                <button type="button" class="switch active">Reservierung</button>
+                                            </ng-container>
 										</div>
 									</section>
 									<section id="opening-hour-filter">
