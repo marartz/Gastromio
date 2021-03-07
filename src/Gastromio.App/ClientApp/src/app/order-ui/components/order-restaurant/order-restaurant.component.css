@@ -1,3 +1,29 @@
+#sub-text {
+    float: left;
+}
+
+#reservation {
+    margin-top: 20px;
+    float: left;
+}
+
+#reservation a.proceed-to-reservation {
+    background-color: #DECF80;
+    border-radius: 23px;
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0px;
+    line-height: 26px;
+    padding: 11px;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+
 
 #order #menu {
 	float: left;
@@ -23,12 +49,19 @@
     }
 }
 
+#order-restaurant #order #menu .cart {
+    cursor: pointer;
+}
+
+#order-restaurant #order #menu .nocart {
+    cursor: default;
+}
+
 #order-restaurant #order #menu .dish {
     background-color: #ADCCCB;
     border: 0px none;
     border-radius: 23px;
 	color: #363636;
-    cursor: pointer;
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
@@ -90,7 +123,7 @@
 #order-restaurant #order #menu .dish .dish-information {
 	flex-grow: 1;
 	margin-bottom: auto;
-	position: relative;						 
+	position: relative;
 }
 
 #order-restaurant #order #menu .dish-category {

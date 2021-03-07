@@ -4,7 +4,7 @@
         <div id="fp-alert" *ngIf="generalError !== undefined"><p>{{generalError}}</p></div>
 
 		<div
-			 class="warning"
+			 class="warning closed-rest"
 			 data-aos="gm-move-up"
 			 data-aos-anchor="body"
 			 data-aos-delay="200"
@@ -39,44 +39,61 @@
 							(click)="openImprintModal()"
 							>
 							{{restaurant.name}}
-						</h1>
-						<h2
-							class="restaurant-address"
-							data-aos="gm-move-up"
-							data-aos-anchor="#order"
-							data-aos-delay="200"
-							data-aos-duration="800"
-							data-aos-once="true"
-							>
-							{{restaurant.address.street}}, {{restaurant.address.city}}
-						</h2>
-						<h2
-							class="restaurant-hours"
-							data-aos="gm-move-up"
-							data-aos-anchor="#order"
-							data-aos-delay="300"
-							data-aos-duration="800"
-							data-aos-once="true"
-							>
-							<ng-container *ngIf="restaurant.openingHoursTodayText !== null">
-								<span>Geöffnet von {{restaurant.openingHoursTodayText}} Uhr</span>
-							</ng-container>
-							<ng-container *ngIf="!restaurant.isOpen(undefined)">
-								<span> ({{restaurant.getRestaurantClosedReason(undefined)}})</span>
-							</ng-container>
-						</h2>
-						<h2
-							class="restaurant-info"
-							data-aos="gm-move-up"
-							data-aos-anchor="#order"
-							data-aos-delay="400"
-							data-aos-duration="800"
-							data-aos-once="true"
-							>
-							<ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span>Telefonische Bestellung</span></ng-container>
-							<ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span>Online-Vorbestellung</span></ng-container>
-							<ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span>Online-Bestellung</span></ng-container>
-						</h2>
+                        </h1>
+                        <div id="sub-text">
+                            <h2
+                                class="restaurant-address"
+                                data-aos="gm-move-up"
+                                data-aos-anchor="#order"
+                                data-aos-delay="200"
+                                data-aos-duration="800"
+                                data-aos-once="true"
+                                >
+                                {{restaurant.address.street}}, {{restaurant.address.city}}
+                            </h2>
+                            <h2
+                                class="restaurant-hours"
+                                data-aos="gm-move-up"
+                                data-aos-anchor="#order"
+                                data-aos-delay="300"
+                                data-aos-duration="800"
+                                data-aos-once="true"
+                                >
+                                <ng-container *ngIf="restaurant.openingHoursTodayText !== null">
+                                    <span>Geöffnet von {{restaurant.openingHoursTodayText}} Uhr</span>
+                                </ng-container>
+                                <ng-container *ngIf="!restaurant.isOpen(undefined)">
+                                    <span> ({{restaurant.getRestaurantClosedReason(undefined)}})</span>
+                                </ng-container>
+                            </h2>
+                            <h2
+                                class="restaurant-info"
+                                data-aos="gm-move-up"
+                                data-aos-anchor="#order"
+                                data-aos-delay="400"
+                                data-aos-duration="800"
+                                data-aos-once="true"
+                                >
+                                <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span>Telefonische Bestellung</span></ng-container>
+                                <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span>Online-Vorbestellung</span></ng-container>
+                                <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span>Online-Bestellung</span></ng-container>
+                            </h2>
+                        </div>
+                        <div *ngIf="isReservationEnabled()" id="reservation">
+                            <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" (click)="proceedToReservation()">
+                                Tisch reservieren
+                            </a>
+                            <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank">
+                                Tisch reservieren
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" width="16" height="16" style="display: inline">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                            </a>
+                        </div>
 					</div>
 				</div>
 			</header>
@@ -92,12 +109,12 @@
 					 data-aos-once="true"
 					 id="filter-mobile"
 					 >
-					<button class="cart-open" type="button" (click)="toggleCartVisibility()">Warenkorb</button>
+					<button *ngIf="allowCart" class="cart-open" type="button" (click)="toggleCartVisibility()">Warenkorb</button>
 					<div class="search">
 						<div class="icon-wrapper"><div class="icon"></div></div>
 						<input type="text" autocomplete="off" inputmode="latin" maxlength="100" spellcheck="false" placeholder="Suche ..." (keyup)="onSearchTextChanged($event.target.value)">
 					</div>
-				</section>
+                </section>
 				<!-- ENDE: _3_advanced-filter -->
 
                 <div class="wrapper">
@@ -125,7 +142,7 @@
 										   (keyup)="onSearchTextChanged($event.target.value)"
 										   >
 								</div>
-								<div class="restaurant-open-cart" (click)="toggleCartVisibility()">
+								<div *ngIf="allowCart" class="restaurant-open-cart" (click)="toggleCartVisibility()">
 									<div class="cart-icon"><span>{{getCart().getDishCountOfOrder()}}</span></div>
 								</div>
 							</div>
@@ -192,6 +209,8 @@
 								</p>
                                 <a
 								   class="dish"
+                                   [class.cart]="allowCart"
+                                   [class.nocart]="!allowCart"
 								   itemscope=""
 								   itemtype="http://schema.org/Product"
 								   (click)="onAddDishToCart(dish)"

@@ -1,4 +1,4 @@
-<section 
+<section
 		 data-aos="fade"
 		 data-aos-anchor="#page-opening-hours-settings"
 		 data-aos-delay="400"
@@ -6,12 +6,12 @@
 		 data-aos-once="false"
 		 id="page-opening-hours-settings"
 		 >
-	
+
 	<header class="section-header">
 		<h3>Speisekarte</h3>
 		<p>Speisen und Menüs einpflegen und immer aktuell halten</p>
 	</header>
-	
+
 	<ul ngbNav #nav="ngbNav" class="nav-tabs" [activeId]="activeDishCategoryId$ | async"
                 (activeIdChange)="onChangeActiveDishCategoryId($event)">
                 <li [ngbNavItem]="dishCategory.id" *ngFor="let dishCategory of dishCategories">
@@ -175,17 +175,17 @@
                 </li>
             </ul>
             <div [ngbNavOutlet]="nav"></div>
-	
+
 	<header class="section-header">
 		<h3>Externe Speisekarte</h3>
 		<p>Externe Speisekarte über einen Web-Link anzeigen</p>
 	</header>
-	
+
 	<section id="settings">
 		<form [formGroup]="externalMenuForm">
 			<label for="enabled">Externe Speisekarte aktiv?</label>
 			<input
-				   class="checkbox-input"
+				   class="text-input"
 				   formControlName="enabled"
 				   id="enabled"
 				   type="checkbox"
@@ -230,5 +230,5 @@
 				   >
 		</form>
 	</section>
-	
+
 </section>

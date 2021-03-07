@@ -56,7 +56,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
                                         new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = pickupInfo ?? new PickupInfo(false, 0, null, null);
             DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, 0, null, null, null);
-            ReservationInfo = reservationInfo ?? new ReservationInfo(false);
+            ReservationInfo = reservationInfo ?? new ReservationInfo(false, null);
             HygienicHandling = hygienicHandling;
             ImportId = importId;
             IsActive = isActive;

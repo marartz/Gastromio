@@ -249,7 +249,8 @@ namespace Gastromio.App.Controllers.V1
                         changeRestaurantServiceInfoModel.DeliveryCosts
                     ),
                     new ReservationInfo(
-                        changeRestaurantServiceInfoModel.ReservationEnabled
+                        changeRestaurantServiceInfoModel.ReservationEnabled,
+                        changeRestaurantServiceInfoModel.ReservationSystemUrl
                     ),
                     changeRestaurantServiceInfoModel.HygienicHandling
                 ),
@@ -650,7 +651,7 @@ namespace Gastromio.App.Controllers.V1
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
-        
+
         [Route("restaurants/{restaurantId}/changesupportedordermode")]
         [HttpPost]
         public async Task<IActionResult> PostChangeSupportedOrderModeAsync(Guid restaurantId,
@@ -669,7 +670,7 @@ namespace Gastromio.App.Controllers.V1
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
-        
+
         [Route("restaurants/{restaurantId}/addorchangeexternalmenu")]
         [HttpPost]
         public async Task<IActionResult> PostAddOrChangeExternalMenuAsync(Guid restaurantId,
@@ -693,7 +694,7 @@ namespace Gastromio.App.Controllers.V1
 
             return ResultHelper.HandleResult(commandResult, failureMessageService);
         }
-        
+
         [Route("restaurants/{restaurantId}/removeexternalmenu")]
         [HttpPost]
         public async Task<IActionResult> PostRemoveExternalMenuAsync(Guid restaurantId,

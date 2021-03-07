@@ -30,35 +30,38 @@ import {RestaurantAdminFacade} from "./restaurant-admin.facade";
 import {RestaurantRestAdminService} from './services/restaurant-rest-admin.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
-    BlockUIModule.forRoot(),
-    RestaurantAdminRoutingModule,
-    SharedModule,
-    AuthModule
-  ],
-  declarations: [
-    AddDeviatingDateComponent,
-    AddDishCategoryComponent,
-    AdminMyRestaurantsComponent,
-    AdminRestaurantComponent,
-    ChangeDishCategoryComponent,
-    EditDishComponent,
-    GeneralSettingsComponent,
-    RemoveDishComponent,
-    RemoveDishCategoryComponent,
-    DishManagementComponent,
-    OpeningHoursSettingsComponent,
-    OrderSettingsComponent,
-    PaymentSettingsComponent,
-  ],
-  providers: [
-    RestaurantAdminFacade,
-    RestaurantRestAdminService,
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbModule,
+        BlockUIModule.forRoot(),
+        RestaurantAdminRoutingModule,
+        SharedModule,
+        AuthModule
+    ],
+    declarations: [
+        AddDeviatingDateComponent,
+        AddDishCategoryComponent,
+        AdminMyRestaurantsComponent,
+        AdminRestaurantComponent,
+        ChangeDishCategoryComponent,
+        EditDishComponent,
+        GeneralSettingsComponent,
+        RemoveDishComponent,
+        RemoveDishCategoryComponent,
+        DishManagementComponent,
+        OpeningHoursSettingsComponent,
+        OrderSettingsComponent,
+        PaymentSettingsComponent,
+    ],
+    exports: [
+        AdminRestaurantComponent
+    ],
+    providers: [
+        RestaurantAdminFacade,
+        RestaurantRestAdminService,
+    ]
 })
 export class RestaurantAdminModule {
 }

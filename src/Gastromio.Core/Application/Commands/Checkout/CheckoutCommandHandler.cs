@@ -149,7 +149,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
 
                     break;
                 case OrderType.Reservation:
-                    if (!ValidateOrderTypeReservation(restaurant, newOrderId))
+                    if (!ValidateOrderTypeReservation(command, newOrderId, restaurant))
                     {
                         logger.LogInformation($"Declined order {newOrderId.Value}: reservation order is not valid");
                         return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
@@ -167,12 +167,17 @@ namespace Gastromio.Core.Application.Commands.Checkout
                 return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
             }
 
-            var paymentMethod =
-                await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId, cancellationToken);
-            if (paymentMethod == null)
+            PaymentMethod paymentMethod = null;
+            if (command.OrderType == OrderType.Pickup || command.OrderType == OrderType.Delivery)
             {
-                logger.LogInformation($"Declined order {newOrderId.Value}: payment method is not known");
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                paymentMethod =
+                    await paymentMethodRepository.FindByPaymentMethodIdAsync(command.PaymentMethodId,
+                        cancellationToken);
+                if (paymentMethod == null)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: payment method is not known");
+                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
             }
 
             decimal costs = 0;
@@ -217,8 +222,8 @@ namespace Gastromio.Core.Application.Commands.Checkout
                 ),
                 command.Comments,
                 command.PaymentMethodId,
-                paymentMethod.Name,
-                paymentMethod.Description,
+                paymentMethod?.Name,
+                paymentMethod?.Description,
                 costs,
                 totalPrice,
                 command.ServiceTime,
@@ -359,11 +364,53 @@ namespace Gastromio.Core.Application.Commands.Checkout
             return true;
         }
 
-        private bool ValidateOrderTypeReservation(Restaurant restaurant, OrderId newOrderId)
+        private bool ValidateOrderTypeReservation(CheckoutCommand command, OrderId newOrderId, Restaurant restaurant)
         {
             if (restaurant.ReservationInfo == null || !restaurant.ReservationInfo.Enabled)
             {
                 logger.LogInformation($"Declined order {newOrderId.Value}: reservation is not enabled");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.GivenName))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: given name is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.LastName))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: last name is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Street))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: street is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.ZipCode))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: zip code is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.City))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: city is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Email))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: email is empty");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(command.Phone))
+            {
+                logger.LogInformation($"Declined order {newOrderId.Value}: phone is empty");
                 return false;
             }
 

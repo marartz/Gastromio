@@ -1,0 +1,9 @@
+#preview-button {
+    border-radius: 20px;
+    margin-top: 5px;
+    padding: 10px;
+    height: 20px;
+    color: #fff;
+    font-size: 12px;
+    background-color: #363636;
+}

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Gastromio.Core.Application.Ports.Template;
 using Gastromio.Core.Domain.Model.Orders;
 
@@ -8,20 +9,129 @@ namespace Gastromio.Template.DotLiquid
     {
         public EmailData GetCustomerEmail(Order order)
         {
-            var sb = new StringBuilder();
+            return order.CartInfo.OrderType switch
+            {
+                OrderType.Pickup => GetCustomerEmailForPickup(order),
+                OrderType.Delivery => GetCustomerEmailForDelivery(order),
+                OrderType.Reservation => GetCustomerEmailForReservation(order),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
 
+        private static EmailData GetCustomerEmailForPickup(Order order)
+        {
+            var sb = new StringBuilder();
+            AppendCustomerSalutation(order, sb);
+            AppendOrderReceptionForCustomer(order, sb);
+            AppendGastromioInfoForCustomer(order, sb);
+            AppendOrderRestaurantInfoForCustomer(order, sb);
+            AppendOrderDetails(sb, order);
+
+            sb.Append("<p>");
+            sb.Append("Die gewählte Bestellart ist: Abholung. Bitte hole das Essen beim Restaurant ab.");
+            sb.Append("</p>");
+
+            AppendServiceTime(sb, order);
+            AppendGreetings(sb);
+
+            var message = sb.ToString();
+            return new EmailData
+            {
+                Subject = "Deine Bestellung bei Gastromio.de",
+                TextPart = message
+                    .Replace("<br/>", "\r\n")
+                    .Replace("<p>", "")
+                    .Replace("</p>", "\r\n"),
+                HtmlPart = message
+            };
+        }
+
+        private static EmailData GetCustomerEmailForDelivery(Order order)
+        {
+            var sb = new StringBuilder();
+            AppendCustomerSalutation(order, sb);
+            AppendOrderReceptionForCustomer(order, sb);
+            AppendGastromioInfoForCustomer(order, sb);
+            AppendOrderRestaurantInfoForCustomer(order, sb);
+            AppendOrderDetails(sb, order);
+
+            sb.Append("<p>");
+            sb.Append("Die gewählte Bestellart ist: Lieferung. Das Essen wird Dir nach Hause geliefert.");
+            sb.Append("</p>");
+
+            AppendServiceTime(sb, order);
+            AppendGreetings(sb);
+
+            var message = sb.ToString();
+            return new EmailData
+            {
+                Subject = "Deine Bestellung bei Gastromio.de",
+                TextPart = message
+                    .Replace("<br/>", "\r\n")
+                    .Replace("<p>", "")
+                    .Replace("</p>", "\r\n"),
+                HtmlPart = message
+            };
+        }
+
+        private static EmailData GetCustomerEmailForReservation(Order order)
+        {
+            var sb = new StringBuilder();
+            AppendCustomerSalutation(order, sb);
+            AppendReservationReceptionForCustomer(order, sb);
+            AppendServiceTime(sb, order);
+            AppendGastromioInfoForCustomer(order, sb);
+            AppendGreetings(sb);
+
+            var message = sb.ToString();
+            return new EmailData
+            {
+                Subject = "Deine Reservierungsanfrage bei Gastromio.de",
+                TextPart = message
+                    .Replace("<br/>", "\r\n")
+                    .Replace("<p>", "")
+                    .Replace("</p>", "\r\n"),
+                HtmlPart = message
+            };
+        }
+
+        private static void AppendGreetings(StringBuilder sb)
+        {
+            sb.AppendLine("<br/>");
+            sb.Append("<p>");
+            sb.AppendLine("Dein Gastromio-Team");
+            sb.Append("</p>");
+        }
+
+        private static void AppendCustomerSalutation(Order order, StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.Append("Liebe/r ");
             sb.Append(order.CustomerInfo.GivenName);
             sb.Append(",");
             sb.Append("</p>");
+        }
 
+        private static void AppendOrderReceptionForCustomer(Order order, StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.Append("wir haben Deine Bestellung empfangen und an ");
             sb.Append(order.CartInfo.RestaurantInfo);
             sb.Append(" weitergeleitet!");
             sb.Append("</p>");
+        }
 
+        private static void AppendReservationReceptionForCustomer(Order order, StringBuilder sb)
+        {
+            sb.Append("<p>");
+            sb.Append("wir haben Deine Reservierungsanfrage empfangen und an ");
+            sb.Append(order.CartInfo.RestaurantInfo);
+            sb.Append(" weitergeleitet!");
+            sb.Append("</p>");
+        }
+
+        private static void AppendGastromioInfoForCustomer(Order order, StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.AppendLine(
                 "Gastromio.de wurde ehrenamtlich erstellt, um Bocholts schönes Gastronomieangebot zu erhalten. Gastromio wurde");
@@ -43,40 +153,54 @@ namespace Gastromio.Template.DotLiquid
                 "Wenn ein Problem aufgetreten ist, das ihr nicht lösen konntet, melde Dich doch gerne unter support@gastromio.de!");
             sb.Append("Wir nehmen Deinen Hinweis gerne auf.");
             sb.Append("</p>");
+        }
 
+        private static void AppendOrderRestaurantInfoForCustomer(Order order, StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.Append("Deine Bestellung bei ");
             sb.Append(order.CartInfo.RestaurantName);
             sb.Append(":");
             sb.Append("</p>");
+        }
 
+        public EmailData GetRestaurantEmail(Order order)
+        {
+            switch (order.CartInfo.OrderType)
+            {
+                case OrderType.Pickup:
+                    return GetRestaurantEmailForPickup(order);
+                case OrderType.Delivery:
+                    return GetRestaurantEmailForDelivery(order);
+                case OrderType.Reservation:
+                    return GetRestaurantEmailForReservation(order);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+
+        private static EmailData GetRestaurantEmailForPickup(Order order)
+        {
+            var sb = new StringBuilder();
+            AppendRestaurantSalutation(order, sb);
+            AppendOrderReceptionForRestaurant(sb);
             AppendOrderDetails(sb, order);
 
             sb.Append("<p>");
-            if (order.CartInfo.OrderType == OrderType.Pickup)
-            {
-                sb.Append("Die gewählte Bestellart ist: Abholung. Bitte hole das Essen beim Restaurant ab.");
-            }
-            else if (order.CartInfo.OrderType == OrderType.Delivery)
-            {
-                sb.Append("Die gewählte Bestellart ist: Lieferung. Das Essen wird Dir nach Hause geliefert.");
-            }
-
+            sb.Append("Die gewählte Bestellart ist: Abholung. Der Besteller holt die Bestellung ab.");
             sb.Append("</p>");
 
             AppendServiceTime(sb, order);
+            AppendGastromioInfoForRestaurant(order, sb);
+            AppendGreetings(sb);
 
-            sb.AppendLine("<br/>");
-
-            sb.Append("<p>");
-            sb.AppendLine("Dein Gastromio-Team");
-            sb.Append("</p>");
-
+            var customerInfo =
+                $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName}, {order.CustomerInfo.Email}, {order.CustomerInfo.Phone})";
             var message = sb.ToString();
-
             return new EmailData
             {
-                Subject = "Deine Bestellung bei Gastromio.de",
+                Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
                 TextPart = message
                     .Replace("<br/>", "\r\n")
                     .Replace("<p>", "")
@@ -85,37 +209,115 @@ namespace Gastromio.Template.DotLiquid
             };
         }
 
-        public EmailData GetRestaurantEmail(Order order)
+        private static EmailData GetRestaurantEmailForDelivery(Order order)
         {
             var sb = new StringBuilder();
+            AppendRestaurantSalutation(order, sb);
+            AppendOrderReceptionForRestaurant(sb);
+            AppendOrderDetails(sb, order);
 
+            sb.Append("<p>");
+            sb.Append("Die gewählte Bestellart ist: Lieferung. Bitte dem Besteller die Bestellung zur gewünschten Adresse liefern.");
+            sb.Append("</p>");
+
+            AppendServiceTime(sb, order);
+            AppendGastromioInfoForRestaurant(order, sb);
+            AppendGreetings(sb);
+
+            var customerInfo =
+                $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} {order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
+            var message = sb.ToString();
+            return new EmailData
+            {
+                Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
+                TextPart = message
+                    .Replace("<br/>", "\r\n")
+                    .Replace("<p>", "")
+                    .Replace("</p>", "\r\n"),
+                HtmlPart = message
+            };
+        }
+
+        private static EmailData GetRestaurantEmailForReservation(Order order)
+        {
+            var sb = new StringBuilder();
+            AppendRestaurantSalutation(order, sb);
+            AppendReservationReceptionForRestaurant(sb);
+            AppendServiceTime(sb, order);
+
+            sb.Append("<p>");
+            sb.Append("Reservierungsanfrage:");
+            sb.AppendLine("<br/>");
+
+            sb.Append(order.CustomerInfo.GivenName);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.LastName);
+            sb.AppendLine("<br/>");
+
+            sb.AppendLine(order.CustomerInfo.Street);
+            sb.Append(order.CustomerInfo.ZipCode);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.City);
+            sb.AppendLine("<br/>");
+
+            sb.Append("Telefonnummer: ");
+            sb.Append(order.CustomerInfo.Phone);
+            sb.AppendLine("<br/>");
+
+            sb.Append("E-Mail-Adresse: ");
+            sb.Append(order.CustomerInfo.Email);
+
+            if (!string.IsNullOrWhiteSpace(order.CustomerInfo.AddAddressInfo))
+            {
+                sb.AppendLine("<br/>");
+                sb.Append("Zusatzinformationen: ");
+                sb.Append(order.CustomerInfo.AddAddressInfo);
+            }
+
+            sb.Append("</p>");
+
+            AppendGastromioInfoForRestaurant(order, sb);
+            AppendGreetings(sb);
+
+            var customerInfo =
+                $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} {order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})";
+            var message = sb.ToString();
+            return new EmailData
+            {
+                Subject = $"Gastromio.de - Neue Reservierungsanfrage von {customerInfo}",
+                TextPart = message
+                    .Replace("<br/>", "\r\n")
+                    .Replace("<p>", "")
+                    .Replace("</p>", "\r\n"),
+                HtmlPart = message
+            };
+        }
+
+        private static void AppendRestaurantSalutation(Order order, StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.Append("Liebes Restaurant ");
             sb.Append(order.CartInfo.RestaurantName);
             sb.Append(",");
             sb.Append("</p>");
+        }
 
+        private static void AppendOrderReceptionForRestaurant(StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.Append("Wir haben eine neue Bestellung für Dich über Gastromio.de entgegengenommen:");
             sb.Append("</p>");
+        }
 
-            AppendOrderDetails(sb, order);
-
+        private static void AppendReservationReceptionForRestaurant(StringBuilder sb)
+        {
             sb.Append("<p>");
-            if (order.CartInfo.OrderType == OrderType.Pickup)
-            {
-                sb.Append("Die gewählte Bestellart ist: Abholung. Der Besteller holt die Bestellung ab.");
-            }
-            else if (order.CartInfo.OrderType == OrderType.Delivery)
-            {
-                sb.Append(
-                    "Die gewählte Bestellart ist: Lieferung. Bitte dem Besteller die Bestellung zur gewünschten Adresse liefern.");
-            }
-
+            sb.Append("Wir haben eine neue Reservierungsanfrage für Dich über Gastromio.de entgegengenommen:");
             sb.Append("</p>");
+        }
 
-            AppendServiceTime(sb, order);
-
+        private static void AppendGastromioInfoForRestaurant(Order order, StringBuilder sb)
+        {
             sb.Append("<p>");
             sb.AppendLine("Noch ein wichtiger Hinweis:");
             sb.Append("</p>");
@@ -168,32 +370,6 @@ namespace Gastromio.Template.DotLiquid
             sb.AppendLine(
                 "etwas zu kritisieren hast und erkläre uns einfach, was Du Dir anders wünschst, sie alle tun ihr Bestes.");
             sb.Append("</p>");
-
-            sb.AppendLine("<br/>");
-
-            sb.Append("<p>");
-            sb.AppendLine("Dein Gastromio-Team");
-            sb.Append("</p>");
-
-            var customerInfo = order.CartInfo.OrderType switch
-            {
-                OrderType.Delivery =>
-                    $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName} {order.CustomerInfo.Street}, {order.CustomerInfo.ZipCode} {order.CustomerInfo.City})",
-                _ =>
-                    $"({order.CustomerInfo.GivenName} {order.CustomerInfo.LastName}, {order.CustomerInfo.Email}, {order.CustomerInfo.Phone})"
-            };
-
-            var message = sb.ToString();
-
-            return new EmailData
-            {
-                Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
-                TextPart = message
-                    .Replace("<br/>", "\r\n")
-                    .Replace("<p>", "")
-                    .Replace("</p>", "\r\n"),
-                HtmlPart = message
-            };
         }
 
         public EmailData GetRequestPasswordChangeEmail(string email, string url)
@@ -246,7 +422,16 @@ namespace Gastromio.Template.DotLiquid
             var sb = new StringBuilder();
             sb.Append("Liebes Restaurant ");
             sb.Append(order.CartInfo.RestaurantName);
-            sb.Append(", wir haben eine Bestellung von ");
+            sb.Append(", wir haben eine ");
+            if (order.CartInfo.OrderType == OrderType.Reservation)
+            {
+                sb.Append("Reservierungsanfrage");
+            }
+            else
+            {
+                sb.Append("Bestellung");
+            }
+            sb.Append(" von ");
             sb.Append(order.CustomerInfo.GivenName);
             sb.Append(" ");
             sb.Append(order.CustomerInfo.LastName);

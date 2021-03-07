@@ -489,7 +489,7 @@ namespace Gastromio.Core.Domain.Services
             if (boolResult.IsFailure)
                 return boolResult;
 
-            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation), curUserId);
+            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation, null), curUserId);
             if (boolResult.IsFailure)
                 return boolResult;
 

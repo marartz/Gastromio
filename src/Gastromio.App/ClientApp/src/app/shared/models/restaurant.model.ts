@@ -442,9 +442,12 @@ export class ReservationInfoModel {
 
   public enabled: boolean;
 
+  public reservationSystemUrl: string;
+
   public clone(): ReservationInfoModel {
     return new ReservationInfoModel({
-      enabled: this.enabled
+      enabled: this.enabled,
+      reservationSystemUrl: this.reservationSystemUrl
     });
   }
 
@@ -477,6 +480,8 @@ export class ServiceInfoModel {
 
   public reservationEnabled: boolean;
 
+  public reservationSystemUrl: string;
+
   public hygienicHandling: string;
 
   public clone(): ServiceInfoModel {
@@ -491,6 +496,7 @@ export class ServiceInfoModel {
       deliveryMaximumOrderValue: this.deliveryMaximumOrderValue,
       deliveryCosts: this.deliveryCosts,
       reservationEnabled: this.reservationEnabled,
+      reservationSystemUrl: this.reservationSystemUrl,
       hygienicHandling: this.hygienicHandling
     });
   }

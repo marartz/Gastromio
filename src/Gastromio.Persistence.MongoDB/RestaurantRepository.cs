@@ -405,7 +405,7 @@ namespace Gastromio.Persistence.MongoDB
                     )
                     : null,
                 document.ReservationInfo != null
-                    ? new ReservationInfo(document.ReservationInfo.Enabled)
+                    ? new ReservationInfo(document.ReservationInfo.Enabled, document.ReservationInfo.ReservationSystemUrl)
                     : null,
                 document.HygienicHandling,
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
@@ -512,7 +512,8 @@ namespace Gastromio.Persistence.MongoDB
                 ReservationInfo = obj.ReservationInfo != null
                     ? new ReservationInfoModel
                     {
-                        Enabled = obj.ReservationInfo.Enabled
+                        Enabled = obj.ReservationInfo.Enabled,
+                        ReservationSystemUrl = obj.ReservationInfo.ReservationSystemUrl
                     }
                     : null,
                 HygienicHandling = obj.HygienicHandling,
