@@ -50,7 +50,7 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   getOrderTypeText(): string {
-    return this.order.cartInfo.orderType === 'reservation' ? "Rervierungsanfrage" : "Bestellung";
+    return this.order.cartInfo.orderType === 2 ? "Rervierungsanfrage" : "Bestellung";
   }
 
 }

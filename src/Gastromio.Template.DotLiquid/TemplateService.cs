@@ -86,7 +86,7 @@ namespace Gastromio.Template.DotLiquid
             var message = sb.ToString();
             return new EmailData
             {
-                Subject = "Deine Bestellung bei Gastromio.de",
+                Subject = "Deine Reservierungsanfrage bei Gastromio.de",
                 TextPart = message
                     .Replace("<br/>", "\r\n")
                     .Replace("<p>", "")
@@ -244,6 +244,38 @@ namespace Gastromio.Template.DotLiquid
             AppendRestaurantSalutation(order, sb);
             AppendReservationReceptionForRestaurant(sb);
             AppendServiceTime(sb, order);
+
+            sb.Append("<p>");
+            sb.Append("Reservierungsanfrage:");
+            sb.AppendLine("<br/>");
+
+            sb.Append(order.CustomerInfo.GivenName);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.LastName);
+            sb.AppendLine("<br/>");
+
+            sb.AppendLine(order.CustomerInfo.Street);
+            sb.Append(order.CustomerInfo.ZipCode);
+            sb.Append(" ");
+            sb.Append(order.CustomerInfo.City);
+            sb.AppendLine("<br/>");
+
+            sb.Append("Telefonnummer: ");
+            sb.Append(order.CustomerInfo.Phone);
+            sb.AppendLine("<br/>");
+
+            sb.Append("E-Mail-Adresse: ");
+            sb.Append(order.CustomerInfo.Email);
+
+            if (!string.IsNullOrWhiteSpace(order.CustomerInfo.AddAddressInfo))
+            {
+                sb.AppendLine("<br/>");
+                sb.Append("Zusatzinformationen: ");
+                sb.Append(order.CustomerInfo.AddAddressInfo);
+            }
+
+            sb.Append("</p>");
+
             AppendGastromioInfoForRestaurant(order, sb);
             AppendGreetings(sb);
 
@@ -252,7 +284,7 @@ namespace Gastromio.Template.DotLiquid
             var message = sb.ToString();
             return new EmailData
             {
-                Subject = $"Gastromio.de - Neue Bestellung von {customerInfo}",
+                Subject = $"Gastromio.de - Neue Reservierungsanfrage von {customerInfo}",
                 TextPart = message
                     .Replace("<br/>", "\r\n")
                     .Replace("<p>", "")
