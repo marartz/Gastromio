@@ -58,7 +58,7 @@
 					>
 					Admin Bereich
 				</h1>
-				<h3
+				<h5
 					data-aos="gm-move-down"
 					data-aos-anchor="#backend"
 					data-aos-delay="400"
@@ -67,76 +67,31 @@
 					>
 					Hier können Sie Ihre Daten verwalten, um Gastromio <br>
 					optimal an Ihre Bedürfnisse anzupassen.
-				</h3>
+                </h5>
+                <h5 *ngIf="(restaurant$ | async).isActive"
+                    data-aos="gm-move-down"
+                    data-aos-anchor="#backend"
+                    data-aos-delay="400"
+                    data-aos-duration="800"
+                    data-aos-once="true"
+                    >
+                    <a id="preview-button" [routerLink]="['/restaurants', (restaurant$ | async).alias]" class="action" *ngIf="(restaurant$ | async).isActive" target="_blank">
+                        Vorschau
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round" width="16" height="16" style="display: inline;">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                </h5>
 			</div>
 		</header>
 
 		<div class="common-container">
 			<aside id="drawer-mobile">
-			<nav class="links">
-				<ul>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="500"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'general'"
-						(click)="selectTab('general')"
-						>
-						<a>Allgemeines</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="700"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'order'"
-						(click)="selectTab('order')"
-						>
-						<a>Bestellung</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="800"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'payment'"
-						(click)="selectTab('payment')"
-						>
-						<a>Zahlung</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="900"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'opening-hours'"
-						(click)="selectTab('opening-hours')"
-						>
-						<a>Zeiten</a>
-					</li>
-					<li
-						class="drawer-item"
-						data-aos="gm-move-down"
-						data-aos-anchor="#backend"
-						data-aos-delay="1000"
-						data-aos-duration="800"
-						data-aos-once="true"
-						[class.active]="(selectedTab$ | async) === 'dishes'"
-						(click)="selectTab('dishes')"
-						>
-						<a>Speisen</a>
-					</li>
-				</ul>
-			</nav>
+                <scrollable-nav-bar [links]='links' (selected)="selectTab($event)" [current]="(selectedTab$ | async)"></scrollable-nav-bar>
 		</aside>
 			<section id="body">
 

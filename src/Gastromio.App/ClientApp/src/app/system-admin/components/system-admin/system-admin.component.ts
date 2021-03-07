@@ -7,6 +7,7 @@ import {merge, Observable, of} from "rxjs";
 import {BlockUI, NgBlockUI} from "ng-block-ui";
 
 import {SystemAdminFacade} from "../../system-admin.facade";
+import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component";
 
 @Component({
   selector: 'app-system-admin',
@@ -26,6 +27,14 @@ export class SystemAdminComponent implements OnInit {
   public selectedTab$: Observable<string>;
   public isUpdated$: Observable<boolean>;
   public updateError$: Observable<string>;
+
+  public links: Array<LinkInfo> = [
+    { id: 'users', name: 'Benutzer' },
+    { id: 'cuisines', name: 'Cuisines' },
+    { id: 'restaurants', name: 'Restaurants' },
+    { id: 'restaurant-import', name: 'Restaurantimport' },
+    { id: 'dish-import', name: 'Speisenimport' },
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -93,6 +102,7 @@ export class SystemAdminComponent implements OnInit {
   }
 
   selectTab(tab: string): void {
+    console.log('selectTab: ', tab);
     this.facade.selectTab(tab);
   }
 
