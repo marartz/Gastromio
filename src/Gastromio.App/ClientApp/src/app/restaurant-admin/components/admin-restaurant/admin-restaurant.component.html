@@ -135,6 +135,27 @@
 						>
 						<a>Speisen</a>
 					</li>
+                    <li
+                        class="drawer-item"
+                        data-aos="gm-move-down"
+                        data-aos-anchor="#backend"
+                        data-aos-delay="1100"
+                        data-aos-duration="800"
+                        data-aos-once="true"
+                        [class.active]="(selectedTab$ | async) === 'dishes'"
+                        (click)="selectTab('dishes')"
+						role="button"
+                    >
+                        <a [routerLink]="['/restaurants', (restaurant$ | async).alias]" class="action" *ngIf="(restaurant$ | async).isActive" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" width="16" height="16" style="display: inline-block;">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </li>
 				</ul>
 			</nav>
 		</aside>
@@ -207,6 +228,28 @@
 							<div><a>Speisekarte</a></div>
 							<div><span class="icon-right"></span></div>
 						</li>
+                        <li
+                            class="drawer-item"
+                            data-aos="gm-move-down"
+                            data-aos-anchor="#backend"
+                            data-aos-delay="1000"
+                            data-aos-duration="800"
+                            data-aos-once="true"
+                        >
+                            <div>
+                                <a [routerLink]="['/restaurants', (restaurant$ | async).alias]" class="action" *ngIf="(restaurant$ | async).isActive" target="_blank">
+                                    Vorschau&nbsp;
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" width="16" height="16">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div><span class="icon-right"></span></div>
+                        </li>
 					</ul>
 				</aside>
 
