@@ -142,7 +142,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
                 Enumerable.Empty<DeviatingOpeningDay>(),
                 new PickupInfo(false, 0, null, null),
                 new DeliveryInfo(false, 0, null, null, null),
-                new ReservationInfo(false),
+                new ReservationInfo(false, null),
                 null,
                 new HashSet<CuisineId>(),
                 new HashSet<PaymentMethodId>(),
