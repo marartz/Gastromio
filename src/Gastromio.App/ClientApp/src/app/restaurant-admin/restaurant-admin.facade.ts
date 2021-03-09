@@ -880,6 +880,46 @@ export class RestaurantAdminFacade {
       });
   }
 
+  public enableDishCategory(dishCategoryId: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.enableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const dishCategories = this.dishCategories$.value;
+        const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+        const dishCategory = dishCategories[dishCategoryIndex];
+        dishCategory.enabled = true;
+
+        this.dishCategories$.next(this.dishCategories$.value);
+        this.isUpdated$.next(true);
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public disableDishCategory(dishCategoryId: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.disableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const dishCategories = this.dishCategories$.value;
+        const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+        const dishCategory = dishCategories[dishCategoryIndex];
+        dishCategory.enabled = false;
+
+        this.dishCategories$.next(this.dishCategories$.value);
+        this.isUpdated$.next(true);
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
   public addOrChangedDish(dishCategoryId: string, dish: DishModel): Observable<string> {
     this.isUpdating$.next(true);
     return this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurant$.value.id, dishCategoryId, dish)

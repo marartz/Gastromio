@@ -24,6 +24,8 @@ using Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo;
 using Gastromio.Core.Application.Commands.ChangeSupportedOrderModeOfRestaurant;
 using Gastromio.Core.Application.Commands.DecOrderOfDish;
 using Gastromio.Core.Application.Commands.DecOrderOfDishCategory;
+using Gastromio.Core.Application.Commands.DisableDishCategory;
+using Gastromio.Core.Application.Commands.EnableDishCategory;
 using Gastromio.Core.Application.Commands.IncOrderOfDish;
 using Gastromio.Core.Application.Commands.IncOrderOfDishCategory;
 using Gastromio.Core.Application.Commands.RemoveDeviatingOpeningDayFromRestaurant;
@@ -37,7 +39,7 @@ using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetAllCuisines;
 using Gastromio.Core.Application.Queries.GetAllPaymentMethods;
-using Gastromio.Core.Application.Queries.GetDishesOfRestaurant;
+using Gastromio.Core.Application.Queries.GetDishesOfRestaurantForAdmin;
 using Gastromio.Core.Application.Queries.GetRestaurantById;
 using Gastromio.Core.Application.Queries.RestAdminMyRestaurants;
 using Gastromio.Core.Application.Services;
@@ -113,8 +115,8 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var queryResult =
-                await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
-                    new GetDishesOfRestaurantQuery(restaurant), new UserId(currentUserId));
+                await queryDispatcher.PostAsync<GetDishesOfRestaurantForAdminQuery, ICollection<DishCategoryDTO>>(
+                    new GetDishesOfRestaurantForAdminQuery(restaurant), new UserId(currentUserId));
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 
@@ -539,6 +541,42 @@ namespace Gastromio.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<DecOrderOfDishCategoryCommand, bool>(
                 new DecOrderOfDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
+                new UserId(currentUserId)
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/enabledishcategory")]
+        [HttpPost]
+        public async Task<IActionResult> PostEnableDishCategoryAsync(Guid restaurantId,
+            [FromBody] EnableDishCategoryModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<EnableDishCategoryCommand, bool>(
+                new EnableDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
+                new UserId(currentUserId)
+            );
+
+            return ResultHelper.HandleResult(commandResult, failureMessageService);
+        }
+
+        [Route("restaurants/{restaurantId}/disabledishcategory")]
+        [HttpPost]
+        public async Task<IActionResult> PostDisableDishCategoryAsync(Guid restaurantId,
+            [FromBody] DisableDishCategoryModel model)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var commandResult = await commandDispatcher.PostAsync<DisableDishCategoryCommand, bool>(
+                new DisableDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
                 new UserId(currentUserId)
             );
 

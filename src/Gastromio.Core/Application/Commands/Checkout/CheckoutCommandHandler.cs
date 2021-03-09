@@ -7,6 +7,7 @@ using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Dish;
+using Gastromio.Core.Domain.Model.DishCategory;
 using Gastromio.Core.Domain.Model.Order;
 using Gastromio.Core.Domain.Model.PaymentMethod;
 using Gastromio.Core.Domain.Model.Restaurant;
@@ -20,16 +21,19 @@ namespace Gastromio.Core.Application.Commands.Checkout
     {
         private readonly ILogger<CheckoutCommandHandler> logger;
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IDishCategoryRepository dishCategoryRepository;
         private readonly IDishRepository dishRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly IOrderRepository orderRepository;
 
         public CheckoutCommandHandler(ILogger<CheckoutCommandHandler> logger,
-            IRestaurantRepository restaurantRepository, IDishRepository dishRepository,
-            IPaymentMethodRepository paymentMethodRepository, IOrderRepository orderRepository)
+            IRestaurantRepository restaurantRepository, IDishCategoryRepository dishCategoryRepository,
+            IDishRepository dishRepository, IPaymentMethodRepository paymentMethodRepository,
+            IOrderRepository orderRepository)
         {
             this.logger = logger;
             this.restaurantRepository = restaurantRepository;
+            this.dishCategoryRepository = dishCategoryRepository;
             this.dishRepository = dishRepository;
             this.paymentMethodRepository = paymentMethodRepository;
             this.orderRepository = orderRepository;
@@ -79,6 +83,8 @@ namespace Gastromio.Core.Application.Commands.Checkout
 
             decimal totalPrice = 0;
 
+            var dishCategoryDict = new Dictionary<DishCategoryId, DishCategory>();
+
             var dishDict = new Dictionary<Guid, Dish>();
             var variantDict = new Dictionary<Guid, DishVariant>();
             foreach (var cartDish in command.CartDishes)
@@ -96,6 +102,23 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     logger.LogInformation($"Declined order {newOrderId.Value}: dish does not belong to restaurant");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                 }
+
+                if (!dishCategoryDict.TryGetValue(dish.CategoryId, out var dishCategory))
+                {
+                    dishCategory =
+                        await dishCategoryRepository.FindByDishCategoryIdAsync(dish.CategoryId, cancellationToken);
+                }
+                if (dishCategory == null)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: dish category not found");
+                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
+                if (!dishCategory.Enabled)
+                {
+                    logger.LogInformation($"Declined order {newOrderId.Value}: dish category is disabled");
+                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                }
+                dishCategoryDict.Add(dish.CategoryId, dishCategory);
 
                 var variant = dish.Variants.FirstOrDefault(en => en.VariantId == cartDish.VariantId);
                 if (variant == null)

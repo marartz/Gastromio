@@ -184,6 +184,14 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onEnableDishCategory(dishCategory: DishCategoryModel): void {
+    this.facade.enableDishCategory(dishCategory.id);
+  }
+
+  public onDisableDishCategory(dishCategory: DishCategoryModel): void {
+    this.facade.disableDishCategory(dishCategory.id);
+  }
+
   public openRemoveDishCategoryForm(dishCategory: DishCategoryModel): void {
     const modalRef = this.modalService.open(RemoveDishCategoryComponent);
     modalRef.componentInstance.dishCategory = dishCategory.clone();
