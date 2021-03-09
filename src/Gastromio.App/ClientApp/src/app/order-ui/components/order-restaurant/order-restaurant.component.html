@@ -80,7 +80,7 @@
                             </h2>
                         </div>
                         <div *ngIf="isReservationEnabled()" id="reservation">
-                            <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" (click)="proceedToReservation()">
+                            <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" [routerLink]="['/restaurants', restaurant.alias, 'reservation']">
                                 Tisch reservieren
                             </a>
                             <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank">
