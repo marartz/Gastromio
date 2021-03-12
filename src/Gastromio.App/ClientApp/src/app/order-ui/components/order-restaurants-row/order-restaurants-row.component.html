@@ -42,6 +42,7 @@
 			</ng-container>
 			<ng-container *ngIf="isRestaurantOpen(restaurant)">
 				<ng-container *ngIf="orderType === 'pickup'"><span>{{restaurant.address.street}}, {{restaurant.address.city}}</span></ng-container>
+				<ng-container *ngIf="orderType === 'reservation'"><span>{{restaurant.address.street}}, {{restaurant.address.city}}</span></ng-container>
 				<ng-container *ngIf="orderType === 'delivery'"><span>Lieferzeit {{restaurant.deliveryInfo.averageTime}} Minuten | {{restaurant.deliveryInfo.getCostsText()}}</span></ng-container>
 			</ng-container>
 			<ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> <br />Telefonische Bestellung</span></ng-container>

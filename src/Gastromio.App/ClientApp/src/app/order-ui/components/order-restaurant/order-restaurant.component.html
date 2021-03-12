@@ -79,11 +79,19 @@
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span>Online-Bestellung</span></ng-container>
                             </h2>
                         </div>
-                        <div *ngIf="isReservationEnabled()" id="reservation">
+                        <div
+							 data-aos="gm-move-right"
+                             data-aos-anchor="#order"
+                             data-aos-delay="1000"
+                             data-aos-duration="1200"
+                             data-aos-once="true"
+							 *ngIf="isReservationEnabled()"
+							 id="reservation"
+							 >
                             <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" [routerLink]="['/restaurants', restaurant.alias, 'reservation']">
                                 Tisch reservieren
                             </a>
-                            <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank">
+                            <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank" rel="nofollow noreferrer">
                                 Tisch reservieren
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
