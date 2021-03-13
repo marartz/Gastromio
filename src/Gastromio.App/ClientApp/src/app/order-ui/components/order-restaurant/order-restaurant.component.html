@@ -93,7 +93,7 @@
                                 <span style="font-size: 11px;" *ngIf="showReservationValidFrom()"> (ab 22.03.)</span>
                             </a>
                             <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank" rel="nofollow noreferrer">
-                                Tisch reservieren
+                                <span>Tisch reservieren</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" width="16" height="16" style="display: inline">
@@ -101,6 +101,7 @@
                                     <polyline points="15 3 21 3 21 9"></polyline>
                                     <line x1="10" y1="14" x2="21" y2="3"></line>
                                 </svg>
+                                <span style="font-size: 11px;" *ngIf="showReservationValidFrom()"> (ab 22.03.)</span>
                             </a>
                         </div>
 					</div>
