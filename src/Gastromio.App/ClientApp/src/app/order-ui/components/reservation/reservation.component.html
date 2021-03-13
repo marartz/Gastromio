@@ -19,8 +19,24 @@
 					data-aos-duration="800"
 					data-aos-once="true"
 					>
-					Deine Reservierunganfrage bei „{{restaurant.name}}“
+                    Deine Reservierunganfrage bei „{{restaurant.name}}“
 				</h2>
+                <h3 *ngIf="showReservationValidFrom()"
+                    data-aos="gm-move-down"
+                    data-aos-delay="300"
+                    data-aos-duration="800"
+                    data-aos-once="true"
+                >
+                    ab 22.03.2021 bei einem Inzidenzwert im Kreis Borken unter 100
+                </h3>
+                <h3 *ngIf="showReservationValidFrom()"
+                    data-aos="gm-move-down"
+                    data-aos-delay="300"
+                    data-aos-duration="800"
+                    data-aos-once="true"
+                >
+                    (gem. aktueller Corona-Schutz-Verordnung)
+                </h3>
             </header>
 
 			<section class="common-container" style="align-items: center; justify-content: center; align-content: center; margin-left: auto; margin-right: auto;">

@@ -543,6 +543,10 @@ export class OrderFacade {
     this.order$.next(undefined);
   }
 
+  public getStartDateOfReservation(): Date {
+    return new Date(2021, 2, 23);
+  }
+
   private updateRestaurantSearchResult() {
     this.isSearching$.next(true);
     this.orderService.searchForRestaurantsAsync(this.selectedSearchPhrase$.value, this.selectedOrderType$.value, this.selectedCuisine$.value, undefined)

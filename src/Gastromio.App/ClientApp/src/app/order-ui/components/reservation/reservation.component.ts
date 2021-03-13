@@ -100,7 +100,10 @@ export class ReservationComponent implements OnInit {
           this.serviceTime = this.orderFacade?.getCart()?.getServiceTime();
 
           if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
-            this.serviceTime = ReservationComponent.roundOnQuarterHours(new Date());
+            let now = new Date();
+            if (now < this.orderFacade.getStartDateOfReservation())
+              now = this.orderFacade.getStartDateOfReservation();
+            this.serviceTime = ReservationComponent.roundOnQuarterHours(now);
           }
 
           this.titleService.setTitle(this.restaurant.name + ' Tischreservierung - Gastromio');
@@ -167,6 +170,11 @@ export class ReservationComponent implements OnInit {
       return undefined;
     }
     return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
+  }
+
+  showReservationValidFrom(): boolean {
+    const now = new Date();
+    return now < this.orderFacade.getStartDateOfReservation();
   }
 
   getGivenNameError(): string {
@@ -246,6 +254,8 @@ export class ReservationComponent implements OnInit {
   getServiceTimeError(): string {
     if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
       return 'Eine elektronische Reservierungsanfrage zum gewählten Zeitpunkt ist nicht möglich.';
+    if (this.serviceTime < this.orderFacade.getStartDateOfReservation())
+      return 'Der frühestmögliche Termin für eine Tischreservierung ist der 22.03.2021 (bei einem Inzidenzwert im Kreis Borken von unter 100)';
 
     return undefined;
   }

@@ -79,18 +79,18 @@
 											type="button"
 											*ngIf="(selectedOrderType$ | async) === 'pickup'"
 											(click)="onReservationSelected()">
-										Reservierung <span>Neu</span>
+										Tischreservierung <span>Neu</span>
 									</button>
 									<button class="reservation"
 											type="button"
 											*ngIf="(selectedOrderType$ | async) === 'delivery'"
 											(click)="onReservationSelected()">
-										Reservierung <span>Neu</span>
+                                        Tischreservierung <span>Neu</span>
 									</button>
 									<ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
 										<button class="reservation active"
 												type="button">
-											Reservierung <span>Neu</span>
+                                            Tischreservierung <span>Neu</span>
 										</button>
 									</ng-container>
 								</div>
@@ -207,18 +207,18 @@
 												type="button"
 												*ngIf="(selectedOrderType$ | async) === 'pickup'"
 												(click)="onReservationSelected()">
-											Reservierung <span>Neu</span>
+                                            Tischreservierung <span>Neu</span>
 										</button>
 										<button class="reservation"
 												type="button"
 												*ngIf="(selectedOrderType$ | async) === 'delivery'"
 												(click)="onReservationSelected()">
-											Reservierung <span>Neu</span>
+                                            Tischreservierung <span>Neu</span>
 										</button>
 										<ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
 											<button class="reservation active"
 													type="button">
-												Reservierung <span>Neu</span>
+                                                Tischreservierung <span>Neu</span>
 											</button>
 										</ng-container>
 									</section>

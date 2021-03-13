@@ -89,7 +89,8 @@
 							 id="reservation"
 							 >
                             <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" [routerLink]="['/restaurants', restaurant.alias, 'reservation']">
-                                Tisch reservieren
+                                <span>Tisch reservieren</span>
+                                <span style="font-size: 11px;" *ngIf="showReservationValidFrom()"> (ab 22.03.)</span>
                             </a>
                             <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank" rel="nofollow noreferrer">
                                 Tisch reservieren
