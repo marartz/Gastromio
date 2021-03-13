@@ -42,8 +42,9 @@
 										 data-aos-delay="300"
 										 data-aos-duration="800"
 										 data-aos-once="false">
-                                    <span
+                                    <span (click)="onRestaurantWithSoleOrderTypeSelected(restaurant)"
 										  class="restaurant-name"
+                                          [class.clickable]="!hasMultipleOrderTypes(restaurant)"
 										  data-aos="gm-move-down"
 										 data-aos-delay="600"
 										 data-aos-duration="800"
