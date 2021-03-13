@@ -133,8 +133,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
           if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
             this.orderFacade.startOrder(orderType, serviceTime);
-          } else if (orderType !== OrderType.Reservation) {
-            this.orderFacade.showCart();
           }
 
           this.filterDishCategories();
