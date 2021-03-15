@@ -205,7 +205,7 @@ export class OrderFacade {
 
   public resetFilters(): void {
     this.selectedSearchPhrase$.next('');
-    this.selectedOrderType$.next(OrderType.Pickup);
+    this.selectedOrderType$.next(undefined);
     this.selectedOrderTime$.next(undefined);
     this.selectedCuisine$.next(undefined);
   }
