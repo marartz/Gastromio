@@ -175,8 +175,18 @@ export class OrderFacade {
     return this.selectedOrderType$;
   }
 
+  public getSelectedOrderType(): OrderType {
+    return this.selectedOrderType$.value;
+  }
+
   public setSelectedOrderType(selectedOrderType: OrderType): void {
     this.selectedOrderType$.next(selectedOrderType);
+  }
+
+  public setSelectedOrderTypeIfNotSet(selectedOrderType: OrderType): void {
+    if (!this.selectedOrderType$.value) {
+      this.selectedOrderType$.next(selectedOrderType);
+    }
   }
 
   public getSelectedOrderTime$(): Observable<Date> {
