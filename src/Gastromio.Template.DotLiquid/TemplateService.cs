@@ -374,7 +374,7 @@ namespace Gastromio.Template.DotLiquid
             sb.AppendLine(
                 "Solltest Du Deine Öffnungszeiten ändern oder Deine Speisekarte anpassen wollen und dabei Schwierigkeiten haben, kannst Du auch");
             sb.AppendLine(
-                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine Mail schicken an hotline@coronahilfe-bocholt.de");
+                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine E-Mail an hotline@coronahilfe-bocholt.de schicken");
             sb.Append("</p>");
 
             sb.Append("<p>");
@@ -422,7 +422,7 @@ namespace Gastromio.Template.DotLiquid
             sb.AppendLine(
                 "Solltest Du Deine Öffnungszeiten ändern oder Deine Speisekarte anpassen wollen und dabei Schwierigkeiten haben, kannst Du auch");
             sb.AppendLine(
-                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine Mail schicken an hotline@coronahilfe-bocholt.de");
+                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine E-Mail an hotline@coronahilfe-bocholt.de schicken");
             sb.Append("</p>");
 
             sb.Append("<p>");
