@@ -24,9 +24,9 @@
 				<ng-container *ngIf="orderType === 'reservation'"><span>{{restaurant.address.street}}, {{restaurant.address.city}}</span></ng-container>
 				<ng-container *ngIf="orderType === 'delivery'"><span>Lieferzeit {{restaurant.deliveryInfo.averageTime}} Minuten | {{restaurant.deliveryInfo.getCostsText()}}</span></ng-container>
 			</ng-container>
-			<ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> <br />Telefonische Bestellung</span></ng-container>
-			<ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> <br />Online-Vorbestellung</span></ng-container>
-			<ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> <br />Online-Bestellung</span></ng-container>
+			<ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span> <br />Telefonisch</span></ng-container>
+			<ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span> <br />Telefonisch & Online-Vorbestellung</span></ng-container>
+			<ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span> <br />Telefonisch & Online-Vorbestellung & Online-Bestellung</span></ng-container>
 		</p>
 		<div class="cuisines">
 			<div class="cuisine-container">
