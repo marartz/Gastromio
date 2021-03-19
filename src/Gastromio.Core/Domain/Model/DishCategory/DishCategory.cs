@@ -23,12 +23,13 @@ namespace Gastromio.Core.Domain.Model.DishCategory
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
         }
-        
+
         public DishCategory(
             DishCategoryId id,
             RestaurantId restaurantId,
             string name,
             int orderNo,
+            bool enabled,
             DateTime createdOn,
             UserId createdBy,
             DateTime updatedOn,
@@ -39,6 +40,7 @@ namespace Gastromio.Core.Domain.Model.DishCategory
             RestaurantId = restaurantId;
             Name = name;
             OrderNo = orderNo;
+            Enabled = enabled;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -46,21 +48,23 @@ namespace Gastromio.Core.Domain.Model.DishCategory
         }
 
         public DishCategoryId Id { get; }
-        
+
         public RestaurantId RestaurantId { get; }
-        
+
         public string Name { get; private set; }
-        
+
         public int OrderNo { get; private set; }
 
+        public bool Enabled { get; private set; }
+
         public DateTime CreatedOn { get; }
-        
+
         public UserId CreatedBy { get; }
-        
+
         public DateTime UpdatedOn { get; private set; }
-        
+
         public UserId UpdatedBy { get; private set; }
-        
+
         public Result<bool> ChangeName(string name, UserId changedBy)
         {
             if (string.IsNullOrEmpty(name))
@@ -71,7 +75,7 @@ namespace Gastromio.Core.Domain.Model.DishCategory
             Name = name;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
-            
+
             return SuccessResult<bool>.Create(true);
         }
 
@@ -79,12 +83,32 @@ namespace Gastromio.Core.Domain.Model.DishCategory
         {
             if (orderNo < 0)
                 return FailureResult<bool>.Create(FailureResultCode.DishCategoryInvalidOrderNo, nameof(orderNo));
-            
+
             OrderNo = orderNo;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
+        }
+
+        public void Enable(UserId changedBy)
+        {
+            if (Enabled)
+                return;
+
+            Enabled = true;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+        }
+
+        public void Disable(UserId changedBy)
+        {
+            if (!Enabled)
+                return;
+            
+            Enabled = false;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
         }
     }
 }

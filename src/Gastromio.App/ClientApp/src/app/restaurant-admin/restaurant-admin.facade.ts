@@ -397,7 +397,8 @@ export class RestaurantAdminFacade {
         });
 
         this.restaurant$.value.reservationInfo = new ReservationInfoModel({
-          enabled: serviceInfo.reservationEnabled
+          enabled: serviceInfo.reservationEnabled,
+          reservationSystemUrl: serviceInfo.reservationSystemUrl
         });
 
         this.restaurant$.value.hygienicHandling = serviceInfo.hygienicHandling;
@@ -870,6 +871,46 @@ export class RestaurantAdminFacade {
         this.updateError$.next(undefined);
 
         [dishCategories[pos], dishCategories[pos + 1]] = [dishCategories[pos + 1], dishCategories[pos]];
+
+        this.dishCategories$.next(this.dishCategories$.value);
+        this.isUpdated$.next(true);
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public enableDishCategory(dishCategoryId: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.enableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const dishCategories = this.dishCategories$.value;
+        const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+        const dishCategory = dishCategories[dishCategoryIndex];
+        dishCategory.enabled = true;
+
+        this.dishCategories$.next(this.dishCategories$.value);
+        this.isUpdated$.next(true);
+      }, (response: HttpErrorResponse) => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+      });
+  }
+
+  public disableDishCategory(dishCategoryId: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService.disableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(() => {
+        this.isUpdating$.next(false);
+        this.updateError$.next(undefined);
+
+        const dishCategories = this.dishCategories$.value;
+        const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+        const dishCategory = dishCategories[dishCategoryIndex];
+        dishCategory.enabled = false;
 
         this.dishCategories$.next(this.dishCategories$.value);
         this.isUpdated$.next(true);
