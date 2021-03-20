@@ -107,6 +107,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                 {
                     dishCategory =
                         await dishCategoryRepository.FindByDishCategoryIdAsync(dish.CategoryId, cancellationToken);
+                    dishCategoryDict.Add(dish.CategoryId, dishCategory);
                 }
                 if (dishCategory == null)
                 {
@@ -118,7 +119,6 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     logger.LogInformation($"Declined order {newOrderId.Value}: dish category is disabled");
                     return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
                 }
-                dishCategoryDict.Add(dish.CategoryId, dishCategory);
 
                 var variant = dish.Variants.FirstOrDefault(en => en.VariantId == cartDish.VariantId);
                 if (variant == null)
