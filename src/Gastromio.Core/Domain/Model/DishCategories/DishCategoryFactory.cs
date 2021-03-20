@@ -19,6 +19,7 @@ namespace Gastromio.Core.Domain.Model.DishCategories
                 restaurantId,
                 null,
                 0,
+                true,
                 DateTimeOffset.UtcNow,
                 createdBy,
                 DateTimeOffset.UtcNow,

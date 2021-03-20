@@ -76,6 +76,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -135,6 +136,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantName(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantByName();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -193,6 +195,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishThatCannotBeFound();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -223,6 +226,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishThatDoesNotBelongToRestaurant();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -253,6 +257,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishVariantThatDoesNotBelongToDish();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -283,6 +288,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishesWithRemarkOfLength1001();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -313,6 +319,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithNegativeCount();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -343,6 +350,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithZeroCount();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -373,6 +381,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithCountOf101();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -403,6 +412,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -433,6 +443,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithCountOfOne();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -463,6 +474,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithCountOf100();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -493,6 +505,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -523,6 +536,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -553,6 +567,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -583,6 +598,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -613,6 +629,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -643,6 +660,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -673,6 +691,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -703,6 +722,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -733,6 +753,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -763,6 +784,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithCountOfOne();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -793,6 +815,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupOrderedDishWithCountOf100();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -823,6 +846,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -853,6 +877,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -883,6 +908,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -913,6 +939,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -943,6 +970,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithStreetNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -973,6 +1001,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithStreetEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1003,6 +1032,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithZipCodeNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1033,6 +1063,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithZipCodeEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1063,6 +1094,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithCityNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1093,6 +1125,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithCityEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1123,6 +1156,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1153,6 +1187,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1183,6 +1218,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1213,6 +1249,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1243,6 +1280,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1273,6 +1311,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryNotFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1303,6 +1342,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1335,6 +1375,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1368,6 +1409,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
             fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
@@ -1412,6 +1454,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             {
                 Logger = output.BuildLoggerFor<CheckoutCommandHandler>();
                 RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
+                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
                 DishRepositoryMock = new DishRepositoryMock(MockBehavior.Strict);
                 PaymentMethodRepositoryMock = new PaymentMethodRepositoryMock(MockBehavior.Strict);
                 OrderRepositoryMock = new OrderRepositoryMock(MockBehavior.Strict);
@@ -1420,6 +1463,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             public ILogger<CheckoutCommandHandler> Logger { get; }
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
+
+            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
 
             public DishRepositoryMock DishRepositoryMock { get; }
 
@@ -1448,6 +1493,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 return new CheckoutCommandHandler(
                     Logger,
                     RestaurantRepositoryMock.Object,
+                    DishCategoryRepositoryMock.Object,
                     DishRepositoryMock.Object,
                     PaymentMethodRepositoryMock.Object,
                     OrderRepositoryMock.Object
@@ -2178,6 +2224,15 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .ReturnsAsync(Enumerable.Empty<Restaurant>());
             }
 
+            public void SetupDishCategoryRepositoryFindingDishCategoriesById()
+            {
+                foreach (var dishCategory in DishCategoriesOfRestaurant)
+                {
+                    DishCategoryRepositoryMock.SetupFindByDishCategoryIdAsync(dishCategory.Id)
+                        .ReturnsAsync(dishCategory);
+                }
+            }
+
             public void SetupDishRepositoryFindingDishesById()
             {
                 foreach (var dish in DishesOfRestaurant)
@@ -2222,6 +2277,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 SetupDefaultOrderedDishes();
                 SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
                 SetupRestaurantRepositoryFindingRestaurantById();
+                SetupDishCategoryRepositoryFindingDishCategoriesById();
                 SetupDishRepositoryFindingDishesById();
                 SetupPaymentMethodRepositoryFindingPaymentMethods();
                 SetupOrderRepositoryStoringOrder();
