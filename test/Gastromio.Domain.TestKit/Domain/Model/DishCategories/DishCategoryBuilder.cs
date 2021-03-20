@@ -33,6 +33,12 @@ namespace Gastromio.Domain.TestKit.Domain.Model.DishCategories
             return this;
         }
 
+        public DishCategoryBuilder WithEnabled(bool enabled)
+        {
+            WithConstantConstructorArgumentFor("enabled", enabled);
+            return this;
+        }
+
         public DishCategoryBuilder WithOrderNo(int orderNo)
         {
             WithConstantConstructorArgumentFor("orderNo", orderNo);

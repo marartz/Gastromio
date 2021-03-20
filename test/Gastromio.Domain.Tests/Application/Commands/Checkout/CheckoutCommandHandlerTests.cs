@@ -41,7 +41,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -69,7 +69,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -101,7 +101,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -129,7 +129,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -161,7 +161,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupInactiveRestaurant();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -188,7 +188,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -219,7 +219,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -246,11 +246,42 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
+        public async Task HandleAsync_DishThatBelongsToDisabledCategory_ReturnsFailure()
+        {
+            // Arrange
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
+            fixture.SetupRandomDisabledDishCategories();
+            fixture.SetupRandomDishes();
+            fixture.SetupPaymentMethods();
+            fixture.SetupValidServiceTime();
+            fixture.SetupDefaultOrderedDishes();
+            fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
+            fixture.SetupDishRepositoryFindingDishesById();
+            fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
+            fixture.SetupOrderRepositoryStoringOrder();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+            }
+        }
+
+        [Fact]
         public async Task HandleAsync_VariantThatDoesNotBelongToDish_ReturnsFailure()
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -281,7 +312,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -312,7 +343,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -343,7 +374,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -374,7 +405,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -405,7 +436,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -436,7 +467,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -467,7 +498,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -498,7 +529,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -529,7 +560,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -560,7 +591,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -591,7 +622,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -622,7 +653,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -653,7 +684,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -684,7 +715,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -715,7 +746,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -746,7 +777,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithPickupActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -777,7 +808,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -808,7 +839,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -839,7 +870,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -870,7 +901,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -901,7 +932,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -932,7 +963,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -963,7 +994,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -994,7 +1025,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1025,7 +1056,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1056,7 +1087,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1087,7 +1118,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1118,7 +1149,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1149,7 +1180,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1180,7 +1211,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1211,7 +1242,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1242,7 +1273,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1273,7 +1304,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupInvalidServiceTime();
@@ -1304,7 +1335,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivated();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1335,7 +1366,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivatedAndEnabledOrderNotificationByMobile();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1368,7 +1399,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1402,7 +1433,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         {
             // Arrange
             fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
-            fixture.SetupRandomDishCategories();
+            fixture.SetupRandomEnabledDishCategories();
             fixture.SetupRandomDishes();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
@@ -1659,10 +1690,20 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .Create();
             }
 
-            public void SetupRandomDishCategories()
+            public void SetupRandomEnabledDishCategories()
             {
                 DishCategoriesOfRestaurant = new DishCategoryBuilder()
                     .WithRestaurantId(Restaurant.Id)
+                    .WithEnabled(true)
+                    .WithValidConstrains()
+                    .CreateMany(3).ToList();
+            }
+
+            public void SetupRandomDisabledDishCategories()
+            {
+                DishCategoriesOfRestaurant = new DishCategoryBuilder()
+                    .WithRestaurantId(Restaurant.Id)
+                    .WithEnabled(false)
                     .WithValidConstrains()
                     .CreateMany(3).ToList();
             }
@@ -1773,6 +1814,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
 
                 var dish = new DishBuilder()
                     .WithRestaurantId(Restaurant.Id)
+                    .WithCategoryId(DishCategoriesOfRestaurant[0].Id)
                     .WithVariants(new List<DishVariant> {variant})
                     .WithValidConstrains()
                     .Create();
@@ -2270,7 +2312,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupActiveRestaurantWithDeliveryActivated();
-                SetupRandomDishCategories();
+                SetupRandomEnabledDishCategories();
                 SetupRandomDishes();
                 SetupPaymentMethods();
                 SetupValidServiceTime();
