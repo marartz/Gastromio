@@ -48,8 +48,8 @@ Copyr: gastromio.de/imprint
 	display: -webkit-box;
 	display: -webkit-flex;
     height: 42px;
-    margin-bottom: 22px;
-    width: 330px;
+    margin-bottom: 4px;
+    width: 222px;
 }
 
 #filter #ordertype-filter .filter .switch,
@@ -89,7 +89,7 @@ Copyr: gastromio.de/imprint
     border: 2px solid #ADCCCB;
     border-radius: 23px;
     line-height: 24px;
-    width: 40%;
+    width: 50%;
 }
 
 #filter #ordertype-filter .filter .switch.active span,
@@ -106,6 +106,72 @@ Copyr: gastromio.de/imprint
     height: 20px;
     width: 20px;
     position: relative;
+}
+
+#filter .filter-divider,
+#filter-details .filter-divider {
+    display: flex;
+    width: 222px;
+}
+
+#filter .filter-divider p,
+#filter-details .filter-divider p {
+    color: #363636;
+    font-family: "Apercu", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: -.33px;
+    text-align: center;
+    margin-bottom: 4px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#filter button.reservation,
+#filter-details button.reservation {
+    background-color: #ADCCCB;
+    border-radius: 23px;
+    color: #363636;
+    cursor: pointer;
+    font-family: "Apercu", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 42px;
+    margin-bottom: 22px;
+    outline: none;
+    width: 222px;
+}
+
+#filter button.reservation span,
+#filter-details button.reservation span {
+    background-color: #81B67C;
+    color: #fff;
+    font-family: "Apercu", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    border-radius: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-left: 4px;
+}
+
+#filter button.reservation.active,
+#filter-details button.reservation.active {
+    background-color: #DECF80;
+}
+
+#filter button.reservation:hover {
+    transform: scale(1.024);
+    -moz-transform: scale(1.024);
+    -ms-transform: scale(1.024);
+    -webkit-transform: scale(1.024);
+	transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
 }
 
 /* #filter > #opening-hour-filter */

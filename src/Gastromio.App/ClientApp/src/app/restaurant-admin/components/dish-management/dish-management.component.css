@@ -107,3 +107,8 @@
 input.failure {
     background-color: indianred;
 }
+
+a.nav-link span.disabled-dish-category {
+    color: #888888;
+    font-style: italic;
+}

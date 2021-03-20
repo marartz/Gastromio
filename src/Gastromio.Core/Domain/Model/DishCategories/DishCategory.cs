@@ -12,6 +12,7 @@ namespace Gastromio.Core.Domain.Model.DishCategories
             RestaurantId restaurantId,
             string name,
             int orderNo,
+            bool enabled,
             DateTimeOffset createdOn,
             UserId createdBy,
             DateTimeOffset updatedOn,
@@ -22,6 +23,7 @@ namespace Gastromio.Core.Domain.Model.DishCategories
             RestaurantId = restaurantId;
             Name = name;
             OrderNo = orderNo;
+            Enabled = enabled;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -35,6 +37,8 @@ namespace Gastromio.Core.Domain.Model.DishCategories
         public string Name { get; private set; }
 
         public int OrderNo { get; private set; }
+
+        public bool Enabled { get; private set; }
 
         public DateTimeOffset CreatedOn { get; }
 
@@ -68,6 +72,26 @@ namespace Gastromio.Core.Domain.Model.DishCategories
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
+        }
+
+        public void Enable(UserId changedBy)
+        {
+            if (Enabled)
+                return;
+
+            Enabled = true;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
+        }
+
+        public void Disable(UserId changedBy)
+        {
+            if (!Enabled)
+                return;
+
+            Enabled = false;
+            UpdatedOn = DateTime.UtcNow;
+            UpdatedBy = changedBy;
         }
     }
 }

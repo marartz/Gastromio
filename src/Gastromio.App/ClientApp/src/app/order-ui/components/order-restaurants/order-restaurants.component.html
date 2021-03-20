@@ -56,26 +56,44 @@
                                     <button (click)="onHideMobileFilterDetails()"></button>
                                 </header>
 
-                                <div id="ordertype-filter">
-                                    <p class="title">Wie kommt das Essen zu dir?</p>
-                                    <div class="filter">
-                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
-                                            <button type="button" class="switch active"><span>Abholung</span></button>
-                                            <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
-                                            <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
-                                        </ng-container>
-                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
-                                            <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
-                                            <button type="button" class="switch active"><span>Lieferung</span></button>
-                                            <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
-                                        </ng-container>
-                                        <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
-                                            <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
-                                            <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
-                                            <button type="button" class="switch active"><span>Reservierung</span></button>
-                                        </ng-container>
-                                    </div>
-                                </div>
+								<div id="ordertype-filter">
+									<p class="title">Wie kommt das Essen zu dir?</p>
+									<div class="filter">
+										<ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
+											<button type="button" class="switch active"><span>Abholung</span></button>
+											<button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+										</ng-container>
+										<ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
+											<button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+											<button type="button" class="switch active"><span>Lieferung</span></button>
+										</ng-container>
+										<ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+											<button type="button" class="switch" style="margin-left: 10px;" (click)="onPickupSelected()">Abholung</button>
+											<button type="button" class="switch" style="margin-left: 10px;" (click)="onDeliverySelected()">Lieferung</button>
+										</ng-container>
+									</div>
+									<div class="filter-divider">
+										<p>oder</p>
+									</div>
+									<button class="reservation"
+											type="button"
+											*ngIf="(selectedOrderType$ | async) === 'pickup'"
+											(click)="onReservationSelected()">
+										Tischreservierung <span>Neu</span>
+									</button>
+									<button class="reservation"
+											type="button"
+											*ngIf="(selectedOrderType$ | async) === 'delivery'"
+											(click)="onReservationSelected()">
+                                        Tischreservierung <span>Neu</span>
+									</button>
+									<ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+										<button class="reservation active"
+												type="button">
+                                            Tischreservierung <span>Neu</span>
+										</button>
+									</ng-container>
+								</div>
                                 <div id="opening-hour-filter">
                                     <p class="title">Für wann möchtest du bestellen?</p>
                                     <button *ngIf="!(selectedOrderTime$ | async)" type="button" (click)="openOpeningHourFilter()">Zeit wählen</button>
@@ -143,40 +161,66 @@
 							<aside id="filter">
 								<div class="filter-wrapper">
 									<section id="ordertype-filter">
-										<p
-										   class="title"
+										<p class="title"
 										   data-aos="gm-move-down"
 										   data-aos-anchor="#order"
 										   data-aos-delay="500"
 										   data-aos-duration="800"
-										   data-aos-once="true"
-										   >
+										   data-aos-once="true">
 											Wie kommt das Essen zu dir?
 										</p>
-										<div
-											 class="filter"
+										<div class="filter"
 											 data-aos="gm-move-down"
 											 data-aos-anchor="#order"
 											 data-aos-delay="700"
 											 data-aos-duration="800"
-											 data-aos-once="true"
-											 >
+											 data-aos-once="true">
 											<ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
 												<button type="button" class="switch active"><span>Abholung</span></button>
 												<button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
-                                                <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
 											</ng-container>
 											<ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
 												<button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
 												<button type="button" class="switch active"><span>Lieferung</span></button>
-                                                <button type="button" class="switch" (click)="onReservationSelected()">Reservierung</button>
 											</ng-container>
-                                            <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
-                                                <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
-                                                <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
-                                                <button type="button" class="switch active">Reservierung</button>
-                                            </ng-container>
+											<ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+												<button type="button" class="switch" style="margin-left: 10px;" (click)="onPickupSelected()">Abholung</button>
+												<button type="button" class="switch" style="margin-left: 10px;" (click)="onDeliverySelected()">Lieferung</button>
+											</ng-container>
 										</div>
+										<div
+											 class="filter-divider"
+											 data-aos="gm-move-down"
+											 data-aos-anchor="#order"
+											 data-aos-delay="750"
+											 data-aos-duration="800"
+											 data-aos-once="true"
+											 >
+											<p>oder</p>
+										</div>
+										<button class="reservation"
+												data-aos="gm-move-down"
+												data-aos-anchor="#order"
+												data-aos-delay="800"
+												data-aos-duration="800"
+												data-aos-once="true"
+												type="button"
+												*ngIf="(selectedOrderType$ | async) === 'pickup'"
+												(click)="onReservationSelected()">
+                                            Tischreservierung <span>Neu</span>
+										</button>
+										<button class="reservation"
+												type="button"
+												*ngIf="(selectedOrderType$ | async) === 'delivery'"
+												(click)="onReservationSelected()">
+                                            Tischreservierung <span>Neu</span>
+										</button>
+										<ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+											<button class="reservation active"
+													type="button">
+                                                Tischreservierung <span>Neu</span>
+											</button>
+										</ng-container>
 									</section>
 									<section id="opening-hour-filter">
 										<p

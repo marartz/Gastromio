@@ -133,8 +133,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
           if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
             this.orderFacade.startOrder(orderType, serviceTime);
-          } else if (orderType !== OrderType.Reservation) {
-            this.orderFacade.showCart();
           }
 
           this.filterDishCategories();
@@ -167,6 +165,11 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       return undefined;
     }
     return 'url(\'/api/v1/restaurants/' + this.restaurant.id + '/images/banner' + '\')';
+  }
+
+  showReservationValidFrom(): boolean {
+    const now = new Date();
+    return now < this.orderFacade.getStartDateOfReservation();
   }
 
   scrollToDishCategory(dishCategoryId: string): void {
@@ -325,10 +328,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   public hasExternalReservationSystem(): boolean {
     return this.restaurant.reservationInfo.reservationSystemUrl &&
       this.restaurant.reservationInfo.reservationSystemUrl.length > 0;
-  }
-
-  public proceedToReservation(): void {
-    this.router.navigateByUrl('/reservation');
   }
 
   toggleCartVisibility(): void {

@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'restaurants/:restaurantId', component: OrderRestaurantComponent},
   {path: 'checkout', component: CheckoutComponent},
   {path: 'order-summary', component: OrderSummaryComponent},
-  {path: 'reservation', component: ReservationComponent},
+  {path: 'restaurants/:restaurantId/reservation', component: ReservationComponent},
 ];
 
 @NgModule({

@@ -12,6 +12,11 @@
 	transform: translateY(-10px);
     transition-property: transform, opacity
 }
+[data-aos=gm-move-right] {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition-property: transform, opacity
+}
 [data-aos=gm-move-up].aos-animate{
     opacity: 1;
     transform: translateY(0px)
@@ -19,4 +24,8 @@
 [data-aos=gm-move-down].aos-animate{
     opacity: 1;
     transform: translateY(0px)
+}
+[data-aos=gm-move-right].aos-animate {
+    opacity: 1;
+    transform: translateX(0px)
 }

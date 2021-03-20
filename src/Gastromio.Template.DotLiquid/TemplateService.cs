@@ -23,7 +23,7 @@ namespace Gastromio.Template.DotLiquid
             var sb = new StringBuilder();
             AppendCustomerSalutation(order, sb);
             AppendOrderReceptionForCustomer(order, sb);
-            AppendGastromioInfoForCustomer(order, sb);
+            AppendGastromioInfoForCustomerOrder(order, sb);
             AppendOrderRestaurantInfoForCustomer(order, sb);
             AppendOrderDetails(sb, order);
 
@@ -51,7 +51,7 @@ namespace Gastromio.Template.DotLiquid
             var sb = new StringBuilder();
             AppendCustomerSalutation(order, sb);
             AppendOrderReceptionForCustomer(order, sb);
-            AppendGastromioInfoForCustomer(order, sb);
+            AppendGastromioInfoForCustomerOrder(order, sb);
             AppendOrderRestaurantInfoForCustomer(order, sb);
             AppendOrderDetails(sb, order);
 
@@ -80,7 +80,7 @@ namespace Gastromio.Template.DotLiquid
             AppendCustomerSalutation(order, sb);
             AppendReservationReceptionForCustomer(order, sb);
             AppendServiceTime(sb, order);
-            AppendGastromioInfoForCustomer(order, sb);
+            AppendGastromioInfoForCustomerReservation(order, sb);
             AppendGreetings(sb);
 
             var message = sb.ToString();
@@ -130,7 +130,7 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("</p>");
         }
 
-        private static void AppendGastromioInfoForCustomer(Order order, StringBuilder sb)
+        private static void AppendGastromioInfoForCustomerOrder(Order order, StringBuilder sb)
         {
             sb.Append("<p>");
             sb.AppendLine(
@@ -141,6 +141,31 @@ namespace Gastromio.Template.DotLiquid
                 "Gastromio geübt ist, oder sich ein Systemfehler eingeschlichen hat, den wir noch nicht kennen. Wir haben daher");
             sb.AppendLine(
                 "den Wirt gebeten, seine Vorbestellungen zu Beginn der Schicht kurz per E-Mail zu bestätigen. Passiert das nicht,");
+            sb.AppendLine(
+                "frag ruhig kurz nach, sei aber nett, es ist für den Wirt genauso neu, wie für Dich. Das Restaurant ist unter der");
+            sb.Append("Telefonnummer ");
+            sb.Append(order.CartInfo.RestaurantPhone);
+            sb.Append(" zu erreichen.");
+            sb.Append("</p>");
+
+            sb.Append("<p>");
+            sb.AppendLine(
+                "Wenn ein Problem aufgetreten ist, das ihr nicht lösen konntet, melde Dich doch gerne unter support@gastromio.de!");
+            sb.Append("Wir nehmen Deinen Hinweis gerne auf.");
+            sb.Append("</p>");
+        }
+
+        private static void AppendGastromioInfoForCustomerReservation(Order order, StringBuilder sb)
+        {
+            sb.Append("<p>");
+            sb.AppendLine(
+                "Gastromio.de wurde ehrenamtlich erstellt, um Bocholts schönes Gastronomieangebot zu erhalten. Gastromio wurde");
+            sb.AppendLine(
+                "erst kürzlich in Betrieb genommen. Es ist also möglich, dass der Wirt noch nicht in der Abwicklung der Reservierungsanfragen über");
+            sb.AppendLine(
+                "Gastromio geübt ist, oder sich ein Systemfehler eingeschlichen hat, den wir noch nicht kennen. Wir haben daher");
+            sb.AppendLine(
+                "den Wirt gebeten, seine Reservierungsanfragen zu Beginn der Schicht kurz per E-Mail zu bestätigen. Passiert das nicht,");
             sb.AppendLine(
                 "frag ruhig kurz nach, sei aber nett, es ist für den Wirt genauso neu, wie für Dich. Das Restaurant ist unter der");
             sb.Append("Telefonnummer ");
@@ -192,7 +217,7 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("</p>");
 
             AppendServiceTime(sb, order);
-            AppendGastromioInfoForRestaurant(order, sb);
+            AppendGastromioInfoForRestaurantOrder(order, sb);
             AppendGreetings(sb);
 
             var customerInfo =
@@ -221,7 +246,7 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("</p>");
 
             AppendServiceTime(sb, order);
-            AppendGastromioInfoForRestaurant(order, sb);
+            AppendGastromioInfoForRestaurantOrder(order, sb);
             AppendGreetings(sb);
 
             var customerInfo =
@@ -276,7 +301,7 @@ namespace Gastromio.Template.DotLiquid
 
             sb.Append("</p>");
 
-            AppendGastromioInfoForRestaurant(order, sb);
+            AppendGastromioInfoForRestaurantReservation(order, sb);
             AppendGreetings(sb);
 
             var customerInfo =
@@ -316,7 +341,7 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("</p>");
         }
 
-        private static void AppendGastromioInfoForRestaurant(Order order, StringBuilder sb)
+        private static void AppendGastromioInfoForRestaurantOrder(Order order, StringBuilder sb)
         {
             sb.Append("<p>");
             sb.AppendLine("Noch ein wichtiger Hinweis:");
@@ -341,10 +366,50 @@ namespace Gastromio.Template.DotLiquid
 
             sb.Append("<p>");
             sb.AppendLine(
-                "Bestellungen per E-Mail betreffen immer nur Vorbestellungen für die nächste Öffnungszeit/Schicht. Bestellungen oder Abholungen,");
+                "Wenn ein Problem aufgetreten ist, das Ihr nicht lösen konntet, melde es doch gerne unter support@gastromio.de! Wir nehmen Deinen");
+            sb.Append("Hinweis gerne auf.");
+            sb.Append("</p>");
+
+            sb.Append("<p>");
             sb.AppendLine(
-                "die der Kunde für sofort oder möglichst schnell erhalten will, lassen wir auf Wunsch vieler Wirte, zunächst telefonisch bei Dir");
-            sb.Append("eingehen.");
+                "Solltest Du Deine Öffnungszeiten ändern oder Deine Speisekarte anpassen wollen und dabei Schwierigkeiten haben, kannst Du auch");
+            sb.AppendLine(
+                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine E-Mail an hotline@coronahilfe-bocholt.de schicken");
+            sb.Append("</p>");
+
+            sb.Append("<p>");
+            sb.AppendLine(
+                "Denke bitte daran: Alle Helfer, die Dein Angebot über Gastromio.de im Internet und auf verschiedenen Sozialen Medien");
+            sb.AppendLine(
+                "kommunizieren, tun das ehrenamtlich nach bestem Wissen und Gewissen, und völlig ohne Gegenleistung. Oft sind es Stammkunden,");
+            sb.AppendLine(
+                "die möchten, dass Du weiter existierst, aber vielleicht macht auch einer mal einen Fehler dabei. Bitte sei also nett, wenn Du");
+            sb.AppendLine(
+                "etwas zu kritisieren hast und erkläre uns einfach, was Du Dir anders wünschst, sie alle tun ihr Bestes.");
+            sb.Append("</p>");
+        }
+
+        private static void AppendGastromioInfoForRestaurantReservation(Order order, StringBuilder sb)
+        {
+            sb.Append("<p>");
+            sb.AppendLine("Noch ein wichtiger Hinweis:");
+            sb.Append("</p>");
+
+            sb.Append("<p>");
+            sb.AppendLine(
+                "Gastromio.de wurde ehrenamtlich von Helfern der Coronahilfe-Bocholt erstellt, um Deine Existenz als Gastronom in dieser");
+            sb.AppendLine(
+                "schweren Zeit zu erhalten. Weder Du noch Dein Kunde haben durch Gastromio.de irgendwelche Kosten. Gastromio.de wurde erst");
+            sb.AppendLine(
+                "kürzlich in Betrieb genommen. Es ist also möglich, dass der Kunde noch unsicher ist, ob die Abwicklung von Reservierungsanfragen über Gastromio");
+            sb.AppendLine(
+                "funktioniert. Wir haben ihm daher zugesagt, dass Du die Reservierungsanfrage zu Beginn Deiner Schicht kurz per E-Mail bestätigen würdest.");
+            sb.Append(
+                "Falls es Gesprächsbedarf zu seiner Reservierungsanfrage gibt, rufe ihn bitte an, er ist unter Telefonnummer ");
+            sb.AppendLine(order.CustomerInfo.Phone);
+            sb.Append("bzw. unter der E-Mail-Adresse ");
+            sb.Append(order.CustomerInfo.Email);
+            sb.Append(" zu erreichen.");
             sb.Append("</p>");
 
             sb.Append("<p>");
@@ -357,7 +422,7 @@ namespace Gastromio.Template.DotLiquid
             sb.AppendLine(
                 "Solltest Du Deine Öffnungszeiten ändern oder Deine Speisekarte anpassen wollen und dabei Schwierigkeiten haben, kannst Du auch");
             sb.AppendLine(
-                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine Mail schicken an hotline@coronahilfe-bocholt.de");
+                "gerne bei unserer Hotline nachfragen: 02871-287381 oder aber eine E-Mail an hotline@coronahilfe-bocholt.de schicken");
             sb.Append("</p>");
 
             sb.Append("<p>");

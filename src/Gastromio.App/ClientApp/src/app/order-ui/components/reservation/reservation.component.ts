@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
-import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
 
@@ -21,6 +20,9 @@ import {OrderFacade} from "../../../order/order.facade";
 import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
 import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
 import {OrderType} from "../../../order/models/order-type";
+import {filter, take, tap} from "rxjs/operators";
+import {combineLatest} from "rxjs";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-reservation',
@@ -35,11 +37,12 @@ export class ReservationComponent implements OnInit {
 
   generalError: string;
 
+  restaurantId: string;
+
   initialized: boolean;
   submitted = false;
 
   restaurant: RestaurantModel;
-  dishCategories: DishCategoryModel[];
 
   givenName: string;
   lastName: string;
@@ -57,6 +60,8 @@ export class ReservationComponent implements OnInit {
     private orderFacade: OrderFacade,
     private modalService: NgbModal,
     private httpErrorHandlingService: HttpErrorHandlingService,
+    private route: ActivatedRoute,
+    private titleService: Title,
     private router: Router,
     private location: Location
   ) {
@@ -64,6 +69,61 @@ export class ReservationComponent implements OnInit {
 
   ngOnInit() {
     this.initialized = false;
+
+    this.blockUI.start('Restaurant wird geladen ...');
+
+    const observables = [
+      this.orderFacade.getIsInitialized$().pipe(
+        filter(isInitialized => isInitialized === true),
+      ),
+      this.route.paramMap.pipe(tap(params => {
+        const restaurantId = params.get('restaurantId');
+        console.log('restaurantId from params: ', restaurantId);
+        if (restaurantId)
+          this.restaurantId = restaurantId;
+      }))
+    ];
+
+    combineLatest(observables).pipe(take(1)).subscribe(() => {
+      this.orderFacade.selectRestaurantId$(this.restaurantId).subscribe(() => {
+        this.blockUI.stop();
+
+        try {
+          this.restaurant = this.orderFacade.getSelectedRestaurant();
+
+          if (!this.restaurant.reservationInfo?.enabled)
+          {
+            this.generalError = "Das Restaurant unterstützt im Moment noch keine elektronische Reservierungsanfrage";
+            return;
+          }
+
+          this.serviceTime = this.orderFacade?.getCart()?.getServiceTime();
+
+          if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
+            let now = new Date();
+            if (now < this.orderFacade.getStartDateOfReservation())
+              now = this.orderFacade.getStartDateOfReservation();
+            this.serviceTime = ReservationComponent.roundOnQuarterHours(now);
+          }
+
+          this.titleService.setTitle(this.restaurant.name + ' Tischreservierung - Gastromio');
+
+          this.initialized = true;
+        }
+        catch (e) {
+          if (e instanceof Error) {
+            this.generalError = e.message;
+          }
+          else {
+            throw e;
+          }
+        }
+      }, error => {
+        console.log('error: ', error);
+        this.blockUI.stop();
+        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+      });
+    });
 
     this.orderFacade.getIsInitializing$()
       .subscribe(isInitializing => {
@@ -73,24 +133,6 @@ export class ReservationComponent implements OnInit {
           this.blockUI.stop();
         }
       })
-
-    this.orderFacade.getIsInitialized$()
-      .subscribe(isInitialized => {
-        if (!isInitialized)
-          return;
-
-        this.initialized = isInitialized;
-
-        this.restaurant = this.orderFacade.getSelectedRestaurant();
-        this.serviceTime = this.orderFacade.getCart().getServiceTime();
-
-        if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
-          this.serviceTime = ReservationComponent.roundOnQuarterHours(new Date());
-        }
-      }, error => {
-        this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
-      });
 
     this.orderFacade.getInitializationError$()
       .subscribe(initializationError => {
@@ -128,6 +170,11 @@ export class ReservationComponent implements OnInit {
       return undefined;
     }
     return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
+  }
+
+  showReservationValidFrom(): boolean {
+    const now = new Date();
+    return now < this.orderFacade.getStartDateOfReservation();
   }
 
   getGivenNameError(): string {
@@ -207,6 +254,8 @@ export class ReservationComponent implements OnInit {
   getServiceTimeError(): string {
     if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
       return 'Eine elektronische Reservierungsanfrage zum gewählten Zeitpunkt ist nicht möglich.';
+    if (this.serviceTime < this.orderFacade.getStartDateOfReservation())
+      return 'Der frühestmögliche Termin für eine Tischreservierung ist der 22.03.2021 (bzw. offiziell gestattet laut CSV, bei einem Inzidenzwert im Kreis Borken von unter 100)';
 
     return undefined;
   }
@@ -252,8 +301,6 @@ export class ReservationComponent implements OnInit {
       return;
     }
 
-    const cart = this.orderFacade.getCart();
-
     const checkoutModel = new CheckoutModel();
     checkoutModel.givenName = this.givenName;
     checkoutModel.lastName = this.lastName;
@@ -264,7 +311,7 @@ export class ReservationComponent implements OnInit {
     checkoutModel.email = this.email;
     checkoutModel.addAddressInfo = this.comments;
     checkoutModel.orderType = OrderTypeConverter.convertToString(OrderType.Reservation);
-    checkoutModel.restaurantId = cart.getRestaurantId();
+    checkoutModel.restaurantId = this.restaurantId;
     checkoutModel.cartDishes = new Array<StoredCartDishModel>();
 
     checkoutModel.comments = this.comments;

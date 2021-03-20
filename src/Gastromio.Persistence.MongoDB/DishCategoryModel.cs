@@ -12,6 +12,8 @@ namespace Gastromio.Persistence.MongoDB
 
         public int OrderNo { get; set; }
 
+        public bool? Enabled { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public Guid CreatedBy { get; set; }

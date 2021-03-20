@@ -224,6 +224,10 @@
     line-height: 50px;
 }
 
+#order-home #landing #results .restaurant-name.clickable {
+    cursor: pointer;
+}
+
 #order-home #landing #results .border {
     align-items: center;
     border-bottom: 1px solid #E7E7E7;

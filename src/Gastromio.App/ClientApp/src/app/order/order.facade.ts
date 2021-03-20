@@ -175,8 +175,18 @@ export class OrderFacade {
     return this.selectedOrderType$;
   }
 
+  public getSelectedOrderType(): OrderType {
+    return this.selectedOrderType$.value;
+  }
+
   public setSelectedOrderType(selectedOrderType: OrderType): void {
     this.selectedOrderType$.next(selectedOrderType);
+  }
+
+  public setSelectedOrderTypeIfNotSet(selectedOrderType: OrderType): void {
+    if (!this.selectedOrderType$.value) {
+      this.selectedOrderType$.next(selectedOrderType);
+    }
   }
 
   public getSelectedOrderTime$(): Observable<Date> {
@@ -205,7 +215,7 @@ export class OrderFacade {
 
   public resetFilters(): void {
     this.selectedSearchPhrase$.next('');
-    this.selectedOrderType$.next(OrderType.Pickup);
+    this.selectedOrderType$.next(undefined);
     this.selectedOrderTime$.next(undefined);
     this.selectedCuisine$.next(undefined);
   }
@@ -541,6 +551,10 @@ export class OrderFacade {
   public resetCheckout(): void {
     this.isCheckedOut$.next(false);
     this.order$.next(undefined);
+  }
+
+  public getStartDateOfReservation(): Date {
+    return new Date(2021, 2, 23);
   }
 
   private updateRestaurantSearchResult() {

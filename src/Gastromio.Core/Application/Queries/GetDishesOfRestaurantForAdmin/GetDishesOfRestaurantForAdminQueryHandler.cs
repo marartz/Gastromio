@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
-using Gastromio.Core.Domain.Model.Restaurants;
-using Gastromio.Core.Domain.Model.Users;
+using Gastromio.Core.Domain.Model.Dish;
+using Gastromio.Core.Domain.Model.DishCategory;
+using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.User;
 
-namespace Gastromio.Core.Application.Queries.GetDishesOfRestaurant
+namespace Gastromio.Core.Application.Queries.GetDishesOfRestaurantForAdmin
 {
-    public class GetDishesOfRestaurantQueryHandler
-        : IQueryHandler<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>
+    public class GetDishesOfRestaurantForAdminQueryHandler
+        : IQueryHandler<GetDishesOfRestaurantForAdminQuery, ICollection<DishCategoryDTO>>
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IDishCategoryRepository dishCategoryRepository;
         private readonly IDishRepository dishRepository;
 
-        public GetDishesOfRestaurantQueryHandler(
+        public GetDishesOfRestaurantForAdminQueryHandler(
             IRestaurantRepository restaurantRepository,
             IDishCategoryRepository dishCategoryRepository,
             IDishRepository dishRepository
@@ -31,11 +31,17 @@ namespace Gastromio.Core.Application.Queries.GetDishesOfRestaurant
             this.dishRepository = dishRepository;
         }
 
-        public async Task<Result<ICollection<DishCategoryDTO>>> HandleAsync(GetDishesOfRestaurantQuery query,
+        public async Task<Result<ICollection<DishCategoryDTO>>> HandleAsync(GetDishesOfRestaurantForAdminQuery query,
             User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
+
+            if (currentUser == null)
+                return FailureResult<ICollection<DishCategoryDTO>>.Unauthorized();
+
+            if (currentUser.Role < Role.RestaurantAdmin)
+                return FailureResult<ICollection<DishCategoryDTO>>.Forbidden();
 
             Restaurant restaurant;
 
@@ -51,14 +57,14 @@ namespace Gastromio.Core.Application.Queries.GetDishesOfRestaurant
                     (await restaurantRepository.FindByRestaurantNameAsync(query.RestaurantId, cancellationToken))
                     .FirstOrDefault();
             }
-            
+
             if (restaurant == null)
                 return FailureResult<ICollection<DishCategoryDTO>>.Create(FailureResultCode.RestaurantDoesNotExist);
 
             var dishCategories =
                 await dishCategoryRepository.FindByRestaurantIdAsync(restaurant.Id, cancellationToken);
             var dishCategoryList = dishCategories != null ? dishCategories.ToList() : new List<DishCategory>();
-            
+
             var dishes = await dishRepository.FindByRestaurantIdAsync(restaurant.Id, cancellationToken);
             var dishList = dishes != null ? dishes.ToList() : new List<Dish>();
 
