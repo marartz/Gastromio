@@ -255,7 +255,7 @@ export class ReservationComponent implements OnInit {
     if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
       return 'Eine elektronische Reservierungsanfrage zum gewählten Zeitpunkt ist nicht möglich.';
     if (this.serviceTime < this.orderFacade.getStartDateOfReservation())
-      return 'Der frühestmögliche Termin für eine Tischreservierung ist der 22.03.2021 (bei einem Inzidenzwert im Kreis Borken von unter 100)';
+      return 'Der frühestmögliche Termin für eine Tischreservierung ist der 22.03.2021 (bzw. offiziell gestattet laut CSV, bei einem Inzidenzwert im Kreis Borken von unter 100)';
 
     return undefined;
   }
