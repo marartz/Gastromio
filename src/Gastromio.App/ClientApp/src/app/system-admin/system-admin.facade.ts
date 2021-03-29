@@ -234,9 +234,9 @@ export class SystemAdminFacade {
       );
   }
 
-  public addCuisine$(name: string): Observable<void> {
+  public addCuisine$(name: string, image: string): Observable<void> {
     this.isUpdating$.next(true);
-    return this.cuisineAdminService.addCuisineAsync(name)
+    return this.cuisineAdminService.addCuisineAsync(name, image)
       .pipe(
         map(cuisine => {
           const cuisines = this.cuisines$.value;
@@ -256,9 +256,9 @@ export class SystemAdminFacade {
       );
   }
 
-  public changeCuisine$(cuisineId: string, name: string): Observable<void> {
+  public changeCuisine$(cuisineId: string, name: string, image: string): Observable<void> {
     this.isUpdating$.next(true);
-    return this.cuisineAdminService.changeCuisineAsync(cuisineId, name)
+    return this.cuisineAdminService.changeCuisineAsync(cuisineId, name, image)
       .pipe(
         map(() => {
           const cuisines = this.cuisines$.value;

@@ -24,6 +24,30 @@
     background-repeat: no-repeat !important;
 }
 
+#order #restaurants {
+    float: left;
+    margin-left: 10px;
+    margin-top: -8px;
+    min-height: 100%;
+    width: calc(100% - 20px);
+}
+
+@media only screen and (min-width: 570px) {
+    #order #restaurants {
+        float: left;
+        margin-left: 10px;
+        width: calc(100% - 20px);
+    }
+}
+
+@media only screen and (min-width: 1004px) {
+    #order #restaurants {
+        margin-left: 20px;
+        margin-bottom: 30px;
+        width: calc(75% - 20px);
+    }
+}
+
 .preorder {
     align-items: center;
     justify-content: center;

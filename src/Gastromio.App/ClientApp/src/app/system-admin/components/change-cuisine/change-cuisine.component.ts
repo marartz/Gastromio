@@ -58,7 +58,6 @@ export class ChangeCuisineComponent implements OnInit {
   }
 
   onSubmit(data) {
-    console.log('submint');
     if (this.changeCuisineForm.invalid) {
       return;
     }
