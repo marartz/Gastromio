@@ -39,6 +39,7 @@
         RestaurantResponsiblePersonRequired,
         RestaurantEmailRequired,
         RestaurantEmailInvalid,
+        RestaurantMobileInvalid,
         RestaurantImageTypeRequired,
         RestaurantImageDataTooBig,
         RestaurantImageNotValid,

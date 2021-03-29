@@ -33,12 +33,12 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
             Address = new Address(null, null, null);
-            ContactInfo = new ContactInfo(null, null, null, null, null);
+            ContactInfo = new ContactInfo(null, null, null, null, null, null, false);
             regularOpeningDays = new Dictionary<int, RegularOpeningDay>();
             deviatingOpeningDays = new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = new PickupInfo(false, 0, null, null);
             DeliveryInfo = new DeliveryInfo(false, 0, null, null, null);
-            ReservationInfo = new ReservationInfo(false);
+            ReservationInfo = new ReservationInfo(false, null);
             cuisines = new HashSet<CuisineId>();
             paymentMethods = new HashSet<PaymentMethodId>();
             administrators = new HashSet<UserId>();
@@ -75,14 +75,14 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             Name = name;
             Alias = alias;
             Address = address ?? new Address(null, null, null);
-            ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null);
+            ContactInfo = contactInfo ?? new ContactInfo(null, null, null, null, null, null, false);
             this.regularOpeningDays = regularOpeningDays?.ToDictionary(en => en.DayOfWeek, en => en) ??
                                       new Dictionary<int, RegularOpeningDay>();
             this.deviatingOpeningDays = deviatingOpeningDays?.ToDictionary(en => en.Date, en => en) ??
                                         new Dictionary<Date, DeviatingOpeningDay>();
             PickupInfo = pickupInfo ?? new PickupInfo(false, 0, null, null);
             DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, 0, null, null, null);
-            ReservationInfo = reservationInfo ?? new ReservationInfo(false);
+            ReservationInfo = reservationInfo ?? new ReservationInfo(false, null);
             HygienicHandling = hygienicHandling;
             ImportId = importId;
             IsActive = isActive;
@@ -216,13 +216,16 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             if (!Validators.IsValidEmailAddress(contactInfo.EmailAddress))
                 return FailureResult<bool>.Create(FailureResultCode.RestaurantEmailInvalid, contactInfo.EmailAddress);
 
+            if (!string.IsNullOrEmpty(contactInfo.Mobile) && !Validators.IsValidPhoneNumber(contactInfo.Mobile))
+                return FailureResult<bool>.Create(FailureResultCode.RestaurantMobileInvalid, contactInfo.Mobile);
+
             ContactInfo = contactInfo;
             UpdatedOn = DateTime.UtcNow;
             UpdatedBy = changedBy;
 
             return SuccessResult<bool>.Create(true);
         }
-        
+
         public bool IsOpen(DateTime dateTime)
         {
             return FindOpeningPeriod(dateTime) != null;
@@ -397,7 +400,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             {
                 return true;
             }
-            
+
             if (orderDateTime.Date > DateTime.Today)
             {
                 return true;
@@ -410,7 +413,7 @@ namespace Gastromio.Core.Domain.Model.Restaurant
             {
                 return true;
             }
-            
+
             return openingPeriodOfNow != openingPeriodOfOrderDateTime;
         }
 

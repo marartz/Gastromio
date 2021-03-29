@@ -380,7 +380,9 @@ namespace Gastromio.Persistence.MongoDB
                         document.ContactInfo.Fax,
                         document.ContactInfo.WebSite,
                         document.ContactInfo.ResponsiblePerson,
-                        document.ContactInfo.EmailAddress
+                        document.ContactInfo.EmailAddress,
+                        document.ContactInfo.Mobile,
+                        document.ContactInfo.OrderNotificationByMobile
                     )
                     : null,
                 regularOpeningDays,
@@ -403,7 +405,7 @@ namespace Gastromio.Persistence.MongoDB
                     )
                     : null,
                 document.ReservationInfo != null
-                    ? new ReservationInfo(document.ReservationInfo.Enabled)
+                    ? new ReservationInfo(document.ReservationInfo.Enabled, document.ReservationInfo.ReservationSystemUrl)
                     : null,
                 document.HygienicHandling,
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
@@ -481,7 +483,9 @@ namespace Gastromio.Persistence.MongoDB
                         Fax = obj.ContactInfo.Fax,
                         WebSite = obj.ContactInfo.WebSite,
                         ResponsiblePerson = obj.ContactInfo.ResponsiblePerson,
-                        EmailAddress = obj.ContactInfo.EmailAddress
+                        EmailAddress = obj.ContactInfo.EmailAddress,
+                        Mobile = obj.ContactInfo.Mobile,
+                        OrderNotificationByMobile = obj.ContactInfo.OrderNotificationByMobile
                     }
                     : null,
                 OpeningHours = openingHours,
@@ -508,7 +512,8 @@ namespace Gastromio.Persistence.MongoDB
                 ReservationInfo = obj.ReservationInfo != null
                     ? new ReservationInfoModel
                     {
-                        Enabled = obj.ReservationInfo.Enabled
+                        Enabled = obj.ReservationInfo.Enabled,
+                        ReservationSystemUrl = obj.ReservationInfo.ReservationSystemUrl
                     }
                     : null,
                 HygienicHandling = obj.HygienicHandling,
@@ -597,7 +602,7 @@ namespace Gastromio.Persistence.MongoDB
 
             return sb.ToString();
         }
-        
+
         private static string ToDbDeviatingOpeningDayStatus(DeviatingOpeningDayStatus deviatingOpeningDayStatus)
         {
             switch (deviatingOpeningDayStatus)

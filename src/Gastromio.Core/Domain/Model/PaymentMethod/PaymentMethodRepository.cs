@@ -13,10 +13,9 @@ namespace Gastromio.Core.Domain.Model.PaymentMethod
             new PaymentMethod(PaymentMethodId.Cash, "Bar", "Sie bezahlen mit Bargeld", "bar"),
             new PaymentMethod(PaymentMethodId.DebitCard, "EC-Karte", "Sie bezahlen mit Ihrer EC-Karte", "maestro"),
             new PaymentMethod(PaymentMethodId.CreditCard, "Kreditkarte", "Sie bezahlen mit Ihrer Kreditkarte", "kreditkarte"),
-            new PaymentMethod(PaymentMethodId.PayPal, "PayPal", "Sie bezahlen mit PayPal", "paypal"),
             new PaymentMethod(PaymentMethodId.Invoice, "Rechnung", "Sie bezahlen später auf Rechnung", "rechnung")
         };
-        
+
         public Task<IEnumerable<PaymentMethod>> FindAllAsync(CancellationToken cancellationToken = default)
         {
             return Task.FromResult(PaymentMethods.AsEnumerable());

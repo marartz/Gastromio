@@ -46,7 +46,8 @@ namespace Gastromio.Core.Domain.Model.Order
             decimal totalPrice,
             DateTime? serviceTime,
             NotificationInfo customerNotificationInfo,
-            NotificationInfo restaurantNotificationInfo,
+            NotificationInfo restaurantEmailNotificationInfo,
+            NotificationInfo restaurantMobileNotificationInfo,
             DateTime createdOn,
             DateTime? updatedOn,
             UserId updatedBy
@@ -63,7 +64,8 @@ namespace Gastromio.Core.Domain.Model.Order
             TotalPrice = totalPrice;
             ServiceTime = serviceTime;
             CustomerNotificationInfo = customerNotificationInfo;
-            RestaurantNotificationInfo = restaurantNotificationInfo;
+            RestaurantEmailNotificationInfo = restaurantEmailNotificationInfo;
+            RestaurantMobileNotificationInfo = restaurantMobileNotificationInfo;
             CreatedOn = createdOn;
             UpdatedOn = updatedOn;
             UpdatedBy = updatedBy;
@@ -91,7 +93,9 @@ namespace Gastromio.Core.Domain.Model.Order
 
         public NotificationInfo CustomerNotificationInfo { get; private set; }
 
-        public NotificationInfo RestaurantNotificationInfo { get; private set; }
+        public NotificationInfo RestaurantEmailNotificationInfo { get; private set; }
+        
+        public NotificationInfo RestaurantMobileNotificationInfo { get; private set; }
 
         public DateTime CreatedOn { get; }
 
@@ -119,11 +123,21 @@ namespace Gastromio.Core.Domain.Model.Order
             return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> RegisterRestaurantNotificationAttempt(bool status, string message)
+        public Result<bool> RegisterRestaurantEmailNotificationAttempt(bool status, string message)
         {
-            RestaurantNotificationInfo = RestaurantNotificationInfo == null
+            RestaurantEmailNotificationInfo = RestaurantEmailNotificationInfo == null
                 ? new NotificationInfo(status, 1, message, DateTime.UtcNow)
-                : new NotificationInfo(status, RestaurantNotificationInfo.Attempt + 1, message, DateTime.UtcNow);
+                : new NotificationInfo(status, RestaurantEmailNotificationInfo.Attempt + 1, message, DateTime.UtcNow);
+            UpdatedOn = DateTime.UtcNow;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> RegisterRestaurantMobileNotificationAttempt(bool status, string message)
+        {
+            RestaurantMobileNotificationInfo = RestaurantMobileNotificationInfo == null
+                ? new NotificationInfo(status, 1, message, DateTime.UtcNow)
+                : new NotificationInfo(status, RestaurantMobileNotificationInfo.Attempt + 1, message, DateTime.UtcNow);
             UpdatedOn = DateTime.UtcNow;
 
             return SuccessResult<bool>.Create(true);

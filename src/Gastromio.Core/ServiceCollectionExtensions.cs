@@ -77,6 +77,7 @@ namespace Gastromio.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantResponsiblePersonRequired, "Die verantwortliche Person des Restaurants wird benötigt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantEmailRequired, "Die E-Mail-Addresse des Restaurants wird benötigt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantEmailInvalid, "Die E-Mail-Addresse des Restaurants ist nicht gültig: {0}");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantMobileInvalid, "Die Mobilnummer des Restaurants ist nicht gültig: {0}");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageTypeRequired, "Der Type der Bilddatei wird benötigt");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageDataTooBig, "Die Bilddatei ist zu groß (max. 4MB)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.RestaurantImageNotValid, "Die angegebene Bilddatei ist nicht gültig");
@@ -116,7 +117,7 @@ namespace Gastromio.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishNameRequired, "Name des Gerichts ist ein Pflichtfeld");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishNameTooLong, "Der Name des Gerichts ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishDescriptionTooLong, "Die Beschreibung des Gerichts ist zu lang (maximum {0} Zeichen)");
-            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishProductInfoTooLong, "Die Beschreibung des Gerichts ist zu lang (maximum {0} Zeichen)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishProductInfoTooLong, "Die Produktinformation des Gerichts ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishInvalidOrderNo, "Gericht hat eine ungültige Reihenfolgenkennzahl");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantNameTooLong, "Der Name der Variante ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.DishVariantPriceIsNegativeOrZero, "Das Gericht / die Variante muss einen Preis > 0 besitzen");

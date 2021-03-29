@@ -45,6 +45,12 @@ export class OrderSummaryComponent implements OnInit {
         this.initialized = true;
         this.restaurant = this.orderFacade.getSelectedRestaurant();
         this.order = this.orderFacade.getOrder();
+        this.orderFacade.resetCheckout();
       });
   }
+
+  getOrderTypeText(): string {
+    return this.order.cartInfo.orderType === 2 ? "Reservierungsanfrage" : "Bestellung";
+  }
+
 }

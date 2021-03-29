@@ -6,5 +6,6 @@ namespace Gastromio.App
     {
         public bool IsTestSystem { get; set; }
         public string EmailRecipientForTest { get; set; }
+        public string MobileRecipientForTest { get; set; }
     }
 }
