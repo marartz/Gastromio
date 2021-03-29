@@ -264,6 +264,7 @@ export class SystemAdminFacade {
           const cuisines = this.cuisines$.value;
           let cuisine = cuisines.find(en => en.id === cuisineId);
           cuisine.name = name;
+          cuisine.image = image;
           cuisines.sort(SystemAdminFacade.compareCuisine);
           this.cuisines$.next(cuisines);
 
