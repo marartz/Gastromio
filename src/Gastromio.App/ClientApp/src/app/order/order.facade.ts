@@ -264,14 +264,13 @@ export class OrderFacade {
   }
 
   public selectRestaurant$(restaurant: RestaurantModel): Observable<void> {
-    if (this.selectedRestaurant$.value !== undefined && this.selectedRestaurant$.value.id === restaurant.id) {
-      return of(void 0);
+    if (this.selectedRestaurant$.value === undefined || this.selectedRestaurant$.value.id !== restaurant.id) {
+      this.storedCart$.next(undefined);
+      this.storedCartService.removeFromStorage();
     }
 
     this.selectedRestaurant$.next(new RestaurantModel(restaurant));
 
-    this.storedCart$.next(undefined);
-    this.storedCartService.removeFromStorage();
     this.dishCategoriesOfSelectedRestaurant$.next(undefined);
     this.isCartVisible$.next(false);
     this.updateCartModel();
