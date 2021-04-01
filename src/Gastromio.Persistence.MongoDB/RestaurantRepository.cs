@@ -309,6 +309,8 @@ namespace Gastromio.Persistence.MongoDB
                     throw new ArgumentOutOfRangeException();
             }
 
+            openingHourFilter = openingHourFilter.ToLocalTime();
+
             const double earliestOpeningHour = 4d;
 
             int filterMinutes;
