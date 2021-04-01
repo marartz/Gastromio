@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.DishCategory;
+using Gastromio.Core.Domain.Model.DishCategories;
+using Gastromio.Core.Domain.Model.Dishes;
 
 namespace Gastromio.Core.Application.DTOs
 {
