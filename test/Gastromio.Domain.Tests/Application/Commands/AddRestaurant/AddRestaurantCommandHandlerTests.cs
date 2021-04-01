@@ -207,12 +207,16 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
 
             public void SetupUserRepositoryFindingAdministrators()
             {
-                var administrators = Restaurant.Administrators.Select(
+                var userIds = Restaurant.Administrators
+                    .Union(new[] {Restaurant.CreatedBy, Restaurant.UpdatedBy})
+                    .ToList();
+
+                var users = userIds.Select(
                     userId => new UserBuilder().WithId(userId).Create()
                 );
 
-                UserRepositoryMock.SetupFindByUserIdsAsync(Restaurant.Administrators)
-                    .ReturnsAsync(administrators);
+                UserRepositoryMock.SetupFindByUserIdsAsync(userIds)
+                    .ReturnsAsync(users);
             }
 
             public void SetupRestaurantImageRepositoryFindingTypes()
