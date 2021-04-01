@@ -38,7 +38,8 @@ namespace Gastromio.Core.Application.DTOs
             DeviatingOpeningDays = new ReadOnlyCollection<DeviatingOpeningDayDTO>(
                 restaurant.DeviatingOpeningDays?
                     .Select(keyValuePair =>
-                        new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.Status, keyValuePair.Value.OpeningPeriods))
+                        new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.Status,
+                            keyValuePair.Value.OpeningPeriods))
                     .ToList() ?? new List<DeviatingOpeningDayDTO>()
             );
             RegularOpeningHoursText = regularOpeningHoursText;
@@ -73,6 +74,10 @@ namespace Gastromio.Core.Application.DTOs
                     )
                     .ToList()
                 : new List<ExternalMenuDTO>();
+            CreatedOn = restaurant.CreatedOn;
+            CreatedBy = users.TryGetValue(restaurant.CreatedBy, out var createdOnUserDto) ? createdOnUserDto : null;
+            UpdatedOn = restaurant.UpdatedOn;
+            UpdatedBy = users.TryGetValue(restaurant.UpdatedBy, out var updatedUserDto) ? updatedUserDto : null;
         }
 
         public Guid Id { get; }
@@ -122,6 +127,14 @@ namespace Gastromio.Core.Application.DTOs
         public string SupportedOrderMode { get; }
 
         public IReadOnlyCollection<ExternalMenuDTO> ExternalMenus { get; }
+
+        public DateTimeOffset CreatedOn { get; }
+
+        public UserDTO CreatedBy { get; }
+
+        public DateTimeOffset UpdatedOn { get; }
+
+        public UserDTO UpdatedBy { get; }
 
         private static CuisineDTO RetrieveCuisineModel(IDictionary<Guid, CuisineDTO> allCuisines,
             Guid cuisineId)
