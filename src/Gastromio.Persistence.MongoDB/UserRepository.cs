@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -188,7 +188,7 @@ namespace Gastromio.Persistence.MongoDB
                 model.PasswordSalt,
                 model.PasswordHash,
                 model.PasswordResetCode,
-                model.PasswordResetExpiration,
+                model.PasswordResetExpiration?.ToDateTimeOffset(TimeSpan.Zero),
                 model.CreatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(model.CreatedBy),
                 model.UpdatedOn.ToDateTimeOffset(TimeSpan.Zero),

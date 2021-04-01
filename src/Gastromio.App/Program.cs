@@ -6,7 +6,7 @@ using System.Linq;
 using Gastromio.Core.Application.Commands.AddTestData;
 using Gastromio.Core.Application.Commands.EnsureAdminUser;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Persistence.MongoDB;
 using Microsoft.Extensions.Configuration;
 using Serilog;

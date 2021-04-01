@@ -9,14 +9,14 @@ using Gastromio.Core.Application.Commands.Checkout;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetAllCuisines;
-using Gastromio.Core.Application.Queries.GetDishesOfRestaurant;
+using Gastromio.Core.Application.Queries.GetDishesOfRestaurantForOrder;
 using Gastromio.Core.Application.Queries.GetRestaurantById;
 using Gastromio.Core.Application.Queries.OrderSearchForRestaurants;
 using Gastromio.Core.Application.Services;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -89,8 +89,8 @@ namespace Gastromio.App.Controllers.V1
         public async Task<IActionResult> GetDishesOfRestaurantAsync(string restaurant)
         {
             var queryResult =
-                await queryDispatcher.PostAsync<GetDishesOfRestaurantQuery, ICollection<DishCategoryDTO>>(
-                    new GetDishesOfRestaurantQuery(restaurant), null);
+                await queryDispatcher.PostAsync<GetDishesOfRestaurantForOrderQuery, ICollection<DishCategoryDTO>>(
+                    new GetDishesOfRestaurantForOrderQuery(restaurant), null);
             return ResultHelper.HandleResult(queryResult, failureMessageService);
         }
 

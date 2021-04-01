@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Users;
 using MongoDB.Bson;
 using MongoDB.Driver;
 

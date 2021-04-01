@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Domain.Services
 {
@@ -347,10 +347,11 @@ namespace Gastromio.Core.Domain.Services
                 }
                 else if (dateParts.Length == 2)
                 {
-                    var localToday = DateTimeOffset.UtcNow.ToLocalDate();
-                    date = dateParts[1] >= localToday.Month
-                        ? new Date(localToday.Year, dateParts[1], dateParts[0])
-                        : new Date(localToday.Year + 1, dateParts[1], dateParts[0]);
+                    var today = DateTimeOffset.UtcNow.ToUtcDate();
+
+                    date = dateParts[1] >= today.Month
+                        ? new Date(today.Year, dateParts[1], dateParts[0])
+                        : new Date(today.Year + 1, dateParts[1], dateParts[0]);
                 }
                 else
                 {
@@ -488,7 +489,7 @@ namespace Gastromio.Core.Domain.Services
             if (boolResult.IsFailure)
                 return boolResult;
 
-            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation), curUserId);
+            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation, null), curUserId);
             if (boolResult.IsFailure)
                 return boolResult;
 

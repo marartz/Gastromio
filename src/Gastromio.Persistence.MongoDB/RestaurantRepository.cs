@@ -7,11 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -309,6 +309,8 @@ namespace Gastromio.Persistence.MongoDB
                     throw new ArgumentOutOfRangeException();
             }
 
+            openingHourFilter = openingHourFilter.ToLocalTime();
+
             const double earliestOpeningHour = 4d;
 
             int filterMinutes;
@@ -405,7 +407,7 @@ namespace Gastromio.Persistence.MongoDB
                     )
                     : null,
                 document.ReservationInfo != null
-                    ? new ReservationInfo(document.ReservationInfo.Enabled)
+                    ? new ReservationInfo(document.ReservationInfo.Enabled, document.ReservationInfo.ReservationSystemUrl)
                     : null,
                 document.HygienicHandling,
                 new HashSet<CuisineId>(document.Cuisines.Select(en => new CuisineId(en))),
@@ -512,7 +514,8 @@ namespace Gastromio.Persistence.MongoDB
                 ReservationInfo = obj.ReservationInfo != null
                     ? new ReservationInfoModel
                     {
-                        Enabled = obj.ReservationInfo.Enabled
+                        Enabled = obj.ReservationInfo.Enabled,
+                        ReservationSystemUrl = obj.ReservationInfo.ReservationSystemUrl
                     }
                     : null,
                 HygienicHandling = obj.HygienicHandling,

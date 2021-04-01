@@ -54,6 +54,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.orderFacade.setSelectedOrderTypeIfNotSet(OrderType.Pickup);
+
     this.orderFacade.getIsSearching$()
       .subscribe(isSearching => {
         if (isSearching) {
@@ -146,6 +148,10 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   onPickupSelected(): void {
     this.orderFacade.setSelectedOrderType(OrderType.Pickup);
+  }
+
+  onReservationSelected(): void {
+    this.orderFacade.setSelectedOrderType(OrderType.Reservation);
   }
 
   onSearchType(value: string) {

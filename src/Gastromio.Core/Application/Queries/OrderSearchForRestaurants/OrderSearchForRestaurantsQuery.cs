@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gastromio.Core.Application.DTOs;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Order;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Orders;
 
 namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
 {

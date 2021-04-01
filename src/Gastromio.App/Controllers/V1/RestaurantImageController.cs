@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetRestaurantImage;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.RestaurantImage;
+using Gastromio.Core.Domain.Model.RestaurantImages;
+using Gastromio.Core.Domain.Model.Restaurants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -36,7 +36,7 @@ namespace Gastromio.App.Controllers.V1
 
             var fileContentResult = new FileContentResult(data, "image/jpeg")
             {
-                LastModified = updatedOn.UtcDateTime,
+                LastModified = updatedOn
             };
 
             return fileContentResult;

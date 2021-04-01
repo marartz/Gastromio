@@ -18,9 +18,9 @@
 
 		<form>
 			<!-- class="active" wenn aktiv -->
-			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'phone'" (click)="changeSupportedOrderMode('phone')">Telefonische Bestellung</button>
-			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'shift'" (click)="changeSupportedOrderMode('shift')">Online Vorbestellung (per E-Mail)</button>
-			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'anytime'" (click)="changeSupportedOrderMode('anytime')">Online Bestellung (per E-Mail)</button>
+			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'phone'" (click)="changeSupportedOrderMode('phone')">Telefonisch</button>
+			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'shift'" (click)="changeSupportedOrderMode('shift')">Telefonisch & Online-Vorbestellung</button>
+			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'anytime'" (click)="changeSupportedOrderMode('anytime')">Telefonisch & Online-Vorbestellung & Online-Bestellung</button>
 		</form>
 	</section>
 
@@ -31,6 +31,7 @@
 		<form>
 			<button type="button" class="checkbox-input" [class.active]="pickupEnabled" (click)="togglePickupEnabled()">Abholung</button>
 			<button type="button" class="checkbox-input" [class.active]="deliveryEnabled" (click)="toggleDeliveryEnabled()">Lieferung</button>
+            <button type="button" class="checkbox-input" [class.active]="reservationEnabled" (click)="toggleReservationEnabled()">Tischreservierung</button>
 		</form>
 	</section>
 
@@ -136,6 +137,23 @@
                    placeholder="z.B. 0€"
                    type="number"
                    >
+
+        </section>
+
+        <section id="settings">
+            <h3>Angaben zur Tischreservierung</h3>
+
+            <label for="reservationSystemUrl">Link zum Reservierungssystem</label>
+            <input
+                autocapitalize="none"
+                autocomplete="off"
+                class="text-input"
+                formControlName="reservationSystemUrl"
+                id="reservationSystemUrl"
+                mozactionhint="next"
+                placeholder="Link zum externen Reservierungssystem"
+                type="text"
+            >
 
         </section>
 

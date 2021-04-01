@@ -8,8 +8,8 @@ using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Application.Ports.Template;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.Logging;
 
 namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications

@@ -1,6 +1,6 @@
 ﻿using System;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
 
 namespace Gastromio.Core.Application.DTOs
 {

@@ -461,6 +461,24 @@ button {
 	font-weight: 400;
 }
 
+@media only screen and (max-width: 768px) {
+	#flash-message.closed-rest {
+		position: fixed;
+		bottom: 0px;
+		left: 0px;
+		z-index: 9999;
+		font-family: "Apercu", sans-serif;
+		background-color: #ADCCCB;
+		padding: 10px 30px;
+		border-radius: 23px 23px 0px 0px;
+		color: #363636;
+		font-size: 16px;
+		font-weight: 400;
+		width: 100%;
+		text-align: center;
+	}
+}
+
 #flash-message span {
 	align-items: center;
 	display: inline-flex;

@@ -8,6 +8,7 @@ import {BlockUI, NgBlockUI} from 'ng-block-ui';
 import {RestaurantModel} from "../../../shared/models/restaurant.model";
 
 import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
+import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component";
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -27,6 +28,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   public selectedTab$: Observable<string>;
   public isUpdated$: Observable<boolean>;
   public updateError$: Observable<string>;
+
+  public links: Array<LinkInfo> = [
+    { id: 'general', name: 'Allgemein' },
+    { id: 'order', name: 'Bestellung' },
+    { id: 'payment', name: 'Zahlung' },
+    { id: 'opening-hours', name: 'Zeiten' },
+    { id: 'dishes', name: 'Speisen' },
+  ];
 
   constructor(
     private route: ActivatedRoute,

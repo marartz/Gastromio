@@ -5,11 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 using MongoDB.Driver;
 
 namespace Gastromio.Persistence.MongoDB
