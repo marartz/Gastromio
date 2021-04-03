@@ -13,10 +13,10 @@ using Gastromio.Core.Application.Queries.GetDishesOfRestaurantForOrder;
 using Gastromio.Core.Application.Queries.GetRestaurantById;
 using Gastromio.Core.Application.Queries.OrderSearchForRestaurants;
 using Gastromio.Core.Application.Services;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -58,10 +58,10 @@ namespace Gastromio.App.Controllers.V1
 
             var tempCuisineId = cuisineId != Guid.Empty ? new CuisineId(cuisineId) : null;
 
-            DateTime? openingHourDateTime = null;
+            DateTimeOffset? openingHourDateTime = null;
             if (!string.IsNullOrWhiteSpace(openingHour))
             {
-                if (DateTime.TryParse(openingHour, out var tempOpeningHour))
+                if (DateTimeOffset.TryParse(openingHour, out var tempOpeningHour))
                 {
                     openingHourDateTime = tempOpeningHour;
                 }
