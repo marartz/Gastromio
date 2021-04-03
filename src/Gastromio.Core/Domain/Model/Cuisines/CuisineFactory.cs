@@ -11,6 +11,7 @@ namespace Gastromio.Core.Domain.Model.Cuisines
             var cuisine = new Cuisine(
                 new CuisineId(Guid.NewGuid()),
                 null,
+                null,
                 DateTimeOffset.UtcNow,
                 createdBy,
                 DateTimeOffset.UtcNow,
@@ -23,11 +24,13 @@ namespace Gastromio.Core.Domain.Model.Cuisines
                 ? SuccessResult<Cuisine>.Create(cuisine)
                 : tempResult.Cast<Cuisine>();
         }
-        
+
         public Result<Cuisine> Create(string name, string image, UserId createdBy)
         {
             var cuisine = new Cuisine(
                 new CuisineId(Guid.NewGuid()),
+                name,
+                image,
                 DateTime.UtcNow,
                 createdBy,
                 DateTime.UtcNow,

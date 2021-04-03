@@ -31,7 +31,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             fixture.SetupCuisineRepositoryFindingCuisineByName();
 
             var testObject = fixture.CreateTestObject();
-            var command = new AddCuisineCommand(null);
+            var command = new AddCuisineCommand(null, null);
 
             // Act
             var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
@@ -51,7 +51,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             fixture.SetupCuisineRepositoryFindingCuisineByName();
 
             var testObject = fixture.CreateTestObject();
-            var command = new AddCuisineCommand("");
+            var command = new AddCuisineCommand("", null);
 
             // Act
             var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
@@ -136,7 +136,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
 
             public override AddCuisineCommand CreateSuccessfulCommand()
             {
-                return new AddCuisineCommand("test");
+                return new AddCuisineCommand("test", null);
             }
 
             public void SetupCuisineRepositoryFindingCuisineByName()
@@ -167,7 +167,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
                     .WithName("test")
                     .Create();
 
-                CuisineFactoryMock.SetupCreate("test", UserWithMinimumRole.Id)
+                CuisineFactoryMock.SetupCreate("test", null, UserWithMinimumRole.Id)
                     .Returns(SuccessResult<Cuisine>.Create(CreatedCuisine));
             }
 

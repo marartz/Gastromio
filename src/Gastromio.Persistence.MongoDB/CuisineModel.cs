@@ -19,4 +19,3 @@ namespace Gastromio.Persistence.MongoDB
         public Guid UpdatedBy { get; set; }
     }
 }
-
