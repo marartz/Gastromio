@@ -136,7 +136,9 @@ export class RestaurantRestAdminService {
       fax: contactInfo.fax,
       webSite: contactInfo.webSite,
       responsiblePerson: contactInfo.responsiblePerson,
-      emailAddress: contactInfo.emailAddress
+      emailAddress: contactInfo.emailAddress,
+      mobile: contactInfo.mobile,
+      orderNotificationByMobile: contactInfo.orderNotificationByMobile
     }, httpOptions)
       .pipe(take(1));
   }
@@ -300,6 +302,7 @@ export class RestaurantRestAdminService {
       deliveryMaximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
       deliveryCosts: serviceInfo.deliveryCosts,
       reservationEnabled: serviceInfo.reservationEnabled,
+      reservationSystemUrl: serviceInfo.reservationSystemUrl,
       hygienicHandling: serviceInfo.hygienicHandling
     }, httpOptions)
       .pipe(take(1));
@@ -381,6 +384,32 @@ export class RestaurantRestAdminService {
       })
     };
     return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/decorderofdishcategory',
+      {dishCategoryId}, httpOptions)
+      .pipe(take(1));
+  }
+
+  public enableDishCategoryAsync(id: string, dishCategoryId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/enabledishcategory',
+      {dishCategoryId}, httpOptions)
+      .pipe(take(1));
+  }
+
+  public disableDishCategoryAsync(id: string, dishCategoryId: string): Observable<boolean> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.authService.getToken(),
+      })
+    };
+    return this.http.post<boolean>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/disabledishcategory',
       {dishCategoryId}, httpOptions)
       .pipe(take(1));
   }

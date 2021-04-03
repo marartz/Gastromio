@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Gastromio.App.BackgroundServices;
 using Gastromio.Core;
+using Gastromio.Notification.Sms77;
 using Gastromio.Notification.Smtp;
 using Gastromio.Persistence.MongoDB;
 using Gastromio.Template.DotLiquid;
@@ -35,13 +36,14 @@ namespace Gastromio.App
 
             var databaseName = Configuration.GetValue("DatabaseName", Constants.DatabaseName);
             Log.Logger.Information("Using database name: {0}", databaseName);
-            
+
             services.AddMongoDB(connectionString, databaseName);
 
             var configurationProvider = new ConfigurationProvider
             {
                 IsTestSystem = Configuration.GetValue("IsTestSystem", true),
-                EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net")
+                EmailRecipientForTest = Configuration.GetValue("EmailRecipientForTest", "artz.marco@gmx.net"),
+                MobileRecipientForTest = Configuration.GetValue("MobileRecipientForTest", "+4915165119020")
             };
 
             Log.Information($"IsTestSystem: {configurationProvider.IsTestSystem}");
@@ -52,7 +54,7 @@ namespace Gastromio.App
 
             services.AddSingleton<Gastromio.Core.Application.Ports.IConfigurationProvider>(configurationProvider);
 
-            var smtpConfiguration = new SmtpConfiguration()
+            var smtpConfiguration = new SmtpEmailConfiguration
             {
                 ServerName = Configuration.GetValue<string>("Smtp:ServerName"),
                 Port = Configuration.GetValue<int>("Smtp:Port"),
@@ -60,10 +62,17 @@ namespace Gastromio.App
                 Password = Configuration.GetValue<string>("Smtp:Password")
             };
             services.AddSingleton(smtpConfiguration);
-            services.AddSmtp();
+            services.AddEmailNotificationViaSmtp();
+
+            var sms77MobileConfiguration = new Sms77MobileConfiguration
+            {
+                ApiToken = Configuration.GetValue<string>("SMS77:ApiToken")
+            };
+            services.AddSingleton(sms77MobileConfiguration);
+            services.AddMobileNotificationViaSms77();
 
             services.AddDotLiquid();
-            
+
             services.AddHostedService<NotificationBackgroundService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -84,7 +93,7 @@ namespace Gastromio.App
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            // Errors caused by request body deserialization or data annonations on DTOs (e.g. '[Required]') are handled automatically.
+            // Errors caused by request body deserialization or data annotations on DTOs (e.g. '[Required]') are handled automatically.
             // In this case controller endpoints are not reached and BadRequest is returned (client validation should catch these cases earlier).
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -124,7 +133,7 @@ namespace Gastromio.App
             }
 
             app.UseSerilogRequestLogging();
-            
+
             app.UseRouting();
 
             app.UseAuthentication();

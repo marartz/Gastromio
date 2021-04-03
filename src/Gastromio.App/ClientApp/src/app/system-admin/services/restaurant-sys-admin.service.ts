@@ -15,6 +15,7 @@ import {ImportLogModel} from '../models/import-log.model';
 
 @Injectable()
 export class RestaurantSysAdminService {
+
   private baseUrl = 'api/v1/systemadmin';
 
   constructor(
@@ -248,4 +249,5 @@ export class RestaurantSysAdminService {
     return this.http.post<ImportLogModel>(url, formData, httpOptions)
       .pipe(take(1));
   }
+
 }

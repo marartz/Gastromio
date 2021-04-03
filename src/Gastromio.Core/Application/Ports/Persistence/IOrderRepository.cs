@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Ports.Persistence
 {
@@ -12,7 +12,9 @@ namespace Gastromio.Core.Application.Ports.Persistence
 
         Task<IEnumerable<Order>> FindByPendingCustomerNotificationAsync(CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<Order>> FindByPendingRestaurantNotificationAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Order>> FindByPendingRestaurantEmailNotificationAsync(CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Order>> FindByPendingRestaurantMobileNotificationAsync(CancellationToken cancellationToken = default);
 
         Task<Order> FindByOrderIdAsync(OrderId orderId, CancellationToken cancellationToken = default);
 

@@ -6,7 +6,7 @@ using Gastromio.Core.Application.Ports.Notification;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Application.Ports.Template;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RequestPasswordChange
 {
@@ -14,14 +14,14 @@ namespace Gastromio.Core.Application.Commands.RequestPasswordChange
     {
         private readonly IUserRepository userRepository;
         private readonly ITemplateService templateService;
-        private readonly INotificationService notificationService;
+        private readonly IEmailNotificationService emailNotificationService;
 
         public RequestPasswordChangeCommandHandler(IUserRepository userRepository, ITemplateService templateService,
-            INotificationService notificationService)
+            IEmailNotificationService emailNotificationService)
         {
             this.userRepository = userRepository;
             this.templateService = templateService;
-            this.notificationService = notificationService;
+            this.emailNotificationService = emailNotificationService;
         }
 
         public async Task<Result<bool>> HandleAsync(RequestPasswordChangeCommand command, User currentUser, CancellationToken cancellationToken = default)
@@ -47,7 +47,7 @@ namespace Gastromio.Core.Application.Commands.RequestPasswordChange
 
             var emailData = templateService.GetRequestPasswordChangeEmail(user.Email, url);
 
-            await notificationService.SendNotificationAsync(new NotificationRequest(
+            await emailNotificationService.SendEmailNotificationAsync(new EmailNotificationRequest(
                 new EmailAddress("Gastromio.de", "noreply@gastromio.de"),
                 new List<EmailAddress>
                 {
@@ -59,7 +59,7 @@ namespace Gastromio.Core.Application.Commands.RequestPasswordChange
                 emailData.TextPart,
                 emailData.HtmlPart
             ), cancellationToken);
-            
+
             return SuccessResult<bool>.Create(true);
         }
     }

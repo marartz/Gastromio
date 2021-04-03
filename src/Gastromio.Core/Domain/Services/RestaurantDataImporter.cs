@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Domain.Services
 {
@@ -89,7 +89,9 @@ namespace Gastromio.Core.Domain.Services
                 restaurantRow.Fax,
                 restaurantRow.WebSite,
                 restaurantRow.ResponsiblePerson,
-                restaurantRow.OrderEmailAddress
+                restaurantRow.OrderEmailAddress,
+                null,
+                false
             );
             boolResult = restaurant.ChangeContactInfo(contactInfo, curUserId);
             if (boolResult.IsFailure)
@@ -229,7 +231,7 @@ namespace Gastromio.Core.Domain.Services
                     return;
                 }
             }
-            
+
             boolResult = SetSupportOrderMode(restaurant, restaurantRow.SupportedOrderMode, curUserId);
             if (boolResult.IsFailure)
             {
@@ -263,7 +265,7 @@ namespace Gastromio.Core.Domain.Services
                 newRestaurant
                     ? "Lege ein neues Restaurant '{0}' an ({1})."
                     : "Aktualisiere das bereits existierende Restaurant '{0}' ({1}).", restaurant.Name, activityStatus);
-            
+
             if (!dryRun)
                 await restaurantRepository.StoreAsync(restaurant, cancellationToken);
         }
@@ -273,7 +275,7 @@ namespace Gastromio.Core.Domain.Services
         {
             if (string.IsNullOrWhiteSpace(openingHoursText))
                 return SuccessResult<bool>.Create(true);
-            
+
             if (openingHoursText.Trim() == "-")
                 return SuccessResult<bool>.Create(true);
 
@@ -328,7 +330,7 @@ namespace Gastromio.Core.Domain.Services
 
                 if (dateTextParts.Length == 0)
                     return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
-                
+
                 var dateParts = new int[dateTextParts.Length];
                 for (var partIdx = 0; partIdx < dateParts.Length; partIdx++)
                 {
@@ -345,9 +347,11 @@ namespace Gastromio.Core.Domain.Services
                 }
                 else if (dateParts.Length == 2)
                 {
-                    date = dateParts[1] >= DateTime.Today.Month
-                        ? new Date(DateTime.Today.Year, dateParts[1], dateParts[0])
-                        : new Date(DateTime.Today.Year + 1, dateParts[1], dateParts[0]);
+                    var today = DateTimeOffset.UtcNow.ToUtcDate();
+
+                    date = dateParts[1] >= today.Month
+                        ? new Date(today.Year, dateParts[1], dateParts[0])
+                        : new Date(today.Year + 1, dateParts[1], dateParts[0]);
                 }
                 else
                 {
@@ -355,7 +359,7 @@ namespace Gastromio.Core.Domain.Services
                 }
 
                 tempOpeningDay = tempOpeningDay.Substring(index + 1).Trim();
-                
+
                 if (tempOpeningDay == "geschlossen")
                 {
                     var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.Closed, curUserId);
@@ -443,7 +447,7 @@ namespace Gastromio.Core.Domain.Services
             foreach (var orderTypeText in orderTypeTexts)
             {
                 var orderTypeTextTrimmed = orderTypeText.Trim();
-                
+
                 switch (orderTypeTextTrimmed)
                 {
                     case "Abholung":
@@ -485,7 +489,7 @@ namespace Gastromio.Core.Domain.Services
             if (boolResult.IsFailure)
                 return boolResult;
 
-            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation), curUserId);
+            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation, null), curUserId);
             if (boolResult.IsFailure)
                 return boolResult;
 
@@ -573,7 +577,7 @@ namespace Gastromio.Core.Domain.Services
                 return SuccessResult<bool>.Create(true);
 
             var user = await userRepository.FindByEmailAsync(administratorEmailAddress.Trim().ToLowerInvariant());
-            
+
             if (user == null)
             {
                 var createNewUserResult =
