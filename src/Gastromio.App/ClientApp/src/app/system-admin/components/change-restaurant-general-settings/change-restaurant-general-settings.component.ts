@@ -92,6 +92,7 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
       this.restaurant,
       cuisineStatusArray,
       data.name,
+      data.alias,
       data.importId
     )
       .subscribe(

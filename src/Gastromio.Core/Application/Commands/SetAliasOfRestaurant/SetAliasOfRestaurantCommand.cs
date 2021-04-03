@@ -1,4 +1,4 @@
-using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.SetAliasOfRestaurant
 {
@@ -9,7 +9,7 @@ namespace Gastromio.Core.Application.Commands.SetAliasOfRestaurant
             RestaurantId = restaurantId;
             Alias = alias;
         }
-        
+
         public RestaurantId RestaurantId { get; }
         public string Alias { get; }
     }

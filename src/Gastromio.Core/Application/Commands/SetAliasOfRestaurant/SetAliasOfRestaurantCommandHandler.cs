@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.SetAliasOfRestaurant
 {
@@ -15,7 +15,7 @@ namespace Gastromio.Core.Application.Commands.SetAliasOfRestaurant
         {
             this.restaurantRepository = restaurantRepository;
         }
-        
+
         public async Task<Result<bool>> HandleAsync(SetAliasOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)

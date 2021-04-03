@@ -409,7 +409,7 @@ export class SystemAdminFacade {
       );
   }
 
-  public updateRestaurantGeneralSettings$(restaurant: RestaurantModel, cuisineStatusArray: Array<CuisineStatus>, name: string, importId: string): Observable<void> {
+  public updateRestaurantGeneralSettings$(restaurant: RestaurantModel, cuisineStatusArray: Array<CuisineStatus>, name: string, alias: string, importId: string): Observable<void> {
     if (!cuisineStatusArray.some(en => en.newStatus)) {
       this.updateError$.next("Bitte wähle mindestens eine Cuisine aus.");
       return;
@@ -447,6 +447,21 @@ export class SystemAdminFacade {
         } else {
           curObservable = nextChangeCuisineObservable;
         }
+      }
+    }
+
+    if (restaurant.alias !== alias)
+    {
+      const nextObservable = this.restaurantSysAdminService.setRestaurantAliasAsync(restaurant.id, alias)
+        .pipe(
+          tap(() => {
+            restaurant.alias = alias;
+          })
+        );
+      if (curObservable !== undefined) {
+        curObservable = curObservable.pipe(concatMap(() => nextObservable));
+      } else {
+        curObservable = nextObservable;
       }
     }
 
