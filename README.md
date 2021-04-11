@@ -50,10 +50,11 @@ docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:
 2. Repository klonen: ```git clone```
 3. Abhängigkeiten installieren
     * Backend: ```dotnet restore ./src/Gastromio.App```
-    * Frontend: ```npm i```
+    * Frontend: ```npm i``` (Ausführen in ./src/Gastromio.App/ClientApp)
 4. Frontend starten: ```npm start```
-5. Backend starten: ```dotnet run ./src/Gastromio.App```
-6. Im Browser ```localhost:4200``` aufrufen
+5. Backend starten: ```dotnet run --project ./src/Gastromio.App```
+6. Im Browser ```localhost:5001``` aufrufen
+   - **Hinweis**: Port kann varieren
 
 ### Installation von MongoDB
 [MongoDB](https://www.mongodb.com/try/download/community) kann entweder auf dem Entwicklungs- oder Testrechner installiert werden oder mit Hilfe von Docker:
