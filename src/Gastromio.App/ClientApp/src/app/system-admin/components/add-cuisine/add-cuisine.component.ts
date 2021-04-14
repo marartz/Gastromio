@@ -31,7 +31,8 @@ export class AddCuisineComponent implements OnInit {
     private facade: SystemAdminFacade
   ) {
     this.addCuisineForm = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      image: ['']
     });
   }
 
@@ -58,7 +59,7 @@ export class AddCuisineComponent implements OnInit {
       return;
     }
 
-    this.facade.addCuisine$(data.name)
+    this.facade.addCuisine$(data.name, data.image)
       .subscribe(() => {
         this.activeModal.close('Close click');
       });

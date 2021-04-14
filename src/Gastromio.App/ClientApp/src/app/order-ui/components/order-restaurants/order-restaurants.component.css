@@ -1,9 +1,35 @@
+@-webkit-keyframes fadeUpTitle {
+    0% {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@keyframes fadeUpTitle {
+    0% {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+
+#hero[class^="cuisine"] {
+    -webkit-animation-name: fadeUpTitle!important;
+    animation-name: fadeUpTitle!important;
+    -webkit-animation-duration: 1.6s;
+    animation-duration: 1.6s;
+    transition: opacity 1.6s ease!important;
+    background-repeat: no-repeat !important;
+}
+
 #order #restaurants {
-	float: left;
-	margin-left: 10px;
-	margin-top: -8px;
+    float: left;
+    margin-left: 10px;
+    margin-top: -8px;
     min-height: 100%;
-	width: calc(100% - 20px);
+    width: calc(100% - 20px);
 }
 
 @media only screen and (min-width: 570px) {
@@ -18,18 +44,9 @@
     #order #restaurants {
         margin-left: 20px;
         margin-bottom: 30px;
-		width: calc(75% - 20px);
+        width: calc(75% - 20px);
     }
 }
-
-
-
-
-
-
-
-
-
 
 .preorder {
     align-items: center;

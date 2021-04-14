@@ -116,6 +116,11 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  getCuisineHeroImage(): string {
+    let selectedCuisine = this.orderFacade.getCuisines().find(cuisine => cuisine.id === this.orderFacade.getSelectedCuisine());
+    return selectedCuisine && selectedCuisine.image ? selectedCuisine.image : 'default.jpg';
+  }
+
   onToggleMobileFilterDetails(): void {
     this.showMobileFilterDetails = !this.showMobileFilterDetails;
   }

@@ -48,7 +48,8 @@ export class ChangeCuisineComponent implements OnInit {
     this.message$ = this.facade.getUpdateError$();
 
     this.changeCuisineForm = this.formBuilder.group({
-      name: [this.cuisine.name, Validators.required]
+      name: [this.cuisine.name, Validators.required],
+      image: [this.cuisine.image]
     });
   }
 
@@ -61,7 +62,7 @@ export class ChangeCuisineComponent implements OnInit {
       return;
     }
 
-    this.facade.changeCuisine$(this.cuisine.id, data.name)
+    this.facade.changeCuisine$(this.cuisine.id, data.name, data.image)
       .subscribe(() => {
         this.activeModal.close('Close click');
       });

@@ -35,6 +35,10 @@ namespace Gastromio.Core.Application.Commands.ChangeCuisine
             if (result.IsFailure)
                 return result;
 
+            result = cuisine.ChangeImage(command.Image, currentUser.Id);
+            if (result.IsFailure)
+                return result;
+
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 
             return SuccessResult<bool>.Create(true);

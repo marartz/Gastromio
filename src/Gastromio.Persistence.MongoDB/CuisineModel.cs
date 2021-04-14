@@ -8,6 +8,8 @@ namespace Gastromio.Persistence.MongoDB
 
         public string Name { get; set; }
 
+        public string Image { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public Guid CreatedBy { get; set; }

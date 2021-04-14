@@ -91,7 +91,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
 
             public override ChangeCuisineCommand CreateSuccessfulCommand()
             {
-                return new ChangeCuisineCommand(Cuisine.Id, "test");
+                return new ChangeCuisineCommand(Cuisine.Id, "test", "image");
             }
 
             public void SetupRandomCuisine()

@@ -6,5 +6,7 @@ namespace Gastromio.Core.Domain.Model.Cuisines
     public interface ICuisineFactory
     {
         Result<Cuisine> Create(string name, UserId createdBy);
+        
+        Result<Cuisine> Create(string name, string image, UserId createdBy);
     }
 }

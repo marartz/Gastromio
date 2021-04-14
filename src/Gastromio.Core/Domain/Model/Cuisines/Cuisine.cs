@@ -9,6 +9,7 @@ namespace Gastromio.Core.Domain.Model.Cuisines
         public Cuisine(
             CuisineId id,
             string name,
+            string image,
             DateTimeOffset createdOn,
             UserId createdBy,
             DateTimeOffset updatedOn,
@@ -17,6 +18,7 @@ namespace Gastromio.Core.Domain.Model.Cuisines
         {
             Id = id;
             Name = name;
+            Image = image;
             CreatedOn = createdOn;
             CreatedBy = createdBy;
             UpdatedOn = updatedOn;
@@ -24,7 +26,10 @@ namespace Gastromio.Core.Domain.Model.Cuisines
         }
 
         public CuisineId Id { get; }
+
         public string Name { get; private set; }
+
+        public string Image { get; private set; }
 
         public DateTimeOffset CreatedOn { get; }
 
@@ -43,6 +48,20 @@ namespace Gastromio.Core.Domain.Model.Cuisines
 
             Name = name;
             UpdatedOn = DateTimeOffset.UtcNow;
+            UpdatedBy = updatedBy;
+
+            return SuccessResult<bool>.Create(true);
+        }
+
+        public Result<bool> ChangeImage(string image, UserId updatedBy)
+        {
+            image = !string.IsNullOrWhiteSpace(image) ? image.ToLowerInvariant() : null;
+
+            if (image != null && image.Length > 50)
+                return FailureResult<bool>.Create(FailureResultCode.CuisineImageTooLong, 50);
+
+            Image = image;
+            UpdatedOn = DateTime.UtcNow;
             UpdatedBy = updatedBy;
 
             return SuccessResult<bool>.Create(true);

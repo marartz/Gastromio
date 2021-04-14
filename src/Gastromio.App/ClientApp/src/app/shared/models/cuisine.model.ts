@@ -10,10 +10,13 @@ export class CuisineModel {
 
   public name: string;
 
+  public image: string;
+
   public clone(): CuisineModel {
     return new CuisineModel({
       id: this.id,
-      name: this.name
+      name: this.name,
+      image: this.image
     });
   }
 

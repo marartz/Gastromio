@@ -54,6 +54,7 @@ namespace Gastromio.Core
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.UserIsRestaurantAdmin, "Der Benutzer kann nicht gelöscht werden, da er noch als Restaurantadministrator eingetragen ist (Restaurant(s): {0})");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineNameIsRequired, "Name der Cuisine ist ein Pflichtfeld");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineNameTooLong, "Der Name der Cuisine ist zu lang (maximum {0} Zeichen)");
+            failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineImageTooLong, "Der Bildname der Cuisine ist zu lang (maximum {0} Zeichen)");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineDoesNotExist, "Cuisine existiert nicht");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.CuisineAlreadyExists, "Cuisine existiert bereits");
             failureMessageService.RegisterMessage(deDeCultureInfo, FailureResultCode.PaymentMethodDoesNotExist, "Zahlungsmethode existiert nicht");
