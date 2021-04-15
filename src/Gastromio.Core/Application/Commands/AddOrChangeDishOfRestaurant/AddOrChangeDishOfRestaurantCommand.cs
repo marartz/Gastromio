@@ -12,7 +12,7 @@ namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
     public class AddOrChangeDishOfRestaurantCommand : ICommand<Guid>
     {
         public AddOrChangeDishOfRestaurantCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId,
-            Guid dishId, string name, string description, string productInfo, int orderNo, IEnumerable<DishVariant> variants)
+            DishId dishId, string name, string description, string productInfo, int orderNo, IEnumerable<DishVariant> variants)
         {
             RestaurantId = restaurantId;
             DishCategoryId = dishCategoryId;
@@ -28,7 +28,7 @@ namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
         
         public DishCategoryId DishCategoryId { get; }
 
-        public Guid DishId { get; }
+        public DishId DishId { get; }
         
         public string Name { get; }
         

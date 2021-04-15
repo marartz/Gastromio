@@ -122,7 +122,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
                 return new AddOrChangeDishOfRestaurantCommand(
                     Restaurant.Id,
                     Dish.CategoryId,
-                    Guid.Empty,
+                    new DishId(Guid.Empty),
                     Dish.Name,
                     Dish.Description,
                     Dish.ProductInfo,
