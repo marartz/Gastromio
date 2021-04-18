@@ -172,11 +172,6 @@ export class ReservationComponent implements OnInit {
     return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
   }
 
-  showReservationValidFrom(): boolean {
-    const now = new Date();
-    return now < this.orderFacade.getStartDateOfReservation();
-  }
-
   getGivenNameError(): string {
     if (!this.givenName || this.givenName.trim().length === 0)
       return 'Bitte gib Deinen Vornamen an.';
