@@ -167,11 +167,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     return 'url(\'/api/v1/restaurants/' + this.restaurant.id + '/images/banner' + '\')';
   }
 
-  showReservationValidFrom(): boolean {
-    const now = new Date();
-    return now < this.orderFacade.getStartDateOfReservation();
-  }
-
   scrollToDishCategory(dishCategoryId: string): void {
     const element = document.querySelector('#dc' + dishCategoryId);
     if (element === null) {
