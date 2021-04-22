@@ -29,7 +29,9 @@
                             <div class="input-inner">
                                 <div style="background: none; border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                 <label>
-                                    <div class="label">Beschreibung des Gerichts (optional)</div>
+                                    <div class="label">Beschreibung des Gerichts (optional) 
+                                        <span *ngIf="!!editDishForm.value && !!editDishForm.value.description">{{editDishForm.value.description.length}} / {{maxStringLength}}</span>
+                                    </div>
                                     <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="true" id="description" formControlName="description" maxlength="500">
                                 </label>
                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
@@ -39,7 +41,9 @@
                             <div class="input-inner">
                                 <div style="background: none; border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                 <label>
-                                    <div class="label">Zusatzstoffe und Allergene (optional)</div>
+                                    <div class="label">Zusatzstoffe und Allergene (optional) 
+                                        <span *ngIf="!!editDishForm.value && !!editDishForm.value.productInfo">{{editDishForm.value.productInfo.length}} / {{maxStringLength}}</span>
+                                    </div>
                                     <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="false" id="productInfo" formControlName="productInfo" maxlength="500">
                                 </label>
                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
