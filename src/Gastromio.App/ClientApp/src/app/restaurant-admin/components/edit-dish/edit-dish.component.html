@@ -30,7 +30,7 @@
                                 <div style="background: none; border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                 <label>
                                     <div class="label">Beschreibung des Gerichts (optional)</div>
-                                    <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="true" id="description" formControlName="description">
+                                    <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="true" id="description" formControlName="description" maxlength="500">
                                 </label>
                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
                             </div>
@@ -40,7 +40,7 @@
                                 <div style="background: none; border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                 <label>
                                     <div class="label">Zusatzstoffe und Allergene (optional)</div>
-                                    <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="false" id="productInfo" formControlName="productInfo">
+                                    <input type="text" mozactionhint="next" autocomplete="off" autocapitalize="off" spellcheck="false" id="productInfo" formControlName="productInfo" maxlength="500">
                                 </label>
                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
                             </div>
@@ -50,7 +50,7 @@
                                 <div style="background: none; border-radius: 0px 0px 8px 8px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                 <label>
                                     <div class="label">Preis des Gerichts</div>
-                                    <input type="number" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}">
+                                    <input type="number" id="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" min="0" step=".01">
                                 </label>
                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px 0px 8px 8px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
                             </div>
@@ -79,7 +79,7 @@
                                                 <div style="background: none; border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
                                                 <label>
                                                     <div class="label">Preis des Variante</div>
-                                                    <input type="number" autocomplete="off" class="form-control" [(ngModel)]="variant.price" [ngModelOptions]="{standalone: true}">
+                                                    <input type="number" autocomplete="off" class="form-control" [(ngModel)]="variant.price" [ngModelOptions]="{standalone: true}" min="0" step=".01">
                                                 </label>
                                                 <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 0px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
                                             </td>
