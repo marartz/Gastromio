@@ -240,13 +240,13 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
             public void SetupValidParametersExceptDescription()
             {
                 SetupValidParameters();
-                Description = RandomStringBuilder.BuildWithLength(201);
+                Description = RandomStringBuilder.BuildWithLength(501);
             }
 
             public void SetupValidParametersExceptProductInfo()
             {
                 SetupValidParameters();
-                ProductInfo = RandomStringBuilder.BuildWithLength(201);
+                ProductInfo = RandomStringBuilder.BuildWithLength(501);
             }
 
             public void SetupValidParametersExceptOrderNo()
