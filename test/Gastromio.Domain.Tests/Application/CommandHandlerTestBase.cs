@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands;
+using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 using Xunit;
 
@@ -132,6 +134,19 @@ namespace Gastromio.Domain.Tests.Application
                 {
                     result?.IsSuccess.Should().BeTrue();
                 }
+            }
+        }
+
+        public void AssertFailure(Result<TResult> result, FailureResultCode failureCode)
+        {
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+                FailureResult<TResult> fr = (FailureResult<TResult>)result;
+                fr.Should().NotBeNull();
+                fr.Errors.Should().HaveCount(1);
+                fr.Errors.Values.First().First().Code.Should().Be(failureCode);
             }
         }
     }
