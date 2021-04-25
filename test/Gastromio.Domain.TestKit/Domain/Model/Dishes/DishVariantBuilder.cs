@@ -8,7 +8,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Dishes
     {
         public DishVariantBuilder WithValidConstrains()
         {
-            WithRangeConstrainedIntegerConstructorArgumentFor("price", 0, 200);
+            WithRangeConstrainedDecimalConstructorArgumentFor("price", 0, 200);
             return this;
         }
 
