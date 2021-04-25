@@ -292,7 +292,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
 
             public void SetupRandomDish()
             {
-                var variants = new DishVariantBuilder().WithValidConstrains().CreateMany(3);
+                var variants = new DishVariantBuilder().WithValidConstrains().CreateMany(3).ToList();
 
                 Dish = new DishBuilder()
                     .WithRestaurantId(Restaurant.Id)
