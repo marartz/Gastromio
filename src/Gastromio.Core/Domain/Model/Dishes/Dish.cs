@@ -160,6 +160,9 @@ namespace Gastromio.Core.Domain.Model.Dishes
 
             foreach (var variant in newVariants)
             {
+                if (variants == null)
+                    throw new NullReferenceException(nameof(variant));
+
                 var tempResult = AddVariant(tempVariants, variant.VariantId, variant.Name, variant.Price);
                 if (tempResult.IsFailure)
                     return tempResult;

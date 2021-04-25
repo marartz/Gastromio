@@ -154,9 +154,45 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
             var command = fixture.CreateSuccessfulEditCommand(null, null, null, null, expectedChange);
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
-            AssertFailure(result, FailureResultCode.DishVariantNameTooLong);
+            await act.Should().ThrowAsync<NullReferenceException>();
+        }
+
+        [Fact]
+        public async Task HandleAsync_ChangeDishVariant_ShouldThrowWithoutVariantId()
+        {
+            // Arrange
+            fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
+
+            var testObject = fixture.CreateTestObject();
+            var expectedChange = new List<DishVariant> { new DishVariant(Guid.Empty, "Unit Test", 5) };
+            var command = fixture.CreateSuccessfulEditCommand(null, null, null, null, expectedChange);
+
+            // Act
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("variant has no id");
+        }
+
+        [Fact]
+        public async Task HandleAsync_ChangeDishVariant_ShouldThrowWithDuplicateVariantId()
+        {
+            // Arrange
+            fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
+
+            var testObject = fixture.CreateTestObject();
+            var inUseGuid = Guid.NewGuid();
+            var expectedChange = new List<DishVariant> { 
+                new DishVariant(inUseGuid, "Unit Test", 5), 
+                new DishVariant(inUseGuid, "Unit Test 2", 8) 
+            };
+            var command = fixture.CreateSuccessfulEditCommand(null, null, null, null, expectedChange);
+
+            // Act
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("variant already exists");
         }
 
         [Fact]
