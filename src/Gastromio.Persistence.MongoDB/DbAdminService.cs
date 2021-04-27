@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using MongoDBMigrations;
 
 namespace Gastromio.Persistence.MongoDB
 {
@@ -70,16 +71,15 @@ namespace Gastromio.Persistence.MongoDB
                     Builders<OrderModel>.IndexKeys.Ascending(x => x.RestaurantNotificationInfo.Status)));
         }
 
-        public void CorrectRestaurantAliases()
+        public void CheckAndRunDatabaseMigrations()
         {
-            var collection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
-            var documents = collection.Find(_ => true).ToList();
-
-            foreach (var document in documents)
+            var assembly = typeof(DbAdminService).Assembly;
+            if (MongoDatabaseStateChecker.IsDatabaseOutdated("mongodb://localhost:27017", Constants.DatabaseName, assembly))
             {
-                document.Alias = RestaurantRepository.CreateAlias(document.Name);
-                var filter = Builders<RestaurantModel>.Filter.Eq(en => en.Id, document.Id);
-                collection.ReplaceOne(filter, document);
+                new MigrationEngine().UseDatabase("mongodb://localhost:27017", Constants.DatabaseName)
+                    .UseAssembly(assembly) //Required
+                    .UseSchemeValidation(false) //Optional if you want to ensure that all documents in collections, that will be affected in the current run, has a consistent structure. Set a true and absolute path to *.csproj file with migration classes or just false.
+                    .Run(); // Execution call. Might be called without targetVersion, in that case, the engine will choose the latest available version.   
             }
         }
     }

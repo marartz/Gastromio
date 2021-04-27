@@ -109,7 +109,7 @@ namespace Gastromio.App
                         }
                     }
 
-                    dbAdminService.CorrectRestaurantAliases();
+                    dbAdminService.CheckAndRunDatabaseMigrations();
                 }
 
                 host.Run();
