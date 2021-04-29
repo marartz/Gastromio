@@ -1,19 +1,63 @@
 <block-ui [delayStart]="0">
-<div *ngIf="initialized" id="root">
-    <div class="layout">
-        <div  id="confirmation">
-            <div  class="text">
-                <span *ngIf="!order" >
-                    <span class="top">Eine neu abgesendete {{getOrderTypeText()}} liegt aktuell nicht vor!</span><br />
-                </span>
-                <span *ngIf="order">
-                    <span class="top">Vielen Dank für Deine {{getOrderTypeText()}}!</span><br />
-                    <span class="middle">Deine {{getOrderTypeText()}} wurde übermittelt!<br />Eine Zusammenfassung Deiner {{getOrderTypeText()}} wurde an Deine hinterlegte E-Mail-Adresse gesendet.</span><br />
-                    <span class="bottom">Das Gastromio-Team wünscht Euch einen Guten Appetit!</span>
-                </span>
-                <button [routerLink]="['/']" target="_blank">Zurück zur Startseite ...</button>
-            </div>
+    <main id="order-summary" *ngIf="initialized">
+        <div class="page-wrapper">
+            <section data-aos="gm-move-down"
+                     data-aos-delay="300"
+                     data-aos-duration="800"
+                     data-aos-once="true"
+                     id="page-card"
+                     *ngIf="order"
+                     >
+                <div class="lottie-success"
+                     data-aos="gm-move-down"
+                     data-aos-delay="500"
+                     data-aos-duration="800"
+                     data-aos-once="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" style="width: 100%; height: 100%; transform: translate3d(0px, 0px, 0px);" preserveAspectRatio="xMidYMid meet"><defs><clipPath id="__lottie_element_2"><rect width="120" height="120" x="0" y="0"></rect></clipPath><clipPath id="__lottie_element_4"><path d="M0,0 L54,0 L54,54 L0,54z"></path></clipPath><clipPath id="__lottie_element_8"><path d="M0,0 L108,0 L108,108 L0,108z"></path></clipPath><clipPath id="__lottie_element_18"><path d="M0,0 L54,0 L54,54 L0,54z"></path></clipPath><clipPath id="__lottie_element_22"><path d="M0,0 L108,0 L108,108 L0,108z"></path></clipPath><clipPath id="__lottie_element_32"><path d="M0,0 L54,0 L54,54 L0,54z"></path></clipPath><clipPath id="__lottie_element_36"><path d="M0,0 L108,0 L108,108 L0,108z"></path></clipPath></defs><g clip-path="url(#__lottie_element_2)"><g clip-path="url(#__lottie_element_32)" style="display: block;" transform="matrix(2.138890027999878,0,0,2.138890027999878,2.249969482421875,2.249969482421875)" opacity="1"><g clip-path="url(#__lottie_element_36)" style="display: block;" transform="matrix(0.5,0,0,0.5,0,0)" opacity="1"><g style="display: block;" transform="matrix(0.37460657954216003,-0.9271838665008545,0.9271838665008545,0.37460657954216003,54,54)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path stroke-linecap="round" stroke-linejoin="round" fill-opacity="0" stroke="rgb(129,182,124)" stroke-opacity="1" stroke-width="5" d=" M0,-50 C27.594999313354492,-50 50,-27.594999313354492 50,0 C50,27.594999313354492 27.594999313354492,50 0,50 C-27.594999313354492,50 -50,27.594999313354492 -50,0 C-50,-27.594999313354492 -27.594999313354492,-50 0,-50z"></path></g></g><g style="display: block;" transform="matrix(-0.7660444378852844,-0.6427876353263855,0.6427876353263855,-0.7660444378852844,54,54)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" stroke-miterlimit="4" stroke="rgb(129,182,124)" stroke-opacity="1" stroke-width="5" d="M0 0"></path></g></g><g style="display: block;" transform="matrix(0.9943199753761292,0,0,1,1.6817207336425781,-1.375)" opacity="1"><path stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" stroke-miterlimit="4" stroke="rgb(129,182,124)" stroke-opacity="1" stroke-width="6" d=" M29.899999618530273,55.540000915527344 C38.917999267578125,63.5880012512207 47.2239990234375,71 47.2239990234375,71 C47.2239990234375,71 81.53199768066406,39 81.53199768066406,39"></path></g></g></g><g clip-path="url(#__lottie_element_18)" style="display: none;" transform="matrix(2.138890027999878,0,0,2.138890027999878,2.249969482421875,2.249969482421875)" opacity="1"><g clip-path="url(#__lottie_element_22)" style="display: block;" transform="matrix(0.5,0,0,0.5,0,0)" opacity="1"><g style="display: block;" transform="matrix(0.37460657954216003,-0.9271838665008545,0.9271838665008545,0.37460657954216003,54,54)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path stroke-linecap="round" stroke-linejoin="round" fill-opacity="0" stroke="rgb(28,30,39)" stroke-opacity="1" stroke-width="5" d=" M0,-50 C27.594999313354492,-50 50,-27.594999313354492 50,0 C50,27.594999313354492 27.594999313354492,50 0,50 C-27.594999313354492,50 -50,27.594999313354492 -50,0 C-50,-27.594999313354492 -27.594999313354492,-50 0,-50z"></path></g></g><g style="display: block;" transform="matrix(0.37460657954216003,-0.9271838665008545,0.9271838665008545,0.37460657954216003,54,54)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" stroke-miterlimit="4" stroke="rgb(129,182,124)" stroke-opacity="1" stroke-width="5" d=" M0,-50 C22.202999114990234,-50 41.04600143432617,-35.494998931884766 47.5620002746582,-15.45300006866455"></path></g></g></g></g><g clip-path="url(#__lottie_element_4)" style="display: none;" transform="matrix(2.138890027999878,0,0,2.138890027999878,2.249969482421875,2.249969482421875)" opacity="1"><g clip-path="url(#__lottie_element_8)" style="display: block;" transform="matrix(0.5,0,0,0.5,0,0)" opacity="1"><g style="display: block;" transform="matrix(0.37460657954216003,-0.9271838665008545,0.9271838665008545,0.37460657954216003,54,54)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path stroke-linecap="round" stroke-linejoin="round" fill-opacity="0" stroke="rgb(28,30,39)" stroke-opacity="1" stroke-width="5" d=" M0,-50 C27.594999313354492,-50 50,-27.594999313354492 50,0 C50,27.594999313354492 27.594999313354492,50 0,50 C-27.594999313354492,50 -50,27.594999313354492 -50,0 C-50,-27.594999313354492 -27.594999313354492,-50 0,-50z"></path></g></g><g style="display: block;" transform="matrix(0.37460657954216003,-0.9271838665008545,0.9271838665008545,0.37460657954216003,54,54)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" stroke-miterlimit="4" stroke="rgb(129,182,124)" stroke-opacity="1" stroke-width="5" d=" M0,-50 C22.202999114990234,-50 41.04600143432617,-35.494998931884766 47.5620002746582,-15.45300006866455"></path></g></g></g></g></g></svg>
+                </div>
+                <h1 data-aos="gm-move-down"
+                    data-aos-delay="700"
+                    data-aos-duration="800"
+                    data-aos-once="true">
+                    Bestellung erfolgt
+                </h1>
+                <p data-aos="gm-move-down"
+                   data-aos-delay="800"
+                   data-aos-duration="800"
+                   data-aos-once="true">Vielen Dank für Deine Bestellung bei *RestaurantName*! Eine Zusammenfassung Deiner Bestellung wurde an die hinterlegte E-Mail-Adresse gesendet.</p>
+                <button data-aos="gm-move-down"
+                        data-aos-delay="1100"
+                        data-aos-duration="800"
+                        data-aos-once="true"
+                        [routerLink]="['/']">
+                    Zurück zur Startseite
+                </button>
+            </section>
+            <section data-aos="gm-move-down"
+                     data-aos-delay="300"
+                     data-aos-duration="800"
+                     data-aos-once="true"
+                     id="page-card"
+                     *ngIf="!order"
+                     >
+                <h1 data-aos="gm-move-down"
+                    data-aos-delay="700"
+                    data-aos-duration="800"
+                    data-aos-once="true">
+                    Hmmm... Komisch...
+                </h1>
+                <p data-aos="gm-move-down"
+                   data-aos-delay="800"
+                   data-aos-duration="800"
+                   data-aos-once="true">Wir können keine neu abgesendete Bestellung finden!</p>
+                <button data-aos="gm-move-down"
+                        data-aos-delay="1100"
+                        data-aos-duration="800"
+                        data-aos-once="true"
+                        [routerLink]="['/']">
+                    Zurück zur Startseite
+                </button>
+            </section>
         </div>
-    </div>
-</div>
+    </main>
 </block-ui>

@@ -1,107 +1,187 @@
-#confirmation {
-    background-color: #ADCCCB;
-    background-image: url('../../../../assets/images/rough/blue.png');
+#order-summary {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #adcccb;
+    background-image: url("../../../../assets/images/rough/blue.png");
     background-repeat: repeat;
-    height: 100vh;
-    position: relative;
     margin-top: -90px;
 }
 
-#confirmation .text {
+#order-summary .page-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
     flex-direction: column;
-    padding: 16px;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100vw;
+    margin-bottom: 0px;
+    padding: 80px 32px;
 }
 
-#confirmation .text span {
-    text-align: center;
+#order-summary #logo {
+    height: 40px;
+    margin-bottom: 48px;
+    max-width: 100%;
     display: inline-block;
-    margin: auto;
 }
 
-#confirmation .text span span.top {
+#order-summary #logo img {
+    height: 40px;
+    margin-bottom: 48px;
+    display: inline-block;
+    max-width: 100%;
+}
+
+#order-summary #page-card {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-radius: 23px;
+    width: 100%;
+    max-width: 460px;
+    min-width: 320px;
+    background-color: #adcccb;
+    padding: 40px;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+}
+
+@media screen and (max-width: 991px) {
+    #order-summary #page-card {
+        min-width: 50%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #order-summary #page-card {
+        min-width: 80%;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    #order-summary #page-card {
+        min-width: 280px;
+    }
+}
+
+#order-summary #page-card .lottie-success {
+    width: 120px;
+    margin-right: auto;
+    margin-bottom: 24px;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 767px) {
+    #order-summary #page-card .lottie-success {
+        width: 80px;
+    }
+}
+
+#order-summary #page-card h1 {
+    margin-top: 0px;
+    margin-bottom: 32px;
     color: #363636;
-    font-family: "Apercu", sans-serif;
-    font-size: 52px;
+    font-family: 'Apercu', sans-serif;
+    font-size: 36px;
+    line-height: 42px;
     font-weight: 700;
-    letter-spacing: -0.5px;
-    line-height: 60px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 80px;
     text-align: center;
 }
 
-#confirmation .text span span.middle {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    line-height: 32px;
-    text-align: center;
-    margin-top: 32px;
+@media screen and (max-width: 991px) {
+    #order-summary #page-card h1 {
+        font-size: 34px;
+        line-height: 40px;
+    }
 }
 
-#confirmation .text span span.bottom {
+@media screen and (max-width: 767px) {
+    #order-summary #page-card h1 {
+        font-size: 32px;
+        line-height: 38px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    #order-summary #page-card h1 {
+        font-size: 30px;
+        line-height: 36px;
+    }
+}
+
+#order-summary #page-card p {
+    margin-bottom: 48px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
     color: #363636;
-    font-family: "Apercu", sans-serif;
-    font-size: 20px;
+    font-family: 'Apercu', sans-serif;
     font-weight: 400;
-    letter-spacing: -0.5px;
-    line-height: 24px;
-    text-align: center;
-    margin-top: 16px;
+    margin-top: 0px;
 }
 
-@media screen and (max-width: 768px) {
-    #confirmation .text span span.top {
-        font-size: 38px;
-    }
-    #confirmation .text span span.middle {
-        font-size: 20px;
-        margin-top: 8px;
-    }
-    #confirmation .text span span.bottom {
-        font-size: 16px;
-        margin-top: 16px;
-    }
-}
-
-#confirmation .text button {
-    background-color: #ADCCCB;
+#order-summary #page-card button {
+    background-color: #363636;
     border: 0px;
     border-radius: 23px;
-    color: #363636;
+    color: #fff;
     font-family: "Apercu", sans-serif;
     font-size: 18px;
     font-weight: 500;
     height: 50px;
     letter-spacing: 0px;
-    margin-top: 32px;
+    margin-top: 0px;
     position: relative;
     text-align: center;
-    transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -webkit-transition: all .3s ease;
-    width: 300px;
+    width: 100%;
 }
 
-#confirmation .text button:hover {
+#order-summary #page-card button:hover {
     transform: scale(1.03);
     -moz-transform: scale(1.03);
     -ms-transform: scale(1.03);
     -webkit-transform: scale(1.03);
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
 }
 
-#confirmation .text button:active {
-    transform: scale(.98);
-    -moz-transform: scale(.98);
-    -ms-transform: scale(.98);
-    -webkit-transform: scale(.98);
-}
+    #order-summary #page-card button:active {
+        transform: scale(.98);
+        -moz-transform: scale(.98);
+        -ms-transform: scale(.98);
+        -webkit-transform: scale(.98);
+        transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        -ms-transition: all .3s ease;
+        -webkit-transition: all .3s ease;
+    }
