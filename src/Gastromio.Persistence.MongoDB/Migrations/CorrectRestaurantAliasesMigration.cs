@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoDBMigrations;
 using System;
 
@@ -16,15 +17,15 @@ namespace Gastromio.Persistence.MongoDB.Migrations
 
         public void Up(IMongoDatabase database)
         {
-            var collection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
-            var documents = collection.Find(_ => true).ToList();
-
-            foreach (var document in documents)
+            var collection = database.GetCollection<BsonDocument>(Constants.RestaurantCollectionName);
+            collection.Find(_ => true).ForEachAsync(doc =>
             {
-                document.Alias = RestaurantRepository.CreateAlias(document.Name);
-                var filter = Builders<RestaurantModel>.Filter.Eq(en => en.Id, document.Id);
-                collection.ReplaceOne(filter, document);
-            }
+                if (doc.TryGetValue("Name", out var name))
+                {
+                    var alias = RestaurantRepository.CreateAlias(name.AsString);
+                    doc.Set("Alias", BsonValue.Create(alias));
+                }
+            });
         }
     }
 }
