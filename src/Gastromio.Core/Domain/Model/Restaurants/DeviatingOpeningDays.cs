@@ -10,7 +10,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 {
     public class DeviatingOpeningDays : IReadOnlyCollection<DeviatingOpeningDay>
     {
-        private IReadOnlyDictionary<Date, DeviatingOpeningDay> openingDayDict;
+        private readonly IReadOnlyDictionary<Date, DeviatingOpeningDay> openingDayDict;
 
         public DeviatingOpeningDays(IEnumerable<DeviatingOpeningDay> openingDays)
         {

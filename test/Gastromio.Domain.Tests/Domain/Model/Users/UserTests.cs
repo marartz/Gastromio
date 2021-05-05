@@ -29,7 +29,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             var testObject = fixture.CreateTestObject();
 
             const Role role = Role.SystemAdmin;
-            var email = RandomStringBuilder.BuildWithLength(100);
+            var email = "moritz@mustermann.de";
 
             // Act
             testObject.ChangeDetails(role, email, fixture.ChangedBy);
@@ -473,6 +473,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             public User CreateTestObject()
             {
                 var user = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .WithPasswordResetCode(PasswordResetCode)
                     .WithPasswordResetExpiration(PasswordResetExpiration)
                     .Create();

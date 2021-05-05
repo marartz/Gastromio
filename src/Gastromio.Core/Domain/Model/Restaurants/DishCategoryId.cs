@@ -7,6 +7,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
     {
         public DishCategoryId(Guid value) : base(value)
         {
+            if (value == Guid.Empty)
+                throw new InvalidOperationException("dish category id is invalid");
         }
     }
 }

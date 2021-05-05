@@ -60,7 +60,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantStreetRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantStreetTooLongFailure>>();
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantStreetRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantStreetInvalidFailure>>();
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantStreetRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantZipCodeRequiredFailure>>();
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantStreetRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantZipCodeRequiredFailure>>();
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantStreetRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantZipCodeInvalidFailure>>();
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantStreetRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantZipCodeInvalidFailure>>();
         }
 
         [Fact]
@@ -180,7 +180,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             Action act = () => fixture.CreateTestObject();
 
             // Assert
-            act.Should().Throw<DomainException<RestaurantCityRequiredFailure>>();
+            act.Should().Throw<DomainException<RestaurantCityTooLongFailure>>();
         }
 
         [Fact]

@@ -451,7 +451,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             UpdatedBy = changedBy;
         }
 
-        private (int DayOfWeek, TimeSpan Time) GetDayOfWeekAndTimeInfoFromDateTime(DateTimeOffset dateTime)
+        private static (int DayOfWeek, TimeSpan Time) GetDayOfWeekAndTimeInfoFromDateTime(DateTimeOffset dateTime)
         {
             var dayOfWeek = ((int) dateTime.DayOfWeek - 1) % 7;
             if (dayOfWeek < 0)

@@ -306,7 +306,6 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             var variant = new DishVariantBuilder()
-                .WithId(fixture.Variants.First().Id)
                 .WithValidConstrains()
                 .Create();
 
@@ -317,12 +316,12 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                testObject.Variants.Any(v => v.Id == variant.Id).Should().BeTrue();
+                result.Variants.Any(v => v.Id == variant.Id).Should().BeTrue();
             }
         }
 
         [Fact]
-        public void RemoveVariant_VariantDoesNotExist_ThrowsException()
+        public void RemoveVariant_VariantDoesNotExist_DoesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -332,10 +331,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var variantId = new DishVariantId(Guid.NewGuid());
 
             // Act
-            Action act = () => testObject.RemoveDishVariant(variantId);
+            var result = testObject.RemoveDishVariant(variantId);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>();
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                testObject.Variants.Any(v => v.Id == variantId).Should().BeFalse();
+            }
         }
 
         [Fact]
@@ -355,7 +358,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                testObject.Variants.Any(v => v.Id == variantId).Should().BeFalse();
+                result.Variants.Any(v => v.Id == variantId).Should().BeFalse();
             }
         }
 
@@ -374,7 +377,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                testObject.Variants.Should().BeEmpty();
+                result.Variants.Should().BeNull();
             }
         }
 
@@ -398,7 +401,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                testObject.Variants.Should().BeEquivalentTo(newVariants);
+                result.Variants.Should().BeEquivalentTo(newVariants);
             }
         }
 

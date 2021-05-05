@@ -89,7 +89,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             public void SetupValidParameters()
             {
                 Role = Role.SystemAdmin;
-                Email = RandomStringBuilder.BuildWithLength(30);
+                Email = "max@mustermann.de";
                 Password = UserTests.ShortestValidPassword;
                 CheckPasswordPolicy = true;
                 CreatedBy = new UserIdBuilder().Create();

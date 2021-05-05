@@ -103,7 +103,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public DishCategories RemoveDishCategory(DishCategoryId dishCategoryId)
         {
-            return TryGetDishCategory(dishCategoryId, out var dishCategory)
+            return TryGetDishCategory(dishCategoryId, out _)
                 ? Remove(dishCategoryId)
                 : this;
         }

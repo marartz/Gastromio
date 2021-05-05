@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Users;
@@ -75,7 +74,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         {
             var restaurant = new Restaurant(
                 new RestaurantId(Guid.NewGuid()),
-                null,
+                name,
                 null,
                 new Address(null, null, null),
                 new ContactInfo(null, null, null, null, null, null, false),

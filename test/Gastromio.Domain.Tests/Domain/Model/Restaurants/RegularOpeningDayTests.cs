@@ -132,44 +132,6 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_StartBeforeEarliestOpeningTime_ReturnsFailure()
-        {
-            // Arrange
-            fixture.SetupWithoutPeriods();
-            var testObject = fixture.CreateTestObject();
-
-            var period = new OpeningPeriodBuilder()
-                .WithStart(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime - 1))
-                .WithEnd(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 1))
-                .Create();
-
-            // Act
-            Action act = () => testObject.AddPeriod(period);
-
-            // Assert
-            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
-        }
-
-        [Fact]
-        public void AddPeriod_StartBeforeEnd_ReturnsFailure()
-        {
-            // Arrange
-            fixture.SetupWithoutPeriods();
-            var testObject = fixture.CreateTestObject();
-
-            var period = new OpeningPeriodBuilder()
-                .WithStart(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 2))
-                .WithEnd(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 1))
-                .Create();
-
-            // Act
-            Action act = () => testObject.AddPeriod(period);
-
-            // Assert
-            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
-        }
-
-        [Fact]
         public void AddPeriod_NewEndEqualsCurrentStart_ReturnsFailure()
         {
             // Arrange
@@ -425,6 +387,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             public RegularOpeningDay CreateTestObject()
             {
                 return new RegularOpeningDayBuilder()
+                    .WithDayOfWeek(2)
                     .WithOpeningPeriods(OpeningPeriods)
                     .Create();
             }
