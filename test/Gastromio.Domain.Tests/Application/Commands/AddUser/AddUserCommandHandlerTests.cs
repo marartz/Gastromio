@@ -1,9 +1,12 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddUser;
 using Gastromio.Core.Application.DTOs;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
@@ -32,14 +35,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
         //     var command = new AddUserCommand(null);
         //
         //     // Act
-        //     var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+        // Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
         //
-        //     // Assert
-        //     using (new AssertionScope())
-        //     {
-        //         result.Should().NotBeNull();
-        //         result?.IsFailure.Should().BeTrue();
-        //     }
+        // // Assert
+        // await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         // }
 
         [Fact]
@@ -53,14 +52,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]

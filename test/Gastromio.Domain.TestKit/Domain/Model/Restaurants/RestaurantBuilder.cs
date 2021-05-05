@@ -13,7 +13,23 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
     {
         public RestaurantBuilder WithValidConstrains()
         {
-            WithLengthConstrainedStringConstructorArgumentFor("name", 0, 100);
+            WithLengthConstrainedStringConstructorArgumentFor("name", 1, 100);
+
+            WithConstrainedConstructorArgumentFor("address", () =>
+            {
+                var address = new AddressBuilder()
+                    .WithValidConstrains()
+                    .Create();
+                return address;
+            });
+
+            WithConstrainedConstructorArgumentFor("contactInfo", () =>
+            {
+                var contactInfo = new ContactInfoBuilder()
+                    .WithValidConstrains()
+                    .Create();
+                return contactInfo;
+            });
 
             WithConstrainedConstructorArgumentFor("regularOpeningDays", () =>
             {
@@ -30,7 +46,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
                         )
                         .Create());
                 }
-                return regularOpeningDays;
+                return new RegularOpeningDays(regularOpeningDays);
             });
 
             WithConstrainedConstructorArgumentFor("deviatingOpeningDays", () =>
@@ -47,7 +63,47 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
                         )
                         .Create());
                 }
-                return deviatingOpeningDays;
+                return new DeviatingOpeningDays(deviatingOpeningDays);
+            });
+
+            WithConstrainedConstructorArgumentFor("pickupInfo", () =>
+            {
+                var pickupInfo = new PickupInfoBuilder()
+                    .WithValidConstrains()
+                    .Create();
+                return pickupInfo;
+            });
+
+            WithConstrainedConstructorArgumentFor("deliveryInfo", () =>
+            {
+                var deliveryInfo = new DeliveryInfoBuilder()
+                    .WithValidConstrains()
+                    .Create();
+                return deliveryInfo;
+            });
+
+            WithConstrainedConstructorArgumentFor("reservationInfo", () =>
+            {
+                var reservationInfo = new ReservationInfoBuilder()
+                    .Create();
+                return reservationInfo;
+            });
+
+            WithConstrainedConstructorArgumentFor("dishCategories", () =>
+            {
+                var dishCategories = new List<DishCategory>();
+                for (var dishCategoryIdx = 0; dishCategoryIdx < 3; dishCategoryIdx++)
+                {
+                    dishCategories.Add(new DishCategoryBuilder()
+                        .WithName($"dish-category-name{dishCategoryIdx}")
+                        .WithOrderNo(dishCategoryIdx)
+                        .WithEnabled(true)
+                        .WithValidConstrains()
+                        .Create()
+                    );
+                }
+
+                return new DishCategories(dishCategories);
             });
 
             return this;
@@ -90,6 +146,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 
         public RestaurantBuilder WithRegularOpeningDays(IEnumerable<RegularOpeningDay> regularOpeningDays)
         {
+            return WithRegularOpeningDays(new RegularOpeningDays(regularOpeningDays));
+        }
+
+        public RestaurantBuilder WithRegularOpeningDays(RegularOpeningDays regularOpeningDays)
+        {
             WithConstantConstructorArgumentFor("regularOpeningDays", regularOpeningDays);
             return this;
         }
@@ -100,6 +161,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
         }
 
         public RestaurantBuilder WithDeviatingOpeningDays(IEnumerable<DeviatingOpeningDay> deviatingOpeningDays)
+        {
+            return WithDeviatingOpeningDays(new DeviatingOpeningDays(deviatingOpeningDays));
+        }
+
+        public RestaurantBuilder WithDeviatingOpeningDays(DeviatingOpeningDays deviatingOpeningDays)
         {
             WithConstantConstructorArgumentFor("deviatingOpeningDays", deviatingOpeningDays);
             return this;
@@ -208,6 +274,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
         }
 
         public RestaurantBuilder WithExternalMenus(IEnumerable<ExternalMenu> externalMenus)
+        {
+            return WithExternalMenus(new ExternalMenus(externalMenus));
+        }
+
+        public RestaurantBuilder WithExternalMenus(ExternalMenus externalMenus)
         {
             WithConstantConstructorArgumentFor("externalMenus", externalMenus);
             return this;

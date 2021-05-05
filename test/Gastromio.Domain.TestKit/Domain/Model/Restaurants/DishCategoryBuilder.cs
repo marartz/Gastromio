@@ -11,6 +11,21 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
         {
             WithName("dish-category-name");
             WithOrderNo(1);
+            WithConstrainedConstructorArgumentFor("dishes", () =>
+            {
+                var dishes = new List<Dish>();
+                for (var dishIdx = 0; dishIdx < 3; dishIdx++)
+                {
+                    dishes.Add(new DishBuilder()
+                        .WithName($"dish-name{dishIdx}")
+                        .WithOrderNo(dishIdx)
+                        .WithValidConstrains()
+                        .Create()
+                    );
+                }
+
+                return new Dishes(dishes);
+            });
             return this;
         }
 

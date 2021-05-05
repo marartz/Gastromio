@@ -12,6 +12,13 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
             WithDescription("dish-description");
             WithProductInfo("dish-product-info");
             WithOrderNo(1);
+            WithConstrainedConstructorArgumentFor("variants", () =>
+            {
+                var dishVariants = new DishVariantBuilder()
+                    .WithValidConstrains()
+                    .CreateMany(3);
+                return new DishVariants(dishVariants);
+            });
             return this;
         }
 

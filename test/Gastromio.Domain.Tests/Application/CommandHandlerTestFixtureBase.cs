@@ -14,27 +14,33 @@ namespace Gastromio.Domain.Tests.Application
             if (!MinimumRole.HasValue)
                 return;
 
+            var email = "user@gasromio.de";
+
             UserId = new UserIdBuilder()
                 .Create();
 
             UserWithCustomerRole = new UserBuilder()
                 .WithId(UserId)
                 .WithRole(Role.Customer)
+                .WithEmail(email)
                 .Create();
 
             UserWithRestaurantAdminRole = new UserBuilder()
                 .WithId(UserId)
                 .WithRole(Role.RestaurantAdmin)
+                .WithEmail(email)
                 .Create();
 
             UserWithSystemAdminRole = new UserBuilder()
                 .WithId(UserId)
                 .WithRole(Role.SystemAdmin)
+                .WithEmail(email)
                 .Create();
 
             UserWithMinimumRole = new UserBuilder()
                 .WithId(UserId)
                 .WithRole(MinimumRole.Value)
+                .WithEmail(email)
                 .Create();
         }
 

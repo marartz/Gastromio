@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -44,14 +45,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantNameRequiredFailure>>();
         }
 
         [Fact]
@@ -65,14 +62,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantAlreadyExistsFailure>>();
         }
 
         [Fact]
@@ -150,6 +143,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             {
                 Restaurant = new RestaurantBuilder()
                     .WithName("test")
+                    .WithValidConstrains()
                     .Create();
             }
 
@@ -157,6 +151,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             {
                 var restaurant = new RestaurantBuilder()
                     .WithName("test")
+                    .WithValidConstrains()
                     .Create();
 
                 RestaurantRepositoryMock.SetupFindByRestaurantNameAsync("test")
@@ -212,7 +207,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
                     .ToList();
 
                 var users = userIds.Select(
-                    userId => new UserBuilder().WithId(userId).Create()
+                    userId => new UserBuilder()
+                        .WithId(userId)
+                        .WithEmail($"{userId}@gastromio.de")
+                        .Create()
                 );
 
                 UserRepositoryMock.SetupFindByUserIdsAsync(userIds)
