@@ -1,6 +1,8 @@
 using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Common;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
@@ -37,31 +39,30 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                result?.Value.Should().BeOfType<User>();
-                result?.Value?.Id.Value.Should().NotBeEmpty();
-                result?.Value?.Role.Should().Be(fixture.Role);
-                result?.Value?.Email.Should().Be(fixture.Email);
-                result?.Value?.PasswordSalt.Should().NotBeNull();
-                result?.Value?.PasswordHash.Should().NotBeNull();
-                result?.Value?.PasswordResetCode.Should().BeNull();
-                result?.Value?.PasswordResetExpiration.Should().BeNull();
-                result?.Value?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                result?.Value?.CreatedBy.Should().Be(fixture.CreatedBy);
-                result?.Value?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                result?.Value?.UpdatedBy.Should().Be(fixture.CreatedBy);
+                result?.Should().BeOfType<User>();
+                result?.Id.Value.Should().NotBeEmpty();
+                result?.Role.Should().Be(fixture.Role);
+                result?.Email.Should().Be(fixture.Email);
+                result?.PasswordSalt.Should().NotBeNull();
+                result?.PasswordHash.Should().NotBeNull();
+                result?.PasswordResetCode.Should().BeNull();
+                result?.PasswordResetExpiration.Should().BeNull();
+                result?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result?.CreatedBy.Should().Be(fixture.CreatedBy);
+                result?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result?.UpdatedBy.Should().Be(fixture.CreatedBy);
             }
         }
 
         [Fact]
-        public void Create_ValidParametersExceptPassword_ReturnsFailure()
+        public void Create_ValidParametersExceptPassword_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidParametersExceptPassword();
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = testObject.Create(
+            Action act = () => testObject.Create(
                 fixture.Role,
                 fixture.Email,
                 fixture.Password,
@@ -70,11 +71,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             );
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<PasswordIsNotValidFailure>>();
         }
 
         private sealed class Fixture

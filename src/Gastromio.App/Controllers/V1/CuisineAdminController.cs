@@ -15,7 +15,6 @@ using Gastromio.Core.Application.Commands.RemoveCuisine;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetAllCuisines;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
 
@@ -29,15 +28,13 @@ namespace Gastromio.App.Controllers.V1
         private readonly ILogger logger;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
-        private readonly IFailureMessageService failureMessageService;
 
         public CuisineAdminController(ILogger<CuisineAdminController> logger, ICommandDispatcher commandDispatcher,
-            IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
+            IQueryDispatcher queryDispatcher)
         {
             this.logger = logger;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
-            this.failureMessageService = failureMessageService;
         }
 
         [Route("cuisines")]
@@ -52,7 +49,7 @@ namespace Gastromio.App.Controllers.V1
             var queryResult =
                 await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(new GetAllCuisinesQuery(),
                     new UserId(currentUserId));
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return ResultHelper.HandleResult(queryResult);
         }
 
         [Route("cuisines")]
@@ -67,7 +64,7 @@ namespace Gastromio.App.Controllers.V1
             var commandResult =
                 await commandDispatcher.PostAsync<AddCuisineCommand, CuisineDTO>(
                     new AddCuisineCommand(addCuisineModel.Name), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("cuisines/{cuisineId}/change")]
@@ -82,7 +79,7 @@ namespace Gastromio.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<ChangeCuisineCommand, bool>(
                 new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("cuisines/{cuisineId}")]
@@ -97,7 +94,7 @@ namespace Gastromio.App.Controllers.V1
             var commandResult =
                 await commandDispatcher.PostAsync<RemoveCuisineCommand, bool>(
                     new RemoveCuisineCommand(new CuisineId(cuisineId)), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
     }
 }

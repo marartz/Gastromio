@@ -186,6 +186,22 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
             return this;
         }
 
+        public RestaurantBuilder WithoutDishCategories()
+        {
+            return WithDishCategories(Enumerable.Empty<DishCategory>());
+        }
+
+        public RestaurantBuilder WithDishCategories(IEnumerable<DishCategory> dishCategories)
+        {
+            return WithDishCategories(new DishCategories(dishCategories));
+        }
+
+        public RestaurantBuilder WithDishCategories(DishCategories dishCategories)
+        {
+            WithConstantConstructorArgumentFor("dishCategories", dishCategories);
+            return this;
+        }
+
         public RestaurantBuilder WithoutExternalMenus()
         {
             return WithExternalMenus(Enumerable.Empty<ExternalMenu>());

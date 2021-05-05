@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveUser
@@ -31,14 +32,14 @@ namespace Gastromio.Core.Application.Commands.RemoveUser
                 return FailureResult<bool>.Forbidden();
 
             if (command.UserId == currentUser.Id)
-                return FailureResult<bool>.Create(FailureResultCode.CannotRemoveCurrentUser);
+                throw DomainException.CreateFrom(new CannotRemoveCurrentUserFailure());
 
             var restaurants = await restaurantRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             var restaurantList = restaurants.ToList();
             if (restaurantList.Any())
             {
-                return FailureResult<bool>.Create(FailureResultCode.UserIsRestaurantAdmin,
-                    string.Join(", ", restaurantList.Select(en => en.Name)));
+                throw DomainException.CreateFrom(
+                    new UserIsRestaurantAdminFailure(restaurantList.Select(en => en.Name)));
             }
 
             await userRepository.RemoveAsync(command.UserId, cancellationToken);

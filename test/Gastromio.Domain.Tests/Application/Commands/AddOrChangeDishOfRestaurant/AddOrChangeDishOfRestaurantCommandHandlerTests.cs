@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant;
-using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
-using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
-using Gastromio.Domain.TestKit.Domain.Model.Dishes;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
@@ -71,7 +65,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.DishRepositoryMock.VerifyStoreAsync(fixture.Dish, Times.Once);
+                fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
@@ -88,18 +82,9 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
                 RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
-                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
-                DishRepositoryMock = new DishRepositoryMock(MockBehavior.Strict);
-                DishFactoryMock = new DishFactoryMock(MockBehavior.Strict);
             }
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
-
-            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
-
-            public DishRepositoryMock DishRepositoryMock { get; }
-
-            public DishFactoryMock DishFactoryMock { get; }
 
             public Restaurant Restaurant { get; private set; }
 
@@ -109,20 +94,15 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
 
             public override AddOrChangeDishOfRestaurantCommandHandler CreateTestObject()
             {
-                return new AddOrChangeDishOfRestaurantCommandHandler(
-                    RestaurantRepositoryMock.Object,
-                    DishCategoryRepositoryMock.Object,
-                    DishRepositoryMock.Object,
-                    DishFactoryMock.Object
-                );
+                return new AddOrChangeDishOfRestaurantCommandHandler(RestaurantRepositoryMock.Object);
             }
 
             public override AddOrChangeDishOfRestaurantCommand CreateSuccessfulCommand()
             {
                 return new AddOrChangeDishOfRestaurantCommand(
                     Restaurant.Id,
-                    Dish.CategoryId,
-                    Guid.Empty,
+                    DishCategory.Id,
+                    null,
                     Dish.Name,
                     Dish.Description,
                     Dish.ProductInfo,
@@ -149,25 +129,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
             public void SetupRandomDishCategory()
             {
                 DishCategory = new DishCategoryBuilder()
-                    .WithRestaurantId(Restaurant.Id)
                     .WithOrderNo(0)
-                    .WithCreatedBy(UserId)
-                    .WithCreatedOn(DateTimeOffset.Now)
-                    .WithUpdatedBy(UserId)
-                    .WithUpdatedOn(DateTimeOffset.Now)
                     .Create();
             }
 
             public void SetupRandomDish()
             {
                 Dish = new DishBuilder()
-                    .WithRestaurantId(Restaurant.Id)
-                    .WithCategoryId(DishCategory.Id)
                     .WithOrderNo(0)
-                    .WithCreatedBy(UserId)
-                    .WithCreatedOn(DateTimeOffset.Now)
-                    .WithUpdatedBy(UserId)
-                    .WithUpdatedOn(DateTimeOffset.Now)
                     .Create();
             }
 
@@ -183,50 +152,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
                     .ReturnsAsync((Restaurant) null);
             }
 
-            public void SetupDishCategoryRepositoryFindingDishCategory()
-            {
-                DishCategoryRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
-                    .ReturnsAsync(new[] {DishCategory});
-            }
-
-            public void SetupDishRepositoryFindingNoDishForDishCategory()
-            {
-                DishRepositoryMock.SetupFindByDishCategoryIdAsync(DishCategory.Id)
-                    .ReturnsAsync(Enumerable.Empty<Dish>());
-            }
-
-            public void SetupDishRepositoryStoringDish()
-            {
-                DishRepositoryMock.SetupStoreAsync(Dish)
-                    .Returns(Task.CompletedTask);
-            }
-
-            public void SetupDishFactoryCreatingDish()
-            {
-                DishFactoryMock
-                    .SetupCreate(
-                        Restaurant.Id,
-                        DishCategory.Id,
-                        Dish.Name,
-                        Dish.Description,
-                        Dish.ProductInfo,
-                        Dish.OrderNo,
-                        Dish.Variants,
-                        DishCategory.CreatedBy
-                    )
-                    .Returns(SuccessResult<Dish>.Create(Dish));
-            }
-
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupRandomRestaurant(role);
                 SetupRandomDishCategory();
                 SetupRandomDish();
                 SetupRestaurantRepositoryFindingRestaurant();
-                SetupDishCategoryRepositoryFindingDishCategory();
-                SetupDishRepositoryFindingNoDishForDishCategory();
-                SetupDishFactoryCreatingDish();
-                SetupDishRepositoryStoringDish();
             }
         }
     }

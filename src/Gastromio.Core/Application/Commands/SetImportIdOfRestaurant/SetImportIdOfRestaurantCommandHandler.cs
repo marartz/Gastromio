@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
@@ -30,11 +31,9 @@ namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
-            var result = restaurant.ChangeImportId(command.ImportId, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            restaurant.ChangeImportId(command.ImportId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

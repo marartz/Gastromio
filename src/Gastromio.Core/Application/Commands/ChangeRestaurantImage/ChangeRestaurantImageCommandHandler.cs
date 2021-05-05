@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.RestaurantImages;
 using Gastromio.Core.Domain.Model.Users;
 using SixLabors.ImageSharp;
@@ -38,13 +39,13 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
             if (string.IsNullOrWhiteSpace(command.Type))
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageTypeRequired);
+                throw DomainException.CreateFrom(new RestaurantImageTypeRequiredFailure());
 
             if (command.Image == null)
             {
@@ -62,7 +63,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
             }
 
             if (command.Image.Length > 2024 * 2024) // 4 MB
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageDataTooBig);
+                throw DomainException.CreateFrom(new RestaurantImageDataTooBigFailure());
 
             try
             {
@@ -71,7 +72,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
                 {
                     var imageObj = Image.Load(srcMemoryStream);
                     if (imageObj == null)
-                        return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
+                        throw DomainException.CreateFrom(new RestaurantImageNotValidFailure());
 
                     imageObj.SaveAsJpeg(dstMemoryStream);
 
@@ -96,7 +97,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
             catch
             {
                 // TODO: Log error
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantImageNotValid);
+                throw DomainException.CreateFrom(new RestaurantImageNotValidFailure());
             }
         }
     }

@@ -61,9 +61,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserPassword
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                var validationResult = fixture.User.ValidatePassword("Start2020!!!") as SuccessResult<bool>;
-                validationResult.Should().NotBeNull();
-                validationResult?.Value.Should().BeTrue();
+                var validationResult = fixture.User.ValidatePassword("Start2020!!!");
+                validationResult.Should().BeTrue();
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.User, Times.Once);
             }
         }

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeUserPassword
@@ -29,11 +30,9 @@ namespace Gastromio.Core.Application.Commands.ChangeUserPassword
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             if (user == null)
-                return FailureResult<bool>.Create(FailureResultCode.UserDoesNotExist);
+                throw DomainException.CreateFrom(new UserDoesNotExistFailure());
 
-            var result = user.ChangePassword(command.Password, true, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            user.ChangePassword(command.Password, true, currentUser.Id);
 
             await userRepository.StoreAsync(user, cancellationToken);
 

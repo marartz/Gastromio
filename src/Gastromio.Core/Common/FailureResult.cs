@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
+using Gastromio.Core.Domain.Failures;
 
 namespace Gastromio.Core.Common
 {
     public class FailureResult<TResult> : Result<TResult>
     {
-        private FailureResult(IDictionary<string, IList<InvariantError>> errors, int statusCode)
+        private FailureResult(Failure failure)
         {
-            Errors = errors ?? new Dictionary<string, IList<InvariantError>>();
-            StatusCode = statusCode;
+            CorrelationId = Guid.NewGuid();
+            Failure = failure;
         }
 
-        private FailureResult(InvariantError error, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-            : this(new Dictionary<string, IList<InvariantError>>{ { "", new List<InvariantError> { error } } }, (int) statusCode) {}
+        public Guid CorrelationId { get; }
 
-        public IDictionary<string, IList<InvariantError>> Errors { get; }
-        
-        public int StatusCode { get; }
+        public Failure Failure { get; }
 
         public override bool IsSuccess => false;
 
@@ -27,54 +23,27 @@ namespace Gastromio.Core.Common
 
         public override Result<TDstResult> Cast<TDstResult>()
         {
-            return new FailureResult<TDstResult>(Errors, StatusCode);
+            return new FailureResult<TDstResult>(Failure);
         }
 
-        public static FailureResult<TResult> Unauthorized(FailureResultCode code = FailureResultCode.SessionExpired, params object[] args)
+        public override void ThrowDomainExceptionIfFailure()
         {
-            return new FailureResult<TResult>(new InvariantError(code, args), HttpStatusCode.Unauthorized);
+            throw DomainException.CreateFrom(Failure);
         }
 
-        public static FailureResult<TResult> Forbidden(FailureResultCode code = FailureResultCode.Forbidden, params object[] args)
+        public static FailureResult<TResult> Unauthorized()
         {
-            return new FailureResult<TResult>(new InvariantError(code, args), HttpStatusCode.Forbidden);
+            return Create(new SessionExpiredFailure());
         }
 
-        public static FailureResult<TResult> Create(FailureResultCode code, params object[] args)
+        public static FailureResult<TResult> Forbidden()
         {
-            return new FailureResult<TResult>(new InvariantError(code, args));
+            return Create(new ForbiddenFailure());
         }
 
-        public static FailureResult<TResult> CreateStatusCode(FailureResultCode code, HttpStatusCode statusCode, params object[] args)
+        public static FailureResult<TResult> Create(Failure failure)
         {
-            return new FailureResult<TResult>(new InvariantError(code, args), statusCode);
-        }
-
-        public void AddComponentError(string componentName, FailureResultCode code, params object[] args)
-        {
-            if (componentName == null)
-            {
-                throw new ArgumentNullException(nameof(componentName));
-            }
-            bool exists = Errors.TryGetValue(componentName, out var comErrs);
-            var msg = new InvariantError(code, args);
-            if (!exists)
-            {
-                Errors.Add(componentName, new List<InvariantError> { msg });
-            }
-            else
-            {
-                if (comErrs == null)
-                {
-                    comErrs = new List<InvariantError> { msg };
-                }
-                comErrs.Add(msg);
-            }
-        }
-
-        public void AddError(FailureResultCode code, params object[] args)
-        {
-            AddComponentError("", code, args);
+            return new FailureResult<TResult>(failure);
         }
     }
 }

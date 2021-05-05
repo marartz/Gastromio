@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
-
 
 namespace Gastromio.Core.Application.Commands.AddCuisine
 {
@@ -15,8 +15,10 @@ namespace Gastromio.Core.Application.Commands.AddCuisine
         private readonly ICuisineFactory cuisineFactory;
         private readonly ICuisineRepository cuisineRepository;
 
-        public AddCuisineCommandHandler(ICuisineFactory cuisineFactory,
-            ICuisineRepository cuisineRepository)
+        public AddCuisineCommandHandler(
+            ICuisineFactory cuisineFactory,
+            ICuisineRepository cuisineRepository
+        )
         {
             this.cuisineFactory = cuisineFactory;
             this.cuisineRepository = cuisineRepository;
@@ -35,21 +37,15 @@ namespace Gastromio.Core.Application.Commands.AddCuisine
                 return FailureResult<CuisineDTO>.Forbidden();
 
             if (string.IsNullOrWhiteSpace(command.Name))
-            {
-                return FailureResult<CuisineDTO>.Create(FailureResultCode.CuisineNameIsRequired);
-            }
+                throw DomainException.CreateFrom(new CuisineNameIsRequiredFailure());
 
             var cuisine = await cuisineRepository.FindByNameAsync(command.Name, cancellationToken);
             if (cuisine != null)
-                return FailureResult<CuisineDTO>.Create(FailureResultCode.CuisineAlreadyExists);
+                throw DomainException.CreateFrom(new CuisineAlreadyExistsFailure());
 
-            var createResult = cuisineFactory.Create(command.Name, currentUser.Id);
-            if (createResult.IsFailure)
-                return createResult.Cast<CuisineDTO>();
-
-            cuisine = createResult.Value;
+            cuisine = cuisineFactory.Create(command.Name, currentUser.Id);
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
-            
+
             return SuccessResult<CuisineDTO>.Create(new CuisineDTO(cuisine));
         }
     }

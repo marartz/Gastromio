@@ -1,17 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.RemoveDishFromRestaurant;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
-using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
-using Gastromio.Domain.TestKit.Domain.Model.Dishes;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
@@ -68,7 +63,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishFromRestaurant
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.DishRepositoryMock.VerifyRemoveAsync(fixture.Dish.Id, Times.Once);
             }
         }
 
@@ -84,15 +78,9 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishFromRestaurant
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
                 RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
-                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
-                DishRepositoryMock = new DishRepositoryMock(MockBehavior.Strict);
             }
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
-
-            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
-
-            public DishRepositoryMock DishRepositoryMock { get; }
 
             public Restaurant Restaurant { get; private set; }
 
@@ -102,18 +90,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishFromRestaurant
 
             public override RemoveDishFromRestaurantCommandHandler CreateTestObject()
             {
-                return new RemoveDishFromRestaurantCommandHandler(
-                    RestaurantRepositoryMock.Object,
-                    DishCategoryRepositoryMock.Object,
-                    DishRepositoryMock.Object
-                );
+                return new RemoveDishFromRestaurantCommandHandler(RestaurantRepositoryMock.Object);
             }
 
             public override RemoveDishFromRestaurantCommand CreateSuccessfulCommand()
             {
                 return new RemoveDishFromRestaurantCommand(
                     Restaurant.Id,
-                    Dish.CategoryId,
+                    DishCategory.Id,
                     Dish.Id
                 );
             }
@@ -136,25 +120,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishFromRestaurant
             public void SetupRandomDishCategory()
             {
                 DishCategory = new DishCategoryBuilder()
-                    .WithRestaurantId(Restaurant.Id)
                     .WithOrderNo(0)
-                    .WithCreatedBy(UserId)
-                    .WithCreatedOn(DateTimeOffset.Now)
-                    .WithUpdatedBy(UserId)
-                    .WithUpdatedOn(DateTimeOffset.Now)
                     .Create();
             }
 
             public void SetupRandomDish()
             {
                 Dish = new DishBuilder()
-                    .WithRestaurantId(Restaurant.Id)
-                    .WithCategoryId(DishCategory.Id)
                     .WithOrderNo(0)
-                    .WithCreatedBy(UserId)
-                    .WithCreatedOn(DateTimeOffset.Now)
-                    .WithUpdatedBy(UserId)
-                    .WithUpdatedOn(DateTimeOffset.Now)
                     .Create();
             }
 
@@ -170,33 +143,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishFromRestaurant
                     .ReturnsAsync((Restaurant) null);
             }
 
-            public void SetupDishCategoryRepositoryFindingDishCategory()
-            {
-                DishCategoryRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
-                    .ReturnsAsync(new[] {DishCategory});
-            }
-
-            public void SetupDishRepositoryFindingDishForDishCategory()
-            {
-                DishRepositoryMock.SetupFindByDishCategoryIdAsync(DishCategory.Id)
-                    .ReturnsAsync(new[] {Dish});
-            }
-
-            public void SetupDishRepositoryRemovingDish()
-            {
-                DishRepositoryMock.SetupRemoveAsync(Dish.Id)
-                    .Returns(Task.CompletedTask);
-            }
-
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupRandomRestaurant(role);
                 SetupRandomDishCategory();
                 SetupRandomDish();
                 SetupRestaurantRepositoryFindingRestaurant();
-                SetupDishCategoryRepositoryFindingDishCategory();
-                SetupDishRepositoryFindingDishForDishCategory();
-                SetupDishRepositoryRemovingDish();
             }
         }
     }

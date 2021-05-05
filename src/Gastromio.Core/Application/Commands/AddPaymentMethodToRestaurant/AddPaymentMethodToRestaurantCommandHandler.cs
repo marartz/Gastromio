@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.AddPaymentMethodToRestaurant
@@ -29,13 +30,12 @@ namespace Gastromio.Core.Application.Commands.AddPaymentMethodToRestaurant
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
             restaurant.AddPaymentMethod(command.PaymentMethodId, currentUser.Id);
-
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
             return SuccessResult<bool>.Create(true);

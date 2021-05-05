@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Ports.Persistence;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.PaymentMethods;
@@ -22,7 +19,6 @@ namespace Gastromio.Domain.Tests.Domain.Services
 {
     public class RestaurantDataImporterTests
     {
-        private readonly Mock<IFailureMessageService> failureMessageService = new Mock<IFailureMessageService>();
         private readonly Mock<IRestaurantRepository> restaurantRepository = new Mock<IRestaurantRepository>();
         private readonly Mock<ICuisineRepository> cuisineRepository = new Mock<ICuisineRepository>();
         private readonly Mock<IUserRepository> userRepository = new Mock<IUserRepository>();
@@ -30,7 +26,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
         private readonly RestaurantDataImporter target;
 
         private readonly UserId mockUserId;
-        
+
         private readonly RestaurantRow mockRestaurantRow = new RestaurantRow
         {
             ImportId = "123",
@@ -72,30 +68,10 @@ namespace Gastromio.Domain.Tests.Domain.Services
         private readonly List<Cuisine> storedCuisines = new List<Cuisine>();
         private readonly List<User> storedUsers = new List<User>();
 
-        
+
         public RestaurantDataImporterTests()
         {
             mockUserId = new UserId(Guid.NewGuid());
-
-            failureMessageService
-                .Setup(m => m.GetTranslatedMessage(It.IsAny<FailureResult<bool>>(),
-                    It.IsAny<CultureInfo>()))
-                .Returns((FailureResult<bool> failureResult, CultureInfo cultureInfo) =>
-                {
-                    var sb = new StringBuilder();
-                    var first = true;
-                    foreach (var (_, invariantErrors) in failureResult.Errors)
-                    {
-                        foreach (var invariantError in invariantErrors)
-                        {
-                            if (!first)
-                                sb.Append(";");
-                            sb.Append(invariantError.Code.ToString());
-                            first = false;
-                        }
-                    }
-                    return sb.ToString();
-                });
 
             var restaurantFactory = new RestaurantFactory();
 
@@ -105,7 +81,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 {
                     storedRestaurant = restaurant;
                 });
-            
+
             var cuisineFactory = new CuisineFactory();
 
             cuisineRepository
@@ -125,9 +101,8 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 });
 
             var userFactory = new UserFactory();
-            
+
             target = new RestaurantDataImporter(
-                failureMessageService.Object,
                 restaurantFactory,
                 restaurantRepository.Object,
                 cuisineFactory,
@@ -144,7 +119,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
             // Arrange
             var log = new ImportLog();
             var rowIndex = 1;
- 
+
             // Act
             await target.ImportRestaurantAsync(log, rowIndex, mockRestaurantRow, mockUserId, false);
 
@@ -155,7 +130,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
                     .BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task ImportRestaurantAsync_NoDryRun_NonExistent_ClosedDeviatingDay_ImportCorrectly()
         {
@@ -164,7 +139,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
             var rowIndex = 1;
             mockRestaurantRow.DeviatingOpeningHours = "24.12.2020: geschlossen";
             var date = new Date(2020, 12, 24);
- 
+
             // Act
             await target.ImportRestaurantAsync(log, rowIndex, mockRestaurantRow, mockUserId, false);
 
@@ -173,15 +148,15 @@ namespace Gastromio.Domain.Tests.Domain.Services
             {
                 storedRestaurant.Should().NotBeNull();
                 storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
-                
+
                 DeviatingOpeningDay deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task ImportRestaurantAsync_NoDryRun_NonExistent_DeviatingDayWithOnePeriod_ImportCorrectly()
         {
@@ -190,7 +165,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
             var rowIndex = 1;
             mockRestaurantRow.DeviatingOpeningHours = "24.12.2020: 10:00-14:00";
             var date = new Date(2020, 12, 24);
- 
+
             // Act
             await target.ImportRestaurantAsync(log, rowIndex, mockRestaurantRow, mockUserId, false);
 
@@ -199,9 +174,9 @@ namespace Gastromio.Domain.Tests.Domain.Services
             {
                 storedRestaurant.Should().NotBeNull();
                 storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
-                
+
                 DeviatingOpeningDay deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
@@ -209,7 +184,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 );
             }
         }
-        
+
         [Fact]
         public async Task ImportRestaurantAsync_NoDryRun_NonExistent_DeviatingDayWithTwoPeriods_ImportCorrectly()
         {
@@ -218,7 +193,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
             var rowIndex = 1;
             mockRestaurantRow.DeviatingOpeningHours = "24.12.2020: 10:00-14:00; 17:00-20:00";
             var date = new Date(2020, 12, 24);
- 
+
             // Act
             await target.ImportRestaurantAsync(log, rowIndex, mockRestaurantRow, mockUserId, false);
 
@@ -227,9 +202,9 @@ namespace Gastromio.Domain.Tests.Domain.Services
             {
                 storedRestaurant.Should().NotBeNull();
                 storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
-                
+
                 DeviatingOpeningDay deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
@@ -238,7 +213,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 );
             }
         }
-        
+
         [Fact]
         public async Task ImportRestaurantAsync_NoDryRun_NonExistent_TwoClosedDeviatingDays_ImportCorrectly()
         {
@@ -248,7 +223,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
             mockRestaurantRow.DeviatingOpeningHours = "24.12.2020: geschlossen | 25.12.2020: geschlossen";
             var date1 = new Date(2020, 12, 24);
             var date2 = new Date(2020, 12, 25);
- 
+
             // Act
             await target.ImportRestaurantAsync(log, rowIndex, mockRestaurantRow, mockUserId, false);
 
@@ -257,21 +232,21 @@ namespace Gastromio.Domain.Tests.Domain.Services
             {
                 storedRestaurant.Should().NotBeNull();
                 storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
-                
+
                 DeviatingOpeningDay deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date1, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date1, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date1);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEmpty();
-                
+
                 deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date2, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date2, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date2);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task ImportRestaurantAsync_NoDryRun_NonExistent_TwoDeviatingDaysWithTwoPeriods_ImportCorrectly()
         {
@@ -281,7 +256,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
             mockRestaurantRow.DeviatingOpeningHours = "24.12.2020: 18:00-20:00; 22:00-02:00 | 25.12.2020: 18:00-20:00; 22:00-02:00";
             var date1 = new Date(2020, 12, 24);
             var date2 = new Date(2020, 12, 25);
- 
+
             // Act
             await target.ImportRestaurantAsync(log, rowIndex, mockRestaurantRow, mockUserId, false);
 
@@ -290,18 +265,18 @@ namespace Gastromio.Domain.Tests.Domain.Services
             {
                 storedRestaurant.Should().NotBeNull();
                 storedRestaurant?.DeviatingOpeningDays.Should().NotBeNull();
-                
+
                 DeviatingOpeningDay deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date1, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date1, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date1);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
                     new OpeningPeriod(TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
                     new OpeningPeriod(TimeSpan.FromHours(22), TimeSpan.FromHours(26))
                 );
-               
+
                 deviatingOpeningDay = null;
-                storedRestaurant?.DeviatingOpeningDays?.TryGetValue(date2, out deviatingOpeningDay);
+                storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date2, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date2);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
@@ -310,6 +285,6 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 );
             }
         }
-        
+
     }
 }

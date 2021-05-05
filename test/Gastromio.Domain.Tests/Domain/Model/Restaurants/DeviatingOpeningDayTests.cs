@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Xunit;
@@ -126,10 +127,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var successResult = (SuccessResult<DeviatingOpeningDay>) result;
-                successResult.Should().NotBeNull();
-                successResult?.Value.OpeningPeriods.Should().BeEquivalentTo(curPeriod);
+                result.OpeningPeriods.Should().BeEquivalentTo(curPeriod);
             }
         }
 
@@ -146,14 +144,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -169,14 +163,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -194,14 +184,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -219,14 +205,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -244,14 +226,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -269,14 +247,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -294,14 +268,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -319,14 +289,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -344,14 +310,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -369,14 +331,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
@@ -398,10 +356,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var successResult = (SuccessResult<DeviatingOpeningDay>) result;
-                successResult.Should().NotBeNull();
-                successResult?.Value.OpeningPeriods.Should().BeEquivalentTo(period);
+                result.OpeningPeriods.Should().BeEquivalentTo(period);
             }
         }
 

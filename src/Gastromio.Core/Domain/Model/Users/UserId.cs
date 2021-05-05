@@ -7,6 +7,8 @@ namespace Gastromio.Core.Domain.Model.Users
     {
         public UserId(Guid value) : base(value)
         {
+            if (value == Guid.Empty)
+                throw new InvalidOperationException("user id is invalid");
         }
     }
 }

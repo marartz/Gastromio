@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -63,8 +62,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddDeviatingOpeningDayToRe
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Restaurant.DeviatingOpeningDays.Select(en => en.Value).Should()
-                    .BeEquivalentTo(fixture.DeviatingOpeningDay);
+                fixture.Restaurant.DeviatingOpeningDays.Should().BeEquivalentTo(fixture.DeviatingOpeningDay);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }

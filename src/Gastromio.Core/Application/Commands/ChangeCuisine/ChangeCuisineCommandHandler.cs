@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeCuisine
@@ -29,11 +30,9 @@ namespace Gastromio.Core.Application.Commands.ChangeCuisine
 
             var cuisine = await cuisineRepository.FindByCuisineIdAsync(command.CuisineId, cancellationToken);
             if (cuisine == null)
-                return FailureResult<bool>.Create(FailureResultCode.CuisineDoesNotExist);
+                throw DomainException.CreateFrom(new CuisineDoesNotExistFailure());
 
-            var result = cuisine.ChangeName(command.Name, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            cuisine.ChangeName(command.Name, currentUser.Id);
 
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 

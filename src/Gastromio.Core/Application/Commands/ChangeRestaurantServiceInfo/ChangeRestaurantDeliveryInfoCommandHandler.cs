@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo
@@ -29,30 +30,19 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<bool>.Forbidden();
 
-            var result = restaurant.ChangePickupInfo(command.PickupInfo, currentUser.Id);
-            if (result.IsFailure)
-                return result;
-
-            result = restaurant.ChangeDeliveryInfo(command.DeliveryInfo, currentUser.Id);
-            if (result.IsFailure)
-                return result;
-
-            result = restaurant.ChangeReservationInfo(command.ReservationInfo, currentUser.Id);
-            if (result.IsFailure)
-                return result;
-
-            result = restaurant.ChangeHygienicHandling(command.HygienicHandling, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            restaurant.ChangePickupInfo(command.PickupInfo, currentUser.Id);
+            restaurant.ChangeDeliveryInfo(command.DeliveryInfo, currentUser.Id);
+            restaurant.ChangeReservationInfo(command.ReservationInfo, currentUser.Id);
+            restaurant.ChangeHygienicHandling(command.HygienicHandling, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return result;
+            return SuccessResult<bool>.Create(true);
         }
     }
 }

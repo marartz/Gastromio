@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Gastromio.App.BackgroundServices;
+using Gastromio.App.Extensions;
 using Gastromio.Core;
 using Gastromio.Notification.Sms77;
 using Gastromio.Notification.Smtp;
@@ -14,6 +15,7 @@ using Gastromio.Persistence.MongoDB;
 using Gastromio.Template.DotLiquid;
 using Serilog;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Gastromio.App
 {
@@ -111,7 +113,7 @@ namespace Gastromio.App
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -123,6 +125,8 @@ namespace Gastromio.App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.ConfigureExceptionHandler(logger);
 
             app.UseHttpsRedirection();
 

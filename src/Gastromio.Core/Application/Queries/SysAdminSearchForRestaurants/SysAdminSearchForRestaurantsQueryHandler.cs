@@ -46,10 +46,10 @@ namespace Gastromio.Core.Application.Queries.SysAdminSearchForRestaurants
                 return FailureResult<PagingDTO<RestaurantDTO>>.Forbidden();
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));
+                .ToDictionary(en => en.Id, en => new CuisineDTO(en));
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
+                .ToDictionary(en => en.Id, en => new PaymentMethodDTO(en));
 
             var (total, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, null, null, null, null,
                 query.Skip, query.Take, cancellationToken);

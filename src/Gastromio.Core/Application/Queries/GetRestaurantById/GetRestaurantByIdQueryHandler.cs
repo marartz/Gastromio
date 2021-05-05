@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
@@ -41,10 +42,10 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantById
                 throw new ArgumentNullException(nameof(query));
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));
+                .ToDictionary(en => en.Id, en => new CuisineDTO(en));
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
+                .ToDictionary(en => en.Id, en => new PaymentMethodDTO(en));
 
             Restaurant restaurant;
 
@@ -62,10 +63,10 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantById
             }
 
             if (restaurant == null)
-                return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (query.OnlyActiveRestaurants && !restaurant.IsActive)
-                return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             var userIds = restaurant.Administrators
                 .Union(new[] {restaurant.CreatedBy, restaurant.UpdatedBy})

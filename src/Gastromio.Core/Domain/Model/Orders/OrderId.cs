@@ -7,6 +7,8 @@ namespace Gastromio.Core.Domain.Model.Orders
     {
         public OrderId(Guid value) : base(value)
         {
+            if (value == Guid.Empty)
+                throw new InvalidOperationException("order id is invalid");
         }
     }
 }

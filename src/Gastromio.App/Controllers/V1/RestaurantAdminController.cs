@@ -39,12 +39,8 @@ using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetAllCuisines;
 using Gastromio.Core.Application.Queries.GetAllPaymentMethods;
-using Gastromio.Core.Application.Queries.GetDishesOfRestaurantForAdmin;
 using Gastromio.Core.Application.Queries.GetRestaurantById;
 using Gastromio.Core.Application.Queries.RestAdminMyRestaurants;
-using Gastromio.Core.Application.Services;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
@@ -62,16 +58,13 @@ namespace Gastromio.App.Controllers.V1
         private readonly ILogger logger;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
-        private readonly IFailureMessageService failureMessageService;
 
         public RestaurantAdminController(ILogger<RestaurantAdminController> logger,
-            ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher,
-            IFailureMessageService failureMessageService)
+            ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             this.logger = logger;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
-            this.failureMessageService = failureMessageService;
         }
 
         [Route("myrestaurants")]
@@ -86,7 +79,7 @@ namespace Gastromio.App.Controllers.V1
             var queryResult =
                 await queryDispatcher.PostAsync<RestAdminMyRestaurantsQuery, ICollection<RestaurantDTO>>(
                     new RestAdminMyRestaurantsQuery(), new UserId(currentUserId));
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return ResultHelper.HandleResult(queryResult);
         }
 
         [Route("restaurants/{restaurant}")]
@@ -102,22 +95,7 @@ namespace Gastromio.App.Controllers.V1
                 await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
                     new GetRestaurantByIdQuery(restaurant, false), new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurant}/dishes")]
-        [HttpGet]
-        public async Task<IActionResult> GetDishesOfRestaurantAsync(string restaurant)
-        {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
-                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
-                return Unauthorized();
-
-            var queryResult =
-                await queryDispatcher.PostAsync<GetDishesOfRestaurantForAdminQuery, ICollection<DishCategoryDTO>>(
-                    new GetDishesOfRestaurantForAdminQuery(restaurant), new UserId(currentUserId));
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return ResultHelper.HandleResult(queryResult);
         }
 
         [Route("cuisines")]
@@ -132,7 +110,7 @@ namespace Gastromio.App.Controllers.V1
             var queryResult =
                 await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(new GetAllCuisinesQuery(),
                     new UserId(currentUserId));
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return ResultHelper.HandleResult(queryResult);
         }
 
         [Route("paymentmethods")]
@@ -147,7 +125,7 @@ namespace Gastromio.App.Controllers.V1
             var queryResult =
                 await queryDispatcher.PostAsync<GetAllPaymentMethodsQuery, ICollection<PaymentMethodDTO>>(
                     new GetAllPaymentMethodsQuery(), new UserId(currentUserId));
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return ResultHelper.HandleResult(queryResult);
         }
 
         [Route("restaurants/{restaurantId}/changeimage")]
@@ -171,7 +149,7 @@ namespace Gastromio.App.Controllers.V1
                 await commandDispatcher.PostAsync<ChangeRestaurantImageCommand, bool>(command,
                     new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changeaddress")]
@@ -194,7 +172,7 @@ namespace Gastromio.App.Controllers.V1
             var commandResult =
                 await commandDispatcher.PostAsync<ChangeRestaurantAddressCommand, bool>(command,
                     new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changecontactinfo")]
@@ -222,7 +200,7 @@ namespace Gastromio.App.Controllers.V1
                 await commandDispatcher.PostAsync<ChangeRestaurantContactInfoCommand, bool>(command,
                     new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changeserviceinfo")]
@@ -259,7 +237,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/addregularopeningperiod")]
@@ -279,7 +257,7 @@ namespace Gastromio.App.Controllers.V1
                 new AddRegularOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, start, end),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changeregularopeningperiod")]
@@ -300,7 +278,7 @@ namespace Gastromio.App.Controllers.V1
                 new ChangeRegularOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.DayOfWeek, oldStart, newStart, newEnd),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removeregularopeningperiod")]
@@ -320,7 +298,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/adddeviatingopeningday")]
@@ -337,7 +315,7 @@ namespace Gastromio.App.Controllers.V1
                 new AddDeviatingOpeningDayToRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain(), model.Status.ToDeviatingOpeningDayStatus()),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changedeviatingopeningdaystatus")]
@@ -354,7 +332,7 @@ namespace Gastromio.App.Controllers.V1
                 new ChangeDeviatingOpeningDayStatusOfRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain(), model.Status.ToDeviatingOpeningDayStatus()),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removedeviatingopeningday")]
@@ -371,7 +349,7 @@ namespace Gastromio.App.Controllers.V1
                 new RemoveDeviatingOpeningDayFromRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain()),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/adddeviatingopeningperiod")]
@@ -391,7 +369,7 @@ namespace Gastromio.App.Controllers.V1
                 new AddDeviatingOpeningPeriodToRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain(), start, end),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changedeviatingopeningperiod")]
@@ -412,7 +390,7 @@ namespace Gastromio.App.Controllers.V1
                 new ChangeDeviatingOpeningPeriodOfRestaurantCommand(new RestaurantId(restaurantId), model.Date.ToDomain(), oldStart, newStart, newEnd),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removedeviatingopeningperiod")]
@@ -432,7 +410,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/addpaymentmethod")]
@@ -451,7 +429,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removepaymentmethod")]
@@ -470,7 +448,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/adddishcategory")]
@@ -489,7 +467,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changedishcategory")]
@@ -508,7 +486,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/incorderofdishcategory")]
@@ -522,11 +500,14 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<IncOrderOfDishCategoryCommand, bool>(
-                new IncOrderOfDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
+                new IncOrderOfDishCategoryCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId)
+                ),
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/decorderofdishcategory")]
@@ -540,11 +521,14 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<DecOrderOfDishCategoryCommand, bool>(
-                new DecOrderOfDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
+                new DecOrderOfDishCategoryCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId)
+                ),
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/enabledishcategory")]
@@ -558,11 +542,14 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<EnableDishCategoryCommand, bool>(
-                new EnableDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
+                new EnableDishCategoryCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId)
+                ),
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/disabledishcategory")]
@@ -576,11 +563,14 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<DisableDishCategoryCommand, bool>(
-                new DisableDishCategoryCommand(new DishCategoryId(model.DishCategoryId)),
+                new DisableDishCategoryCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId)
+                ),
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removedishcategory")]
@@ -599,7 +589,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/addoreditdish")]
@@ -616,14 +606,14 @@ namespace Gastromio.App.Controllers.V1
                 new AddOrChangeDishOfRestaurantCommand(
                     new RestaurantId(restaurantId),
                     new DishCategoryId(model.DishCategoryId),
-                    model.Dish.Id,
+                    new DishId(model.Dish.Id),
                     model.Dish.Name,
                     model.Dish.Description,
                     model.Dish.ProductInfo,
                     model.Dish.OrderNo,
                     model.Dish.Variants?.Select(
                         variant => new DishVariant(
-                            variant.VariantId,
+                            new DishVariantId(variant.VariantId),
                             variant.Name,
                             variant.Price
                         )
@@ -632,7 +622,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/incorderofdish")]
@@ -646,11 +636,15 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<IncOrderOfDishCommand, bool>(
-                new IncOrderOfDishCommand(new DishId(model.DishId)),
+                new IncOrderOfDishCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId),
+                    new DishId(model.DishId)
+                ),
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/decorderofdish")]
@@ -664,11 +658,15 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<DecOrderOfDishCommand, bool>(
-                new DecOrderOfDishCommand(new DishId(model.DishId)),
+                new DecOrderOfDishCommand(
+                    new RestaurantId(restaurantId),
+                    new DishCategoryId(model.DishCategoryId),
+                    new DishId(model.DishId)
+                ),
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removedish")]
@@ -687,7 +685,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/changesupportedordermode")]
@@ -706,7 +704,7 @@ namespace Gastromio.App.Controllers.V1
                 new ChangeSupportedOrderModeOfRestaurantCommand(new RestaurantId(restaurantId), supportedOrderMode),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/addorchangeexternalmenu")]
@@ -720,7 +718,7 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var externalMenu = new ExternalMenu(
-                model.ExternalMenuId,
+                new ExternalMenuId(model.ExternalMenuId),
                 model.Name,
                 model.Description,
                 model.Url
@@ -730,7 +728,7 @@ namespace Gastromio.App.Controllers.V1
                 new AddOrChangeExternalMenuOfRestaurantCommand(new RestaurantId(restaurantId), externalMenu),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("restaurants/{restaurantId}/removeexternalmenu")]
@@ -744,10 +742,13 @@ namespace Gastromio.App.Controllers.V1
                 return Unauthorized();
 
             var commandResult = await commandDispatcher.PostAsync<RemoveExternalMenuFromRestaurantCommand, bool>(
-                new RemoveExternalMenuFromRestaurantCommand(new RestaurantId(restaurantId), model.ExternalMenuId),
+                new RemoveExternalMenuFromRestaurantCommand(
+                    new RestaurantId(restaurantId),
+                    new ExternalMenuId(model.ExternalMenuId)
+                ),
                 new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
     }
 }

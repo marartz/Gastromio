@@ -1,5 +1,6 @@
 ﻿using System;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Domain.Model.Cuisines
@@ -15,6 +16,8 @@ namespace Gastromio.Core.Domain.Model.Cuisines
             UserId updatedBy
         )
         {
+            ValidateName(name);
+
             Id = id;
             Name = name;
             CreatedOn = createdOn;
@@ -24,6 +27,7 @@ namespace Gastromio.Core.Domain.Model.Cuisines
         }
 
         public CuisineId Id { get; }
+
         public string Name { get; private set; }
 
         public DateTimeOffset CreatedOn { get; }
@@ -34,18 +38,20 @@ namespace Gastromio.Core.Domain.Model.Cuisines
 
         public UserId UpdatedBy { get; private set; }
 
-        public Result<bool> ChangeName(string name, UserId updatedBy)
+        public void ChangeName(string name, UserId updatedBy)
         {
-            if (string.IsNullOrEmpty(name))
-                return FailureResult<bool>.Create(FailureResultCode.CuisineNameIsRequired);
-            if (name.Length > 100)
-                return FailureResult<bool>.Create(FailureResultCode.CuisineNameTooLong, 100);
-
+            ValidateName(name);
             Name = name;
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = updatedBy;
+        }
 
-            return SuccessResult<bool>.Create(true);
+        private static void ValidateName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw DomainException.CreateFrom(new CuisineNameIsRequiredFailure());
+            if (name.Length > 100)
+                throw DomainException.CreateFrom(new CuisineNameTooLongFailure());
         }
     }
 }

@@ -7,12 +7,12 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddRestaurant;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Cuisines;
 using Gastromio.Domain.TestKit.Domain.Model.PaymentMethods;
-using Gastromio.Domain.TestKit.Domain.Model.RestaurantImages;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
 using Moq;
@@ -196,13 +196,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             public void SetupRestaurantFactoryCreatingRestaurant()
             {
                 RestaurantFactoryMock.SetupCreateWithName("test", UserWithMinimumRole.Id)
-                    .Returns(SuccessResult<Restaurant>.Create(Restaurant));
+                    .Returns(Restaurant);
             }
 
             public void SetupRestaurantFactoryNotCreatingRestaurant()
             {
                 RestaurantFactoryMock.SetupCreateWithName("test", UserWithMinimumRole.Id)
-                    .Returns(FailureResult<Restaurant>.Create(FailureResultCode.RestaurantNameRequired));
+                    .Throws(DomainException.CreateFrom(new RestaurantNameRequiredFailure()));
             }
 
             public void SetupUserRepositoryFindingAdministrators()

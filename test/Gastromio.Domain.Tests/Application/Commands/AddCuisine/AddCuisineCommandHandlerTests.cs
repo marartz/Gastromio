@@ -4,7 +4,6 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddCuisine;
 using Gastromio.Core.Application.DTOs;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -168,7 +167,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
                     .Create();
 
                 CuisineFactoryMock.SetupCreate("test", UserWithMinimumRole.Id)
-                    .Returns(SuccessResult<Cuisine>.Create(CreatedCuisine));
+                    .Returns(CreatedCuisine);
             }
 
             public override void SetupForSuccessfulCommandExecution(Role? role)

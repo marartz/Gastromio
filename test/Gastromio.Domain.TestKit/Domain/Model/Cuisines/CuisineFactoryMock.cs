@@ -12,7 +12,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Cuisines
         {
         }
 
-        public ISetup<ICuisineFactory, Result<Cuisine>> SetupCreate(string name, UserId createdBy)
+        public ISetup<ICuisineFactory, Cuisine> SetupCreate(string name, UserId createdBy)
         {
             return Setup(m => m.Create(name, createdBy));
         }

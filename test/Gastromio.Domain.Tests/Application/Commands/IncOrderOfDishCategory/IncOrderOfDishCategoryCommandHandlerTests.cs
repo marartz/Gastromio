@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.IncOrderOfDishCategory;
-using Gastromio.Core.Domain.Model.DishCategories;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
-using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
+using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
 
@@ -26,12 +24,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
         }
 
         [Fact]
-        public async Task HandleAsync_DishCategoryNotKnown_ReturnsFailure()
+        public async Task HandleAsync_DishNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(3);
             fixture.SetupCurrentDishCategory(1);
-            fixture.SetupDishRepositoryNotFindingDishByDishId();
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -48,15 +46,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex0_ChangesNothingAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_ChangesDishCategoryOrderAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(3);
             fixture.SetupCurrentDishCategory(0);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
-            fixture.SetupDishRepositoryStoringDish(0);
-            fixture.SetupDishRepositoryStoringDish(1);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -72,22 +67,35 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
                 fixture.DishCategories[0].OrderNo.Should().Be(1);
                 fixture.DishCategories[1].OrderNo.Should().Be(0);
                 fixture.DishCategories[2].OrderNo.Should().Be(2);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Once);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Once);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Never);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex1_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupCurrentDishCategory(0);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
+        }
+
+        [Fact]
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_ChangesDishCategoryOrderAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(3);
             fixture.SetupCurrentDishCategory(1);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
-            fixture.SetupDishRepositoryStoringDish(1);
-            fixture.SetupDishRepositoryStoringDish(2);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -103,20 +111,35 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
                 fixture.DishCategories[0].OrderNo.Should().Be(0);
                 fixture.DishCategories[1].OrderNo.Should().Be(2);
                 fixture.DishCategories[2].OrderNo.Should().Be(1);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Once);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Once);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex2_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupCurrentDishCategory(1);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
+        }
+
+        [Fact]
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_ChangesNothingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(3);
             fixture.SetupCurrentDishCategory(2);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -132,20 +155,35 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
                 fixture.DishCategories[0].OrderNo.Should().Be(0);
                 fixture.DishCategories[1].OrderNo.Should().Be(1);
                 fixture.DishCategories[2].OrderNo.Should().Be(2);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Never);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_OneDishCategory_ChangesNothingAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupDishCategories(1);
+            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupCurrentDishCategory(2);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
+        }
+
+        [Fact]
+        public async Task HandleAsync_OneDish_ChangesNothingAndReturnsSuccess()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(1);
             fixture.SetupCurrentDishCategory(0);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -159,8 +197,26 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
                 fixture.DishCategories[0].OrderNo.Should().Be(0);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
             }
+        }
+
+        [Fact]
+        public async Task HandleAsync_OneDish_StoresRestaurant()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(1);
+            fixture.SetupCurrentDishCategory(0);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
         }
 
         protected override
@@ -174,80 +230,68 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDishCategory
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
-                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
+                RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
             }
 
-            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
+            public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
 
             public List<DishCategory> DishCategories { get; private set; }
 
-            public DishCategory CurrentDishCategory { get; private set; }
+            public Restaurant Restaurant { get; private set; }
+
+            public DishCategoryId CurrentDishCategoryId { get; private set; }
 
             public override IncOrderOfDishCategoryCommandHandler CreateTestObject()
             {
                 return new IncOrderOfDishCategoryCommandHandler(
-                    DishCategoryRepositoryMock.Object
+                    RestaurantRepositoryMock.Object
                 );
             }
 
             public override IncOrderOfDishCategoryCommand CreateSuccessfulCommand()
             {
-                return new IncOrderOfDishCategoryCommand(CurrentDishCategory.Id);
+                return new IncOrderOfDishCategoryCommand(Restaurant.Id, CurrentDishCategoryId);
             }
 
-            public void SetupDishCategories(int count)
+            public void SetupRestaurantWithDishes(int count)
             {
-                var restaurantId = new RestaurantId(Guid.NewGuid());
-
                 DishCategories = new List<DishCategory>();
-
                 for (var i = 0; i < count; i++)
                 {
                     DishCategories.Add(new DishCategoryBuilder()
-                        .WithRestaurantId(restaurantId)
                         .WithOrderNo(i)
                         .WithValidConstrains()
                         .Create());
                 }
+
+                Restaurant = new RestaurantBuilder()
+                    .WithDishCategories(DishCategories)
+                    .Create();
             }
 
             public void SetupCurrentDishCategory(int index)
             {
-                CurrentDishCategory = DishCategories[index];
+                CurrentDishCategoryId = DishCategories[index].Id;
             }
 
-            public void SetupDishRepositoryFindingDishByDishId()
+            public void SetupRestaurantRepositoryFindingRestaurant()
             {
-                DishCategoryRepositoryMock.SetupFindByDishCategoryIdAsync(CurrentDishCategory.Id)
-                    .ReturnsAsync(CurrentDishCategory);
+                RestaurantRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
+                    .ReturnsAsync(Restaurant);
             }
 
-            public void SetupDishRepositoryNotFindingDishByDishId()
+            public void SetupRestaurantRepositoryStoringRestaurant()
             {
-                DishCategoryRepositoryMock.SetupFindByDishCategoryIdAsync(CurrentDishCategory.Id)
-                    .ReturnsAsync((DishCategory) null);
-            }
-
-            public void SetupDishRepositoryFindingDishByDishCategoryId()
-            {
-                DishCategoryRepositoryMock.SetupFindByRestaurantIdAsync(CurrentDishCategory.RestaurantId)
-                    .ReturnsAsync(DishCategories);
-            }
-
-            public void SetupDishRepositoryStoringDish(int index)
-            {
-                DishCategoryRepositoryMock.SetupStoreAsync(DishCategories[index])
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
                     .Returns(Task.CompletedTask);
             }
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupDishCategories(3);
+                SetupRestaurantWithDishes(3);
                 SetupCurrentDishCategory(1);
-                SetupDishRepositoryFindingDishByDishId();
-                SetupDishRepositoryFindingDishByDishCategoryId();
-                SetupDishRepositoryStoringDish(1);
-                SetupDishRepositoryStoringDish(2);
+                SetupRestaurantRepositoryFindingRestaurant();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

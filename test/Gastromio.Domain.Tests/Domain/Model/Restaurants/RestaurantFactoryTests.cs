@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Common;
@@ -38,26 +37,22 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                result?.Value.Should().BeOfType<Restaurant>();
-                result?.Value?.Name.Should().Be(fixture.Name);
-                result?.Value?.Address.Should().BeEquivalentTo(fixture.Address);
-                result?.Value?.ContactInfo.Should().BeEquivalentTo(fixture.ContactInfo);
-                result?.Value?.RegularOpeningDays.Select(en => en.Value)
-                    .Should().BeEquivalentTo(fixture.RegularOpeningDays);
-                result?.Value?.DeviatingOpeningDays.Select(en => en.Value)
-                    .Should().BeEquivalentTo(fixture.DeviatingOpeningDays);
-                result?.Value?.PickupInfo.Should().BeEquivalentTo(fixture.PickupInfo);
-                result?.Value?.DeliveryInfo.Should().BeEquivalentTo(fixture.DeliveryInfo);
-                result?.Value?.ReservationInfo.Should().BeEquivalentTo(fixture.ReservationInfo);
-                result?.Value?.HygienicHandling.Should().Be(fixture.HygienicHandling);
-                result?.Value?.Cuisines.Should().BeEquivalentTo(fixture.Cuisines);
-                result?.Value?.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethods);
-                result?.Value?.Administrators.Should().BeEquivalentTo(fixture.Administrators);
-                result?.Value?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                result?.Value?.CreatedBy.Should().Be(fixture.CreatedBy);
-                result?.Value?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                result?.Value?.UpdatedBy.Should().Be(fixture.CreatedBy);
+                result.Name.Should().Be(fixture.Name);
+                result.Address.Should().BeEquivalentTo(fixture.Address);
+                result.ContactInfo.Should().BeEquivalentTo(fixture.ContactInfo);
+                result.RegularOpeningDays.Should().BeEquivalentTo(fixture.RegularOpeningDays);
+                result.DeviatingOpeningDays.Should().BeEquivalentTo(fixture.DeviatingOpeningDays);
+                result.PickupInfo.Should().BeEquivalentTo(fixture.PickupInfo);
+                result.DeliveryInfo.Should().BeEquivalentTo(fixture.DeliveryInfo);
+                result.ReservationInfo.Should().BeEquivalentTo(fixture.ReservationInfo);
+                result.HygienicHandling.Should().Be(fixture.HygienicHandling);
+                result.Cuisines.Should().BeEquivalentTo(fixture.Cuisines);
+                result.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethods);
+                result.Administrators.Should().BeEquivalentTo(fixture.Administrators);
+                result.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result.CreatedBy.Should().Be(fixture.CreatedBy);
+                result.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result.UpdatedBy.Should().Be(fixture.CreatedBy);
             }
         }
 
@@ -69,14 +64,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
         [Fact]
@@ -87,14 +78,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
         [Fact]
@@ -105,14 +92,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
         [Fact]
@@ -123,14 +106,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
         [Fact]
@@ -141,14 +120,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
         [Fact]
@@ -159,14 +134,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
         [Fact]
@@ -177,17 +148,13 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = CallCreate(testObject);
+            Action act = () => CallCreate(testObject);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException>();
         }
 
-        private Result<Restaurant> CallCreate(IRestaurantFactory testObject)
+        private Restaurant CallCreate(IRestaurantFactory testObject)
         {
             return testObject.Create(
                 fixture.Name,
@@ -214,9 +181,9 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
 
             public ContactInfo ContactInfo { get; private set; }
 
-            public List<RegularOpeningDay> RegularOpeningDays { get; private set; }
+            public RegularOpeningDays RegularOpeningDays { get; private set; }
 
-            public List<DeviatingOpeningDay> DeviatingOpeningDays { get; private set; }
+            public DeviatingOpeningDays DeviatingOpeningDays { get; private set; }
 
             public PickupInfo PickupInfo { get; private set; }
 
@@ -243,21 +210,25 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 ContactInfo = new ContactInfoBuilder()
                     .WithValidConstrains()
                     .Create();
-                RegularOpeningDays = new RegularOpeningDayBuilder()
-                    .WithDayOfWeek(0)
-                    .WithOpeningPeriods(new []
-                    {
-                        new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))
-                    })
-                    .CreateMany(1).ToList();
-                DeviatingOpeningDays = new DeviatingOpeningDayBuilder()
-                    .WithDate(Date.Today.AddDays(1))
-                    .WithStatus(DeviatingOpeningDayStatus.Open)
-                    .WithOpeningPeriods(new []
-                    {
-                        new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))
-                    })
-                    .CreateMany(1).ToList();
+                RegularOpeningDays = new RegularOpeningDays(
+                    new RegularOpeningDayBuilder()
+                        .WithDayOfWeek(0)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))
+                        })
+                        .CreateMany(1)
+                );
+                DeviatingOpeningDays = new DeviatingOpeningDays(
+                    new DeviatingOpeningDayBuilder()
+                        .WithDate(Date.Today.AddDays(1))
+                        .WithStatus(DeviatingOpeningDayStatus.Open)
+                        .WithOpeningPeriods(new[]
+                        {
+                            new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22))
+                        })
+                        .CreateMany(1)
+                );
                 PickupInfo = new PickupInfoBuilder()
                     .WithValidConstrains()
                     .Create();
@@ -300,7 +271,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             public void SetupValidParametersExceptRegularOpeningDays()
             {
                 SetupValidParameters();
-                RegularOpeningDays = new List<RegularOpeningDay>
+                RegularOpeningDays = new RegularOpeningDays(new[]
                 {
                     new RegularOpeningDayBuilder()
                         .WithDayOfWeek(0)
@@ -309,13 +280,13 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                             new OpeningPeriod(TimeSpan.FromHours(2), TimeSpan.FromHours(3))
                         })
                         .Create()
-                };
+                });
             }
 
             public void SetupValidParametersExceptDeviatingOpeningDays()
             {
                 SetupValidParameters();
-                DeviatingOpeningDays = new List<DeviatingOpeningDay>
+                DeviatingOpeningDays = new DeviatingOpeningDays(new[]
                 {
                     new DeviatingOpeningDayBuilder()
                         .WithDate(Date.Today.AddDays(1))
@@ -325,7 +296,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                             new OpeningPeriod(TimeSpan.FromHours(2), TimeSpan.FromHours(3))
                         })
                         .Create()
-                };
+                });
             }
 
             public void SetupValidParametersExceptPickupInfo()

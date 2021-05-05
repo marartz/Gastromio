@@ -12,7 +12,6 @@ using Gastromio.Core.Application.Commands.RemoveUser;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.SearchForUsers;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Domain.Model.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,15 +27,13 @@ namespace Gastromio.App.Controllers.V1
         private readonly ILogger logger;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
-        private readonly IFailureMessageService failureMessageService;
 
         public UserAdminController(ILogger<UserAdminController> logger, ICommandDispatcher commandDispatcher,
-            IQueryDispatcher queryDispatcher, IFailureMessageService failureMessageService)
+            IQueryDispatcher queryDispatcher)
         {
             this.logger = logger;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
-            this.failureMessageService = failureMessageService;
         }
 
         [Route("users")]
@@ -54,7 +51,7 @@ namespace Gastromio.App.Controllers.V1
                 await queryDispatcher
                     .PostAsync<SearchForUsersQuery, PagingDTO<UserDTO>>(query, new UserId(currentUserId));
 
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return ResultHelper.HandleResult(queryResult);
         }
 
         [Route("users")]
@@ -70,7 +67,7 @@ namespace Gastromio.App.Controllers.V1
 
             var commandResult = await commandDispatcher.PostAsync<AddUserCommand, UserDTO>(
                 new AddUserCommand(role, addUserModel.Email, addUserModel.Password), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("users/{userId}/changedetails")]
@@ -90,7 +87,7 @@ namespace Gastromio.App.Controllers.V1
                 new UserId(currentUserId)
             );
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("users/{userId}/changepassword")]
@@ -106,7 +103,7 @@ namespace Gastromio.App.Controllers.V1
             var commandResult = await commandDispatcher.PostAsync<ChangeUserPasswordCommand, bool>(
                 new ChangeUserPasswordCommand(new UserId(userId), changeUserPasswordModel.Password),
                 new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [Route("users/{userId}")]
@@ -121,7 +118,7 @@ namespace Gastromio.App.Controllers.V1
             var commandResult =
                 await commandDispatcher.PostAsync<RemoveUserCommand, bool>(new RemoveUserCommand(new UserId(userId)),
                     new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
     }
 }

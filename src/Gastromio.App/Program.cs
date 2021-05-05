@@ -68,7 +68,7 @@ namespace Gastromio.App
                         if (result.IsFailure)
                         {
                             var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Errors));
+                            Log.Logger.Error(string.Join("; ", failureResult.Failure));
                             throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
                         }
 
@@ -92,7 +92,7 @@ namespace Gastromio.App
                         if (result.IsFailure)
                         {
                             var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Errors.Values.SelectMany(en => en)));
+                            Log.Logger.Error(string.Join("; ", failureResult.Failure));
                             throw new InvalidOperationException("Error during command AddTestDataCommand");
                         }
                     }
@@ -104,7 +104,7 @@ namespace Gastromio.App
                         if (result.IsFailure)
                         {
                             var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Errors));
+                            Log.Logger.Error(string.Join("; ", failureResult.Failure));
                             throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
                         }
                     }

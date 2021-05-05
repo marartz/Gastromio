@@ -1,5 +1,5 @@
 using System;
-using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Domain.Model.Orders
 {
@@ -9,7 +9,7 @@ namespace Gastromio.Core.Domain.Model.Orders
             Guid itemId,
             DishId dishId,
             string dishName,
-            Guid variantId,
+            DishVariantId variantId,
             string variantName,
             decimal variantPrice,
             int count,
@@ -25,11 +25,11 @@ namespace Gastromio.Core.Domain.Model.Orders
             Count = count;
             Remarks = remarks;
         }
-        
+
         public Guid ItemId { get; }
         public DishId DishId { get; }
         public string DishName { get; }
-        public Guid VariantId { get; }
+        public DishVariantId VariantId { get; }
         public string VariantName { get; }
         public decimal VariantPrice { get; }
         public int Count { get; }

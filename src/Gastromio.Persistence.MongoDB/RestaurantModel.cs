@@ -41,6 +41,8 @@ namespace Gastromio.Persistence.MongoDB
 
         public string SupportedOrderMode { get; set; }
 
+        public List<DishCategoryModel> DishCategories { get; set; }
+
         public List<ExternalMenuModel> ExternalMenus { get; set; }
 
         public DateTime CreatedOn { get; set; }

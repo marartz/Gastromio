@@ -11,20 +11,14 @@ namespace Gastromio.Core.Application.Commands.RemoveRestaurant
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IRestaurantImageRepository restaurantImageRepository;
-        private readonly IDishCategoryRepository dishCategoryRepository;
-        private readonly IDishRepository dishRepository;
 
         public RemoveRestaurantCommandHandler(
             IRestaurantRepository restaurantRepository,
-            IRestaurantImageRepository restaurantImageRepository,
-            IDishCategoryRepository dishCategoryRepository,
-            IDishRepository dishRepository
+            IRestaurantImageRepository restaurantImageRepository
         )
         {
             this.restaurantRepository = restaurantRepository;
             this.restaurantImageRepository = restaurantImageRepository;
-            this.dishCategoryRepository = dishCategoryRepository;
-            this.dishRepository = dishRepository;
         }
 
         public async Task<Result<bool>> HandleAsync(RemoveRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
@@ -38,8 +32,6 @@ namespace Gastromio.Core.Application.Commands.RemoveRestaurant
             if (currentUser.Role < Role.SystemAdmin)
                 return FailureResult<bool>.Forbidden();
 
-            await dishRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            await dishCategoryRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             await restaurantImageRepository.RemoveByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             await restaurantRepository.RemoveAsync(command.RestaurantId, cancellationToken);
 

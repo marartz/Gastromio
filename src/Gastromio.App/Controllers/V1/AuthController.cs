@@ -11,7 +11,6 @@ using Gastromio.Core.Application.Commands.Login;
 using Gastromio.Core.Application.Commands.RequestPasswordChange;
 using Gastromio.Core.Application.Commands.ValidatePasswordResetCode;
 using Gastromio.Core.Application.DTOs;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -31,21 +30,18 @@ namespace Gastromio.App.Controllers.V1
         private readonly ILogger logger;
         private readonly IConfiguration config;
         private readonly ICommandDispatcher commandDispatcher;
-        private readonly IFailureMessageService failureMessageService;
         private readonly IMemoryCache memoryCache;
 
         public AuthController(
             ILogger<AuthController> logger,
             IConfiguration config,
             ICommandDispatcher commandDispatcher,
-            IFailureMessageService failureMessageService,
             IMemoryCache memoryCache
         )
         {
             this.logger = logger;
             this.config = config;
             this.commandDispatcher = commandDispatcher;
-            this.failureMessageService = failureMessageService;
             this.memoryCache = memoryCache;
         }
 
@@ -87,7 +83,7 @@ namespace Gastromio.App.Controllers.V1
                 memoryCache.Set(cacheKey, delay);
             }
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            return ResultHelper.HandleResult(commandResult);
         }
 
         [AllowAnonymous]
@@ -102,7 +98,7 @@ namespace Gastromio.App.Controllers.V1
 
             return commandResult is SuccessResult<bool>
                 ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+                : ResultHelper.HandleResult(commandResult);
         }
 
         [AllowAnonymous]
@@ -128,7 +124,7 @@ namespace Gastromio.App.Controllers.V1
 
             return commandResult is SuccessResult<bool>
                 ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+                : ResultHelper.HandleResult(commandResult);
         }
 
         [AllowAnonymous]
@@ -154,7 +150,7 @@ namespace Gastromio.App.Controllers.V1
 
             return commandResult is SuccessResult<bool>
                 ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+                : ResultHelper.HandleResult(commandResult);
         }
 
         [Route("ping")]

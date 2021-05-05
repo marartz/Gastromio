@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 
 namespace Gastromio.App.Helper
 {
     public static class ResultHelper
     {
-        public static IActionResult HandleResult<TResult>(Result<TResult> result, IFailureMessageService failureMessageService)
+        public static IActionResult HandleResult<TResult>(Result<TResult> result)
         {
             if (result is SuccessResult<TResult> successResult)
             {
@@ -15,8 +15,12 @@ namespace Gastromio.App.Helper
             }
             if (result is FailureResult<TResult> failureResult)
             {
-                var errorDTO = new FailureResultDTO(failureMessageService.GetTranslatedMessages<TResult>(failureResult.Errors));
-                return new ObjectResult(errorDTO) { StatusCode = failureResult.StatusCode };
+                return failureResult.Failure switch
+                {
+                    SessionExpiredFailure _ => new ObjectResult(failureResult.Failure) {StatusCode = 401},
+                    ForbiddenFailure _ => new ObjectResult(failureResult.Failure) {StatusCode = 403},
+                    _ => new ObjectResult(failureResult.Failure) {StatusCode = 400}
+                };
             }
             throw new InvalidOperationException("internal server error");
         }

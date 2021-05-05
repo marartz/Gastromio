@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.DisableSupportForRestaurant
@@ -31,11 +32,9 @@ namespace Gastromio.Core.Application.Commands.DisableSupportForRestaurant
             var restaurant =
                 await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
-            var tempResult = restaurant.DisableSupport(currentUser.Id);
-            if (tempResult.IsFailure)
-                return tempResult;
+            restaurant.DisableSupport(currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 

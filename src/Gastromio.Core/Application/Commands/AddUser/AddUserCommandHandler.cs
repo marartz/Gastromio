@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.AddUser
@@ -32,20 +33,15 @@ namespace Gastromio.Core.Application.Commands.AddUser
 
             var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user != null)
-                return FailureResult<UserDTO>.Create(FailureResultCode.UserAlreadyExists);
+                throw DomainException.CreateFrom(new UserAlreadyExistsFailure());
 
-            var createResult = userFactory.Create(
+            user = userFactory.Create(
                 command.Role,
                 command.Email,
                 command.Password,
                 true,
                 currentUser.Id
             );
-            
-            if (createResult.IsFailure)
-                return createResult.Cast<UserDTO>();
-
-            user = createResult.Value;
 
             await userRepository.StoreAsync(user, cancellationToken);
 

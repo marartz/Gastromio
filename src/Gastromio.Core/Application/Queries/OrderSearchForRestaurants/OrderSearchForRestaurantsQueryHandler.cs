@@ -40,10 +40,10 @@ namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
                 throw new ArgumentNullException(nameof(query));
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));
+                .ToDictionary(en => en.Id, en => new CuisineDTO(en));
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
+                .ToDictionary(en => en.Id, en => new PaymentMethodDTO(en));
 
             var (_, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, query.OrderType,
                 query.CuisineId, query.OpeningHour, true, 0, -1, cancellationToken);

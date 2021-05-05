@@ -63,7 +63,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDeviatingOpeningDayS
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Restaurant.DeviatingOpeningDays.Select(en => en.Value).First().Status.Should()
+                fixture.Restaurant.DeviatingOpeningDays.First().Status.Should()
                     .Be(DeviatingOpeningDayStatus.FullyBooked);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }

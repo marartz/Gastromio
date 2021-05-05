@@ -3,17 +3,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.DisableDishCategory
 {
     public class DisableDishCategoryCommandHandler : ICommandHandler<DisableDishCategoryCommand, bool>
     {
-        private readonly IDishCategoryRepository dishCategoryRepository;
+        private readonly IRestaurantRepository restaurantRepository;
 
-        public DisableDishCategoryCommandHandler(IDishCategoryRepository dishCategoryRepository)
+        public DisableDishCategoryCommandHandler(IRestaurantRepository restaurantRepository)
         {
-            this.dishCategoryRepository = dishCategoryRepository;
+            this.restaurantRepository = restaurantRepository;
         }
 
         public async Task<Result<bool>> HandleAsync(DisableDishCategoryCommand command, User currentUser,
@@ -28,13 +29,17 @@ namespace Gastromio.Core.Application.Commands.DisableDishCategory
             if (currentUser.Role < Role.RestaurantAdmin)
                 return FailureResult<bool>.Forbidden();
 
-            var curCategory =
-                await dishCategoryRepository.FindByDishCategoryIdAsync(command.CategoryId, cancellationToken);
-            if (curCategory == null)
-                return FailureResult<bool>.Create(FailureResultCode.DishCategoryDoesNotExist);
+            var restaurant =
+                await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
+            if (restaurant == null)
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
-            curCategory.Disable(currentUser.Id);
-            await dishCategoryRepository.StoreAsync(curCategory, cancellationToken);
+            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
+                return FailureResult<bool>.Forbidden();
+
+            restaurant.DisableDishCategory(command.CategoryId, currentUser.Id);
+
+            await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
             return SuccessResult<bool>.Create(true);
         }

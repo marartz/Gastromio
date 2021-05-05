@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeUserDetails
@@ -29,7 +30,7 @@ namespace Gastromio.Core.Application.Commands.ChangeUserDetails
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             if (user == null)
-                return FailureResult<bool>.Create(FailureResultCode.UserDoesNotExist);
+                throw DomainException.CreateFrom(new UserDoesNotExistFailure());
 
             user.ChangeDetails(command.Role, command.Email, currentUser.Id);
 

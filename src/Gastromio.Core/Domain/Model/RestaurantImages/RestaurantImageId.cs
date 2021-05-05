@@ -7,6 +7,8 @@ namespace Gastromio.Core.Domain.Model.RestaurantImages
     {
         public RestaurantImageId(Guid value) : base(value)
         {
+            if (value == Guid.Empty)
+                throw new InvalidOperationException("restaurant image id is invalid");
         }
     }
 }

@@ -13,12 +13,16 @@ namespace Gastromio.Core.Common
         public override bool IsSuccess => true;
 
         public override bool IsFailure => false;
-        
+
         public override TResult Value { get; }
 
         public override Result<TDstResult> Cast<TDstResult>()
         {
             throw new InvalidOperationException("casting a success result is not allowed");
+        }
+
+        public override void ThrowDomainExceptionIfFailure()
+        {
         }
 
         public override string ToString()
