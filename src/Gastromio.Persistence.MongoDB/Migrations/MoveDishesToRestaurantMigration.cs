@@ -6,7 +6,7 @@ namespace Gastromio.Persistence.MongoDB.Migrations
 {
     public class MoveDishesToRestaurantMigration : IMigration
     {
-        public MongoDBMigrations.Version Version => new MongoDBMigrations.Version(2, 0, 0);
+        public MongoDBMigrations.Version Version => DatabaseVersions.MoveDishesToRestaurantSchema;
 
         public string Name => "Change database schema so that DishCategories, Dishes and DishVariants are all directly in the Restaurant Model";
 

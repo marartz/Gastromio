@@ -7,7 +7,7 @@ namespace Gastromio.Persistence.MongoDB.Migrations
 {
     public class CorrectRestaurantAliasesMigration : IMigration
     {
-        public MongoDBMigrations.Version Version => new MongoDBMigrations.Version(1, 0, 1);
+        public MongoDBMigrations.Version Version => DatabaseVersions.CorrectRestaurantAliases;
         public string Name => "Correct Restaurant Aliases";
 
         public void Down(IMongoDatabase database)
