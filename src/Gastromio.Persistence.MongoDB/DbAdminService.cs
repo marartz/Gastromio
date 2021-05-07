@@ -7,42 +7,36 @@ namespace Gastromio.Persistence.MongoDB
 {
     public class DbAdminService : IDbAdminService
     {
-        private readonly IMongoClient client;
-        private readonly IMongoDatabase database;
+        private readonly IMongoClient Client;
 
         private readonly Assembly UsedAssembly;
-        private readonly MigrationEngine Migration;
+        private readonly IMigrationRunner Migration;
 
-        public DbAdminService(IMongoClient client, IMongoDatabase database)
+        public DbAdminService(IMongoClient client)
         {
-            this.client = client;
-            this.database = database;
+            Client = client;
+            UsedAssembly = typeof(DbAdminService).Assembly;
+            Migration = new MigrationEngine()
+                .UseDatabase("mongodb://localhost:27017", Constants.DatabaseName)
+                .UseAssembly(UsedAssembly)
+                .UseSchemeValidation(false, null);
         }
 
         public void PurgeDatabase()
         {
-            client.DropDatabase(Constants.DatabaseName);
+            Client.DropDatabase(Constants.DatabaseName);
         }
 
         public void PrepareDatabase()
         {
-            var assembly = typeof(DbAdminService).Assembly;
-
-            new MigrationEngine().UseDatabase("mongodb://localhost:27017", Constants.DatabaseName)
-                .UseAssembly(assembly)
-                .UseSchemeValidation(false)
-                .Run(DatabaseVersions.Initial);
+            Migration.Run(DatabaseVersions.Initial);
         }
 
         public void CheckAndRunDatabaseMigrations()
         {
-            var assembly = typeof(DbAdminService).Assembly;
-            if (MongoDatabaseStateChecker.IsDatabaseOutdated("mongodb://localhost:27017", Constants.DatabaseName, assembly))
+            if (MongoDatabaseStateChecker.IsDatabaseOutdated("mongodb://localhost:27017", Constants.DatabaseName, UsedAssembly))
             {
-                new MigrationEngine().UseDatabase("mongodb://localhost:27017", Constants.DatabaseName)
-                    .UseAssembly(assembly)
-                    .UseSchemeValidation(false)
-                    .Run();
+                Migration.Run();
             }
         }
     }
