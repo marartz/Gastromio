@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveDeviatingOpeningDayFromRestaurant
 {
-    public class RemoveDeviatingOpeningDayFromRestaurantCommandHandler : ICommandHandler<RemoveDeviatingOpeningDayFromRestaurantCommand, bool>
+    public class RemoveDeviatingOpeningDayFromRestaurantCommandHandler : ICommandHandler<RemoveDeviatingOpeningDayFromRestaurantCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -17,17 +17,17 @@ namespace Gastromio.Core.Application.Commands.RemoveDeviatingOpeningDayFromResta
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveDeviatingOpeningDayFromRestaurantCommand command,
+        public async Task HandleAsync(RemoveDeviatingOpeningDayFromRestaurantCommand command,
             User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant =
                 await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
@@ -35,13 +35,11 @@ namespace Gastromio.Core.Application.Commands.RemoveDeviatingOpeningDayFromResta
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             restaurant.RemoveDeviatingOpeningDay(command.Date, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

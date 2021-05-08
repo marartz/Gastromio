@@ -20,7 +20,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantImage
 {
     public class ChangeRestaurantImageCommandHandlerTests : CommandHandlerTestBase<
-        ChangeRestaurantImageCommandHandler, ChangeRestaurantImageCommand, bool>
+        ChangeRestaurantImageCommandHandler, ChangeRestaurantImageCommand>
     {
         private readonly Fixture fixture;
 
@@ -54,7 +54,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantImage
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
@@ -72,7 +72,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantImage
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsRestaurantImageToRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsRestaurantImageToRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -81,13 +81,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantImage
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantImageRepositoryMock
                     .Verify(m => m.StoreAsync(
                         It.Is<RestaurantImage>(i => i.Type == fixture.RestaurantImage.Type),
@@ -97,14 +95,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantImage
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeRestaurantImageCommandHandler, ChangeRestaurantImageCommand,
-                bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeRestaurantImageCommandHandler, ChangeRestaurantImageCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeRestaurantImageCommandHandler,
-            ChangeRestaurantImageCommand, bool>
+            ChangeRestaurantImageCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

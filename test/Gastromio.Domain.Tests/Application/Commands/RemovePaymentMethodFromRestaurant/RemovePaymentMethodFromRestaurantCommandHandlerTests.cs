@@ -18,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemovePaymentMethodFromRestaurant
 {
     public class RemovePaymentMethodFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemovePaymentMethodFromRestaurantCommandHandler,
-        RemovePaymentMethodFromRestaurantCommand, bool>
+        RemovePaymentMethodFromRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -28,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemovePaymentMethodFromRes
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomPaymentMethod();
@@ -46,7 +46,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemovePaymentMethodFromRes
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesPaymentMethodFromRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesPaymentMethodFromRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -55,26 +55,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemovePaymentMethodFromRes
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.PaymentMethods.Should().BeEmpty();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemovePaymentMethodFromRestaurantCommandHandler, RemovePaymentMethodFromRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemovePaymentMethodFromRestaurantCommandHandler, RemovePaymentMethodFromRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemovePaymentMethodFromRestaurantCommandHandler,
-            RemovePaymentMethodFromRestaurantCommand, bool>
+            RemovePaymentMethodFromRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

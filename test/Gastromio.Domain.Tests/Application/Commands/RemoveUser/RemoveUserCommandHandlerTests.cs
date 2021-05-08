@@ -19,7 +19,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveUser
 {
     public class
-        RemoveUserCommandHandlerTests : CommandHandlerTestBase<RemoveUserCommandHandler, RemoveUserCommand, bool>
+        RemoveUserCommandHandlerTests : CommandHandlerTestBase<RemoveUserCommandHandler, RemoveUserCommand>
     {
         private readonly Fixture fixture;
 
@@ -29,7 +29,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveUser
         }
 
         [Fact]
-        public async Task HandleAsync_UserIsAdminOfRestaurant_ReturnsFailure()
+        public async Task HandleAsync_UserIsAdminOfRestaurant_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomUserToBeRemoved();
@@ -47,7 +47,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveUser
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesUserReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesUser()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -56,23 +56,21 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveUser
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.UserRepositoryMock.VerifyRemoveAsync(fixture.UserToBeRemoved.Id, Times.Once);
             }
         }
 
-        protected override CommandHandlerTestFixtureBase<RemoveUserCommandHandler, RemoveUserCommand, bool> FixtureBase
+        protected override CommandHandlerTestFixtureBase<RemoveUserCommandHandler, RemoveUserCommand> FixtureBase
         {
             get { return fixture; }
         }
 
-        private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveUserCommandHandler, RemoveUserCommand, bool>
+        private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveUserCommandHandler, RemoveUserCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

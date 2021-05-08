@@ -36,7 +36,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
             this.orderRepository = orderRepository;
         }
 
-        public async Task<Result<OrderDTO>> HandleAsync(CheckoutCommand command, User currentUser,
+        public async Task<OrderDTO> HandleAsync(CheckoutCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
@@ -247,7 +247,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
 
             var viewModel = new OrderDTO(order, paymentMethod);
             logger.LogInformation($"Order is processed successfully: {newOrderId.Value}");
-            return SuccessResult<OrderDTO>.Create(viewModel);
+            return viewModel;
         }
 
         private bool ValidateOrderTypePickup(CheckoutCommand command, OrderId newOrderId, Restaurant restaurant, decimal totalPrice)

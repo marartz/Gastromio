@@ -13,7 +13,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveRestaurant
 {
     public class RemoveRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveRestaurantCommandHandler,
-        RemoveRestaurantCommand, bool>
+        RemoveRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -23,7 +23,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesRestaurantAndDependingAggregatesAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesRestaurantAndDependingAggregates()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -32,26 +32,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantImageRepositoryMock.VerifyRemoveByRestaurantIdAsync(fixture.Restaurant.Id, Times.Once);
                 fixture.RestaurantRepositoryMock.VerifyRemoveAsync(fixture.Restaurant.Id, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveRestaurantCommandHandler, RemoveRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveRestaurantCommandHandler, RemoveRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveRestaurantCommandHandler,
-            RemoveRestaurantCommand, bool>
+            RemoveRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

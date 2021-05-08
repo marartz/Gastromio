@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.EnableSupportForRestaurant
 {
     public class EnableSupportForRestaurantCommandHandlerTests : CommandHandlerTestBase<EnableSupportForRestaurantCommandHandler,
-        EnableSupportForRestaurantCommand, bool>
+        EnableSupportForRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.EnableSupportForRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFound_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFound_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant();
@@ -44,7 +44,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.EnableSupportForRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_EnablesSupportForRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_EnablesSupportForRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -53,26 +53,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.EnableSupportForRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.NeedsSupport.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<EnableSupportForRestaurantCommandHandler, EnableSupportForRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<EnableSupportForRestaurantCommandHandler, EnableSupportForRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<EnableSupportForRestaurantCommandHandler,
-            EnableSupportForRestaurantCommand, bool>
+            EnableSupportForRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveExternalMenuFromRestaurant
 {
     public class RemoveExternalMenuFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveExternalMenuFromRestaurantCommandHandler,
-        RemoveExternalMenuFromRestaurantCommand, bool>
+        RemoveExternalMenuFromRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveExternalMenuFromRest
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomExternalMenu();
@@ -45,7 +45,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveExternalMenuFromRest
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesExternalMenuFromRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesExternalMenuFromRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,26 +54,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveExternalMenuFromRest
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.ExternalMenus.Should().BeEmpty();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveExternalMenuFromRestaurantCommandHandler, RemoveExternalMenuFromRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveExternalMenuFromRestaurantCommandHandler, RemoveExternalMenuFromRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveExternalMenuFromRestaurantCommandHandler,
-            RemoveExternalMenuFromRestaurantCommand, bool>
+            RemoveExternalMenuFromRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

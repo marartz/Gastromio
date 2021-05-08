@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo
 {
-    public class ChangeRestaurantServiceInfoCommandHandler : ICommandHandler<ChangeRestaurantServiceInfoCommand, bool>
+    public class ChangeRestaurantServiceInfoCommandHandler : ICommandHandler<ChangeRestaurantServiceInfoCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -17,23 +17,23 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeRestaurantServiceInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeRestaurantServiceInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             restaurant.ChangePickupInfo(command.PickupInfo, currentUser.Id);
             restaurant.ChangeDeliveryInfo(command.DeliveryInfo, currentUser.Id);
@@ -41,8 +41,6 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo
             restaurant.ChangeHygienicHandling(command.HygienicHandling, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

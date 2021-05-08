@@ -36,7 +36,7 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantById
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<RestaurantDTO>> HandleAsync(GetRestaurantByIdQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<RestaurantDTO> HandleAsync(GetRestaurantByIdQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -81,8 +81,7 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantById
             var restaurantImageTypes =
                 await restaurantImageRepository.FindTypesByRestaurantIdsAsync(new[] {restaurant.Id}, cancellationToken);
 
-            return SuccessResult<RestaurantDTO>.Create(new RestaurantDTO(restaurant, cuisines, paymentMethods,
-                userDict, restaurantImageTypes));
+            return new RestaurantDTO(restaurant, cuisines, paymentMethods, userDict, restaurantImageTypes);
         }
     }
 }

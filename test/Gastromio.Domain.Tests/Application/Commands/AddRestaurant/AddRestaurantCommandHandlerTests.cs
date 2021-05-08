@@ -32,7 +32,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantCreationWithFailure_ReturnsFailure()
+        public async Task HandleAsync_RestaurantCreationWithFailure_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurantToCreate();
@@ -52,7 +52,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantAlreadyKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantAlreadyKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurantToCreate();
@@ -69,7 +69,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -84,7 +84,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }

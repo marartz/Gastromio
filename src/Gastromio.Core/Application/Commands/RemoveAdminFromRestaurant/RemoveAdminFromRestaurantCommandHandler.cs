@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant
 {
-    public class RemoveAdminFromRestaurantCommandHandler : ICommandHandler<RemoveAdminFromRestaurantCommand, bool>
+    public class RemoveAdminFromRestaurantCommandHandler : ICommandHandler<RemoveAdminFromRestaurantCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -17,16 +17,16 @@ namespace Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveAdminFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(RemoveAdminFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
@@ -38,8 +38,6 @@ namespace Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant
             restaurant.RemoveAdministrator(command.UserId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

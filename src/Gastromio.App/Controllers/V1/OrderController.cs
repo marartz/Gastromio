@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gastromio.App.Helper;
 using Gastromio.App.Models;
 using Gastromio.Core.Application.Commands;
 using Gastromio.Core.Application.Commands.Checkout;
@@ -16,7 +15,6 @@ using Gastromio.Core.Domain.Model.Orders;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Gastromio.App.Controllers.V1
 {
@@ -24,14 +22,14 @@ namespace Gastromio.App.Controllers.V1
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly ILogger logger;
         private readonly IQueryDispatcher queryDispatcher;
         private readonly ICommandDispatcher commandDispatcher;
 
-        public OrderController(ILogger<OrderController> logger, IQueryDispatcher queryDispatcher,
-            ICommandDispatcher commandDispatcher)
+        public OrderController(
+            IQueryDispatcher queryDispatcher,
+            ICommandDispatcher commandDispatcher
+        )
         {
-            this.logger = logger;
             this.queryDispatcher = queryDispatcher;
             this.commandDispatcher = commandDispatcher;
         }
@@ -40,10 +38,12 @@ namespace Gastromio.App.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetAllCuisines()
         {
-            var queryResult =
-                await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(
-                    new GetAllCuisinesQuery(), null);
-            return ResultHelper.HandleResult(queryResult);
+            var cuisineDtos = await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(
+                new GetAllCuisinesQuery(),
+                null
+            );
+
+            return Ok(cuisineDtos);
         }
 
         [Route("restaurants")]
@@ -63,21 +63,25 @@ namespace Gastromio.App.Controllers.V1
                 }
             }
 
-            var queryResult =
+            var restaurantDtos =
                 await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantDTO>>(
-                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime), null);
-            return ResultHelper.HandleResult(queryResult);
+                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime),
+                    null
+                );
+
+            return Ok(restaurantDtos);
         }
 
         [Route("restaurants/{restaurant}")]
         [HttpGet]
         public async Task<IActionResult> GetRestaurantAsync(string restaurant)
         {
-            var queryResult =
-                await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
-                    new GetRestaurantByIdQuery(restaurant, true), null);
+            var restaurantDto = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
+                new GetRestaurantByIdQuery(restaurant, true),
+                null
+            );
 
-            return ResultHelper.HandleResult(queryResult);
+            return Ok(restaurantDto);
         }
 
         [Route("checkout")]
@@ -112,8 +116,12 @@ namespace Gastromio.App.Controllers.V1
                 checkoutModel.ServiceTime
             );
 
-            var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(command, null);
-            return ResultHelper.HandleResult(commandResult);
+            var orderDto = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(
+                command,
+                null
+            );
+
+            return Ok(orderDto);
         }
 
         private static OrderType ConvertOrderType(string orderType)

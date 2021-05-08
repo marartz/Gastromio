@@ -18,7 +18,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_NameNull_ReturnsFailure()
+        // public void SetExternalMenu_NameNull_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -41,7 +41,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_NameEmpty_ReturnsFailure()
+        // public void SetExternalMenu_NameEmpty_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -64,7 +64,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_DescriptionNull_ReturnsFailure()
+        // public void SetExternalMenu_DescriptionNull_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -87,7 +87,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_DescriptionEmpty_ReturnsFailure()
+        // public void SetExternalMenu_DescriptionEmpty_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -110,7 +110,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_UrlNull_ReturnsFailure()
+        // public void SetExternalMenu_UrlNull_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -133,7 +133,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_UrlEmpty_ReturnsFailure()
+        // public void SetExternalMenu_UrlEmpty_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -156,7 +156,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_ExternalMenuNotKnown_AddsExternalMenuAndReturnsSuccess()
+        // public void SetExternalMenu_ExternalMenuNotKnown_AddsExternalMenu()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -179,7 +179,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void SetExternalMenu_ExternalMenuKnown_ReplacesExternalMenuAndReturnsSuccess()
+        // public void SetExternalMenu_ExternalMenuKnown_ReplacesExternalMenu()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -219,7 +219,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveExternalMenu_ExternalMenuNotKnown_ReturnsFailure()
+        // public void RemoveExternalMenu_ExternalMenuNotKnown_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -238,7 +238,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveExternalMenu_ExternalMenuKnown_RemovesExternalMenuAndReturnsSuccess()
+        // public void RemoveExternalMenu_ExternalMenuKnown_RemovesExternalMenu()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();

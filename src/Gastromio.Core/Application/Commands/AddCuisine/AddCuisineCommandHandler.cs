@@ -24,17 +24,17 @@ namespace Gastromio.Core.Application.Commands.AddCuisine
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<Result<CuisineDTO>> HandleAsync(AddCuisineCommand command, User currentUser,
+        public async Task<CuisineDTO> HandleAsync(AddCuisineCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<CuisineDTO>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<CuisineDTO>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             if (string.IsNullOrWhiteSpace(command.Name))
                 throw DomainException.CreateFrom(new CuisineNameIsRequiredFailure());
@@ -46,7 +46,7 @@ namespace Gastromio.Core.Application.Commands.AddCuisine
             cuisine = cuisineFactory.Create(command.Name, currentUser.Id);
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
 
-            return SuccessResult<CuisineDTO>.Create(new CuisineDTO(cuisine));
+            return new CuisineDTO(cuisine);
         }
     }
 }

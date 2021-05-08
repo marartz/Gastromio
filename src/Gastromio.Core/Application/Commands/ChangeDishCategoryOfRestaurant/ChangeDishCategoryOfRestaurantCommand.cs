@@ -2,7 +2,7 @@
 
 namespace Gastromio.Core.Application.Commands.ChangeDishCategoryOfRestaurant
 {
-    public class ChangeDishCategoryOfRestaurantCommand : ICommand<bool>
+    public class ChangeDishCategoryOfRestaurantCommand : ICommand
     {
         public ChangeDishCategoryOfRestaurantCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId, string name)
         {

@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ValidatePasswordResetCode
 {
-    public class ValidatePasswordResetCodeCommandHandler : ICommandHandler<ValidatePasswordResetCodeCommand, bool>
+    public class ValidatePasswordResetCodeCommandHandler : ICommandHandler<ValidatePasswordResetCodeCommand>
     {
         private readonly IUserRepository userRepository;
 
@@ -17,7 +17,7 @@ namespace Gastromio.Core.Application.Commands.ValidatePasswordResetCode
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ValidatePasswordResetCodeCommand command, User currentUser,
+        public async Task HandleAsync(ValidatePasswordResetCodeCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
@@ -29,8 +29,6 @@ namespace Gastromio.Core.Application.Commands.ValidatePasswordResetCode
 
             if (!user.ValidatePasswordResetCode(command.PasswordResetCode))
                 throw DomainException.CreateFrom(new PasswordResetCodeIsInvalidFailure());
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

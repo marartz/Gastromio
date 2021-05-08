@@ -2,7 +2,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.EnableDishCategory
 {
-    public class EnableDishCategoryCommand : ICommand<bool>
+    public class EnableDishCategoryCommand : ICommand
     {
         public EnableDishCategoryCommand(RestaurantId restaurantId, DishCategoryId categoryId)
         {

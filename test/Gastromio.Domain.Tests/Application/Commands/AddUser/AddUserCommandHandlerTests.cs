@@ -26,7 +26,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
         }
 
         // [Fact]
-        // public async Task HandleAsync_UserCreationWithFailure_ReturnsFailure()
+        // public async Task HandleAsync_UserCreationWithFailure_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupUserRepositoryFindingUserByName();
@@ -42,7 +42,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
         // }
 
         [Fact]
-        public async Task HandleAsync_UserAlreadyKnown_ReturnsFailure()
+        public async Task HandleAsync_UserAlreadyKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomUserToCreate();
@@ -59,7 +59,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesUserReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesUser()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -74,7 +74,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.CreatedUser, Times.Once);
             }
         }

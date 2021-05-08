@@ -18,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeDeviatingOpeningDayStatusOfRestaurant
 {
     public class ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandlerTests : CommandHandlerTestBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler,
-        ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool>
+        ChangeDeviatingOpeningDayStatusOfRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -28,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDeviatingOpeningDayS
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomDeviatingOpeningDay();
@@ -46,7 +46,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDeviatingOpeningDayS
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesDeviatingDayStatusAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesDeviatingDayStatus()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -55,13 +55,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDeviatingOpeningDayS
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.DeviatingOpeningDays.First().Status.Should()
                     .Be(DeviatingOpeningDayStatus.FullyBooked);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
@@ -69,13 +67,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDeviatingOpeningDayS
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler, ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler, ChangeDeviatingOpeningDayStatusOfRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeDeviatingOpeningDayStatusOfRestaurantCommandHandler,
-            ChangeDeviatingOpeningDayStatusOfRestaurantCommand, bool>
+            ChangeDeviatingOpeningDayStatusOfRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
@@ -13,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Gastromio.Core.Application.Commands.AddTestData
 {
-    public class AddTestDataCommandHandler : ICommandHandler<AddTestDataCommand, bool>
+    public class AddTestDataCommandHandler : ICommandHandler<AddTestDataCommand>
     {
         private readonly ILogger<AddTestDataCommandHandler> logger;
         private readonly IUserFactory userFactory;
@@ -50,37 +51,29 @@ namespace Gastromio.Core.Application.Commands.AddTestData
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(AddTestDataCommand command, User currentUser,
+        public async Task HandleAsync(AddTestDataCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken)).ToList();
 
-            var tempResult = await CreateUsersAsync(currentUser, command.UserCount, cancellationToken);
-            if (tempResult.IsFailure)
-                return tempResult;
+            await CreateUsersAsync(currentUser, command.UserCount, cancellationToken);
 
-            tempResult = await CreateCuisinesAsync(currentUser, cancellationToken);
-            if (tempResult.IsFailure)
-                return tempResult;
+            await CreateCuisinesAsync(currentUser, cancellationToken);
 
-            tempResult = await CreateRestaurantsAsync(currentUser, command.RestCount, command.DishCatCount, command.DishCount,
+            await CreateRestaurantsAsync(currentUser, command.RestCount, command.DishCatCount, command.DishCount,
                 cancellationToken);
-            if (tempResult.IsFailure)
-                return tempResult;
-
-            return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateUsersAsync(User currentUser, int count, CancellationToken cancellationToken)
+        private async Task CreateUsersAsync(User currentUser, int count, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test users");
 
@@ -111,10 +104,9 @@ namespace Gastromio.Core.Application.Commands.AddTestData
             }
 
             logger.LogInformation("test users created");
-            return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateCuisinesAsync(User currentUser, CancellationToken cancellationToken)
+        private async Task CreateCuisinesAsync(User currentUser, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test cuisines");
 
@@ -163,10 +155,9 @@ namespace Gastromio.Core.Application.Commands.AddTestData
             cuisines.Add(cuisine);
 
             logger.LogInformation("test cuisines created");
-            return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateRestaurantsAsync(User currentUser, int restCount, int dishCatCount, int dishCount, CancellationToken cancellationToken)
+        private async Task CreateRestaurantsAsync(User currentUser, int restCount, int dishCatCount, int dishCount, CancellationToken cancellationToken)
         {
             logger.LogInformation("creating test restaurants");
 
@@ -174,16 +165,13 @@ namespace Gastromio.Core.Application.Commands.AddTestData
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
-                var tempResult = await CreateRestaurantAsync(currentUser, i, dishCatCount, dishCount, cancellationToken);
-                if (tempResult.IsFailure)
-                    return tempResult;
+                await CreateRestaurantAsync(currentUser, i, dishCatCount, dishCount, cancellationToken);
             }
 
             logger.LogInformation("test restaurants created");
-            return SuccessResult<bool>.Create(true);
         }
 
-        private async Task<Result<bool>> CreateRestaurantAsync(User currentUser, int index, int dishCatCount, int dishCount, CancellationToken cancellationToken)
+        private async Task CreateRestaurantAsync(User currentUser, int index, int dishCatCount, int dishCount, CancellationToken cancellationToken)
         {
             var restaurantName = $"Restaurant {(index + 1):D3}";
             var restAdminName = $"restadmin{(index % restAdminDict.Count + 1):D3}";
@@ -301,7 +289,6 @@ namespace Gastromio.Core.Application.Commands.AddTestData
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
             logger.LogInformation("    test restaurant {0} created", restaurantName);
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

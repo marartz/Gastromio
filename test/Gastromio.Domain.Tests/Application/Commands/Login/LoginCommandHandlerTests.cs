@@ -25,7 +25,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
         }
 
         [Fact]
-        public async Task HandleAsync_EmailNull_ReturnsFailure()
+        public async Task HandleAsync_EmailNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -41,7 +41,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
         }
 
         [Fact]
-        public async Task HandleAsync_EmailEmpty_ReturnsFailure()
+        public async Task HandleAsync_EmailEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -57,7 +57,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
         }
 
         [Fact]
-        public async Task HandleAsync_PasswordNull_ReturnsFailure()
+        public async Task HandleAsync_PasswordNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -73,7 +73,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
         }
 
         [Fact]
-        public async Task HandleAsync_PasswordEmpty_ReturnsFailure()
+        public async Task HandleAsync_PasswordEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -89,7 +89,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
         }
 
         [Fact]
-        public async Task HandleAsync_UserNotKnown_ReturnsFailure()
+        public async Task HandleAsync_UserNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupPassword();
@@ -107,7 +107,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
         }
 
         [Fact]
-        public async Task HandleAsync_EmailAndPasswordValid_ReturnsSuccessWithUser()
+        public async Task HandleAsync_EmailAndPasswordValid_ReturnsUser()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -121,12 +121,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             // Assert
             using (new AssertionScope())
             {
-                var successResult = result as SuccessResult<UserDTO>;
-                successResult.Should().NotBeNull();
-                successResult?.Value.Should().NotBeNull();
-                successResult?.Value.Id.Should().Be(fixture.User.Id.Value);
-                successResult?.Value.Email.Should().Be(fixture.User.Email);
-                successResult?.Value.Role.Should().Be("SystemAdmin");
+                result.Should().NotBeNull();
+                result?.Id.Should().Be(fixture.User.Id.Value);
+                result?.Email.Should().Be(fixture.User.Email);
+                result?.Role.Should().Be("SystemAdmin");
             }
         }
 

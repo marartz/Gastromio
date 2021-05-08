@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.AddAdminToRestaurant
 {
     public class AddAdminToRestaurantCommandHandlerTests : CommandHandlerTestBase<AddAdminToRestaurantCommandHandler,
-        AddAdminToRestaurantCommand, bool>
+        AddAdminToRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddAdminToRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFound_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFound_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant();
@@ -44,7 +44,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddAdminToRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsAdminToRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsAdminToRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -53,26 +53,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddAdminToRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.Administrators.Should().BeEquivalentTo(fixture.UserId, fixture.AdministratorId);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<AddAdminToRestaurantCommandHandler, AddAdminToRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<AddAdminToRestaurantCommandHandler, AddAdminToRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<AddAdminToRestaurantCommandHandler,
-            AddAdminToRestaurantCommand, bool>
+            AddAdminToRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

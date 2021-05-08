@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ActivateRestaurant
 {
-    public class ActivateRestaurantCommandHandler : ICommandHandler<ActivateRestaurantCommand, bool>
+    public class ActivateRestaurantCommandHandler : ICommandHandler<ActivateRestaurantCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -19,16 +19,16 @@ namespace Gastromio.Core.Application.Commands.ActivateRestaurant
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ActivateRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ActivateRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant =
                 await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
@@ -37,8 +37,6 @@ namespace Gastromio.Core.Application.Commands.ActivateRestaurant
 
             restaurant.Activate(currentUser.Id);
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
 
     }

@@ -9,7 +9,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantContactInfo
 {
-    public class ChangeRestaurantContactInfoCommandHandler : ICommandHandler<ChangeRestaurantContactInfoCommand, bool>
+    public class ChangeRestaurantContactInfoCommandHandler : ICommandHandler<ChangeRestaurantContactInfoCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -18,23 +18,23 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantContactInfo
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeRestaurantContactInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeRestaurantContactInfoCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var contactInfo = new ContactInfo(command.Phone, command.Fax, command.WebSite, command.ResponsiblePerson,
                 command.EmailAddress, command.Mobile, command.OrderNotificationByMobile);
@@ -42,8 +42,6 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantContactInfo
             restaurant.ChangeContactInfo(contactInfo, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

@@ -38,16 +38,16 @@ namespace Gastromio.Core.Application.Commands.AddRestaurant
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<RestaurantDTO>> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<RestaurantDTO> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<RestaurantDTO>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<RestaurantDTO>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var existingRestaurants =
                 await restaurantRepository.FindByRestaurantNameAsync(command.Name, cancellationToken);
@@ -76,8 +76,7 @@ namespace Gastromio.Core.Application.Commands.AddRestaurant
             var restaurantImageTypes =
                 await restaurantImageRepository.FindTypesByRestaurantIdsAsync(new[] {restaurant.Id}, cancellationToken);
 
-            return SuccessResult<RestaurantDTO>.Create(new RestaurantDTO(restaurant, cuisines, paymentMethods,
-                userDict, restaurantImageTypes));
+            return new RestaurantDTO(restaurant, cuisines, paymentMethods, userDict, restaurantImageTypes);
         }
     }
 }

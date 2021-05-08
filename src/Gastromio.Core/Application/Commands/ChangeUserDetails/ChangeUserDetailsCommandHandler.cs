@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeUserDetails
 {
-    public class ChangeUserDetailsCommandHandler : ICommandHandler<ChangeUserDetailsCommand, bool>
+    public class ChangeUserDetailsCommandHandler : ICommandHandler<ChangeUserDetailsCommand>
     {
         private readonly IUserRepository userRepository;
 
@@ -17,16 +17,16 @@ namespace Gastromio.Core.Application.Commands.ChangeUserDetails
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeUserDetailsCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeUserDetailsCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             if (user == null)
@@ -35,8 +35,6 @@ namespace Gastromio.Core.Application.Commands.ChangeUserDetails
             user.ChangeDetails(command.Role, command.Email, currentUser.Id);
 
             await userRepository.StoreAsync(user, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<ICollection<RestaurantDTO>>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<ICollection<RestaurantDTO>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
@@ -65,8 +65,8 @@ namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
                 await restaurantImageRepository.FindTypesByRestaurantIdsAsync(
                     itemList.Select(restaurant => restaurant.Id), cancellationToken);
 
-            return SuccessResult<ICollection<RestaurantDTO>>.Create(itemList.Select(en =>
-                new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes)).ToList());
+            return itemList
+                .Select(en => new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes)).ToList();
         }
     }
 }

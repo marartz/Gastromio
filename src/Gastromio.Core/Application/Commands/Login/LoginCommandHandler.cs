@@ -18,7 +18,7 @@ namespace Gastromio.Core.Application.Commands.Login
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<UserDTO>> HandleAsync(LoginCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<UserDTO> HandleAsync(LoginCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
@@ -37,7 +37,7 @@ namespace Gastromio.Core.Application.Commands.Login
             if (!valid)
                 throw DomainException.CreateFrom(new WrongCredentialsFailure());
 
-            return SuccessResult<UserDTO>.Create(new UserDTO(user));
+            return new UserDTO(user);
         }
     }
 }

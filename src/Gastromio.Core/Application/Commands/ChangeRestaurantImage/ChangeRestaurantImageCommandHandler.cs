@@ -12,7 +12,7 @@ using SixLabors.ImageSharp;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
 {
-    public class ChangeRestaurantImageCommandHandler : ICommandHandler<ChangeRestaurantImageCommand, bool>
+    public class ChangeRestaurantImageCommandHandler : ICommandHandler<ChangeRestaurantImageCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
         private readonly IRestaurantImageRepository restaurantImageRepository;
@@ -26,23 +26,23 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
             this.restaurantImageRepository = restaurantImageRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeRestaurantImageCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeRestaurantImageCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             if (string.IsNullOrWhiteSpace(command.Type))
                 throw DomainException.CreateFrom(new RestaurantImageTypeRequiredFailure());
@@ -51,7 +51,7 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
             {
                 await restaurantImageRepository.RemoveByRestaurantIdAndTypeAsync(command.RestaurantId, command.Type,
                     cancellationToken);
-                return SuccessResult<bool>.Create(true);
+                return;
             }
 
             var types = (await restaurantImageRepository.FindTypesByRestaurantIdAsync(command.RestaurantId,
@@ -90,8 +90,6 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
                     );
 
                     await restaurantImageRepository.StoreAsync(restaurantImage, cancellationToken);
-
-                    return SuccessResult<bool>.Create(true);
                 }
             }
             catch

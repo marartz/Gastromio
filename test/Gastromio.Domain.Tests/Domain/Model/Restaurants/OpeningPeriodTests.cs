@@ -19,7 +19,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_StartBeforeEarliestOpeningTime_ReturnsFailure()
+        public void Ctor_StartBeforeEarliestOpeningTime_ThrowsDomainException()
         {
             // Arrange
             fixture.Start = TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime - 1);
@@ -33,7 +33,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_StartBeforeEnd_ReturnsFailure()
+        public void Ctor_StartBeforeEnd_ThrowsDomainException()
         {
             // Arrange
             fixture.Start = TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 2);

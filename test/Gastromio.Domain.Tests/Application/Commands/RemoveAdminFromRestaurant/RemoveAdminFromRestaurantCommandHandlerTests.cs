@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveAdminFromRestaurant
 {
     public class RemoveAdminFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveAdminFromRestaurantCommandHandler,
-        RemoveAdminFromRestaurantCommand, bool>
+        RemoveAdminFromRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveAdminFromRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFound_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFound_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomAdministrator();
@@ -45,7 +45,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveAdminFromRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesAdminFromRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesAdminFromRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,26 +54,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveAdminFromRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.Administrators.Should().BeEquivalentTo(fixture.UserId);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveAdminFromRestaurantCommandHandler, RemoveAdminFromRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveAdminFromRestaurantCommandHandler, RemoveAdminFromRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveAdminFromRestaurantCommandHandler,
-            RemoveAdminFromRestaurantCommand, bool>
+            RemoveAdminFromRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

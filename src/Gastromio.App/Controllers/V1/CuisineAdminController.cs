@@ -1,8 +1,6 @@
-﻿using Gastromio.App.Helper;
-using Gastromio.App.Models;
+﻿using Gastromio.App.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +23,14 @@ namespace Gastromio.App.Controllers.V1
     [Authorize()]
     public class CuisineAdminController : ControllerBase
     {
-        private readonly ILogger logger;
         private readonly ICommandDispatcher commandDispatcher;
         private readonly IQueryDispatcher queryDispatcher;
 
-        public CuisineAdminController(ILogger<CuisineAdminController> logger, ICommandDispatcher commandDispatcher,
-            IQueryDispatcher queryDispatcher)
+        public CuisineAdminController(
+            ICommandDispatcher commandDispatcher,
+            IQueryDispatcher queryDispatcher
+        )
         {
-            this.logger = logger;
             this.commandDispatcher = commandDispatcher;
             this.queryDispatcher = queryDispatcher;
         }
@@ -41,30 +39,34 @@ namespace Gastromio.App.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetCuisinesAsync()
         {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
+            var identityName = (User.Identity as ClaimsIdentity)?.Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var queryResult =
-                await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(new GetAllCuisinesQuery(),
-                    new UserId(currentUserId));
-            return ResultHelper.HandleResult(queryResult);
+            var cuisineDtos = await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(
+                new GetAllCuisinesQuery(),
+                new UserId(currentUserId)
+            );
+
+            return Ok(cuisineDtos);
         }
 
         [Route("cuisines")]
         [HttpPost]
         public async Task<IActionResult> PostCuisinesAsync([FromBody] AddCuisineModel addCuisineModel)
         {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
+            var identityName = (User.Identity as ClaimsIdentity)?.Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var commandResult =
-                await commandDispatcher.PostAsync<AddCuisineCommand, CuisineDTO>(
-                    new AddCuisineCommand(addCuisineModel.Name), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult);
+            var cuisineDto = await commandDispatcher.PostAsync<AddCuisineCommand, CuisineDTO>(
+                new AddCuisineCommand(addCuisineModel.Name),
+                new UserId(currentUserId)
+            );
+
+            return Ok(cuisineDto);
         }
 
         [Route("cuisines/{cuisineId}/change")]
@@ -72,29 +74,34 @@ namespace Gastromio.App.Controllers.V1
         public async Task<IActionResult> PostChangeAsync(Guid cuisineId,
             [FromBody] ChangeCuisineModel changeCuisineModel)
         {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
+            var identityName = (User.Identity as ClaimsIdentity)?.Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var commandResult = await commandDispatcher.PostAsync<ChangeCuisineCommand, bool>(
-                new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult);
+            await commandDispatcher.PostAsync(
+                new ChangeCuisineCommand(new CuisineId(cuisineId), changeCuisineModel.Name),
+                new UserId(currentUserId)
+            );
+
+            return Ok();
         }
 
         [Route("cuisines/{cuisineId}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteCuisineAsync(Guid cuisineId)
         {
-            var identityName = (User.Identity as ClaimsIdentity).Claims
+            var identityName = (User.Identity as ClaimsIdentity)?.Claims
                 .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
             if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
                 return Unauthorized();
 
-            var commandResult =
-                await commandDispatcher.PostAsync<RemoveCuisineCommand, bool>(
-                    new RemoveCuisineCommand(new CuisineId(cuisineId)), new UserId(currentUserId));
-            return ResultHelper.HandleResult(commandResult);
+            await commandDispatcher.PostAsync(
+                new RemoveCuisineCommand(new CuisineId(cuisineId)),
+                new UserId(currentUserId)
+            );
+
+            return Ok();
         }
     }
 }

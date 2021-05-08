@@ -22,7 +22,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameNull_ReturnsFailure()
+        public void ChangeName_NameNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -36,7 +36,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameEmpty_ReturnsFailure()
+        public void ChangeName_NameEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -50,7 +50,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength101_ReturnsFailure()
+        public void ChangeName_NameLength101_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -66,7 +66,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength100_ChangesNameAndReturnsSuccess()
+        public void ChangeName_NameLength100_ChangesName()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -86,7 +86,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeOrderNo_OrderNoNegative_ReturnsFailure()
+        public void ChangeOrderNo_OrderNoNegative_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -100,7 +100,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeOrderNo_OrderNoOne_ChangesOrderNoAndReturnsSuccess()
+        public void ChangeOrderNo_OrderNoOne_ChangesOrderNo()
         {
             // Arrange
             fixture.SetupChangedBy();

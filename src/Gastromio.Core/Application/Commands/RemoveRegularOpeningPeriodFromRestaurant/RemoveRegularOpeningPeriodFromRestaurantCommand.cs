@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveRegularOpeningPeriodFromRestaurant
 {
-    public class RemoveRegularOpeningPeriodFromRestaurantCommand : ICommand<bool>
+    public class RemoveRegularOpeningPeriodFromRestaurantCommand : ICommand
     {
         public RemoveRegularOpeningPeriodFromRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan start)
         {

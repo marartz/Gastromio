@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using Gastromio.Core.Application.Commands.AddTestData;
 using Gastromio.Core.Application.Commands.EnsureAdminUser;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Persistence.MongoDB;
 using Microsoft.Extensions.Configuration;
@@ -64,13 +63,7 @@ namespace Gastromio.App
                         dbAdminService.PurgeDatabase();
                         dbAdminService.PrepareDatabase();
 
-                        var result = ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).Result;
-                        if (result.IsFailure)
-                        {
-                            var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Failure));
-                            throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
-                        }
+                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser);
 
                         if (!Int32.TryParse(configuration["Seed:Params:UserCount"], out var userCount))
                             userCount = 20;
@@ -86,27 +79,14 @@ namespace Gastromio.App
 
                         var addTestDataCommandHandler = services.GetService<AddTestDataCommandHandler>();
 
-                        result = addTestDataCommandHandler
-                            .HandleAsync(new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount),
-                                currentUser).Result;
-                        if (result.IsFailure)
-                        {
-                            var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Failure));
-                            throw new InvalidOperationException("Error during command AddTestDataCommand");
-                        }
+                        addTestDataCommandHandler.HandleAsync(
+                            new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount), currentUser);
                     }
                     else
                     {
                         dbAdminService.PrepareDatabase();
 
-                        var result = ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).Result;
-                        if (result.IsFailure)
-                        {
-                            var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Failure));
-                            throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
-                        }
+                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser);
                     }
 
                     dbAdminService.CorrectRestaurantAliases();

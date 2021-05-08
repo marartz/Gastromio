@@ -2,7 +2,7 @@
 
 namespace Gastromio.Core.Application.Commands.DisableSupportForRestaurant
 {
-    public class DisableSupportForRestaurantCommand : ICommand<bool>
+    public class DisableSupportForRestaurantCommand : ICommand
     {
         public DisableSupportForRestaurantCommand(RestaurantId restaurantId)
         {

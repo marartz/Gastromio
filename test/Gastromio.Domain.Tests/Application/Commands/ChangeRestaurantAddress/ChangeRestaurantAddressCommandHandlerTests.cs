@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantAddress
 {
     public class ChangeRestaurantAddressCommandHandlerTests : CommandHandlerTestBase<ChangeRestaurantAddressCommandHandler,
-        ChangeRestaurantAddressCommand, bool>
+        ChangeRestaurantAddressCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantAddress
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
@@ -45,7 +45,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantAddress
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesAddressOfRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesAddressOfRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,26 +54,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRestaurantAddress
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.Address.Should().BeEquivalentTo(fixture.Address);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeRestaurantAddressCommandHandler, ChangeRestaurantAddressCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeRestaurantAddressCommandHandler, ChangeRestaurantAddressCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeRestaurantAddressCommandHandler,
-            ChangeRestaurantAddressCommand, bool>
+            ChangeRestaurantAddressCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

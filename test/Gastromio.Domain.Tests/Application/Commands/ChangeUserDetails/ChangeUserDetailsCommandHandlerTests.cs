@@ -15,7 +15,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserDetails
 {
     public class ChangeUserDetailsCommandHandlerTests : CommandHandlerTestBase<ChangeUserDetailsCommandHandler,
-        ChangeUserDetailsCommand, bool>
+        ChangeUserDetailsCommand>
     {
         private readonly Fixture fixture;
 
@@ -25,7 +25,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserDetails
         }
 
         [Fact]
-        public async Task HandleAsync_UserNotKnown_ReturnsFailure()
+        public async Task HandleAsync_UserNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupUser();
@@ -43,7 +43,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserDetails
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesUserReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesUser()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -52,13 +52,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserDetails
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.User.Role.Should().Be(fixture.NewRole);
                 fixture.User.Email.Should().Be(fixture.NewEmail);
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.User, Times.Once);
@@ -66,13 +64,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserDetails
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeUserDetailsCommandHandler, ChangeUserDetailsCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeUserDetailsCommandHandler, ChangeUserDetailsCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeUserDetailsCommandHandler,
-            ChangeUserDetailsCommand, bool>
+            ChangeUserDetailsCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -2,7 +2,7 @@
 
 namespace Gastromio.Core.Application.Commands.RemoveDishCategoryFromRestaurant
 {
-    public class RemoveDishCategoryFromRestaurantCommand : ICommand<bool>
+    public class RemoveDishCategoryFromRestaurantCommand : ICommand
     {
         public RemoveDishCategoryFromRestaurantCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId)
         {

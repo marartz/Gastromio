@@ -3,7 +3,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
     public class ReservationInfoTests
     {
         // [Fact]
-        // public void ChangeReservationInfo_ChangesReservationInfoAndReturnsSuccess()
+        // public void ChangeReservationInfo_ChangesReservationInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();

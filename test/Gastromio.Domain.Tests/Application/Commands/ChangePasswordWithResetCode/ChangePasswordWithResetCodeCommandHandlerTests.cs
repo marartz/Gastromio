@@ -13,7 +13,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangePasswordWithResetCode
 {
     public class ChangePasswordWithResetCodeCommandHandlerTests : CommandHandlerTestBase<
-        ChangePasswordWithResetCodeCommandHandler, ChangePasswordWithResetCodeCommand, bool>
+        ChangePasswordWithResetCodeCommandHandler, ChangePasswordWithResetCodeCommand>
     {
         private readonly Fixture fixture;
 
@@ -23,7 +23,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangePasswordWithResetCod
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesPasswordAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesPassword()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -32,26 +32,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangePasswordWithResetCod
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.User.UpdatedOn.Should().BeCloseTo(DateTimeOffset.Now, 1000);
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.User, Times.Once);
             }
         }
 
         protected override CommandHandlerTestFixtureBase<ChangePasswordWithResetCodeCommandHandler,
-            ChangePasswordWithResetCodeCommand, bool> FixtureBase
+            ChangePasswordWithResetCodeCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangePasswordWithResetCodeCommandHandler,
-            ChangePasswordWithResetCodeCommand, bool>
+            ChangePasswordWithResetCodeCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

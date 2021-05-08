@@ -18,7 +18,7 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantImage
             this.restaurantImageRepository = restaurantImageRepository;
         }
 
-        public async Task<Result<RestaurantImage>> HandleAsync(GetRestaurantImageQuery query, User currentUser,
+        public async Task<RestaurantImage> HandleAsync(GetRestaurantImageQuery query, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (query == null)
@@ -31,7 +31,7 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantImage
             if (restaurantImage?.Data == null || restaurantImage.Data.Length == 0)
                 throw DomainException.CreateFrom(new RestaurantImageNotValidFailure());
 
-            return SuccessResult<RestaurantImage>.Create(restaurantImage);
+            return restaurantImage;
         }
     }
 }

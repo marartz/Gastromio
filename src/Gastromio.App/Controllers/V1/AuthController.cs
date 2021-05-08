@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Gastromio.App.Helper;
 using Gastromio.App.Models;
 using Gastromio.Core.Application.Commands;
 using Gastromio.Core.Application.Commands.ChangePasswordWithResetCode;
@@ -12,6 +11,7 @@ using Gastromio.Core.Application.Commands.RequestPasswordChange;
 using Gastromio.Core.Application.Commands.ValidatePasswordResetCode;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,15 +57,19 @@ namespace Gastromio.App.Controllers.V1
                 await Task.Delay(delay);
             }
 
-            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserDTO>(new LoginCommand(loginModel.Email, loginModel.Password), null);
-            if (commandResult is SuccessResult<UserDTO> successResult)
+            try
             {
+                var user = await commandDispatcher.PostAsync<LoginCommand, UserDTO>(
+                    new LoginCommand(loginModel.Email, loginModel.Password),
+                    null
+                );
                 memoryCache.Remove(cacheKey);
 
-                var tokenString = GenerateJSONWebToken(successResult.Value);
-                return Ok(new { token = tokenString, user = successResult.Value });
+                var tokenString = GenerateJSONWebToken(user);
+
+                return Ok(new {token = tokenString, user});
             }
-            else
+            catch (DomainException<WrongCredentialsFailure>)
             {
                 if (delay == 0)
                 {
@@ -81,9 +85,9 @@ namespace Gastromio.App.Controllers.V1
                 }
 
                 memoryCache.Set(cacheKey, delay);
-            }
 
-            return ResultHelper.HandleResult(commandResult);
+                throw;
+            }
         }
 
         [AllowAnonymous]
@@ -92,13 +96,12 @@ namespace Gastromio.App.Controllers.V1
         public async Task<IActionResult> PostRequestPasswordChangeAsync(
             [FromBody] RequestPasswordChangeModel requestPasswordChangeModel)
         {
-            var commandResult =
-                await commandDispatcher.PostAsync<RequestPasswordChangeCommand, bool>(
-                    new RequestPasswordChangeCommand(requestPasswordChangeModel.UserEmail), null);
+            await commandDispatcher.PostAsync(
+                new RequestPasswordChangeCommand(requestPasswordChangeModel.UserEmail),
+                null
+            );
 
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult);
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -118,13 +121,13 @@ namespace Gastromio.App.Controllers.V1
                 return BadRequest();
             }
 
-            var commandResult = await commandDispatcher.PostAsync<ValidatePasswordResetCodeCommand, bool>(
+            await commandDispatcher.PostAsync(
                 new ValidatePasswordResetCodeCommand(new UserId(validatePasswordResetCodeModel.UserId),
-                    passwordResetCode), null);
+                    passwordResetCode),
+                null
+            );
 
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult);
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -144,13 +147,13 @@ namespace Gastromio.App.Controllers.V1
                 return BadRequest();
             }
 
-            var commandResult = await commandDispatcher.PostAsync<ChangePasswordWithResetCodeCommand, bool>(
+            await commandDispatcher.PostAsync(
                 new ChangePasswordWithResetCodeCommand(new UserId(changePasswordWithResetCodeModel.UserId),
-                    passwordResetCode, changePasswordWithResetCodeModel.Password), null);
+                    passwordResetCode, changePasswordWithResetCodeModel.Password),
+                null
+            );
 
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult);
+            return Ok();
         }
 
         [Route("ping")]

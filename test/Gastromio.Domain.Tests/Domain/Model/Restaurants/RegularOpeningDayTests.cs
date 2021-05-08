@@ -107,7 +107,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_SamePeriodAlreadyPresent_ChangesNothingAndReturnsSuccess()
+        public void AddPeriod_SamePeriodAlreadyPresent_ChangesNothing()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -132,7 +132,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewEndEqualsCurrentStart_ReturnsFailure()
+        public void AddPeriod_NewEndEqualsCurrentStart_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -153,7 +153,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewEndIsOverlappingIntoCurrent_ReturnsFailure()
+        public void AddPeriod_NewEndIsOverlappingIntoCurrent_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -174,7 +174,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewStartIsOverlappingIntoCurrent_ReturnsFailure()
+        public void AddPeriod_NewStartIsOverlappingIntoCurrent_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -195,7 +195,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewStartEqualsCurrentEnd_ReturnsFailure()
+        public void AddPeriod_NewStartEqualsCurrentEnd_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -216,7 +216,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewStartEqualsCurStartButShorter_ReturnsFailure()
+        public void AddPeriod_NewStartEqualsCurStartButShorter_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -237,7 +237,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewIsCompletelyInCurrent_ReturnsFailure()
+        public void AddPeriod_NewIsCompletelyInCurrent_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -258,7 +258,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_NewEndEqualsCurEndButShorter_ReturnsFailure()
+        public void AddPeriod_NewEndEqualsCurEndButShorter_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -279,7 +279,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_CurrentIsCompletelyInNew_ReturnsFailure()
+        public void AddPeriod_CurrentIsCompletelyInNew_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -300,7 +300,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_WithoutPeriods_AddsPeriodAndReturnsSuccess()
+        public void AddPeriod_WithoutPeriods_AddsPeriod()
         {
             // Arrange
             fixture.SetupWithoutPeriods();

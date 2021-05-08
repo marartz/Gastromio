@@ -19,7 +19,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_StreetNull_ReturnsFailure()
+        public void Ctor_StreetNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupStreetNull();
@@ -34,7 +34,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_StreetEmpty_ReturnsFailure()
+        public void Ctor_StreetEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupStreetEmpty();
@@ -49,7 +49,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_StreetLength101_ReturnsFailure()
+        public void Ctor_StreetLength101_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupStreetLength101();
@@ -64,7 +64,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_StreetInvalid_ReturnsFailure()
+        public void Ctor_StreetInvalid_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupStreetInvalid();
@@ -79,7 +79,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_ZipCodeNull_ReturnsFailure()
+        public void Ctor_ZipCodeNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -94,7 +94,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_ZipCodeEmpty_ReturnsFailure()
+        public void Ctor_ZipCodeEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -109,7 +109,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_ZipCodeLength6_ReturnsFailure()
+        public void Ctor_ZipCodeLength6_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -124,7 +124,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_ZipCodeInvalid_ReturnsFailure()
+        public void Ctor_ZipCodeInvalid_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -139,7 +139,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_CityNull_ReturnsFailure()
+        public void Ctor_CityNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -154,7 +154,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_CityEmpty_ReturnsFailure()
+        public void Ctor_CityEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -169,7 +169,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_CityLength51_ReturnsFailure()
+        public void Ctor_CityLength51_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();
@@ -184,7 +184,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Ctor_AllValid_ReturnsFailure()
+        public void Ctor_AllValid_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidStreet();

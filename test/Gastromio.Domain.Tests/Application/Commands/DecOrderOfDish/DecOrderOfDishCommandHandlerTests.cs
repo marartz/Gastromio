@@ -18,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
 {
     public class DecOrderOfDishCommandHandlerTests : CommandHandlerTestBase<
-        DecOrderOfDishCommandHandler, DecOrderOfDishCommand, bool>
+        DecOrderOfDishCommandHandler, DecOrderOfDishCommand>
     {
         private readonly Fixture fixture;
 
@@ -28,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
         }
 
         [Fact]
-        public async Task HandleAsync_DishNotKnown_ReturnsFailure()
+        public async Task HandleAsync_DishNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
@@ -46,7 +46,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_ChangesNothingAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_ChangesNothing()
         {
             // Arrange
             fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
@@ -58,13 +58,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
                 dishCategory.Should().NotBeNull();
                 var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
@@ -95,7 +93,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_ChangesDishOrder()
         {
             // Arrange
             fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
@@ -107,13 +105,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
                 dishCategory.Should().NotBeNull();
                 var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
@@ -144,7 +140,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_ChangesDishOrder()
         {
             // Arrange
             fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
@@ -156,13 +152,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
                 dishCategory.Should().NotBeNull();
                 var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
@@ -193,7 +187,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
         }
 
         [Fact]
-        public async Task HandleAsync_OneDish_ChangesNothingAndReturnsSuccess()
+        public async Task HandleAsync_OneDish_ChangesNothing()
         {
             // Arrange
             fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 1);
@@ -205,13 +199,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
                 dishCategory.Should().NotBeNull();
                 var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
@@ -239,13 +231,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDish
         }
 
         protected override
-            CommandHandlerTestFixtureBase<DecOrderOfDishCommandHandler, DecOrderOfDishCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<DecOrderOfDishCommandHandler, DecOrderOfDishCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<DecOrderOfDishCommandHandler,
-            DecOrderOfDishCommand, bool>
+            DecOrderOfDishCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

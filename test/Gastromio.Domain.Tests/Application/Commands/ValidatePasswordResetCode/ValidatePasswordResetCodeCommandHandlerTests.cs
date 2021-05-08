@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ValidatePasswordResetCode;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Failures;
@@ -15,7 +14,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
 {
     public class ValidatePasswordResetCodeCommandHandlerTests : CommandHandlerTestBase<
-        ValidatePasswordResetCodeCommandHandler, ValidatePasswordResetCodeCommand, bool>
+        ValidatePasswordResetCodeCommandHandler, ValidatePasswordResetCodeCommand>
     {
         private readonly Fixture fixture;
 
@@ -61,7 +60,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ValidatesResetCodeAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ValidatesResetCode()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -70,24 +69,20 @@ namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-            }
+            await act.Should().NotThrowAsync();
         }
 
         protected override CommandHandlerTestFixtureBase<ValidatePasswordResetCodeCommandHandler,
-            ValidatePasswordResetCodeCommand, bool> FixtureBase
+            ValidatePasswordResetCodeCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ValidatePasswordResetCodeCommandHandler,
-            ValidatePasswordResetCodeCommand, bool>
+            ValidatePasswordResetCodeCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningDayFromRestaurant
 {
     public class RemoveDeviatingOpeningDayFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler,
-        RemoveDeviatingOpeningDayFromRestaurantCommand, bool>
+        RemoveDeviatingOpeningDayFromRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningDayF
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomDeviatingOpeningDay();
@@ -45,7 +45,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningDayF
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesDeviatingDaysAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesDeviatingDays()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,26 +54,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningDayF
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.DeviatingOpeningDays.Should().BeEmpty();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler, RemoveDeviatingOpeningDayFromRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler, RemoveDeviatingOpeningDayFromRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveDeviatingOpeningDayFromRestaurantCommandHandler,
-            RemoveDeviatingOpeningDayFromRestaurantCommand, bool>
+            RemoveDeviatingOpeningDayFromRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

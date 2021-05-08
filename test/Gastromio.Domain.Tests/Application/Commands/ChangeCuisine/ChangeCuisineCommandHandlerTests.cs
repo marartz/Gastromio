@@ -16,7 +16,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
 {
     public class ChangeCuisineCommandHandlerTests : CommandHandlerTestBase<ChangeCuisineCommandHandler,
-        ChangeCuisineCommand, bool>
+        ChangeCuisineCommand>
     {
         private readonly Fixture fixture;
 
@@ -26,7 +26,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineNotKnown_ReturnsFailure()
+        public async Task HandleAsync_CuisineNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomCuisine();
@@ -43,7 +43,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_StoresCuisineReturnsSuccess()
+        public async Task HandleAsync_AllValid_StoresCuisine()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -52,25 +52,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.CuisineRepositoryMock.VerifyStoreAsync(fixture.Cuisine, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeCuisineCommandHandler, ChangeCuisineCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeCuisineCommandHandler, ChangeCuisineCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeCuisineCommandHandler,
-            ChangeCuisineCommand, bool>
+            ChangeCuisineCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -35,7 +35,7 @@ namespace Gastromio.Core.Application.Queries
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<Result<TResult>> PostAsync<TQuery, TResult>(TQuery query, UserId currentUserId, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
+        public async Task<TResult> PostAsync<TQuery, TResult>(TQuery query, UserId currentUserId, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
         {
             User currentUser = null;
 

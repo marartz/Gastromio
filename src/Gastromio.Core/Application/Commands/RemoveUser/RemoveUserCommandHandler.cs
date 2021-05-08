@@ -9,7 +9,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveUser
 {
-    public class RemoveUserCommandHandler : ICommandHandler<RemoveUserCommand, bool>
+    public class RemoveUserCommandHandler : ICommandHandler<RemoveUserCommand>
     {
         private readonly IUserRepository userRepository;
         private readonly IRestaurantRepository restaurantRepository;
@@ -20,16 +20,16 @@ namespace Gastromio.Core.Application.Commands.RemoveUser
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(RemoveUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             if (command.UserId == currentUser.Id)
                 throw DomainException.CreateFrom(new CannotRemoveCurrentUserFailure());
@@ -43,8 +43,6 @@ namespace Gastromio.Core.Application.Commands.RemoveUser
             }
 
             await userRepository.RemoveAsync(command.UserId, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

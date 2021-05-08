@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeCuisine
 {
-    public class ChangeCuisineCommandHandler : ICommandHandler<ChangeCuisineCommand, bool>
+    public class ChangeCuisineCommandHandler : ICommandHandler<ChangeCuisineCommand>
     {
         private readonly ICuisineRepository cuisineRepository;
 
@@ -17,16 +17,16 @@ namespace Gastromio.Core.Application.Commands.ChangeCuisine
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var cuisine = await cuisineRepository.FindByCuisineIdAsync(command.CuisineId, cancellationToken);
             if (cuisine == null)
@@ -35,8 +35,6 @@ namespace Gastromio.Core.Application.Commands.ChangeCuisine
             cuisine.ChangeName(command.Name, currentUser.Id);
 
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

@@ -18,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.AddRegularOpeningPeriodToRestaurant
 {
     public class AddRegularOpeningPeriodToRestaurantCommandHandlerTests : CommandHandlerTestBase<AddRegularOpeningPeriodToRestaurantCommandHandler,
-        AddRegularOpeningPeriodToRestaurantCommand, bool>
+        AddRegularOpeningPeriodToRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -28,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRegularOpeningPeriodToR
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomDateOfRegularOpeningDay();
@@ -47,7 +47,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRegularOpeningPeriodToR
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsRegularOpeningPeriodAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsRegularOpeningPeriod()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -56,13 +56,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRegularOpeningPeriodToR
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.RegularOpeningDays.First().OpeningPeriods.Should()
                     .BeEquivalentTo(fixture.OpeningPeriod);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
@@ -70,13 +68,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRegularOpeningPeriodToR
         }
 
         protected override
-            CommandHandlerTestFixtureBase<AddRegularOpeningPeriodToRestaurantCommandHandler, AddRegularOpeningPeriodToRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<AddRegularOpeningPeriodToRestaurantCommandHandler, AddRegularOpeningPeriodToRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<AddRegularOpeningPeriodToRestaurantCommandHandler,
-            AddRegularOpeningPeriodToRestaurantCommand, bool>
+            AddRegularOpeningPeriodToRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -17,17 +17,17 @@ namespace Gastromio.Core.Application.Commands.AddDishCategoryToRestaurant
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<Guid>> HandleAsync(AddDishCategoryToRestaurantCommand command, User currentUser,
+        public async Task<Guid> HandleAsync(AddDishCategoryToRestaurantCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<Guid>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<Guid>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant =
                 await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
@@ -35,12 +35,12 @@ namespace Gastromio.Core.Application.Commands.AddDishCategoryToRestaurant
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<Guid>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var dishCategory = restaurant.AddDishCategory(command.Name, command.AfterCategoryId, currentUser.Id);
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            return SuccessResult<Guid>.Create(dishCategory.Id.Value);
+            return dishCategory.Id.Value;
         }
     }
 }

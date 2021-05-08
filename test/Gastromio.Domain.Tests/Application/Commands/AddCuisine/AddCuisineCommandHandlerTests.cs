@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineToCreateNull_ReturnsFailure()
+        public async Task HandleAsync_CuisineToCreateNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupCuisineRepositoryFindingCuisineByName();
@@ -43,7 +43,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineToCreateEmpty_ReturnsFailure()
+        public async Task HandleAsync_CuisineToCreateEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupCuisineRepositoryFindingCuisineByName();
@@ -59,7 +59,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineAlreadyKnown_ReturnsFailure()
+        public async Task HandleAsync_CuisineAlreadyKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupCuisineRepositoryFindingCuisineByName();
@@ -75,7 +75,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesCuisineAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesCuisine()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -90,7 +90,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.CuisineRepositoryMock.VerifyStoreAsync(fixture.CreatedCuisine, Times.Once);
             }
         }

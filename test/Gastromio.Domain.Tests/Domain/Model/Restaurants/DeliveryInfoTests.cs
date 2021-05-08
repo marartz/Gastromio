@@ -3,7 +3,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
     public class DeliveryInfoTests
     {
         // [Fact]
-        // public void ChangeDeliveryInfo_NotEnabled_SavesDeliveryInfoAndReturnsSuccess()
+        // public void ChangeDeliveryInfo_NotEnabled_SavesDeliveryInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -29,7 +29,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_AverageTimeNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        // public void ChangeDeliveryInfo_Enabled_AverageTimeNoValue_SavesDeliveryInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -56,7 +56,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_AverageTimeBelowMin_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_AverageTimeBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -80,7 +80,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_AverageTimeAboveMax_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_AverageTimeAboveMax_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -104,7 +104,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_MinimumOrderValueNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        // public void ChangeDeliveryInfo_Enabled_MinimumOrderValueNoValue_SavesDeliveryInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -131,7 +131,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_MinimumOrderValueBelowMin_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_MinimumOrderValueBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -155,7 +155,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_MinimumOrderValueAboveMax_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_MinimumOrderValueAboveMax_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -179,7 +179,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_MaximumOrderValueNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        // public void ChangeDeliveryInfo_Enabled_MaximumOrderValueNoValue_SavesDeliveryInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -206,7 +206,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_MaximumOrderValueBelowMin_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_MaximumOrderValueBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -230,7 +230,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_AllValid_SavesDeliveryInfoAndReturnsSuccess()
+        // public void ChangeDeliveryInfo_Enabled_AllValid_SavesDeliveryInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -256,7 +256,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_CostsNoValue_SavesDeliveryInfoAndReturnsSuccess()
+        // public void ChangeDeliveryInfo_Enabled_CostsNoValue_SavesDeliveryInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -283,7 +283,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_CostsBelowMin_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_CostsBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -307,7 +307,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeliveryInfo_Enabled_CostsAboveMax_ReturnsFailure()
+        // public void ChangeDeliveryInfo_Enabled_CostsAboveMax_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();

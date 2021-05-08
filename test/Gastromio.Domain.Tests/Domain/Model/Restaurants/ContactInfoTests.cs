@@ -3,7 +3,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
     public class ContactInfoTests
     {
         // [Fact]
-        // public void ChangeContactInfo_PhoneNull_ReturnsFailure()
+        // public void ChangeContactInfo_PhoneNull_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -26,7 +26,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_PhoneEmpty_ReturnsFailure()
+        // public void ChangeContactInfo_PhoneEmpty_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -49,7 +49,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_PhoneInvalid_ReturnsFailure()
+        // public void ChangeContactInfo_PhoneInvalid_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -72,7 +72,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_FaxNull_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_FaxNull_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -98,7 +98,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_FaxEmpty_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_FaxEmpty_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -124,7 +124,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_FaxInvalid_ReturnsFailure()
+        // public void ChangeContactInfo_FaxInvalid_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -147,7 +147,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_WebSiteNull_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_WebSiteNull_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -173,7 +173,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_WebSiteEmpty_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_WebSiteEmpty_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -199,7 +199,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_WebSiteInvalid_ReturnsFailure()
+        // public void ChangeContactInfo_WebSiteInvalid_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -222,7 +222,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_EmailAddressNull_ReturnsFailure()
+        // public void ChangeContactInfo_EmailAddressNull_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -245,7 +245,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_EmailAddressEmpty_ReturnsFailure()
+        // public void ChangeContactInfo_EmailAddressEmpty_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -268,7 +268,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_EmailAddressInvalid_ReturnsFailure()
+        // public void ChangeContactInfo_EmailAddressInvalid_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -291,7 +291,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_MobileNull_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_MobileNull_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -317,7 +317,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_MobileEmpty_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_MobileEmpty_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -343,7 +343,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_MobileInvalid_ReturnsFailure()
+        // public void ChangeContactInfo_MobileInvalid_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -366,7 +366,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeContactInfo_AllValid_ChangesContactInfoAndReturnsSuccess()
+        // public void ChangeContactInfo_AllValid_ChangesContactInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();

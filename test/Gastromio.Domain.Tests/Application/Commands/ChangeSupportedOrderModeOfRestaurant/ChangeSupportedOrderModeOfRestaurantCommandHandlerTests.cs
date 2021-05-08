@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOfRestaurant
 {
     public class ChangeSupportedOrderModeOfRestaurantCommandHandlerTests : CommandHandlerTestBase<ChangeSupportedOrderModeOfRestaurantCommandHandler,
-        ChangeSupportedOrderModeOfRestaurantCommand, bool>
+        ChangeSupportedOrderModeOfRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOf
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
@@ -44,7 +44,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOf
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesServiceInfoOfRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesServiceInfoOfRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -53,26 +53,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOf
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.SupportedOrderMode.Should().Be(SupportedOrderMode.Anytime);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeSupportedOrderModeOfRestaurantCommandHandler, ChangeSupportedOrderModeOfRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeSupportedOrderModeOfRestaurantCommandHandler, ChangeSupportedOrderModeOfRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeSupportedOrderModeOfRestaurantCommandHandler,
-            ChangeSupportedOrderModeOfRestaurantCommand, bool>
+            ChangeSupportedOrderModeOfRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

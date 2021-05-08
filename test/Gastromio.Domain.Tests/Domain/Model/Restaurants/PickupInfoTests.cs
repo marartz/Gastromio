@@ -3,7 +3,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
     public class PickupInfoTests
     {
         // [Fact]
-        // public void ChangePickupInfo_NotEnabled_SavesPickupInfoAndReturnsSuccess()
+        // public void ChangePickupInfo_NotEnabled_SavesPickupInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -29,7 +29,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_AverageTimeNoValue_SavesPickupInfoAndReturnsSuccess()
+        // public void ChangePickupInfo_Enabled_AverageTimeNoValue_SavesPickupInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -56,7 +56,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_AverageTimeBelowMin_ReturnsFailure()
+        // public void ChangePickupInfo_Enabled_AverageTimeBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -80,7 +80,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_AverageTimeAboveMax_ReturnsFailure()
+        // public void ChangePickupInfo_Enabled_AverageTimeAboveMax_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -104,7 +104,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_MinimumOrderValueNoValue_SavesPickupInfoAndReturnsSuccess()
+        // public void ChangePickupInfo_Enabled_MinimumOrderValueNoValue_SavesPickupInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -131,7 +131,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_MinimumOrderValueBelowMin_ReturnsFailure()
+        // public void ChangePickupInfo_Enabled_MinimumOrderValueBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -155,7 +155,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_MinimumOrderValueAboveMax_ReturnsFailure()
+        // public void ChangePickupInfo_Enabled_MinimumOrderValueAboveMax_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -179,7 +179,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_MaximumOrderValueNoValue_SavesPickupInfoAndReturnsSuccess()
+        // public void ChangePickupInfo_Enabled_MaximumOrderValueNoValue_SavesPickupInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -206,7 +206,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_MaximumOrderValueBelowMin_ReturnsFailure()
+        // public void ChangePickupInfo_Enabled_MaximumOrderValueBelowMin_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -230,7 +230,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangePickupInfo_Enabled_AllValid_SavesPickupInfoAndReturnsSuccess()
+        // public void ChangePickupInfo_Enabled_AllValid_SavesPickupInfo()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();

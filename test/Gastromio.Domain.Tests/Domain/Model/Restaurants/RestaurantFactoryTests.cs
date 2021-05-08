@@ -57,7 +57,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Create_ValidParametersExceptName_ReturnsFailure()
+        public void Create_ValidParametersExceptName_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupValidParametersExceptName();

@@ -25,7 +25,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameNull_ReturnsFailure()
+        public void ChangeName_NameNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -39,7 +39,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameEmpty_ReturnsFailure()
+        public void ChangeName_NameEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -53,7 +53,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength101_ReturnsFailure()
+        public void ChangeName_NameLength101_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -69,7 +69,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength100_ChangesNameAndReturnsSuccess()
+        public void ChangeName_NameLength100_ChangesName()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -90,7 +90,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeAddress_ChangesAddressAndReturnsSuccess()
+        public void ChangeAddress_ChangesAddress()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -113,7 +113,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         // [Fact]
-        // public void AddRegularOpeningPeriod_DayNotKnown_AddsDayAndReturnsSuccess()
+        // public void AddRegularOpeningPeriod_DayNotKnown_AddsDay()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -144,7 +144,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddRegularOpeningPeriod_OtherDayKnown_AddsDayAndReturnsSuccess()
+        // public void AddRegularOpeningPeriod_OtherDayKnown_AddsDay()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -180,7 +180,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddRegularOpeningPeriod_DayKnownAndPeriodOverlaps_ReturnsFailure()
+        // public void AddRegularOpeningPeriod_DayKnownAndPeriodOverlaps_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -205,7 +205,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddRegularOpeningPeriod_DayKnownAndPeriodDoesNotOverlap_AddsPeriodReturnsSuccess()
+        // public void AddRegularOpeningPeriod_DayKnownAndPeriodDoesNotOverlap_AddsPeriod()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -242,7 +242,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveRegularOpeningPeriod_DayNotKnown_DoesNothingAndReturnsSuccess()
+        // public void RemoveRegularOpeningPeriod_DayNotKnown_DoesNothing()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -264,7 +264,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveRegularOpeningPeriod_OtherDayKnownWithOnePeriod_DoesNothingAndReturnsSuccess()
+        // public void RemoveRegularOpeningPeriod_OtherDayKnownWithOnePeriod_DoesNothing()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -286,7 +286,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveRegularOpeningPeriod_DayKnownWithOnePeriod_RemovesDayAndReturnsSuccess()
+        // public void RemoveRegularOpeningPeriod_DayKnownWithOnePeriod_RemovesDay()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -309,7 +309,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveRegularOpeningPeriod_DayKnownWithTwoPeriods_RemovesPeriodAndReturnsSuccess()
+        // public void RemoveRegularOpeningPeriod_DayKnownWithTwoPeriods_RemovesPeriod()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -336,7 +336,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddDeviatingOpeningDay_DayNotKnown_AddsDayAndReturnsSuccess()
+        // public void AddDeviatingOpeningDay_DayNotKnown_AddsDay()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -362,7 +362,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddDeviatingOpeningDay_DayKnown_DoesNotChangeAnythingAndReturnsSuccess()
+        // public void AddDeviatingOpeningDay_DayKnown_DoesNotChangeAnything()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -388,7 +388,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeviatingOpeningDayStatus_DayNotKnown_ReturnsFailure()
+        // public void ChangeDeviatingOpeningDayStatus_DayNotKnown_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -410,7 +410,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeviatingOpeningDayStatus_DayKnownAndHasPeriods_ReturnsFailure()
+        // public void ChangeDeviatingOpeningDayStatus_DayKnownAndHasPeriods_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -432,7 +432,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void ChangeDeviatingOpeningDayStatus_DayKnown_ChangesStatusAndReturnsSuccess()
+        // public void ChangeDeviatingOpeningDayStatus_DayKnown_ChangesStatus()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -460,7 +460,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveDeviatingOpeningDay_DayNotKnown_DoesNotChangeAnythingAndReturnsSuccess()
+        // public void RemoveDeviatingOpeningDay_DayNotKnown_DoesNotChangeAnything()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -483,7 +483,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveDeviatingOpeningDay_DayKnown_RemovesDayAndReturnsSuccess()
+        // public void RemoveDeviatingOpeningDay_DayKnown_RemovesDay()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -506,7 +506,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddDeviatingOpeningPeriod_DayNotKnown_ReturnsFailure()
+        // public void AddDeviatingOpeningPeriod_DayNotKnown_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -531,7 +531,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddDeviatingOpeningPeriod_DayKnownAndPeriodOverlaps_ReturnsFailure()
+        // public void AddDeviatingOpeningPeriod_DayKnownAndPeriodOverlaps_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -557,7 +557,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void AddDeviatingOpeningPeriod_DayKnownAndPeriodDoesNotOverlap_AddsPeriodReturnsSuccess()
+        // public void AddDeviatingOpeningPeriod_DayKnownAndPeriodDoesNotOverlap_AddsPeriod()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -595,7 +595,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveDeviatingOpeningPeriod_DayNotKnown_DoesNothingAndReturnsSuccess()
+        // public void RemoveDeviatingOpeningPeriod_DayNotKnown_DoesNothing()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -618,7 +618,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveDeviatingOpeningPeriod_OtherDayKnownWithOnePeriod_DoesNothingAndReturnsSuccess()
+        // public void RemoveDeviatingOpeningPeriod_OtherDayKnownWithOnePeriod_DoesNothing()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -641,7 +641,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveDeviatingOpeningPeriod_DayKnownWithOnePeriod_RemovesDayAndReturnsSuccess()
+        // public void RemoveDeviatingOpeningPeriod_DayKnownWithOnePeriod_RemovesDay()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -668,7 +668,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         // }
         //
         // [Fact]
-        // public void RemoveDeviatingOpeningPeriod_DayKnownWithTwoPeriods_RemovesPeriodAndReturnsSuccess()
+        // public void RemoveDeviatingOpeningPeriod_DayKnownWithTwoPeriods_RemovesPeriod()
         // {
         //     // Arrange
         //     fixture.SetupChangedBy();
@@ -1116,7 +1116,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeHygienicHandling_ChangesHygienicHandlingAndReturnsSuccess()
+        public void ChangeHygienicHandling_ChangesHygienicHandling()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1137,7 +1137,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddCuisine_CuisineKnown_ReturnsSuccess()
+        public void AddCuisine_CuisineKnown_ChangesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1157,7 +1157,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddCuisine_CuisineNotKnown_AddsCuisineAndReturnsSuccess()
+        public void AddCuisine_CuisineNotKnown_AddsCuisine()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1177,7 +1177,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void RemoveCuisine_CuisineKnown_RemovesCuisineAndReturnsSuccess()
+        public void RemoveCuisine_CuisineKnown_RemovesCuisine()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1197,7 +1197,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void RemoveCuisine_CuisineNotKnown_ReturnsSuccess()
+        public void RemoveCuisine_CuisineNotKnown_ChangesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1217,7 +1217,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPaymentMethod_PaymentMethodKnown_ReturnsSuccess()
+        public void AddPaymentMethod_PaymentMethodKnown_ChangesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1237,7 +1237,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPaymentMethod_PaymentMethodNotKnown_AddsPaymentMethodAndReturnsSuccess()
+        public void AddPaymentMethod_PaymentMethodNotKnown_AddsPaymentMethod()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1257,7 +1257,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void RemovePaymentMethod_PaymentMethodKnown_RemovesPaymentMethodAndReturnsSuccess()
+        public void RemovePaymentMethod_PaymentMethodKnown_RemovesPaymentMethod()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1277,7 +1277,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void RemovePaymentMethod_PaymentMethodNotKnown_ReturnsSuccess()
+        public void RemovePaymentMethod_PaymentMethodNotKnown_ChangesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1327,7 +1327,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddAdministrator_AdministratorKnown_ReturnsSuccess()
+        public void AddAdministrator_AdministratorKnown_ChangesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1347,7 +1347,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddAdministrator_AdministratorNotKnown_AddsAdministratorAndReturnsSuccess()
+        public void AddAdministrator_AdministratorNotKnown_AddsAdministrator()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1367,7 +1367,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void RemoveAdministrator_AdministratorKnown_RemovesAdministratorAndReturnsSuccess()
+        public void RemoveAdministrator_AdministratorKnown_RemovesAdministrator()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1387,7 +1387,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void RemoveAdministrator_AdministratorNotKnown_ReturnsSuccess()
+        public void RemoveAdministrator_AdministratorNotKnown_ChangesNothing()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1407,7 +1407,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeImportId_ChangesImportIdAndReturnsSuccess()
+        public void ChangeImportId_ChangesImportId()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1428,7 +1428,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Deactivate_Deactivated_DoesNotChangeAndReturnsSuccess()
+        public void Deactivate_Deactivated_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1448,7 +1448,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Deactivate_Activated_DoesNotChangeAndReturnsSuccess()
+        public void Deactivate_Activated_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1468,7 +1468,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Activate_Deactivated_DoesNotChangeAndReturnsSuccess()
+        public void Activate_Deactivated_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1488,7 +1488,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void Activate_Activated_DoesNotChangeAndReturnsSuccess()
+        public void Activate_Activated_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1508,7 +1508,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void DisableSupport_WithoutSupport_DoesNotChangeAndReturnsSuccess()
+        public void DisableSupport_WithoutSupport_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1528,7 +1528,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void DisableSupport_WithSupport_DoesNotChangeAndReturnsSuccess()
+        public void DisableSupport_WithSupport_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1548,7 +1548,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void EnableSupport_WithoutSupport_DoesNotChangeAndReturnsSuccess()
+        public void EnableSupport_WithoutSupport_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1568,7 +1568,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void EnableSupport_WithSupport_DoesNotChangeAndReturnsSuccess()
+        public void EnableSupport_WithSupport_DoesNotChange()
         {
             // Arrange
             fixture.SetupChangedBy();
@@ -1588,7 +1588,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeSupportedOrderMode_ChangesSupportedOrderModeAndReturnsSuccess()
+        public void ChangeSupportedOrderMode_ChangesSupportedOrderMode()
         {
             // Arrange
             fixture.SetupChangedBy();

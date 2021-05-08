@@ -94,7 +94,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
         }
 
         [Fact]
-        public void RegisterCustomerNotificationAttempt_InfoNull_CreatesInitialInfoAndReturnsSuccess()
+        public void RegisterCustomerNotificationAttempt_InfoNull_CreatesInitialInfo()
         {
             // Arrange
             fixture.SetupRandomCartInfo();
@@ -104,13 +104,11 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
             var message = RandomStringBuilder.Build();
 
             // Act
-            var result = testObject.RegisterCustomerNotificationAttempt(true, message);
+            testObject.RegisterCustomerNotificationAttempt(true, message);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 testObject.CustomerNotificationInfo.Should().NotBeNull();
                 testObject.CustomerNotificationInfo?.Status.Should().BeTrue();
                 testObject.CustomerNotificationInfo?.Attempt.Should().Be(1);
@@ -121,7 +119,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
         }
 
         [Fact]
-        public void RegisterCustomerNotificationAttempt_InfoNotNull_IncreasesAttemptAndReturnsSuccess()
+        public void RegisterCustomerNotificationAttempt_InfoNotNull_IncreasesAttempt()
         {
             // Arrange
             fixture.SetupRandomCartInfo();
@@ -131,13 +129,11 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
             var message = RandomStringBuilder.Build();
 
             // Act
-            var result = testObject.RegisterCustomerNotificationAttempt(true, message);
+            testObject.RegisterCustomerNotificationAttempt(true, message);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 testObject.CustomerNotificationInfo.Should().NotBeNull();
                 testObject.CustomerNotificationInfo?.Status.Should().BeTrue();
                 testObject.CustomerNotificationInfo?.Attempt.Should().Be(fixture.CustomerNotificationInfo.Attempt + 1);
@@ -148,7 +144,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
         }
 
         [Fact]
-        public void RegisterRestaurantEmailNotificationAttempt_InfoNull_CreatesInitialInfoAndReturnsSuccess()
+        public void RegisterRestaurantEmailNotificationAttempt_InfoNull_CreatesInitialInfo()
         {
             // Arrange
             fixture.SetupRandomCartInfo();
@@ -158,13 +154,11 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
             var message = RandomStringBuilder.Build();
 
             // Act
-            var result = testObject.RegisterRestaurantEmailNotificationAttempt(true, message);
+            testObject.RegisterRestaurantEmailNotificationAttempt(true, message);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 testObject.RestaurantEmailNotificationInfo.Should().NotBeNull();
                 testObject.RestaurantEmailNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantEmailNotificationInfo?.Attempt.Should().Be(1);
@@ -175,7 +169,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
         }
 
         [Fact]
-        public void RegisterRestaurantEmailNotificationAttempt_InfoNotNull_IncreasesAttemptAndReturnsSuccess()
+        public void RegisterRestaurantEmailNotificationAttempt_InfoNotNull_IncreasesAttempt()
         {
             // Arrange
             fixture.SetupRandomCartInfo();
@@ -185,13 +179,11 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
             var message = RandomStringBuilder.Build();
 
             // Act
-            var result = testObject.RegisterRestaurantEmailNotificationAttempt(true, message);
+            testObject.RegisterRestaurantEmailNotificationAttempt(true, message);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 testObject.RestaurantEmailNotificationInfo.Should().NotBeNull();
                 testObject.RestaurantEmailNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantEmailNotificationInfo?.Attempt.Should().Be(fixture.RestaurantEmailNotificationInfo.Attempt + 1);
@@ -202,7 +194,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
         }
 
         [Fact]
-        public void RegisterRestaurantMobileNotificationAttempt_InfoNull_CreatesInitialInfoAndReturnsSuccess()
+        public void RegisterRestaurantMobileNotificationAttempt_InfoNull_CreatesInitialInfo()
         {
             // Arrange
             fixture.SetupRandomCartInfo();
@@ -212,13 +204,11 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
             var message = RandomStringBuilder.Build();
 
             // Act
-            var result = testObject.RegisterRestaurantMobileNotificationAttempt(true, message);
+            testObject.RegisterRestaurantMobileNotificationAttempt(true, message);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 testObject.RestaurantMobileNotificationInfo.Should().NotBeNull();
                 testObject.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantMobileNotificationInfo?.Attempt.Should().Be(1);
@@ -229,7 +219,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
         }
 
         [Fact]
-        public void RegisterRestaurantMobileNotificationAttempt_InfoNotNull_IncreasesAttemptAndReturnsSuccess()
+        public void RegisterRestaurantMobileNotificationAttempt_InfoNotNull_IncreasesAttempt()
         {
             // Arrange
             fixture.SetupRandomCartInfo();
@@ -239,13 +229,11 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
             var message = RandomStringBuilder.Build();
 
             // Act
-            var result = testObject.RegisterRestaurantMobileNotificationAttempt(true, message);
+            testObject.RegisterRestaurantMobileNotificationAttempt(true, message);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 testObject.RestaurantMobileNotificationInfo.Should().NotBeNull();
                 testObject.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantMobileNotificationInfo?.Attempt.Should().Be(fixture.RestaurantMobileNotificationInfo.Attempt + 1);

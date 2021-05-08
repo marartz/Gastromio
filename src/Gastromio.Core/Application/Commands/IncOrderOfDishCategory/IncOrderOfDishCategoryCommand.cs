@@ -2,7 +2,7 @@
 
 namespace Gastromio.Core.Application.Commands.IncOrderOfDishCategory
 {
-    public class IncOrderOfDishCategoryCommand : ICommand<bool>
+    public class IncOrderOfDishCategoryCommand : ICommand
     {
         public IncOrderOfDishCategoryCommand(RestaurantId restaurantId, DishCategoryId categoryId)
         {

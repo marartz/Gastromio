@@ -34,7 +34,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFoundById_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFoundById_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -57,7 +57,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantFoundById_ReturnsSuccess()
+        public async Task HandleAsync_RestaurantFoundById_()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -80,13 +80,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyFindByRestaurantIdAsync(fixture.Restaurant.Id, Times.Once);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFoundByName_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFoundByName_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -109,7 +108,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantFoundByName_ReturnsSuccess()
+        public async Task HandleAsync_RestaurantFoundByName_FindsRestaurantByName()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -132,13 +131,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyFindByRestaurantNameAsync(fixture.Restaurant.Name, Times.Once);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantInactive_ReturnsFailure()
+        public async Task HandleAsync_RestaurantInactive_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -160,7 +158,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DishThatCannotBeFound_ReturnsFailure()
+        public async Task HandleAsync_DishThatCannotBeFound_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -184,7 +182,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DishThatDoesNotBelongToRestaurant_ReturnsFailure()
+        public async Task HandleAsync_DishThatDoesNotBelongToRestaurant_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -208,7 +206,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DishThatBelongsToDisabledCategory_ReturnsFailure()
+        public async Task HandleAsync_DishThatBelongsToDisabledCategory_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomDisabledDishCategories();
@@ -232,7 +230,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_VariantThatDoesNotBelongToDish_ReturnsFailure()
+        public async Task HandleAsync_VariantThatDoesNotBelongToDish_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -256,7 +254,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_RemarkHasLength1001_ReturnsFailure()
+        public async Task HandleAsync_RemarkHasLength1001_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -280,7 +278,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_CountIsNegative_ReturnsFailure()
+        public async Task HandleAsync_CountIsNegative_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -304,7 +302,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_CountIsZero_ReturnsFailure()
+        public async Task HandleAsync_CountIsZero_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -328,7 +326,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_CountOf101_ReturnsFailure()
+        public async Task HandleAsync_CountOf101_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -352,7 +350,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_PickupIsDisabled_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_PickupIsDisabled_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -376,7 +374,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_BelowMinimum_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_BelowMinimum_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -400,7 +398,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_AboveMaximum_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_AboveMaximum_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -424,7 +422,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_GivenNameNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_GivenNameNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -448,7 +446,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_GivenNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_GivenNameEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -472,7 +470,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_LastNameNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_LastNameNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -496,7 +494,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_LastNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_LastNameEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -520,7 +518,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_EmailNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_EmailNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -544,7 +542,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_PhoneNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_PhoneNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -568,7 +566,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_PhoneEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_PhoneEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -592,7 +590,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_EmailEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_EmailEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -616,7 +614,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_DeliveryIsDisabled_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_DeliveryIsDisabled_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -640,7 +638,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_BelowMinimum_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_BelowMinimum_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -664,7 +662,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_AboveMaximum_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_AboveMaximum_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -688,7 +686,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_GivenNameNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_GivenNameNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -712,7 +710,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_GivenNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_GivenNameEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -736,7 +734,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_LastNameNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_LastNameNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -760,7 +758,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_LastNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_LastNameEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -784,7 +782,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_StreetNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_StreetNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -808,7 +806,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_StreetEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_StreetEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -832,7 +830,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_ZipCodeNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_ZipCodeNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -856,7 +854,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_ZipCodeEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_ZipCodeEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -880,7 +878,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_CityNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_CityNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -904,7 +902,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_CityEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_CityEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -928,7 +926,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_EmailNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_EmailNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -952,7 +950,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_PhoneNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_PhoneNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -976,7 +974,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_PhoneEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_PhoneEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -1000,7 +998,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_EmailEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_EmailEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -1024,7 +1022,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_OrderIsNotPossible_ReturnsFailure()
+        public async Task HandleAsync_OrderIsNotPossible_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -1048,7 +1046,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_PaymentMethodUnknown_ReturnsFailure()
+        public async Task HandleAsync_PaymentMethodUnknown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -1072,7 +1070,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_EnabledOrderNotificationByMobile_SetsMobileNotificationAttemptToNullAndReturnsSuccess()
+        public async Task HandleAsync_EnabledOrderNotificationByMobile_SetsMobileNotificationAttemptToNull()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -1095,14 +1093,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.StoredOrder.Should().NotBeNull();
                 fixture.StoredOrder?.RestaurantMobileNotificationInfo.Should().BeNull();
             }
         }
 
         [Fact]
-        public async Task HandleAsync_DisabledOrderNotificationByMobile_SetsMobileNotificationAttemptWithStatusAndReturnsSuccess()
+        public async Task HandleAsync_DisabledOrderNotificationByMobile_SetsMobileNotificationAttemptWithStatus()
         {
             // Arrange
             fixture.SetupRandomEnabledDishCategories();
@@ -1125,7 +1122,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.StoredOrder.Should().NotBeNull();
                 fixture.StoredOrder?.RestaurantMobileNotificationInfo.Should().NotBeNull();
                 fixture.StoredOrder?.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
@@ -1156,7 +1152,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.StoredOrder.Should().NotBeNull();
                 fixture.StoredOrder?.Id.Should().NotBeNull();
                 fixture.StoredOrder?.Id.Value.Should().NotBeEmpty();

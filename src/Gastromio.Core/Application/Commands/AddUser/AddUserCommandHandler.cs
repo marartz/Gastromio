@@ -20,16 +20,16 @@ namespace Gastromio.Core.Application.Commands.AddUser
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<UserDTO>> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<UserDTO> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<UserDTO>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<UserDTO>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user != null)
@@ -45,7 +45,7 @@ namespace Gastromio.Core.Application.Commands.AddUser
 
             await userRepository.StoreAsync(user, cancellationToken);
 
-            return SuccessResult<UserDTO>.Create(new UserDTO(user));
+            return new UserDTO(user);
         }
     }
 }

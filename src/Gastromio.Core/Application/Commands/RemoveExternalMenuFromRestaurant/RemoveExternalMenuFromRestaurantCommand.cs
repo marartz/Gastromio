@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveExternalMenuFromRestaurant
 {
-    public class RemoveExternalMenuFromRestaurantCommand : ICommand<bool>
+    public class RemoveExternalMenuFromRestaurantCommand : ICommand
     {
         public RemoveExternalMenuFromRestaurantCommand(RestaurantId restaurantId, ExternalMenuId externalMenuId)
         {

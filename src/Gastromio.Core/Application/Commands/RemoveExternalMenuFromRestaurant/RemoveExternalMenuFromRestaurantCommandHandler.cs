@@ -9,7 +9,7 @@ using Gastromio.Core.Domain.Model.Users;
 namespace Gastromio.Core.Application.Commands.RemoveExternalMenuFromRestaurant
 {
     public class
-        RemoveExternalMenuFromRestaurantCommandHandler : ICommandHandler<RemoveExternalMenuFromRestaurantCommand, bool>
+        RemoveExternalMenuFromRestaurantCommandHandler : ICommandHandler<RemoveExternalMenuFromRestaurantCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -18,30 +18,28 @@ namespace Gastromio.Core.Application.Commands.RemoveExternalMenuFromRestaurant
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveExternalMenuFromRestaurantCommand command, User currentUser,
+        public async Task HandleAsync(RemoveExternalMenuFromRestaurantCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             restaurant.RemoveExternalMenu(command.ExternalMenuId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

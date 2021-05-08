@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Users;
 
@@ -34,16 +35,16 @@ namespace Gastromio.Core.Application.Queries.SysAdminSearchForRestaurants
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<PagingDTO<RestaurantDTO>>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<PagingDTO<RestaurantDTO>> HandleAsync(SysAdminSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return FailureResult<PagingDTO<RestaurantDTO>>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<PagingDTO<RestaurantDTO>>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
                 .ToDictionary(en => en.Id, en => new CuisineDTO(en));
@@ -76,7 +77,7 @@ namespace Gastromio.Core.Application.Queries.SysAdminSearchForRestaurants
                         new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes))
                     .ToList());
 
-            return SuccessResult<PagingDTO<RestaurantDTO>>.Create(pagingViewModel);
+            return pagingViewModel;
         }
     }
 }

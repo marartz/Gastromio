@@ -8,7 +8,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangePasswordWithResetCode
 {
-    public class ChangePasswordWithResetCodeCommandHandler : ICommandHandler<ChangePasswordWithResetCodeCommand, bool>
+    public class ChangePasswordWithResetCodeCommandHandler : ICommandHandler<ChangePasswordWithResetCodeCommand>
     {
         private readonly IUserRepository userRepository;
 
@@ -17,7 +17,7 @@ namespace Gastromio.Core.Application.Commands.ChangePasswordWithResetCode
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangePasswordWithResetCodeCommand command, User currentUser,
+        public async Task HandleAsync(ChangePasswordWithResetCodeCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
@@ -30,8 +30,6 @@ namespace Gastromio.Core.Application.Commands.ChangePasswordWithResetCode
 
             user.ChangePasswordWithResetCode(command.PasswordResetCode, command.Password);
             await userRepository.StoreAsync(user, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

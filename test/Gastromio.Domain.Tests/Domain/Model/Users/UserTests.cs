@@ -60,7 +60,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
         }
 
         [Fact]
-        public void ValidatePassword_PasswordDoesNotMatch_ReturnsSuccessWithFalse()
+        public void ValidatePassword_PasswordDoesNotMatch_ReturnsFalse()
         {
             // Arrange
             fixture.SetupChangedBy();
