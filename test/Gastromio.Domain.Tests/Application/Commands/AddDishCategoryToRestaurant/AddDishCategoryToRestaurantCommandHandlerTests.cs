@@ -132,11 +132,18 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddDishCategoryToRestauran
                     .ReturnsAsync((Restaurant) null);
             }
 
+            public void SetupRestaurantRepositoryStoringRestaurant()
+            {
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
+                    .Returns(Task.CompletedTask);
+            }
+
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
                 SetupRandomRestaurant(role);
                 SetupRandomDishCategory();
                 SetupRestaurantRepositoryFindingRestaurant();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

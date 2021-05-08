@@ -30,8 +30,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
         public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomDishCategory();
+            fixture.SetupRandomRestaurantWithDishCategory(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -48,8 +48,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
         public async Task HandleAsync_DishCategoryNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomDishCategory();
+            fixture.SetupRandomRestaurantWithoutDishCategory(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -59,7 +59,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<DishCategoryDoesNotExistFailure>>();
         }
 
         [Fact]
@@ -79,7 +79,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategory.Name.Should().Be("changed");
+                fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
+                dishCategory.Name.Should().Be("changed");
             }
         }
 
@@ -113,7 +114,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                 return new ChangeDishCategoryOfRestaurantCommand(Restaurant.Id, DishCategory.Id, "changed");
             }
 
-            public void SetupRandomRestaurant(Role? role)
+            public void SetupRandomRestaurantWithDishCategory(Role? role)
             {
                 var builder = new RestaurantBuilder();
 
@@ -124,6 +125,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                 }
 
                 Restaurant = builder
+                    .WithDishCategories(new[] {DishCategory})
+                    .WithValidConstrains()
+                    .Create();
+            }
+
+            public void SetupRandomRestaurantWithoutDishCategory(Role? role)
+            {
+                var builder = new RestaurantBuilder();
+
+                if (role == Role.RestaurantAdmin)
+                {
+                    builder = builder
+                        .WithAdministrators(new HashSet<UserId> {UserId});
+                }
+
+                Restaurant = builder
+                    .WithoutDishCategories()
                     .WithValidConstrains()
                     .Create();
             }
@@ -133,6 +151,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                 DishCategory = new DishCategoryBuilder()
                     .WithName("test")
                     .WithOrderNo(0)
+                    .WithValidConstrains()
                     .Create();
             }
 
@@ -148,11 +167,18 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                     .ReturnsAsync((Restaurant) null);
             }
 
+            public void SetupRestaurantRepositoryStoringRestaurant()
+            {
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
+                    .Returns(Task.CompletedTask);
+            }
+
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomRestaurant(role);
                 SetupRandomDishCategory();
+                SetupRandomRestaurantWithDishCategory(role);
                 SetupRestaurantRepositoryFindingRestaurant();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

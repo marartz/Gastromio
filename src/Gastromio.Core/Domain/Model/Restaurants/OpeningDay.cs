@@ -11,6 +11,15 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public OpeningPeriods OpeningPeriods { get; }
 
+        public bool HasOpeningPeriods
+        {
+            get
+            {
+                return OpeningPeriods.Count > 0;
+            }
+        }
+
+
         public OpeningPeriod FindPeriodAtTime(TimeSpan time)
         {
             return OpeningPeriods.FindPeriodAtTime(time);

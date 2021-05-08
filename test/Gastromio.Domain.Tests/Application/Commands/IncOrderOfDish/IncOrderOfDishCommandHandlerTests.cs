@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -30,8 +31,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_DishNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
-            fixture.SetupCurrentDish(1);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
+            fixture.SetupCurrentDishToUnknown();
             fixture.SetupRestaurantRepositoryFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -41,16 +42,17 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<DishDoesNotExistFailure>>();
         }
 
         [Fact]
         public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_ChangesDishOrderAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDish(0);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -63,9 +65,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Dishes[0].OrderNo.Should().Be(1);
-                fixture.Dishes[1].OrderNo.Should().Be(0);
-                fixture.Dishes[2].OrderNo.Should().Be(2);
+                fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
+                dishCategory.Should().NotBeNull();
+                var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
+                dishes.Should().NotBeNull();
+                dishes?[0].Id.Should().Be(fixture.Dishes[1].Id);
+                dishes?[1].Id.Should().Be(fixture.Dishes[0].Id);
+                dishes?[2].Id.Should().Be(fixture.Dishes[2].Id);
             }
         }
 
@@ -73,9 +79,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDish(0);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -91,7 +98,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_ChangesDishOrderAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDish(1);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
             fixture.SetupRestaurantRepositoryStoringRestaurant();
@@ -107,9 +114,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Dishes[0].OrderNo.Should().Be(0);
-                fixture.Dishes[1].OrderNo.Should().Be(2);
-                fixture.Dishes[2].OrderNo.Should().Be(1);
+                fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
+                dishCategory.Should().NotBeNull();
+                var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
+                dishes.Should().NotBeNull();
+                dishes?[0].Id.Should().Be(fixture.Dishes[0].Id);
+                dishes?[1].Id.Should().Be(fixture.Dishes[2].Id);
+                dishes?[2].Id.Should().Be(fixture.Dishes[1].Id);
             }
         }
 
@@ -117,9 +128,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDish(1);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -135,7 +147,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_ChangesNothingAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDish(2);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
             fixture.SetupRestaurantRepositoryStoringRestaurant();
@@ -151,9 +163,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Dishes[0].OrderNo.Should().Be(0);
-                fixture.Dishes[1].OrderNo.Should().Be(1);
-                fixture.Dishes[2].OrderNo.Should().Be(2);
+                fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
+                dishCategory.Should().NotBeNull();
+                var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
+                dishes.Should().NotBeNull();
+                dishes?[0].Id.Should().Be(fixture.Dishes[0].Id);
+                dishes?[1].Id.Should().Be(fixture.Dishes[1].Id);
+                dishes?[2].Id.Should().Be(fixture.Dishes[2].Id);
             }
         }
 
@@ -161,9 +177,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDish(2);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
@@ -179,7 +196,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_OneDish_ChangesNothingAndReturnsSuccess()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(1);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 1);
             fixture.SetupCurrentDish(0);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
             fixture.SetupRestaurantRepositoryStoringRestaurant();
@@ -195,7 +212,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
             {
                 result.Should().NotBeNull();
                 result?.IsSuccess.Should().BeTrue();
-                fixture.Dishes[0].OrderNo.Should().Be(0);
+                fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
+                dishCategory.Should().NotBeNull();
+                var dishes = dishCategory?.Dishes.OrderBy(dish => dish.OrderNo).ToList();
+                dishes?[0].Id.Should().Be(fixture.Dishes[0].Id);
             }
         }
 
@@ -203,7 +223,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
         public async Task HandleAsync_OneDish_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupRestaurantWithDishes(1);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 1);
             fixture.SetupCurrentDish(0);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
             fixture.SetupRestaurantRepositoryStoringRestaurant();
@@ -212,7 +232,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
@@ -254,12 +274,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
                 return new IncOrderOfDishCommand(Restaurant.Id, DishCategory.Id, CurrentDishId);
             }
 
-            public void SetupRestaurantWithDishes(int count)
+            public void SetupRestaurantWithDishes(Role? role, int count)
             {
                 Dishes = new List<Dish>();
                 for (var i = 0; i < count; i++)
                 {
                     Dishes.Add(new DishBuilder()
+                        .WithName($"dish-{i + 1}")
                         .WithOrderNo(i)
                         .WithValidConstrains()
                         .Create());
@@ -267,11 +288,26 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
 
                 DishCategory = new DishCategoryBuilder()
                     .WithDishes(Dishes)
+                    .WithValidConstrains()
                     .Create();
 
-                Restaurant = new RestaurantBuilder()
+                var restaurantBuilder = new RestaurantBuilder();
+
+                if (role == Role.RestaurantAdmin)
+                {
+                    restaurantBuilder = restaurantBuilder
+                        .WithAdministrators(new HashSet<UserId> {UserId});
+                }
+
+                Restaurant = restaurantBuilder
                     .WithDishCategories(new[] {DishCategory})
+                    .WithValidConstrains()
                     .Create();
+            }
+
+            public void SetupCurrentDishToUnknown()
+            {
+                CurrentDishId = new DishId(Guid.NewGuid());
             }
 
             public void SetupCurrentDish(int index)
@@ -293,7 +329,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.IncOrderOfDish
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRestaurantWithDishes(3);
+                SetupRestaurantWithDishes(MinimumRole, 3);
                 SetupCurrentDish(1);
                 SetupRestaurantRepositoryFindingRestaurant();
                 SetupRestaurantRepositoryStoringRestaurant();

@@ -25,7 +25,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         protected override DeviatingOpeningDay CreateSpecificOpeningDayWith(OpeningPeriods openingPeriods)
         {
-            return new DeviatingOpeningDay(Date, Status, openingPeriods);
+            var status = openingPeriods.Count > 0 ? DeviatingOpeningDayStatus.Open : DeviatingOpeningDayStatus.Closed;
+            return new DeviatingOpeningDay(Date, status, openingPeriods);
         }
     }
 }

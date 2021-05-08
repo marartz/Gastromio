@@ -30,8 +30,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishCategoryFromRest
         public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomDishCategory();
+            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -106,6 +106,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishCategoryFromRest
                 }
 
                 Restaurant = builder
+                    .WithDishCategories(new[] {DishCategory})
                     .WithValidConstrains()
                     .Create();
             }
@@ -114,6 +115,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishCategoryFromRest
             {
                 DishCategory = new DishCategoryBuilder()
                     .WithOrderNo(0)
+                    .WithValidConstrains()
                     .Create();
             }
 
@@ -129,11 +131,18 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDishCategoryFromRest
                     .ReturnsAsync((Restaurant) null);
             }
 
+            public void SetupRestaurantRepositoryStoringRestaurant()
+            {
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
+                    .Returns(Task.CompletedTask);
+            }
+
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomRestaurant(role);
                 SetupRandomDishCategory();
+                SetupRandomRestaurant(role);
                 SetupRestaurantRepositoryFindingRestaurant();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

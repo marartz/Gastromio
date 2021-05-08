@@ -31,9 +31,9 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
         public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
-            fixture.SetupRandomDishCategory();
             fixture.SetupRandomDish();
+            fixture.SetupRandomDishCategory();
+            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
@@ -120,6 +120,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
                 }
 
                 Restaurant = builder
+                    .WithDishCategories(new []{DishCategory})
                     .WithValidConstrains()
                     .Create();
             }
@@ -128,13 +129,16 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
             {
                 DishCategory = new DishCategoryBuilder()
                     .WithOrderNo(0)
+                    .WithValidConstrains()
                     .Create();
             }
 
             public void SetupRandomDish()
             {
                 Dish = new DishBuilder()
+                    .WithName("random-dish")
                     .WithOrderNo(0)
+                    .WithValidConstrains()
                     .Create();
             }
 
@@ -150,12 +154,19 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
                     .ReturnsAsync((Restaurant) null);
             }
 
+            public void SetupRestaurantRepositoryStoringRestaurant()
+            {
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
+                    .Returns(Task.CompletedTask);
+            }
+
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomRestaurant(role);
-                SetupRandomDishCategory();
                 SetupRandomDish();
+                SetupRandomDishCategory();
+                SetupRandomRestaurant(role);
                 SetupRestaurantRepositoryFindingRestaurant();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

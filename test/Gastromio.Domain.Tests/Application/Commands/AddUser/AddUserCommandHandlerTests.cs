@@ -55,7 +55,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<UserAlreadyExistsFailure>>();
         }
 
         [Fact]
@@ -116,6 +116,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             public void SetupRandomUserToCreate()
             {
                 CreatedUser = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .Create();
             }
 

@@ -82,6 +82,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveRestaurant
             {
                 Restaurant = new RestaurantBuilder()
                     .WithName("test")
+                    .WithValidConstrains()
                     .Create();
             }
 

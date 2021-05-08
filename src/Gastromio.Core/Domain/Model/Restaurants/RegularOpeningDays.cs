@@ -40,9 +40,12 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public RegularOpeningDays RemoveOpeningPeriod(int dayOfWeek, TimeSpan start)
         {
-            return TryGetOpeningDay(dayOfWeek, out var openingDay)
-                ? Replace(openingDay.RemovePeriod(start))
-                : this;
+            if (!TryGetOpeningDay(dayOfWeek, out var openingDay))
+                return this;
+            var changedOpeningDay = openingDay.RemovePeriod(start);
+            return changedOpeningDay.HasOpeningPeriods
+                ? Replace(changedOpeningDay)
+                : Remove(dayOfWeek);
         }
 
         public IEnumerator<RegularOpeningDay> GetEnumerator()

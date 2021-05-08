@@ -37,7 +37,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<LoginEmailRequiredFailure>>();
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<LoginEmailRequiredFailure>>();
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<LoginPasswordRequiredFailure>>();
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<LoginPasswordRequiredFailure>>();
         }
 
         [Fact]
@@ -97,13 +97,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             fixture.SetupUserRepositoryNotFindingUser();
 
             var testObject = fixture.CreateTestObject();
-            var command = new LoginCommand(fixture.User.Email, "");
+            var command = new LoginCommand(fixture.User.Email, fixture.Password);
 
             // Act
             Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
+            await act.Should().ThrowAsync<DomainException<WrongCredentialsFailure>>();
         }
 
         [Fact]
@@ -168,6 +168,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Login
             public void SetupRandomUserWithPassword()
             {
                 User = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .WithRole(Role.SystemAdmin)
                     .Create();
                 User.ChangePassword(Password, true, new UserId(Guid.NewGuid()));

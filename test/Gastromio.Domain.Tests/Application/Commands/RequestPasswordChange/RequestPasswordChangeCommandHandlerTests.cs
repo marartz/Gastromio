@@ -115,6 +115,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RequestPasswordChange
             public void SetupRandomUser()
             {
                 User = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .WithPasswordResetCode(null)
                     .WithPasswordResetExpiration(null)
                     .Create();

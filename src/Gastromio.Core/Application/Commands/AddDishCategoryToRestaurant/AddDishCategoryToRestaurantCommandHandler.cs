@@ -32,7 +32,7 @@ namespace Gastromio.Core.Application.Commands.AddDishCategoryToRestaurant
             var restaurant =
                 await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<Guid>.Create(new RestaurantDoesNotExistFailure());
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
                 return FailureResult<Guid>.Forbidden();

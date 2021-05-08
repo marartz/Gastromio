@@ -77,6 +77,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangePasswordWithResetCod
             public void SetupRandomUser()
             {
                 User = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .WithPasswordResetExpiration(DateTimeOffset.Now.AddHours(1))
                     .Create();
             }

@@ -34,6 +34,9 @@ namespace Gastromio.Core.Application.Commands.DecOrderOfDish
             if (restaurant == null)
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
+            if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
+                return FailureResult<bool>.Forbidden();
+
             restaurant.DecOrderOfDish(command.DishCategoryId, command.DishId, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);

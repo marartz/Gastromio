@@ -25,9 +25,12 @@ namespace Gastromio.Core.Application.Commands.ValidatePasswordResetCode
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             if (user == null)
-                return FailureResult<bool>.Create(new PasswordResetCodeIsInvalidFailure());
+                throw DomainException.CreateFrom(new PasswordResetCodeIsInvalidFailure());
 
-            return SuccessResult<bool>.Create(user.ValidatePasswordResetCode(command.PasswordResetCode));
+            if (!user.ValidatePasswordResetCode(command.PasswordResetCode))
+                throw DomainException.CreateFrom(new PasswordResetCodeIsInvalidFailure());
+
+            return SuccessResult<bool>.Create(true);
         }
     }
 }
