@@ -37,6 +37,5 @@ namespace Gastromio.Core.Application.Commands.DeactivateRestaurant
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
         }
-
     }
 }
