@@ -175,7 +175,7 @@ namespace Gastromio.Core.Domain.Services
                 var trimmedOpeningPeriodText = openingPeriodText.Trim();
                 var openingPeriodParts = trimmedOpeningPeriodText.Split('-');
                 if (openingPeriodParts.Length != 2)
-                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingPeriodText));
 
                 var parsedStartTime = ParseTime(openingPeriodParts[0]);
                 var parsedEndTime = ParseTime(openingPeriodParts[1]);
@@ -207,19 +207,19 @@ namespace Gastromio.Core.Domain.Services
 
                 var index = tempOpeningDay.IndexOf(':');
                 if (index < 1)
-                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
                 var dateText = tempOpeningDay.Substring(0, index);
                 var dateTextParts = dateText.Split('.');
 
                 if (dateTextParts.Length == 0)
-                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
 
                 var dateParts = new int[dateTextParts.Length];
                 for (var partIdx = 0; partIdx < dateParts.Length; partIdx++)
                 {
                     var dateTextPart = dateTextParts[partIdx];
                     if (!int.TryParse(dateTextPart, out var datePart))
-                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
                     dateParts[partIdx] = datePart;
                 }
 
@@ -238,7 +238,7 @@ namespace Gastromio.Core.Domain.Services
                 }
                 else
                 {
-                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
                 }
 
                 tempOpeningDay = tempOpeningDay.Substring(index + 1).Trim();
@@ -261,7 +261,7 @@ namespace Gastromio.Core.Domain.Services
                         var trimmedOpeningPeriodText = openingPeriodText.Trim();
                         var openingPeriodParts = trimmedOpeningPeriodText.Split('-');
                         if (openingPeriodParts.Length != 2)
-                            throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                            throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
 
                         var parsedStartTime = ParseTime(openingPeriodParts[0]);
                         var parsedEndTime = ParseTime(openingPeriodParts[1]);
@@ -286,21 +286,21 @@ namespace Gastromio.Core.Domain.Services
                 {
                     var hourText = timeTextParts[0];
                     if (!int.TryParse(hourText, out var hours))
-                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
                     var minuteText = timeTextParts[1];
                     if (!int.TryParse(minuteText, out var minutes))
-                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
                     return new TimeSpan(0, hours, minutes, 0);
                 }
                 case 1:
                 {
                     var hourText = timeTextParts[0];
                     if (!int.TryParse(hourText, out var hours))
-                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
                     return new TimeSpan(0, hours, 0, 0);
                 }
                 default:
-                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure());
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
             }
         }
 
@@ -341,7 +341,7 @@ namespace Gastromio.Core.Domain.Services
                         break;
                     }
                     default:
-                        throw DomainException.CreateFrom(new ImportOrderTypeIsInvalidFailure());
+                        throw DomainException.CreateFrom(new ImportOrderTypeIsInvalidFailure(orderTypeText));
                 }
             }
 
@@ -417,7 +417,7 @@ namespace Gastromio.Core.Domain.Services
             var paymentMethod = await paymentMethodRepository.FindByNameAsync(paymentMethodNameTrimmed, true);
             return paymentMethod != null
                 ? paymentMethod.Id
-                : throw DomainException.CreateFrom(new ImportPaymentMethodNotFoundFailure());
+                : throw DomainException.CreateFrom(new ImportPaymentMethodNotFoundFailure(paymentMethodName));
         }
 
         private async Task<ISet<UserId>> GetOrAddAdministratorAsync(ImportLog log, int rowIndex, string administratorEmailAddress, bool dryRun, UserId curUserId)
@@ -469,7 +469,7 @@ namespace Gastromio.Core.Domain.Services
                 case "Jederzeit":
                     return SupportedOrderMode.Anytime;
                 default:
-                    throw DomainException.CreateFrom(new ImportUnknownSupportedOrderModeFailure());
+                    throw DomainException.CreateFrom(new ImportUnknownSupportedOrderModeFailure(supportedOrderModeText));
             }
         }
 

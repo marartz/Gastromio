@@ -128,19 +128,19 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(name))
                 throw DomainException.CreateFrom(new DishNameRequiredFailure());
             if (name.Length > 40)
-                throw DomainException.CreateFrom(new DishNameTooLongFailure());
+                throw DomainException.CreateFrom(new DishNameTooLongFailure(40));
         }
 
         private static void ValidateDescription(string description)
         {
             if (description != null && description.Length > 200)
-                throw DomainException.CreateFrom(new DishDescriptionTooLongFailure());
+                throw DomainException.CreateFrom(new DishDescriptionTooLongFailure(200));
         }
 
         private static void ValidateProductInfo(string productInfo)
         {
             if (productInfo != null && productInfo.Length > 200)
-                throw DomainException.CreateFrom(new DishProductInfoTooLongFailure());
+                throw DomainException.CreateFrom(new DishProductInfoTooLongFailure(200));
         }
 
         private static void ValidateOrderNo(int orderNo)

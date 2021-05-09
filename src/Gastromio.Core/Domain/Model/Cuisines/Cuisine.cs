@@ -51,7 +51,7 @@ namespace Gastromio.Core.Domain.Model.Cuisines
             if (string.IsNullOrEmpty(name))
                 throw DomainException.CreateFrom(new CuisineNameIsRequiredFailure());
             if (name.Length > 100)
-                throw DomainException.CreateFrom(new CuisineNameTooLongFailure());
+                throw DomainException.CreateFrom(new CuisineNameTooLongFailure(100));
         }
     }
 }

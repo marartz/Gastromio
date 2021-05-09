@@ -8,7 +8,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         public DishVariant(DishVariantId id, string name, decimal price)
         {
             if (name != null && name.Length > 40)
-                throw DomainException.CreateFrom(new DishVariantNameTooLongFailure());
+                throw DomainException.CreateFrom(new DishVariantNameTooLongFailure(40));
             if (!(price > 0))
                 throw DomainException.CreateFrom(new DishVariantPriceIsNegativeOrZeroFailure());
             if (price > 200)

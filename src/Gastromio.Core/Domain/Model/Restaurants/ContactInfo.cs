@@ -43,19 +43,19 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(phone))
                 throw DomainException.CreateFrom(new RestaurantPhoneRequiredFailure());
             if (!Validators.IsValidPhoneNumber(phone))
-                throw DomainException.CreateFrom(new RestaurantPhoneInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantPhoneInvalidFailure(phone));
         }
 
         private static void ValidateFax(string fax)
         {
             if (!string.IsNullOrEmpty(fax) && !Validators.IsValidPhoneNumber(fax))
-                throw DomainException.CreateFrom(new RestaurantFaxInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantFaxInvalidFailure(fax));
         }
 
         private static void ValidateWebSite(string webSite)
         {
             if (!string.IsNullOrEmpty(webSite) && !Validators.IsValidWebsite(webSite))
-                throw DomainException.CreateFrom(new RestaurantWebSiteInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantWebSiteInvalidFailure(webSite));
         }
 
         private static void ValidateResponsiblePerson(string responsiblePerson)
@@ -69,13 +69,13 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(emailAddress))
                 throw DomainException.CreateFrom(new RestaurantEmailRequiredFailure());
             if (!Validators.IsValidEmailAddress(emailAddress))
-                throw DomainException.CreateFrom(new RestaurantEmailInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantEmailInvalidFailure(emailAddress));
         }
 
         private static void ValidateMobile(string mobile)
         {
             if (!string.IsNullOrEmpty(mobile) && !Validators.IsValidPhoneNumber(mobile))
-                throw DomainException.CreateFrom(new RestaurantMobileInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantMobileInvalidFailure(mobile));
         }
     }
 }

@@ -28,9 +28,9 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(street))
                 throw DomainException.CreateFrom(new RestaurantStreetRequiredFailure());
             if (street.Length > 100)
-                throw DomainException.CreateFrom(new RestaurantStreetTooLongFailure());
+                throw DomainException.CreateFrom(new RestaurantStreetTooLongFailure(100));
             if (!Validators.IsValidStreet(street))
-                throw DomainException.CreateFrom(new RestaurantStreetInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantStreetInvalidFailure(street));
         }
 
         private static void ValidateZipCode(string zipCode)
@@ -38,9 +38,9 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(zipCode))
                 throw DomainException.CreateFrom(new RestaurantZipCodeRequiredFailure());
             if (zipCode.Length != 5 || zipCode.Any(en => !char.IsDigit(en)))
-                throw DomainException.CreateFrom(new RestaurantZipCodeInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantZipCodeInvalidFailure(zipCode));
             if (!Validators.IsValidZipCode(zipCode))
-                throw DomainException.CreateFrom(new RestaurantZipCodeInvalidFailure());
+                throw DomainException.CreateFrom(new RestaurantZipCodeInvalidFailure(zipCode));
         }
 
         private static void ValidateCity(string city)
@@ -48,7 +48,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(city))
                 throw DomainException.CreateFrom(new RestaurantCityRequiredFailure());
             if (city.Length > 50)
-                throw DomainException.CreateFrom(new RestaurantCityTooLongFailure());
+                throw DomainException.CreateFrom(new RestaurantCityTooLongFailure(50));
         }
     }
 }
