@@ -4,7 +4,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {CuisineModel} from '../../shared/models/cuisine.model';
-import {DishCategoryModel} from '../../shared/models/dish-category.model';
 import {DishModel} from '../../shared/models/dish.model';
 import {RestaurantModel, AddressModel, ContactInfoModel, ServiceInfoModel} from '../../shared/models/restaurant.model';
 import {PaymentMethodModel} from '../../shared/models/payment-method.model';
@@ -50,21 +49,6 @@ export class RestaurantRestAdminService {
       .pipe(
         take(1),
         map(restaurant => restaurant ? new RestaurantModel(restaurant) : undefined)
-      );
-  }
-
-  public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions)
-      .pipe(
-        take(1),
-        map(dishCategories => dishCategories?.map(dishCategory => dishCategory ? new DishCategoryModel(dishCategory) : undefined))
       );
   }
 
