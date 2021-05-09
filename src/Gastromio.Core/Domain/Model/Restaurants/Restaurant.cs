@@ -613,7 +613,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             if (string.IsNullOrEmpty(name))
                 throw DomainException.CreateFrom(new RestaurantNameRequiredFailure());
             if (name.Length > 100)
-                throw DomainException.CreateFrom(new RestaurantNameTooLongFailure());
+                throw DomainException.CreateFrom(new RestaurantNameTooLongFailure(100));
         }
     }
 }

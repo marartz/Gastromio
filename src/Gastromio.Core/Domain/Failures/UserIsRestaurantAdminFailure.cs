@@ -10,7 +10,7 @@ namespace Gastromio.Core.Domain.Failures
 
         public UserIsRestaurantAdminFailure(IEnumerable<string> restaurantInfos)
         {
-            this.restaurantNames = restaurantInfos.ToList();
+            restaurantNames = restaurantInfos.ToList();
         }
 
         public override string ToString()
