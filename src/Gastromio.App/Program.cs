@@ -39,8 +39,10 @@ namespace Gastromio.App
 
                     var dbAdminService = services.GetService<IDbAdminService>();
 
+                    var currentUserId = new UserId(Guid.NewGuid());
+
                     var currentUser = new User(
-                        new UserId(Guid.Empty),
+                        currentUserId,
                         Role.SystemAdmin,
                         "admin@gastromio.de",
                         null,
@@ -48,9 +50,9 @@ namespace Gastromio.App
                         null,
                         null,
                         DateTimeOffset.UtcNow,
-                        new UserId(Guid.Empty),
+                        currentUserId,
                         DateTimeOffset.UtcNow,
-                        new UserId(Guid.Empty)
+                        currentUserId
                     );
 
                     var ensureAdminUserCommandHandler = services.GetService<EnsureAdminUserCommandHandler>();

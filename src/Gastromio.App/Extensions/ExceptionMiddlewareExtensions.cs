@@ -20,7 +20,7 @@ namespace Gastromio.App.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        Exception occuredException = contextFeature.Error;
+                        var occuredException = contextFeature.Error;
                         Guid correlationId;
                         if (occuredException is DomainException domainException)
                         {
