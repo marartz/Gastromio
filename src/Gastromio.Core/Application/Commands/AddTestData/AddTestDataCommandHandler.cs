@@ -192,7 +192,7 @@ namespace Gastromio.Core.Application.Commands.AddTestData
                 $"http://www.restaurant{(index + 1):D3}.de",
                 $"Verantw. Person {(index + 1):D3}",
                 $"order@restaurant{(index + 1):D3}.de",
-                "0171/1234-{(index + 1):D3}",
+                $"0171/1234-{(index + 1):D3}",
                 true
             ), currentUser.Id);
 

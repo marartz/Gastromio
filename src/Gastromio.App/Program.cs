@@ -65,7 +65,7 @@ namespace Gastromio.App
                         dbAdminService.PurgeDatabase();
                         dbAdminService.PrepareDatabase();
 
-                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser);
+                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).GetAwaiter().GetResult();
 
                         if (!Int32.TryParse(configuration["Seed:Params:UserCount"], out var userCount))
                             userCount = 20;
@@ -82,13 +82,13 @@ namespace Gastromio.App
                         var addTestDataCommandHandler = services.GetService<AddTestDataCommandHandler>();
 
                         addTestDataCommandHandler.HandleAsync(
-                            new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount), currentUser);
+                            new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount), currentUser).GetAwaiter().GetResult();;
                     }
                     else
                     {
                         dbAdminService.PrepareDatabase();
 
-                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser);
+                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).GetAwaiter().GetResult();;
                     }
 
                     dbAdminService.CorrectRestaurantAliases();
