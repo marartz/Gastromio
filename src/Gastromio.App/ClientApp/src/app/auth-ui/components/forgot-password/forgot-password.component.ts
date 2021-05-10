@@ -55,7 +55,7 @@ export class ForgotPasswordComponent implements OnInit {
         },
         (response: HttpErrorResponse) => {
           this.sending = false;
-          this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+          this.message = this.httpErrorHandlingService.handleError(response).message;
         }
       );
   }

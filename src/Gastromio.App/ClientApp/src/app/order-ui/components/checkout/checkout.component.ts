@@ -97,7 +97,7 @@ export class CheckoutComponent implements OnInit {
         }
       }, error => {
         this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+        this.generalError = this.httpErrorHandlingService.handleError(error).message;
       });
 
     this.orderFacade.getInitializationError$()

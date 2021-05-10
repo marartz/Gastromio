@@ -102,6 +102,8 @@ export class RestaurantAdminFacade {
             return 0;
           });
 
+          console.log("restaurant: ", restaurant);
+
           this.restaurant$.next(restaurant);
         })
       );
@@ -121,7 +123,7 @@ export class RestaurantAdminFacade {
         (error: HttpErrorResponse) => {
           this.isInitializing$.next(false);
           this.isInitialized$.next(false);
-          this.initializationError$.next(this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors());
+          this.initializationError$.next(this.httpErrorHandlingService.handleError(error).message);
         }
       );
   }
@@ -250,7 +252,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, response => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -266,7 +268,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, response => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -289,7 +291,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -307,7 +309,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -330,7 +332,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -348,7 +350,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -366,7 +368,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -404,7 +406,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -450,7 +452,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -482,7 +484,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -507,7 +509,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -532,7 +534,7 @@ export class RestaurantAdminFacade {
         ),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -563,7 +565,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -589,7 +591,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -615,7 +617,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -650,7 +652,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -676,7 +678,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -705,7 +707,7 @@ export class RestaurantAdminFacade {
         ),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -740,7 +742,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -765,7 +767,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -792,7 +794,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -816,7 +818,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -840,7 +842,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -866,7 +868,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -890,7 +892,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -911,7 +913,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -932,7 +934,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -962,7 +964,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       )
@@ -988,7 +990,7 @@ export class RestaurantAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       )
@@ -1019,7 +1021,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 
@@ -1048,7 +1050,7 @@ export class RestaurantAdminFacade {
         this.isUpdated$.next(true);
       }, (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
       });
   }
 

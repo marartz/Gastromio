@@ -126,7 +126,7 @@ export class OrderFacade {
           this.isInitializing$.next(false);
           this.isInitialized$.next(false);
           if (error instanceof HttpErrorResponse) {
-            const errorText = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+            const errorText = this.httpErrorHandlingService.handleError(error).message;
             this.initializationError$.next(errorText);
           } else if (error instanceof Error) {
             this.initializationError$.next(error.message);
@@ -496,7 +496,7 @@ export class OrderFacade {
         (response: HttpErrorResponse) => {
           this.isCheckingOut$.next(false);
           this.isCheckedOut$.next(false);
-          this.checkoutError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.checkoutError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         }
       );
