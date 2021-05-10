@@ -606,7 +606,7 @@ namespace Gastromio.App.Controllers.V1
                 new AddOrChangeDishOfRestaurantCommand(
                     new RestaurantId(restaurantId),
                     new DishCategoryId(model.DishCategoryId),
-                    new DishId(model.Dish.Id),
+                    model.Dish.Id == Guid.Empty ? null : new DishId(model.Dish.Id),
                     model.Dish.Name,
                     model.Dish.Description,
                     model.Dish.ProductInfo,

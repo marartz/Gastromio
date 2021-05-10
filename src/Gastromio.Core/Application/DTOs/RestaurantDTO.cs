@@ -67,6 +67,9 @@ namespace Gastromio.Core.Application.DTOs
             IsActive = restaurant.IsActive;
             NeedsSupport = restaurant.NeedsSupport;
             SupportedOrderMode = restaurant.SupportedOrderMode.ToModel();
+            DishCategories = restaurant.DishCategories != null
+                ? restaurant.DishCategories.Select(en => new DishCategoryDTO(en)).ToList()
+                : new List<DishCategoryDTO>();
             ExternalMenus = restaurant.ExternalMenus != null
                 ? restaurant.ExternalMenus.Select(menu => new ExternalMenuDTO(
                         menu.Id.Value,
@@ -127,6 +130,8 @@ namespace Gastromio.Core.Application.DTOs
         public bool NeedsSupport { get; }
 
         public string SupportedOrderMode { get; }
+
+        public IReadOnlyCollection<DishCategoryDTO> DishCategories { get; }
 
         public IReadOnlyCollection<ExternalMenuDTO> ExternalMenus { get; }
 
