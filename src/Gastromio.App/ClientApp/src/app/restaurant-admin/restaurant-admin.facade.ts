@@ -102,8 +102,6 @@ export class RestaurantAdminFacade {
             return 0;
           });
 
-          console.log("restaurant: ", restaurant);
-
           this.restaurant$.next(restaurant);
         })
       );
