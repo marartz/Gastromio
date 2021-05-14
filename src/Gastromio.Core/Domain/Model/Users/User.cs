@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Failures;
 
@@ -11,8 +10,6 @@ namespace Gastromio.Core.Domain.Model.Users
         private const int SALT_BYTES = 24;
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
-
-        private static Regex passwordPolicyRegex = new Regex(@"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}");
 
         public User(
             UserId id,
@@ -87,7 +84,7 @@ namespace Gastromio.Core.Domain.Model.Users
             if (password == null)
                 throw new ArgumentNullException(nameof(password));
 
-            if (checkPasswordPolicy && !passwordPolicyRegex.IsMatch(password))
+            if (checkPasswordPolicy && !Validators.IsValidPassword(password))
                 throw DomainException.CreateFrom(new PasswordIsNotValidFailure());
 
             var newPasswordSalt = new byte[SALT_BYTES];
