@@ -6,7 +6,7 @@ namespace Gastromio.Core.Domain.Failures
     {
         public override string ToString()
         {
-            return base.ToString();
+            return "Die Kontaktinformationen des Restaurants werden benötigt";
         }
     }
 }

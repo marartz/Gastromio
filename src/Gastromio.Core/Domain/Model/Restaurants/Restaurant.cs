@@ -50,8 +50,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             Alias = alias;
             Address = address;
             ContactInfo = contactInfo;
-            RegularOpeningDays = regularOpeningDays;
-            DeviatingOpeningDays = deviatingOpeningDays;
+            RegularOpeningDays = regularOpeningDays ?? new RegularOpeningDays(Enumerable.Empty<RegularOpeningDay>());
+            DeviatingOpeningDays = deviatingOpeningDays ?? new DeviatingOpeningDays(Enumerable.Empty<DeviatingOpeningDay>());
             PickupInfo = pickupInfo ?? new PickupInfo(false, 0, null, null);
             DeliveryInfo = deliveryInfo ?? new DeliveryInfo(false, 0, null, null, null);
             ReservationInfo = reservationInfo ?? new ReservationInfo(false, null);
@@ -154,14 +154,14 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public void ChangeContactInfo(ContactInfo contactInfo, UserId changedBy)
         {
-            ContactInfo = contactInfo;
+            ContactInfo = contactInfo ?? throw DomainException.CreateFrom(new RestaurantContactInfoRequiredFailure());
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
         }
 
         public void ChangeRegularOpeningDays(RegularOpeningDays regularOpeningDays, UserId changedBy)
         {
-            RegularOpeningDays = regularOpeningDays;
+            RegularOpeningDays = regularOpeningDays ?? new RegularOpeningDays(Enumerable.Empty<RegularOpeningDay>());
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
         }
@@ -182,7 +182,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public void ChangeDeviatingOpeningDays(DeviatingOpeningDays deviatingOpeningDays, UserId changedBy)
         {
-            DeviatingOpeningDays = deviatingOpeningDays;
+            DeviatingOpeningDays = deviatingOpeningDays ?? new DeviatingOpeningDays(Enumerable.Empty<DeviatingOpeningDay>());
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
         }
@@ -271,21 +271,21 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public void ChangePickupInfo(PickupInfo pickupInfo, UserId changedBy)
         {
-            PickupInfo = pickupInfo;
+            PickupInfo = pickupInfo ?? throw DomainException.CreateFrom(new RestaurantPickupInfoRequiredFailure());
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
         }
 
         public void ChangeDeliveryInfo(DeliveryInfo deliveryInfo, UserId changedBy)
         {
-            DeliveryInfo = deliveryInfo;
+            DeliveryInfo = deliveryInfo ?? throw DomainException.CreateFrom(new RestaurantDeliveryInfoRequiredFailure());
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
         }
 
         public void ChangeReservationInfo(ReservationInfo reservationInfo, UserId changedBy)
         {
-            ReservationInfo = reservationInfo;
+            ReservationInfo = reservationInfo ?? throw DomainException.CreateFrom(new RestaurantReservationInfoRequiredFailure());
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
         }
