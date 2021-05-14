@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 
 namespace Gastromio.Core.Domain.Model.Restaurants
 {
@@ -16,7 +18,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             foreach (var openingDay in openingDays)
             {
                 if (tempDict.ContainsKey(openingDay.DayOfWeek))
-                    throw new InvalidOperationException("day of week is already registered");
+                    throw DomainException.CreateFrom(new RegularOpeningDayIsAlreadyRegisteredFailure(openingDay.DayOfWeek));
                 tempDict.Add(openingDay.DayOfWeek, openingDay);
             }
 

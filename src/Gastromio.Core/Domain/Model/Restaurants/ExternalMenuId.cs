@@ -1,5 +1,6 @@
 using System;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 
 namespace Gastromio.Core.Domain.Model.Restaurants
 {
@@ -8,7 +9,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         public ExternalMenuId(Guid value) : base(value)
         {
             if (value == Guid.Empty)
-                throw new InvalidOperationException("external menu id is invalid");
+                throw DomainException.CreateFrom(new ExternalMenuIdIsInvalidFailure());
         }
     }
 }

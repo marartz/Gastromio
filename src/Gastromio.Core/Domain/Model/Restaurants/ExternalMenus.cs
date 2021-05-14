@@ -18,7 +18,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             foreach (var externalMenu in externalMenus)
             {
                 if (tempDict.ContainsKey(externalMenu.Id))
-                    throw new InvalidOperationException("external menu is already registered");
+                    throw DomainException.CreateFrom(new ExternalMenuIsAlreadyRegisteredFailure(externalMenu.Id));
                 tempDict.Add(externalMenu.Id, externalMenu);
             }
 

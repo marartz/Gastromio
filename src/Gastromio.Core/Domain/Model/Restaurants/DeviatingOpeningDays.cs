@@ -18,7 +18,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             foreach (var openingDay in openingDays)
             {
                 if (tempDict.ContainsKey(openingDay.Date))
-                    throw new InvalidOperationException("day of week is already registered");
+                    throw DomainException.CreateFrom(new DeviatingOpeningDayIsAlreadyRegisteredFailure(openingDay.Date));
                 tempDict.Add(openingDay.Date, openingDay);
             }
 
