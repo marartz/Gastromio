@@ -73,10 +73,10 @@
 
 #order-home #landing h1 {
     font-family: "Apercu", sans-serif;
-    font-size: 74px;
+    font-size: 48px;
     font-weight: 700;
-    letter-spacing: -0.5px;
-    line-height: 82px;
+    letter-spacing: -0.9px;
+    line-height: 45px;
     margin: 0px;
     min-height: 1px;
     text-align: center;
@@ -85,7 +85,7 @@
 
 #order-home #landing h2 {
     font-family: "Apercu", sans-serif;
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.5px;
     line-height: 46px;
@@ -281,8 +281,8 @@
         margin-right: -16px;
     }
     #order-home #landing .hero-container {
-        flex: 0 0 75%;
-        max-width: 75%;
+        flex: 0 0 90%;
+        max-width: 90%;
         padding-left: 16px;
         padding-right: 16px;
         -webkit-box-flex: 0;
@@ -343,8 +343,8 @@
         width: 960px;
     }
     #order-home #landing .hero-container {
-        flex: 0 0 66.66667%;
-        max-width: 66.66667%;
+        flex: 0 0 85%;
+        max-width: 85%;
         padding-left: 16px;
         padding-right: 16px;
         -webkit-box-flex: 0;
@@ -381,12 +381,12 @@
         margin-top: 100px;
     }
     #order-home #landing h1 {
-        font-size: 58px;
-        line-height: 65px;
+        font-size: 32px;
+        line-height: 40px;
     }
     #order-home #landing h2 {
-        font-size: 26px;
-        line-height: 44px;
+        font-size: 20px;
+        line-height: 40px;
     }
     #order-home #landing .input-wrapper input {
         border-radius: 23px 23px 0px 0px;
@@ -447,7 +447,7 @@
         margin-top: 80px;
     }
     #order-home #landing h2 {
-        font-size: 24px;
+        font-size: 20px;
     }
 }
 
