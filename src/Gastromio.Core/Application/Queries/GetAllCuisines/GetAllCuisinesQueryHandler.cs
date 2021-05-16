@@ -19,14 +19,14 @@ namespace Gastromio.Core.Application.Queries.GetAllCuisines
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<Result<ICollection<CuisineDTO>>> HandleAsync(GetAllCuisinesQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<ICollection<CuisineDTO>> HandleAsync(GetAllCuisinesQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             var cuisines = await cuisineRepository.FindAllAsync(cancellationToken);
 
-            return SuccessResult<ICollection<CuisineDTO>>.Create(cuisines.Select(cuisine => new CuisineDTO(cuisine)).ToList());
+            return cuisines.Select(cuisine => new CuisineDTO(cuisine)).ToList();
         }
     }
 }

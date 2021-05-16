@@ -3,6 +3,7 @@ import {UserModel} from './user.model';
 import {CuisineModel} from './cuisine.model';
 import {DateModel} from "./date.model";
 import * as moment from "moment";
+import {DishCategoryModel} from "./dish-category.model";
 
 export class RestaurantModel {
 
@@ -17,6 +18,7 @@ export class RestaurantModel {
     this.pickupInfo = new PickupInfoModel(this.pickupInfo);
     this.deliveryInfo = new DeliveryInfoModel(this.deliveryInfo);
     this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
+    this.dishCategories = this.dishCategories?.map(dishCategory => new DishCategoryModel(dishCategory)) ?? new Array<DishCategoryModel>();
     this.externalMenus = this.externalMenus?.map(menu => new ExternalMenu(menu)) ?? new Array<ExternalMenu>();
     this.paymentMethods = this.paymentMethods?.map(paymentMethod => new PaymentMethodModel(paymentMethod))
       .sort((a, b) => {
@@ -85,6 +87,8 @@ export class RestaurantModel {
 
   public supportedOrderMode: string;
 
+  public dishCategories: DishCategoryModel[];
+
   public externalMenus: ExternalMenu[];
 
   public createdOn: string;
@@ -124,6 +128,7 @@ export class RestaurantModel {
       isActive: this.isActive,
       needsSupport: this.needsSupport,
       supportedOrderMode: this.supportedOrderMode,
+      dishCategories: this.dishCategories?.map(dishCategory => dishCategory?.clone()),
       externalMenus: this.externalMenus?.map(menu => menu?.clone()),
       createdOn: this.createdOn,
       createdOnDate: this.createdOnDate,

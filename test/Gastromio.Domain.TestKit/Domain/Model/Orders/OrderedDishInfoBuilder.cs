@@ -1,6 +1,6 @@
 using System;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Domain.TestKit.Common;
 
 namespace Gastromio.Domain.TestKit.Domain.Model.Orders

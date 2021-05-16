@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveCuisineFromRestaurant
 {
-    public class RemoveCuisineFromRestaurantCommand : ICommand<bool>
+    public class RemoveCuisineFromRestaurantCommand : ICommand
     {
         public RemoveCuisineFromRestaurantCommand(RestaurantId restaurantId, CuisineId cuisineId)
         {

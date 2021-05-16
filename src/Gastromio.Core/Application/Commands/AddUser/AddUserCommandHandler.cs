@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.AddUser
@@ -19,37 +20,32 @@ namespace Gastromio.Core.Application.Commands.AddUser
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<UserDTO>> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<UserDTO> HandleAsync(AddUserCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<UserDTO>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<UserDTO>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user != null)
-                return FailureResult<UserDTO>.Create(FailureResultCode.UserAlreadyExists);
+                throw DomainException.CreateFrom(new UserAlreadyExistsFailure());
 
-            var createResult = userFactory.Create(
+            user = userFactory.Create(
                 command.Role,
                 command.Email,
                 command.Password,
                 true,
                 currentUser.Id
             );
-            
-            if (createResult.IsFailure)
-                return createResult.Cast<UserDTO>();
-
-            user = createResult.Value;
 
             await userRepository.StoreAsync(user, cancellationToken);
 
-            return SuccessResult<UserDTO>.Create(new UserDTO(user));
+            return new UserDTO(user);
         }
     }
 }

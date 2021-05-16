@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,12 +8,12 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddRestaurant;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Cuisines;
 using Gastromio.Domain.TestKit.Domain.Model.PaymentMethods;
-using Gastromio.Domain.TestKit.Domain.Model.RestaurantImages;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
 using Moq;
@@ -31,7 +32,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantCreationWithFailure_ReturnsFailure()
+        public async Task HandleAsync_RestaurantCreationWithFailure_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurantToCreate();
@@ -44,18 +45,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantNameRequiredFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantAlreadyKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantAlreadyKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurantToCreate();
@@ -65,18 +62,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantAlreadyExistsFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -91,7 +84,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
@@ -150,6 +142,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             {
                 Restaurant = new RestaurantBuilder()
                     .WithName("test")
+                    .WithValidConstrains()
                     .Create();
             }
 
@@ -157,6 +150,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             {
                 var restaurant = new RestaurantBuilder()
                     .WithName("test")
+                    .WithValidConstrains()
                     .Create();
 
                 RestaurantRepositoryMock.SetupFindByRestaurantNameAsync("test")
@@ -196,13 +190,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
             public void SetupRestaurantFactoryCreatingRestaurant()
             {
                 RestaurantFactoryMock.SetupCreateWithName("test", UserWithMinimumRole.Id)
-                    .Returns(SuccessResult<Restaurant>.Create(Restaurant));
+                    .Returns(Restaurant);
             }
 
             public void SetupRestaurantFactoryNotCreatingRestaurant()
             {
                 RestaurantFactoryMock.SetupCreateWithName("test", UserWithMinimumRole.Id)
-                    .Returns(FailureResult<Restaurant>.Create(FailureResultCode.RestaurantNameRequired));
+                    .Throws(DomainException.CreateFrom(new RestaurantNameRequiredFailure()));
             }
 
             public void SetupUserRepositoryFindingAdministrators()
@@ -212,7 +206,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRestaurant
                     .ToList();
 
                 var users = userIds.Select(
-                    userId => new UserBuilder().WithId(userId).Create()
+                    userId => new UserBuilder()
+                        .WithId(userId)
+                        .WithEmail($"{userId}@gastromio.de")
+                        .Create()
                 );
 
                 UserRepositoryMock.SetupFindByUserIdsAsync(userIds)

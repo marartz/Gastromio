@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -16,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant
 {
     public class ChangeRegularOpeningPeriodOfRestaurantCommandHandlerTests : CommandHandlerTestBase<ChangeRegularOpeningPeriodOfRestaurantCommandHandler,
-        ChangeRegularOpeningPeriodOfRestaurantCommand, bool>
+        ChangeRegularOpeningPeriodOfRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -26,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRegularOpeningPeriod
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRegularOpeningPeriodAndDay();
@@ -37,18 +39,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRegularOpeningPeriod
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesRegularOpeningPeriodAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesRegularOpeningPeriod()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -57,14 +55,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRegularOpeningPeriod
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var openingPeriod = fixture.Restaurant.RegularOpeningDays.Select(en => en.Value).First();
+                var openingPeriod = fixture.Restaurant.RegularOpeningDays.First();
                 openingPeriod.OpeningPeriods.Should()
                     .BeEquivalentTo(new OpeningPeriod(TimeSpan.FromHours(15), TimeSpan.FromHours(21)));
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
@@ -72,13 +68,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeRegularOpeningPeriod
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeRegularOpeningPeriodOfRestaurantCommandHandler, ChangeRegularOpeningPeriodOfRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeRegularOpeningPeriodOfRestaurantCommandHandler, ChangeRegularOpeningPeriodOfRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeRegularOpeningPeriodOfRestaurantCommandHandler,
-            ChangeRegularOpeningPeriodOfRestaurantCommand, bool>
+            ChangeRegularOpeningPeriodOfRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -2,7 +2,7 @@
 
 namespace Gastromio.Core.Application.Commands.ChangeUserDetails
 {
-    public class ChangeUserDetailsCommand : ICommand<bool>
+    public class ChangeUserDetailsCommand : ICommand
     {
         public ChangeUserDetailsCommand(UserId userId, Role role, string email)
         {

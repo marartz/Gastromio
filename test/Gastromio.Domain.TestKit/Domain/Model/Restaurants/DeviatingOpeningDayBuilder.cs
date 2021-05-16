@@ -27,6 +27,11 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 
         public DeviatingOpeningDayBuilder WithOpeningPeriods(IEnumerable<OpeningPeriod> openingPeriods)
         {
+            return WithOpeningPeriods(new OpeningPeriods(openingPeriods));
+        }
+
+        public DeviatingOpeningDayBuilder WithOpeningPeriods(OpeningPeriods openingPeriods)
+        {
             WithConstantConstructorArgumentFor("openingPeriods", openingPeriods);
             return this;
         }

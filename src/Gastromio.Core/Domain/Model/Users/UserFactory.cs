@@ -1,11 +1,10 @@
 ﻿using System;
-using Gastromio.Core.Common;
 
 namespace Gastromio.Core.Domain.Model.Users
 {
     public class UserFactory : IUserFactory
     {
-        public Result<User> Create(
+        public User Create(
             Role role,
             string email,
             string password,
@@ -15,8 +14,8 @@ namespace Gastromio.Core.Domain.Model.Users
         {
             var user = new User(
                 new UserId(Guid.NewGuid()),
-                Role.Customer,
-                null,
+                role,
+                email,
                 null,
                 null,
                 null,
@@ -27,18 +26,12 @@ namespace Gastromio.Core.Domain.Model.Users
                 createdBy
             );
 
-            var tempResult = user.ChangeDetails(role, email, createdBy);
-            if (tempResult.IsFailure)
-                return tempResult.Cast<User>();
-
             if (!string.IsNullOrEmpty(password))
             {
-                tempResult = user.ChangePassword(password, checkPasswordPolicy, createdBy);
-                if (tempResult.IsFailure)
-                    return tempResult.Cast<User>();
+                user.ChangePassword(password, checkPasswordPolicy, createdBy);
             }
 
-            return SuccessResult<User>.Create(user);
+            return user;
         }
     }
 }

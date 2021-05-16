@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Users;
 
@@ -87,34 +86,28 @@ namespace Gastromio.Core.Domain.Model.Orders
             return GetValueOfOrder() + Costs;
         }
 
-        public Result<bool> RegisterCustomerNotificationAttempt(bool status, string message)
+        public void RegisterCustomerNotificationAttempt(bool status, string message)
         {
             CustomerNotificationInfo = CustomerNotificationInfo == null
                 ? new NotificationInfo(status, 1, message, DateTimeOffset.UtcNow)
                 : new NotificationInfo(status, CustomerNotificationInfo.Attempt + 1, message, DateTimeOffset.UtcNow);
             UpdatedOn = DateTimeOffset.UtcNow;
-
-            return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> RegisterRestaurantEmailNotificationAttempt(bool status, string message)
+        public void RegisterRestaurantEmailNotificationAttempt(bool status, string message)
         {
             RestaurantEmailNotificationInfo = RestaurantEmailNotificationInfo == null
                 ? new NotificationInfo(status, 1, message, DateTimeOffset.UtcNow)
                 : new NotificationInfo(status, RestaurantEmailNotificationInfo.Attempt + 1, message, DateTimeOffset.UtcNow);
             UpdatedOn = DateTimeOffset.UtcNow;
-
-            return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> RegisterRestaurantMobileNotificationAttempt(bool status, string message)
+        public void RegisterRestaurantMobileNotificationAttempt(bool status, string message)
         {
             RestaurantMobileNotificationInfo = RestaurantMobileNotificationInfo == null
                 ? new NotificationInfo(status, 1, message, DateTimeOffset.UtcNow)
                 : new NotificationInfo(status, RestaurantMobileNotificationInfo.Attempt + 1, message, DateTimeOffset.UtcNow);
             UpdatedOn = DateTimeOffset.UtcNow;
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

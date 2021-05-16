@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
 {
-    public class ProcessPendingNotificationsCommandHandler : ICommandHandler<ProcessPendingNotificationsCommand, bool>
+    public class ProcessPendingNotificationsCommandHandler : ICommandHandler<ProcessPendingNotificationsCommand>
     {
         private readonly ILogger<ProcessPendingNotificationsCommandHandler> logger;
         private readonly IOrderRepository orderRepository;
@@ -40,7 +40,7 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
             this.configurationProvider = configurationProvider;
         }
 
-        public async Task<Result<bool>> HandleAsync(ProcessPendingNotificationsCommand command, User currentUser,
+        public async Task HandleAsync(ProcessPendingNotificationsCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             var pendingCustomerNotificationOrders =
@@ -73,8 +73,6 @@ namespace Gastromio.Core.Application.Commands.ProcessPendingNotifications
                     break;
                 await TriggerRestaurantMobileNotificationAsync(order, cancellationToken);
             }
-
-            return SuccessResult<bool>.Create(true);
         }
 
         private async Task TriggerCustomerNotificationAsync(Order order,

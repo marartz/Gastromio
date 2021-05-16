@@ -1,8 +1,11 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeCuisine;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -13,7 +16,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
 {
     public class ChangeCuisineCommandHandlerTests : CommandHandlerTestBase<ChangeCuisineCommandHandler,
-        ChangeCuisineCommand, bool>
+        ChangeCuisineCommand>
     {
         private readonly Fixture fixture;
 
@@ -23,7 +26,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineNotKnown_ReturnsFailure()
+        public async Task HandleAsync_CuisineNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomCuisine();
@@ -33,18 +36,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<CuisineDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_StoresCuisineReturnsSuccess()
+        public async Task HandleAsync_AllValid_StoresCuisine()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -53,25 +52,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeCuisine
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.CuisineRepositoryMock.VerifyStoreAsync(fixture.Cuisine, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeCuisineCommandHandler, ChangeCuisineCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeCuisineCommandHandler, ChangeCuisineCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeCuisineCommandHandler,
-            ChangeCuisineCommand, bool>
+            ChangeCuisineCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,6 +7,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.RemoveDeviatingOpeningPeriodFromRestaurant;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -17,7 +19,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningPeriodFromRestaurant
 {
     public class RemoveDeviatingOpeningPeriodFromRestaurantCommandHandlerTests : CommandHandlerTestBase<RemoveDeviatingOpeningPeriodFromRestaurantCommandHandler,
-        RemoveDeviatingOpeningPeriodFromRestaurantCommand, bool>
+        RemoveDeviatingOpeningPeriodFromRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,7 +29,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningPeri
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomDateOfDeviatingOpeningDay();
@@ -39,18 +41,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningPeri
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesDeviatingOpeningPeriodAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesDeviatingOpeningPeriod()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -59,28 +57,26 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveDeviatingOpeningPeri
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.Restaurant.DeviatingOpeningDays.First().Value.Status.Should()
+                fixture.Restaurant.DeviatingOpeningDays.First().Status.Should()
                     .Be(DeviatingOpeningDayStatus.Closed);
-                fixture.Restaurant.DeviatingOpeningDays.First().Value.OpeningPeriods.Should().BeEmpty();
+                fixture.Restaurant.DeviatingOpeningDays.First().OpeningPeriods.Should().BeEmpty();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveDeviatingOpeningPeriodFromRestaurantCommandHandler, RemoveDeviatingOpeningPeriodFromRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveDeviatingOpeningPeriodFromRestaurantCommandHandler, RemoveDeviatingOpeningPeriodFromRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveDeviatingOpeningPeriodFromRestaurantCommandHandler,
-            RemoveDeviatingOpeningPeriodFromRestaurantCommand, bool>
+            RemoveDeviatingOpeningPeriodFromRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

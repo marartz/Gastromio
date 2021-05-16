@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Orders;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
@@ -21,25 +20,23 @@ namespace Gastromio.Core.Application.Commands.Checkout
     {
         private readonly ILogger<CheckoutCommandHandler> logger;
         private readonly IRestaurantRepository restaurantRepository;
-        private readonly IDishCategoryRepository dishCategoryRepository;
-        private readonly IDishRepository dishRepository;
         private readonly IPaymentMethodRepository paymentMethodRepository;
         private readonly IOrderRepository orderRepository;
 
-        public CheckoutCommandHandler(ILogger<CheckoutCommandHandler> logger,
-            IRestaurantRepository restaurantRepository, IDishCategoryRepository dishCategoryRepository,
-            IDishRepository dishRepository, IPaymentMethodRepository paymentMethodRepository,
-            IOrderRepository orderRepository)
+        public CheckoutCommandHandler(
+            ILogger<CheckoutCommandHandler> logger,
+            IRestaurantRepository restaurantRepository,
+            IPaymentMethodRepository paymentMethodRepository,
+            IOrderRepository orderRepository
+        )
         {
             this.logger = logger;
             this.restaurantRepository = restaurantRepository;
-            this.dishCategoryRepository = dishCategoryRepository;
-            this.dishRepository = dishRepository;
             this.paymentMethodRepository = paymentMethodRepository;
             this.orderRepository = orderRepository;
         }
 
-        public async Task<Result<OrderDTO>> HandleAsync(CheckoutCommand command, User currentUser,
+        public async Task<OrderDTO> HandleAsync(CheckoutCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
@@ -69,13 +66,13 @@ namespace Gastromio.Core.Application.Commands.Checkout
             if (restaurant == null)
             {
                 logger.LogInformation($"Declined order {newOrderId.Value}: restaurant not found");
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                throw DomainException.CreateFrom(new OrderIsInvalidFailure());
             }
 
             if (!restaurant.IsActive)
             {
                 logger.LogInformation($"Declined order {newOrderId.Value}: restaurant not active");
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                throw DomainException.CreateFrom(new OrderIsInvalidFailure());
             }
 
             var restaurantInfo =
@@ -83,71 +80,53 @@ namespace Gastromio.Core.Application.Commands.Checkout
 
             decimal totalPrice = 0;
 
-            var dishCategoryDict = new Dictionary<DishCategoryId, DishCategory>();
-
             var dishDict = new Dictionary<Guid, Dish>();
             var variantDict = new Dictionary<Guid, DishVariant>();
+
             foreach (var cartDish in command.CartDishes)
             {
-                var dish = await dishRepository.FindByDishIdAsync(cartDish.DishId, cancellationToken);
-                if (dish == null)
+                if (!restaurant.DishCategories.TryGetDish(cartDish.DishId, out var dishCategory, out var dish))
                 {
                     logger.LogInformation($"Declined order {newOrderId.Value}: dish not found");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                 }
 
-                dishDict.Add(cartDish.ItemId, dish);
-                if (dish.RestaurantId != restaurant.Id)
-                {
-                    logger.LogInformation($"Declined order {newOrderId.Value}: dish does not belong to restaurant");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-                }
+                dishDict[cartDish.ItemId] = dish;
 
-                if (!dishCategoryDict.TryGetValue(dish.CategoryId, out var dishCategory))
-                {
-                    dishCategory =
-                        await dishCategoryRepository.FindByDishCategoryIdAsync(dish.CategoryId, cancellationToken);
-                    dishCategoryDict.Add(dish.CategoryId, dishCategory);
-                }
-                if (dishCategory == null)
-                {
-                    logger.LogInformation($"Declined order {newOrderId.Value}: dish category not found");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
-                }
                 if (!dishCategory.Enabled)
                 {
                     logger.LogInformation($"Declined order {newOrderId.Value}: dish category is disabled");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                 }
 
-                var variant = dish.Variants.FirstOrDefault(en => en.VariantId == cartDish.VariantId);
-                if (variant == null)
+                if (!dish.Variants.TryGetDishVariant(cartDish.VariantId, out var variant))
                 {
                     logger.LogInformation($"Declined order {newOrderId.Value}: variant does not belong to dish");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                 }
 
-                variantDict.Add(cartDish.ItemId, variant);
+                variantDict[cartDish.ItemId] = variant;
+
                 if (!string.IsNullOrWhiteSpace(cartDish.Remarks))
                 {
                     var remarks = cartDish.Remarks.Trim();
                     if (remarks.Length > 1000)
                     {
                         logger.LogInformation($"Declined order {newOrderId.Value}: remark is longer than 1000 characters");
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                        throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                     }
                 }
 
                 if (cartDish.Count <= 0)
                 {
                     logger.LogInformation($"Declined order {newOrderId.Value}: dish count is negative");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                 }
 
                 if (cartDish.Count > 100)
                 {
                     logger.LogInformation($"Declined order {newOrderId.Value}: dish count is greater than 100");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                 }
 
                 totalPrice += cartDish.Count * variant.Price;
@@ -159,7 +138,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     if (!ValidateOrderTypePickup(command, newOrderId, restaurant, totalPrice))
                     {
                         logger.LogInformation($"Declined order {newOrderId.Value}: pickup order is not valid");
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                        throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                     }
 
                     break;
@@ -167,7 +146,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     if (!ValidateOrderTypeDelivery(command, newOrderId, restaurant, totalPrice))
                     {
                         logger.LogInformation($"Declined order {newOrderId.Value}: delivery order is not valid");
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                        throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                     }
 
                     break;
@@ -175,7 +154,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                     if (!ValidateOrderTypeReservation(command, newOrderId, restaurant))
                     {
                         logger.LogInformation($"Declined order {newOrderId.Value}: reservation order is not valid");
-                        return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                        throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                     }
 
                     break;
@@ -187,7 +166,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
             if (!restaurant.IsOrderPossibleAt(serviceTime))
             {
                 logger.LogInformation($"Declined order {newOrderId.Value}: order at this time is not possible");
-                return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                throw DomainException.CreateFrom(new OrderIsInvalidFailure());
             }
 
             PaymentMethod paymentMethod = null;
@@ -199,7 +178,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
                 if (paymentMethod == null)
                 {
                     logger.LogInformation($"Declined order {newOrderId.Value}: payment method is not known");
-                    return FailureResult<OrderDTO>.Create(FailureResultCode.OrderIsInvalid);
+                    throw DomainException.CreateFrom(new OrderIsInvalidFailure());
                 }
             }
 
@@ -268,7 +247,7 @@ namespace Gastromio.Core.Application.Commands.Checkout
 
             var viewModel = new OrderDTO(order, paymentMethod);
             logger.LogInformation($"Order is processed successfully: {newOrderId.Value}");
-            return SuccessResult<OrderDTO>.Create(viewModel);
+            return viewModel;
         }
 
         private bool ValidateOrderTypePickup(CheckoutCommand command, OrderId newOrderId, Restaurant restaurant, decimal totalPrice)

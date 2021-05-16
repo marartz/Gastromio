@@ -49,7 +49,7 @@
                                 data-aos-duration="800"
                                 data-aos-once="true"
                                 >
-                                {{restaurant.address.street}}, {{restaurant.address.city}}
+                                {{restaurant.address?.street}}, {{restaurant.address?.city}}
                             </h2>
                             <h2
                                 class="restaurant-hours"
@@ -90,7 +90,7 @@
 							 >
                             <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" [routerLink]="['/restaurants', restaurant.alias, 'reservation']">
                                 <span>Tisch reservieren</span>
-                                <span style="font-size: 11px;" *ngIf="showReservationValidFrom()"> (gem. CSV)</span>
+                                <span style="font-size: 11px;"> (gem. CSV)</span>
                             </a>
                             <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank" rel="nofollow noreferrer">
                                 <span>Tisch reservieren</span>
@@ -101,7 +101,7 @@
                                     <polyline points="15 3 21 3 21 9"></polyline>
                                     <line x1="10" y1="14" x2="21" y2="3"></line>
                                 </svg>
-                                <span style="font-size: 11px;" *ngIf="showReservationValidFrom()"> (gem. CSV)</span>
+                                <span style="font-size: 11px;"> (gem. CSV)</span>
                             </a>
                         </div>
 					</div>
@@ -172,7 +172,7 @@
 									Filter
 								</p>
 								<div class="category-container">
-									<div class="category" *ngFor="let dishCategory of dishCategories">
+									<div class="category" *ngFor="let dishCategory of restaurant.dishCategories">
 										<button
 												data-aos="gm-move-down"
 												data-aos-anchor="#order"

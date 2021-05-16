@@ -19,8 +19,6 @@ namespace Gastromio.Persistence.MongoDB
 
             services.AddTransient<IDbAdminService, DbAdminService>();
             services.AddTransient<ICuisineRepository, CuisineRepository>();
-            services.AddTransient<IDishCategoryRepository, DishCategoryRepository>();
-            services.AddTransient<IDishRepository, DishRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IRestaurantImageRepository, RestaurantImageRepository>();
             services.AddTransient<IUserRepository, UserRepository>();

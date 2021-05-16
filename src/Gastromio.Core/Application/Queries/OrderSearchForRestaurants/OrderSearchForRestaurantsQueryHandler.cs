@@ -34,16 +34,16 @@ namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<ICollection<RestaurantDTO>>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<ICollection<RestaurantDTO>> HandleAsync(OrderSearchForRestaurantsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));
+                .ToDictionary(en => en.Id, en => new CuisineDTO(en));
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
+                .ToDictionary(en => en.Id, en => new PaymentMethodDTO(en));
 
             var (_, items) = await restaurantRepository.SearchPagedAsync(query.SearchPhrase, query.OrderType,
                 query.CuisineId, query.OpeningHour, true, 0, -1, cancellationToken);
@@ -65,8 +65,8 @@ namespace Gastromio.Core.Application.Queries.OrderSearchForRestaurants
                 await restaurantImageRepository.FindTypesByRestaurantIdsAsync(
                     itemList.Select(restaurant => restaurant.Id), cancellationToken);
 
-            return SuccessResult<ICollection<RestaurantDTO>>.Create(itemList.Select(en =>
-                new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes)).ToList());
+            return itemList
+                .Select(en => new RestaurantDTO(en, cuisines, paymentMethods, userDict, restaurantImageTypes)).ToList();
         }
     }
 }

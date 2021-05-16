@@ -13,41 +13,58 @@
 
 </p>
 
-## Voraussetzungen für Entwickler
-- .NET SDK 3.1
-- MongoDB
+## Testen des Systems
 
-## Voraussetzungen für Tester
+### Voraussetzungen
 - Docker Community Edition
 - MongoDB
 
-## Installation von MongoDB
-MongoDB kann entweder auf dem Entwicklungs- oder Testrechner installiert werden (https://www.mongodb.com/try/download/community)
-oder mit Hilfe von Docker:
-
-    docker pull mongo:latest
-    docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:latest
-
-Ein Admin-User-Interface kann hier heruntergeladen werden: https://docs.mongodb.com/compass/master/install/
-
-## Testen des Systems
 Das System wird automatisiert mit GitHub Actions gebaut. GitHub Actions baut das Paket (in den Artefakten des Builds)
-und ein Dockerimage, welches bei Docker Hub veröffentlich wird: https://hub.docker.com/repository/docker/marartz/gastromio
+und ein Dockerimage, welches bei [Docker Hub](https://hub.docker.com/repository/docker/marartz/gastromio) veröffentlich wird
 
-Es werden unterschiedliche Versionen (Tags) veröffentlicht, abhängig vom Branch, der automatisch gebaut wurde. Im Folgenden ist der Platzhalter &lt;tag> durch einen Branch-Namen ersetzt werden (bspw. develop). Für Branches mit Slash: Das Slash muss durch
+Es werden unterschiedliche Versionen (Tags) veröffentlicht, abhängig vom Branch, der automatisch gebaut wurde. Im Folgenden ist der Platzhalter &lt;tag> durch einen Branch-Namen ersetzt werden (bspw. develop). 
+Für Branches mit Slash: Das Slash muss durch
 einen Unterstrich ersetzt werden (Beispiel: feature/abc => feature_abc)
 
 Zum Herunterladen des Images:
-    
-    docker pull marartz/gastromio:<tag>
+```
+docker pull marartz/gastromio:<tag>
+```
 
 Zum Starten des Images:
-    
-    docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 marartz/gastromio:<tag>
+```
+docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 marartz/gastromio:<tag>
+```
     
 Wenn die Datenbank zurückgesetzt und Testdaten automatisiert angelegt werden sollen:
-    
-    docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 -e SEED=true marartz/gastromio:<tag>
+```
+docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 -e SEED=true marartz/gastromio:<tag>
+```
+
+## Projekt für die Entwicklung aufsetzen
+1. Vorrausgesetzte Software installieren
+    * .NET SDK 3.1
+    * [MongoDB](https://www.mongodb.com/try/download/community) (+ [Compass](https://www.mongodb.com/try/download/compass) empfohlen)
+    * IDE für C# und Webentwicklung (z.B. [Visual Studio](https://visualstudio.microsoft.com/de/))
+    * [NodeJS](https://nodejs.org/)
+2. Repository klonen: ```git clone```
+3. Abhängigkeiten installieren
+    * Backend: ```dotnet restore ./src/Gastromio.App```
+    * Frontend: ```npm i``` (Ausführen in ./src/Gastromio.App/ClientApp)
+4. Frontend starten: ```npm start```
+5. Backend starten: ```dotnet run --project ./src/Gastromio.App```
+6. Im Browser ```localhost:5001``` aufrufen
+   - **Hinweis**: Port kann varieren
+
+### Installation von MongoDB
+[MongoDB](https://www.mongodb.com/try/download/community) kann entweder auf dem Entwicklungs- oder Testrechner installiert werden oder mit Hilfe von Docker:
+
+```
+docker pull mongo:latest
+docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:latest
+```
+
+Ein Admin-User-Interface kann hier heruntergeladen werden: https://docs.mongodb.com/compass/master/install/
 
 ## Lizenzierung
 

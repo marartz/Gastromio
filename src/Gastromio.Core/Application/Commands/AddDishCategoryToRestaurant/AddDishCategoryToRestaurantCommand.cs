@@ -1,5 +1,4 @@
 ﻿using System;
-using Gastromio.Core.Domain.Model.DishCategories;
 using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.AddDishCategoryToRestaurant
