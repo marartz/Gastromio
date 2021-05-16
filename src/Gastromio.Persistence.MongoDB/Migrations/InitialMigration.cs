@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using MongoDBMigrations;
 using System;
 
@@ -8,6 +7,14 @@ namespace Gastromio.Persistence.MongoDB.Migrations
     public class InitialMigration : IMigration
     {
         public MongoDBMigrations.Version Version => DatabaseVersions.Initial;
+
+        private static string CuisineCollectionName = "cuisines";
+        private static string DishCategoryCollectionName = "dish_categories";
+        private static string DishCollectionName = "dishes";
+        private static string RestaurantCollectionName = "restaurants";
+        private static string RestaurantImageCollectionName = "restaurant_images";
+        private static string UserCollectionName = "users";
+        private static string OrderCollectionName = "orders";
 
         public string Name => "Initialise Database";
 
@@ -18,21 +25,23 @@ namespace Gastromio.Persistence.MongoDB.Migrations
 
         public void Up(IMongoDatabase database)
         {
-            var cuisineCollection = database.GetCollection<CuisineModel>(Constants.CuisineCollectionName);
+            var cuisineCollection = database.GetCollection<CuisineModel>(CuisineCollectionName);
             cuisineCollection.Indexes.CreateOne(
                 new CreateIndexModel<CuisineModel>(Builders<CuisineModel>.IndexKeys.Ascending(x => x.Name)));
 
-            var dishCategoryCollection = database.GetCollection<DishCategoryModel>(Constants.DishCategoryCollectionName);
-            dishCategoryCollection.Indexes.CreateOne(
-                new CreateIndexModel<DishCategoryModel>(Builders<DishCategoryModel>.IndexKeys.Ascending(x => x.RestaurantId)));
+            // TODO: Models of dish category and dishes have been changed!
 
-            var dishCollection = database.GetCollection<DishModel>(Constants.DishCollectionName);
-            dishCollection.Indexes.CreateOne(
-                new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.RestaurantId)));
-            dishCollection.Indexes.CreateOne(
-                new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.CategoryId)));
+            // var dishCategoryCollection = database.GetCollection<DishCategoryModel>(DishCategoryCollectionName);
+            // dishCategoryCollection.Indexes.CreateOne(
+            //     new CreateIndexModel<DishCategoryModel>(Builders<DishCategoryModel>.IndexKeys.Ascending(x => x.RestaurantId)));
+            //
+            // var dishCollection = database.GetCollection<DishModel>(DishCollectionName);
+            // dishCollection.Indexes.CreateOne(
+            //     new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.RestaurantId)));
+            // dishCollection.Indexes.CreateOne(
+            //     new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.CategoryId)));
 
-            var restaurantCollection = database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
+            var restaurantCollection = database.GetCollection<RestaurantModel>(RestaurantCollectionName);
             restaurantCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.ImportId)));
             restaurantCollection.Indexes.CreateOne(
@@ -44,17 +53,17 @@ namespace Gastromio.Persistence.MongoDB.Migrations
             restaurantCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.ReservationInfo.Enabled)));
 
-            var restaurantImageCollection = database.GetCollection<RestaurantImageModel>(Constants.RestaurantImageCollectionName);
+            var restaurantImageCollection = database.GetCollection<RestaurantImageModel>(RestaurantImageCollectionName);
             restaurantImageCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.RestaurantId)));
             restaurantImageCollection.Indexes.CreateOne(
                 new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.Type)));
 
-            var userCollection = database.GetCollection<UserModel>(Constants.UserCollectionName);
+            var userCollection = database.GetCollection<UserModel>(UserCollectionName);
             userCollection.Indexes.CreateOne(
                 new CreateIndexModel<UserModel>(Builders<UserModel>.IndexKeys.Ascending(x => x.Email)));
 
-            var orderCollection = database.GetCollection<OrderModel>(Constants.OrderCollectionName);
+            var orderCollection = database.GetCollection<OrderModel>(OrderCollectionName);
             orderCollection.Indexes.CreateOne(
                 new CreateIndexModel<OrderModel>(
                     Builders<OrderModel>.IndexKeys.Ascending(x => x.CartInfo.RestaurantId)));
