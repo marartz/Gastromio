@@ -75,3 +75,7 @@
 input.failure {
     background-color: indianred;
 }
+
+#table table tbody .actions .action-item svg {
+    max-width: unset;
+}
