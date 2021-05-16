@@ -1,57 +1,43 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveDishFromRestaurant
 {
-    public class RemoveDishFromRestaurantCommandHandler : ICommandHandler<RemoveDishFromRestaurantCommand, bool>
+    public class RemoveDishFromRestaurantCommandHandler : ICommandHandler<RemoveDishFromRestaurantCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
-        private readonly IDishCategoryRepository dishCategoryRepository;
-        private readonly IDishRepository dishRepository;
 
-        public RemoveDishFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository, IDishCategoryRepository dishCategoryRepository, IDishRepository dishRepository)
+        public RemoveDishFromRestaurantCommandHandler(IRestaurantRepository restaurantRepository)
         {
             this.restaurantRepository = restaurantRepository;
-            this.dishCategoryRepository = dishCategoryRepository;
-            this.dishRepository = dishRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(RemoveDishFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(RemoveDishFromRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
-            var dishCategories = await dishCategoryRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
-            var dishCategory = dishCategories?.FirstOrDefault(en => en.Id == command.DishCategoryId);
-            if (dishCategory == null)
-                return FailureResult<bool>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
+            restaurant.RemoveDish(command.DishCategoryId, command.DishId, currentUser.Id);
 
-            var dishes = await dishRepository.FindByDishCategoryIdAsync(dishCategory.Id, cancellationToken);
-            var dish = dishes?.FirstOrDefault(en => en.Id == command.DishId);
-            if (dish == null)
-                return FailureResult<bool>.Create(FailureResultCode.DishDoesNotBelongToDishCategory);
-
-            await dishRepository.RemoveAsync(command.DishId, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
+            await restaurantRepository.StoreAsync(restaurant, cancellationToken);
         }
     }
 }

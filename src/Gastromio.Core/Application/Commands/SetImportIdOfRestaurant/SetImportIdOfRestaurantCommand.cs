@@ -2,7 +2,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
 {
-    public class SetImportIdOfRestaurantCommand : ICommand<bool>
+    public class SetImportIdOfRestaurantCommand : ICommand
     {
         public SetImportIdOfRestaurantCommand(RestaurantId restaurantId, string importId)
         {

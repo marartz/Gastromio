@@ -3,8 +3,8 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Core.Domain.Services;
 using NPOI.XSSF.UserModel;
@@ -20,28 +20,27 @@ namespace Gastromio.Core.Application.Commands.ImportDishData
             this.dishDataImporter = dishDataImporter;
         }
 
-        public async Task<Result<ImportLog>> HandleAsync(ImportDishDataCommand command, User currentUser,
+        public async Task<ImportLog> HandleAsync(ImportDishDataCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<ImportLog>.Unauthorized().Cast<ImportLog>();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<ImportLog>.Forbidden().Cast<ImportLog>();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             return await ProcessFileAsync(command.DishDataStream, currentUser.Id, command.DryRun);
         }
 
-        private async Task<Result<ImportLog>> ProcessFileAsync(Stream stream, UserId curUserId, bool dryRun)
+        private async Task<ImportLog> ProcessFileAsync(Stream stream, UserId curUserId, bool dryRun)
         {
             var log = new ImportLog();
 
             var xssWorkbook = new XSSFWorkbook(stream);
             var sheet = xssWorkbook.GetSheetAt(0);
-            var headerRow = sheet.GetRow(0);
 
             for (var rowIndex = sheet.FirstRowNum + 1; rowIndex <= sheet.LastRowNum; rowIndex++)
             {
@@ -85,7 +84,7 @@ namespace Gastromio.Core.Application.Commands.ImportDishData
                 }
             }
 
-            return SuccessResult<ImportLog>.Create(log);
+            return log;
         }
     }
 }

@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeSupportedOrderModeOfRestaurant;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -14,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOfRestaurant
 {
     public class ChangeSupportedOrderModeOfRestaurantCommandHandlerTests : CommandHandlerTestBase<ChangeSupportedOrderModeOfRestaurantCommandHandler,
-        ChangeSupportedOrderModeOfRestaurantCommand, bool>
+        ChangeSupportedOrderModeOfRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -24,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOf
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
@@ -34,18 +37,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOf
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesServiceInfoOfRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesServiceInfoOfRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,26 +53,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeSupportedOrderModeOf
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.SupportedOrderMode.Should().Be(SupportedOrderMode.Anytime);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeSupportedOrderModeOfRestaurantCommandHandler, ChangeSupportedOrderModeOfRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeSupportedOrderModeOfRestaurantCommandHandler, ChangeSupportedOrderModeOfRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeSupportedOrderModeOfRestaurantCommandHandler,
-            ChangeSupportedOrderModeOfRestaurantCommand, bool>
+            ChangeSupportedOrderModeOfRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

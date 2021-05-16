@@ -4,7 +4,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRestaurant
 {
-    public class ChangeDeviatingOpeningPeriodOfRestaurantCommand : ICommand<bool>
+    public class ChangeDeviatingOpeningPeriodOfRestaurantCommand : ICommand
     {
         public ChangeDeviatingOpeningPeriodOfRestaurantCommand(RestaurantId restaurantId, Date date, TimeSpan oldStart, TimeSpan newStart, TimeSpan newEnd)
         {

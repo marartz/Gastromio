@@ -63,7 +63,7 @@ export class SystemAdminFacade {
             this.cuisines$.next(cuisines);
           }),
           catchError(response => {
-            return throwError(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+            return throwError(this.httpErrorHandlingService.handleError(response).message);
           })
         )
       );
@@ -177,7 +177,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -194,7 +194,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -211,7 +211,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -228,7 +228,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -250,7 +250,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -273,7 +273,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -295,7 +295,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -331,7 +331,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -403,7 +403,7 @@ export class SystemAdminFacade {
         },
         response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         }
       );
@@ -487,7 +487,7 @@ export class SystemAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       )
@@ -504,7 +504,7 @@ export class SystemAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -521,7 +521,7 @@ export class SystemAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -538,7 +538,7 @@ export class SystemAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -555,7 +555,7 @@ export class SystemAdminFacade {
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -572,7 +572,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -593,7 +593,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );
@@ -614,7 +614,7 @@ export class SystemAdminFacade {
         }),
         catchError(response => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         })
       );

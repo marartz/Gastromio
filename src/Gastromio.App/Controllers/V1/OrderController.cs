@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gastromio.App.Helper;
 using Gastromio.App.Models;
 using Gastromio.Core.Application.Commands;
 using Gastromio.Core.Application.Commands.Checkout;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetAllCuisines;
-using Gastromio.Core.Application.Queries.GetDishesOfRestaurantForOrder;
 using Gastromio.Core.Application.Queries.GetRestaurantById;
 using Gastromio.Core.Application.Queries.OrderSearchForRestaurants;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Domain.Model.Cuisines;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Orders;
 using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Gastromio.App.Controllers.V1
 {
@@ -26,28 +22,28 @@ namespace Gastromio.App.Controllers.V1
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly ILogger logger;
         private readonly IQueryDispatcher queryDispatcher;
         private readonly ICommandDispatcher commandDispatcher;
-        private readonly IFailureMessageService failureMessageService;
 
-        public OrderController(ILogger<OrderController> logger, IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher,
-            IFailureMessageService failureMessageService)
+        public OrderController(
+            IQueryDispatcher queryDispatcher,
+            ICommandDispatcher commandDispatcher
+        )
         {
-            this.logger = logger;
             this.queryDispatcher = queryDispatcher;
             this.commandDispatcher = commandDispatcher;
-            this.failureMessageService = failureMessageService;
         }
 
         [Route("cuisines")]
         [HttpGet]
         public async Task<IActionResult> GetAllCuisines()
         {
-            var queryResult =
-                await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(
-                    new GetAllCuisinesQuery(), null);
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            var cuisineDtos = await queryDispatcher.PostAsync<GetAllCuisinesQuery, ICollection<CuisineDTO>>(
+                new GetAllCuisinesQuery(),
+                null
+            );
+
+            return Ok(cuisineDtos);
         }
 
         [Route("restaurants")]
@@ -67,31 +63,25 @@ namespace Gastromio.App.Controllers.V1
                 }
             }
 
-            var queryResult =
+            var restaurantDtos =
                 await queryDispatcher.PostAsync<OrderSearchForRestaurantsQuery, ICollection<RestaurantDTO>>(
-                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime), null);
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+                    new OrderSearchForRestaurantsQuery(search, orderTypeEnum, tempCuisineId, openingHourDateTime),
+                    null
+                );
+
+            return Ok(restaurantDtos);
         }
 
         [Route("restaurants/{restaurant}")]
         [HttpGet]
         public async Task<IActionResult> GetRestaurantAsync(string restaurant)
         {
-            var queryResult =
-                await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
-                    new GetRestaurantByIdQuery(restaurant, true), null);
+            var restaurantDto = await queryDispatcher.PostAsync<GetRestaurantByIdQuery, RestaurantDTO>(
+                new GetRestaurantByIdQuery(restaurant, true),
+                null
+            );
 
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
-        }
-
-        [Route("restaurants/{restaurant}/dishes")]
-        [HttpGet]
-        public async Task<IActionResult> GetDishesOfRestaurantAsync(string restaurant)
-        {
-            var queryResult =
-                await queryDispatcher.PostAsync<GetDishesOfRestaurantForOrderQuery, ICollection<DishCategoryDTO>>(
-                    new GetDishesOfRestaurantForOrderQuery(restaurant), null);
-            return ResultHelper.HandleResult(queryResult, failureMessageService);
+            return Ok(restaurantDto);
         }
 
         [Route("checkout")]
@@ -117,7 +107,7 @@ namespace Gastromio.App.Controllers.V1
                 checkoutModel.CartDishes?.Select(en => new CartDishInfoDTO(
                     en.ItemId,
                     new DishId(en.DishId),
-                    en.VariantId,
+                    new DishVariantId(en.VariantId),
                     en.Count,
                     en.Remarks
                 )).ToList(),
@@ -126,8 +116,12 @@ namespace Gastromio.App.Controllers.V1
                 checkoutModel.ServiceTime
             );
 
-            var commandResult = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(command, null);
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+            var orderDto = await commandDispatcher.PostAsync<CheckoutCommand, OrderDTO>(
+                command,
+                null
+            );
+
+            return Ok(orderDto);
         }
 
         private static OrderType ConvertOrderType(string orderType)

@@ -1,11 +1,10 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ValidatePasswordResetCode;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
@@ -15,7 +14,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
 {
     public class ValidatePasswordResetCodeCommandHandlerTests : CommandHandlerTestBase<
-        ValidatePasswordResetCodeCommandHandler, ValidatePasswordResetCodeCommand, bool>
+        ValidatePasswordResetCodeCommandHandler, ValidatePasswordResetCodeCommand>
     {
         private readonly Fixture fixture;
 
@@ -36,17 +35,10 @@ namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                var failureResult = result as FailureResult<bool>;
-                failureResult.Should().NotBeNull();
-                failureResult?.Errors
-                    ?.Any(en => en.Value.Any(error => error.Code == FailureResultCode.PasswordResetCodeIsInvalid))
-                    .Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<PasswordResetCodeIsInvalidFailure>>();
         }
 
         [Fact]
@@ -61,21 +53,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
             var command = new ValidatePasswordResetCodeCommand(fixture.User.Id, new byte[] {2, 3, 4, 6});
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                var failureResult = result as FailureResult<bool>;
-                failureResult.Should().NotBeNull();
-                failureResult?.Errors
-                    ?.Any(en => en.Value.Any(error => error.Code == FailureResultCode.PasswordResetCodeIsInvalid))
-                    .Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<PasswordResetCodeIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ValidatesResetCodeAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ValidatesResetCode()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -84,24 +69,20 @@ namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-            }
+            await act.Should().NotThrowAsync();
         }
 
         protected override CommandHandlerTestFixtureBase<ValidatePasswordResetCodeCommandHandler,
-            ValidatePasswordResetCodeCommand, bool> FixtureBase
+            ValidatePasswordResetCodeCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ValidatePasswordResetCodeCommandHandler,
-            ValidatePasswordResetCodeCommand, bool>
+            ValidatePasswordResetCodeCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
@@ -134,6 +115,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ValidatePasswordResetCode
             public void SetupRandomUser()
             {
                 User = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .WithPasswordResetCode(PasswordResetCode)
                     .WithPasswordResetExpiration(DateTimeOffset.Now.AddMinutes(10))
                     .Create();

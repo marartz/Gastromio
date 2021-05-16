@@ -1,11 +1,12 @@
-using System.Collections.Generic;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 
 namespace Gastromio.Core.Domain.Model.Restaurants
 {
     public class DeviatingOpeningDay : OpeningDay<DeviatingOpeningDay>
     {
-        public DeviatingOpeningDay(Date date, DeviatingOpeningDayStatus status, IEnumerable<OpeningPeriod> openingPeriods) : base(openingPeriods)
+        public DeviatingOpeningDay(Date date, DeviatingOpeningDayStatus status, OpeningPeriods openingPeriods)
+            : base(openingPeriods)
         {
             Date = date;
             Status = status;
@@ -15,9 +16,17 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 
         public DeviatingOpeningDayStatus Status { get; }
 
-        protected override DeviatingOpeningDay CreateNewInstance(IEnumerable<OpeningPeriod> openingPeriods)
+        public DeviatingOpeningDay ChangeStatus(DeviatingOpeningDayStatus status)
         {
-            return new DeviatingOpeningDay(Date, Status, openingPeriods);
+            if (OpeningPeriods?.Count > 0)
+                throw DomainException.CreateFrom(new RestaurantDeviatingOpeningDayHasStillOpenPeriodsFailure());
+            return new DeviatingOpeningDay(Date, status, OpeningPeriods);
+        }
+
+        protected override DeviatingOpeningDay CreateSpecificOpeningDayWith(OpeningPeriods openingPeriods)
+        {
+            var status = openingPeriods.Count > 0 ? DeviatingOpeningDayStatus.Open : DeviatingOpeningDayStatus.Closed;
+            return new DeviatingOpeningDay(Date, status, openingPeriods);
         }
     }
 }

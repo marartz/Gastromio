@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -5,6 +6,7 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddUser;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
@@ -24,7 +26,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
         }
 
         // [Fact]
-        // public async Task HandleAsync_UserCreationWithFailure_ReturnsFailure()
+        // public async Task HandleAsync_UserCreationWithFailure_ThrowsDomainException()
         // {
         //     // Arrange
         //     fixture.SetupUserRepositoryFindingUserByName();
@@ -33,18 +35,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
         //     var command = new AddUserCommand(null);
         //
         //     // Act
-        //     var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+        // Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
         //
-        //     // Assert
-        //     using (new AssertionScope())
-        //     {
-        //         result.Should().NotBeNull();
-        //         result?.IsFailure.Should().BeTrue();
-        //     }
+        // // Assert
+        // await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         // }
 
         [Fact]
-        public async Task HandleAsync_UserAlreadyKnown_ReturnsFailure()
+        public async Task HandleAsync_UserAlreadyKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomUserToCreate();
@@ -54,18 +52,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<UserAlreadyExistsFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesUserReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesUser()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -80,7 +74,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.CreatedUser, Times.Once);
             }
         }
@@ -122,6 +115,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             public void SetupRandomUserToCreate()
             {
                 CreatedUser = new UserBuilder()
+                    .WithEmail("max@mustermann.de")
                     .Create();
             }
 
@@ -147,7 +141,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddUser
             {
                 UserFactoryMock
                     .SetupCreate(CreatedUser.Role, CreatedUser.Email, "password", true, UserWithMinimumRole.Id)
-                    .Returns(SuccessResult<User>.Create(CreatedUser));
+                    .Returns(CreatedUser);
             }
 
             public override void SetupForSuccessfulCommandExecution(Role? role)

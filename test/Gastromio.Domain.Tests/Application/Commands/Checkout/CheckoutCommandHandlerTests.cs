@@ -8,16 +8,13 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.Checkout;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Orders;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Common;
-using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
-using Gastromio.Domain.TestKit.Domain.Model.Dishes;
 using Gastromio.Domain.TestKit.Domain.Model.PaymentMethods;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Microsoft.Extensions.Logging;
@@ -37,12 +34,11 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFoundById_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFoundById_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
@@ -53,31 +49,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-                fixture.RestaurantRepositoryMock.VerifyFindByRestaurantIdAsync(fixture.Restaurant.Id, Times.Once);
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
+            fixture.RestaurantRepositoryMock.VerifyFindByRestaurantIdAsync(fixture.Restaurant.Id, Times.Once);
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantFoundById_ReturnsSuccess()
+        public async Task HandleAsync_RestaurantFoundById_()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -91,18 +80,16 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyFindByRestaurantIdAsync(fixture.Restaurant.Id, Times.Once);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFoundByName_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFoundByName_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
@@ -113,31 +100,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-                fixture.RestaurantRepositoryMock.VerifyFindByRestaurantNameAsync(fixture.Restaurant.Name, Times.Once);
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
+            fixture.RestaurantRepositoryMock.VerifyFindByRestaurantNameAsync(fixture.Restaurant.Name, Times.Once);
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantFoundByName_ReturnsSuccess()
+        public async Task HandleAsync_RestaurantFoundByName_FindsRestaurantByName()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantName(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantByName();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -151,18 +131,16 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyFindByRestaurantNameAsync(fixture.Restaurant.Name, Times.Once);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantInactive_ReturnsFailure()
+        public async Task HandleAsync_RestaurantInactive_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupInactiveRestaurant();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupInactiveRestaurant();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
@@ -173,30 +151,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DishThatCannotBeFound_ReturnsFailure()
+        public async Task HandleAsync_DishThatCannotBeFound_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishThatCannotBeFound();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -204,30 +175,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DishThatDoesNotBelongToRestaurant_ReturnsFailure()
+        public async Task HandleAsync_DishThatDoesNotBelongToRestaurant_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishThatDoesNotBelongToRestaurant();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -235,30 +199,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DishThatBelongsToDisabledCategory_ReturnsFailure()
+        public async Task HandleAsync_DishThatBelongsToDisabledCategory_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomDisabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -266,30 +223,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_VariantThatDoesNotBelongToDish_ReturnsFailure()
+        public async Task HandleAsync_VariantThatDoesNotBelongToDish_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishVariantThatDoesNotBelongToDish();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -297,30 +247,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_RemarkHasLength1001_ReturnsFailure()
+        public async Task HandleAsync_RemarkHasLength1001_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishesWithRemarkOfLength1001();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -328,30 +271,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_CountIsNegative_ReturnsFailure()
+        public async Task HandleAsync_CountIsNegative_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithNegativeCount();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -359,30 +295,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_CountIsZero_ReturnsFailure()
+        public async Task HandleAsync_CountIsZero_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithZeroCount();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -390,30 +319,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_CountOf101_ReturnsFailure()
+        public async Task HandleAsync_CountOf101_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithCountOf101();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -421,30 +343,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_PickupIsDisabled_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_PickupIsDisabled_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -452,30 +367,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_BelowMinimum_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_BelowMinimum_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithCountOfOne();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -483,30 +391,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_AboveMaximum_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_AboveMaximum_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithCountOf100();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -514,30 +415,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_GivenNameNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_GivenNameNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -545,30 +439,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_GivenNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_GivenNameEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -576,30 +463,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_LastNameNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_LastNameNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -607,30 +487,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_LastNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_LastNameEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -638,30 +511,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_EmailNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_EmailNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -669,30 +535,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_PhoneNull_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_PhoneNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneNull(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -700,30 +559,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_PhoneEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_PhoneEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -731,30 +583,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PickupOrdered_EmailEmpty_ReturnsFailure()
+        public async Task HandleAsync_PickupOrdered_EmailEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailEmpty(OrderType.Pickup);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -762,30 +607,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_DeliveryIsDisabled_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_DeliveryIsDisabled_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithPickupActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -793,30 +631,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_BelowMinimum_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_BelowMinimum_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithCountOfOne();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -824,30 +655,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_AboveMaximum_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_AboveMaximum_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupOrderedDishWithCountOf100();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -855,30 +679,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_GivenNameNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_GivenNameNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -886,30 +703,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_GivenNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_GivenNameEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithGivenNameEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -917,30 +727,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_LastNameNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_LastNameNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -948,30 +751,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_LastNameEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_LastNameEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithLastNameEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -979,30 +775,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_StreetNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_StreetNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithStreetNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1010,30 +799,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_StreetEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_StreetEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithStreetEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1041,30 +823,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_ZipCodeNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_ZipCodeNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithZipCodeNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1072,30 +847,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_ZipCodeEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_ZipCodeEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithZipCodeEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1103,30 +871,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_CityNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_CityNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithCityNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1134,30 +895,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_CityEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_CityEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithCityEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1165,30 +919,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_EmailNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_EmailNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1196,30 +943,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_PhoneNull_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_PhoneNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneNull(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1227,30 +967,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_PhoneEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_PhoneEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithPhoneEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1258,30 +991,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DeliveryOrdered_EmailEmpty_ReturnsFailure()
+        public async Task HandleAsync_DeliveryOrdered_EmailEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupCommandWithEmailEmpty(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1289,30 +1015,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_OrderIsNotPossible_ReturnsFailure()
+        public async Task HandleAsync_OrderIsNotPossible_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupInvalidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1320,30 +1039,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_PaymentMethodUnknown_ReturnsFailure()
+        public async Task HandleAsync_PaymentMethodUnknown_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivated();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryNotFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1351,30 +1063,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<OrderIsInvalidFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_EnabledOrderNotificationByMobile_SetsMobileNotificationAttemptToNullAndReturnsSuccess()
+        public async Task HandleAsync_EnabledOrderNotificationByMobile_SetsMobileNotificationAttemptToNull()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivatedAndEnabledOrderNotificationByMobile();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivatedAndEnabledOrderNotificationByMobile();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1388,26 +1093,22 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.StoredOrder.Should().NotBeNull();
                 fixture.StoredOrder?.RestaurantMobileNotificationInfo.Should().BeNull();
             }
         }
 
         [Fact]
-        public async Task HandleAsync_DisabledOrderNotificationByMobile_SetsMobileNotificationAttemptWithStatusAndReturnsSuccess()
+        public async Task HandleAsync_DisabledOrderNotificationByMobile_SetsMobileNotificationAttemptWithStatus()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1421,7 +1122,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.StoredOrder.Should().NotBeNull();
                 fixture.StoredOrder?.RestaurantMobileNotificationInfo.Should().NotBeNull();
                 fixture.StoredOrder?.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
@@ -1432,16 +1132,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
         public async Task HandleAsync_DefaultCommand_CreatesOrderWithCorrectData()
         {
             // Arrange
-            fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
             fixture.SetupRandomEnabledDishCategories();
-            fixture.SetupRandomDishes();
+            fixture.SetupActiveRestaurantWithDeliveryActivatedAndDisabledOrderNotificationByMobile();
             fixture.SetupPaymentMethods();
             fixture.SetupValidServiceTime();
             fixture.SetupDefaultOrderedDishes();
             fixture.SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
             fixture.SetupRestaurantRepositoryFindingRestaurantById();
-            fixture.SetupDishCategoryRepositoryFindingDishCategoriesById();
-            fixture.SetupDishRepositoryFindingDishesById();
             fixture.SetupPaymentMethodRepositoryFindingPaymentMethods();
             fixture.SetupOrderRepositoryStoringOrder();
 
@@ -1455,7 +1152,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.StoredOrder.Should().NotBeNull();
                 fixture.StoredOrder?.Id.Should().NotBeNull();
                 fixture.StoredOrder?.Id.Value.Should().NotBeEmpty();
@@ -1485,8 +1181,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             {
                 Logger = output.BuildLoggerFor<CheckoutCommandHandler>();
                 RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
-                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
-                DishRepositoryMock = new DishRepositoryMock(MockBehavior.Strict);
                 PaymentMethodRepositoryMock = new PaymentMethodRepositoryMock(MockBehavior.Strict);
                 OrderRepositoryMock = new OrderRepositoryMock(MockBehavior.Strict);
             }
@@ -1494,10 +1188,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             public ILogger<CheckoutCommandHandler> Logger { get; }
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
-
-            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
-
-            public DishRepositoryMock DishRepositoryMock { get; }
 
             public PaymentMethodRepositoryMock PaymentMethodRepositoryMock { get; }
 
@@ -1524,8 +1214,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 return new CheckoutCommandHandler(
                     Logger,
                     RestaurantRepositoryMock.Object,
-                    DishCategoryRepositoryMock.Object,
-                    DishRepositoryMock.Object,
                     PaymentMethodRepositoryMock.Object,
                     OrderRepositoryMock.Object
                 );
@@ -1555,7 +1243,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 {
                     regularOpeningDays.Add(new RegularOpeningDay(
                         day,
-                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                        new OpeningPeriods(new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))})
                     ));
                 }
 
@@ -1565,6 +1253,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .WithRegularOpeningDays(regularOpeningDays)
                     .WithPickupInfo(pickupInfo)
                     .WithDeliveryInfo(deliveryInfo)
+                    .WithDishCategories(DishCategoriesOfRestaurant)
                     .WithValidConstrains()
                     .Create();
             }
@@ -1588,7 +1277,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 {
                     regularOpeningDays.Add(new RegularOpeningDay(
                         day,
-                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                        new OpeningPeriods(new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))})
                     ));
                 }
 
@@ -1598,6 +1287,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .WithRegularOpeningDays(regularOpeningDays)
                     .WithPickupInfo(pickupInfo)
                     .WithDeliveryInfo(deliveryInfo)
+                    .WithDishCategories(DishCategoriesOfRestaurant)
                     .WithValidConstrains()
                     .Create();
             }
@@ -1627,7 +1317,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 {
                     regularOpeningDays.Add(new RegularOpeningDay(
                         day,
-                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                        new OpeningPeriods(new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))})
                     ));
                 }
 
@@ -1638,6 +1328,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .WithRegularOpeningDays(regularOpeningDays)
                     .WithPickupInfo(pickupInfo)
                     .WithDeliveryInfo(deliveryInfo)
+                    .WithDishCategories(DishCategoriesOfRestaurant)
                     .WithValidConstrains()
                     .Create();
             }
@@ -1667,7 +1358,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 {
                     regularOpeningDays.Add(new RegularOpeningDay(
                         day,
-                        new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))}
+                        new OpeningPeriods(new[] {new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(23.75))})
                     ));
                 }
 
@@ -1678,6 +1369,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .WithRegularOpeningDays(regularOpeningDays)
                     .WithPickupInfo(pickupInfo)
                     .WithDeliveryInfo(deliveryInfo)
+                    .WithDishCategories(DishCategoriesOfRestaurant)
                     .WithValidConstrains()
                     .Create();
             }
@@ -1686,46 +1378,56 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
             {
                 Restaurant = new RestaurantBuilder()
                     .WithIsActive(false)
+                    .WithDishCategories(DishCategoriesOfRestaurant)
                     .WithValidConstrains()
                     .Create();
             }
 
             public void SetupRandomEnabledDishCategories()
             {
-                DishCategoriesOfRestaurant = new DishCategoryBuilder()
-                    .WithRestaurantId(Restaurant.Id)
-                    .WithEnabled(true)
-                    .WithValidConstrains()
-                    .CreateMany(3).ToList();
+                SetupRandomDishCategories(true);
             }
 
             public void SetupRandomDisabledDishCategories()
             {
-                DishCategoriesOfRestaurant = new DishCategoryBuilder()
-                    .WithRestaurantId(Restaurant.Id)
-                    .WithEnabled(false)
-                    .WithValidConstrains()
-                    .CreateMany(3).ToList();
+                SetupRandomDishCategories(false);
             }
 
-            public void SetupRandomDishes()
+            private void SetupRandomDishCategories(bool enabled)
             {
+                DishCategoriesOfRestaurant = new List<DishCategory>();
                 DishesOfRestaurant = new List<Dish>();
-                foreach (var dishCategory in DishCategoriesOfRestaurant)
+
+                for (var dishCategoryIdx = 0; dishCategoryIdx < 3; dishCategoryIdx++)
                 {
-                    var dishes = new DishBuilder()
-                        .WithRestaurantId(Restaurant.Id)
-                        .WithCategoryId(dishCategory.Id)
-                        .WithVariants(new List<DishVariant>
-                        {
-                            new DishVariantBuilder()
-                                .WithPrice(1.23m)
-                                .WithValidConstrains()
-                                .Create()
-                        })
-                        .WithValidConstrains()
-                        .CreateMany(3).ToList();
+                    var dishes = new List<Dish>();
+                    for (var dishIdx = 0; dishIdx < 3; dishIdx++)
+                    {
+                        var dish = new DishBuilder()
+                            .WithName($"dish-{dishIdx + 1}")
+                            .WithVariants(new List<DishVariant>
+                            {
+                                new DishVariantBuilder()
+                                    .WithPrice(1.23m)
+                                    .WithValidConstrains()
+                                    .Create()
+                            })
+                            .WithValidConstrains()
+                            .Create();
+                        dishes.Add(dish);
+                    }
+
+
                     DishesOfRestaurant.AddRange(dishes);
+
+                    var dishCategory = new DishCategoryBuilder()
+                        .WithName($"dish-category-{dishCategoryIdx + 1}")
+                        .WithEnabled(enabled)
+                        .WithDishes(dishes)
+                        .WithValidConstrains()
+                        .Create();
+
+                    DishCategoriesOfRestaurant.Add(dishCategory);
                 }
             }
 
@@ -1755,7 +1457,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     OrderedDishes.Add(new CartDishInfoDTO(
                         Guid.NewGuid(),
                         dish.Id,
-                        dish.Variants.First().VariantId,
+                        dish.Variants.First().Id,
                         1,
                         "Standard"
                     ));
@@ -1767,15 +1469,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 var orderedDish = new CartDishInfoDTO(
                     Guid.NewGuid(),
                     new DishId(Guid.NewGuid()),
-                    Guid.NewGuid(),
+                    new DishVariantId(Guid.NewGuid()),
                     1,
                     "Standard"
                 );
 
                 OrderedDishes = new List<CartDishInfoDTO> {orderedDish};
-
-                DishRepositoryMock.SetupFindByDishIdAsync(orderedDish.DishId)
-                    .ReturnsAsync((Dish) null);
             }
 
             public void SetupOrderedDishThatDoesNotBelongToRestaurant()
@@ -1786,7 +1485,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .Create();
 
                 var dish = new DishBuilder()
-                    .WithRestaurantId(new RestaurantId(Guid.NewGuid()))
                     .WithVariants(new List<DishVariant> {variant})
                     .WithValidConstrains()
                     .Create();
@@ -1794,15 +1492,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 var orderedDish = new CartDishInfoDTO(
                     Guid.NewGuid(),
                     dish.Id,
-                    variant.VariantId,
+                    variant.Id,
                     1,
                     "Standard"
                 );
 
                 OrderedDishes = new List<CartDishInfoDTO> {orderedDish};
-
-                DishRepositoryMock.SetupFindByDishIdAsync(dish.Id)
-                    .ReturnsAsync(dish);
             }
 
             public void SetupOrderedDishVariantThatDoesNotBelongToDish()
@@ -1813,8 +1508,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .Create();
 
                 var dish = new DishBuilder()
-                    .WithRestaurantId(Restaurant.Id)
-                    .WithCategoryId(DishCategoriesOfRestaurant[0].Id)
                     .WithVariants(new List<DishVariant> {variant})
                     .WithValidConstrains()
                     .Create();
@@ -1822,15 +1515,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                 var orderedDish = new CartDishInfoDTO(
                     Guid.NewGuid(),
                     dish.Id,
-                    Guid.NewGuid(),
+                    new DishVariantId(Guid.NewGuid()),
                     1,
                     "Standard"
                 );
 
                 OrderedDishes = new List<CartDishInfoDTO> {orderedDish};
-
-                DishRepositoryMock.SetupFindByDishIdAsync(dish.Id)
-                    .ReturnsAsync(dish);
             }
 
             public void SetupOrderedDishesWithRemarkOfLength1001()
@@ -1841,7 +1531,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     OrderedDishes.Add(new CartDishInfoDTO(
                         Guid.NewGuid(),
                         dish.Id,
-                        dish.Variants.First().VariantId,
+                        dish.Variants.First().Id,
                         1,
                         RandomStringBuilder.BuildWithLength(1001)
                     ));
@@ -1856,7 +1546,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     new CartDishInfoDTO(
                         Guid.NewGuid(),
                         firstDish.Id,
-                        firstDish.Variants.First().VariantId,
+                        firstDish.Variants.First().Id,
                         -1,
                         "Standard"
                     )
@@ -1871,7 +1561,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     new CartDishInfoDTO(
                         Guid.NewGuid(),
                         firstDish.Id,
-                        firstDish.Variants.First().VariantId,
+                        firstDish.Variants.First().Id,
                         0,
                         "Standard"
                     )
@@ -1886,7 +1576,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     new CartDishInfoDTO(
                         Guid.NewGuid(),
                         firstDish.Id,
-                        firstDish.Variants.First().VariantId,
+                        firstDish.Variants.First().Id,
                         1,
                         "Standard"
                     )
@@ -1901,7 +1591,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     new CartDishInfoDTO(
                         Guid.NewGuid(),
                         firstDish.Id,
-                        firstDish.Variants.First().VariantId,
+                        firstDish.Variants.First().Id,
                         100,
                         "Standard"
                     )
@@ -1916,7 +1606,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     new CartDishInfoDTO(
                         Guid.NewGuid(),
                         firstDish.Id,
-                        firstDish.Variants.First().VariantId,
+                        firstDish.Variants.First().Id,
                         101,
                         "Standard"
                     )
@@ -2266,24 +1956,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
                     .ReturnsAsync(Enumerable.Empty<Restaurant>());
             }
 
-            public void SetupDishCategoryRepositoryFindingDishCategoriesById()
-            {
-                foreach (var dishCategory in DishCategoriesOfRestaurant)
-                {
-                    DishCategoryRepositoryMock.SetupFindByDishCategoryIdAsync(dishCategory.Id)
-                        .ReturnsAsync(dishCategory);
-                }
-            }
-
-            public void SetupDishRepositoryFindingDishesById()
-            {
-                foreach (var dish in DishesOfRestaurant)
-                {
-                    DishRepositoryMock.SetupFindByDishIdAsync(dish.Id)
-                        .ReturnsAsync(dish);
-                }
-            }
-
             public void SetupPaymentMethodRepositoryNotFindingPaymentMethods()
             {
                 foreach (var paymentMethod in PaymentMethods)
@@ -2311,16 +1983,13 @@ namespace Gastromio.Domain.Tests.Application.Commands.Checkout
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupActiveRestaurantWithDeliveryActivated();
                 SetupRandomEnabledDishCategories();
-                SetupRandomDishes();
+                SetupActiveRestaurantWithDeliveryActivated();
                 SetupPaymentMethods();
                 SetupValidServiceTime();
                 SetupDefaultOrderedDishes();
                 SetupSuccessfulCommandWithRestaurantId(OrderType.Delivery);
                 SetupRestaurantRepositoryFindingRestaurantById();
-                SetupDishCategoryRepositoryFindingDishCategoriesById();
-                SetupDishRepositoryFindingDishesById();
                 SetupPaymentMethodRepositoryFindingPaymentMethods();
                 SetupOrderRepositoryStoringOrder();
             }

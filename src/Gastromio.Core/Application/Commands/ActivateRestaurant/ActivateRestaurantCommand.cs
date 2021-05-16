@@ -2,7 +2,7 @@
 
 namespace Gastromio.Core.Application.Commands.ActivateRestaurant
 {
-    public class ActivateRestaurantCommand : ICommand<bool>
+    public class ActivateRestaurantCommand : ICommand
     {
         public ActivateRestaurantCommand(RestaurantId restaurantId)
         {

@@ -75,13 +75,7 @@ export class LoginComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         const errors = this.httpErrorHandlingService.handleError(error);
-        this.generalError = errors.getJoinedGeneralErrors();
-        errors.addComponentErrorsToFormControls(this.loginForm);
-        // don't reset form if there are componentErrors from backend, because
-        // otherwise they would also be reset.
-        if (!Object.keys(errors.componentErrors).length) {
-          this.loginForm.reset();
-        }
+        this.generalError = errors.message;
         this.blockUI.stop();
       });
   }

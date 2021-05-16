@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantContactInfo
 {
-    public class ChangeRestaurantContactInfoCommand : ICommand<bool>
+    public class ChangeRestaurantContactInfoCommand : ICommand
     {
         public ChangeRestaurantContactInfoCommand(RestaurantId restaurantId, string phone, string fax, string webSite,
             string responsiblePerson, string emailAddress, string mobile, bool orderNotificationByMobile)

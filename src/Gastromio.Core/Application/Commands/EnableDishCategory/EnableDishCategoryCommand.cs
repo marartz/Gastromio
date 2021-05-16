@@ -1,14 +1,16 @@
-using Gastromio.Core.Domain.Model.DishCategories;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.EnableDishCategory
 {
-    public class EnableDishCategoryCommand : ICommand<bool>
+    public class EnableDishCategoryCommand : ICommand
     {
-        public EnableDishCategoryCommand(DishCategoryId categoryId)
+        public EnableDishCategoryCommand(RestaurantId restaurantId, DishCategoryId categoryId)
         {
+            RestaurantId = restaurantId;
             CategoryId = categoryId;
         }
 
+        public RestaurantId RestaurantId { get; }
         public DishCategoryId CategoryId { get; }
     }
 }

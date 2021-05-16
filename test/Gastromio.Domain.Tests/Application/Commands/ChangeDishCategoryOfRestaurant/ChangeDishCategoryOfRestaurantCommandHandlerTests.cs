@@ -1,15 +1,15 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeDishCategoryOfRestaurant;
-using Gastromio.Core.Domain.Model.DishCategories;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
-using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
@@ -17,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestaurant
 {
     public class ChangeDishCategoryOfRestaurantCommandHandlerTests : CommandHandlerTestBase<
-        ChangeDishCategoryOfRestaurantCommandHandler, ChangeDishCategoryOfRestaurantCommand, bool>
+        ChangeDishCategoryOfRestaurantCommandHandler, ChangeDishCategoryOfRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -27,52 +27,43 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomDishCategory();
+            fixture.SetupRandomRestaurantWithDishCategory(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryNotFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_DishCategoryNotKnown_ReturnsFailure()
+        public async Task HandleAsync_DishCategoryNotKnown_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomDishCategory();
+            fixture.SetupRandomRestaurantWithoutDishCategory(fixture.MinimumRole);
             fixture.SetupRestaurantRepositoryFindingRestaurant();
-            fixture.SetupDishCategoryRepositoryNotFindingDishCategoryForRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<DishCategoryDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsDishCategoryToRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsDishCategoryToRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -81,36 +72,31 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategory.Name.Should().Be("changed");
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategory, Times.Once);
+                fixture.Restaurant.DishCategories.TryGetDishCategory(fixture.DishCategory.Id, out var dishCategory);
+                dishCategory.Name.Should().Be("changed");
             }
         }
 
         protected override CommandHandlerTestFixtureBase<ChangeDishCategoryOfRestaurantCommandHandler,
-            ChangeDishCategoryOfRestaurantCommand, bool> FixtureBase
+            ChangeDishCategoryOfRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeDishCategoryOfRestaurantCommandHandler,
-            ChangeDishCategoryOfRestaurantCommand, bool>
+            ChangeDishCategoryOfRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
                 RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
-                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
             }
 
             public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
-
-            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
 
             public Restaurant Restaurant { get; private set; }
 
@@ -118,10 +104,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
 
             public override ChangeDishCategoryOfRestaurantCommandHandler CreateTestObject()
             {
-                return new ChangeDishCategoryOfRestaurantCommandHandler(
-                    RestaurantRepositoryMock.Object,
-                    DishCategoryRepositoryMock.Object
-                );
+                return new ChangeDishCategoryOfRestaurantCommandHandler(RestaurantRepositoryMock.Object);
             }
 
             public override ChangeDishCategoryOfRestaurantCommand CreateSuccessfulCommand()
@@ -129,7 +112,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                 return new ChangeDishCategoryOfRestaurantCommand(Restaurant.Id, DishCategory.Id, "changed");
             }
 
-            public void SetupRandomRestaurant(Role? role)
+            public void SetupRandomRestaurantWithDishCategory(Role? role)
             {
                 var builder = new RestaurantBuilder();
 
@@ -140,6 +123,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                 }
 
                 Restaurant = builder
+                    .WithDishCategories(new[] {DishCategory})
+                    .WithValidConstrains()
+                    .Create();
+            }
+
+            public void SetupRandomRestaurantWithoutDishCategory(Role? role)
+            {
+                var builder = new RestaurantBuilder();
+
+                if (role == Role.RestaurantAdmin)
+                {
+                    builder = builder
+                        .WithAdministrators(new HashSet<UserId> {UserId});
+                }
+
+                Restaurant = builder
+                    .WithoutDishCategories()
                     .WithValidConstrains()
                     .Create();
             }
@@ -147,9 +147,9 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
             public void SetupRandomDishCategory()
             {
                 DishCategory = new DishCategoryBuilder()
-                    .WithRestaurantId(Restaurant.Id)
                     .WithName("test")
                     .WithOrderNo(0)
+                    .WithValidConstrains()
                     .Create();
             }
 
@@ -165,31 +165,18 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeDishCategoryOfRestau
                     .ReturnsAsync((Restaurant) null);
             }
 
-            public void SetupDishCategoryRepositoryFindingDishCategoryForRestaurant()
+            public void SetupRestaurantRepositoryStoringRestaurant()
             {
-                DishCategoryRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
-                    .ReturnsAsync(new[] {DishCategory});
-            }
-
-            public void SetupDishCategoryRepositoryNotFindingDishCategoryForRestaurant()
-            {
-                DishCategoryRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
-                    .ReturnsAsync(Enumerable.Empty<DishCategory>());
-            }
-
-            public void SetupDishCategoryRepositoryStoringDishCategory()
-            {
-                DishCategoryRepositoryMock.SetupStoreAsync(DishCategory)
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
                     .Returns(Task.CompletedTask);
             }
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupRandomRestaurant(role);
                 SetupRandomDishCategory();
+                SetupRandomRestaurantWithDishCategory(role);
                 SetupRestaurantRepositoryFindingRestaurant();
-                SetupDishCategoryRepositoryFindingDishCategoryForRestaurant();
-                SetupDishCategoryRepositoryStoringDishCategory();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

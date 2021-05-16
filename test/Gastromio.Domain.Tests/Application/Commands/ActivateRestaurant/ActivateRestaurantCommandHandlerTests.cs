@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ActivateRestaurant;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -14,7 +17,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ActivateRestaurant
 {
     public class ActivateRestaurantCommandHandlerTests : CommandHandlerTestBase<ActivateRestaurantCommandHandler,
-        ActivateRestaurantCommand, bool>
+        ActivateRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -24,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ActivateRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotFound_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotFound_ThrowsFailure()
         {
             // Arrange
             fixture.SetupRandomRestaurant();
@@ -34,18 +37,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.ActivateRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () =>  await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ActivatesRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ActivatesRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,26 +53,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.ActivateRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.IsActive.Should().BeTrue();
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ActivateRestaurantCommandHandler, ActivateRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ActivateRestaurantCommandHandler, ActivateRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ActivateRestaurantCommandHandler,
-            ActivateRestaurantCommand, bool>
+            ActivateRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
@@ -99,6 +96,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ActivateRestaurant
             public void SetupRandomRestaurant()
             {
                 Restaurant = new RestaurantBuilder()
+                    .WithValidConstrains()
                     .WithAdministrators(new HashSet<UserId>
                     {
                         UserId

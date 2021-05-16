@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Queries;
+using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 using Xunit;
 
@@ -39,20 +40,19 @@ namespace Gastromio.Domain.Tests.Application
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
-            var result = await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
+            Func<Task> act = async () => await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
                 null, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
                 if (FixtureBase.MinimumRole.HasValue)
                 {
-                    result?.IsSuccess.Should().BeFalse();
+                    await act.Should().ThrowAsync<DomainException>();
                 }
                 else
                 {
-                    result?.IsSuccess.Should().BeTrue();
+                    await act.Should().NotThrowAsync();
                 }
             }
         }
@@ -65,20 +65,19 @@ namespace Gastromio.Domain.Tests.Application
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
-            var result = await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
+            Func<Task> act = async () => await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
                 FixtureBase.UserWithCustomerRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
                 if (FixtureBase.MinimumRole.HasValue && FixtureBase.MinimumRole.Value > Role.Customer)
                 {
-                    result?.IsSuccess.Should().BeFalse();
+                    await act.Should().ThrowAsync<DomainException>();
                 }
                 else
                 {
-                    result?.IsSuccess.Should().BeTrue();
+                    await act.Should().NotThrowAsync();
                 }
             }
         }
@@ -91,20 +90,19 @@ namespace Gastromio.Domain.Tests.Application
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
-            var result = await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
+            Func<Task> act = async () => await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
                 FixtureBase.UserWithRestaurantAdminRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
                 if (FixtureBase.MinimumRole.HasValue && FixtureBase.MinimumRole.Value > Role.RestaurantAdmin)
                 {
-                    result?.IsSuccess.Should().BeFalse();
+                    await act.Should().ThrowAsync<DomainException>();
                 }
                 else
                 {
-                    result?.IsSuccess.Should().BeTrue();
+                    await act.Should().NotThrowAsync();
                 }
             }
         }
@@ -117,20 +115,19 @@ namespace Gastromio.Domain.Tests.Application
             var testObject = FixtureBase.CreateTestObject();
 
             // Act
-            var result = await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
+            Func<Task> act = async () => await testObject.HandleAsync(FixtureBase.CreateSuccessfulQuery(),
                 FixtureBase.UserWithSystemAdminRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
                 if (FixtureBase.MinimumRole.HasValue && FixtureBase.MinimumRole.Value > Role.SystemAdmin)
                 {
-                    result?.IsSuccess.Should().BeFalse();
+                    await act.Should().ThrowAsync<DomainException>();
                 }
                 else
                 {
-                    result?.IsSuccess.Should().BeTrue();
+                    await act.Should().NotThrowAsync();
                 }
             }
         }

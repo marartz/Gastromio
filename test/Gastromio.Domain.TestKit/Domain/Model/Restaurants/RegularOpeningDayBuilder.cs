@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gastromio.Core.Domain.Model.Restaurants;
@@ -21,9 +20,13 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
 
         public RegularOpeningDayBuilder WithOpeningPeriods(IEnumerable<OpeningPeriod> openingPeriods)
         {
+            return WithOpeningPeriods(new OpeningPeriods(openingPeriods));
+        }
+
+        public RegularOpeningDayBuilder WithOpeningPeriods(OpeningPeriods openingPeriods)
+        {
             WithConstantConstructorArgumentFor("openingPeriods", openingPeriods);
             return this;
         }
-
     }
 }

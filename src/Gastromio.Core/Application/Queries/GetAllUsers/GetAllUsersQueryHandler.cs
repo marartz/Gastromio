@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Queries.GetAllUsers
@@ -19,20 +20,20 @@ namespace Gastromio.Core.Application.Queries.GetAllUsers
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<ICollection<UserDTO>>> HandleAsync(GetAllUsersQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<ICollection<UserDTO>> HandleAsync(GetAllUsersQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             if (currentUser == null)
-                return FailureResult<ICollection<UserDTO>>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<ICollection<UserDTO>>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var users = await userRepository.FindAllAsync(cancellationToken);
 
-            return SuccessResult<ICollection<UserDTO>>.Create(users.Select(user => new UserDTO(user)).ToList());
+            return users.Select(user => new UserDTO(user)).ToList();
         }
     }
 }
