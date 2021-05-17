@@ -1,6 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoDBMigrations;
 using System;
+using System.Collections.Generic;
 
 namespace Gastromio.Persistence.MongoDB.Migrations
 {
@@ -15,82 +17,96 @@ namespace Gastromio.Persistence.MongoDB.Migrations
         private static string RestaurantImageCollectionName = "restaurant_images";
         private static string UserCollectionName = "users";
         private static string OrderCollectionName = "orders";
+        private static string[] CollectionNames = new[] { 
+            CuisineCollectionName,
+            DishCategoryCollectionName,
+            DishCollectionName,
+            RestaurantCollectionName,
+            RestaurantImageCollectionName,
+            UserCollectionName,
+            OrderCollectionName
+        };
 
         public string Name => "Initialise Database";
 
         public void Down(IMongoDatabase database)
         {
-            throw new NotImplementedException();
+            foreach(string collection in CollectionNames)
+            {
+                database.DropCollection(collection);
+            }
         }
 
         public void Up(IMongoDatabase database)
         {
-            var cuisineCollection = database.GetCollection<CuisineModel>(CuisineCollectionName);
-            cuisineCollection.Indexes.CreateOne(
-                new CreateIndexModel<CuisineModel>(Builders<CuisineModel>.IndexKeys.Ascending(x => x.Name)));
 
-            // TODO: Models of dish category and dishes have been changed!
+            foreach (string collection in CollectionNames)
+            {
+                if(!database.CollectionExists(collection))
+                    database.CreateCollection(collection);
+            }
+            
+            var restaurantIdIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("RestaurantId", 1));
+            var nameIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("Name", 1));
+            var categoryIdIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("CategoryId", 1));
+            var importIdIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("ImportId", 1));
+            var typeIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("Type", 1));
+            var emailIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("Email", 1));
 
-            // var dishCategoryCollection = database.GetCollection<DishCategoryModel>(DishCategoryCollectionName);
-            // dishCategoryCollection.Indexes.CreateOne(
-            //     new CreateIndexModel<DishCategoryModel>(Builders<DishCategoryModel>.IndexKeys.Ascending(x => x.RestaurantId)));
-            //
-            // var dishCollection = database.GetCollection<DishModel>(DishCollectionName);
-            // dishCollection.Indexes.CreateOne(
-            //     new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.RestaurantId)));
-            // dishCollection.Indexes.CreateOne(
-            //     new CreateIndexModel<DishModel>(Builders<DishModel>.IndexKeys.Ascending(x => x.CategoryId)));
+            var pickupInfoEnabledIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("PickupInfo.Enabled", 1));
+            var deliveryInfoEnabledIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("DeliveryInfo.Enabled", 1));
+            var reservationInfoEnabledIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("ReservationInfo.Enabled", 1));
 
-            var restaurantCollection = database.GetCollection<RestaurantModel>(RestaurantCollectionName);
-            restaurantCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.ImportId)));
-            restaurantCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.Name)));
-            restaurantCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.PickupInfo.Enabled)));
-            restaurantCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.DeliveryInfo.Enabled)));
-            restaurantCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantModel>(Builders<RestaurantModel>.IndexKeys.Ascending(x => x.ReservationInfo.Enabled)));
+            var orderCollectionRestaurantIdIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("CartInfo.RestaurantId", 1));
+            var orderCollectionCustomerStatusIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("CustomerNotificationInfo.Status", 1));
+            var orderCollectionRestaurantStatusIndex = new CreateIndexModel<BsonDocument>(new BsonDocument("RestaurantNotificationInfo.Status", 1));
 
-            var restaurantImageCollection = database.GetCollection<RestaurantImageModel>(RestaurantImageCollectionName);
-            restaurantImageCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.RestaurantId)));
-            restaurantImageCollection.Indexes.CreateOne(
-                new CreateIndexModel<RestaurantImageModel>(Builders<RestaurantImageModel>.IndexKeys.Ascending(x => x.Type)));
+            var cuisineCollection = database.GetCollection<BsonDocument>(CuisineCollectionName);
+            cuisineCollection.Indexes.CreateOne(nameIndex);
 
-            var userCollection = database.GetCollection<UserModel>(UserCollectionName);
-            userCollection.Indexes.CreateOne(
-                new CreateIndexModel<UserModel>(Builders<UserModel>.IndexKeys.Ascending(x => x.Email)));
+            var dishCategoryCollection = database.GetCollection<BsonDocument>(DishCategoryCollectionName);
+            dishCategoryCollection.Indexes.CreateOne(restaurantIdIndex);
 
-            var orderCollection = database.GetCollection<OrderModel>(OrderCollectionName);
-            orderCollection.Indexes.CreateOne(
-                new CreateIndexModel<OrderModel>(
-                    Builders<OrderModel>.IndexKeys.Ascending(x => x.CartInfo.RestaurantId)));
+            var dishCollection = database.GetCollection<BsonDocument>(DishCollectionName);
+            dishCollection.Indexes.CreateMany(new[] { restaurantIdIndex, categoryIdIndex });
 
-            orderCollection.Indexes.CreateOne(
-                new CreateIndexModel<OrderModel>(
-                    Builders<OrderModel>.IndexKeys.Ascending(x => x.CustomerNotificationInfo.Status)));
+            var restaurantCollection = database.GetCollection<BsonDocument>(RestaurantCollectionName);
+            restaurantCollection.Indexes.CreateMany(new []
+            {
+                importIdIndex,
+                nameIndex,
+                pickupInfoEnabledIndex,
+                deliveryInfoEnabledIndex,
+                reservationInfoEnabledIndex
+            });
 
-            orderCollection.Indexes.CreateOne(
-                new CreateIndexModel<OrderModel>(
-                    Builders<OrderModel>.IndexKeys.Ascending(x => x.RestaurantNotificationInfo.Status)));
+            var restaurantImageCollection = database.GetCollection<BsonDocument>(RestaurantImageCollectionName);
+            restaurantImageCollection.Indexes.CreateMany(new[] { restaurantIdIndex, typeIndex });
 
-            //var systemAdminAlreadyExists = userCollection.Find<UserModel>(
-            //        Builders<UserModel>.Filter.Where(doc => doc.Role.Equals("SystemAdmin")))
-            //    .Any();
+            var userCollection = database.GetCollection<BsonDocument>(UserCollectionName);
+            userCollection.Indexes.CreateOne(emailIndex);
+
+            var orderCollection = database.GetCollection<BsonDocument>(OrderCollectionName);
+            orderCollection.Indexes.CreateMany(new[]{
+                orderCollectionRestaurantIdIndex,
+                orderCollectionCustomerStatusIndex,
+                orderCollectionRestaurantStatusIndex
+            });
+
+            //var sysAdminFilter = new FilterDefinitionBuilder<BsonDocument>().Where(doc => doc.GetValue("Role").AsString.Equals("SystemAdmin"));
+            //var systemAdminAlreadyExists = userCollection.Find<BsonDocument>(sysAdminFilter).Any();
             //if (!systemAdminAlreadyExists)
             //{
-            //    var adminUser = new UserModel()
+            //    var adminUser = new BsonDocument(new Dictionary<string, object>()
             //    {
-            //        Id = Guid.NewGuid(),
-            //        Role = "SystemAdmin",
-            //        Email = "admin@gastromio.de",
-            //        CreatedOn = DateTime.UtcNow,
-            //        CreatedBy = Guid.Empty,
-            //        UpdatedOn = DateTime.UtcNow,
-            //        UpdatedBy = Guid.Empty,
-            //    };
+            //        { "Id", Guid.NewGuid() },
+            //        { "Role", "SystemAdmin" },
+            //        { "Email", "admin@gastromio.de" },
+            //        { "CreatedOn", DateTime.UtcNow },
+            //        { "CreatedBy", Guid.Empty },
+            //        { "UpdatedOn", DateTime.UtcNow },
+            //        { "UpdatedBy", Guid.Empty }
+            //    });
             //    userCollection.InsertOne(adminUser);
             //}
         }
