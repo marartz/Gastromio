@@ -90,8 +90,6 @@ namespace Gastromio.App
 
                         ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).GetAwaiter().GetResult();;
                     }
-
-                    dbAdminService.CheckAndRunDatabaseMigrations();
                 }
 
                 host.Run();

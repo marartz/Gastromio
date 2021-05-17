@@ -29,11 +29,6 @@ namespace Gastromio.Persistence.MongoDB
 
         public void PrepareDatabase()
         {
-            Migration.Run(DatabaseVersions.Initial);
-        }
-
-        public void CheckAndRunDatabaseMigrations()
-        {
             if (MongoDatabaseStateChecker.IsDatabaseOutdated("mongodb://localhost:27017", Constants.DatabaseName, UsedAssembly))
             {
                 Migration.Run();
