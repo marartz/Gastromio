@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDBMigrations;
-using System;
+using System.Collections.Generic;
 
 namespace Gastromio.Persistence.MongoDB.Migrations
 {
@@ -27,34 +27,36 @@ namespace Gastromio.Persistence.MongoDB.Migrations
             var restaurants = restaurantCollection.Find(_ => true).ToEnumerable();
             foreach (var restaurant in restaurants)
             {
-                var restaurantId = restaurant.GetValue("Id");
+                var restaurantId = restaurant.GetValue("_id");
                 var dishCategories = dishCategoryCollection
-                    .Find(Builders<BsonDocument>.Filter.Where(categoryDoc => categoryDoc.GetValue("RestaurantId").Equals(restaurantId)))
+                    .Find(new BsonDocument { { "RestaurantId", restaurantId } })
                     .Project(Builders<BsonDocument>.Projection
                         .Exclude("RestaurantId")
-                        .Exclude("CreateyBy")
+                        .Exclude("CreatedBy")
                         .Exclude("CreatedOn")
                         .Exclude("UpdatedOn")
                         .Exclude("UpdatedBy")
                     ).ToEnumerable();
+                var categories = new List<BsonDocument>();
                 foreach (var dishCatogory in dishCategories)
                 {
-                    var dishCategoryId = dishCatogory.GetValue("Id");
+                    var dishCategoryId = dishCatogory.GetValue("_id");
                     var dishes = dishCollection
-                        .Find(
-                            Builders<BsonDocument>.Filter.Where(dishDoc => dishDoc.GetValue("RestaurantId").Equals(restaurantId)
-                                && dishDoc.GetValue("CategoryId").Equals(dishCategoryId))
-                        ).Project(Builders<BsonDocument>.Projection
+                        .Find(new BsonDocument { { "RestaurantId", restaurantId }, { "CategoryId", dishCategoryId } })
+                        .Project(Builders<BsonDocument>.Projection
                             .Exclude("RestaurantId")
                             .Exclude("CategoryId")
-                            .Exclude("CreateyBy")
+                            .Exclude("CreatedBy")
                             .Exclude("CreatedOn")
                             .Exclude("UpdatedOn")
                             .Exclude("UpdatedBy")
                         ).ToEnumerable();
-                    dishCatogory.Add(new BsonElement("Dishes", new BsonArray(dishes)));
+                    categories.Add(dishCatogory.Set("Dishes", new BsonArray(dishes)));
                 }
-                restaurant.Add(new BsonElement("DishCategories", new BsonArray(dishCategories)));
+                restaurantCollection.UpdateOne(
+                    Builders<BsonDocument>.Filter.Eq("_id", restaurantId),
+                    Builders<BsonDocument>.Update.Set("DishCategories", new BsonArray(categories))
+                );
             }
 
             database.DropCollection(DishCollectionName);
