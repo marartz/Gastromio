@@ -12,7 +12,7 @@ namespace Gastromio.Persistence.MongoDB.Migrations
 
         public void Down(IMongoDatabase database)
         {
-            throw new NotImplementedException();
+            // Old restaurant names are not stored -> no point of return!
         }
 
         public void Up(IMongoDatabase database)

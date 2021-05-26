@@ -1,14 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDBMigrations;
-using System;
-using System.Collections.Generic;
 
 namespace Gastromio.Persistence.MongoDB.Migrations
 {
     public class InitialMigration : IMigration
     {
-        public MongoDBMigrations.Version Version => DatabaseVersions.Initial;
+        public Version Version => DatabaseVersions.Initial;
 
         private static string CuisineCollectionName = "cuisines";
         private static string DishCategoryCollectionName = "dish_categories";
@@ -92,23 +90,6 @@ namespace Gastromio.Persistence.MongoDB.Migrations
                 orderCollectionCustomerStatusIndex,
                 orderCollectionRestaurantStatusIndex
             });
-
-            //var sysAdminFilter = new FilterDefinitionBuilder<BsonDocument>().Where(doc => doc.GetValue("Role").AsString.Equals("SystemAdmin"));
-            //var systemAdminAlreadyExists = userCollection.Find<BsonDocument>(sysAdminFilter).Any();
-            //if (!systemAdminAlreadyExists)
-            //{
-            //    var adminUser = new BsonDocument(new Dictionary<string, object>()
-            //    {
-            //        { "Id", Guid.NewGuid() },
-            //        { "Role", "SystemAdmin" },
-            //        { "Email", "admin@gastromio.de" },
-            //        { "CreatedOn", DateTime.UtcNow },
-            //        { "CreatedBy", Guid.Empty },
-            //        { "UpdatedOn", DateTime.UtcNow },
-            //        { "UpdatedBy", Guid.Empty }
-            //    });
-            //    userCollection.InsertOne(adminUser);
-            //}
         }
     }
 }
