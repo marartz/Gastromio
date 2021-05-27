@@ -11,6 +11,11 @@ namespace Gastromio.Core.Domain.Model.Dishes
 {
     public class Dish
     {
+        private const int MaxNameLength = 40;
+        private const int MaxDescriptionLength = 500;
+        private const int MaxProductInfoLength = 500;
+        private const int MaxVariantPrice = 200;
+
         private IList<DishVariant> variants;
 
         public Dish(
@@ -70,8 +75,8 @@ namespace Gastromio.Core.Domain.Model.Dishes
         {
             if (string.IsNullOrEmpty(name))
                 return FailureResult<bool>.Create(FailureResultCode.DishNameRequired);
-            if (name.Length > 40)
-                return FailureResult<bool>.Create(FailureResultCode.DishNameTooLong, 40);
+            if (name.Length > MaxNameLength)
+                return FailureResult<bool>.Create(FailureResultCode.DishNameTooLong, MaxNameLength);
 
             Name = name;
             UpdatedOn = DateTimeOffset.UtcNow;
@@ -82,8 +87,8 @@ namespace Gastromio.Core.Domain.Model.Dishes
 
         public Result<bool> ChangeDescription(string description, UserId changedBy)
         {
-            if (description != null && description.Length > 200)
-                return FailureResult<bool>.Create(FailureResultCode.DishDescriptionTooLong,  200);
+            if (description != null && description.Length > MaxDescriptionLength)
+                return FailureResult<bool>.Create(FailureResultCode.DishDescriptionTooLong, MaxDescriptionLength);
 
             Description = description;
             UpdatedOn = DateTimeOffset.UtcNow;
@@ -94,8 +99,8 @@ namespace Gastromio.Core.Domain.Model.Dishes
 
         public Result<bool> ChangeProductInfo(string productInfo, UserId changedBy)
         {
-            if (productInfo != null && productInfo.Length > 200)
-                return FailureResult<bool>.Create(FailureResultCode.DishProductInfoTooLong,  200);
+            if (productInfo != null && productInfo.Length > MaxProductInfoLength)
+                return FailureResult<bool>.Create(FailureResultCode.DishProductInfoTooLong, MaxProductInfoLength);
 
             ProductInfo = productInfo;
             UpdatedOn = DateTimeOffset.UtcNow;
@@ -155,6 +160,9 @@ namespace Gastromio.Core.Domain.Model.Dishes
 
             foreach (var variant in newVariants)
             {
+                if (variants == null)
+                    throw new NullReferenceException(nameof(variant));
+
                 var tempResult = AddVariant(tempVariants, variant.VariantId, variant.Name, variant.Price);
                 if (tempResult.IsFailure)
                     return tempResult;
@@ -177,12 +185,12 @@ namespace Gastromio.Core.Domain.Model.Dishes
             if (variants.Any(en => en.VariantId == variantId))
                 throw new InvalidOperationException("variant already exists");
 
-            if (name != null && name.Length > 40)
-                return FailureResult<bool>.Create(FailureResultCode.DishVariantNameTooLong, 40);
+            if (name != null && name.Length > MaxNameLength)
+                return FailureResult<bool>.Create(FailureResultCode.DishVariantNameTooLong, MaxNameLength);
 
             if (!(price > 0))
                 return FailureResult<bool>.Create(FailureResultCode.DishVariantPriceIsNegativeOrZero);
-            if (price > 200)
+            if (price > MaxVariantPrice)
                 return FailureResult<bool>.Create(FailureResultCode.DishVariantPriceIsTooBig);
 
             variants.Add(new DishVariant(variantId, name, price));

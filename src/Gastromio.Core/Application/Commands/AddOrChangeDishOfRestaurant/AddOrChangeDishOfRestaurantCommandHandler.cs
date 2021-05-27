@@ -52,10 +52,11 @@ namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
                 return FailureResult<Guid>.Create(FailureResultCode.DishCategoryDoesNotBelongToRestaurant);
 
             Dish dish;
-            if (command.DishId != Guid.Empty)
+            if (command.DishId.Value != Guid.Empty)
             {
                 var dishes = await dishRepository.FindByDishCategoryIdAsync(dishCategory.Id, cancellationToken);
-                dish = dishes?.FirstOrDefault(en => en.Id.Value == command.DishId);
+                dish = dishes?.FirstOrDefault(en => en.Id == command.DishId);
+
                 if (dish == null)
                     return FailureResult<Guid>.Create(FailureResultCode.DishDoesNotBelongToDishCategory);
 

@@ -24,6 +24,9 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
   ]
 })
 export class EditDishComponent implements OnInit {
+  
+  public readonly maxStringLength = 500; 
+  
   @Input() public dishCategoryId: string;
   @Input() public dish: DishModel;
   @BlockUI() blockUI: NgBlockUI;
@@ -53,9 +56,9 @@ export class EditDishComponent implements OnInit {
     this.isNew = this.dish.id === undefined;
 
     this.editDishForm = this.formBuilder.group({
-      name: [this.dish.name, Validators.required],
-      description: [this.dish.description],
-      productInfo: [this.dish.productInfo],
+      name: [this.dish.name, Validators.required,],
+      description: [this.dish.description, Validators.maxLength(this.maxStringLength)],
+      productInfo: [this.dish.productInfo, Validators.maxLength(this.maxStringLength)],
     });
 
     if (this.dish.variants.length === 0) {

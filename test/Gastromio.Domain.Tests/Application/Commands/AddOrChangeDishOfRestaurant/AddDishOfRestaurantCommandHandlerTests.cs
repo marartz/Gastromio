@@ -20,13 +20,13 @@ using Xunit;
 
 namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestaurant
 {
-    public class AddOrChangeDishOfRestaurantCommandHandlerTests : CommandHandlerTestBase<
+    public class AddDishOfRestaurantCommandHandlerTests : CommandHandlerTestBase<
         AddOrChangeDishOfRestaurantCommandHandler,
         AddOrChangeDishOfRestaurantCommand, Guid>
     {
         private readonly Fixture fixture;
 
-        public AddOrChangeDishOfRestaurantCommandHandlerTests()
+        public AddDishOfRestaurantCommandHandlerTests()
         {
             fixture = new Fixture(Role.RestaurantAdmin);
         }
@@ -122,7 +122,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
                 return new AddOrChangeDishOfRestaurantCommand(
                     Restaurant.Id,
                     Dish.CategoryId,
-                    Guid.Empty,
+                    new DishId(Guid.Empty),
                     Dish.Name,
                     Dish.Description,
                     Dish.ProductInfo,
@@ -161,9 +161,9 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeDishOfRestauran
             public void SetupRandomDish()
             {
                 Dish = new DishBuilder()
+                    .WithValidConstrains()
                     .WithRestaurantId(Restaurant.Id)
                     .WithCategoryId(DishCategory.Id)
-                    .WithOrderNo(0)
                     .WithCreatedBy(UserId)
                     .WithCreatedOn(DateTimeOffset.Now)
                     .WithUpdatedBy(UserId)

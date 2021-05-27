@@ -143,14 +143,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
         }
 
         [Fact]
-        public void ChangeDescription_DescriptionLength201_ReturnsFailure()
+        public void ChangeDescription_DescriptionLength501_ReturnsFailure()
         {
             // Arrange
             fixture.SetupChangedBy();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var description = RandomStringBuilder.BuildWithLength(201);
+            var description = RandomStringBuilder.BuildWithLength(501);
 
             // Act
             var result = testObject.ChangeDescription(description, fixture.ChangedBy);
@@ -164,14 +164,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
         }
 
         [Fact]
-        public void ChangeDescription_DescriptionLength200_ChangesDescriptionAndReturnsSuccess()
+        public void ChangeDescription_DescriptionLength500_ChangesDescriptionAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupChangedBy();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var description = RandomStringBuilder.BuildWithLength(200);
+            var description = RandomStringBuilder.BuildWithLength(500);
 
             // Act
             var result = testObject.ChangeDescription(description, fixture.ChangedBy);
@@ -226,14 +226,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
         }
 
         [Fact]
-        public void ChangeProductInfo_ProductInfoLength201_ReturnsFailure()
+        public void ChangeProductInfo_ProductInfoLength501_ReturnsFailure()
         {
             // Arrange
             fixture.SetupChangedBy();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var productInfo = RandomStringBuilder.BuildWithLength(201);
+            var productInfo = RandomStringBuilder.BuildWithLength(501);
 
             // Act
             var result = testObject.ChangeProductInfo(productInfo, fixture.ChangedBy);
@@ -247,14 +247,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Dishes
         }
 
         [Fact]
-        public void ChangeProductInfo_ProductInfoLength200_ChangesProductInfoAndReturnsSuccess()
+        public void ChangeProductInfo_ProductInfoLength500_ChangesProductInfoAndReturnsSuccess()
         {
             // Arrange
             fixture.SetupChangedBy();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var productInfo = RandomStringBuilder.BuildWithLength(200);
+            var productInfo = RandomStringBuilder.BuildWithLength(500);
 
             // Act
             var result = testObject.ChangeProductInfo(productInfo, fixture.ChangedBy);
