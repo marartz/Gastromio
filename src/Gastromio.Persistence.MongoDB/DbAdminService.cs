@@ -7,31 +7,33 @@ namespace Gastromio.Persistence.MongoDB
 {
     public class DbAdminService : IDbAdminService
     {
-        private readonly IMongoClient Client;
+        private readonly IMongoClient client;
+        private readonly string connectionString;
 
-        private readonly Assembly UsedAssembly;
-        private readonly IMigrationRunner Migration;
+        private readonly Assembly usedAssembly;
+        private readonly IMigrationRunner migration;
 
-        public DbAdminService(IMongoClient client)
+        public DbAdminService(IMongoClient client, string connectionString)
         {
-            Client = client;
-            UsedAssembly = typeof(DbAdminService).Assembly;
-            Migration = new MigrationEngine()
-                .UseDatabase("mongodb://localhost:27017", Constants.DatabaseName)
-                .UseAssembly(UsedAssembly)
+            this.client = client;
+            this.connectionString = connectionString;
+            usedAssembly = typeof(DbAdminService).Assembly;
+            migration = new MigrationEngine()
+                .UseDatabase(connectionString, Constants.DatabaseName)
+                .UseAssembly(usedAssembly)
                 .UseSchemeValidation(false, null);
         }
 
         public void PurgeDatabase()
         {
-            Client.DropDatabase(Constants.DatabaseName);
+            client.DropDatabase(Constants.DatabaseName);
         }
 
         public void PrepareDatabase()
         {
-            if (MongoDatabaseStateChecker.IsDatabaseOutdated("mongodb://localhost:27017", Constants.DatabaseName, UsedAssembly))
+            if (MongoDatabaseStateChecker.IsDatabaseOutdated(connectionString, Constants.DatabaseName, usedAssembly))
             {
-                Migration.Run();
+                migration.Run();
             }
         }
     }
