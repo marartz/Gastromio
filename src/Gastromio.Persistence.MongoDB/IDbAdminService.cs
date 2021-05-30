@@ -5,7 +5,5 @@ namespace Gastromio.Persistence.MongoDB
         void PurgeDatabase();
 
         void PrepareDatabase();
-
-        void CorrectRestaurantAliases();
     }
 }
