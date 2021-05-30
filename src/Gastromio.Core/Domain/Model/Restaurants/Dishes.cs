@@ -19,8 +19,6 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             {
                 if (tempDict.ContainsKey(dish.Id))
                     throw DomainException.CreateFrom(new DishAlreadyExistsFailure());
-                if (tempDict.Any(en => string.Equals(en.Value.Name, dish.Name)))
-                    throw DomainException.CreateFrom(new DishAlreadyExistsFailure());
                 tempDict.Add(dish.Id, dish);
             }
 
