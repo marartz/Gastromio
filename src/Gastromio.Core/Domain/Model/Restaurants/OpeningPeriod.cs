@@ -6,7 +6,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 {
     public class OpeningPeriod
     {
-        public const double EarliestOpeningTime = 4d;
+        public const double EarliestOpeningTime = 5.5d;
 
         public OpeningPeriod(TimeSpan start, TimeSpan end)
         {
