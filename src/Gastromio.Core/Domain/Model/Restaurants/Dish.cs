@@ -5,6 +5,10 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 {
     public class Dish
     {
+        private const int MaxNameLength = 100;
+        private const int MaxDescriptionLength = 500;
+        private const int MaxProductInfoLength = 500;
+
         public Dish(
             DishId id,
             string name,
@@ -127,20 +131,20 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         {
             if (string.IsNullOrEmpty(name))
                 throw DomainException.CreateFrom(new DishNameRequiredFailure());
-            if (name.Length > 100)
-                throw DomainException.CreateFrom(new DishNameTooLongFailure(100));
+            if (name.Length > MaxNameLength)
+                throw DomainException.CreateFrom(new DishNameTooLongFailure(MaxNameLength));
         }
 
         private static void ValidateDescription(string description)
         {
-            if (description != null && description.Length > 200)
-                throw DomainException.CreateFrom(new DishDescriptionTooLongFailure(200));
+            if (description != null && description.Length > MaxDescriptionLength)
+                throw DomainException.CreateFrom(new DishDescriptionTooLongFailure(MaxDescriptionLength));
         }
 
         private static void ValidateProductInfo(string productInfo)
         {
-            if (productInfo != null && productInfo.Length > 200)
-                throw DomainException.CreateFrom(new DishProductInfoTooLongFailure(200));
+            if (productInfo != null && productInfo.Length > MaxProductInfoLength)
+                throw DomainException.CreateFrom(new DishProductInfoTooLongFailure(MaxProductInfoLength));
         }
 
         private static void ValidateOrderNo(int orderNo)

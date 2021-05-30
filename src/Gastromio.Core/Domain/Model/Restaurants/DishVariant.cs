@@ -5,14 +5,17 @@ namespace Gastromio.Core.Domain.Model.Restaurants
 {
     public class DishVariant
     {
+        private const int MaxNameLength = 40;
+        private const decimal MaxVariantPrice = 200;
+
         public DishVariant(DishVariantId id, string name, decimal price)
         {
-            if (name != null && name.Length > 40)
-                throw DomainException.CreateFrom(new DishVariantNameTooLongFailure(40));
+            if (name != null && name.Length > MaxNameLength)
+                throw DomainException.CreateFrom(new DishVariantNameTooLongFailure(MaxNameLength));
             if (!(price > 0))
                 throw DomainException.CreateFrom(new DishVariantPriceIsNegativeOrZeroFailure());
-            if (price > 200)
-                throw DomainException.CreateFrom(new DishVariantPriceIsTooBigFailure());
+            if (price > MaxVariantPrice)
+                throw DomainException.CreateFrom(new DishVariantPriceIsTooBigFailure(MaxVariantPrice));
 
             Id = id;
             Name = name;

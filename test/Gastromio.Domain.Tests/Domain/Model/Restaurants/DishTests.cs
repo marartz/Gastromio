@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
-using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Common;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
-using Gastromio.Domain.TestKit.Domain.Model.Users;
 using Xunit;
 
 namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
@@ -24,10 +21,187 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
+        public void Ctor_NameNull_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupNameWithNull();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            act.Should().Throw<DomainException<DishNameRequiredFailure>>();
+        }
+
+        [Fact]
+        public void Ctor_NameEmpty_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupNameWithEmptyString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            act.Should().Throw<DomainException<DishNameRequiredFailure>>();
+        }
+
+        [Fact]
+        public void Ctor_NameTooLong_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupNameWithTooLongString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            act.Should().Throw<DomainException<DishNameTooLongFailure>>();
+        }
+
+        [Fact]
+        public void Ctor_DescriptionTooLong_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithTooLongString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            act.Should().Throw<DomainException<DishDescriptionTooLongFailure>>();
+        }
+
+        [Fact]
+        public void Ctor_ProductInfoTooLong_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithTooLongString();
+            fixture.SetupOrderNoWithValidValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            act.Should().Throw<DomainException<DishProductInfoTooLongFailure>>();
+        }
+
+        [Fact]
+        public void Ctor_OrderNoNegative_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithNegativeValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            act.Should().Throw<DomainException<DishInvalidOrderNoFailure>>();
+        }
+
+        [Fact]
+        public void Ctor_AllValid_CreatesInstance()
+        {
+            // Arrange
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
+            fixture.SetupRandomVariants();
+
+            // Act
+            var dish = new Dish(
+                new DishId(Guid.NewGuid()),
+                fixture.Name,
+                fixture.Description,
+                fixture.ProductInfo,
+                fixture.OrderNo,
+                fixture.Variants
+            );
+
+            // Assert
+            dish.Should().NotBeNull();
+        }
+
+        [Fact]
         public void ChangeName_NameNull_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -42,7 +216,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeName_NameEmpty_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -54,14 +231,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength41_ThrowsDomainException()
+        public void ChangeName_NameLength101_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var name = RandomStringBuilder.BuildWithLength(41);
+            var name = RandomStringBuilder.BuildWithLength(101);
 
             // Act
             Action act = () => testObject.ChangeName(name);
@@ -71,14 +251,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength40_ChangesName()
+        public void ChangeName_NameLength100_ChangesName()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var name = RandomStringBuilder.BuildWithLength(40);
+            var name = RandomStringBuilder.BuildWithLength(100);
 
             // Act
             var result = testObject.ChangeName(name);
@@ -95,7 +278,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeDescription_DescriptionNull_ReturnsChangedDish()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -114,7 +300,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeDescription_DescriptionEmpty_ReturnsChangedDish()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -130,14 +319,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeDescription_DescriptionLength201_ThrowsDomainException()
+        public void ChangeDescription_DescriptionLength501_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var description = RandomStringBuilder.BuildWithLength(201);
+            var description = RandomStringBuilder.BuildWithLength(501);
 
             // Act
             Action act = () => testObject.ChangeDescription(description);
@@ -147,14 +339,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeDescription_DescriptionLength200_ChangesDescription()
+        public void ChangeDescription_DescriptionLength500_ChangesDescription()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var description = RandomStringBuilder.BuildWithLength(200);
+            var description = RandomStringBuilder.BuildWithLength(500);
 
             // Act
             var result = testObject.ChangeDescription(description);
@@ -171,7 +366,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeProductInfo_ProductInfoNull_ReturnsChangedDish()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -190,7 +388,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeProductInfo_ProductInfoEmpty_ReturnsChangedDish()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -206,14 +407,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeProductInfo_ProductInfoLength201_ThrowsDomainException()
+        public void ChangeProductInfo_ProductInfoLength501_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var productInfo = RandomStringBuilder.BuildWithLength(201);
+            var productInfo = RandomStringBuilder.BuildWithLength(501);
 
             // Act
             Action act = () => testObject.ChangeProductInfo(productInfo);
@@ -223,14 +427,17 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeProductInfo_ProductInfoLength200_ChangesProductInfo()
+        public void ChangeProductInfo_ProductInfoLength500_ChangesProductInfo()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
-            var productInfo = RandomStringBuilder.BuildWithLength(200);
+            var productInfo = RandomStringBuilder.BuildWithLength(500);
 
             // Act
             var result = testObject.ChangeProductInfo(productInfo);
@@ -247,7 +454,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeOrderNo_OrderNoNegative_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -262,7 +472,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ChangeOrderNo_OrderNoOne_ChangesOrderNo()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -281,7 +494,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void AddDishVariant_VariantAlreadyExists_ThrowsException()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -301,7 +517,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void AddDishVariant_ValidParameters_AddsVariant()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -324,7 +543,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void RemoveVariant_VariantDoesNotExist_DoesNothing()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -345,7 +567,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void RemoveVariant_VariantExists_RemovesVariants()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -366,7 +591,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ReplaceVariants_NewVariantsNull_RemovesAllVariants()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -385,7 +613,10 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         public void ReplaceVariant_VariantExists_ReplacesVariants()
         {
             // Arrange
-            fixture.SetupChangedBy();
+            fixture.SetupNameWithValidString();
+            fixture.SetupDescriptionWithValidString();
+            fixture.SetupProductInfoWithValidString();
+            fixture.SetupOrderNoWithValidValue();
             fixture.SetupRandomVariants();
             var testObject = fixture.CreateTestObject();
 
@@ -407,28 +638,83 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
 
         private sealed class Fixture
         {
-            public UserId ChangedBy { get; private set; }
+            public string Name { get; private set; }
 
-            public IList<DishVariant> Variants { get; private set; }
+            public string Description { get; private set; }
 
-            public void SetupChangedBy()
+            public string ProductInfo { get; private set; }
+
+            public int OrderNo { get; private set; }
+
+            public DishVariants Variants { get; private set; }
+
+            public void SetupNameWithNull()
             {
-                ChangedBy = new UserIdBuilder().Create();
+                Name = null;
+            }
+
+            public void SetupNameWithEmptyString()
+            {
+                Name = string.Empty;
+            }
+
+            public void SetupNameWithValidString()
+            {
+                Name = RandomStringBuilder.BuildWithLength(100);
+            }
+
+            public void SetupNameWithTooLongString()
+            {
+                Name = RandomStringBuilder.BuildWithLength(101);
+            }
+
+            public void SetupDescriptionWithValidString()
+            {
+                Description = RandomStringBuilder.BuildWithLength(500);
+            }
+
+            public void SetupDescriptionWithTooLongString()
+            {
+                Description = RandomStringBuilder.BuildWithLength(501);
+            }
+
+            public void SetupProductInfoWithValidString()
+            {
+                ProductInfo = RandomStringBuilder.BuildWithLength(500);
+            }
+
+            public void SetupProductInfoWithTooLongString()
+            {
+                ProductInfo = RandomStringBuilder.BuildWithLength(501);
+            }
+
+            public void SetupOrderNoWithNegativeValue()
+            {
+                OrderNo = -1;
+            }
+
+            public void SetupOrderNoWithValidValue()
+            {
+                OrderNo = 0;
             }
 
             public void SetupRandomVariants()
             {
-                Variants = new DishVariantBuilder()
-                    .WithValidConstrains()
-                    .CreateMany(3)
-                    .ToList();
+                Variants = new DishVariants(
+                    new DishVariantBuilder()
+                        .WithValidConstrains()
+                        .CreateMany(3)
+                );
             }
 
             public Dish CreateTestObject()
             {
                 return new DishBuilder()
+                    .WithName(Name)
+                    .WithDescription(Description)
+                    .WithProductInfo(ProductInfo)
+                    .WithOrderNo(OrderNo)
                     .WithVariants(Variants)
-                    .WithValidConstrains()
                     .Create();
             }
         }
