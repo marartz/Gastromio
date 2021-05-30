@@ -8,7 +8,7 @@
         </header>
         <div id="body" tabindex="0">
             <div class="wrapper bg-rough-blue">
-				
+
                 <p>
 					<br />{{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}
 					<br />
@@ -22,8 +22,11 @@
 					<br />Telefax: {{restaurant.contactInfo.fax}}
 					</ng-container>
 					<ng-container *ngIf="restaurant.contactInfo.webSite.length > 0">
-					<br />Webseite: <a href="{{restaurant.contactInfo.webSite}}" target="_blank" rel="nofollow noreferrer">{{restaurant.contactInfo.webSite}}</a> 
+					<br />Webseite: <a href="{{restaurant.contactInfo.webSite}}" target="_blank" rel="nofollow noreferrer">{{restaurant.contactInfo.webSite}}</a>
 					</ng-container>
+                    <ng-container *ngIf="restaurant.contactInfo.emailAddress.length > 0">
+                    <br />E-Mail: {{restaurant.contactInfo.emailAddress}}
+                    </ng-container>
 					<br />
 					<br /><b>Öffnungszeiten</b>
 					<br />{{restaurant.regularOpeningHoursText}}
