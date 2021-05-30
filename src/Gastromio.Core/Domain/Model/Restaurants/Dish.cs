@@ -127,8 +127,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         {
             if (string.IsNullOrEmpty(name))
                 throw DomainException.CreateFrom(new DishNameRequiredFailure());
-            if (name.Length > 40)
-                throw DomainException.CreateFrom(new DishNameTooLongFailure(40));
+            if (name.Length > 100)
+                throw DomainException.CreateFrom(new DishNameTooLongFailure(100));
         }
 
         private static void ValidateDescription(string description)
