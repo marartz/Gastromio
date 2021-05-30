@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -252,6 +253,19 @@ namespace Gastromio.Domain.Tests.Application
                 {
                     await act.Should().NotThrowAsync();
                 }
+            }
+        }
+
+        public void AssertFailure(Result<TResult> result, FailureResultCode failureCode)
+        {
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result?.IsFailure.Should().BeTrue();
+                FailureResult<TResult> fr = (FailureResult<TResult>)result;
+                fr.Should().NotBeNull();
+                fr.Errors.Should().HaveCount(1);
+                fr.Errors.Values.First().First().Code.Should().Be(failureCode);
             }
         }
     }
