@@ -1,9 +1,11 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.ChangeUserPassword;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
@@ -13,7 +15,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserPassword
 {
     public class ChangeUserPasswordCommandHandlerTests : CommandHandlerTestBase<ChangeUserPasswordCommandHandler,
-        ChangeUserPasswordCommand, bool>
+        ChangeUserPasswordCommand>
     {
         private readonly Fixture fixture;
 
@@ -23,7 +25,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserPassword
         }
 
         [Fact]
-        public async Task HandleAsync_UserNotKnown_ReturnsFailure()
+        public async Task HandleAsync_UserNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupUser();
@@ -34,18 +36,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserPassword
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<UserDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesUserReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesUser()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -54,28 +52,25 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangeUserPassword
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var validationResult = fixture.User.ValidatePassword("Start2020!!!") as SuccessResult<bool>;
-                validationResult.Should().NotBeNull();
-                validationResult?.Value.Should().BeTrue();
+                var validationResult = fixture.User.ValidatePassword("Start2020!!!");
+                validationResult.Should().BeTrue();
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.User, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangeUserPasswordCommandHandler, ChangeUserPasswordCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangeUserPasswordCommandHandler, ChangeUserPasswordCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangeUserPasswordCommandHandler,
-            ChangeUserPasswordCommand, bool>
+            ChangeUserPasswordCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
@@ -15,12 +14,12 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
         {
         }
 
-        public ISetup<IRestaurantFactory, Result<Restaurant>> SetupCreate(
+        public ISetup<IRestaurantFactory, Restaurant> SetupCreate(
             string name,
             Address address,
             ContactInfo contactInfo,
-            IEnumerable<RegularOpeningDay> regularOpeningDays,
-            IEnumerable<DeviatingOpeningDay> deviatingOpeningDays,
+            RegularOpeningDays regularOpeningDays,
+            DeviatingOpeningDays deviatingOpeningDays,
             PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo,
             ReservationInfo reservationInfo,
@@ -31,11 +30,24 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Restaurants
             UserId createBy
         )
         {
-            return Setup(m => m.Create(name, address, contactInfo, regularOpeningDays, deviatingOpeningDays, pickupInfo,
-                deliveryInfo, reservationInfo, hygienicHandling, cuisines, paymentMethods, administrators, createBy));
+            return Setup(m => m.Create(
+                name,
+                address,
+                contactInfo,
+                regularOpeningDays,
+                deviatingOpeningDays,
+                pickupInfo,
+                deliveryInfo,
+                reservationInfo,
+                hygienicHandling,
+                cuisines,
+                paymentMethods,
+                administrators,
+                createBy)
+            );
         }
 
-        public ISetup<IRestaurantFactory, Result<Restaurant>> SetupCreateWithName(
+        public ISetup<IRestaurantFactory, Restaurant> SetupCreateWithName(
             string name,
             UserId createdBy
         )

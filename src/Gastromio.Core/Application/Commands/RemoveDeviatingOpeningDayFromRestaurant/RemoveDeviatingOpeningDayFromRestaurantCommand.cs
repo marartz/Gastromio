@@ -4,7 +4,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveDeviatingOpeningDayFromRestaurant
 {
-    public class RemoveDeviatingOpeningDayFromRestaurantCommand : ICommand<bool>
+    public class RemoveDeviatingOpeningDayFromRestaurantCommand : ICommand
     {
         public RemoveDeviatingOpeningDayFromRestaurantCommand(RestaurantId restaurantId, Date date)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 
 namespace Gastromio.Core.Domain.Model.Users
 {
@@ -10,8 +10,6 @@ namespace Gastromio.Core.Domain.Model.Users
         private const int SALT_BYTES = 24;
         private const int HASH_BYTES = 18;
         private const int PBKDF2_ITERATIONS = 64000;
-
-        private static Regex passwordPolicyRegex = new Regex(@"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}");
 
         public User(
             UserId id,
@@ -27,6 +25,8 @@ namespace Gastromio.Core.Domain.Model.Users
             UserId updatedBy
         )
         {
+            ValidateEmail(email);
+
             Id = id;
             Role = role;
             Email = email;
@@ -62,30 +62,30 @@ namespace Gastromio.Core.Domain.Model.Users
 
         public UserId UpdatedBy { get; private set; }
 
-        public Result<bool> ChangeDetails(Role role, string email, UserId changedBy)
+        public void ChangeDetails(Role role, string email, UserId changedBy)
         {
+            ValidateEmail(email);
+
             Role = role;
             Email = email;
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
-
-            return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ValidatePassword(string password)
+        public bool ValidatePassword(string password)
         {
-            byte[] testPasswordHash = PBKDF2(password, PasswordSalt, PBKDF2_ITERATIONS, HASH_BYTES);
+            var testPasswordHash = PBKDF2(password, PasswordSalt, PBKDF2_ITERATIONS, HASH_BYTES);
             var validationResult = SlowEquals(PasswordHash, testPasswordHash);
-            return SuccessResult<bool>.Create(validationResult);
+            return validationResult;
         }
 
-        public Result<bool> ChangePassword(string password, bool checkPasswordPolicy, UserId changedBy)
+        public void ChangePassword(string password, bool checkPasswordPolicy, UserId changedBy)
         {
             if (password == null)
                 throw new ArgumentNullException(nameof(password));
 
-            if (checkPasswordPolicy && !passwordPolicyRegex.IsMatch(password))
-                return FailureResult<bool>.Create(FailureResultCode.PasswordIsNotValid);
+            if (checkPasswordPolicy && !Validators.IsValidPassword(password))
+                throw DomainException.CreateFrom(new PasswordIsNotValidFailure());
 
             var newPasswordSalt = new byte[SALT_BYTES];
             using (var csprng = new RNGCryptoServiceProvider())
@@ -99,49 +99,38 @@ namespace Gastromio.Core.Domain.Model.Users
             PasswordHash = newPasswordHash;
             UpdatedOn = DateTimeOffset.UtcNow;
             UpdatedBy = changedBy;
-
-            return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> GeneratePasswordResetCode()
+        public void GeneratePasswordResetCode()
         {
             var resetCode = Guid.NewGuid();
-
             PasswordResetCode = resetCode.ToByteArray();
             PasswordResetExpiration = DateTimeOffset.UtcNow.AddMinutes(30);
-
-            return SuccessResult<bool>.Create(true);
         }
 
-        public Result<bool> ValidatePasswordResetCode(byte[] resetCode)
+        public bool ValidatePasswordResetCode(byte[] resetCode)
         {
             if (resetCode == null)
                 throw new ArgumentNullException(nameof(resetCode));
-
             return PasswordResetExpiration.HasValue && DateTimeOffset.UtcNow <= PasswordResetExpiration &&
-                   SlowEquals(PasswordResetCode, resetCode)
-                ? (Result<bool>) SuccessResult<bool>.Create(true)
-                : FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);
+                   SlowEquals(PasswordResetCode, resetCode);
         }
 
-        public Result<bool> ChangePasswordWithResetCode(byte[] resetCode, string password)
+        public void ChangePasswordWithResetCode(byte[] resetCode, string password)
         {
-            var tempResult = ValidatePasswordResetCode(resetCode);
-            if (tempResult.IsFailure)
-            {
-                return tempResult;
-            }
-
-            tempResult = ChangePassword(password, true, Id);
-            if (tempResult.IsFailure)
-            {
-                return tempResult;
-            }
-
+            if (!ValidatePasswordResetCode(resetCode))
+                throw DomainException.CreateFrom(new PasswordResetCodeIsInvalidFailure());
+            ChangePassword(password, true, Id);
             PasswordResetCode = null;
             PasswordResetExpiration = null;
+        }
 
-            return SuccessResult<bool>.Create(true);
+        private static void ValidateEmail(string emailAddress)
+        {
+            if (string.IsNullOrEmpty(emailAddress))
+                throw DomainException.CreateFrom(new UserEmailRequiredFailure());
+            if (!Validators.IsValidEmailAddress(emailAddress))
+                throw DomainException.CreateFrom(new UserEmailInvalidFailure());
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)

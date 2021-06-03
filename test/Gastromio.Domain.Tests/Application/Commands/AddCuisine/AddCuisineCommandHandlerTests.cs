@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -5,6 +6,7 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddCuisine;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -25,7 +27,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineToCreateNull_ReturnsFailure()
+        public async Task HandleAsync_CuisineToCreateNull_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupCuisineRepositoryFindingCuisineByName();
@@ -34,18 +36,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             var command = new AddCuisineCommand(null);
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<CuisineNameIsRequiredFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineToCreateEmpty_ReturnsFailure()
+        public async Task HandleAsync_CuisineToCreateEmpty_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupCuisineRepositoryFindingCuisineByName();
@@ -54,18 +52,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             var command = new AddCuisineCommand("");
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<CuisineNameIsRequiredFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_CuisineAlreadyKnown_ReturnsFailure()
+        public async Task HandleAsync_CuisineAlreadyKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupCuisineRepositoryFindingCuisineByName();
@@ -74,18 +68,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<CuisineAlreadyExistsFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_CreatesCuisineAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_CreatesCuisine()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -100,7 +90,6 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.CuisineRepositoryMock.VerifyStoreAsync(fixture.CreatedCuisine, Times.Once);
             }
         }
@@ -168,7 +157,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddCuisine
                     .Create();
 
                 CuisineFactoryMock.SetupCreate("test", UserWithMinimumRole.Id)
-                    .Returns(SuccessResult<Cuisine>.Create(CreatedCuisine));
+                    .Returns(CreatedCuisine);
             }
 
             public override void SetupForSuccessfulCommandExecution(Role? role)

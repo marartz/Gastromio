@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeRegularOpeningPeriodOfRestaurant
 {
-    public class ChangeRegularOpeningPeriodOfRestaurantCommand : ICommand<bool>
+    public class ChangeRegularOpeningPeriodOfRestaurantCommand : ICommand
     {
         public ChangeRegularOpeningPeriodOfRestaurantCommand(RestaurantId restaurantId, int dayOfWeek, TimeSpan oldStart, TimeSpan newStart, TimeSpan newEnd)
         {

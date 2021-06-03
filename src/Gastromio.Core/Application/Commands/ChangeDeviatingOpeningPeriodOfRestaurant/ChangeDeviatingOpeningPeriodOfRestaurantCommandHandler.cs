@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRestaurant
 {
-    public class ChangeDeviatingOpeningPeriodOfRestaurantCommandHandler : ICommandHandler<ChangeDeviatingOpeningPeriodOfRestaurantCommand, bool>
+    public class ChangeDeviatingOpeningPeriodOfRestaurantCommandHandler : ICommandHandler<ChangeDeviatingOpeningPeriodOfRestaurantCommand>
     {
         private readonly IRestaurantRepository restaurantRepository;
 
@@ -17,37 +18,30 @@ namespace Gastromio.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRest
             this.restaurantRepository = restaurantRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeDeviatingOpeningPeriodOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeDeviatingOpeningPeriodOfRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
-                return FailureResult<bool>.Create(FailureResultCode.RestaurantDoesNotExist);
+                throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
 
             if (currentUser.Role == Role.RestaurantAdmin && !restaurant.HasAdministrator(currentUser.Id))
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
-            var result = restaurant.RemoveDeviatingOpeningPeriod(command.Date, command.OldStart, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            restaurant.RemoveDeviatingOpeningPeriod(command.Date, command.OldStart, currentUser.Id);
 
             var openingPeriod = new OpeningPeriod(command.NewStart, command.NewEnd);
-
-            result = restaurant.AddDeviatingOpeningPeriod(command.Date, openingPeriod, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            restaurant.AddDeviatingOpeningPeriod(command.Date, openingPeriod, currentUser.Id);
 
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
-
-            return result;
         }
     }
 }

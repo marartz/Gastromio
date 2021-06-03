@@ -51,7 +51,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   restaurantId: string;
   restaurant: RestaurantModel;
   openingHours: string;
-  dishCategories: DishCategoryModel[];
 
   searchPhrase: string;
   filteredDishCategories: DishCategoryModel[];
@@ -126,7 +125,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
         try {
           this.restaurant = this.orderFacade.getSelectedRestaurant();
-          this.dishCategories = this.orderFacade.getDishCategoriesOfSelectedRestaurant();
           this.openingHours = this.restaurant.openingHoursTodayText;
 
           const cart = this.orderFacade.getCart();
@@ -152,7 +150,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       }, error => {
         console.log('error: ', error);
         this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+        this.generalError = this.httpErrorHandlingService.handleError(error).message;
       });
     });
   }
@@ -222,13 +220,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   filterDishCategories(): void {
     if (!this.searchPhrase) {
-      this.filteredDishCategories = this.dishCategories;
+      this.filteredDishCategories = this.restaurant.dishCategories;
       return;
     }
 
     this.filteredDishCategories = new Array<DishCategoryModel>();
 
-    for (let dishCategory of this.dishCategories) {
+    for (let dishCategory of this.restaurant.dishCategories) {
       let hasMatch = false;
 
       let dishCategoryClone = new DishCategoryModel();

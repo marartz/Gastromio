@@ -3,11 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangePasswordWithResetCode
 {
-    public class ChangePasswordWithResetCodeCommandHandler : ICommandHandler<ChangePasswordWithResetCodeCommand, bool>
+    public class ChangePasswordWithResetCodeCommandHandler : ICommandHandler<ChangePasswordWithResetCodeCommand>
     {
         private readonly IUserRepository userRepository;
 
@@ -16,7 +17,7 @@ namespace Gastromio.Core.Application.Commands.ChangePasswordWithResetCode
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangePasswordWithResetCodeCommand command, User currentUser,
+        public async Task HandleAsync(ChangePasswordWithResetCodeCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
@@ -25,14 +26,10 @@ namespace Gastromio.Core.Application.Commands.ChangePasswordWithResetCode
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
 
             if (user == null)
-                return FailureResult<bool>.Create(FailureResultCode.PasswordResetCodeIsInvalid);
+                throw DomainException.CreateFrom(new PasswordResetCodeIsInvalidFailure());
 
-            var result = user.ChangePasswordWithResetCode(command.PasswordResetCode, command.Password);
-            if (result.IsFailure)
-                return result;
-
+            user.ChangePasswordWithResetCode(command.PasswordResetCode, command.Password);
             await userRepository.StoreAsync(user, cancellationToken);
-            return result;
         }
     }
 }

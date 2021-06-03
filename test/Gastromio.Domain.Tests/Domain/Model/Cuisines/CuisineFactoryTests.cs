@@ -1,6 +1,8 @@
 using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Cuisines;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Common;
@@ -32,33 +34,28 @@ namespace Gastromio.Domain.Tests.Domain.Model.Cuisines
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                result?.Value.Should().BeOfType<Cuisine>();
-                result?.Value?.Id.Value.Should().NotBeEmpty();
-                result?.Value?.Name.Should().Be(fixture.Name);
-                result?.Value?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                result?.Value?.CreatedBy.Should().Be(fixture.CreatedBy);
-                result?.Value?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                result?.Value?.UpdatedBy.Should().Be(fixture.CreatedBy);
+                result?.Should().BeOfType<Cuisine>();
+                result?.Id.Value.Should().NotBeEmpty();
+                result?.Name.Should().Be(fixture.Name);
+                result?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result?.CreatedBy.Should().Be(fixture.CreatedBy);
+                result?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result?.UpdatedBy.Should().Be(fixture.CreatedBy);
             }
         }
 
         [Fact]
-        public void Create_InvalidParameters_ReturnsFailure()
+        public void Create_InvalidParameters_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupInvalidParameters();
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = testObject.Create(fixture.Name, fixture.CreatedBy);
+            Action act = () => testObject.Create(fixture.Name, fixture.CreatedBy);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<CuisineNameTooLongFailure>>();
         }
 
         private sealed class Fixture

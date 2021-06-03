@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Gastromio.Core.Domain.Model.DishCategories;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Restaurants;
 
 
@@ -25,19 +23,19 @@ namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
         }
 
         public RestaurantId RestaurantId { get; }
-        
+
         public DishCategoryId DishCategoryId { get; }
 
         public DishId DishId { get; }
-        
+
         public string Name { get; }
-        
+
         public string Description { get; }
-        
+
         public string ProductInfo { get; }
-        
+
         public int OrderNo { get; }
-        
+
         public IReadOnlyCollection<DishVariant> Variants { get; }
     }
 }

@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveAdminFromRestaurant
 {
-    public class RemoveAdminFromRestaurantCommand : ICommand<bool>
+    public class RemoveAdminFromRestaurantCommand : ICommand
     {
         public RemoveAdminFromRestaurantCommand(RestaurantId restaurantId, UserId userId)
         {

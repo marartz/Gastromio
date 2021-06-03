@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.AddAdminToRestaurant
 {
-    public class AddAdminToRestaurantCommand : ICommand<bool>
+    public class AddAdminToRestaurantCommand : ICommand
     {
         public AddAdminToRestaurantCommand(RestaurantId restaurantId, UserId userId)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Xunit;
@@ -106,7 +107,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void AddPeriod_SamePeriodAlreadyPresent_ChangesNothingAndReturnsSuccess()
+        public void AddPeriod_SamePeriodAlreadyPresent_ChangesNothing()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -126,61 +127,12 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var successResult = (SuccessResult<DeviatingOpeningDay>) result;
-                successResult.Should().NotBeNull();
-                successResult?.Value.OpeningPeriods.Should().BeEquivalentTo(curPeriod);
+                result.OpeningPeriods.Should().BeEquivalentTo(curPeriod);
             }
         }
 
         [Fact]
-        public void AddPeriod_StartBeforeEarliestOpeningTime_ReturnsFailure()
-        {
-            // Arrange
-            fixture.SetupWithoutPeriods();
-            var testObject = fixture.CreateTestObject();
-
-            var period = new OpeningPeriodBuilder()
-                .WithStart(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime - 1))
-                .WithEnd(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 1))
-                .Create();
-
-            // Act
-            var result = testObject.AddPeriod(period);
-
-            // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
-        }
-
-        [Fact]
-        public void AddPeriod_StartBeforeEnd_ReturnsFailure()
-        {
-            // Arrange
-            fixture.SetupWithoutPeriods();
-            var testObject = fixture.CreateTestObject();
-
-            var period = new OpeningPeriodBuilder()
-                .WithStart(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 2))
-                .WithEnd(TimeSpan.FromHours(OpeningPeriod.EarliestOpeningTime + 1))
-                .Create();
-
-            // Act
-            var result = testObject.AddPeriod(period);
-
-            // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
-        }
-
-        [Fact]
-        public void AddPeriod_NewEndEqualsCurrentStart_ReturnsFailure()
+        public void AddPeriod_NewEndEqualsCurrentStart_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -194,18 +146,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_NewEndIsOverlappingIntoCurrent_ReturnsFailure()
+        public void AddPeriod_NewEndIsOverlappingIntoCurrent_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -219,18 +167,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_NewStartIsOverlappingIntoCurrent_ReturnsFailure()
+        public void AddPeriod_NewStartIsOverlappingIntoCurrent_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -244,18 +188,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_NewStartEqualsCurrentEnd_ReturnsFailure()
+        public void AddPeriod_NewStartEqualsCurrentEnd_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -269,18 +209,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_NewStartEqualsCurStartButShorter_ReturnsFailure()
+        public void AddPeriod_NewStartEqualsCurStartButShorter_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -294,18 +230,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_NewIsCompletelyInCurrent_ReturnsFailure()
+        public void AddPeriod_NewIsCompletelyInCurrent_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -319,18 +251,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_NewEndEqualsCurEndButShorter_ReturnsFailure()
+        public void AddPeriod_NewEndEqualsCurEndButShorter_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -344,18 +272,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_CurrentIsCompletelyInNew_ReturnsFailure()
+        public void AddPeriod_CurrentIsCompletelyInNew_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupWithOnePeriod();
@@ -369,18 +293,14 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 .Create();
 
             // Act
-            var result = testObject.AddPeriod(period);
+            Action act = () => testObject.AddPeriod(period);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            act.Should().Throw<DomainException<RestaurantOpeningPeriodIntersectsFailure>>();
         }
 
         [Fact]
-        public void AddPeriod_WithoutPeriods_AddsPeriodAndReturnsSuccess()
+        public void AddPeriod_WithoutPeriods_AddsPeriod()
         {
             // Arrange
             fixture.SetupWithoutPeriods();
@@ -398,10 +318,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var successResult = (SuccessResult<DeviatingOpeningDay>) result;
-                successResult.Should().NotBeNull();
-                successResult?.Value.OpeningPeriods.Should().BeEquivalentTo(period);
+                result.OpeningPeriods.Should().BeEquivalentTo(period);
             }
         }
 

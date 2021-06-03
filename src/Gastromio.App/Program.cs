@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using Gastromio.Core.Application.Commands.AddTestData;
 using Gastromio.Core.Application.Commands.EnsureAdminUser;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Persistence.MongoDB;
 using Microsoft.Extensions.Configuration;
@@ -40,8 +39,10 @@ namespace Gastromio.App
 
                     var dbAdminService = services.GetService<IDbAdminService>();
 
+                    var currentUserId = new UserId(Guid.NewGuid());
+
                     var currentUser = new User(
-                        new UserId(Guid.Empty),
+                        currentUserId,
                         Role.SystemAdmin,
                         "admin@gastromio.de",
                         null,
@@ -49,9 +50,9 @@ namespace Gastromio.App
                         null,
                         null,
                         DateTimeOffset.UtcNow,
-                        new UserId(Guid.Empty),
+                        currentUserId,
                         DateTimeOffset.UtcNow,
-                        new UserId(Guid.Empty)
+                        currentUserId
                     );
 
                     var ensureAdminUserCommandHandler = services.GetService<EnsureAdminUserCommandHandler>();
@@ -64,13 +65,7 @@ namespace Gastromio.App
                         dbAdminService.PurgeDatabase();
                         dbAdminService.PrepareDatabase();
 
-                        var result = ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).Result;
-                        if (result.IsFailure)
-                        {
-                            var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Errors));
-                            throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
-                        }
+                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).GetAwaiter().GetResult();
 
                         if (!Int32.TryParse(configuration["Seed:Params:UserCount"], out var userCount))
                             userCount = 20;
@@ -86,30 +81,15 @@ namespace Gastromio.App
 
                         var addTestDataCommandHandler = services.GetService<AddTestDataCommandHandler>();
 
-                        result = addTestDataCommandHandler
-                            .HandleAsync(new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount),
-                                currentUser).Result;
-                        if (result.IsFailure)
-                        {
-                            var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Errors.Values.SelectMany(en => en)));
-                            throw new InvalidOperationException("Error during command AddTestDataCommand");
-                        }
+                        addTestDataCommandHandler.HandleAsync(
+                            new AddTestDataCommand(userCount, restCount, dishCatCount, dishCount), currentUser).GetAwaiter().GetResult();;
                     }
                     else
                     {
                         dbAdminService.PrepareDatabase();
 
-                        var result = ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).Result;
-                        if (result.IsFailure)
-                        {
-                            var failureResult = (FailureResult<bool>) result;
-                            Log.Logger.Error(string.Join("; ", failureResult.Errors));
-                            throw new InvalidOperationException("Error during command EnsureAdminUserCommand");
-                        }
+                        ensureAdminUserCommandHandler.HandleAsync(new EnsureAdminUserCommand(), currentUser).GetAwaiter().GetResult();;
                     }
-
-                    dbAdminService.CorrectRestaurantAliases();
                 }
 
                 host.Run();

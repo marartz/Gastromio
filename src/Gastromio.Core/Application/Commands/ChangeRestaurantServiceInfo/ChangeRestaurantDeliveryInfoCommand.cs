@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantServiceInfo
 {
-    public class ChangeRestaurantServiceInfoCommand : ICommand<bool>
+    public class ChangeRestaurantServiceInfoCommand : ICommand
     {
         public ChangeRestaurantServiceInfoCommand(RestaurantId restaurantId, PickupInfo pickupInfo,
             DeliveryInfo deliveryInfo, ReservationInfo reservationInfo, string hygienicHandling)

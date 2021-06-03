@@ -1,4 +1,3 @@
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 using Moq;
 using Moq.Language.Flow;
@@ -11,7 +10,7 @@ namespace Gastromio.Domain.TestKit.Domain.Model.Users
         {
         }
 
-        public ISetup<IUserFactory, Result<User>> SetupCreate(Role role, string email, string password,
+        public ISetup<IUserFactory, User> SetupCreate(Role role, string email, string password,
             bool checkPasswordPolicy, UserId createdBy)
         {
             return Setup(m => m.Create(role, email, password, checkPasswordPolicy, createdBy));

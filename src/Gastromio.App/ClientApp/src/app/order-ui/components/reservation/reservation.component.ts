@@ -121,7 +121,7 @@ export class ReservationComponent implements OnInit {
       }, error => {
         console.log('error: ', error);
         this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+        this.generalError = this.httpErrorHandlingService.handleError(error).message;
       });
     });
 

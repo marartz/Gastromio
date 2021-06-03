@@ -12,20 +12,9 @@ export class HttpErrorHandlingService {
 
   handleError(httpError: HttpErrorResponse): FailureResult {
     const errorObj = httpError.error;
-    let componentErrors = Object.assign({}, errorObj.errors || {});
-
-    // fix type
-    if (typeof componentErrors !== 'object') {
-      componentErrors = {};
+    if (errorObj.Code && errorObj.Message) {
+      return new FailureResult(errorObj.Code, errorObj.Message);
     }
-
-    // only return specific failure result if at least one message exists
-    if (!!Object.keys(componentErrors).length) {
-      const generalErrors = componentErrors[''] || [];
-      delete componentErrors[''];
-      return new FailureResult(generalErrors, componentErrors);
-    }
-
     return this.createDefaultResult();
   }
 
