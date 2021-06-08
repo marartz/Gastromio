@@ -8,7 +8,6 @@ import {AuthService} from '../../auth/services/auth.service';
 
 import {RestaurantModel} from '../../shared/models/restaurant.model';
 import {CuisineModel} from '../../shared/models/cuisine.model';
-import {DishCategoryModel} from '../../shared/models/dish-category.model';
 
 import {CheckoutModel} from '../models/checkout.model';
 import {OrderModel} from '../models/order.model';
@@ -90,18 +89,6 @@ export class OrderService {
       })
     };
     return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions)
-      .pipe(take(1));
-  }
-
-  public getDishesOfRestaurantAsync(id: string): Observable<DishCategoryModel[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + this.authService.getToken(),
-      })
-    };
-    return this.http.get<DishCategoryModel[]>(this.baseUrl + '/restaurants/' + encodeURIComponent(id) + '/dishes', httpOptions)
       .pipe(take(1));
   }
 

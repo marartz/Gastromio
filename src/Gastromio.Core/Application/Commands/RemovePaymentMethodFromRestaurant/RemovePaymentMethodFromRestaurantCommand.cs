@@ -3,7 +3,7 @@ using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemovePaymentMethodFromRestaurant
 {
-    public class RemovePaymentMethodFromRestaurantCommand : ICommand<bool>
+    public class RemovePaymentMethodFromRestaurantCommand : ICommand
     {
         public RemovePaymentMethodFromRestaurantCommand(RestaurantId restaurantId, PaymentMethodId paymentMethodId)
         {

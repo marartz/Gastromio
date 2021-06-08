@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Notification;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Application.Ports.Template;
-using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RequestPasswordChange
 {
-    public class RequestPasswordChangeCommandHandler : ICommandHandler<RequestPasswordChangeCommand, bool>
+    public class RequestPasswordChangeCommandHandler : ICommandHandler<RequestPasswordChangeCommand>
     {
         private readonly IUserRepository userRepository;
         private readonly ITemplateService templateService;
@@ -24,16 +23,14 @@ namespace Gastromio.Core.Application.Commands.RequestPasswordChange
             this.emailNotificationService = emailNotificationService;
         }
 
-        public async Task<Result<bool>> HandleAsync(RequestPasswordChangeCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(RequestPasswordChangeCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             var user = await userRepository.FindByEmailAsync(command.UserEmail, cancellationToken);
             if (user == null)
-            {
-                return SuccessResult<bool>.Create(false);
-            }
+                return;
 
             user.GeneratePasswordResetCode();
 
@@ -59,8 +56,6 @@ namespace Gastromio.Core.Application.Commands.RequestPasswordChange
                 emailData.TextPart,
                 emailData.HtmlPart
             ), cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

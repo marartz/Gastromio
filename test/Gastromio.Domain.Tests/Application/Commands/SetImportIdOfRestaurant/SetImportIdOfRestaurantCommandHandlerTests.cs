@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.SetImportIdOfRestaurant;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
@@ -15,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
 {
     public class SetImportIdOfRestaurantCommandHandlerTests : CommandHandlerTestBase<SetImportIdOfRestaurantCommandHandler,
-        SetImportIdOfRestaurantCommand, bool>
+        SetImportIdOfRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -25,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
@@ -36,18 +39,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_ChangesImportIdOfRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_ChangesImportIdOfRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -56,26 +55,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.ImportId.Should().Be(fixture.ImportId);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<SetImportIdOfRestaurantCommandHandler, SetImportIdOfRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<SetImportIdOfRestaurantCommandHandler, SetImportIdOfRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<SetImportIdOfRestaurantCommandHandler,
-            SetImportIdOfRestaurantCommand, bool>
+            SetImportIdOfRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

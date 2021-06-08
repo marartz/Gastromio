@@ -16,7 +16,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.RemoveCuisine
 {
     public class RemoveCuisineCommandHandlerTests : CommandHandlerTestBase<RemoveCuisineCommandHandler,
-        RemoveCuisineCommand, bool>
+        RemoveCuisineCommand>
     {
         private readonly Fixture fixture;
 
@@ -26,7 +26,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveCuisine
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_RemovesCuisineAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_RemovesCuisine()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -35,25 +35,23 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveCuisine
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.CuisineRepositoryMock.VerifyRemoveAsync(fixture.Cuisine.Id, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<RemoveCuisineCommandHandler, RemoveCuisineCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<RemoveCuisineCommandHandler, RemoveCuisineCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<RemoveCuisineCommandHandler,
-            RemoveCuisineCommand, bool>
+            RemoveCuisineCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

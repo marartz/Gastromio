@@ -3,11 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeUserPassword
 {
-    public class ChangeUserPasswordCommandHandler : ICommandHandler<ChangeUserPasswordCommand, bool>
+    public class ChangeUserPasswordCommandHandler : ICommandHandler<ChangeUserPasswordCommand>
     {
         private readonly IUserRepository userRepository;
 
@@ -16,28 +17,24 @@ namespace Gastromio.Core.Application.Commands.ChangeUserPassword
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeUserPasswordCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeUserPasswordCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var user = await userRepository.FindByUserIdAsync(command.UserId, cancellationToken);
             if (user == null)
-                return FailureResult<bool>.Create(FailureResultCode.UserDoesNotExist);
+                throw DomainException.CreateFrom(new UserDoesNotExistFailure());
 
-            var result = user.ChangePassword(command.Password, true, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            user.ChangePassword(command.Password, true, currentUser.Id);
 
             await userRepository.StoreAsync(user, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

@@ -36,7 +36,6 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   public activeDishCategoryId$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
 
   private restaurantSubscription: Subscription;
-  private dishCategoriesSubscription: Subscription;
 
   private externalMenuId: string = "EA9D3F69-4709-4F4A-903C-7EA68C0A36C7".toLocaleLowerCase();
 
@@ -95,6 +94,8 @@ export class DishManagementComponent implements OnInit, OnDestroy {
 
     this.restaurantSubscription = this.facade.getRestaurant$().subscribe(
       restaurant => {
+        this.dishCategories = restaurant.dishCategories;
+
         const index = restaurant.externalMenus?.findIndex(en => en.id === this.externalMenuId) ?? -1;
         if (index >= 0) {
           const externalMenu = restaurant.externalMenus[index];
@@ -112,25 +113,10 @@ export class DishManagementComponent implements OnInit, OnDestroy {
         }
       }
     );
-
-    this.dishCategoriesSubscription = this.facade.getDishCategories$().subscribe(
-      dishCategories => {
-        this.dishCategories = dishCategories;
-
-        if (this.activeDishCategoryId$.value === undefined) {
-          this.activeDishCategoryId$.next(dishCategories.length > 0 ? dishCategories[0].id : undefined);
-        }
-        const index = dishCategories.findIndex(en => en.id === this.activeDishCategoryId$.value)
-        if (index < 0) {
-          this.activeDishCategoryId$.next(dishCategories.length > 0 ? dishCategories[0].id : undefined);
-        }
-      }
-    );
   }
 
   ngOnDestroy(): void {
     this.restaurantSubscription?.unsubscribe();
-    this.dishCategoriesSubscription?.unsubscribe();
   }
 
   get emf() {

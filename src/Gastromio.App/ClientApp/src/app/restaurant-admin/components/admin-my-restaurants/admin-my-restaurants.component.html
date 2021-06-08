@@ -50,7 +50,7 @@
                                 <li *ngFor="let restaurant of restaurants">
                                     <div class="left">
                                         <span class="name hasDetails">{{restaurant.name}} <span *ngIf="!restaurant.isActive">(inaktiv)</span></span>
-                                        <span class="details">{{restaurant.address.street}}, {{restaurant.address.city}}</span>
+                                        <span class="details">{{restaurant.address?.street}}, {{restaurant.address?.city}}</span>
                                     </div>
                                     <div class="right">
                                         <button [routerLink]="['/restaurants', restaurant.alias]" class="action" *ngIf="restaurant.isActive"target="_blank">

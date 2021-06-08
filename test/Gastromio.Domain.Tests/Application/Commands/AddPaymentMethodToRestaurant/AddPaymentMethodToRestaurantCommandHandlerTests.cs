@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.AddPaymentMethodToRestaurant;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
@@ -16,7 +18,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.AddPaymentMethodToRestaurant
 {
     public class AddPaymentMethodToRestaurantCommandHandlerTests : CommandHandlerTestBase<AddPaymentMethodToRestaurantCommandHandler,
-        AddPaymentMethodToRestaurantCommand, bool>
+        AddPaymentMethodToRestaurantCommand>
     {
         private readonly Fixture fixture;
 
@@ -26,7 +28,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddPaymentMethodToRestaura
         }
 
         [Fact]
-        public async Task HandleAsync_RestaurantNotKnown_ReturnsFailure()
+        public async Task HandleAsync_RestaurantNotKnown_ThrowsDomainException()
         {
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
@@ -36,18 +38,14 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddPaymentMethodToRestaura
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () =>  await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<RestaurantDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_AllValid_AddsPaymentMethodToRestaurantAndReturnsSuccess()
+        public async Task HandleAsync_AllValid_AddsPaymentMethodToRestaurant()
         {
             // Arrange
             fixture.SetupForSuccessfulCommandExecution(fixture.MinimumRole);
@@ -56,26 +54,24 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddPaymentMethodToRestaura
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
                 fixture.Restaurant.PaymentMethods.Should().Contain(fixture.PaymentMethodId);
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<AddPaymentMethodToRestaurantCommandHandler, AddPaymentMethodToRestaurantCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<AddPaymentMethodToRestaurantCommandHandler, AddPaymentMethodToRestaurantCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<AddPaymentMethodToRestaurantCommandHandler,
-            AddPaymentMethodToRestaurantCommand, bool>
+            AddPaymentMethodToRestaurantCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {

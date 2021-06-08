@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Dishes;
 using Gastromio.Core.Domain.Model.Orders;
 using Gastromio.Core.Domain.Model.PaymentMethods;
 using Gastromio.Core.Domain.Model.Restaurants;
@@ -172,7 +171,7 @@ namespace Gastromio.Persistence.MongoDB
                             en.ItemId,
                             new DishId(en.DishId),
                             en.DishName,
-                            en.VariantId,
+                            new DishVariantId(en.VariantId),
                             en.VariantName,
                             (decimal) en.VariantPrice,
                             en.Count,
@@ -266,7 +265,7 @@ namespace Gastromio.Persistence.MongoDB
                             ItemId = en.ItemId,
                             DishId = en.DishId.Value,
                             DishName = en.DishName,
-                            VariantId = en.VariantId,
+                            VariantId = en.VariantId.Value,
                             VariantName = en.VariantName,
                             VariantPrice = (double) en.VariantPrice,
                             Count = en.Count,

@@ -1,22 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Gastromio.Core.Application.Commands.DecOrderOfDishCategory;
-using Gastromio.Core.Domain.Model.DishCategories;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Restaurants;
 using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Domain.TestKit.Application.Ports.Persistence;
-using Gastromio.Domain.TestKit.Domain.Model.DishCategories;
+using Gastromio.Domain.TestKit.Domain.Model.Restaurants;
 using Moq;
 using Xunit;
 
 namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDishCategory
 {
     public class DecOrderOfDishCategoryCommandHandlerTests : CommandHandlerTestBase<
-        DecOrderOfDishCategoryCommandHandler, DecOrderOfDishCategoryCommand, bool>
+        DecOrderOfDishCategoryCommandHandler, DecOrderOfDishCategoryCommand>
     {
         private readonly Fixture fixture;
 
@@ -26,228 +28,293 @@ namespace Gastromio.Domain.Tests.Application.Commands.DecOrderOfDishCategory
         }
 
         [Fact]
-        public async Task HandleAsync_DishCategoryNotKnown_ReturnsFailure()
+        public async Task HandleAsync_DishNotKnown_ThrowsDomainException()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
-            fixture.SetupCurrentDishCategory(1);
-            fixture.SetupDishRepositoryNotFindingDishByDishId();
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
+            fixture.SetupCurrentDishCategoryToUnknown();
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
-            using (new AssertionScope())
-            {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-            }
+            await act.Should().ThrowAsync<DomainException<DishCategoryDoesNotExistFailure>>();
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex0_ChangesNothingAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_ChangesNothing()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDishCategory(0);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategories[0].OrderNo.Should().Be(0);
-                fixture.DishCategories[1].OrderNo.Should().Be(1);
-                fixture.DishCategories[2].OrderNo.Should().Be(2);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Never);
+                var dishCategories = fixture.Restaurant.DishCategories.OrderBy(dishCategory => dishCategory.OrderNo)
+                    .ToList();
+                dishCategories.Should().NotBeNull();
+                dishCategories[0].Id.Should().Be(fixture.DishCategories[0].Id);
+                dishCategories[1].Id.Should().Be(fixture.DishCategories[1].Id);
+                dishCategories[2].Id.Should().Be(fixture.DishCategories[2].Id);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex1_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex0_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
+            fixture.SetupCurrentDishCategory(0);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
+        }
+
+        [Fact]
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_ChangesDishCategoryOrder()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDishCategory(1);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
-            fixture.SetupDishRepositoryStoringDish(0);
-            fixture.SetupDishRepositoryStoringDish(1);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategories[0].OrderNo.Should().Be(1);
-                fixture.DishCategories[1].OrderNo.Should().Be(0);
-                fixture.DishCategories[2].OrderNo.Should().Be(2);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Once);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Once);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Never);
+                var dishCategories = fixture.Restaurant.DishCategories.OrderBy(dishCategory => dishCategory.OrderNo)
+                    .ToList();
+                dishCategories.Should().NotBeNull();
+                dishCategories[0].Id.Should().Be(fixture.DishCategories[1].Id);
+                dishCategories[1].Id.Should().Be(fixture.DishCategories[0].Id);
+                dishCategories[2].Id.Should().Be(fixture.DishCategories[2].Id);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_ThreeDishCategories_CurrentHasIndex2_ChangesDishOrderAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex1_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupDishCategories(3);
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
+            fixture.SetupCurrentDishCategory(1);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
+        }
+
+        [Fact]
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_ChangesDishCategoryOrder()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
             fixture.SetupCurrentDishCategory(2);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
-            fixture.SetupDishRepositoryStoringDish(1);
-            fixture.SetupDishRepositoryStoringDish(2);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategories[0].OrderNo.Should().Be(0);
-                fixture.DishCategories[1].OrderNo.Should().Be(2);
-                fixture.DishCategories[2].OrderNo.Should().Be(1);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[1], Times.Once);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[2], Times.Once);
+                var dishCategories = fixture.Restaurant.DishCategories.OrderBy(dishCategory => dishCategory.OrderNo)
+                    .ToList();
+                dishCategories.Should().NotBeNull();
+                dishCategories[0].Id.Should().Be(fixture.DishCategories[0].Id);
+                dishCategories[1].Id.Should().Be(fixture.DishCategories[2].Id);
+                dishCategories[2].Id.Should().Be(fixture.DishCategories[1].Id);
             }
         }
 
         [Fact]
-        public async Task HandleAsync_OneDishCategory_ChangesNothingAndReturnsSuccess()
+        public async Task HandleAsync_ThreeDishes_CurrentHasIndex2_StoresRestaurant()
         {
             // Arrange
-            fixture.SetupDishCategories(1);
-            fixture.SetupCurrentDishCategory(0);
-            fixture.SetupDishRepositoryFindingDishByDishId();
-            fixture.SetupDishRepositoryFindingDishByDishCategoryId();
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 3);
+            fixture.SetupCurrentDishCategory(2);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
 
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
+        }
+
+        [Fact]
+        public async Task HandleAsync_OneDish_ChangesNothing()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 1);
+            fixture.SetupCurrentDishCategory(0);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                fixture.DishCategories[0].OrderNo.Should().Be(0);
-                fixture.DishCategoryRepositoryMock.VerifyStoreAsync(fixture.DishCategories[0], Times.Never);
+                var dishCategories = fixture.Restaurant.DishCategories.OrderBy(dishCategory => dishCategory.OrderNo)
+                    .ToList();
+                dishCategories.Should().NotBeNull();
+                dishCategories[0].Id.Should().Be(fixture.DishCategories[0].Id);
             }
+        }
+
+        [Fact]
+        public async Task HandleAsync_OneDish_StoresRestaurant()
+        {
+            // Arrange
+            fixture.SetupRestaurantWithDishes(fixture.MinimumRole, 1);
+            fixture.SetupCurrentDishCategory(0);
+            fixture.SetupRestaurantRepositoryFindingRestaurant();
+            fixture.SetupRestaurantRepositoryStoringRestaurant();
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
         }
 
         protected override
-            CommandHandlerTestFixtureBase<DecOrderOfDishCategoryCommandHandler, DecOrderOfDishCategoryCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<DecOrderOfDishCategoryCommandHandler, DecOrderOfDishCategoryCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<DecOrderOfDishCategoryCommandHandler,
-            DecOrderOfDishCategoryCommand, bool>
+            DecOrderOfDishCategoryCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
-                DishCategoryRepositoryMock = new DishCategoryRepositoryMock(MockBehavior.Strict);
+                RestaurantRepositoryMock = new RestaurantRepositoryMock(MockBehavior.Strict);
             }
 
-            public DishCategoryRepositoryMock DishCategoryRepositoryMock { get; }
+            public RestaurantRepositoryMock RestaurantRepositoryMock { get; }
 
             public List<DishCategory> DishCategories { get; private set; }
 
-            public DishCategory CurrentDishCategory { get; private set; }
+            public Restaurant Restaurant { get; private set; }
+
+            public DishCategoryId CurrentDishCategoryId { get; private set; }
 
             public override DecOrderOfDishCategoryCommandHandler CreateTestObject()
             {
                 return new DecOrderOfDishCategoryCommandHandler(
-                    DishCategoryRepositoryMock.Object
+                    RestaurantRepositoryMock.Object
                 );
             }
 
             public override DecOrderOfDishCategoryCommand CreateSuccessfulCommand()
             {
-                return new DecOrderOfDishCategoryCommand(CurrentDishCategory.Id);
+                return new DecOrderOfDishCategoryCommand(Restaurant.Id, CurrentDishCategoryId);
             }
 
-            public void SetupDishCategories(int count)
+            public void SetupRestaurantWithDishes(Role? role, int count)
             {
-                var restaurantId = new RestaurantId(Guid.NewGuid());
-
                 DishCategories = new List<DishCategory>();
-
                 for (var i = 0; i < count; i++)
                 {
                     DishCategories.Add(new DishCategoryBuilder()
-                        .WithRestaurantId(restaurantId)
+                        .WithName($"dish-category-{i + 1}")
                         .WithOrderNo(i)
                         .WithValidConstrains()
                         .Create());
                 }
+
+                var restaurantBuilder = new RestaurantBuilder();
+
+                if (role == Role.RestaurantAdmin)
+                {
+                    restaurantBuilder = restaurantBuilder
+                        .WithAdministrators(new HashSet<UserId> {UserId});
+                }
+
+                Restaurant = restaurantBuilder
+                    .WithDishCategories(DishCategories)
+                    .WithValidConstrains()
+                    .Create();
+            }
+
+            public void SetupCurrentDishCategoryToUnknown()
+            {
+                CurrentDishCategoryId = new DishCategoryId(Guid.NewGuid());
             }
 
             public void SetupCurrentDishCategory(int index)
             {
-                CurrentDishCategory = DishCategories[index];
+                CurrentDishCategoryId = DishCategories[index].Id;
             }
 
-            public void SetupDishRepositoryFindingDishByDishId()
+            public void SetupRestaurantRepositoryFindingRestaurant()
             {
-                DishCategoryRepositoryMock.SetupFindByDishCategoryIdAsync(CurrentDishCategory.Id)
-                    .ReturnsAsync(CurrentDishCategory);
+                RestaurantRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
+                    .ReturnsAsync(Restaurant);
             }
 
-            public void SetupDishRepositoryNotFindingDishByDishId()
+            public void SetupRestaurantRepositoryStoringRestaurant()
             {
-                DishCategoryRepositoryMock.SetupFindByDishCategoryIdAsync(CurrentDishCategory.Id)
-                    .ReturnsAsync((DishCategory) null);
-            }
-
-            public void SetupDishRepositoryFindingDishByDishCategoryId()
-            {
-                DishCategoryRepositoryMock.SetupFindByRestaurantIdAsync(CurrentDishCategory.RestaurantId)
-                    .ReturnsAsync(DishCategories);
-            }
-
-            public void SetupDishRepositoryStoringDish(int index)
-            {
-                DishCategoryRepositoryMock.SetupStoreAsync(DishCategories[index])
+                RestaurantRepositoryMock.SetupStoreAsync(Restaurant)
                     .Returns(Task.CompletedTask);
             }
 
             public override void SetupForSuccessfulCommandExecution(Role? role)
             {
-                SetupDishCategories(3);
+                SetupRestaurantWithDishes(MinimumRole, 3);
                 SetupCurrentDishCategory(1);
-                SetupDishRepositoryFindingDishByDishId();
-                SetupDishRepositoryFindingDishByDishCategoryId();
-                SetupDishRepositoryStoringDish(0);
-                SetupDishRepositoryStoringDish(1);
+                SetupRestaurantRepositoryFindingRestaurant();
+                SetupRestaurantRepositoryStoringRestaurant();
             }
         }
     }

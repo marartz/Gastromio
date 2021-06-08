@@ -2,10 +2,9 @@ import {Injectable} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 
 import {BehaviorSubject, combineLatest, Observable, of, throwError} from "rxjs";
-import {catchError, debounceTime, distinctUntilChanged, map, switchMap, take} from "rxjs/operators";
+import {catchError, debounceTime, distinctUntilChanged, map, take, tap} from "rxjs/operators";
 
 import {CuisineModel} from "../shared/models/cuisine.model";
-import {DishCategoryModel} from "../shared/models/dish-category.model";
 import {DishModel} from "../shared/models/dish.model";
 import {DishVariantModel} from "../shared/models/dish-variant.model";
 import {RestaurantModel} from "../shared/models/restaurant.model";
@@ -44,7 +43,6 @@ export class OrderFacade {
 
   private storedCart$: BehaviorSubject<StoredCartModel> = new BehaviorSubject<StoredCartModel>(undefined);
   private selectedRestaurant$: BehaviorSubject<RestaurantModel> = new BehaviorSubject<RestaurantModel>(undefined);
-  private dishCategoriesOfSelectedRestaurant$: BehaviorSubject<DishCategoryModel[]> = new BehaviorSubject<DishCategoryModel[]>(undefined);
 
   private cart$: BehaviorSubject<CartModel> = new BehaviorSubject<CartModel>(undefined);
 
@@ -113,15 +111,6 @@ export class OrderFacade {
           })
         )
       );
-
-      observables.push(this.orderService.getDishesOfRestaurantAsync(storedCart.restaurantId)
-        .pipe(
-          take(1),
-          map(dishCategories => {
-            this.dishCategoriesOfSelectedRestaurant$.next(dishCategories);
-          })
-        )
-      );
     }
 
     this.isInitialized$.next(undefined);
@@ -137,7 +126,7 @@ export class OrderFacade {
           this.isInitializing$.next(false);
           this.isInitialized$.next(false);
           if (error instanceof HttpErrorResponse) {
-            const errorText = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+            const errorText = this.httpErrorHandlingService.handleError(error).message;
             this.initializationError$.next(errorText);
           } else if (error instanceof Error) {
             this.initializationError$.next(error.message);
@@ -245,25 +234,17 @@ export class OrderFacade {
     return this.selectedRestaurant$.value;
   }
 
-  public getDishCategoriesOfSelectedRestaurant$(): Observable<DishCategoryModel[]> {
-    return this.dishCategoriesOfSelectedRestaurant$;
-  }
-
-  public getDishCategoriesOfSelectedRestaurant(): DishCategoryModel[] {
-    return this.dishCategoriesOfSelectedRestaurant$.value;
-  }
-
-  public selectRestaurantId$(restaurantId: string): Observable<void> {
+  public selectRestaurantId$(restaurantId: string): Observable<RestaurantModel> {
     return this.orderService.getRestaurantAsync(restaurantId)
       .pipe(
         take(1),
-        switchMap(restaurant => {
-          return this.selectRestaurant$(restaurant);
+        tap(restaurant => {
+          this.selectRestaurant(restaurant);
         })
       );
   }
 
-  public selectRestaurant$(restaurant: RestaurantModel): Observable<void> {
+  public selectRestaurant(restaurant: RestaurantModel) {
     if (this.selectedRestaurant$.value === undefined || this.selectedRestaurant$.value.id !== restaurant.id) {
       this.storedCart$.next(undefined);
       this.storedCartService.removeFromStorage();
@@ -271,37 +252,11 @@ export class OrderFacade {
 
     this.selectedRestaurant$.next(new RestaurantModel(restaurant));
 
-    this.dishCategoriesOfSelectedRestaurant$.next(undefined);
     this.isCartVisible$.next(false);
     this.updateCartModel();
 
-    const observables = new Array<Observable<void>>();
-
-    observables.push(this.orderService.getDishesOfRestaurantAsync(restaurant.id)
-      .pipe(
-        take(1),
-        map(dishCategories => {
-          this.dishCategoriesOfSelectedRestaurant$.next(dishCategories);
-        })
-      )
-    );
-
-    this.isInitialized$.next(undefined);
-    this.isInitializing$.next(true);
-    return combineLatest(observables)
-      .pipe(
-        map(() => {
-          this.updateCartModel();
-          this.isInitializing$.next(false);
-          this.isInitialized$.next(true);
-        }),
-        catchError((response: HttpErrorResponse) => {
-          this.isInitializing$.next(false);
-          this.isInitialized$.next(false);
-          this.initializationError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
-          return throwError(response);
-        })
-      );
+    this.isInitializing$.next(false);
+    this.isInitialized$.next(true);
   }
 
   public startOrder(orderType: OrderType, serviceTime: Date): void {
@@ -541,7 +496,7 @@ export class OrderFacade {
         (response: HttpErrorResponse) => {
           this.isCheckingOut$.next(false);
           this.isCheckedOut$.next(false);
-          this.checkoutError$.next(this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors());
+          this.checkoutError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
         }
       );
@@ -605,7 +560,6 @@ export class OrderFacade {
     const cart = OrderFacade.generateCartModel(
       this.storedCart$.value,
       this.selectedRestaurant$.value,
-      this.dishCategoriesOfSelectedRestaurant$.value,
       this.isCartVisible$.value
     );
     this.cart$.next(cart);
@@ -614,10 +568,9 @@ export class OrderFacade {
   private static generateCartModel(
     storedCart: StoredCartModel,
     selectedRestaurant: RestaurantModel,
-    dishCategoriesOfSelectedRestaurant: DishCategoryModel[],
     isCartVisible: boolean
   ): CartModel {
-    if (!storedCart || !selectedRestaurant || !dishCategoriesOfSelectedRestaurant) {
+    if (!storedCart || !selectedRestaurant) {
       return undefined;
     }
 
@@ -648,7 +601,7 @@ export class OrderFacade {
     }
 
     const dishes = new Map<string, DishModel>();
-    for (const dishCategory of dishCategoriesOfSelectedRestaurant) {
+    for (const dishCategory of selectedRestaurant.dishCategories) {
       if (!dishCategory.dishes) {
         continue;
       }

@@ -1,10 +1,8 @@
-﻿using Gastromio.Core.Common;
-
-namespace Gastromio.Core.Domain.Model.Users
+﻿namespace Gastromio.Core.Domain.Model.Users
 {
     public interface IUserFactory
     {
-        Result<User> Create(
+        User Create(
             Role role,
             string email,
             string password,

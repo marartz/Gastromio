@@ -6,13 +6,11 @@ namespace Gastromio.Domain.TestKit.AutoFixture
 {
     public class ConstrainedMemberValueRelay<TValue> : ISpecimenBuilder
     {
-        private readonly Random random;
         private readonly MemberInfo memberInfo;
         private readonly Func<TValue> createValueFunc;
 
         public ConstrainedMemberValueRelay(MemberInfo memberInfo, Func<TValue> createValueFunc)
         {
-            this.random = random;
             this.memberInfo = memberInfo;
             this.createValueFunc = createValueFunc;
         }

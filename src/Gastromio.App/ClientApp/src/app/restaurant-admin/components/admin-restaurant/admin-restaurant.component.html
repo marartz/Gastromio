@@ -86,6 +86,9 @@
                         </svg>
                     </a>
                 </h5>
+                <p>
+                    Letzte Änderung am {{(restaurant$ | async).updatedOnDate.toLocaleString()}} von {{(restaurant$ | async).updatedBy.email}}
+                </p>
 			</div>
 		</header>
 

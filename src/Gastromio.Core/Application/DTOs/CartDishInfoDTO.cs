@@ -1,5 +1,5 @@
 using System;
-using Gastromio.Core.Domain.Model.Dishes;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.DTOs
 {
@@ -8,7 +8,7 @@ namespace Gastromio.Core.Application.DTOs
         public CartDishInfoDTO(
             Guid itemId,
             DishId dishId,
-            Guid variantId,
+            DishVariantId variantId,
             int count,
             string remarks
         )
@@ -22,7 +22,7 @@ namespace Gastromio.Core.Application.DTOs
 
         public Guid ItemId { get; }
         public DishId DishId { get; }
-        public Guid VariantId { get; }
+        public DishVariantId VariantId { get; }
         public int Count { get; }
         public string Remarks { get; }
     }
