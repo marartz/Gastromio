@@ -194,7 +194,6 @@
 #backend #body #drawer .drawer-item .icon-right {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='19' height='3' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' fill='%23fff' fill-rule='evenodd'%3E%3Cpath d='M.7-.5C.033-.5-.5.033-.5.7S.033 1.9.7 1.9h16.267c.667 0 1.2-.533 1.2-1.2s-.533-1.2-1.2-1.2z' stroke='none' fill='%23363636' fill-rule='nonzero'/%3E%3C/svg%3E");
 	display: inline-block;
-	display: inline-block;
 	content: "";
 	position: relative;
 	margin-left: 1px;

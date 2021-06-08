@@ -50,11 +50,12 @@
 
                         <ng-container *ngIf="!restaurant.isOpen(undefined)">
                             <h4 class="subtitle">
-                                <span>{{restaurant.name}} ist im Moment {{restaurant.getRestaurantClosedReason(undefined)}}.</span>
+                                <span>{{restaurant.name}} ist im Moment <strong style="font-weight: 600;">{{restaurant.getRestaurantClosedReason(undefined)}}</strong>.</span>
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'">
-                                    <span> Bitte rufe das Restaurant zur nächsten Öffnungzeit an.</span>
+                                    <span> <br />Bitte rufe das Restaurant zur nächsten Öffnungzeit an.</span>
                                 </ng-container>
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'">
+                                    <br />
                                     <span *ngIf="getCart().isPickup()"> Wann möchtest Du Dein Essen abholen?</span>
                                     <span *ngIf="getCart().isDelivery()"> Wann möchtest Du dein Essen erhalten?</span>
                                 </ng-container>
@@ -77,14 +78,14 @@
 
                             <button *ngIf="restaurant.supportedOrderMode !== 'phone'" type="button" class="pill" [class.active]="serviceTime" (click)="onSelectServiceTime()">
                                 <span>Online-Vorbestellung</span>
-                                <span *ngIf="serviceTime">: {{getServiceTimeText()}}</span>
+                                <span *ngIf="serviceTime"> für den {{getServiceTimeText()}}</span>
                             </button>
                         </ng-container>
 
                         <ng-container *ngIf="restaurant.isOpen(undefined)">
                             <h4 class="subtitle">
                                 <span>{{restaurant.name}} hat heute für dich von {{restaurant.openingHoursTodayText}} geöffnet.</span>
-                                <span *ngIf="getCart().isPickup()"> Wann möchstest Du Dein Essen abholen?</span>
+                                <span *ngIf="getCart().isPickup()"> Wann möchtest Du Dein Essen abholen?</span>
                                 <span *ngIf="getCart().isDelivery()"> Wann möchtest Du dein Essen erhalten?</span>
                                 <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'">
                                     <br /><br />
