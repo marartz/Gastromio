@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantName
 {
-    public class ChangeRestaurantNameCommand : ICommand<bool>
+    public class ChangeRestaurantNameCommand : ICommand
     {
         public ChangeRestaurantNameCommand(RestaurantId restaurantId, string name)
         {

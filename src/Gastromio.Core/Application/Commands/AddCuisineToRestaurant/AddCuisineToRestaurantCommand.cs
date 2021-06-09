@@ -1,9 +1,9 @@
-﻿using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.AddCuisineToRestaurant
 {
-    public class AddCuisineToRestaurantCommand : ICommand<bool>
+    public class AddCuisineToRestaurantCommand : ICommand
     {
         public AddCuisineToRestaurantCommand(RestaurantId restaurantId, CuisineId cuisineId)
         {

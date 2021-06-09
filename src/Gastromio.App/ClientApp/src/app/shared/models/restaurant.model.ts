@@ -2,6 +2,8 @@ import {PaymentMethodModel} from './payment-method.model';
 import {UserModel} from './user.model';
 import {CuisineModel} from './cuisine.model';
 import {DateModel} from "./date.model";
+import * as moment from "moment";
+import {DishCategoryModel} from "./dish-category.model";
 
 export class RestaurantModel {
 
@@ -16,6 +18,7 @@ export class RestaurantModel {
     this.pickupInfo = new PickupInfoModel(this.pickupInfo);
     this.deliveryInfo = new DeliveryInfoModel(this.deliveryInfo);
     this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
+    this.dishCategories = this.dishCategories?.map(dishCategory => new DishCategoryModel(dishCategory)) ?? new Array<DishCategoryModel>();
     this.externalMenus = this.externalMenus?.map(menu => new ExternalMenu(menu)) ?? new Array<ExternalMenu>();
     this.paymentMethods = this.paymentMethods?.map(paymentMethod => new PaymentMethodModel(paymentMethod))
       .sort((a, b) => {
@@ -25,6 +28,16 @@ export class RestaurantModel {
           return 1;
         return 0;
       });
+
+    try {
+      const createdOnMoment = moment.utc(this.createdOn);
+      this.createdOnDate = createdOnMoment.local().toDate();
+    } catch (e) {}
+
+    try {
+      const updatedOnMoment = moment.utc(this.updatedOn);
+      this.updatedOnDate = updatedOnMoment.local().toDate();
+    } catch (e) {}
   }
 
 
@@ -74,7 +87,21 @@ export class RestaurantModel {
 
   public supportedOrderMode: string;
 
+  public dishCategories: DishCategoryModel[];
+
   public externalMenus: ExternalMenu[];
+
+  public createdOn: string;
+
+  public createdOnDate: Date;
+
+  public createdBy: UserModel;
+
+  public updatedOn: string;
+
+  public updatedOnDate: Date;
+
+  public updatedBy: UserModel;
 
   public clone(): RestaurantModel {
     return new RestaurantModel({
@@ -101,7 +128,14 @@ export class RestaurantModel {
       isActive: this.isActive,
       needsSupport: this.needsSupport,
       supportedOrderMode: this.supportedOrderMode,
-      externalMenus: this.externalMenus?.map(menu => menu?.clone())
+      dishCategories: this.dishCategories?.map(dishCategory => dishCategory?.clone()),
+      externalMenus: this.externalMenus?.map(menu => menu?.clone()),
+      createdOn: this.createdOn,
+      createdOnDate: this.createdOnDate,
+      createdBy: this.createdBy.clone(),
+      updatedOn: this.updatedOn,
+      updatedOnDate: this.updatedOnDate,
+      updatedBy: this.updatedBy.clone()
     });
   }
 

@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantAddress
 {
-    public class ChangeRestaurantAddressCommand : ICommand<bool>
+    public class ChangeRestaurantAddressCommand : ICommand
     {
         public ChangeRestaurantAddressCommand(RestaurantId restaurantId, string street, string zipCode, string city)
         {
@@ -15,9 +15,9 @@ namespace Gastromio.Core.Application.Commands.ChangeRestaurantAddress
         public RestaurantId RestaurantId { get; }
 
         public string Street { get; }
-        
+
         public string ZipCode { get; }
-        
+
         public string City { get; }
     }
 }

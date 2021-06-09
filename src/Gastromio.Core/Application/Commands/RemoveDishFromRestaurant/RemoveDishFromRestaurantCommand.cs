@@ -1,10 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.DishCategory;
-using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveDishFromRestaurant
 {
-    public class RemoveDishFromRestaurantCommand : ICommand<bool>
+    public class RemoveDishFromRestaurantCommand : ICommand
     {
         public RemoveDishFromRestaurantCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId, DishId dishId)
         {

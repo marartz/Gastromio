@@ -61,7 +61,7 @@ export class ChangePasswordComponent implements OnInit {
         },
         (response: HttpErrorResponse) => {
           this.valid = false;
-          this.errorMessage = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+          this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
           this.blockUI.stop();
         },
       );
@@ -87,7 +87,7 @@ export class ChangePasswordComponent implements OnInit {
         this.changePasswordForm.reset();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.errorMessage = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
       });
   }
 }

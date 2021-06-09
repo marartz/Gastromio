@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using Gastromio.Core.Application.Ports.Template;
-using Gastromio.Core.Domain.Model.Order;
+using Gastromio.Core.Domain.Model.Orders;
 
 namespace Gastromio.Template.DotLiquid
 {
@@ -597,7 +597,7 @@ namespace Gastromio.Template.DotLiquid
             sb.Append("Gewünschtes Datum / Uhrzeit: ");
             if (order.ServiceTime.HasValue)
             {
-                var localServiceTime = order.ServiceTime.Value.ToLocalTime();
+                var localServiceTime = order.ServiceTime.Value.LocalDateTime;
                 sb.Append(localServiceTime.ToLongDateString());
                 sb.Append(" ");
                 sb.Append(localServiceTime.ToLongTimeString());

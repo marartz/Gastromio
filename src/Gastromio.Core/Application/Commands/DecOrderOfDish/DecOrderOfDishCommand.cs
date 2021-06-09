@@ -1,14 +1,18 @@
-﻿using Gastromio.Core.Domain.Model.Dish;
+﻿using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.DecOrderOfDish
 {
-    public class DecOrderOfDishCommand : ICommand<bool>
+    public class DecOrderOfDishCommand : ICommand
     {
-        public DecOrderOfDishCommand(DishId dishId)
+        public DecOrderOfDishCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId, DishId dishId)
         {
+            RestaurantId = restaurantId;
+            DishCategoryId = dishCategoryId;
             DishId = dishId;
         }
-        
-        public DishId DishId { get; } 
+
+        public RestaurantId RestaurantId { get; }
+        public DishCategoryId DishCategoryId { get; }
+        public DishId DishId { get; }
     }
 }

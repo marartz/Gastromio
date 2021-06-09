@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gastromio.Core.Application.Queries
@@ -35,7 +35,7 @@ namespace Gastromio.Core.Application.Queries
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<Result<TResult>> PostAsync<TQuery, TResult>(TQuery query, UserId currentUserId, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
+        public async Task<TResult> PostAsync<TQuery, TResult>(TQuery query, UserId currentUserId, CancellationToken cancellationToken = default) where TQuery : IQuery<TResult>
         {
             User currentUser = null;
 

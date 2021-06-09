@@ -1,10 +1,10 @@
 using System;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRestaurant
 {
-    public class ChangeDeviatingOpeningPeriodOfRestaurantCommand : ICommand<bool>
+    public class ChangeDeviatingOpeningPeriodOfRestaurantCommand : ICommand
     {
         public ChangeDeviatingOpeningPeriodOfRestaurantCommand(RestaurantId restaurantId, Date date, TimeSpan oldStart, TimeSpan newStart, TimeSpan newEnd)
         {
@@ -14,7 +14,7 @@ namespace Gastromio.Core.Application.Commands.ChangeDeviatingOpeningPeriodOfRest
             NewStart = newStart;
             NewEnd = newEnd;
         }
-        
+
         public RestaurantId RestaurantId { get; }
         public Date Date { get; }
         public TimeSpan OldStart { get; }

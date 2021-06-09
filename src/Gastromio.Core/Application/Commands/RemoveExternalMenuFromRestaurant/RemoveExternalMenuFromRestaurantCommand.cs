@@ -1,18 +1,18 @@
 using System;
-using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveExternalMenuFromRestaurant
 {
-    public class RemoveExternalMenuFromRestaurantCommand : ICommand<bool>
+    public class RemoveExternalMenuFromRestaurantCommand : ICommand
     {
-        public RemoveExternalMenuFromRestaurantCommand(RestaurantId restaurantId, Guid externalMenuId)
+        public RemoveExternalMenuFromRestaurantCommand(RestaurantId restaurantId, ExternalMenuId externalMenuId)
         {
             RestaurantId = restaurantId;
             ExternalMenuId = externalMenuId;
         }
-        
+
         public RestaurantId RestaurantId { get; }
 
-        public Guid ExternalMenuId { get; }
+        public ExternalMenuId ExternalMenuId { get; }
     }
 }

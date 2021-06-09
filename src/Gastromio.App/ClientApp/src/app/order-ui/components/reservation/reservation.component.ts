@@ -121,7 +121,7 @@ export class ReservationComponent implements OnInit {
       }, error => {
         console.log('error: ', error);
         this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+        this.generalError = this.httpErrorHandlingService.handleError(error).message;
       });
     });
 
@@ -170,11 +170,6 @@ export class ReservationComponent implements OnInit {
       return undefined;
     }
     return '/api/v1/restaurants/' + restaurant.id + '/images/banner';
-  }
-
-  showReservationValidFrom(): boolean {
-    const now = new Date();
-    return now < this.orderFacade.getStartDateOfReservation();
   }
 
   getGivenNameError(): string {

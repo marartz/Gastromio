@@ -458,6 +458,8 @@ export class OpeningHoursSettingsComponent implements OnInit, OnDestroy {
   }
 
   private static totalMinutesToString(totalMinutes: number): string {
+    if (totalMinutes > 24 * 60)
+      totalMinutes -= 24 * 60;
     const hours = Math.floor(totalMinutes / 60);
     const minutes = Math.floor(totalMinutes % 60);
     return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');

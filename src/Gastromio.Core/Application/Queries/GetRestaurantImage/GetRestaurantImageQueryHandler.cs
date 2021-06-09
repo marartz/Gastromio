@@ -3,8 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.RestaurantImage;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.RestaurantImages;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Queries.GetRestaurantImage
 {
@@ -17,7 +18,7 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantImage
             this.restaurantImageRepository = restaurantImageRepository;
         }
 
-        public async Task<Result<RestaurantImage>> HandleAsync(GetRestaurantImageQuery query, User currentUser,
+        public async Task<RestaurantImage> HandleAsync(GetRestaurantImageQuery query, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (query == null)
@@ -28,9 +29,9 @@ namespace Gastromio.Core.Application.Queries.GetRestaurantImage
                     cancellationToken);
 
             if (restaurantImage?.Data == null || restaurantImage.Data.Length == 0)
-                return FailureResult<RestaurantImage>.Create(FailureResultCode.RestaurantImageNotValid);
-            
-            return SuccessResult<RestaurantImage>.Create(restaurantImage);
+                throw DomainException.CreateFrom(new RestaurantImageNotValidFailure());
+
+            return restaurantImage;
         }
     }
 }

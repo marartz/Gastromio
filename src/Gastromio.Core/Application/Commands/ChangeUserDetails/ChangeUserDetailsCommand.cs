@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.User;
+﻿using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeUserDetails
 {
-    public class ChangeUserDetailsCommand : ICommand<bool>
+    public class ChangeUserDetailsCommand : ICommand
     {
         public ChangeUserDetailsCommand(UserId userId, Role role, string email)
         {

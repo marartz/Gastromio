@@ -1,9 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.DishCategory;
-using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeDishCategoryOfRestaurant
 {
-    public class ChangeDishCategoryOfRestaurantCommand : ICommand<bool>
+    public class ChangeDishCategoryOfRestaurantCommand : ICommand
     {
         public ChangeDishCategoryOfRestaurantCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId, string name)
         {

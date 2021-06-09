@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.Cuisine;
+﻿using Gastromio.Core.Domain.Model.Cuisines;
 
 namespace Gastromio.Core.Application.Commands.ChangeCuisine
 {
-    public class ChangeCuisineCommand : ICommand<bool>
+    public class ChangeCuisineCommand : ICommand
     {
         public ChangeCuisineCommand(CuisineId cuisineId, string name)
         {

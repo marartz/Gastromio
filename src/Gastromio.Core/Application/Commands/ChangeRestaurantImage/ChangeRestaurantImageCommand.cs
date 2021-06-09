@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.ChangeRestaurantImage
 {
-    public class ChangeRestaurantImageCommand : ICommand<bool>
+    public class ChangeRestaurantImageCommand : ICommand
     {
         public ChangeRestaurantImageCommand(RestaurantId restaurantId, string type, byte[] image)
         {

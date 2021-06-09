@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Gastromio.Core.Domain.Model.Dish;
-using Gastromio.Core.Domain.Model.DishCategory;
-using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 
 namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
@@ -12,7 +10,7 @@ namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
     public class AddOrChangeDishOfRestaurantCommand : ICommand<Guid>
     {
         public AddOrChangeDishOfRestaurantCommand(RestaurantId restaurantId, DishCategoryId dishCategoryId,
-            Guid dishId, string name, string description, string productInfo, int orderNo, IEnumerable<DishVariant> variants)
+            DishId dishId, string name, string description, string productInfo, int orderNo, IEnumerable<DishVariant> variants)
         {
             RestaurantId = restaurantId;
             DishCategoryId = dishCategoryId;
@@ -25,19 +23,19 @@ namespace Gastromio.Core.Application.Commands.AddOrChangeDishOfRestaurant
         }
 
         public RestaurantId RestaurantId { get; }
-        
+
         public DishCategoryId DishCategoryId { get; }
 
-        public Guid DishId { get; }
-        
+        public DishId DishId { get; }
+
         public string Name { get; }
-        
+
         public string Description { get; }
-        
+
         public string ProductInfo { get; }
-        
+
         public int OrderNo { get; }
-        
+
         public IReadOnlyCollection<DishVariant> Variants { get; }
     }
 }

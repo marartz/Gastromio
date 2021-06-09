@@ -1,9 +1,9 @@
 using System;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ValidatePasswordResetCode
 {
-    public class ValidatePasswordResetCodeCommand : ICommand<bool>
+    public class ValidatePasswordResetCodeCommand : ICommand
     {
         public ValidatePasswordResetCodeCommand(UserId userId, byte[] passwordResetCode)
         {

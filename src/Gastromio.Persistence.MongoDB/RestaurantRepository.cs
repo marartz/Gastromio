@@ -7,11 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.Order;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.Orders;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,7 +30,7 @@ namespace Gastromio.Persistence.MongoDB
         }
 
         public async Task<IEnumerable<Restaurant>> SearchAsync(string searchPhrase, OrderType? orderType,
-            CuisineId cuisineId, DateTime? openingHour, bool? isActive, CancellationToken cancellationToken = default)
+            CuisineId cuisineId, DateTimeOffset? openingHour, bool? isActive, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
 
@@ -94,7 +94,7 @@ namespace Gastromio.Persistence.MongoDB
         }
 
         public async Task<(long total, IEnumerable<Restaurant> items)> SearchPagedAsync(string searchPhrase,
-            OrderType? orderType, CuisineId cuisineId, DateTime? openingHour, bool? isActive, int skip = 0,
+            OrderType? orderType, CuisineId cuisineId, DateTimeOffset? openingHour, bool? isActive, int skip = 0,
             int take = -1, CancellationToken cancellationToken = default)
         {
             var collection = GetCollection();
@@ -278,7 +278,7 @@ namespace Gastromio.Persistence.MongoDB
             return database.GetCollection<RestaurantModel>(Constants.RestaurantCollectionName);
         }
 
-        private FilterDefinition<RestaurantModel> GenerateOpeningHourFilterDefinition(DateTime openingHourFilter)
+        private FilterDefinition<RestaurantModel> GenerateOpeningHourFilterDefinition(DateTimeOffset openingHourFilter)
         {
             int filterDayOfWeek;
 
@@ -309,6 +309,8 @@ namespace Gastromio.Persistence.MongoDB
                     throw new ArgumentOutOfRangeException();
             }
 
+            openingHourFilter = openingHourFilter.ToLocalTime();
+
             const double earliestOpeningHour = 4d;
 
             int filterMinutes;
@@ -335,33 +337,80 @@ namespace Gastromio.Persistence.MongoDB
 
         private static Restaurant FromDocument(RestaurantModel document)
         {
-            var regularOpeningDays = document.OpeningHours?
-                .GroupBy(en => en.DayOfWeek)
-                .Select(group => new RegularOpeningDay(
-                        group.Key,
-                        group.Select(openingPeriodModel => new OpeningPeriod(
-                                TimeSpan.FromMinutes(openingPeriodModel.StartTime),
-                                TimeSpan.FromMinutes(openingPeriodModel.EndTime)
-                            )
+            var regularOpeningDays = new RegularOpeningDays(
+                document.OpeningHours?
+                    .GroupBy(en => en.DayOfWeek)
+                    .Select(group => new RegularOpeningDay(
+                            group.Key,
+                            new OpeningPeriods(group.Select(openingPeriodModel => new OpeningPeriod(
+                                    TimeSpan.FromMinutes(openingPeriodModel.StartTime),
+                                    TimeSpan.FromMinutes(openingPeriodModel.EndTime)
+                                )
+                            ))
                         )
-                    )
-                ) ?? Enumerable.Empty<RegularOpeningDay>();
+                    ) ?? Enumerable.Empty<RegularOpeningDay>()
+            );
 
-            var deviatingOpeningDays = document.DeviatingOpeningHours?
-                .Select(deviatingOpeningDayModel => new DeviatingOpeningDay(
-                        new Date(
-                            deviatingOpeningDayModel.Date.Year,
-                            deviatingOpeningDayModel.Date.Month,
-                            deviatingOpeningDayModel.Date.Day
-                        ),
-                        FromDbDeviatingOpeningDayStatus(deviatingOpeningDayModel.Status),
-                        deviatingOpeningDayModel.OpeningPeriods.Select(openingPeriodModel => new OpeningPeriod(
-                                TimeSpan.FromMinutes(openingPeriodModel.StartTime),
-                                TimeSpan.FromMinutes(openingPeriodModel.EndTime)
+            var deviatingOpeningDays = new DeviatingOpeningDays(
+                document.DeviatingOpeningHours?
+                    .Select(deviatingOpeningDayModel => new DeviatingOpeningDay(
+                            new Date(
+                                deviatingOpeningDayModel.Date.Year,
+                                deviatingOpeningDayModel.Date.Month,
+                                deviatingOpeningDayModel.Date.Day
+                            ),
+                            FromDbDeviatingOpeningDayStatus(deviatingOpeningDayModel.Status),
+                            new OpeningPeriods(deviatingOpeningDayModel.OpeningPeriods.Select(openingPeriodModel =>
+                                new OpeningPeriod(
+                                    TimeSpan.FromMinutes(openingPeriodModel.StartTime),
+                                    TimeSpan.FromMinutes(openingPeriodModel.EndTime)
+                                )
+                            ))
+                        )
+                    ) ?? Enumerable.Empty<DeviatingOpeningDay>()
+            );
+
+            var dishCategories = new DishCategories(
+                document.DishCategories?
+                    .Select(dishCategory => new DishCategory(
+                            new DishCategoryId(dishCategory.Id),
+                            dishCategory.Name,
+                            dishCategory.OrderNo,
+                            dishCategory.Enabled ?? true,
+                            new Dishes(
+                                dishCategory.Dishes?
+                                    .Select(dish => new Dish(
+                                            new DishId(dish.Id),
+                                            dish.Name,
+                                            dish.Description,
+                                            dish.ProductInfo,
+                                            dish.OrderNo,
+                                            new DishVariants(
+                                                dish.Variants?
+                                                    .Select(variant => new DishVariant(
+                                                            new DishVariantId(variant.VariantId),
+                                                            variant.Name,
+                                                            (decimal)variant.Price
+                                                        )
+                                                    ) ?? Enumerable.Empty<DishVariant>()
+                                            )
+                                        )
+                                    ) ?? Enumerable.Empty<Dish>()
                             )
                         )
-                    )
-                ) ?? Enumerable.Empty<DeviatingOpeningDay>();
+                    ) ?? Enumerable.Empty<DishCategory>()
+            );
+
+            var externalMenus = new ExternalMenus(
+                document.ExternalMenus?
+                    .Select(menu => new ExternalMenu(
+                            new ExternalMenuId(menu.Id),
+                            menu.Name,
+                            menu.Description,
+                            menu.Url
+                        )
+                    ) ?? Enumerable.Empty<ExternalMenu>()
+            );
 
             return new Restaurant(
                 new RestaurantId(document.Id),
@@ -415,15 +464,11 @@ namespace Gastromio.Persistence.MongoDB
                 document.IsActive,
                 document.NeedsSupport,
                 FromDbSupportedOrderMode(document.SupportedOrderMode),
-                document.ExternalMenus?.Select(menu => new ExternalMenu(
-                    menu.Id,
-                    menu.Name,
-                    menu.Description,
-                    menu.Url
-                )).ToList() ?? new List<ExternalMenu>(),
-                document.CreatedOn,
+                dishCategories,
+                externalMenus,
+                document.CreatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(document.CreatedBy),
-                document.UpdatedOn,
+                document.UpdatedOn.ToDateTimeOffset(TimeSpan.Zero),
                 new UserId(document.UpdatedBy)
             );
         }
@@ -431,11 +476,11 @@ namespace Gastromio.Persistence.MongoDB
         private static RestaurantModel ToDocument(Restaurant obj)
         {
             var openingHours = obj.RegularOpeningDays?
-                .SelectMany(keyValuePair => keyValuePair.Value.OpeningPeriods
+                .SelectMany(regularOpeningDay => regularOpeningDay.OpeningPeriods
                     .Select(en =>
                         new RegularOpeningPeriodModel
                         {
-                            DayOfWeek = keyValuePair.Key,
+                            DayOfWeek = regularOpeningDay.DayOfWeek,
                             StartTime = (int) en.Start.TotalMinutes,
                             EndTime = (int) en.End.TotalMinutes
                         }
@@ -444,16 +489,16 @@ namespace Gastromio.Persistence.MongoDB
                 .ToList() ?? new List<RegularOpeningPeriodModel>();
 
             var deviatingOpeningHours = obj.DeviatingOpeningDays?
-                .Select(keyValuePair => new DeviatingOpeningDayModel
+                .Select(deviatingOpeningDay => new DeviatingOpeningDayModel
                     {
                         Date = new DateModel
                         {
-                            Year = keyValuePair.Key.Year,
-                            Month = keyValuePair.Key.Month,
-                            Day = keyValuePair.Key.Day
+                            Year = deviatingOpeningDay.Date.Year,
+                            Month = deviatingOpeningDay.Date.Month,
+                            Day = deviatingOpeningDay.Date.Day
                         },
-                        Status = ToDbDeviatingOpeningDayStatus(keyValuePair.Value.Status),
-                        OpeningPeriods = keyValuePair.Value.OpeningPeriods
+                        Status = ToDbDeviatingOpeningDayStatus(deviatingOpeningDay.Status),
+                        OpeningPeriods = deviatingOpeningDay.OpeningPeriods
                             .Select(en => new DeviatingOpeningPeriodModel
                                 {
                                     StartTime = (int) en.Start.TotalMinutes,
@@ -528,18 +573,45 @@ namespace Gastromio.Persistence.MongoDB
                 IsActive = obj.IsActive,
                 NeedsSupport = obj.NeedsSupport,
                 SupportedOrderMode = ToDbSupportedOrderMode(obj.SupportedOrderMode),
+                DishCategories = obj.DishCategories != null
+                    ? obj.DishCategories.Select(dishCategory => new DishCategoryModel
+                    {
+                        Id = dishCategory.Id.Value,
+                        Name = dishCategory.Name,
+                        Enabled = dishCategory.Enabled,
+                        OrderNo = dishCategory.OrderNo,
+                        Dishes = dishCategory.Dishes != null
+                        ? dishCategory.Dishes.Select(dish => new DishModel
+                        {
+                            Id = dish.Id.Value,
+                            Name = dish.Name,
+                            Description = dish.Description,
+                            ProductInfo = dish.ProductInfo,
+                            OrderNo = dish.OrderNo,
+                            Variants = dish.Variants != null
+                            ? dish.Variants.Select(dishVariant => new DishVariantModel
+                            {
+                                VariantId = dishVariant.Id.Value,
+                                Name = dishVariant.Name,
+                                Price = (float)dishVariant.Price
+                            }).ToList()
+                            : new List<DishVariantModel>()
+                        }).ToList()
+                        : new List<DishModel>()
+                    }).ToList()
+                    : new List<DishCategoryModel>(),
                 ExternalMenus = obj.ExternalMenus != null
                     ? obj.ExternalMenus.Select(en => new ExternalMenuModel
                     {
-                        Id = en.Id,
+                        Id = en.Id.Value,
                         Name = en.Name,
                         Description = en.Description,
                         Url = en.Url
                     }).ToList()
                     : new List<ExternalMenuModel>(),
-                CreatedOn = obj.CreatedOn,
+                CreatedOn = obj.CreatedOn.UtcDateTime,
                 CreatedBy = obj.CreatedBy.Value,
-                UpdatedOn = obj.UpdatedOn,
+                UpdatedOn = obj.UpdatedOn.UtcDateTime,
                 UpdatedBy = obj.UpdatedBy.Value
             };
         }

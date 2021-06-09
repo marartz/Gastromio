@@ -4,17 +4,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
-using Address = Gastromio.Core.Domain.Model.Restaurant.Address;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
+using Address = Gastromio.Core.Domain.Model.Restaurants.Address;
 
 namespace Gastromio.Core.Application.DTOs
 {
     public class RestaurantDTO
     {
         internal RestaurantDTO(Restaurant restaurant,
-            IDictionary<Guid, CuisineDTO> allCuisines,
-            IDictionary<Guid, PaymentMethodDTO> allPaymentMethods,
+            IDictionary<CuisineId, CuisineDTO> allCuisines,
+            IDictionary<PaymentMethodId, PaymentMethodDTO> allPaymentMethods,
             IDictionary<UserId, UserDTO> users,
             IDictionary<RestaurantId, IEnumerable<string>> restaurantImageTypes)
         {
@@ -31,14 +33,15 @@ namespace Gastromio.Core.Application.DTOs
             ImageTypes = RetrieveImageTypes(restaurantImageTypes, restaurant.Id);
             RegularOpeningDays = new ReadOnlyCollection<RegularOpeningDayDTO>(
                 restaurant.RegularOpeningDays?
-                    .Select(keyValuePair =>
-                        new RegularOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.OpeningPeriods))
+                    .Select(regularOpeningDay =>
+                        new RegularOpeningDayDTO(regularOpeningDay.DayOfWeek, regularOpeningDay.OpeningPeriods))
                     .ToList() ?? new List<RegularOpeningDayDTO>()
             );
             DeviatingOpeningDays = new ReadOnlyCollection<DeviatingOpeningDayDTO>(
                 restaurant.DeviatingOpeningDays?
-                    .Select(keyValuePair =>
-                        new DeviatingOpeningDayDTO(keyValuePair.Key, keyValuePair.Value.Status, keyValuePair.Value.OpeningPeriods))
+                    .Select(deviatingOpeningDay =>
+                        new DeviatingOpeningDayDTO(deviatingOpeningDay.Date, deviatingOpeningDay.Status,
+                            deviatingOpeningDay.OpeningPeriods))
                     .ToList() ?? new List<DeviatingOpeningDayDTO>()
             );
             RegularOpeningHoursText = regularOpeningHoursText;
@@ -49,13 +52,13 @@ namespace Gastromio.Core.Application.DTOs
             ReservationInfo = restaurant.ReservationInfo;
             HygienicHandling = restaurant.HygienicHandling;
             Cuisines = restaurant.Cuisines != null
-                ? restaurant.Cuisines.Select(en => RetrieveCuisineModel(allCuisines, en.Value)).ToList()
+                ? restaurant.Cuisines.Select(en => RetrieveCuisineModel(allCuisines, en)).ToList()
                 : new List<CuisineDTO>();
             CuisinesText = restaurant.Cuisines != null
                 ? string.Join(" • ", Cuisines.Select(en => en.Name))
                 : "";
             PaymentMethods = restaurant.PaymentMethods != null
-                ? restaurant.PaymentMethods.Select(en => RetrievePaymentMethodModel(allPaymentMethods, en.Value))
+                ? restaurant.PaymentMethods.Select(en => RetrievePaymentMethodModel(allPaymentMethods, en))
                     .ToList()
                 : new List<PaymentMethodDTO>();
             Administrators = restaurant.Administrators != null
@@ -64,21 +67,28 @@ namespace Gastromio.Core.Application.DTOs
             IsActive = restaurant.IsActive;
             NeedsSupport = restaurant.NeedsSupport;
             SupportedOrderMode = restaurant.SupportedOrderMode.ToModel();
+            DishCategories = restaurant.DishCategories != null
+                ? restaurant.DishCategories.Select(en => new DishCategoryDTO(en)).ToList()
+                : new List<DishCategoryDTO>();
             ExternalMenus = restaurant.ExternalMenus != null
                 ? restaurant.ExternalMenus.Select(menu => new ExternalMenuDTO(
-                        menu.Id,
+                        menu.Id.Value,
                         menu.Name,
                         menu.Description,
                         menu.Url)
                     )
                     .ToList()
                 : new List<ExternalMenuDTO>();
+            CreatedOn = restaurant.CreatedOn;
+            CreatedBy = users.TryGetValue(restaurant.CreatedBy, out var createdOnUserDto) ? createdOnUserDto : null;
+            UpdatedOn = restaurant.UpdatedOn;
+            UpdatedBy = users.TryGetValue(restaurant.UpdatedBy, out var updatedUserDto) ? updatedUserDto : null;
         }
 
         public Guid Id { get; }
 
         public string Name { get; }
-        
+
         public string ImportId { get; }
 
         public string Alias { get; }
@@ -94,7 +104,7 @@ namespace Gastromio.Core.Application.DTOs
         public IReadOnlyCollection<DeviatingOpeningDayDTO> DeviatingOpeningDays { get; }
 
         public string RegularOpeningHoursText { get; }
-        
+
         public string DeviatingOpeningHoursText { get; }
 
         public string OpeningHoursTodayText { get; }
@@ -121,16 +131,26 @@ namespace Gastromio.Core.Application.DTOs
 
         public string SupportedOrderMode { get; }
 
+        public IReadOnlyCollection<DishCategoryDTO> DishCategories { get; }
+
         public IReadOnlyCollection<ExternalMenuDTO> ExternalMenus { get; }
 
-        private static CuisineDTO RetrieveCuisineModel(IDictionary<Guid, CuisineDTO> allCuisines,
-            Guid cuisineId)
+        public DateTimeOffset CreatedOn { get; }
+
+        public UserDTO CreatedBy { get; }
+
+        public DateTimeOffset UpdatedOn { get; }
+
+        public UserDTO UpdatedBy { get; }
+
+        private static CuisineDTO RetrieveCuisineModel(IDictionary<CuisineId, CuisineDTO> allCuisines,
+            CuisineId cuisineId)
         {
             return allCuisines.TryGetValue(cuisineId, out var model) ? model : null;
         }
 
         private static PaymentMethodDTO RetrievePaymentMethodModel(
-            IDictionary<Guid, PaymentMethodDTO> allPaymentMethods, Guid paymentMethodId)
+            IDictionary<PaymentMethodId, PaymentMethodDTO> allPaymentMethods, PaymentMethodId paymentMethodId)
         {
             return allPaymentMethods.TryGetValue(paymentMethodId, out var model) ? model : null;
         }
@@ -153,14 +173,14 @@ namespace Gastromio.Core.Application.DTOs
         {
             if (restaurant.RegularOpeningDays == null)
                 return string.Empty;
-            
+
             var sb = new StringBuilder();
             var first = true;
 
             var openingPeriodsPerDay = new List<List<OpeningPeriod>>();
             for (var dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
             {
-                openingPeriodsPerDay.Add(restaurant.RegularOpeningDays.TryGetValue(dayOfWeek, out var regularOpeningDay)
+                openingPeriodsPerDay.Add(restaurant.RegularOpeningDays.TryGetOpeningDay(dayOfWeek, out var regularOpeningDay)
                     ? regularOpeningDay.OpeningPeriods.Select(en => en).OrderBy(en => en.Start).ToList()
                     : new List<OpeningPeriod>());
             }
@@ -199,17 +219,18 @@ namespace Gastromio.Core.Application.DTOs
         {
             if (restaurant.DeviatingOpeningDays == null)
                 return string.Empty;
-            
+
             var sb = new StringBuilder();
             var first = true;
 
-            var now = DateTime.Now;
+            var now = DateTimeOffset.Now;
             var today = new Date(now.Year, now.Month, now.Day);
-            var keyValuePairs = restaurant.DeviatingOpeningDays.Where(en => en.Key >= today)
-                .OrderBy(en => en.Key);
-            foreach (var keyValuePair in keyValuePairs)
+            var deviatingOpeningDays = restaurant.DeviatingOpeningDays
+                .Where(en => en.Date >= today)
+                .OrderBy(en => en.Date);
+            foreach (var deviatingOpeningDay in deviatingOpeningDays)
             {
-                var date = keyValuePair.Key;
+                var date = deviatingOpeningDay.Date;
 
                 if (!first)
                     sb.Append("; ");
@@ -218,9 +239,9 @@ namespace Gastromio.Core.Application.DTOs
                 sb.Append(".");
                 sb.Append(date.Month);
                 sb.Append(". ");
-                if (keyValuePair.Value.OpeningPeriods?.Count == 0)
+                if (deviatingOpeningDay.OpeningPeriods?.Count == 0)
                 {
-                    if (keyValuePair.Value.Status == DeviatingOpeningDayStatus.FullyBooked)
+                    if (deviatingOpeningDay.Status == DeviatingOpeningDayStatus.FullyBooked)
                     {
                         sb.Append("ausgebucht");
                     }
@@ -231,7 +252,7 @@ namespace Gastromio.Core.Application.DTOs
                 }
                 else
                 {
-                    WriteOpeningPeriods(sb, keyValuePair.Value.OpeningPeriods);
+                    WriteOpeningPeriods(sb, deviatingOpeningDay.OpeningPeriods);
                 }
 
                 first = false;
@@ -242,8 +263,8 @@ namespace Gastromio.Core.Application.DTOs
 
         private static string GenerateOpeningHoursTodayText(Restaurant restaurant)
         {
-            var now = DateTime.Now;
-            var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday 
+            var now = DateTimeOffset.Now;
+            var dayOfWeek = ((int) now.DayOfWeek - 1) % 7; // DayOfWeek starts with Sunday
             if (dayOfWeek < 0)
             {
                 dayOfWeek += 7;
@@ -259,7 +280,7 @@ namespace Gastromio.Core.Application.DTOs
             }
 
             var today = new Date(now.Year, now.Month, now.Day);
-            if (restaurant.DeviatingOpeningDays != null && restaurant.DeviatingOpeningDays.TryGetValue(today, out var deviatingOpeningDay))
+            if (restaurant.DeviatingOpeningDays != null && restaurant.DeviatingOpeningDays.TryGetOpeningDay(today, out var deviatingOpeningDay))
             {
                 if (deviatingOpeningDay.OpeningPeriods.Count == 0)
                 {
@@ -270,8 +291,8 @@ namespace Gastromio.Core.Application.DTOs
                 WriteOpeningPeriods(sb, deviatingOpeningDay.OpeningPeriods.OrderBy(en => en.Start));
                 return sb.ToString();
             }
-            
-            if (restaurant.RegularOpeningDays != null && restaurant.RegularOpeningDays.TryGetValue(dayOfWeek, out var regularOpeningDay))
+
+            if (restaurant.RegularOpeningDays != null && restaurant.RegularOpeningDays.TryGetOpeningDay(dayOfWeek, out var regularOpeningDay))
             {
                 if (regularOpeningDay.OpeningPeriods.Count == 0)
                 {

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.AddRestaurant
 {
@@ -37,38 +38,35 @@ namespace Gastromio.Core.Application.Commands.AddRestaurant
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<RestaurantDTO>> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<RestaurantDTO> HandleAsync(AddRestaurantCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<RestaurantDTO>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<RestaurantDTO>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var existingRestaurants =
                 await restaurantRepository.FindByRestaurantNameAsync(command.Name, cancellationToken);
             if (existingRestaurants.Any())
-                return FailureResult<RestaurantDTO>.Create(FailureResultCode.RestaurantAlreadyExists);
+                throw DomainException.CreateFrom(new RestaurantAlreadyExistsFailure());
 
             var cuisines = (await cuisineRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new CuisineDTO(en));
+                .ToDictionary(en => en.Id, en => new CuisineDTO(en));
 
             var paymentMethods = (await paymentMethodRepository.FindAllAsync(cancellationToken))
-                .ToDictionary(en => en.Id.Value, en => new PaymentMethodDTO(en));
+                .ToDictionary(en => en.Id, en => new PaymentMethodDTO(en));
 
-            var createResult = restaurantFactory.CreateWithName(command.Name, currentUser.Id);
-            if (createResult.IsFailure)
-                return createResult.Cast<RestaurantDTO>();
-
-            var restaurant = ((SuccessResult<Restaurant>) createResult).Value;
-            
+            var restaurant = restaurantFactory.CreateWithName(command.Name, currentUser.Id);
             await restaurantRepository.StoreAsync(restaurant, cancellationToken);
 
-            var userIds = restaurant.Administrators;
-            
+            var userIds = restaurant.Administrators
+                .Union(new []{restaurant.CreatedBy, restaurant.UpdatedBy})
+                .Distinct();
+
             var users = await userRepository.FindByUserIdsAsync(userIds, cancellationToken);
 
             var userDict = users != null
@@ -78,8 +76,7 @@ namespace Gastromio.Core.Application.Commands.AddRestaurant
             var restaurantImageTypes =
                 await restaurantImageRepository.FindTypesByRestaurantIdsAsync(new[] {restaurant.Id}, cancellationToken);
 
-            return SuccessResult<RestaurantDTO>.Create(new RestaurantDTO(restaurant, cuisines, paymentMethods,
-                userDict, restaurantImageTypes));
+            return new RestaurantDTO(restaurant, cuisines, paymentMethods, userDict, restaurantImageTypes);
         }
     }
 }

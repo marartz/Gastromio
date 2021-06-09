@@ -7,7 +7,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
 import {RestaurantModel} from '../../../shared/models/restaurant.model';
-import {DishCategoryModel} from '../../../shared/models/dish-category.model';
 import {PaymentMethodModel} from '../../../shared/models/payment-method.model';
 
 import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
@@ -40,7 +39,6 @@ export class CheckoutComponent implements OnInit {
   submitted = false;
 
   restaurant: RestaurantModel;
-  dishCategories: DishCategoryModel[];
 
   givenName: string;
   lastName: string;
@@ -92,7 +90,6 @@ export class CheckoutComponent implements OnInit {
         this.initialized = isInitialized;
 
         this.restaurant = this.orderFacade.getSelectedRestaurant();
-        this.dishCategories = this.orderFacade.getDishCategoriesOfSelectedRestaurant();
         this.serviceTime = this.orderFacade.getCart().getServiceTime();
 
         if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
@@ -100,7 +97,7 @@ export class CheckoutComponent implements OnInit {
         }
       }, error => {
         this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).getJoinedGeneralErrors();
+        this.generalError = this.httpErrorHandlingService.handleError(error).message;
       });
 
     this.orderFacade.getInitializationError$()
