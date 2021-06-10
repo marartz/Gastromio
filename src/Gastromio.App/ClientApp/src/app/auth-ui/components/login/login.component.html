@@ -1,71 +1,57 @@
 <block-ui>
-    <div id="forgot-password">
+    <main class="auth">
+        <div class="auth__content">
+            <form class="auth__form"
+                  data-aos="gm-move-down"
+                  data-aos-delay="300"
+                  data-aos-duration="800"
+                  data-aos-once="true"
+                  [formGroup]="loginForm"
+                  (ngSubmit)="onLogin(loginForm.value)">
+                <h1 data-aos="gm-move-down"
+                    data-aos-delay="700"
+                    data-aos-duration="800"
+                    data-aos-once="true">
+                    Anmelden
+                </h1>
+                <p data-aos="gm-move-down"
+                   data-aos-delay="800"
+                   data-aos-duration="800"
+                   data-aos-once="true">
+                    Melde Dich mit Deinem Konto an, um fortzufahren.<br />
+                    Noch kein Konto? Registriere dich <a href="https://gastrom.io/register" target="_blank" rel="nofollow noreferrer">hier</a>.<br />
+                    Hast du dein Passwort vergessen? <a [routerLink]="['/forgotpassword']">Setze es zurück</a>!
+                </p>
 
-        <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Email.errors">
-            <span style="align-items: center; display: inline-flex;">
-                <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 16 16"><g><path d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M9,12H7V7h2V12z M8,6C7.4,6,7,5.6,7,5s0.4-1,1-1 s1,0.4,1,1S8.6,6,8,6z"></path></g></svg>
-                <p *ngIf="f.Email.errors.required">Bitte gib eine gültige E-Mail-Adresse an</p>
-                <p *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</p>
-            </span>
-        </div>
+                <div data-aos="gm-move-down"
+                     data-aos-delay="900"
+                     data-aos-duration="800"
+                     data-aos-once="true">
+                    <label for="email">E-Mail-Adresse</label>
+                    <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" autofocus="" inputmode="email" spellcheck="off" id="email" name="email" formControlName="Email" placeholder="bernd@beispiel.de">
+                    <div class="auth__feedback" *ngIf="submitted && f.Email.errors">
+                        <div *ngIf="f.Email.errors.required">Bitte gib eine gültige E-Mail-Adresse an</div>
+                        <div *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</div>
+                    </div>
 
-        <div class="flash-message js-flash-message" role="status" id="flashMessage2" data-duration="5000" *ngIf="submitted && f.Password.errors">
-            <span style="align-items: center; display: inline-flex;">
-                <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 16 16"><g><path d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M9,12H7V7h2V12z M8,6C7.4,6,7,5.6,7,5s0.4-1,1-1 s1,0.4,1,1S8.6,6,8,6z"></path></g></svg>
-                <p *ngIf="f.Password.errors.required">Bitte gib eine gültige E-Mail-Adresse und ein Passwort an</p>
-                <p *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</p>
-            </span>
-        </div>
-
-        <div class="wrapper">
-            <div id="back">
-                <a [routerLink]="['/']">
-                    <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M6 4.655L10.655 0 12 1.345 7.345 6 12 10.655 10.655 12 6 7.345 1.345 12 0 10.655 4.655 6 0 1.345 1.345 0 6 4.655z" fill="#FFFFFF" fill-rule="nonzero" /></svg>
-                </a>
-            </div>
-
-            <div id="left">
-                <div class="background-image"></div>
-            </div>
-
-            <div id="right">
-                <div class="form-wrapper">
-                    <div class="form">
-                        <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                            <h1>Willkommen zurück!</h1>
-                            <div class="subtext">
-                                Melde Dich mit Deinem Konto an, um fortzufahren.
-                            </div>
-                            <div class="input-wrapper">
-                                <div class="input-100">
-                                    <div class="input-root">
-                                        <label>E-Mail-Adresse</label>
-                                        <div class="inner-input">
-                                            <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" autofocus="" inputmode="email" spellcheck="off" id="email" name="email" formControlName="Email" placeholder="bernd@mustermann.de" data-hj-suppress>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="input-100">
-                                    <div class="input-root">
-                                        <label>Passwort</label>
-                                        <div class="inner-input">
-                                            <input type="password" mozactionhint="send" autocapitalize="none" autocomplete="password" spellcheck="off" id="password" name="password" formControlName="Password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" data-hj-suppress>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="forgot-password-register" type="submit">Anmelden</button>
-                            <div class="disclaimer">
-                                Mit Klick auf "Anmelden" stimmst Du den <a [routerLink]="['/privacy-policy']" target="_blank">Datenschutzbestimmungen</a> von Gastromio zu. Diese Website ist durch Cloudflare geschützt und es gelten die <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank">Cloudflare-Datenschutzbestimmungen</a> und <a href="https://www.cloudflare.com/de-de/terms/" target="_blank">Nutzungsbedingungen</a>.
-                            </div>
-                            <div class="disclaimer">
-                                Wenn Du Dein Passwort vergessen hast, kannst Du <a [routerLink]="['/forgotpassword']">hier Dein Passwort zurücksetzen</a>.
-                            </div>
-                        </form>
+                    <label for="email">Passwort</label>
+                    <input type="password" mozactionhint="send" autocapitalize="none" autocomplete="password" spellcheck="off" id="password" name="password" formControlName="Password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+                    <div class="auth__feedback" *ngIf="submitted && f.Password.errors">
+                        <div *ngIf="f.Password.errors.required">Bitte gib eine gültige E-Mail-Adresse und ein Passwort an</div>
+                        <div *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</div>
                     </div>
                 </div>
-            </div>
 
+                <button class="auth__form-submit"
+                        data-aos="gm-move-down"
+                        data-aos-delay="1100"
+                        data-aos-duration="800"
+                        data-aos-once="true"
+                        type="submit">
+                    Anmelden
+                </button>
+
+            </form>
         </div>
-    </div>
+    </main>
 </block-ui>
