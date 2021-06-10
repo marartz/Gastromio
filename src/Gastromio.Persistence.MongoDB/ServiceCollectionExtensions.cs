@@ -17,7 +17,7 @@ namespace Gastromio.Persistence.MongoDB
             var database = client.GetDatabase(databaseName);
             services.AddSingleton(database);
 
-            services.AddTransient<IDbAdminService>(provider => new DbAdminService(provider.GetRequiredService<IMongoClient>(), connectionString));
+            services.AddTransient<IDbAdminService>(provider => new DbAdminService(provider.GetRequiredService<IMongoClient>(), connectionString, databaseName));
             services.AddTransient<ICuisineRepository, CuisineRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IRestaurantImageRepository, RestaurantImageRepository>();

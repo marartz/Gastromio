@@ -1,4 +1,3 @@
-using Gastromio.Persistence.MongoDB.Migrations;
 using MongoDB.Driver;
 using MongoDBMigrations;
 using System.Reflection;
@@ -9,29 +8,31 @@ namespace Gastromio.Persistence.MongoDB
     {
         private readonly IMongoClient client;
         private readonly string connectionString;
+        private readonly string databaseName;
 
         private readonly Assembly usedAssembly;
         private readonly IMigrationRunner migration;
 
-        public DbAdminService(IMongoClient client, string connectionString)
+        public DbAdminService(IMongoClient client, string connectionString, string databaseName)
         {
             this.client = client;
             this.connectionString = connectionString;
+            this.databaseName = databaseName;
             usedAssembly = typeof(DbAdminService).Assembly;
             migration = new MigrationEngine()
-                .UseDatabase(connectionString, Constants.DatabaseName)
+                .UseDatabase(connectionString, databaseName)
                 .UseAssembly(usedAssembly)
-                .UseSchemeValidation(false, null);
+                .UseSchemeValidation(false);
         }
 
         public void PurgeDatabase()
         {
-            client.DropDatabase(Constants.DatabaseName);
+            client.DropDatabase(databaseName);
         }
 
         public void PrepareDatabase()
         {
-            if (MongoDatabaseStateChecker.IsDatabaseOutdated(connectionString, Constants.DatabaseName, usedAssembly))
+            if (MongoDatabaseStateChecker.IsDatabaseOutdated(connectionString, databaseName, usedAssembly))
             {
                 migration.Run();
             }
