@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/github/issues/marartz/Gastromio?style=flat-square" alt="Gastromio issues" />
     </a>
     <a href="https://www.gastromio.de/" target="blank">
-        <img src="https://img.shields.io/website?url=https%3A%2F%2Fwww.gastromio.de%2FGastromio&logo=github&style=flat-square" />
+        <img src="https://betteruptime.com/status-badges/v1/monitor/7q6q.svg" />
     </a>
 
 </p>
