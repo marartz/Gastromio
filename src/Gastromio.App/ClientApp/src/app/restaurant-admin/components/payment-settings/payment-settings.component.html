@@ -15,7 +15,7 @@
 	<section id="settings">
 		<span *ngFor="let paymentMethod of paymentMethods$ | async">
 			<button
-					class="checkbox-input active"
+					class="radio-group active"
 					type="button"
 					*ngIf="(isPaymentMethodEnabled$(paymentMethod.id) | async) === true"
 					(click)="onTogglePaymentMethod(paymentMethod.id)"
@@ -23,7 +23,7 @@
 				{{paymentMethod.name}}
 			</button>
 			<button
-					class="checkbox-input"
+					class="radio-group"
 					type="button"
 					*ngIf="(isPaymentMethodEnabled$(paymentMethod.id) | async) === false"
 					(click)="onTogglePaymentMethod(paymentMethod.id)"

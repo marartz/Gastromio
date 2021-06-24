@@ -24,7 +24,9 @@ import {debounceTime} from "rxjs/operators";
   styleUrls: [
     './dish-management.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/backend_v2.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+    '../../../../assets/css/application-ui/forms/radio-groups.min.css'
   ]
 })
 export class DishManagementComponent implements OnInit, OnDestroy {

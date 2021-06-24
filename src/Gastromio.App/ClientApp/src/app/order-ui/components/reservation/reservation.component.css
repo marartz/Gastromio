@@ -1,11 +1,9 @@
 /* #chekout */
 #checkout {
     align-items: stretch;
-    background-color: #ADCCCB;
-    background-image: url('../../../../assets/images/rough/blue.png');
-    background-repeat: repeat;
+    background: var(--bg-rough-blue);
     display: flex;
-    font-family: "Apercu", sans-serif;
+    font-family: var(--sans);
     flex-direction: row;
     flex-grow: 1;
     padding-bottom: 48px;
@@ -21,9 +19,7 @@
 
 /* #checkout > header */
 .checkout-header {
-    background-color: #ADCCCB;
-    background-image: url('../../../../assets/images/rough/blue.png');
-    background-repeat: repeat;
+    background: var(--bg-rough-blue);
     margin-top: -90px;
     padding-bottom: 42px;
     padding-left: 16px;
@@ -33,8 +29,8 @@
 }
 
 .checkout-header h1 {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 52px;
     font-weight: 700;
     letter-spacing: -0.5px;
@@ -46,8 +42,8 @@
 }
 
 .checkout-header h2 {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 28px;
     font-weight: 700;
     letter-spacing: -0.5px;
@@ -56,8 +52,8 @@
 }
 
 .checkout-header h3 {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 20px;
     font-weight: 400;
     letter-spacing: -0.5px;
@@ -108,7 +104,7 @@
 
 /* #checkout > #body > #infocard */
 #checkout #body #infocard {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border-radius: 23px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -118,8 +114,8 @@
 }
 
 #checkout #body #infocard .title {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0px;
@@ -127,8 +123,8 @@
 }
 
 #checkout #body #infocard .subtitle {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
     letter-spacing: 0px;
@@ -151,7 +147,7 @@
 }
 
 #checkout #body #infocard input {
-    background-color: #fff;
+    background-color: var(--white);
     border: 0px;
     border-radius: 23px;
     color: #363636;
@@ -207,7 +203,7 @@
 #checkout #body #infocard .invalid-feedback {
     color: darkred;
     display: block;
-    font-family: "Apercu", sans-serif;
+    font-family: var(--sans);
     font-size: 14px;
     font-weight: 400;
     margin-left: 9px;
@@ -216,18 +212,18 @@
 #checkout #body #cart .invalid-feedback {
     color: darkred;
     display: block;
-    font-family: "Apercu", sans-serif;
+    font-family: var(--sans);
     font-size: 14px;
     font-weight: 400;
     margin-left: 9px;
 }
 
 #checkout #body #infocard button.pill {
-    background-color: #ADCCCB;
-    border: 2px solid #fff;
+    background-color: var(--blue);
+    border: 2px solid var(--white);
     border-radius: 23px;
-    color: #363636;
-    font-family: "Apercu";
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 500;
     letter-spacing: -0.33px;
@@ -246,7 +242,7 @@
 }
 
 #checkout #body #infocard button.pill:hover {
-    background-color: #FFF;
+    background-color: var(--white);
 }
 
 #checkout #body #infocard button.pill::before {
@@ -262,11 +258,11 @@
 }
 
 #checkout #body #infocard button.pill.active {
-    background-color: #FFF;
+    background-color: var(--white);
 }
 
 #checkout #body #infocard button.pill.active:hover {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
 }
 
 #checkout #body #infocard button.pill.active::before {
@@ -282,10 +278,10 @@
 }
 
 #checkout #body .confirm-purchase {
-    background-color: #363636;
+    background-color: var(--grey);
     border-radius: 23px;
-    color: #FFF;
-    font-family: "Apercu", sans-serif;
+    color: var(--white);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 700;
     height: 46px;
@@ -327,8 +323,8 @@
 }
 
 #checkout #body #disclaimer p {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
     letter-spacing: 0px;
@@ -341,360 +337,6 @@
     text-align: left;
     text-decoration: underline;
 }
-
-/* #checkout > #body > #cart */
-#checkout #body #cart {
-    background-color: #DECF80;
-    background-image: url('../../../../assets/images/rough/yellow.png');
-    background-repeat: repeat;
-    border-radius: 23px;
-    display: flex;
-    flex-direction: column;
-    max-width: 480px;
-    padding: 20px 28px;
-    width: 35vw;
-}
-
-@media only screen and (max-width: 992px) {
-    #checkout #body #cart {
-        width: 100%;
-        max-width: 100%;
-    }
-}
-
-#checkout #body #cart .title {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: 0px;
-    margin-bottom: 32px;
-    text-align: center;
-}
-
-#checkout #body #cart #dishes {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-}
-
-#checkout #body #cart #dishes .dish {
-    padding: 4px 0px;
-    color: #363636;
-    font-size: 14px;
-    font-family: "Apercu", sans-serif;
-    font-weight: 500;
-    letter-spacing: 0px;
-}
-
-#checkout #body #cart #dishes .dish .top {
-    display: flex;
-    justify-content: flex-start;
-    align-content: center;
-    transform: translateZ(0);
-    align-items: center;
-    width: 100%;
-}
-
-#checkout #body #cart #dishes .dish .top .count {
-    font-weight: 300;
-    padding-right: 10px;
-    width: 20px;
-}
-
-#checkout #body #cart #dishes .dish .top .name {
-    width: 100%;
-    padding: 4px 0px;
-    word-break: break-word;
-    flex: 1 1;
-}
-
-#checkout #body #cart #dishes .dish .top .price {
-    text-align: right;
-    min-width: 3rem;
-    white-space: nowrap;
-}
-
-#checkout #body #cart #dishes .dish .top .edit {
-    background-color: transparent;
-    border: 0px;
-    cursor: pointer;
-    float: left;
-    min-width: 1.25rem;
-    padding: 0px;
-}
-
-#checkout #body #cart #dishes .dish .top .edit::before {
-    background-image: url('../../../../assets/images/svg/edit.svg');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    content: " ";
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    height: 14px;
-    width: 14px;
-    padding: 16px 0px;
-}
-
-#checkout #body #cart #dishes .dish .top .remove {
-    background-color: transparent;
-    border: 0px;
-    cursor: pointer;
-    float: left;
-    min-width: 1.25rem;
-    padding: 0px;
-}
-
-#checkout #body #cart #dishes .dish .top .remove::before {
-    background-image: url('../../../../assets/images/svg/delete.svg');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    content: " ";
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    height: 14px;
-    width: 14px;
-    padding: 16px 0px;
-}
-
-#checkout #body #cart #dishes .dish .top .description {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
-    font-weight: 300;
-    font-size: 14px;
-    letter-spacing: 0px;
-    padding-left: 20px;
-}
-
-@media only screen and (max-width: 992px) {
-    #checkout #body #cart #dishes .dish .top .description {
-        max-width: 65%;
-    }
-}
-
-#checkout #body #cart #dishes .dish .top .remarks {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
-    font-weight: 300;
-    font-size: 14px;
-    letter-spacing: 0px;
-    padding-left: 20px;
-}
-
-#checkout #body #cart #order-fees {
-    padding: 22px 20px;
-}
-
-#checkout #body #cart #order-fees .subtotal,
-#checkout #body #cart #order-fees .minimumordervalue,
-#checkout #body #cart #order-fees .costs {
-    display: flex;
-    align-content: center;
-    transform: translateZ(0);
-    align-items: center;
-    width: 100%;
-    justify-content: flex-start;
-}
-
-#checkout #body #cart #order-fees .total {
-    display: flex;
-    align-content: center;
-    transform: translateZ(0);
-    align-items: center;
-    width: 100%;
-    justify-content: flex-start;
-    margin-top: 6px;
-}
-
-#checkout #body #cart #order-fees .fee-title {
-    color: #363636;
-    float: left;
-    font-family: "Apercu", sans-serif;
-    font-weight: 300;
-    letter-spacing: 0px;
-    font-size: 14px;
-    width: 100%;
-    padding: 4px 0px;
-    text-align: left;
-}
-
-#checkout #body #cart #order-fees .total .fee-title {
-    font-weight: 700;
-    font-size: 24px;
-}
-
-#checkout #body #cart #order-fees .fee-price {
-    color: #363636;
-    float: right;
-    font-family: "Apercu", sans-serif;
-    font-weight: 300;
-    letter-spacing: 0px;
-    font-size: 14px;
-    text-align: right;
-    white-space: nowrap;
-}
-
-#checkout #body #cart #order-fees .total .fee-price {
-    font-weight: 700;
-    font-size: 24px;
-}
-
-/* #chekout > #my-order */
-#checkout #my-order {
-    background: #DECF80;
-    border-radius: 23px;
-    display: flex;
-    flex-direction: column;
-    max-width: 480px;
-    padding: 174px 48px;
-    width: 35vw;
-}
-
-@media screen and (max-width: 768px) {
-    #checkout #my-order {
-        padding: 114px 20px 40px;
-    }
-}
-
-@media screen and (max-width: 992px) {
-    #checkout #my-order {
-        border-radius: 0px 0px 20px 20px;
-        max-width: 100%;
-        width: 100%;
-    }
-}
-
-/* #chekout > #my-order > #header */
-#checkout #my-order #header {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-#checkout #my-order #header .title {
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 36px;
-    pointer-events: none;
-}
-
-@media screen and (max-width: 78px) {
-    #checkout #my-order #header .title {
-        font-size: 26px;
-    }
-}
-
-/* #chekout > #my-order > #body */
-#checkout #my-order #body {
-    align-items: stretch;
-    display: flex;
-    flex-direction: column;
-}
-
-/* #chekout > #my-order > #body > #dishes */
-#checkout #my-order #body #dishes {
-    padding: 50px 0px 10px;
-}
-
-#checkout #my-order #body #dishes .dish {
-    padding: 10px 0px;
-}
-
-#checkout #my-order #body #dishes .dish:not(:last-child) {
-    border-bottom: 1px solid rgba(227, 231, 248, .3);
-    margin-bottom: 10px;
-}
-
-#checkout #my-order #body #dishes .dish .dish-content {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-}
-
-#checkout #my-order #body #dishes .dish .dish-content .name {
-    font-weight: 400;
-    max-width: 50%;
-    padding-right: 10px;
-    width: 50%;
-}
-
-#checkout #my-order #body #dishes .dish .description {
-    display: flex;
-    justify-content: space-between;
-    width: 50%;
-}
-
-#checkout #my-order #body #dishes .dish .description .count {
-    font-weight: 400;
-}
-
-#checkout #my-order #body #dishes .dish .description .price {
-    color: #363636;
-    font-size: 18px;
-    font-weight: 500;
-    padding-left: 5px;
-}
-
-/* #chekout > #my-order > #body > #order-fees */
-#checkout #my-order #body #order-fees {
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
-    padding: 20px 0px;
-    position: relative;
-}
-
-#checkout #my-order #body #order-fees:after {
-    bottom: -1px;
-}
-
-#checkout #my-order #body #order-fees:before {
-    top: -1px;
-}
-
-#checkout #my-order #body #order-fees:after,
-#checkout #my-order #body #order-fees:before {
-    background-image: linear-gradient(90deg,#e3e7e8 50%,hsla(0,0%,100%,0) 0);
-    background-position: bottom;
-    background-repeat: repeat-x;
-    background-size: 10px 2px;
-    content: "";
-    height: 1px;
-    left: 0px;
-    position: absolute;
-    width: 100%;
-}
-
-#checkout #my-order #body #order-fees div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-#checkout #my-order #body #order-fees div .title {
-    font-weight: 300;
-}
-
-/* #chekout > #my-order > #body > #total */
-#checkout #my-order #body #total {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 0px;
-}
-
-#checkout #my-order #body #total span {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-#checkout #my-order #body #total span.bill {
-    color: #363636;
-    font-weight: 700;
-    text-align: right;
-}
-
 
 #fp-alert {
     align-items: center;

@@ -28,8 +28,8 @@ Copyr: gastromio.de/imprint
 
 #filter .title,
 #filter-details .title {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
     letter-spacing: -0.33px;
@@ -39,7 +39,7 @@ Copyr: gastromio.de/imprint
 /* #filter > #ordertype-filter */
 #filter #ordertype-filter .filter,
 #filter-details #ordertype-filter .filter {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border-radius: 23px;
     cursor: pointer;
 	display: flex;
@@ -57,7 +57,7 @@ Copyr: gastromio.de/imprint
     align-items: center;
     -ms-flex-align: center;
     -ms-flex-pack: center;
-    color: #323232;
+    color: var(--grey);
     cursor: pointer;
     display: flex;
     display: -moz-box;
@@ -70,7 +70,7 @@ Copyr: gastromio.de/imprint
     -webkit-box-flex: 1 1 auto;
     -webkit-flex: 1 1 auto;
     font-size: 16px;
-    font-family: "Apercu", sans-serif;
+    font-family: var(--sans);
     font-weight: 500;
 	justify-content: flex-start;
 	-ms-flex-pack: start;
@@ -85,8 +85,8 @@ Copyr: gastromio.de/imprint
 
 #filter #ordertype-filter .filter .switch.active,
 #filter-details #ordertype-filter .filter .switch.active {
-    background-color: #DECF80;
-    border: 2px solid #ADCCCB;
+    background-color: var(--yellow);
+    border: 2px solid var(--blue);
     border-radius: 23px;
     line-height: 24px;
     width: 50%;
@@ -116,8 +116,8 @@ Copyr: gastromio.de/imprint
 
 #filter .filter-divider p,
 #filter-details .filter-divider p {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 14px;
     font-weight: 300;
     letter-spacing: -.33px;
@@ -129,11 +129,11 @@ Copyr: gastromio.de/imprint
 
 #filter button.reservation,
 #filter-details button.reservation {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border-radius: 23px;
-    color: #363636;
+    color: var(--grey);
     cursor: pointer;
-    font-family: "Apercu", sans-serif;
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 500;
     height: 42px;
@@ -144,9 +144,9 @@ Copyr: gastromio.de/imprint
 
 #filter button.reservation span,
 #filter-details button.reservation span {
-    background-color: #81B67C;
-    color: #fff;
-    font-family: "Apercu", sans-serif;
+    background-color: var(--green);
+    color: var(--white);
+    font-family: var(--sans);
     font-size: 12px;
     font-weight: 500;
     padding: 3px;
@@ -160,7 +160,7 @@ Copyr: gastromio.de/imprint
 
 #filter button.reservation.active,
 #filter-details button.reservation.active {
-    background-color: #DECF80;
+    background-color: var(--yellow);
 }
 
 #filter button.reservation:hover {
@@ -226,10 +226,10 @@ Copyr: gastromio.de/imprint
 
 #filter #categories .category button,
 #filter-details #categories .category button {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border-radius: 23px;
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 4px;
@@ -239,12 +239,12 @@ Copyr: gastromio.de/imprint
 
 #filter #categories .category.active button,
 #filter-details #categories .category.active button {
-    background-color: #DECF80;
+    background-color: var(--yellow);
 }
 
 #filter #categories .category button:hover,
 #filter-details #categories .category button:hover {
-    background-color: #DECF80;
+    background-color: var(--yellow);
 	transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -271,9 +271,9 @@ Copyr: gastromio.de/imprint
 	#filter-mobile .filtern {
         height: 42px;
         width: 50%;
-        background-color: #ADCCCB;
-        font-family: "Apercu", sans-serif;
-        color: #363636;
+        background-color: var(--blue);
+        color: var(--grey);
+        font-family: var(--sans);
         font-size: 16px;
         font-weight: 500;
         line-height: 26px;
@@ -284,9 +284,9 @@ Copyr: gastromio.de/imprint
     #filter-mobile .cart-open {
         height: 42px;
         width: 50%;
-        background-color: #DECF80;
-        font-family: "Apercu", sans-serif;
-        color: #363636;
+        background-color: var(--yellow);
+        color: var(--grey);
+        font-family: var(--sans);
         font-size: 16px;
         font-weight: 500;
         line-height: 26px;
@@ -295,7 +295,7 @@ Copyr: gastromio.de/imprint
         padding: 0px;
     }
     #filter-mobile .search {
-        background-color: #FFF;
+        background-color: var(--white);
         border: 0px solid transparent;
         border-radius: 0px;
         display: block;
@@ -322,7 +322,7 @@ Copyr: gastromio.de/imprint
     }
     #filter-mobile .search input {
         border: 0px;
-        font-family: "Apercu", sans serif;
+        font-family: var(--sans);
         font-size: 16px;
         font-weight: 400;
         height: 42px;
@@ -347,8 +347,8 @@ Copyr: gastromio.de/imprint
         padding: 0px;
     }
     #mobile-info .restaurant-count {
-        color: #363636;
-        font-family: "Apercu", sans-serif;
+        color: var(--grey);
+        font-family: var(--sans);
         font-size: 20px;
         font-weight: 700;
         letter-spacing: -0.42px;
@@ -368,9 +368,7 @@ Copyr: gastromio.de/imprint
 
 #filter-details .content {
     width: 100%;
-    background-color: #ADCCCB;
-    background-image: url('../../../assets/images/rough/blue.png');
-    background-repeat: repeat;
+    background: var(--bg-rough-blue);
     padding: 22px;
 }
 
@@ -379,8 +377,8 @@ Copyr: gastromio.de/imprint
 }
 
 #filter-details .content .top h4 {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.42px;

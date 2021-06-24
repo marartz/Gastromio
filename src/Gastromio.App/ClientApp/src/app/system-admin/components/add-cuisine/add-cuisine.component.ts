@@ -15,7 +15,10 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './add-cuisine.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
+    '../../../../assets/css/modals.component.min.css',
+    '../../../../assets/css/overlays/modals.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+    '../../../../assets/css/application-ui/forms/radio-groups.min.css'
   ]
 })
 export class AddCuisineComponent implements OnInit {

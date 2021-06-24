@@ -30,7 +30,7 @@
     animation-duration: 400ms;
     animation-fill-mode: both;
     animation-iteration-count: 1;
-    background-color: #FFF;
+    background: var(--bg-rough-blue);
     border-top-left-radius: 23px;
     border-top-right-radius: 23px;
     box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
@@ -91,7 +91,7 @@
     background-color: transparent;
     border: none;
     border-radius: 50%;
-    color: #363636;
+    color: var(--grey);
     cursor: pointer;
     display: inline-block;
     margin: 0px;
@@ -103,7 +103,7 @@
 }
 
 .modal_v3 #close:hover button {
-    color: #363636; 
+    color: var(--grey); 
 }
 
 .modal_v3 #close button::before {
@@ -128,7 +128,7 @@
 .modal_v3 #header {
     align-items: center;
     border-bottom: 1px solid #EBEBEB;
-    color: #363636;
+    color: var(--grey);
     display: flex;
     display: -moz-box;
     display: -ms-flexbox;
@@ -201,7 +201,7 @@
 }
 
 .modal_v3 #body .wrapper {
-    background-color: #FFF;
+    background-color: var(--white);
     border-radius: 23px;
     position: relative;
 }
@@ -235,7 +235,7 @@
     border-color: transparent;
     border-radius: 0px;
     box-shadow: none;
-    color: #363636;
+    color: var(--grey);
     cursor: text;
     cursor: -webkit-text;
     display: flex;
@@ -326,7 +326,7 @@
 }
 
 .modal_v3 #body #feedback .delete-text {
-    color: #363636;
+    color: var(--grey);
     display: inherit;
     font-size: 16px;
     font-weight: 400;
@@ -352,10 +352,10 @@
 }
 
 .modal_v3 #body #submit button {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border: none;
     border-radius: 23px;
-    color: #FFF;
+    color: var(--white);
     cursor: pointer;
     display: inline-block;
     font-size: 16px;

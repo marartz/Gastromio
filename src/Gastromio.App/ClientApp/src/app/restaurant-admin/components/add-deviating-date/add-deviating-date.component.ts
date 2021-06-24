@@ -14,7 +14,8 @@ import {ConfirmPasswordValidator} from "../../../auth/validators/password.valida
   styleUrls: [
     './add-deviating-date.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
+    '../../../../assets/css/modals.component.min.css',
+    '../../../../assets/css/overlays/modals.min.css'
   ]
 })
 export class AddDeviatingDateComponent implements OnInit {

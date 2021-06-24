@@ -12,7 +12,9 @@ import {ServiceInfoModel} from "../../../shared/models/restaurant.model";
   styleUrls: [
     './order-settings.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/backend_v2.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+    '../../../../assets/css/application-ui/forms/radio-groups.min.css'
   ]
 })
 export class OrderSettingsComponent implements OnInit, OnDestroy {

@@ -35,11 +35,10 @@
 						<ng-container *ngFor="let openingPeriod$ of regularOpeningDay.openingPeriods">
 							<th scope="row">
 								<div *ngIf="openingPeriod$.value !== undefined" class="form-input">
-									<div class="input-group">
-										<input
+									<input
 											   autocapitalize="none"
 											   autocomplete="off"
-											   class="form-control"
+											   class="input-group"
 											   inputmode="numeric"
 											   mozactionhint="next"
 											   style="border-radius: 23px;"
@@ -48,15 +47,13 @@
 											   [value]="openingPeriod$.value.start"
 											   (change)="changeStartOfRegular(openingPeriod$, $event.target.value)"
 											   >
-									</div>
 								</div>
 							</th>
 							<th scope="row">
 								<div *ngIf="openingPeriod$.value !== undefined" class="form-input">
-									<div class="input-group">
-										<input autocapitalize="none"
+									<input autocapitalize="none"
 											   autocomplete="off"
-											   class="form-control"
+											   class="input-group"
 											   inputmode="numeric"
 											   mozactionhint="next"
 											   style="border-radius: 23px;"
@@ -65,7 +62,6 @@
 											   [value]="openingPeriod$.value.end"
 											   (change)="changeEndOfRegular(openingPeriod$, $event.target.value)"
 											   >
-									</div>
 								</div>
 							</th>
 							<td class="actions">
@@ -149,10 +145,9 @@
 						<ng-container *ngFor="let openingPeriod$ of deviatingOpeningDay.openingPeriods">
 							<th scope="row">
 								<div *ngIf="openingPeriod$.value !== undefined" class="form-input">
-									<div class="input-group">
-										<input autocapitalize="none"
+									<input autocapitalize="none"
 											   autocomplete="off"
-											   class="form-control"
+											   class="input-group"
 											   inputmode="numeric"
 											   mozactionhint="next"
 											   style="border-radius: 23px;"
@@ -161,15 +156,13 @@
 											   [value]="openingPeriod$.value.start"
 											   (change)="changeStartOfDeviating(openingPeriod$, $event.target.value)"
 											   >
-									</div>
 								</div>
 							</th>
 							<th scope="row">
 								<div *ngIf="openingPeriod$.value !== undefined" class="form-input">
-									<div class="input-group">
-										<input autocapitalize="none"
+									<input autocapitalize="none"
 											   autocomplete="off"
-											   class="form-control"
+											   class="input-group"
 											   inputmode="numeric"
 											   mozactionhint="next"
 											   style="border-radius: 23px;"
@@ -178,7 +171,6 @@
 											   [value]="openingPeriod$.value.end"
 											   (change)="changeEndOfDeviating(openingPeriod$, $event.target.value)"
 											   >
-									</div>
 								</div>
 							</th>
 							<td class="actions">

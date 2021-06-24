@@ -90,7 +90,7 @@
 							 >
                             <a *ngIf="!hasExternalReservationSystem()" class="proceed-to-reservation" [routerLink]="['/restaurants', restaurant.alias, 'reservation']">
                                 <span>Tisch reservieren</span>
-                                <span style="font-size: 11px;"> (gem. CSV)</span>
+                                <!--span style="font-size: 11px;"> (gem. CSV)</span-->
                             </a>
                             <a *ngIf="hasExternalReservationSystem()" class="proceed-to-reservation" href="{{restaurant.reservationInfo.reservationSystemUrl}}" target="_blank" rel="nofollow noreferrer">
                                 <span>Tisch reservieren</span>

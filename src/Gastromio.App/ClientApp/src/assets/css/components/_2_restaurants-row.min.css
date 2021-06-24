@@ -8,7 +8,7 @@ Copyr: gastromio.de/imprint
 -------------------------------- */
 
 #restaurant {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border: 0px none;
     border-radius: 23px;
     cursor: pointer;
@@ -79,7 +79,7 @@ Copyr: gastromio.de/imprint
 }
 
 #order-restaurant #order #restaurants #restaurant #logo .logo-wrapper {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     height: 100%;
     margin: auto;
     text-align: left;
@@ -122,8 +122,8 @@ Copyr: gastromio.de/imprint
 }
 
 #order-restaurant #order #restaurants #restaurant #infos .restaurant-name {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0px;
@@ -136,8 +136,8 @@ Copyr: gastromio.de/imprint
 }
 
 #order-restaurant #order #restaurants #restaurant #infos .restaurant-address {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
 }
@@ -187,10 +187,10 @@ Copyr: gastromio.de/imprint
 }
 
 #order-restaurant #order #restaurants #restaurant #infos .cuisines .cuisine-container .cuisine-pill span {
-    background-color: #DECF80;
+    background-color: var(--yellow);
     border-radius: 23px;
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 500;
     margin: 0px 6px 0px 0px;
@@ -219,7 +219,7 @@ Copyr: gastromio.de/imprint
 
 #restaurant {
 	transition: all .3s ease;
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     border: 0px solid transparent;
     border-radius: 23px;
     cursor: pointer;
@@ -276,7 +276,7 @@ Copyr: gastromio.de/imprint
 }
 
 #restaurant #logo .logo-wrapper {
-    background-color: #ADCCCB;
+    background-color: var(--blue);
     height: 100%;
     margin: auto;
     text-align: left;
@@ -318,8 +318,8 @@ Copyr: gastromio.de/imprint
 }
 
 #restaurant #infos .restaurant-name {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0px;
@@ -332,8 +332,8 @@ Copyr: gastromio.de/imprint
 }
 
 #restaurant #infos .restaurant-address {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
 }
@@ -381,10 +381,10 @@ Copyr: gastromio.de/imprint
 }
 
 #restaurant #infos .cuisines .cuisine-container .cuisine-pill span {
-    background-color: #DECF80;
+    background-color: var(--yellow);
     border-radius: 23px;
-    color: #323232;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 500;
     margin: 0px 6px 0px 0px;

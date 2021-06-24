@@ -15,7 +15,7 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './remove-user.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
+    '../../../../assets/css/overlays/modals.min.css'
   ]
 })
 export class RemoveUserComponent implements OnInit {

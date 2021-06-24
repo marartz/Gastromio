@@ -17,10 +17,9 @@
 		<p>Über welchen Kanal soll man bestellen können?</p>
 
 		<form>
-			<!-- class="active" wenn aktiv -->
-			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'phone'" (click)="changeSupportedOrderMode('phone')">Telefonisch</button>
-			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'shift'" (click)="changeSupportedOrderMode('shift')">Telefonisch & Online-Vorbestellung</button>
-			<button type="button" class="checkbox-input" [class.active]="supportedOrderMode === 'anytime'" (click)="changeSupportedOrderMode('anytime')">Telefonisch & Online-Vorbestellung & Online-Bestellung</button>
+			<button type="button" class="radio-group" [class.active]="supportedOrderMode === 'phone'" (click)="changeSupportedOrderMode('phone')">Telefonisch</button>
+			<button type="button" class="radio-group" [class.active]="supportedOrderMode === 'shift'" (click)="changeSupportedOrderMode('shift')">Telefonisch & Online-Vorbestellung</button>
+			<button type="button" class="radio-group" [class.active]="supportedOrderMode === 'anytime'" (click)="changeSupportedOrderMode('anytime')">Telefonisch & Online-Vorbestellung & Online-Bestellung</button>
 		</form>
 	</section>
 
@@ -29,9 +28,9 @@
 		<p>Wie kommt das Essen zum Kunden?</p>
 
 		<form>
-			<button type="button" class="checkbox-input" [class.active]="pickupEnabled" (click)="togglePickupEnabled()">Abholung</button>
-			<button type="button" class="checkbox-input" [class.active]="deliveryEnabled" (click)="toggleDeliveryEnabled()">Lieferung</button>
-            <button type="button" class="checkbox-input" [class.active]="reservationEnabled" (click)="toggleReservationEnabled()">Tischreservierung</button>
+			<button type="button" class="radio-group" [class.active]="pickupEnabled" (click)="togglePickupEnabled()">Abholung</button>
+			<button type="button" class="radio-group" [class.active]="deliveryEnabled" (click)="toggleDeliveryEnabled()">Lieferung</button>
+            <button type="button" class="radio-group" [class.active]="reservationEnabled" (click)="toggleReservationEnabled()">Tischreservierung</button>
 		</form>
 	</section>
 
@@ -45,7 +44,7 @@
                 <input
                        autocapitalize="none"
                        autocomplete="off"
-                       class="text-input"
+                       class="input-group"
                        formControlName="pickupAverageTime"
                        id="pickupAverageTime"
                        inputmode="numeric"
@@ -59,7 +58,7 @@
                 <input
                        autocapitalize="none"
                        autocomplete="off"
-                       class="text-input"
+                       class="input-group"
                        formControlName="pickupMinimumOrderValue"
                        id="pickupMinimumOrderValue"
                        inputmode="numeric"
@@ -71,7 +70,7 @@
                 <input
                        autocapitalize="none"
                        autocomplete="off"
-                       class="text-input"
+                       class="input-group"
                        formControlName="pickupMaximumOrderValue"
                        id="pickupMaximumOrderValue"
                        inputmode="numeric"
@@ -89,7 +88,7 @@
             <input
                    autocapitalize="none"
                    autocomplete="off"
-                   class="text-input"
+                   class="input-group"
                    formControlName="deliveryAverageTime"
                    id="deliveryAverageTime"
                    inputmode="numeric"
@@ -103,7 +102,7 @@
             <input
                    autocapitalize="none"
                    autocomplete="off"
-                   class="text-input"
+                   class="input-group"
                    formControlName="deliveryMinimumOrderValue"
                    id="deliveryMinimumOrderValue"
                    inputmode="numeric"
@@ -116,7 +115,7 @@
             <input
                    autocapitalize="none"
                    autocomplete="off"
-                   class="text-input"
+                   class="input-group"
                    formControlName="deliveryMaximumOrderValue"
                    id="deliveryMaximumOrderValue"
                    inputmode="numeric"
@@ -129,7 +128,7 @@
             <input
                    autocapitalize="none"
                    autocomplete="off"
-                   class="text-input"
+                   class="input-group"
                    formControlName="deliveryCosts"
                    id="deliveryCosts"
                    inputmode="numeric"
@@ -147,7 +146,7 @@
             <input
                 autocapitalize="none"
                 autocomplete="off"
-                class="text-input"
+                class="input-group"
                 formControlName="reservationSystemUrl"
                 id="reservationSystemUrl"
                 mozactionhint="next"

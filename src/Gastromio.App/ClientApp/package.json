@@ -25,11 +25,13 @@
     "aos": "^2.3.4",
     "bootstrap": "^4.5.0",
     "guid-typescript": "^1.0.9",
+    "headlessui-angular": "^0.0.5",
     "moment": "^2.29.1",
     "ng-block-ui": "^2.1.8",
     "ng-recaptcha": "^5.0.0",
     "ng2-animate-on-scroll": "^2.0.2",
     "rxjs": "~6.5.4",
+    "tailwindcss": "^2.2.2",
     "tslib": "^1.13.0",
     "zone.js": "~0.10.2",
     "zxcvbn3": "^0.1.1"

@@ -9,9 +9,7 @@ Copyr: gastromio.de/imprint
 
 /* #hero */
 #hero {
-    background-color: #363636;
-    background-image: url("../../../assets/images/rough/grey.png");
-    background-repeat: repeat;
+    background: var(--bg-rough-grey);
     height: 240px;
     max-height: 240px;
     position: relative;
@@ -35,8 +33,8 @@ Copyr: gastromio.de/imprint
 
 #hero #text .name,
 #hero #text .restaurant-name {
-    color: #FFF;
-    font-family: "Apercu", sans-serif;
+    color: var(--white);
+    font-family: var(--sans);
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 0px;
@@ -44,8 +42,8 @@ Copyr: gastromio.de/imprint
 }
 
 #hero #text .slogan {
-    color: #FFF;
-    font-family: "Apercu", sans-serif;
+    color: var(--white);
+    font-family: var(--sans);
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 0px;
@@ -74,8 +72,8 @@ Copyr: gastromio.de/imprint
 #hero #text .restaurant-address,
 #hero #text .restaurant-hours,
 #hero #text .restaurant-info {
-    color: #FFF;
-    font-family: "Apercu", sans-serif;
+    color: var(--white);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
     margin-bottom: 0px;

@@ -13,9 +13,7 @@
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    background-color: #adcccb;
-    background-image: url("../../../../assets/images/rough/blue.png");
-    background-repeat: repeat;
+    background: var(--bg-rough-blue);
     margin-top: -90px;
 }
 
@@ -66,7 +64,7 @@
     width: 100%;
     max-width: 460px;
     min-width: 320px;
-    background-color: #adcccb;
+    background-color: var(--blue);
     padding: 40px;
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
@@ -108,8 +106,8 @@
 #order-summary #page-card h1 {
     margin-top: 0px;
     margin-bottom: 32px;
-    color: #363636;
-    font-family: 'Apercu', sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 36px;
     line-height: 42px;
     font-weight: 700;
@@ -142,18 +140,18 @@
     text-align: center;
     font-size: 14px;
     line-height: 20px;
-    color: #363636;
-    font-family: 'Apercu', sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-weight: 400;
     margin-top: 0px;
 }
 
 #order-summary #page-card button {
-    background-color: #363636;
+    background-color: var(--grey);
     border: 0px;
     border-radius: 23px;
-    color: #fff;
-    font-family: "Apercu", sans-serif;
+    color: var(--white);
+    font-family: var(--sans);
     font-size: 18px;
     font-weight: 500;
     height: 50px;

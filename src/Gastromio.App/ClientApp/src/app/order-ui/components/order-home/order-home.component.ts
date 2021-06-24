@@ -13,7 +13,8 @@ import {OrderFacade} from "../../../order/order.facade";
   templateUrl: './order-home.component.html',
   styleUrls: [
     './order-home.component.css',
-    '../../../../assets/css/frontend_v3.min.css'
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/page-sections/cta-sections.min.css'
   ]
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {

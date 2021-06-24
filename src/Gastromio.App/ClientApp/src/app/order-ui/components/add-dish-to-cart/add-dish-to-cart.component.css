@@ -1,6 +1,6 @@
 .modal_v3 section h1.dish-name {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 30px;
     font-weight: 700;
     margin: 0px;
@@ -8,8 +8,8 @@
 }
 
 .modal_v3 section p.dish-description {
-    color: #363636;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 16px;
     font-weight: 300;
     margin: 0px;
@@ -18,7 +18,7 @@
 }
 
 .modal_v3 .count-wrapper {
-    background-color: #FFF;
+    background-color: var(--white);
     border: 0px;
     border-radius: 23px;
     display: flex;
@@ -38,7 +38,7 @@
 }
 
 .modal_v3 .count-wrapper #variant select {
-    background-color: #FFF;
+    background-color: var(--white);
     border: 0px;
     border-radius: 23px;
     height: 46px;
@@ -76,7 +76,7 @@
 }
 
 .modal_v3 #count .c-wrapper button {
-    background-color: #DECF80;
+    background-color: var(--yellow);
     border: 0px;
     color: inherit;
     cursor: pointer;
@@ -102,13 +102,13 @@
 }
 
 .modal_v3 #count .c-wrapper button svg {
-    fill: #333333;
+    fill: var(--grey);
     height: 24px;
     width: 24px;
 }
 
 .modal_v3 #count .c-wrapper .dish-count {
-    background-color: #FFF;
+    background-color: var(--white);
     display: inline-flex;
     height: 46px;
     justify-content: center;
@@ -118,8 +118,8 @@
 }
 
 .modal_v3 #count .c-wrapper span {
-    color:#323232;
-    font-family: "Apercu", sans-serif;
+    color: var(--grey);
+    font-family: var(--sans);
     font-size: 18px;
     font-weight: 700;
     line-height: 26px;
