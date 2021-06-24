@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import AOS from 'aos'
+import { MetaDataService } from './shared/services/meta-data.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private titleService: Title,
-    private router: Router
+    private router: Router,
+    private metaDataService: MetaDataService
   ) {
   }
 
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
-      this.titleService.setTitle('Gastromio – Essen lokal bestellen');
+      this.metaDataService.setTitle('Gastromio – Essen lokal bestellen');
       window.scrollTo(0, 0);
     });
   }

@@ -22,7 +22,6 @@ import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component'
 import {OrderType} from "../../../order/models/order-type";
 import {filter, take, tap} from "rxjs/operators";
 import {combineLatest} from "rxjs";
-import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-reservation',
@@ -61,7 +60,6 @@ export class ReservationComponent implements OnInit {
     private modalService: NgbModal,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private route: ActivatedRoute,
-    private titleService: Title,
     private router: Router,
     private location: Location
   ) {
@@ -106,7 +104,7 @@ export class ReservationComponent implements OnInit {
             this.serviceTime = ReservationComponent.roundOnQuarterHours(now);
           }
 
-          this.titleService.setTitle(this.restaurant.name + ' Tischreservierung - Gastromio');
+          this.metaDataService.setTitle(this.restaurant.name + ' Tischreservierung - Gastromio');
 
           this.initialized = true;
         }

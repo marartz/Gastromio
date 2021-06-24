@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {combineLatest} from 'rxjs';
@@ -25,6 +24,7 @@ import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.compo
 import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
 import {OrderRestaurantOpeningHoursComponent} from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
 import {OrderRestaurantImprintComponent} from '../order-restaurant-imprint/order-restaurant-imprint.component';
+import { MetaDataService } from 'src/app/shared/services/meta-data.service';
 
 @Component({
   selector: 'app-order-restaurant',
@@ -62,7 +62,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private titleService: Title,
+    private metaDataService: MetaDataService,
     private orderFacade: OrderFacade,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private modalService: NgbModal,
@@ -135,7 +135,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
           this.filterDishCategories();
 
-          this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
+          this.metaDataService.setTitle(this.restaurant.name + ' - Gastromio');
 
           this.initialized = true;
         }
