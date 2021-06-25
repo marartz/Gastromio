@@ -19,7 +19,7 @@ import {ConfirmPasswordValidator} from '../../../auth/validators/password.valida
   styleUrls: [
     './change-password.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/forms/sign-in-and-registration.min.css'
+    '../../../../assets/css/application-ui/forms/sign-in-and-registration.min.css'
   ]
 })
 export class ChangePasswordComponent implements OnInit {

@@ -15,7 +15,7 @@ import {OrderFacade} from "../../../order/order.facade";
   styleUrls: [
     './top-bar.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/navigation/navbars.min.css'
+    '../../../../assets/css/application-ui/navigation/navbars.min.css'
   ]
 })
 export class TopBarComponent implements OnInit {

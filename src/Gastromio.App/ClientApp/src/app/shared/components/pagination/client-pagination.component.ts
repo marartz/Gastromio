@@ -3,7 +3,7 @@ import {Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges
 @Component({
   selector: 'app-client-pagination',
   template: `
-    <ul *ngIf='pager.pages && pager.pages.length' class='pagination justify-content-center'>
+    <ul *ngIf='pager.pages && pager.pages.length' class='pagination justify-content-center' style='font-family: var(--sans);'>
       <li [ngClass]='{disabled:pager.currentPage === 1}' class='page-item first-item'>
         <a (click)='setPage(1)' class='page-link' [routerLink]=''><i class='fas fa-angle-double-left'></i></a>
       </li>

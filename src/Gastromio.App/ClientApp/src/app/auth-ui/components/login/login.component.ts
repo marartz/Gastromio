@@ -16,7 +16,7 @@ import {AuthService} from '../../../auth/services/auth.service';
   styleUrls: [
     './login.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/forms/sign-in-and-registration.min.css'
+    '../../../../assets/css/application-ui/forms/sign-in-and-registration.min.css'
   ]
 })
 export class LoginComponent implements OnInit {

@@ -7,7 +7,7 @@
             <div class="right"></div>
         </header>
         <div id="body" tabindex="0">
-            <div class="wrapper bg-rough-blue">
+            <div class="wrapper" style="background: var(--bg-rough-blue);">
 
                 <p>
 					<br />{{restaurant.contactInfo.responsiblePerson}} ist verantwortlich für {{restaurant.name}}
@@ -46,7 +46,7 @@
 					<br />
 				</p>
             </div>
-            <div id="submit"><button class="bg-grey" type="button" (click)="activeModal.dismiss('Cross click')">Zurück zum Menü</button></div>
+            <div id="submit"><button type="button" style="background: var(--grey);" (click)="activeModal.dismiss('Cross click')">Zurück zum Menü</button></div>
         </div>
     </div>
 </div>

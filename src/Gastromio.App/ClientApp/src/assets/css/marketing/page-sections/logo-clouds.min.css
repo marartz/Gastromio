@@ -1,0 +1,24 @@
+.logo-cloud {
+	align-items: center;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	grid-gap: 16px;
+}
+
+.logo-cloud > div {
+	background: var(--blue);
+	padding: 16px;
+	position: relative;
+}
+.logo-cloud > div::before {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+.logo-cloud > div img {
+	position: absolute;
+	max-width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

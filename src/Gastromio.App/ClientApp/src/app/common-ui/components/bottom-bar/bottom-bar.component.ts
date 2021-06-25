@@ -6,7 +6,7 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: [
     './bottom-bar.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/navigation/footers.min.css'
+    '../../../../assets/css/application-ui/navigation/footers.min.css'
   ]
 })
 

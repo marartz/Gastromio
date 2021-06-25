@@ -1,8 +1,6 @@
 #backend {
-	background-color: #ADCCCB;
-    background-image: url('../../assets/images/rough/blue.png');
-    background-repeat: repeat;
-	font-family: "Apercu", sans-serif;
+	background: var(--bg-rough-blue);
+	font-family: var(--sans);
     margin-top: -90px;
     position: relative;
     width: 100%;
@@ -19,8 +17,8 @@
 }
 
 #backend #header h1 {
-	color: #363636;
-	font-family: "Apercu", sans-serif;
+	color: var(--grey);
+	font-family: var(--sans);
 	font-size: 36px;
 	font-weight: 700;
 	letter-spacing: -0.5px;
@@ -28,8 +26,8 @@
 }
 
 #backend #header h3 {
-	color: #363636;
-	font-family: "Apercu", sans-serif;
+	color: var(--grey);
+	font-family: var(--sans);
 	font-size: 22px;
 	font-weight: 700;
 	letter-spacing: -0.5px;
@@ -92,12 +90,12 @@
 }
 
 #backend #drawer-mobile .links ul .drawer-item:hover {
-	background-color: #363636;
+	background-color: var(--grey);
 	transition: all .5s ease;
 }
 
 #backend #drawer-mobile .links ul .drawer-item:hover a {
-	color: #fff;
+	color: var(--white);
 }
 
 #backend #drawer-mobile .drawer-item.disabled {
@@ -106,7 +104,7 @@
 }
 
 #backend #drawer-mobile .links ul .drawer-item.active {
-	background-color: #363636 !important;
+	background-color: var(--grey) !important;
 }
 
 #backend #drawer-mobile .links ul .drawer-item a {
@@ -114,7 +112,7 @@
 	outline: currentcolor none medium;
 	padding: 6.25px 12.5px;
 	cursor: pointer;
-	color: #363636;
+	color: var(--grey);
 	line-height: 1.25;
 	letter-spacing: 0px;
 	font-weight: 400;
@@ -122,7 +120,7 @@
 }
 
 #backend #drawer-mobile .links ul .drawer-item.active a {
-	color: #fff;
+	color: var(--white);
 }
 
 #backend #body #drawer {
@@ -167,12 +165,12 @@
 }
 
 #backend #body #drawer .drawer-item:not(.disabled):hover {
-	background-color: #ADCCCB;
+	background-color: var(--blue);
 	transition: all .3s ease;
 }
 
 #backend #body #drawer .drawer-item.active {
-	background-color: #363636 !important;
+	background-color: var(--grey) !important;
 }
 
 #backend #body #drawer .drawer-item div:first-child {
@@ -221,7 +219,7 @@
 
 #backend #body #drawer .drawer-item a {
 	cursor: pointer;
-	color: #363636;
+	color: var(--grey);
 	line-height: 1.25;
 	letter-spacing: 0px;
 	font-weight: 400;
@@ -232,7 +230,7 @@
 }
 
 #backend #body #drawer .drawer-item.active a {
-	color: #fff;
+	color: var(--white);
 }
 
 @media only screen and (max-width: 1003px) {
