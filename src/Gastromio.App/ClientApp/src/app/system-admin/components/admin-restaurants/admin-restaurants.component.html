@@ -34,51 +34,12 @@
 				</div>
 			</li>
 
-
-            <div class="table-module">
-                <div class="table-list">
-                    <div class="layout-grid table-headers">
-                        <div class="caption-large">Name</div>
-                        <div class="caption-large">Adresse</div>
-                        <div class="caption-large">Status</div>
-                        <div class="caption-large">Letzter Kontakt</div>
-                        <div class="caption-large">a</div>
-                    </div>
-                    <div role="listitem" *ngFor="let restaurant of pageOfRestaurants" style="background-color: #adcccb; border-radius: 23px; margin-bottom: 8px;">
-                        <div class="table-row-link w-inline-block">
-                            <div class="w-layout-grid table-row _5-columns">
-                                <div class="restaurant-name">
-                                    <div class="name" style="font-weight: 500;">{{restaurant.name}}</div>
-                                </div>
-                                <div class="restaurant-address">{{restaurant.address?.street}}</div>
-                                <div class="restaurant-status">
-                                    <div class="status">
-                                        <div class="indication-color green" *ngIf="restaurant.isActive"></div>
-                                        <div class="indication-color red" *ngIf="!restaurant.isActive"></div>
-                                        <div *ngIf="restaurant.isActive">Aktiv</div>
-                                        <div *ngIf="!restaurant.isActive">Inaktiv</div>
-                                    </div>
-                                </div>
-                                <div class="restaurant-edited">NaN</div>
-                                <div class="restaurant-actions">a</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-
-
-
-
-
-
 			<li *ngFor="let restaurant of pageOfRestaurants">
-				<!--div class="left">
-					<span class="name hasDetails">{{restaurant.name}} <span *ngIf="!restaurant.isActive">(inaktiv)</span></span>
+				<div class="left">
+					<span class="name hasDetails">{{restaurant.name}} <span *ngIf="!restaurant.isActive" style="color: darkred; font-size: 13px;">INAKTIV</span></span>
 					<span class="details">{{restaurant.address?.street}}, {{restaurant.address?.city}}</span>
-				</div-->
-				<!--div class="right">
+				</div>
+				<div class="right">
 					<button [routerLink]="['/restaurants', restaurant.alias]" class="action" *ngIf="restaurant.isActive"target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -161,7 +122,7 @@
                                     <line x1="14" y1="11" x2="14" y2="17"></line>
                                 </svg>
                             </button>
-				</div-->
+				</div>
 			</li>
 		</ul>
 	</section>

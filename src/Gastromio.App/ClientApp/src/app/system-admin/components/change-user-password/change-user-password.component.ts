@@ -19,7 +19,9 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './change-user-password.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
+    '../../../../assets/css/modals.component.min.css',
+    '../../../../assets/css/overlays/modals.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css'
   ]
 })
 export class ChangeUserPasswordComponent implements OnInit {

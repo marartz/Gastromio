@@ -19,7 +19,10 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './change-restaurant-access-settings.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
+    '../../../../assets/css/modals.component.min.css',
+    '../../../../assets/css/overlays/modals.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+    '../../../../assets/css/application-ui/forms/select-groups.min.css'
   ]
 })
 export class ChangeRestaurantAccessSettingsComponent implements OnInit {
