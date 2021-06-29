@@ -88,7 +88,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       this.route.queryParams.pipe(tap(params => {
         const orderTypeText = params.orderType?.toLocaleLowerCase();
         if (!orderTypeText) {
-          orderType = OrderType.Pickup;
+          orderType = undefined;
         } else {
           switch (orderTypeText) {
             case 'pickup':
@@ -105,8 +105,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
               this.generalError = 'Unbekannte Bestellart: ' + orderTypeText;
           }
         }
-
-        this.allowCart = orderType !== OrderType.Reservation;
 
         const serviceTimeText = params.serviceTime;
         if (serviceTimeText) {
@@ -129,9 +127,23 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
           const cart = this.orderFacade.getCart();
 
+          if (!orderType) {
+            if (this.restaurant.pickupInfo?.enabled) {
+              orderType = OrderType.Pickup;
+            } else if (this.restaurant.deliveryInfo?.enabled) {
+              orderType = OrderType.Delivery;
+            } else if (this.restaurant.reservationInfo?.enabled) {
+              orderType = OrderType.Reservation;
+            } else {
+              orderType = OrderType.Pickup;
+            }
+          }
+
           if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
             this.orderFacade.startOrder(orderType, serviceTime);
           }
+
+          this.allowCart = orderType !== OrderType.Reservation;
 
           this.filterDishCategories();
 
