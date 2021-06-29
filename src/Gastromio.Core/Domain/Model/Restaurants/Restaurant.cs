@@ -435,6 +435,11 @@ namespace Gastromio.Core.Domain.Model.Restaurants
             UpdatedBy = changedBy;
         }
 
+        public bool TryGetExternalMenu(ExternalMenuId externalMenuId, out ExternalMenu externalMenu)
+        {
+            return ExternalMenus.TryGetExternalMenu(externalMenuId, out externalMenu);
+        }
+
         public void SetExternalMenu(ExternalMenu menu, UserId changedBy)
         {
             if (menu == null)
