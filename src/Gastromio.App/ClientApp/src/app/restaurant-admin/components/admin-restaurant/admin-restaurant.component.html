@@ -30,18 +30,30 @@
 		</div>
 	</div>
 
-	<div
-		 class="alert error"
-		 data-aos="gm-move-right"
-		 data-aos-anchor="block-ui"
-		 data-aos-duration="400"
-		 role="status"
-		 *ngIf="(initializationError$ | async) !== undefined"
-		 >
-		<div class="alert-wrap">
-			<img class="alert-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMiIgaGVpZ2h0PSIyMiIgdmlld0JveD0iMCAwIDIyIDIyIj4NCiAgPGcgaWQ9ImFsZXJ0LWNpcmNsZS13aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIj4NCiAgICA8Y2lyY2xlIGlkPSJFbGxpcHNlXzU0MDgiIGRhdGEtbmFtZT0iRWxsaXBzZSA1NDA4IiBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIgMikiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiLz4NCiAgICA8bGluZSBpZD0iTGluZV8zOTUwIiBkYXRhLW5hbWU9IkxpbmUgMzk1MCIgeTI9IjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDgpIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+DQogICAgPGxpbmUgaWQ9IkxpbmVfMzk1MSIgZGF0YS1uYW1lPSJMaW5lIDM5NTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDE2KSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPg0KICA8L2c+DQo8L3N2Zz4NCg==" alt="" width="14">
-			<div class="alert-line-2"></div>
-			<div class="alert-text">Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.</div>
+	<div class="oops" *ngIf="(initializationError$ | async) !== undefined">
+		<div>
+			<h2
+			data-aos="gm-move-down"
+			data-aos-anchor="#backend"
+			data-aos-delay="100"
+			data-aos-duration="800"
+			data-aos-once="true">
+			Ups, 404-Alarm! Hier beginnt Land, wo noch nie ein Mensch zuvor gewesen ist.</h2>
+			<p
+			data-aos="gm-move-down"
+			data-aos-anchor="#backend"
+			data-aos-delay="400"
+			data-aos-duration="800"
+			data-aos-once="true">Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns, wenn das Problem anhält.</p>
+			<button
+			data-aos="gm-move-down"
+			data-aos-anchor="#backend"
+			data-aos-delay="700"
+			data-aos-duration="800"
+			data-aos-once="true"
+			[routerLink]="['/']"
+			>Schnell weg hier!
+			</button>
 		</div>
 	</div>
 

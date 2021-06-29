@@ -15,7 +15,9 @@ import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable
   styleUrls: [
     './system-admin.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
+    '../../../../assets/css/backend_v2.min.css',
+    '../../../../assets/css/application-ui/overlays/notifications.min.css',
+    '../../../../assets/css/marketing/page-sections/error-page.min.css'
   ]
 })
 export class SystemAdminComponent implements OnInit {
