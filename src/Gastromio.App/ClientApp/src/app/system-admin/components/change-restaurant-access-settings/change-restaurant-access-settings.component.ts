@@ -113,7 +113,10 @@ export class ChangeRestaurantAccessSettingsComponent implements OnInit {
   }
 
   onSave(): void {
-    this.facade.updateAdministratorsOfRestaurant$(this.restaurant, this.administrators);
+    this.facade.updateAdministratorsOfRestaurant$(this.restaurant, this.administrators)
+      .subscribe(() => {
+        this.activeModal.close('Close click');
+      });
   }
 
 }

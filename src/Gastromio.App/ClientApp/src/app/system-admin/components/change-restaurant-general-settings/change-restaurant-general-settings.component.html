@@ -29,7 +29,7 @@
                                 <p>Ändere Daten eines bestehenden Restaurants.</p>
                                 <p class="help-text" *ngIf="f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für das Restaurant an.</span></p>
                                 <p class="help-text" *ngIf="(message$ | async) !== undefined">{{(message$ | async)}}</p>
-                                <input style="margin-top: 12px;" class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" minlength="3" required="" spellcheck="false" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': f.name.errors }">       
+                                <input style="margin-top: 12px;" class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" minlength="3" required="" spellcheck="false" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': f.name.errors }">
                                 <input style="margin-top: 12px;" class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" spellcheck="false" id="importId" formControlName="importId" [ngClass]="{ 'is-invalid': f.importId.errors }">
                                 <div class="input-group" style="width: 100%; height: auto">
                                     <span *ngFor="let cuisineStatus of cuisineStatusArray$ | async" class="badge" [class.active]="cuisineStatus.newStatus" [class.inactive]="!cuisineStatus.newStatus" (click)="toggleCuisine(cuisineStatus.id)">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="modal-actions">
-                        <button class="submit" type="button">Ändern</button>
+                        <button class="submit" type="submit">Ändern</button>
                         <button class="cancel" type="button" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
                     </div>
                 </form>

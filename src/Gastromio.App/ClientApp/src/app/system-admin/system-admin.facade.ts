@@ -341,7 +341,7 @@ export class SystemAdminFacade {
     return this.restaurantSysAdminService.searchForUsersAsync(search);
   }
 
-  public updateAdministratorsOfRestaurant$(restaurant: RestaurantModel, administrators: Array<UserModel>): void {
+  public updateAdministratorsOfRestaurant$(restaurant: RestaurantModel, administrators: Array<UserModel>): Observable<void> {
     this.isUpdating$.next(true);
 
     let curObservable: Observable<boolean> = undefined;
@@ -394,18 +394,18 @@ export class SystemAdminFacade {
       curObservable = of(true);
     }
 
-    curObservable
-      .subscribe(
-        () => {
+    return curObservable
+      .pipe(
+        map(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
           this.isUpdated$.next(true);
-        },
-        response => {
+        }),
+        catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
           this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
           return throwError(response);
-        }
+        })
       );
   }
 
