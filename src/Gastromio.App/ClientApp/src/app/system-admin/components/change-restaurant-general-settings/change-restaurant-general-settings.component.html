@@ -29,8 +29,14 @@
                                 <p>Ändere Daten eines bestehenden Restaurants.</p>
                                 <p class="help-text" *ngIf="f.name.errors"><span *ngIf="f.name.errors.required">Bitte gebe einen Namen für das Restaurant an.</span></p>
                                 <p class="help-text" *ngIf="(message$ | async) !== undefined">{{(message$ | async)}}</p>
-                                <input style="margin-top: 12px;" class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" minlength="3" required="" spellcheck="false" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': f.name.errors }">
-                                <input style="margin-top: 12px;" class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" spellcheck="false" id="importId" formControlName="importId" [ngClass]="{ 'is-invalid': f.importId.errors }">
+
+                                <label style="margin-top: 12px;">Name</label>
+                                <input class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" minlength="3" required="" spellcheck="false" id="name" formControlName="name" ngbAutofocus [ngClass]="{ 'is-invalid': f.name.errors }">
+
+                                <label style="margin-top: 12px;">Import-Id</label>
+                                <input class="input-group" type="text" mozactionhint="send" autocapitalize="sentences" autocomplete="off" inputmode="latin" spellcheck="false" id="importId" formControlName="importId" [ngClass]="{ 'is-invalid': f.importId.errors }">
+
+                                <label style="margin-top: 6px;">Cuisines</label>
                                 <div class="input-group" style="width: 100%; height: auto">
                                     <span *ngFor="let cuisineStatus of cuisineStatusArray$ | async" class="badge" [class.active]="cuisineStatus.newStatus" [class.inactive]="!cuisineStatus.newStatus" (click)="toggleCuisine(cuisineStatus.id)">
                                         {{cuisineStatus.name}}
