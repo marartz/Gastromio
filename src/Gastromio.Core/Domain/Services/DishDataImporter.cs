@@ -61,11 +61,13 @@ namespace Gastromio.Core.Domain.Services
 
                 if (!dishCategoryDict.TryGetValue(dishRow.Category, out var category))
                 {
-                    var lastDishCategory = dishCategoryDict
-                        .Select(en => en.Value)
-                        .Aggregate((i1, i2) => i1.OrderNo > i2.OrderNo ? i1 : i2);
+                    var lastDishCategory = dishCategoryDict.Count == 0
+                        ? null
+                        : dishCategoryDict
+                            .Select(en => en.Value)
+                            .Aggregate((i1, i2) => i1.OrderNo > i2.OrderNo ? i1 : i2);
 
-                    category = restaurant.AddDishCategory(dishRow.Category, lastDishCategory.Id, curUserId);
+                    category = restaurant.AddDishCategory(dishRow.Category, lastDishCategory?.Id, curUserId);
 
                     log.AddLine(ImportLogLineType.Information, rowIndex,
                         "Lege für Restaurant '{0}' eine neue Kategorie mit Namen '{1}' und Sortierung '{2}' an",
