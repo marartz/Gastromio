@@ -65,12 +65,12 @@ namespace Gastromio.Core.Domain.Services
 
                 var regularOpeningDays = new RegularOpeningDays(Enumerable.Empty<RegularOpeningDay>());
                 regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 0, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 1, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 2, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 3, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 4, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 5, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 6, restaurantRow.OpeningHoursMonday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 1, restaurantRow.OpeningHoursTuesday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 2, restaurantRow.OpeningHoursWednesday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 3, restaurantRow.OpeningHoursThursday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 4, restaurantRow.OpeningHoursFriday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 5, restaurantRow.OpeningHoursSaturday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 6, restaurantRow.OpeningHoursSunday);
 
                 var deviatingOpeningDays = GetDeviatingOpeningDays(restaurantRow.DeviatingOpeningHours);
 
