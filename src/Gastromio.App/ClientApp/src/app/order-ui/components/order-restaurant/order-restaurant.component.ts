@@ -263,14 +263,18 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   filterDishCategories(): void {
+
+    let enabledDishCategoriesOfRestaurant = this.restaurant.dishCategories
+      .filter(category => category.enabled);
+
     if (!this.searchPhrase) {
-      this.filteredDishCategories = this.restaurant.dishCategories;
+      this.filteredDishCategories = enabledDishCategoriesOfRestaurant
       return;
     }
 
     this.filteredDishCategories = new Array<DishCategoryModel>();
 
-    for (let dishCategory of this.restaurant.dishCategories) {
+    for (let dishCategory of enabledDishCategoriesOfRestaurant) {
       let hasMatch = false;
 
       let dishCategoryClone = new DishCategoryModel();
