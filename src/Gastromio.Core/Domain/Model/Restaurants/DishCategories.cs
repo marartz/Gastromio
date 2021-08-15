@@ -81,7 +81,7 @@ namespace Gastromio.Core.Domain.Model.Restaurants
                 new DishCategoryId(Guid.NewGuid()),
                 name,
                 pos + 1,
-                true,
+                false,
                 new Dishes(Enumerable.Empty<Dish>())
             );
             newDishCategories.Add(dishCategory);
