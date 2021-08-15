@@ -53,6 +53,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   openingHours: string;
 
   searchPhrase: string;
+  enabledDishCategories: DishCategoryModel[];
   filteredDishCategories: DishCategoryModel[];
 
   allowCart: boolean;
@@ -162,9 +163,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
                 this.orderFacade.startOrder(orderType, serviceTime);
               }
 
-              this.allowCart = orderType !== OrderType.Reservation;
-
-              this.filterDishCategories();
+          this.allowCart = orderType !== OrderType.Reservation;
+          this.enabledDishCategories = this.restaurant.dishCategories
+            .filter(category => category.enabled);
+          this.filterDishCategories();
 
               this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
 
@@ -264,17 +266,14 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   filterDishCategories(): void {
 
-    let enabledDishCategoriesOfRestaurant = this.restaurant.dishCategories
-      .filter(category => category.enabled);
-
     if (!this.searchPhrase) {
-      this.filteredDishCategories = enabledDishCategoriesOfRestaurant
+      this.filteredDishCategories = this.enabledDishCategories;
       return;
     }
 
     this.filteredDishCategories = new Array<DishCategoryModel>();
 
-    for (let dishCategory of enabledDishCategoriesOfRestaurant) {
+    for (let dishCategory of this.enabledDishCategories) {
       let hasMatch = false;
 
       let dishCategoryClone = new DishCategoryModel();
