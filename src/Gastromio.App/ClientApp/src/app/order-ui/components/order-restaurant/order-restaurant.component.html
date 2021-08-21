@@ -59,11 +59,11 @@
                                 data-aos-duration="800"
                                 data-aos-once="true"
                                 >
+								<ng-container *ngIf="!restaurant.isOpen(undefined)">
+                                    <span style="text-transform: capitalize; font-weight: 500;">{{restaurant.getRestaurantClosedReason(undefined)}} &mdash; </span>
+                                </ng-container>
                                 <ng-container *ngIf="restaurant.openingHoursTodayText !== null">
                                     <span>Geöffnet von {{restaurant.openingHoursTodayText}} Uhr</span>
-                                </ng-container>
-                                <ng-container *ngIf="!restaurant.isOpen(undefined)">
-                                    <span> ({{restaurant.getRestaurantClosedReason(undefined)}})</span>
                                 </ng-container>
                             </h2>
                             <h2

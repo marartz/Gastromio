@@ -57,7 +57,7 @@ export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
     const now = new Date();
 
     if (!this.selectedOpeningHourFilter) {
-      return "Im Moment " + restaurant.getRestaurantClosedReason(now);
+      return restaurant.getRestaurantClosedReason(now);
     } else {
       const nowDay = now.getDate();
       const nowMonth = now.getMonth() + 1;

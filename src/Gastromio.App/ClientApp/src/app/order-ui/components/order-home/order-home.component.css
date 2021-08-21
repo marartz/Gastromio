@@ -448,10 +448,10 @@
 
 @media only screen and (max-width: 575px) {
     #order-home #landing .hero-container {
-        margin-top: 80px;
+        margin-top: 120px;
     }
     #order-home #landing h2 {
-        font-size: 20px;
+        font-size: 22px;
     }
 }
 

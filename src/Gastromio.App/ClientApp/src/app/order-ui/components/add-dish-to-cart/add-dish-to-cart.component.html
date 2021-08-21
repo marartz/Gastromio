@@ -1,5 +1,5 @@
 <div class="modal-overlay">
-    <div class="modal_v3 bg-rough-yellow">
+    <div class="modal_v3" style="background: var(--bg-rough-yellow);">
         <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
         <div id="body" tabindex="0">
             <div class="form">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="submit"><button class="bg-green" type="button" (click)="onSubmit()">Hinzufügen für {{getTotalPrice()}}</button></div>
+                <div id="submit"><button type="button" (click)="onSubmit()" style="background: var(--green);">Hinzufügen für {{getTotalPrice()}}</button></div>
             </div>
         </div>
     </div>

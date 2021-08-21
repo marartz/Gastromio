@@ -159,4 +159,124 @@
     font-size: 32px;
     font-weight: 700;
     letter-spacing: -0.5;
+    margin-bottom: 40px;
+}
+
+
+
+#special {
+	background: var(--bg-rough-grey);
+    position: relative;
+}
+
+#special .wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    width: 100%;
+}
+
+#special header {
+    padding-bottom: 74px;
+    padding-top: 74px;
+}
+
+#special header h1 {
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 48px;
+    font-weight: 700;
+    text-align: center;
+}
+
+#special header h4 {
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+#special img.circle {
+    align-items: center;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    height: 220px;
+    justify-content: center;
+    opacity: 0.15 !important;
+	position: absolute;
+    left: 50%;
+    margin-left: -163.5px;
+    width: 327px;
+}
+
+#special .specials-col {
+    position: relative;
+    display: -ms-grid;
+    display: grid;
+    width: 100%;
+    margin-right: auto;
+    margin-bottom: 24px;
+    margin-left: auto;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    grid-auto-columns: 1fr;
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+    -ms-grid-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    -ms-grid-rows: auto;
+    grid-template-rows: auto;
+}
+
+@media (max-width: 991px) {
+    #special .specials-col {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 767px) {
+    #special .specials-col {
+        margin-left: 0px;
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+}
+
+#special .text-box {
+    -webkit-transition: opacity 200ms ease, color 200ms ease;
+    transition: opacity 200ms ease, color 200ms ease;
+    text-align: left;
+}
+
+#special .text-box h2 {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-family: var(--sans);
+    color: var(--green);
+    font-weight: 700;
+    margin-top: 0px;
+}
+
+#special .text-box p {
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 300;
+    font-family: var(--sans);
+    color: var(--white);
 }

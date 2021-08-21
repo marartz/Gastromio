@@ -47,6 +47,15 @@
     margin-bottom: 10px;
 }
 
+#cta .text h3 {
+    color: var(--grey);
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0px;
+    margin-bottom: 10px;
+}
+
 #cta .text p {
     color: var(--grey);
     font-family: var(--sans);
@@ -111,6 +120,10 @@
     }
     #cta .text h2 {
         font-size: 28px;
+        margin-bottom: 20px;
+    }
+    #cta .text h3 {
+        font-size: 24px;
         margin-bottom: 20px;
     }
     #cta .text p {

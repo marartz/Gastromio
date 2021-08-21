@@ -17,7 +17,7 @@
         </h2>
 		<p class="restaurant-address">
 			<ng-container *ngIf="!isRestaurantOpen(restaurant)">
-				<span style="font-weight: 500;">{{getRestaurantClosedText(restaurant)}}</span>
+				<span style="font-weight: 500; text-transform: capitalize;">{{getRestaurantClosedText(restaurant)}}</span>
 			</ng-container>
 			<ng-container *ngIf="isRestaurantOpen(restaurant)">
 				<ng-container *ngIf="orderType === 'pickup'"><span>{{restaurant.address?.street}}, {{restaurant.address?.city}}</span></ng-container>
