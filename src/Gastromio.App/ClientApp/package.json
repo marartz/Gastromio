@@ -22,6 +22,7 @@
     "@angular/router": "^12.2.2",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
+    "acorn": "^8.4.1",
     "aos": "^2.3.4",
     "bootstrap": "^5.1.0",
     "guid-typescript": "^1.0.9",
