@@ -434,7 +434,9 @@
 							</aside>
 							<!-- ENDE: _3_advanced-filter -->
 
-							<div id="restaurants">
+							<div
+							id="restaurants"
+							>
 								<app-order-restaurants-row
 									*ngFor="let restaurant of openedRestaurants$ | async"
 									[restaurant]="restaurant"
@@ -463,6 +465,10 @@
 										<ng-container
 											*ngIf="(selectedOrderType$ | async) === 'delivery'"
 											>Für Lieferung geschlossen</ng-container
+										>
+										<ng-container
+											*ngIf="(selectedOrderType$ | async) === 'reservation'"
+											>Im Moment geschlossen</ng-container
 										>
 									</h3>
 									<p
