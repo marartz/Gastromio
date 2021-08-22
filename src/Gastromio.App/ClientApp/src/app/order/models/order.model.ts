@@ -1,17 +1,22 @@
-import {PaymentMethodModel} from '../../shared/models/payment-method.model';
+import { PaymentMethodModel } from '../../shared/models/payment-method.model';
 
-import {CustomerInfoModel} from './customer-info.model';
-import {CartInfoModel} from './cart-info.model';
+import { CustomerInfoModel } from './customer-info.model';
+import { CartInfoModel } from './cart-info.model';
 
 export class OrderModel {
-
   constructor(init?: Partial<OrderModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.customerInfo = this.customerInfo ? new CustomerInfoModel(this.customerInfo) : undefined;
-    this.cartInfo = this.cartInfo ? new CartInfoModel(this.cartInfo) : undefined;
-    this.paymentMethod = this.paymentMethod ? new PaymentMethodModel(this.paymentMethod) : undefined;
+    this.customerInfo = this.customerInfo
+      ? new CustomerInfoModel(this.customerInfo)
+      : undefined;
+    this.cartInfo = this.cartInfo
+      ? new CartInfoModel(this.cartInfo)
+      : undefined;
+    this.paymentMethod = this.paymentMethod
+      ? new PaymentMethodModel(this.paymentMethod)
+      : undefined;
   }
 
   public id: string;
@@ -42,9 +47,7 @@ export class OrderModel {
       paymentMethod: this.paymentMethod?.clone(),
       valueOfOrder: this.valueOfOrder,
       costs: this.costs,
-      totalPrice: this.totalPrice
+      totalPrice: this.totalPrice,
     });
   }
-
 }
-

@@ -1,14 +1,14 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {merge, Observable, of} from "rxjs";
-import {delay, switchMap} from "rxjs/operators";
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { merge, Observable, of } from 'rxjs';
+import { delay, switchMap } from 'rxjs/operators';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {RestaurantModel} from "../../../shared/models/restaurant.model";
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
 
-import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
-import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component";
+import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
+import { LinkInfo } from '../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -18,8 +18,8 @@ import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable
     '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css',
     '../../../../assets/css/application-ui/overlays/notifications.min.css',
-    '../../../../assets/css/marketing/page-sections/error-page.min.css'
-  ]
+    '../../../../assets/css/marketing/page-sections/error-page.min.css',
+  ],
 })
 export class AdminRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
@@ -42,11 +42,10 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private facade: RestaurantAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.facade.getIsInitializing$().subscribe(isInitializing => {
+    this.facade.getIsInitializing$().subscribe((isInitializing) => {
       if (isInitializing) {
         this.blockUI.start('Lade Restaurantdaten...');
       } else {
@@ -54,7 +53,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.facade.getIsUpdating$().subscribe(isUpdating => {
+    this.facade.getIsUpdating$().subscribe((isUpdating) => {
       if (isUpdating) {
         this.blockUI.start('Speichere Restaurantdaten...');
       } else {
@@ -70,33 +69,27 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
 
     this.selectedTab$ = this.facade.getSelectedTab$();
 
-    this.isUpdated$ = this.facade.getIsUpdated$()
-      .pipe(
-        switchMap(isUpdated => {
-          if (isUpdated) {
-            return merge(
-              of(true),
-              of(false).pipe(delay(2000))
-            );
-          } else {
-            return of(false);
-          }
-        })
-      );
+    this.isUpdated$ = this.facade.getIsUpdated$().pipe(
+      switchMap((isUpdated) => {
+        if (isUpdated) {
+          return merge(of(true), of(false).pipe(delay(2000)));
+        } else {
+          return of(false);
+        }
+      })
+    );
 
     this.updateError$ = this.facade.getUpdateError$();
 
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const restaurantId = params.get('restaurantId');
       this.facade.initialize(restaurantId);
     });
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   selectTab(tab: string): void {
     this.facade.selectTab(tab);
   }
-
 }

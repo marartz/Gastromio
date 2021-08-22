@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-bottom-bar',
@@ -6,16 +6,11 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: [
     './bottom-bar.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/application-ui/navigation/footers.min.css'
-  ]
+    '../../../../assets/css/application-ui/navigation/footers.min.css',
+  ],
 })
-
 export class BottomBarComponent implements OnInit {
+  constructor() {}
 
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

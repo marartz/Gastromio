@@ -1,127 +1,127 @@
 .modal_v3 section h1.dish-name {
-    color: var(--grey);
-    font-family: var(--sans);
-    font-size: 30px;
-    font-weight: 700;
-    margin: 0px;
-    text-align: center;
+	color: var(--grey);
+	font-family: var(--sans);
+	font-size: 30px;
+	font-weight: 700;
+	margin: 0px;
+	text-align: center;
 }
 
 .modal_v3 section p.dish-description {
-    color: var(--grey);
-    font-family: var(--sans);
-    font-size: 16px;
-    font-weight: 300;
-    margin: 0px;
-    margin-top: 10px;
-    text-align: center;
+	color: var(--grey);
+	font-family: var(--sans);
+	font-size: 16px;
+	font-weight: 300;
+	margin: 0px;
+	margin-top: 10px;
+	text-align: center;
 }
 
 .modal_v3 .count-wrapper {
-    background-color: var(--white);
-    border: 0px;
-    border-radius: 23px;
-    display: flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    height: 46px;
-    width: 100%;
+	background-color: var(--white);
+	border: 0px;
+	border-radius: 23px;
+	display: flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: -webkit-flex;
+	height: 46px;
+	width: 100%;
 }
 
 /* 99.2.1 #modal > #options > #variant */
 .modal_v3 .count-wrapper #variant {
-    display: inline;
-    padding-right: 16px;
-    width: 100%;
+	display: inline;
+	padding-right: 16px;
+	width: 100%;
 }
 
 .modal_v3 .count-wrapper #variant select {
-    background-color: var(--white);
-    border: 0px;
-    border-radius: 23px;
-    height: 46px;
-    padding: 10px 16px 10px 16px;
-    width: 100%;
+	background-color: var(--white);
+	border: 0px;
+	border-radius: 23px;
+	height: 46px;
+	padding: 10px 16px 10px 16px;
+	width: 100%;
 }
 
 /* 99.2.2 #modal > #options > #count */
 .modal_v3 .count-wrapper #count {
-    margin-right: 0px;
-    margin-left: auto;
+	margin-right: 0px;
+	margin-left: auto;
 }
 
 .modal_v3 #count {
-    margin: 0px auto;
-    max-width: 250px;
+	margin: 0px auto;
+	max-width: 250px;
 }
 
 .modal_v3 #count .c-wrapper {
-    align-items: center;
-    display: flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    flex: 0 0 64px;
-    flex-direction: row-reverse;
-    -moz-box-direction: row-reverse;
-    -ms-flex-direction: row-reverse;
-    -webkit-box-direction: row-reverse;
-    -webkit-flex-direction: row-reverse;
-    justify-content: space-between;
-    padding: 0px !important;
-    position: relative;
+	align-items: center;
+	display: flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: -webkit-flex;
+	flex: 0 0 64px;
+	flex-direction: row-reverse;
+	-moz-box-direction: row-reverse;
+	-ms-flex-direction: row-reverse;
+	-webkit-box-direction: row-reverse;
+	-webkit-flex-direction: row-reverse;
+	justify-content: space-between;
+	padding: 0px !important;
+	position: relative;
 }
 
 .modal_v3 #count .c-wrapper button {
-    background-color: var(--yellow);
-    border: 0px;
-    color: inherit;
-    cursor: pointer;
-    display: flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    font-family: inherit;
-    height: 46px;
-    margin: 0px;
-    padding: 14px 28px 9px 28px;
-    text-align: inherit;
-    width: 80px;
+	background-color: var(--yellow);
+	border: 0px;
+	color: inherit;
+	cursor: pointer;
+	display: flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: -webkit-flex;
+	font-family: inherit;
+	height: 46px;
+	margin: 0px;
+	padding: 14px 28px 9px 28px;
+	text-align: inherit;
+	width: 80px;
 }
 
 .modal_v3 #count .c-wrapper button.decrease {
-    border-radius: 0px 23px 23px 0px;
+	border-radius: 0px 23px 23px 0px;
 }
 
 .modal_v3 #count .c-wrapper button.increase {
-    border-radius: 23px 0px 0px 23px;
+	border-radius: 23px 0px 0px 23px;
 }
 
 .modal_v3 #count .c-wrapper button svg {
-    fill: var(--grey);
-    height: 24px;
-    width: 24px;
+	fill: var(--grey);
+	height: 24px;
+	width: 24px;
 }
 
 .modal_v3 #count .c-wrapper .dish-count {
-    background-color: var(--white);
-    display: inline-flex;
-    height: 46px;
-    justify-content: center;
-    margin: 0px;
-    padding: 9px 42px 9px 42px;
-    text-align: center;
+	background-color: var(--white);
+	display: inline-flex;
+	height: 46px;
+	justify-content: center;
+	margin: 0px;
+	padding: 9px 42px 9px 42px;
+	text-align: center;
 }
 
 .modal_v3 #count .c-wrapper span {
-    color: var(--grey);
-    font-family: var(--sans);
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 26px;
-    margin: 0px;
+	color: var(--grey);
+	font-family: var(--sans);
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 26px;
+	margin: 0px;
 }

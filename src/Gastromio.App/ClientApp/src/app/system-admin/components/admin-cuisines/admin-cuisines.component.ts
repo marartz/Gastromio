@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {CuisineModel} from '../../../shared/models/cuisine.model';
+import { CuisineModel } from '../../../shared/models/cuisine.model';
 
-import {AddCuisineComponent} from '../add-cuisine/add-cuisine.component';
-import {ChangeCuisineComponent} from '../change-cuisine/change-cuisine.component';
-import {RemoveCuisineComponent} from '../remove-cuisine/remove-cuisine.component';
-import {SystemAdminFacade} from "../../system-admin.facade";
+import { AddCuisineComponent } from '../add-cuisine/add-cuisine.component';
+import { ChangeCuisineComponent } from '../change-cuisine/change-cuisine.component';
+import { RemoveCuisineComponent } from '../remove-cuisine/remove-cuisine.component';
+import { SystemAdminFacade } from '../../system-admin.facade';
 
 @Component({
   selector: 'app-admin-cuisines',
@@ -17,18 +17,16 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './admin-cuisines.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
-  ]
+    '../../../../assets/css/backend_v2.min.css',
+  ],
 })
 export class AdminCuisinesComponent implements OnInit {
-
   cuisines$: Observable<CuisineModel[]>;
 
   constructor(
     private modalService: NgbModal,
     private facade: SystemAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.cuisines$ = this.facade.getCuisines$();
@@ -47,5 +45,4 @@ export class AdminCuisinesComponent implements OnInit {
     const modalRef = this.modalService.open(RemoveCuisineComponent);
     modalRef.componentInstance.cuisine = cuisine;
   }
-
 }

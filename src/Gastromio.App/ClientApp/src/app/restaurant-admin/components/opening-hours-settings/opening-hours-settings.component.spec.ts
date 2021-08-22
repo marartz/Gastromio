@@ -8,9 +8,8 @@ describe('OpeningHoursSettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OpeningHoursSettingsComponent ]
-    })
-    .compileComponents();
+      declarations: [OpeningHoursSettingsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

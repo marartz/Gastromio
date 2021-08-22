@@ -1,5 +1,4 @@
 ﻿export class CustomerInfoModel {
-
   constructor(init?: Partial<CustomerInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -31,8 +30,7 @@
       zipCode: this.zipCode,
       city: this.city,
       phone: this.phone,
-      email: this.email
+      email: this.email,
     });
   }
-
 }

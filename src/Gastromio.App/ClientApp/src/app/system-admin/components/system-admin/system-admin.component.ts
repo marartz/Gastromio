@@ -1,13 +1,13 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {delay, switchMap, tap} from "rxjs/operators";
-import {merge, Observable, of} from "rxjs";
+import { delay, switchMap, tap } from 'rxjs/operators';
+import { merge, Observable, of } from 'rxjs';
 
-import {BlockUI, NgBlockUI} from "ng-block-ui";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {SystemAdminFacade} from "../../system-admin.facade";
-import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component";
+import { SystemAdminFacade } from '../../system-admin.facade';
+import { LinkInfo } from '../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component';
 
 @Component({
   selector: 'app-system-admin',
@@ -17,11 +17,10 @@ import {LinkInfo} from "../../../shared/components/scrollable-nav-bar/scrollable
     '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/backend_v2.min.css',
     '../../../../assets/css/application-ui/overlays/notifications.min.css',
-    '../../../../assets/css/marketing/page-sections/error-page.min.css'
-  ]
+    '../../../../assets/css/marketing/page-sections/error-page.min.css',
+  ],
 })
 export class SystemAdminComponent implements OnInit {
-
   @BlockUI() blockUI: NgBlockUI;
 
   public isInitialized$: Observable<boolean>;
@@ -41,11 +40,10 @@ export class SystemAdminComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private facade: SystemAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.facade.getIsInitializing$().subscribe(isInitializing => {
+    this.facade.getIsInitializing$().subscribe((isInitializing) => {
       if (isInitializing) {
         this.blockUI.start('Lade Restaurantdaten...');
       } else {
@@ -53,7 +51,7 @@ export class SystemAdminComponent implements OnInit {
       }
     });
 
-    this.facade.getIsUpdating$().subscribe(isUpdating => {
+    this.facade.getIsUpdating$().subscribe((isUpdating) => {
       if (isUpdating) {
         this.blockUI.start('Speichere Restaurantdaten...');
       } else {
@@ -61,7 +59,7 @@ export class SystemAdminComponent implements OnInit {
       }
     });
 
-    this.facade.getIsSearchingFor$().subscribe(isSearchingFor => {
+    this.facade.getIsSearchingFor$().subscribe((isSearchingFor) => {
       if (isSearchingFor) {
         this.blockUI.start('Lade ' + isSearchingFor + '...');
       } else {
@@ -75,29 +73,27 @@ export class SystemAdminComponent implements OnInit {
 
     this.selectedTab$ = this.facade.getSelectedTab$();
 
-    this.isUpdated$ = this.facade.getIsUpdated$()
-      .pipe(
-        switchMap(isUpdated => {
-          if (isUpdated) {
-            return merge(
-              of(true),
-              of(false)
-                .pipe(
-                  delay(2000),
-                  tap(() => {
-                    this.facade.ackIsUpdated();
-                  })
-                )
-            );
-          } else {
-            return of(false);
-          }
-        })
-      );
+    this.isUpdated$ = this.facade.getIsUpdated$().pipe(
+      switchMap((isUpdated) => {
+        if (isUpdated) {
+          return merge(
+            of(true),
+            of(false).pipe(
+              delay(2000),
+              tap(() => {
+                this.facade.ackIsUpdated();
+              })
+            )
+          );
+        } else {
+          return of(false);
+        }
+      })
+    );
 
     this.updateError$ = this.facade.getUpdateError$();
 
-    this.route.data.subscribe(data => {
+    this.route.data.subscribe((data) => {
       const tab = data['tab'];
       this.facade.initialize(tab);
     });
@@ -107,5 +103,4 @@ export class SystemAdminComponent implements OnInit {
     console.log('selectTab: ', tab);
     this.facade.selectTab(tab);
   }
-
 }

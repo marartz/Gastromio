@@ -1,17 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
-import {concatMap} from 'rxjs/operators';
+import { concatMap } from 'rxjs/operators';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+import { HttpErrorHandlingService } from '../../../shared/services/http-error-handling.service';
 
-import {AuthService} from '../../../auth/services/auth.service';
-import {ConfirmPasswordValidator} from '../../../auth/validators/password.validator';
-
+import { AuthService } from '../../../auth/services/auth.service';
+import { ConfirmPasswordValidator } from '../../../auth/validators/password.validator';
 
 @Component({
   selector: 'app-change-password',
@@ -19,8 +18,8 @@ import {ConfirmPasswordValidator} from '../../../auth/validators/password.valida
   styleUrls: [
     './change-password.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/application-ui/forms/sign-in-and-registration.min.css'
-  ]
+    '../../../../assets/css/application-ui/forms/sign-in-and-registration.min.css',
+  ],
 })
 export class ChangePasswordComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -39,23 +38,36 @@ export class ChangePasswordComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private httpErrorHandlingService: HttpErrorHandlingService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.changePasswordForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
-      passwordRepeat: ['']
-    }, {validators: ConfirmPasswordValidator('password', 'passwordRepeat')});
+    this.changePasswordForm = this.formBuilder.group(
+      {
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}'
+            ),
+          ],
+        ],
+        passwordRepeat: [''],
+      },
+      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') }
+    );
 
     this.blockUI.start('Initialisiere...');
 
     this.route.queryParams
       .pipe(
-        concatMap(params => {
+        concatMap((params) => {
           this.userId = params.userId;
           this.passwordResetCode = params.passwordResetCode;
-          return this.authService.validatePasswordResetCodeAsync(this.userId, this.passwordResetCode)
+          return this.authService.validatePasswordResetCodeAsync(
+            this.userId,
+            this.passwordResetCode
+          );
         })
       )
       .subscribe(
@@ -65,9 +77,10 @@ export class ChangePasswordComponent implements OnInit {
         },
         (response: HttpErrorResponse) => {
           this.valid = false;
-          this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
+          this.errorMessage =
+            this.httpErrorHandlingService.handleError(response).message;
           this.blockUI.stop();
-        },
+        }
       );
   }
 
@@ -82,16 +95,25 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     this.blockUI.start('Ändere Dein Passwort...');
-    this.authService.changePasswordWithResetCodeAsync(this.userId, this.passwordResetCode, data.password)
-      .subscribe(() => {
-        this.blockUI.stop();
-        this.submitted = false;
-        this.errorMessage = undefined;
-        this.success = true;
-        this.changePasswordForm.reset();
-      }, (response: HttpErrorResponse) => {
-        this.blockUI.stop();
-        this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
-      });
+    this.authService
+      .changePasswordWithResetCodeAsync(
+        this.userId,
+        this.passwordResetCode,
+        data.password
+      )
+      .subscribe(
+        () => {
+          this.blockUI.stop();
+          this.submitted = false;
+          this.errorMessage = undefined;
+          this.success = true;
+          this.changePasswordForm.reset();
+        },
+        (response: HttpErrorResponse) => {
+          this.blockUI.stop();
+          this.errorMessage =
+            this.httpErrorHandlingService.handleError(response).message;
+        }
+      );
   }
 }

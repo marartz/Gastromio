@@ -1,14 +1,15 @@
-import {StoredCartDishModel} from './stored-cart-dish.model';
-import {OrderedDishInfoModel} from "./ordered-dish-info.model";
-import {CartDishModel} from "./cart-dish.model";
+import { StoredCartDishModel } from './stored-cart-dish.model';
+import { OrderedDishInfoModel } from './ordered-dish-info.model';
+import { CartDishModel } from './cart-dish.model';
 
 export class CheckoutModel {
-
   constructor(init?: Partial<CheckoutModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.cartDishes = this.cartDishes?.map(dish => new StoredCartDishModel(dish));
+    this.cartDishes = this.cartDishes?.map(
+      (dish) => new StoredCartDishModel(dish)
+    );
   }
 
   public givenName: string;
@@ -51,11 +52,10 @@ export class CheckoutModel {
       email: this.email,
       orderType: this.orderType,
       restaurantId: this.restaurantId,
-      cartDishes: this.cartDishes?.map(dish => dish?.clone()),
+      cartDishes: this.cartDishes?.map((dish) => dish?.clone()),
       comments: this.comments,
       paymentMethodId: this.paymentMethodId,
-      serviceTime: this.serviceTime
+      serviceTime: this.serviceTime,
     });
   }
-
 }

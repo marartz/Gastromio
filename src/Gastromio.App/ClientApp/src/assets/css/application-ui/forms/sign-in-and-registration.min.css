@@ -1,223 +1,221 @@
 .auth {
-    align-items: center;
-    background: var(--bg-rough-blue);
-    display: flex;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    justify-content: center;
-    margin-top: -90px;
-    min-height: 100vh;
-    width: 100%;
-    -ms-flex-align: center;
-    -ms-flex-pack: center;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
+	align-items: center;
+	background: var(--bg-rough-blue);
+	display: flex;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: -webkit-flex;
+	justify-content: center;
+	margin-top: -90px;
+	min-height: 100vh;
+	width: 100%;
+	-ms-flex-align: center;
+	-ms-flex-pack: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
 }
 
 .auth .auth__content {
-    align-items: center;
-    display: flex;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    flex-direction: column;
-    margin-bottom: 0px;
-    padding: 80px 32px;
-    width: 100vw;
-    -ms-flex-align: center;
-    -ms-flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -webkit-box-direction: normal;
-    -webkit-box-orient: vertical;
-    -webkit-flex-direction: column;
+	align-items: center;
+	display: flex;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: -webkit-flex;
+	flex-direction: column;
+	margin-bottom: 0px;
+	padding: 80px 32px;
+	width: 100vw;
+	-ms-flex-align: center;
+	-ms-flex-direction: column;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-webkit-box-direction: normal;
+	-webkit-box-orient: vertical;
+	-webkit-flex-direction: column;
 }
 
 .auth .auth__form {
-    align-items: stretch;
-    background-color: var(--blue);
-    border-radius: 23px;
-    display: flex;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-    flex-direction: column;
-    max-width: 460px;
-    min-width: 320px;
-    padding: 40px;
-    width: 100%;
-    -ms-flex-align: stretch;
-    -ms-flex-direction: column;
-    -webkit-align-items: stretch;
-    -webkit-box-align: stretch;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
+	align-items: stretch;
+	background-color: var(--blue);
+	border-radius: 23px;
+	display: flex;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: -webkit-flex;
+	flex-direction: column;
+	max-width: 460px;
+	min-width: 320px;
+	padding: 40px;
+	width: 100%;
+	-ms-flex-align: stretch;
+	-ms-flex-direction: column;
+	-webkit-align-items: stretch;
+	-webkit-box-align: stretch;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
 }
 
 @media (max-width: 991px) {
-    .auth .auth__form {
-        min-width: 50%;
-    }
+	.auth .auth__form {
+		min-width: 50%;
+	}
 }
 
 @media (max-width: 767px) {
-    .auth .auth__form {
-        min-width: 80%;
-        padding: 28px;
-    }
+	.auth .auth__form {
+		min-width: 80%;
+		padding: 28px;
+	}
 }
 
 @media (max-width: 479px) {
-    .auth .auth__form {
-        min-width: 280px;
-    }
+	.auth .auth__form {
+		min-width: 280px;
+	}
 }
 
 .auth .auth__form h1 {
-    color: var(--grey);
-    font-family: var(--sans);
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 42px;
-    margin-top: 0px;
-    text-align: center;
+	color: var(--grey);
+	font-family: var(--sans);
+	font-size: 36px;
+	font-weight: 700;
+	line-height: 42px;
+	margin-top: 0px;
+	text-align: center;
 }
 
 @media (max-width: 991px) {
-    .auth .auth__form h1 {
-        font-size: 34px;
-        line-height: 40px;
-    }
+	.auth .auth__form h1 {
+		font-size: 34px;
+		line-height: 40px;
+	}
 }
 
 @media (max-width: 767px) {
-    .auth .auth__form h1 {
-        font-size: 32px;
-        line-height: 38px;
-    }
+	.auth .auth__form h1 {
+		font-size: 32px;
+		line-height: 38px;
+	}
 }
 
 @media (max-width: 479px) {
-    .auth .auth__form h1 {
-        font-size: 26px;
-        line-height: 36px;
-    }
+	.auth .auth__form h1 {
+		font-size: 26px;
+		line-height: 36px;
+	}
 }
 
 .auth .auth__form p {
-    color: var(--grey);
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    margin-bottom: 24px;
-    margin-top: 0px;
-    text-align: center;
+	color: var(--grey);
+	font-family: var(--sans);
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	margin-bottom: 24px;
+	margin-top: 0px;
+	text-align: center;
 }
 
 @media (max-width: 767px) {
-    .auth .auth__form p br {
-        display: none;
-    }
+	.auth .auth__form p br {
+		display: none;
+	}
 }
 
 .auth .auth__form p a {
-    outline: 0px none;
-    text-decoration: underline;
+	outline: 0px none;
+	text-decoration: underline;
 }
 
-
 .auth .auth__form label {
-    color: var(--grey);
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    margin-bottom: -4px;
-    margin-left: 9px;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	color: var(--grey);
+	font-family: var(--sans);
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	margin-bottom: -4px;
+	margin-left: 9px;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .auth .auth__form input {
-    background-color: var(--white);
-    border: 0px;
-    border-radius: 23px;
-    color: var(--grey);
-    font-family: var(--sans);
-    display: block;
-    font-size: 16px;
-    font-weight: 400;
-    height: 46px;
-    letter-spacing: 0px;
-    line-height: 1.5;
-    margin-bottom: 10px;
-    margin-top: 0px;
-    outline: 0px none;
-    padding: 10px 20px;
-    text-overflow: ellipsis;
-    width: 100%;
+	background-color: var(--white);
+	border: 0px;
+	border-radius: 23px;
+	color: var(--grey);
+	font-family: var(--sans);
+	display: block;
+	font-size: 16px;
+	font-weight: 400;
+	height: 46px;
+	letter-spacing: 0px;
+	line-height: 1.5;
+	margin-bottom: 10px;
+	margin-top: 0px;
+	outline: 0px none;
+	padding: 10px 20px;
+	text-overflow: ellipsis;
+	width: 100%;
 }
 
 .auth .auth__form input:disabled {
-    background-color: #adb5bd;
+	background-color: #adb5bd;
 }
 
 .auth .auth__form input::placeholder {
-    color: #94918E;
+	color: #94918e;
 }
 
 .auth .auth__form .auth__feedback {
-    color: darkred;
-    display: block;
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 400;
-    margin-left: 9px;
+	color: darkred;
+	display: block;
+	font-family: var(--sans);
+	font-size: 14px;
+	font-weight: 400;
+	margin-left: 9px;
 }
 
-
 .auth .auth__form-submit {
-    background-color: var(--grey);
-    border: 0px;
-    border-radius: 23px;
-    color: var(--white);
-    font-family: var(--sans);
-    font-size: 18px;
-    font-weight: 500;
-    height: 50px;
-    letter-spacing: 0px;
-    margin-top: 6px;
-    position: relative;
-    text-align: center;
-    width: 100%;
+	background-color: var(--grey);
+	border: 0px;
+	border-radius: 23px;
+	color: var(--white);
+	font-family: var(--sans);
+	font-size: 18px;
+	font-weight: 500;
+	height: 50px;
+	letter-spacing: 0px;
+	margin-top: 6px;
+	position: relative;
+	text-align: center;
+	width: 100%;
 }
 
 auth .auth__form-submit:focus,
 auth .auth__form-submit:hover {
-    transform: scale(1.03);
-    -moz-transform: scale(1.03);
-    -ms-transform: scale(1.03);
-    -webkit-transform: scale(1.03);
-    transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -webkit-transition: all .3s ease;
+	transform: scale(1.03);
+	-moz-transform: scale(1.03);
+	-ms-transform: scale(1.03);
+	-webkit-transform: scale(1.03);
+	transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	-webkit-transition: all 0.3s ease;
 }
 
 .auth .auth__form-submit:active {
-    transform: scale(.98);
-    -moz-transform: scale(.98);
-    -ms-transform: scale(.98);
-    -webkit-transform: scale(.98);
-    transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -webkit-transition: all .3s ease;
+	transform: scale(0.98);
+	-moz-transform: scale(0.98);
+	-ms-transform: scale(0.98);
+	-webkit-transform: scale(0.98);
+	transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	-webkit-transition: all 0.3s ease;
 }

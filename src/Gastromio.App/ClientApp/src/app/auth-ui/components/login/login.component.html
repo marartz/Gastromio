@@ -1,57 +1,103 @@
 <block-ui>
-    <main class="auth">
-        <div class="auth__content">
-            <form class="auth__form"
-                  data-aos="gm-move-down"
-                  data-aos-delay="300"
-                  data-aos-duration="800"
-                  data-aos-once="true"
-                  [formGroup]="loginForm"
-                  (ngSubmit)="onLogin(loginForm.value)">
-                <h1 data-aos="gm-move-down"
-                    data-aos-delay="700"
-                    data-aos-duration="800"
-                    data-aos-once="true">
-                    Anmelden
-                </h1>
-                <p data-aos="gm-move-down"
-                   data-aos-delay="800"
-                   data-aos-duration="800"
-                   data-aos-once="true">
-                    Melde Dich mit Deinem Konto an, um fortzufahren.<br />
-                    Noch kein Konto? Registriere dich <a href="https://gastrom.io/register" target="_blank" rel="nofollow noreferrer">hier</a>.<br />
-                    Hast du dein Passwort vergessen? <a [routerLink]="['/forgotpassword']">Setze es zurück</a>!
-                </p>
+	<main class="auth">
+		<div class="auth__content">
+			<form
+				class="auth__form"
+				data-aos="gm-move-down"
+				data-aos-delay="300"
+				data-aos-duration="800"
+				data-aos-once="true"
+				[formGroup]="loginForm"
+				(ngSubmit)="onLogin(loginForm.value)"
+			>
+				<h1
+					data-aos="gm-move-down"
+					data-aos-delay="700"
+					data-aos-duration="800"
+					data-aos-once="true"
+				>
+					Anmelden
+				</h1>
+				<p
+					data-aos="gm-move-down"
+					data-aos-delay="800"
+					data-aos-duration="800"
+					data-aos-once="true"
+				>
+					Melde Dich mit Deinem Konto an, um fortzufahren.<br />
+					Noch kein Konto? Registriere dich
+					<a
+						href="https://gastrom.io/register"
+						target="_blank"
+						rel="nofollow noreferrer"
+						>hier</a
+					>.<br />
+					Hast du dein Passwort vergessen?
+					<a [routerLink]="['/forgotpassword']">Setze es zurück</a>!
+				</p>
 
-                <div data-aos="gm-move-down"
-                     data-aos-delay="900"
-                     data-aos-duration="800"
-                     data-aos-once="true">
-                    <label for="email">E-Mail-Adresse</label>
-                    <input type="email" mozactionhint="next" autocapitalize="none" autocomplete="email" autofocus="" inputmode="email" spellcheck="off" id="email" name="email" formControlName="Email" placeholder="bernd@beispiel.de">
-                    <div class="auth__feedback" *ngIf="submitted && f.Email.errors">
-                        <div *ngIf="f.Email.errors.required">Bitte gib eine gültige E-Mail-Adresse an</div>
-                        <div *ngIf="f.Email.errors.backend">{{f.name.errors.backend}}</div>
-                    </div>
+				<div
+					data-aos="gm-move-down"
+					data-aos-delay="900"
+					data-aos-duration="800"
+					data-aos-once="true"
+				>
+					<label for="email">E-Mail-Adresse</label>
+					<input
+						type="email"
+						mozactionhint="next"
+						autocapitalize="none"
+						autocomplete="email"
+						autofocus=""
+						inputmode="email"
+						spellcheck="off"
+						id="email"
+						name="email"
+						formControlName="Email"
+						placeholder="bernd@beispiel.de"
+					/>
+					<div class="auth__feedback" *ngIf="submitted && f.Email.errors">
+						<div *ngIf="f.Email.errors.required">
+							Bitte gib eine gültige E-Mail-Adresse an
+						</div>
+						<div *ngIf="f.Email.errors.backend">
+							{{ f.name.errors.backend }}
+						</div>
+					</div>
 
-                    <label for="email">Passwort</label>
-                    <input type="password" mozactionhint="send" autocapitalize="none" autocomplete="password" spellcheck="off" id="password" name="password" formControlName="Password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
-                    <div class="auth__feedback" *ngIf="submitted && f.Password.errors">
-                        <div *ngIf="f.Password.errors.required">Bitte gib eine gültige E-Mail-Adresse und ein Passwort an</div>
-                        <div *ngIf="f.Password.errors.backend">{{f.name.errors.backend}}</div>
-                    </div>
-                </div>
+					<label for="email">Passwort</label>
+					<input
+						type="password"
+						mozactionhint="send"
+						autocapitalize="none"
+						autocomplete="password"
+						spellcheck="off"
+						id="password"
+						name="password"
+						formControlName="Password"
+						placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+					/>
+					<div class="auth__feedback" *ngIf="submitted && f.Password.errors">
+						<div *ngIf="f.Password.errors.required">
+							Bitte gib eine gültige E-Mail-Adresse und ein Passwort an
+						</div>
+						<div *ngIf="f.Password.errors.backend">
+							{{ f.name.errors.backend }}
+						</div>
+					</div>
+				</div>
 
-                <button class="auth__form-submit"
-                        data-aos="gm-move-down"
-                        data-aos-delay="1100"
-                        data-aos-duration="800"
-                        data-aos-once="true"
-                        type="submit">
-                    Anmelden
-                </button>
-
-            </form>
-        </div>
-    </main>
+				<button
+					class="auth__form-submit"
+					data-aos="gm-move-down"
+					data-aos-delay="1100"
+					data-aos-duration="800"
+					data-aos-once="true"
+					type="submit"
+				>
+					Anmelden
+				</button>
+			</form>
+		</div>
+	</main>
 </block-ui>

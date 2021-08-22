@@ -1,12 +1,13 @@
-import {StoredCartDishModel} from './stored-cart-dish.model';
+import { StoredCartDishModel } from './stored-cart-dish.model';
 
 export class StoredCartModel {
-
   constructor(init?: Partial<StoredCartModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.cartDishes = this.cartDishes?.map(dish => new StoredCartDishModel(dish));
+    this.cartDishes = this.cartDishes?.map(
+      (dish) => new StoredCartDishModel(dish)
+    );
   }
 
   public orderType: string;
@@ -21,9 +22,8 @@ export class StoredCartModel {
     return new StoredCartModel({
       orderType: this.orderType,
       restaurantId: this.restaurantId,
-      cartDishes: this.cartDishes?.map(dish => dish?.clone()),
-      serviceTime: this.serviceTime
+      cartDishes: this.cartDishes?.map((dish) => dish?.clone()),
+      serviceTime: this.serviceTime,
     });
   }
-
 }

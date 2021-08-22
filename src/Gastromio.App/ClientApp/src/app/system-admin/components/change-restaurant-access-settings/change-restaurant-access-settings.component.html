@@ -1,76 +1,143 @@
 <block-ui delayStart="500">
-    <div class="modals" aria-labelledby="Zugriff verwalten" role="dialog" aria-modal="true">
-        <div class="modal-wrapper">
-            <div
-            class="modal-background"
-            data-aos="gm-ease"
-            data-aos-duration="500"
-            data-aos-once="true"
-            ></div>
-            <!--  This element is to trick the browser into centering the modal contents.  -->
-            <span class="center-modal" aria-hidden="true">&#8203;</span>
-            <div
-            class="modal-content"
-            data-aos="gm-move-up"
-            data-aos-delay="300"
-            data-aos-duration="800"
-            data-aos-once="true"
-            >
-                <form>
-                    <div class="modal-body">
-                        <div class="modal-body-flex">
-                            <div class="modal-body-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                </svg>
-                            </div>
-                            <div class="modal-body-text">
-                                <h3>Zugriff verwalten</h3>
-                                <p>Ändere den Zugriff von anderen Benutzern auf ein Restaurant.</p>
-                                <p class="help-text" *ngIf="(message$ | async) !== undefined">{{(message$ | async)}}</p>
-                                <div id="table">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="min-width: 240px;">E-Mail-Adresse</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ng-container *ngIf="administrators.length === 0">
-                                                <tr>
-                                                    <th scope="row" style="font-style:italic;">Keine zugeordnet</th>
-                                                    <td class="actions"></td>
-                                                </tr>
-                                            </ng-container>
-                                            <ng-container class="input-group" *ngIf="administrators.length > 0">
-                                                <tr *ngFor="let user of administrators">
-                                                    <th scope="row">
-                                                        {{user.email}}
-                                                    </th>
-                                                    <td class="actions">
-                                                        <a (click)="onRemoveUser(user)" class="action-item red">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block; width: 16px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </ng-container>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label>Benutzer hinzufügen</label>
-                                <input class="input-group" id="userToBeAdded" placeholder="bernd@beispiel.de" #input type="text" autocomplete="nope" [focusFirst]="true" [ngbTypeahead]="searchForUser" [inputFormatter]="formatUser" [resultFormatter]="formatUser" [editable]='false' (selectItem)="onUserSelected($event, input)" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-actions">
-                        <button class="submit" type="submit" (click)="onSave()">Speichern</button>
-                        <button class="cancel" type="button" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+	<div
+		class="modals"
+		aria-labelledby="Zugriff verwalten"
+		role="dialog"
+		aria-modal="true"
+	>
+		<div class="modal-wrapper">
+			<div
+				class="modal-background"
+				data-aos="gm-ease"
+				data-aos-duration="500"
+				data-aos-once="true"
+			></div>
+			<!--  This element is to trick the browser into centering the modal contents.  -->
+			<span class="center-modal" aria-hidden="true">&#8203;</span>
+			<div
+				class="modal-content"
+				data-aos="gm-move-up"
+				data-aos-delay="300"
+				data-aos-duration="800"
+				data-aos-once="true"
+			>
+				<form>
+					<div class="modal-body">
+						<div class="modal-body-flex">
+							<div class="modal-body-icon">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									aria-hidden="true"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+									></path>
+								</svg>
+							</div>
+							<div class="modal-body-text">
+								<h3>Zugriff verwalten</h3>
+								<p>
+									Ändere den Zugriff von anderen Benutzern auf ein Restaurant.
+								</p>
+								<p class="help-text" *ngIf="(message$ | async) !== undefined">
+									{{ message$ | async }}
+								</p>
+								<div id="table">
+									<table>
+										<thead>
+											<tr>
+												<th scope="col" style="min-width: 240px">
+													E-Mail-Adresse
+												</th>
+												<th scope="col"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<ng-container *ngIf="administrators.length === 0">
+												<tr>
+													<th scope="row" style="font-style: italic">
+														Keine zugeordnet
+													</th>
+													<td class="actions"></td>
+												</tr>
+											</ng-container>
+											<ng-container
+												class="input-group"
+												*ngIf="administrators.length > 0"
+											>
+												<tr *ngFor="let user of administrators">
+													<th scope="row">
+														{{ user.email }}
+													</th>
+													<td class="actions">
+														<a
+															(click)="onRemoveUser(user)"
+															class="action-item red"
+														>
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																viewBox="0 0 24 24"
+																fill="none"
+																stroke="currentColor"
+																stroke-width="2"
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																style="display: block; width: 16px"
+															>
+																<polyline points="3 6 5 6 21 6"></polyline>
+																<path
+																	d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+																></path>
+																<line x1="10" y1="11" x2="10" y2="17"></line>
+																<line x1="14" y1="11" x2="14" y2="17"></line>
+															</svg>
+														</a>
+													</td>
+												</tr>
+											</ng-container>
+										</tbody>
+									</table>
+								</div>
+								<label>Benutzer hinzufügen</label>
+								<input
+									class="input-group"
+									id="userToBeAdded"
+									placeholder="bernd@beispiel.de"
+									#input
+									type="text"
+									autocomplete="nope"
+									[focusFirst]="true"
+									[ngbTypeahead]="searchForUser"
+									[inputFormatter]="formatUser"
+									[resultFormatter]="formatUser"
+									[editable]="false"
+									(selectItem)="onUserSelected($event, input)"
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="modal-actions">
+						<button class="submit" type="submit" (click)="onSave()">
+							Speichern
+						</button>
+						<button
+							class="cancel"
+							type="button"
+							(click)="activeModal.dismiss('Cross click')"
+						>
+							Abbrechen
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </block-ui>
 
 <!--block-ui delayStart="500">

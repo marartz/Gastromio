@@ -1,18 +1,18 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {Guid} from 'guid-typescript';
+import { Guid } from 'guid-typescript';
 
-import {DishModel} from '../../../shared/models/dish.model';
-import {DishVariantModel} from '../../../shared/models/dish-variant.model';
+import { DishModel } from '../../../shared/models/dish.model';
+import { DishVariantModel } from '../../../shared/models/dish-variant.model';
 
-import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
+import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
 
 @Component({
   selector: 'app-edit-dish',
@@ -20,13 +20,12 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
   styleUrls: [
     './edit-dish.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
-  ]
+    '../../../../assets/css/modals.component.min.css',
+  ],
 })
 export class EditDishComponent implements OnInit {
-  
-  public readonly maxStringLength = 500; 
-  
+  public readonly maxStringLength = 500;
+
   @Input() public dishCategoryId: string;
   @Input() public dish: DishModel;
   @BlockUI() blockUI: NgBlockUI;
@@ -42,8 +41,7 @@ export class EditDishComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private facade: RestaurantAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.message$ = this.facade.getUpdateError$();
@@ -56,9 +54,15 @@ export class EditDishComponent implements OnInit {
     this.isNew = this.dish.id === undefined;
 
     this.editDishForm = this.formBuilder.group({
-      name: [this.dish.name, Validators.required,],
-      description: [this.dish.description, Validators.maxLength(this.maxStringLength)],
-      productInfo: [this.dish.productInfo, Validators.maxLength(this.maxStringLength)],
+      name: [this.dish.name, Validators.required],
+      description: [
+        this.dish.description,
+        Validators.maxLength(this.maxStringLength),
+      ],
+      productInfo: [
+        this.dish.productInfo,
+        Validators.maxLength(this.maxStringLength),
+      ],
     });
 
     if (this.dish.variants.length === 0) {
@@ -79,7 +83,9 @@ export class EditDishComponent implements OnInit {
   }
 
   onRemoveVariant(variant: DishVariantModel): void {
-    const index = this.dish.variants.findIndex(en => en.variantId === variant.variantId);
+    const index = this.dish.variants.findIndex(
+      (en) => en.variantId === variant.variantId
+    );
     this.dish.variants.splice(index, 1);
 
     if (this.dish.variants.length === 1) {
@@ -112,10 +118,10 @@ export class EditDishComponent implements OnInit {
       this.dish.variants[0].price = this.price;
     }
 
-    this.facade.addOrChangedDish(this.dishCategoryId, this.dish)
+    this.facade
+      .addOrChangedDish(this.dishCategoryId, this.dish)
       .subscribe(() => {
         this.activeModal.close();
-      })
+      });
   }
-
 }

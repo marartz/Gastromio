@@ -1,30 +1,30 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {combineLatest} from 'rxjs';
-import {filter, take, tap} from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, take, tap } from 'rxjs/operators';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+import { HttpErrorHandlingService } from '../../../shared/services/http-error-handling.service';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
-import {DishCategoryModel} from '../../../shared/models/dish-category.model';
-import {DishModel} from '../../../shared/models/dish.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
+import { DishCategoryModel } from '../../../shared/models/dish-category.model';
+import { DishModel } from '../../../shared/models/dish.model';
 
-import {CartModel} from '../../../order/models/cart.model';
-import {CartDishModel} from '../../../order/models/cart-dish.model';
-import {OrderType} from "../../../order/models/order-type";
+import { CartModel } from '../../../order/models/cart.model';
+import { CartDishModel } from '../../../order/models/cart-dish.model';
+import { OrderType } from '../../../order/models/order-type';
 
-import {OrderFacade} from '../../../order/order.facade';
+import { OrderFacade } from '../../../order/order.facade';
 
-import {AddDishToCartComponent} from '../add-dish-to-cart/add-dish-to-cart.component';
-import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
-import {OrderRestaurantOpeningHoursComponent} from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
-import {OrderRestaurantImprintComponent} from '../order-restaurant-imprint/order-restaurant-imprint.component';
+import { AddDishToCartComponent } from '../add-dish-to-cart/add-dish-to-cart.component';
+import { EditCartDishComponent } from '../edit-cart-dish/edit-cart-dish.component';
+import { OrderRestaurantOpeningHoursComponent } from '../order-restaurant-opening-hours/order-restaurant-opening-hours.component';
+import { OrderRestaurantImprintComponent } from '../order-restaurant-imprint/order-restaurant-imprint.component';
 
 @Component({
   selector: 'app-order-restaurant',
@@ -33,16 +33,16 @@ import {OrderRestaurantImprintComponent} from '../order-restaurant-imprint/order
     './order-restaurant.component.css',
     '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/components/_1_hero.min.css',
-	'../../../../assets/css/components/_2_action-bar.min.css',
-	'../../../../assets/css/components/_3_advanced-filter.min.css'
-  ]
+    '../../../../assets/css/components/_2_action-bar.min.css',
+    '../../../../assets/css/components/_3_advanced-filter.min.css',
+  ],
 })
 export class OrderRestaurantComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
 
   url: string;
 
-      orderType: string;
+  orderType: string;
 
   generalError: string;
 
@@ -65,9 +65,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private orderFacade: OrderFacade,
     private httpErrorHandlingService: HttpErrorHandlingService,
-    private modalService: NgbModal,
-  ) {
-  }
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.url = this.router.url;
@@ -79,102 +78,124 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     let serviceTime: Date;
 
     const observables = [
-      this.orderFacade.getIsInitialized$().pipe(
-        filter(isInitialized => isInitialized === true)
+      this.orderFacade
+        .getIsInitialized$()
+        .pipe(filter((isInitialized) => isInitialized === true)),
+      this.route.paramMap.pipe(
+        tap((params) => {
+          this.restaurantId = params.get('restaurantId');
+        })
       ),
-      this.route.paramMap.pipe(tap(params => {
-        this.restaurantId = params.get('restaurantId');
-      })),
-      this.route.queryParams.pipe(tap(params => {
-        const orderTypeText = params.orderType?.toLocaleLowerCase();
-        if (!orderTypeText) {
-          orderType = undefined;
-        } else {
-          switch (orderTypeText) {
-            case 'pickup':
-              orderType = OrderType.Pickup;
-              break;
-            case 'delivery':
-              orderType = OrderType.Delivery;
-              break;
-            case 'reservation':
-              orderType = OrderType.Reservation;
-              break;
-            default:
-              this.blockUI.stop();
-              this.generalError = 'Unbekannte Bestellart: ' + orderTypeText;
-          }
-        }
-
-        const serviceTimeText = params.serviceTime;
-        if (serviceTimeText) {
-          try {
-            const dt = serviceTimeText.split(/[: T-]/).map(parseFloat);
-            serviceTime = new Date(Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0));
-          }
-          catch {}
-        }
-      }))
-    ];
-
-    combineLatest(observables).pipe(take(1)).subscribe(() => {
-      this.orderFacade.selectRestaurantId$(this.restaurantId).subscribe(() => {
-        this.blockUI.stop();
-
-        try {
-          this.restaurant = this.orderFacade.getSelectedRestaurant();
-          this.openingHours = this.restaurant.openingHoursTodayText;
-
-          const cart = this.orderFacade.getCart();
-
-          if (!orderType) {
-            if (this.restaurant.pickupInfo?.enabled) {
-              orderType = OrderType.Pickup;
-            } else if (this.restaurant.deliveryInfo?.enabled) {
-              orderType = OrderType.Delivery;
-            } else if (this.restaurant.reservationInfo?.enabled) {
-              orderType = OrderType.Reservation;
-            } else {
-              orderType = OrderType.Pickup;
+      this.route.queryParams.pipe(
+        tap((params) => {
+          const orderTypeText = params.orderType?.toLocaleLowerCase();
+          if (!orderTypeText) {
+            orderType = undefined;
+          } else {
+            switch (orderTypeText) {
+              case 'pickup':
+                orderType = OrderType.Pickup;
+                break;
+              case 'delivery':
+                orderType = OrderType.Delivery;
+                break;
+              case 'reservation':
+                orderType = OrderType.Reservation;
+                break;
+              default:
+                this.blockUI.stop();
+                this.generalError = 'Unbekannte Bestellart: ' + orderTypeText;
             }
           }
 
-          if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
-            this.orderFacade.startOrder(orderType, serviceTime);
+          const serviceTimeText = params.serviceTime;
+          if (serviceTimeText) {
+            try {
+              const dt = serviceTimeText.split(/[: T-]/).map(parseFloat);
+              serviceTime = new Date(
+                Date.UTC(
+                  dt[0],
+                  dt[1] - 1,
+                  dt[2],
+                  dt[3] || 0,
+                  dt[4] || 0,
+                  dt[5] || 0,
+                  0
+                )
+              );
+            } catch {}
           }
+        })
+      ),
+    ];
 
-          this.allowCart = orderType !== OrderType.Reservation;
+    combineLatest(observables)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.orderFacade.selectRestaurantId$(this.restaurantId).subscribe(
+          () => {
+            this.blockUI.stop();
 
-          this.filterDishCategories();
+            try {
+              this.restaurant = this.orderFacade.getSelectedRestaurant();
+              this.openingHours = this.restaurant.openingHoursTodayText;
 
-          this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
+              const cart = this.orderFacade.getCart();
 
-          this.initialized = true;
-        }
-        catch (e) {
-          if (e instanceof Error) {
-            this.generalError = e.message;
+              if (!orderType) {
+                if (this.restaurant.pickupInfo?.enabled) {
+                  orderType = OrderType.Pickup;
+                } else if (this.restaurant.deliveryInfo?.enabled) {
+                  orderType = OrderType.Delivery;
+                } else if (this.restaurant.reservationInfo?.enabled) {
+                  orderType = OrderType.Reservation;
+                } else {
+                  orderType = OrderType.Pickup;
+                }
+              }
+
+              if (
+                !cart ||
+                cart.getOrderType() !== orderType ||
+                cart.getServiceTime() != serviceTime
+              ) {
+                this.orderFacade.startOrder(orderType, serviceTime);
+              }
+
+              this.allowCart = orderType !== OrderType.Reservation;
+
+              this.filterDishCategories();
+
+              this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
+
+              this.initialized = true;
+            } catch (e) {
+              if (e instanceof Error) {
+                this.generalError = e.message;
+              } else {
+                throw e;
+              }
+            }
+          },
+          (error) => {
+            console.log('error: ', error);
+            this.blockUI.stop();
+            this.generalError =
+              this.httpErrorHandlingService.handleError(error).message;
           }
-          else {
-            throw e;
-          }
-        }
-      }, error => {
-        console.log('error: ', error);
-        this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).message;
+        );
       });
-    });
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   getBannerStyle(): string {
     if (!this.restaurant) {
       return undefined;
     }
-    return 'url(\'/api/v1/restaurants/' + this.restaurant.id + '/images/banner' + '\')';
+    return (
+      "url('/api/v1/restaurants/" + this.restaurant.id + '/images/banner' + "')"
+    );
   }
 
   scrollToDishCategory(dishCategoryId: string): void {
@@ -207,18 +228,22 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   openOpeningHoursModal(): void {
-    const modalRef = this.modalService.open(OrderRestaurantOpeningHoursComponent);
-    modalRef.result.then(() => {
-    }, () => {
-    });
+    const modalRef = this.modalService.open(
+      OrderRestaurantOpeningHoursComponent
+    );
+    modalRef.result.then(
+      () => {},
+      () => {}
+    );
   }
 
   openImprintModal(): void {
     const modalRef = this.modalService.open(OrderRestaurantImprintComponent);
     modalRef.componentInstance.restaurant = this.restaurant;
-    modalRef.result.then(() => {
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {},
+      () => {}
+    );
   }
 
   onSearchTextChanged(searchPhrase: string): void {
@@ -247,8 +272,12 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       dishCategoryClone.dishes = new Array<DishModel>();
 
       for (let dish of dishCategory.dishes) {
-        const nameContainsSearchPhrase = dish.name && dish.name.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
-        const descriptionContainsSearchPhrase = dish.description && dish.description.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
+        const nameContainsSearchPhrase =
+          dish.name &&
+          dish.name.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
+        const descriptionContainsSearchPhrase =
+          dish.description &&
+          dish.description.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
         if (nameContainsSearchPhrase || descriptionContainsSearchPhrase) {
           dishCategoryClone.dishes.push(dish);
           hasMatch = true;
@@ -262,35 +291,48 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   getFirstDishVariant(dish: DishModel): string {
-    if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
+    if (
+      dish === undefined ||
+      dish.variants === undefined ||
+      dish.variants.length === 0
+    ) {
       return '0,00';
     }
 
-    return dish.variants[0].price.toLocaleString('de', {minimumFractionDigits: 2});
+    return dish.variants[0].price.toLocaleString('de', {
+      minimumFractionDigits: 2,
+    });
   }
 
   public onAddDishToCart(dish: DishModel): void {
-    if (!this.allowCart)
-      return;
+    if (!this.allowCart) return;
 
-    if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
+    if (
+      dish === undefined ||
+      dish.variants === undefined ||
+      dish.variants.length === 0
+    ) {
       return;
     }
     const modalRef = this.modalService.open(AddDishToCartComponent);
     modalRef.componentInstance.dish = dish;
-    modalRef.result.then(() => {
-      this.proceedError = undefined;
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.proceedError = undefined;
+      },
+      () => {}
+    );
   }
 
   public onEditCartDish(cartDish: CartDishModel): void {
     const modalRef = this.modalService.open(EditCartDishComponent);
     modalRef.componentInstance.cartDish = cartDish;
-    modalRef.result.then(() => {
-      this.proceedError = undefined;
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.proceedError = undefined;
+      },
+      () => {}
+    );
   }
 
   public onIncrementDishVariantCount(cartDishVariant: CartDishModel): void {
@@ -331,8 +373,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   public hasExternalReservationSystem(): boolean {
-    return this.restaurant.reservationInfo.reservationSystemUrl &&
-      this.restaurant.reservationInfo.reservationSystemUrl.length > 0;
+    return (
+      this.restaurant.reservationInfo.reservationSystemUrl &&
+      this.restaurant.reservationInfo.reservationSystemUrl.length > 0
+    );
   }
 
   toggleCartVisibility(): void {

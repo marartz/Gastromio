@@ -1,32 +1,43 @@
 <section
-    data-aos="fade"
-    data-aos-anchor="#page-users"
-    data-aos-delay="400"
-    data-aos-duration="1000"
-    data-aos-once="false"
-    id="page-users"
+	data-aos="fade"
+	data-aos-anchor="#page-users"
+	data-aos-delay="400"
+	data-aos-duration="1000"
+	data-aos-once="false"
+	id="page-users"
 >
-
-    <header class="section-header">
-        <h3>Benutzer verwalten</h3>
-        <p>Verwalte die Berechtigungen und den Status aller Benutzer.</p>
-    </header>
+	<header class="section-header">
+		<h3>Benutzer verwalten</h3>
+		<p>Verwalte die Berechtigungen und den Status aller Benutzer.</p>
+	</header>
 
 	<section id="single-list">
 		<ul>
 			<li class="header-no-eff">
 				<div class="left">
-					<input type="search" placeholder="Suchen ..." style="padding: 5px;" aria-label="Search" [value]="searchPhrase$ | async"
-                           (keyup)="onUpdateSearch($event.target.value)"
-                           (search)="onUpdateSearch($event?.target?.value)">
+					<input
+						type="search"
+						placeholder="Suchen ..."
+						style="padding: 5px"
+						aria-label="Search"
+						[value]="searchPhrase$ | async"
+						(keyup)="onUpdateSearch($event.target.value)"
+						(search)="onUpdateSearch($event?.target?.value)"
+					/>
 				</div>
 				<div class="right">
-					<button
-							class="action"
-							type="button"
-							(click)="openAddUserForm()"
-							>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+					<button class="action" type="button" (click)="openAddUserForm()">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							width="16"
+							height="16"
+						>
 							<line x1="12" y1="5" x2="12" y2="19"></line>
 							<line x1="5" y1="12" x2="19" y2="12"></line>
 						</svg>
@@ -35,41 +46,71 @@
 			</li>
 			<li *ngFor="let user of pageOfUsers">
 				<div class="left">
-					<span class="name hasDetails">{{user.email}}</span>
-					<span class="details">{{localizeRole(user.role)}}</span>
+					<span class="name hasDetails">{{ user.email }}</span>
+					<span class="details">{{ localizeRole(user.role) }}</span>
 				</div>
 				<div class="right">
 					<button (click)="openChangeUserDetailsForm(user)" class="action">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" width="16" height="16">
-                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                </svg>
-                            </button>
-                            <button (click)="openChangeUserPasswordForm(user)" class="action">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-key" width="16" height="16">
-                                    <path
-                                        d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
-                                </svg>
-                            </button>
-                            <button (click)="openRemoveUserForm(user)" class="action">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" width="16" height="16">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path
-                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>
-                            </button>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							width="16"
+							height="16"
+						>
+							<path
+								d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+							></path>
+						</svg>
+					</button>
+					<button (click)="openChangeUserPasswordForm(user)" class="action">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="feather feather-key"
+							width="16"
+							height="16"
+						>
+							<path
+								d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+							></path>
+						</svg>
+					</button>
+					<button (click)="openRemoveUserForm(user)" class="action">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							width="16"
+							height="16"
+						>
+							<polyline points="3 6 5 6 21 6"></polyline>
+							<path
+								d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+							></path>
+							<line x1="10" y1="11" x2="10" y2="17"></line>
+							<line x1="14" y1="11" x2="14" y2="17"></line>
+						</svg>
+					</button>
 				</div>
 			</li>
 		</ul>
 	</section>
 
-	<app-server-pagination (fetchPage)="onFetchPage($event)"></app-server-pagination>
-
+	<app-server-pagination
+		(fetchPage)="onFetchPage($event)"
+	></app-server-pagination>
 </section>

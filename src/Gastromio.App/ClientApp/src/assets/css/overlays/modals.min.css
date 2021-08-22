@@ -52,7 +52,9 @@
 .modal-content {
 	background-color: var(--blue);
 	border-radius: 23px;
-	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+		rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 	display: inline-block;
 	overflow: hidden;
 	text-align: left;
@@ -111,13 +113,13 @@
 }
 
 .modal-body-icon svg {
-	color: #dc2626;	
+	color: #dc2626;
 	width: 1.5rem;
 	height: 1.5rem;
 }
 
 .modal-body-text {
-	margin-top: .75rem;
+	margin-top: 0.75rem;
 	text-align: center;
 	width: 100%;
 }
@@ -141,10 +143,10 @@
 
 .modal-body-text p {
 	color: var(--grey);
-	font-size: .875rem;
+	font-size: 0.875rem;
 	line-height: 1.25rem;
 	margin: 0;
-	margin-top: .5rem;
+	margin-top: 0.5rem;
 	font-family: var(--sans);
 	font-weight: 400;
 }
@@ -157,8 +159,8 @@
 	background-color: var(--blue);
 	padding-left: 1rem;
 	padding-right: 1rem;
-	padding-top: .75rem;
-	padding-bottom: .75rem;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
 }
 
 @media screen and (min-width: 640px) {
@@ -176,7 +178,8 @@
 	border-width: 1px;
 	border-color: transparent;
 	justify-content: center;
-	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	color: var(--white);
 	font-weight: 400;
 	display: inline-flex;
@@ -184,8 +187,8 @@
 	line-height: 1.5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
-	padding-top: .5rem;
-	padding-bottom: .5rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 	width: 100%;
 	-webkit-appearance: button;
 	cursor: pointer;
@@ -198,17 +201,18 @@
 }
 
 .modal-actions .delete:focus {
-	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px, rgb(239, 68, 68) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+		rgb(239, 68, 68) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	outline: 2px solid transparent;
 	outline-offset: 2px;
 }
 
 @media screen and (min-width: 640px) {
 	.modal-actions .delete {
-		font-size: .875rem;
+		font-size: 0.875rem;
 		line-height: 1.25rem;
 		width: auto;
-		margin-left: .75rem;
+		margin-left: 0.75rem;
 	}
 }
 
@@ -218,7 +222,8 @@
 	border-width: 1px;
 	border-color: transparent;
 	justify-content: center;
-	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	color: var(--white);
 	font-weight: 400;
 	display: inline-flex;
@@ -226,8 +231,8 @@
 	line-height: 1.5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
-	padding-top: .5rem;
-	padding-bottom: .5rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 	width: 100%;
 	-webkit-appearance: button;
 	cursor: pointer;
@@ -240,22 +245,24 @@
 }
 
 .modal-actions .submit:focus {
-	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px, rgb(129, 182, 124) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+		rgb(129, 182, 124) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	outline: 2px solid transparent;
 	outline-offset: 2px;
 }
 
 @media screen and (min-width: 640px) {
 	.modal-actions .submit {
-		font-size: .875rem;
+		font-size: 0.875rem;
 		line-height: 1.25rem;
 		width: auto;
-		margin-left: .75rem;
+		margin-left: 0.75rem;
 	}
 }
 
 .modal-actions .cancel {
-	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	border-color: #d1d5db;
 	border-radius: 23px;
 	border-width: 1px;
@@ -265,24 +272,23 @@
 	font-size: 1rem;
 	line-height: 1.5rem;
 	padding-left: 1rem;
-	margin-top: .75rem;
+	margin-top: 0.75rem;
 	padding-right: 1rem;
 	display: inline-flex;
-	padding-top: .5rem;
-	padding-bottom: .5rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 	cursor: pointer;
 	background-color: var(--white);
 	width: 100%;
 	font-family: var(--sans);
 }
 
-
 @media screen and (min-width: 640px) {
 	.modal-actions .cancel {
-		font-size: .875rem;
+		font-size: 0.875rem;
 		line-height: 1.25rem;
 		width: auto;
-		margin-left: .75rem;
+		margin-left: 0.75rem;
 		margin-top: 0;
 	}
 }
@@ -293,7 +299,8 @@
 }
 
 .modal-actions .cancel:focus {
-	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px, rgb(99, 102, 241) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+		rgb(99, 102, 241) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	outline: 2px solid transparent;
 	outline-offset: 2px;
 }

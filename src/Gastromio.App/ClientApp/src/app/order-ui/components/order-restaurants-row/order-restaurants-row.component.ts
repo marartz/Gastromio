@@ -1,6 +1,6 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
 
 @Component({
   selector: 'app-order-restaurants-row',
@@ -8,26 +8,22 @@ import {RestaurantModel} from '../../../shared/models/restaurant.model';
   styleUrls: [
     './order-restaurants-row.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-	'../../../../assets/css/components/_2_restaurants-row.min.css'
-  ]
+    '../../../../assets/css/components/_2_restaurants-row.min.css',
+  ],
 })
 export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
-
   @Input() restaurant: RestaurantModel;
   @Input() orderType: string;
   @Input() selectedOpeningHourFilter: Date;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
-  hasLogo(restaurant: RestaurantModel  ): boolean {
-    return restaurant.imageTypes.some(en => en === 'logo');
+  hasLogo(restaurant: RestaurantModel): boolean {
+    return restaurant.imageTypes.some((en) => en === 'logo');
   }
 
   getLogoUrl(restaurant: RestaurantModel): string {
@@ -38,7 +34,7 @@ export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
   }
 
   hasBanner(restaurant: RestaurantModel): boolean {
-    return restaurant.imageTypes.some(en => en === 'banner');
+    return restaurant.imageTypes.some((en) => en === 'banner');
   }
 
   getBannerStyle(restaurant: RestaurantModel): string {
@@ -67,11 +63,28 @@ export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
       const minute = this.selectedOpeningHourFilter.getMinutes();
 
       if (day !== nowDay || month !== nowMonth) {
-        return "Am " + day + "." + month + ". " + hour + ":" + minute + " Uhr " + restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter);
+        return (
+          'Am ' +
+          day +
+          '.' +
+          month +
+          '. ' +
+          hour +
+          ':' +
+          minute +
+          ' Uhr ' +
+          restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter)
+        );
       } else {
-        return "Um " + hour + ":" + minute + " Uhr " + restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter);
+        return (
+          'Um ' +
+          hour +
+          ':' +
+          minute +
+          ' Uhr ' +
+          restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter)
+        );
       }
     }
   }
-
 }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {Title} from '@angular/platform-browser';
-import AOS from 'aos'
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import AOS from 'aos';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +9,13 @@ import AOS from 'aos'
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    
     AOS.init();
 
     this.router.events.subscribe((evt) => {

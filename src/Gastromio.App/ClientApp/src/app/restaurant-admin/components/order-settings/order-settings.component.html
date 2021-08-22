@@ -1,161 +1,204 @@
 <section
-		 data-aos="fade"
-		 data-aos-anchor="#page-opening-hours-settings"
-		 data-aos-delay="400"
-		 data-aos-duration="1000"
-		 data-aos-once="false"
-		 id="page-order-settings"
-		 >
-
+	data-aos="fade"
+	data-aos-anchor="#page-opening-hours-settings"
+	data-aos-delay="400"
+	data-aos-duration="1000"
+	data-aos-once="false"
+	id="page-order-settings"
+>
 	<header class="section-header">
 		<h3>Bestellabwicklung</h3>
-		<p>Alle Informationen und Einstellungen von der Bestellung bis zur Auslieferung.</p>
+		<p>
+			Alle Informationen und Einstellungen von der Bestellung bis zur
+			Auslieferung.
+		</p>
 	</header>
 
 	<section id="settings">
-		<h3 style="margin-bottom: 0px;">Bestellung</h3>
+		<h3 style="margin-bottom: 0px">Bestellung</h3>
 		<p>Über welchen Kanal soll man bestellen können?</p>
 
 		<form>
-			<button type="button" class="radio-group" [class.active]="supportedOrderMode === 'phone'" (click)="changeSupportedOrderMode('phone')">Telefonisch</button>
-			<button type="button" class="radio-group" [class.active]="supportedOrderMode === 'shift'" (click)="changeSupportedOrderMode('shift')">Telefonisch & Online-Vorbestellung</button>
-			<button type="button" class="radio-group" [class.active]="supportedOrderMode === 'anytime'" (click)="changeSupportedOrderMode('anytime')">Telefonisch & Online-Vorbestellung & Online-Bestellung</button>
+			<button
+				type="button"
+				class="radio-group"
+				[class.active]="supportedOrderMode === 'phone'"
+				(click)="changeSupportedOrderMode('phone')"
+			>
+				Telefonisch
+			</button>
+			<button
+				type="button"
+				class="radio-group"
+				[class.active]="supportedOrderMode === 'shift'"
+				(click)="changeSupportedOrderMode('shift')"
+			>
+				Telefonisch & Online-Vorbestellung
+			</button>
+			<button
+				type="button"
+				class="radio-group"
+				[class.active]="supportedOrderMode === 'anytime'"
+				(click)="changeSupportedOrderMode('anytime')"
+			>
+				Telefonisch & Online-Vorbestellung & Online-Bestellung
+			</button>
 		</form>
 	</section>
 
 	<section id="settings">
-		<h3 style="margin-bottom: 0px;">Übergabe</h3>
+		<h3 style="margin-bottom: 0px">Übergabe</h3>
 		<p>Wie kommt das Essen zum Kunden?</p>
 
 		<form>
-			<button type="button" class="radio-group" [class.active]="pickupEnabled" (click)="togglePickupEnabled()">Abholung</button>
-			<button type="button" class="radio-group" [class.active]="deliveryEnabled" (click)="toggleDeliveryEnabled()">Lieferung</button>
-            <button type="button" class="radio-group" [class.active]="reservationEnabled" (click)="toggleReservationEnabled()">Tischreservierung</button>
+			<button
+				type="button"
+				class="radio-group"
+				[class.active]="pickupEnabled"
+				(click)="togglePickupEnabled()"
+			>
+				Abholung
+			</button>
+			<button
+				type="button"
+				class="radio-group"
+				[class.active]="deliveryEnabled"
+				(click)="toggleDeliveryEnabled()"
+			>
+				Lieferung
+			</button>
+			<button
+				type="button"
+				class="radio-group"
+				[class.active]="reservationEnabled"
+				(click)="toggleReservationEnabled()"
+			>
+				Tischreservierung
+			</button>
 		</form>
 	</section>
 
-    <form [formGroup]="changeServiceInfoForm">
+	<form [formGroup]="changeServiceInfoForm">
+		<section id="settings">
+			<h3>Angaben zur Abholung</h3>
 
-        <section id="settings">
-            <h3>Angaben zur Abholung</h3>
+			<form [formGroup]="changeServiceInfoForm">
+				<label for="pickupAverageTime"
+					>Durchschnittliche Zubereitungszeit</label
+				>
+				<input
+					autocapitalize="none"
+					autocomplete="off"
+					class="input-group"
+					formControlName="pickupAverageTime"
+					id="pickupAverageTime"
+					inputmode="numeric"
+					maxlength="3"
+					mozactionhint="next"
+					placeholder="z.B. 30 Minuten"
+					type="number"
+				/>
 
-            <form [formGroup]="changeServiceInfoForm">
-                <label for="pickupAverageTime">Durchschnittliche Zubereitungszeit</label>
-                <input
-                       autocapitalize="none"
-                       autocomplete="off"
-                       class="input-group"
-                       formControlName="pickupAverageTime"
-                       id="pickupAverageTime"
-                       inputmode="numeric"
-                       maxlength="3"
-                       mozactionhint="next"
-                       placeholder="z.B. 30 Minuten"
-                       type="number"
-                       >
+				<label for="pickupMinimumOrderValue">Mindestbestellwert</label>
+				<input
+					autocapitalize="none"
+					autocomplete="off"
+					class="input-group"
+					formControlName="pickupMinimumOrderValue"
+					id="pickupMinimumOrderValue"
+					inputmode="numeric"
+					mozactionhint="next"
+					placeholder="z.B. 0€"
+					type="number"
+				/>
+				<label for="pickupMaximumOrderValue">Maximalbestellwert</label>
+				<input
+					autocapitalize="none"
+					autocomplete="off"
+					class="input-group"
+					formControlName="pickupMaximumOrderValue"
+					id="pickupMaximumOrderValue"
+					inputmode="numeric"
+					mozactionhint="send"
+					placeholder="z.B. 100€"
+					type="number"
+				/>
+			</form>
+		</section>
 
-                <label for="pickupMinimumOrderValue">Mindestbestellwert</label>
-                <input
-                       autocapitalize="none"
-                       autocomplete="off"
-                       class="input-group"
-                       formControlName="pickupMinimumOrderValue"
-                       id="pickupMinimumOrderValue"
-                       inputmode="numeric"
-                       mozactionhint="next"
-                       placeholder="z.B. 0€"
-                       type="number"
-                       >
-                <label for="pickupMaximumOrderValue">Maximalbestellwert</label>
-                <input
-                       autocapitalize="none"
-                       autocomplete="off"
-                       class="input-group"
-                       formControlName="pickupMaximumOrderValue"
-                       id="pickupMaximumOrderValue"
-                       inputmode="numeric"
-                       mozactionhint="send"
-                       placeholder="z.B. 100€"
-                       type="number"
-                       >
-            </form>
-        </section>
+		<section id="settings">
+			<h3>Angaben zur Lieferung</h3>
 
-        <section id="settings">
-            <h3>Angaben zur Lieferung</h3>
+			<label for="deliveryAverageTime"
+				>Durchschnittliche Zubereitungszeit</label
+			>
+			<input
+				autocapitalize="none"
+				autocomplete="off"
+				class="input-group"
+				formControlName="deliveryAverageTime"
+				id="deliveryAverageTime"
+				inputmode="numeric"
+				maxlength="3"
+				mozactionhint="next"
+				placeholder="z.B. 45 Minuten"
+				type="number"
+			/>
 
-            <label for="deliveryAverageTime">Durchschnittliche Zubereitungszeit</label>
-            <input
-                   autocapitalize="none"
-                   autocomplete="off"
-                   class="input-group"
-                   formControlName="deliveryAverageTime"
-                   id="deliveryAverageTime"
-                   inputmode="numeric"
-                   maxlength="3"
-                   mozactionhint="next"
-                   placeholder="z.B. 45 Minuten"
-                   type="number"
-                   >
+			<label for="deliveryMinimumOrderValue">Mindestbestellwert</label>
+			<input
+				autocapitalize="none"
+				autocomplete="off"
+				class="input-group"
+				formControlName="deliveryMinimumOrderValue"
+				id="deliveryMinimumOrderValue"
+				inputmode="numeric"
+				mozactionhint="next"
+				placeholder="z.B. 8€"
+				type="number"
+			/>
 
-            <label for="deliveryMinimumOrderValue">Mindestbestellwert</label>
-            <input
-                   autocapitalize="none"
-                   autocomplete="off"
-                   class="input-group"
-                   formControlName="deliveryMinimumOrderValue"
-                   id="deliveryMinimumOrderValue"
-                   inputmode="numeric"
-                   mozactionhint="next"
-                   placeholder="z.B. 8€"
-                   type="number"
-                   >
+			<label for="deliveryMaximumOrderValue">Maximalbestellwert</label>
+			<input
+				autocapitalize="none"
+				autocomplete="off"
+				class="input-group"
+				formControlName="deliveryMaximumOrderValue"
+				id="deliveryMaximumOrderValue"
+				inputmode="numeric"
+				mozactionhint="next"
+				placeholder="z.B. 100€"
+				type="number"
+			/>
 
-            <label for="deliveryMaximumOrderValue">Maximalbestellwert</label>
-            <input
-                   autocapitalize="none"
-                   autocomplete="off"
-                   class="input-group"
-                   formControlName="deliveryMaximumOrderValue"
-                   id="deliveryMaximumOrderValue"
-                   inputmode="numeric"
-                   mozactionhint="next"
-                   placeholder="z.B. 100€"
-                   type="number"
-                   >
+			<label for="deliveryCosts">Lieferkosten</label>
+			<input
+				autocapitalize="none"
+				autocomplete="off"
+				class="input-group"
+				formControlName="deliveryCosts"
+				id="deliveryCosts"
+				inputmode="numeric"
+				mozactionhint="next"
+				placeholder="z.B. 0€"
+				type="number"
+			/>
+		</section>
 
-            <label for="deliveryCosts">Lieferkosten</label>
-            <input
-                   autocapitalize="none"
-                   autocomplete="off"
-                   class="input-group"
-                   formControlName="deliveryCosts"
-                   id="deliveryCosts"
-                   inputmode="numeric"
-                   mozactionhint="next"
-                   placeholder="z.B. 0€"
-                   type="number"
-                   >
+		<section id="settings">
+			<h3>Angaben zur Tischreservierung</h3>
 
-        </section>
-
-        <section id="settings">
-            <h3>Angaben zur Tischreservierung</h3>
-
-            <label for="reservationSystemUrl">Link zum Reservierungssystem</label>
-            <input
-                autocapitalize="none"
-                autocomplete="off"
-                class="input-group"
-                formControlName="reservationSystemUrl"
-                id="reservationSystemUrl"
-                mozactionhint="next"
-                placeholder="Link zum externen Reservierungssystem"
-                type="text"
-            >
-
-        </section>
-
-    </form>
-
+			<label for="reservationSystemUrl">Link zum Reservierungssystem</label>
+			<input
+				autocapitalize="none"
+				autocomplete="off"
+				class="input-group"
+				formControlName="reservationSystemUrl"
+				id="reservationSystemUrl"
+				mozactionhint="next"
+				placeholder="Link zum externen Reservierungssystem"
+				type="text"
+			/>
+		</section>
+	</form>
 </section>

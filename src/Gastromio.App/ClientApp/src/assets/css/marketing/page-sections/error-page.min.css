@@ -15,8 +15,8 @@
 
 .oops h2 {
 	max-width: 560px;
-    text-align: center;
-    margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
 	font-weight: 700;
 	color: var(--grey);
 	font-family: var(--sans);
@@ -25,8 +25,8 @@
 
 .oops p {
 	max-width: 560px;
-    text-align: center;
-    margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
 	font-weight: 400;
 	color: var(--grey);
 	font-family: var(--sans);

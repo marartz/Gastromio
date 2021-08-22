@@ -1,14 +1,13 @@
 <header
-		class="top-bar"
-		data-aos="gm-move-down"
-		data-aos-duration="500"
-		data-aos-once="true"
-		>
-    <div class="common-container">
+	class="top-bar"
+	data-aos="gm-move-down"
+	data-aos-duration="500"
+	data-aos-once="true"
+>
+	<div class="common-container">
 		<nav class="top-bar__nav">
 			<a class="top-bar__logo" [routerLink]="['/']"></a>
 			<ul class="top-bar__items">
-
 				<!-- 👇 layout 1 -> user not logged in -->
 				<ng-container *ngIf="getUserEmail() === undefined">
 					<a class="top-bar__item" [routerLink]="['/login']">Anmelden</a>
@@ -18,27 +17,28 @@
 				<ng-container *ngIf="getUserEmail() !== undefined">
 					<ng-container *ngIf="isSystemAdmin()">
 						<a
-						   class="top-bar__item settings"
-						   data-aos="gm-move-left"
-						   data-aos-duration="800"
-						   data-aos-delay="900"
-						   data-aos-once="true"
-						   [routerLink]="['/admin/users']"
-						   >Einstellungen</a>
+							class="top-bar__item settings"
+							data-aos="gm-move-left"
+							data-aos-duration="800"
+							data-aos-delay="900"
+							data-aos-once="true"
+							[routerLink]="['/admin/users']"
+							>Einstellungen</a
+						>
 					</ng-container>
 					<ng-container *ngIf="isRestaurantAdmin()">
 						<a
-						   class="top-bar__item settings"
-						   data-aos="gm-move-left"
-						   data-aos-duration="800"
-						   data-aos-delay="900"
-						   data-aos-once="true"
-						   [routerLink]="['/admin/myrestaurants']"
-						   >Einstellungen</a>
+							class="top-bar__item settings"
+							data-aos="gm-move-left"
+							data-aos-duration="800"
+							data-aos-delay="900"
+							data-aos-once="true"
+							[routerLink]="['/admin/myrestaurants']"
+							>Einstellungen</a
+						>
 					</ng-container>
 					<a class="top-bar__item" (click)="logout()">Abmelden</a>
 				</ng-container>
-
 			</ul>
 		</nav>
 	</div>

@@ -1,154 +1,230 @@
 <div id="order-home">
-
-    <section id="landing">
-        <div class="wrapper">
-            <div class="inner">
-                <div class="hero-container">
-                    <h1
+	<section id="landing">
+		<div class="wrapper">
+			<div class="inner">
+				<div class="hero-container">
+					<h1
 						data-aos="gm-move-down"
 						data-aos-anchor="#order-home"
 						data-aos-delay="300"
 						data-aos-duration="800"
 						data-aos-once="true"
-						>
-                        Essen lokal bestellen
+					>
+						Essen lokal bestellen
 					</h1>
-                    <h2
+					<h2
 						data-aos="gm-move-down"
 						data-aos-anchor="#order-home"
 						data-aos-delay="600"
 						data-aos-duration="800"
 						data-aos-once="true"
-						>
-                        in Bocholt und Umgebung
+					>
+						in Bocholt und Umgebung
 					</h2>
-                    <div
-						 class="search-inner"
-						 data-aos="fade"
-						 data-aos-anchor="#order-home"
-						 data-aos-delay="1200"
-						 data-aos-duration="1000"
-						 data-aos-once="true"
-						 >
-                        <div class="input-wrapper">
-                            <input id="icon" type="text" autocapitalize="none" autocomplete="off" autofocus="" inputmode="latin" maxlength="200" spellcheck="false" placeholder="Restaurant suchen ..." (keyup)="onSearchType($event.target.value)">
-                        </div>
-                        <div class="button-wrapper">
-                            <button type="button" (click)="onShowAll()"><span>Alle anzeigen</span></button>
-                        </div>
-                        <div id="results" class="visibleonsearch">
-                            <div class="rest">
-                                <div *ngFor="let restaurant of restaurants$ | async" data-aos="gm-move-down"
-										 data-aos-delay="300"
-										 data-aos-duration="800"
-										 data-aos-once="false">
-                                    <span (click)="onRestaurantWithSoleOrderTypeSelected(restaurant)"
-										  class="restaurant-name"
-                                          [class.clickable]="!hasMultipleOrderTypes(restaurant)"
-										  data-aos="gm-move-down"
-										 data-aos-delay="600"
-										 data-aos-duration="800"
-										 data-aos-once="false"
-										  >{{restaurant.name}}</span>
-                                    <div
-										 class="order-type"
-										 data-aos="gm-move-down"
-										 data-aos-delay="900"
-										 data-aos-duration="800"
-										 data-aos-once="false"
-										 >
-										<ng-container *ngIf="restaurant.deliveryInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'delivery')">Lieferung</button></ng-container>
-                                        <ng-container *ngIf="restaurant.pickupInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'pickup')">Abholung</button></ng-container>
-                                        <ng-container *ngIf="restaurant.reservationInfo?.enabled"><button type="button" (click)="onRestaurantSelected(restaurant, 'reservation')">Reservierung</button></ng-container>
-                                    </div>
-                                    <div class="border" data-aos="gm-move-down"
-										 data-aos-delay="400"
-										 data-aos-duration="800"
-										 data-aos-once="false"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="teller"></div>
-    </section>
+					<div
+						class="search-inner"
+						data-aos="fade"
+						data-aos-anchor="#order-home"
+						data-aos-delay="1200"
+						data-aos-duration="1000"
+						data-aos-once="true"
+					>
+						<div class="input-wrapper">
+							<input
+								id="icon"
+								type="text"
+								autocapitalize="none"
+								autocomplete="off"
+								autofocus=""
+								inputmode="latin"
+								maxlength="200"
+								spellcheck="false"
+								placeholder="Restaurant suchen ..."
+								(keyup)="onSearchType($event.target.value)"
+							/>
+						</div>
+						<div class="button-wrapper">
+							<button type="button" (click)="onShowAll()">
+								<span>Alle anzeigen</span>
+							</button>
+						</div>
+						<div id="results" class="visibleonsearch">
+							<div class="rest">
+								<div
+									*ngFor="let restaurant of restaurants$ | async"
+									data-aos="gm-move-down"
+									data-aos-delay="300"
+									data-aos-duration="800"
+									data-aos-once="false"
+								>
+									<span
+										(click)="onRestaurantWithSoleOrderTypeSelected(restaurant)"
+										class="restaurant-name"
+										[class.clickable]="!hasMultipleOrderTypes(restaurant)"
+										data-aos="gm-move-down"
+										data-aos-delay="600"
+										data-aos-duration="800"
+										data-aos-once="false"
+										>{{ restaurant.name }}</span
+									>
+									<div
+										class="order-type"
+										data-aos="gm-move-down"
+										data-aos-delay="900"
+										data-aos-duration="800"
+										data-aos-once="false"
+									>
+										<ng-container *ngIf="restaurant.deliveryInfo?.enabled"
+											><button
+												type="button"
+												(click)="onRestaurantSelected(restaurant, 'delivery')"
+											>
+												Lieferung
+											</button></ng-container
+										>
+										<ng-container *ngIf="restaurant.pickupInfo?.enabled"
+											><button
+												type="button"
+												(click)="onRestaurantSelected(restaurant, 'pickup')"
+											>
+												Abholung
+											</button></ng-container
+										>
+										<ng-container *ngIf="restaurant.reservationInfo?.enabled"
+											><button
+												type="button"
+												(click)="
+													onRestaurantSelected(restaurant, 'reservation')
+												"
+											>
+												Reservierung
+											</button></ng-container
+										>
+									</div>
+									<div
+										class="border"
+										data-aos="gm-move-down"
+										data-aos-delay="400"
+										data-aos-duration="800"
+										data-aos-once="false"
+									></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="teller"></div>
+	</section>
 
-    <section id="about">
-        <img class="circle" src="../../../../assets/images/circle.png" alt="" draggable="false">
-        <div class="wrapper">
+	<section id="about">
+		<img
+			class="circle"
+			src="../../../../assets/images/circle.png"
+			alt=""
+			draggable="false"
+		/>
+		<div class="wrapper">
 			<header>
 				<h4>So funktioniert</h4>
 				<h1>Gastromio</h1>
 			</header>
 			<div class="step-path">
-				<img src="../../../../assets/images/svg/path.svg" alt="">
+				<img src="../../../../assets/images/svg/path.svg" alt="" />
 			</div>
 
 			<div class="step step-1">
 				<div class="text">
-					<img src="../../../../assets/images/svg/pizza.svg" alt="">
+					<img src="../../../../assets/images/svg/pizza.svg" alt="" />
 					<h3>Restaurant &amp;<br />Speisen auswählen</h3>
-					<p>Gib ein Restaurant ein oder klicke<br />Dich durch zahlreiche Menüs in<br />Bocholt und Umgebung.</p>
+					<p>
+						Gib ein Restaurant ein oder klicke<br />Dich durch zahlreiche Menüs
+						in<br />Bocholt und Umgebung.
+					</p>
 				</div>
 			</div>
-			<img class="step-path-mobile" src="../../../../assets/images/svg/path-mobile.svg" alt="">
+			<img
+				class="step-path-mobile"
+				src="../../../../assets/images/svg/path-mobile.svg"
+				alt=""
+			/>
 			<div class="step step-2">
 				<div class="text">
 					<h3>Bezahle einfach<br />bar bei der Übergabe</h3>
-					<p>Wähle deine Zahlmethode und<br />bezahle erst bei der Übergabe vor Ort.</p>
+					<p>
+						Wähle deine Zahlmethode und<br />bezahle erst bei der Übergabe vor
+						Ort.
+					</p>
 				</div>
 			</div>
-			<img class="step-path-mobile" src="../../../../assets/images/svg/path-mobile.svg" alt="">
+			<img
+				class="step-path-mobile"
+				src="../../../../assets/images/svg/path-mobile.svg"
+				alt=""
+			/>
 			<div class="step step-3">
 				<div class="text">
-					<img src="../../../../assets/images/svg/roller.svg" alt="">
+					<img src="../../../../assets/images/svg/roller.svg" alt="" />
 					<h3>Liefern lassen oder<br />selbst vor Ort abholen</h3>
-					<p>Du wohnst ganz in der Nähe? Dann<br />kannst du deine Bestellung selbst<br />abholen oder dir ganz bequem<br />nach Hause liefern lassen.</p>
+					<p>
+						Du wohnst ganz in der Nähe? Dann<br />kannst du deine Bestellung
+						selbst<br />abholen oder dir ganz bequem<br />nach Hause liefern
+						lassen.
+					</p>
 				</div>
 			</div>
-			<img class="step-path-mobile" src="../../../../assets/images/svg/path-mobile.svg" alt="">
+			<img
+				class="step-path-mobile"
+				src="../../../../assets/images/svg/path-mobile.svg"
+				alt=""
+			/>
 			<div class="step step-4">
 				<div class="text">
 					<h3>100% des Geldes geht<br />an den Gastronomen</h3>
-					<p>Andere Lieferdienste kassieren <br>eine Gebühr für jede Bestellung, <br>die ein Lokal über den Dienst erhält. <br><br>In der Corona-Krise ist das besonders hart. <br>Gastromio ist eine lokale und für den Gastromonen <br>kostenlose Initiative der Corona Hilfe Bocholt.</p>
+					<p>
+						Andere Lieferdienste kassieren <br />eine Gebühr für jede
+						Bestellung, <br />die ein Lokal über den Dienst erhält.
+						<br /><br />In der Corona-Krise ist das besonders hart.
+						<br />Gastromio ist eine lokale und für den Gastromonen
+						<br />kostenlose Initiative der Corona Hilfe Bocholt.
+					</p>
 				</div>
 			</div>
-        </div>
-    </section>
+		</div>
+	</section>
 
-    <section id="cta">
-        <div class="wrapper">
-            <div class="content">
-                <div class="text">
-                    <h2
+	<section id="cta">
+		<div class="wrapper">
+			<div class="content">
+				<div class="text">
+					<h2
 						data-aos="gm-move-up"
 						data-aos-offset="120"
 						data-aos-duration="800"
 						data-aos-once="true"
-						>
+					>
 						Hilf uns, anderen zu helfen
 					</h2>
-                    <p
-					   data-aos="gm-move-up"
-					   data-aos-offset="120"
-					   data-aos-duration="800"
-					   data-aos-once="true"
-					   >
-						Teile unsere Initiative mit Deinen Freunden und Bekannten, <br>sei es in sozialen Medien, lokalen Zeitungen oder in <br>deinem persönlichen Netzwerk.
+					<p
+						data-aos="gm-move-up"
+						data-aos-offset="120"
+						data-aos-duration="800"
+						data-aos-once="true"
+					>
+						Teile unsere Initiative mit Deinen Freunden und Bekannten, <br />sei
+						es in sozialen Medien, lokalen Zeitungen oder in <br />deinem
+						persönlichen Netzwerk.
 					</p>
 					<div
-						 class="addthis_inline_share_toolbox"
-						 data-aos="gm-move-up"
-						 data-aos-duration="800"
-						 data-aos-once="true"
-						 >
-					</div>
-                </div>
-            </div>
-        </div>
-        <div class="messer-gabel"></div>
-    </section>
-
+						class="addthis_inline_share_toolbox"
+						data-aos="gm-move-up"
+						data-aos-duration="800"
+						data-aos-once="true"
+					></div>
+				</div>
+			</div>
+		</div>
+		<div class="messer-gabel"></div>
+	</section>
 </div>

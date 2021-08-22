@@ -42,31 +42,31 @@
 	height: 100%;
 	max-height: 156px;
 	border-radius: 23px;
-	transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -webkit-transition: all .3s ease;
+	transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	-webkit-transition: all 0.3s ease;
 }
 
 .logo-cloud .logo-cloud--partner img {
 	filter: grayscale(1);
-	transition: all .6s ease;
+	transition: all 0.6s ease;
 }
 
 .logo-cloud .logo-cloud--partner:focus,
 .logo-cloud .logo-cloud--partner:hover {
-    box-shadow: 0px 12px 12px 0px rgba(0,0,0,.05);
-    transform: scale(1.024);
-    -moz-transform: scale(1.024);
-    -ms-transform: scale(1.024);
-    -webkit-transform: scale(1.024);
+	box-shadow: 0px 12px 12px 0px rgba(0, 0, 0, 0.05);
+	transform: scale(1.024);
+	-moz-transform: scale(1.024);
+	-ms-transform: scale(1.024);
+	-webkit-transform: scale(1.024);
 }
 
 .logo-cloud .logo-cloud--partner:active {
-    transform: scale(.98);
-    -moz-transform: scale(.98);
-    -ms-transform: scale(.98);
-    -webkit-transform: scale(.98);
+	transform: scale(0.98);
+	-moz-transform: scale(0.98);
+	-ms-transform: scale(0.98);
+	-webkit-transform: scale(0.98);
 }
 
 .logo-cloud .logo-cloud--partner:focus img,

@@ -1,180 +1,207 @@
 <block-ui delayStart="500">
-
-    <div
-		 class="alert confirm"
-		 data-aos="gm-move-right"
-		 data-aos-anchor="block-ui"
-		 data-aos-duration="400"
-		 role="status"
-		 *ngIf="(isUpdated$ | async) === true"
-		 >
+	<div
+		class="alert confirm"
+		data-aos="gm-move-right"
+		data-aos-anchor="block-ui"
+		data-aos-duration="400"
+		role="status"
+		*ngIf="(isUpdated$ | async) === true"
+	>
 		<div class="alert-wrap">
-			<img class="alert-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDE4IDEzIj4NCiAgPHBhdGggaWQ9ImNoZWNrLXdoaXRlIiBkPSJNMjAsNiw5LDE3LDQsMTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zIC01KSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPg0KPC9zdmc+DQo=" alt="" width="14">
+			<img
+				class="alert-icon"
+				src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDE4IDEzIj4NCiAgPHBhdGggaWQ9ImNoZWNrLXdoaXRlIiBkPSJNMjAsNiw5LDE3LDQsMTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zIC01KSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPg0KPC9zdmc+DQo="
+				alt=""
+				width="14"
+			/>
 			<div class="alert-line-2"></div>
 			<div class="alert-text">Änderungen gespeichert</div>
 		</div>
 	</div>
 
-    <div
-		 class="alert error"
-		 data-aos="gm-move-right"
-		 data-aos-anchor="block-ui"
-		 data-aos-duration="400"
-		 role="status"
-		 *ngIf="(updateError$ | async) !== undefined"
-		 >
+	<div
+		class="alert error"
+		data-aos="gm-move-right"
+		data-aos-anchor="block-ui"
+		data-aos-duration="400"
+		role="status"
+		*ngIf="(updateError$ | async) !== undefined"
+	>
 		<div class="alert-wrap">
-			<img class="alert-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMiIgaGVpZ2h0PSIyMiIgdmlld0JveD0iMCAwIDIyIDIyIj4NCiAgPGcgaWQ9ImFsZXJ0LWNpcmNsZS13aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIj4NCiAgICA8Y2lyY2xlIGlkPSJFbGxpcHNlXzU0MDgiIGRhdGEtbmFtZT0iRWxsaXBzZSA1NDA4IiBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIgMikiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiLz4NCiAgICA8bGluZSBpZD0iTGluZV8zOTUwIiBkYXRhLW5hbWU9IkxpbmUgMzk1MCIgeTI9IjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDgpIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+DQogICAgPGxpbmUgaWQ9IkxpbmVfMzk1MSIgZGF0YS1uYW1lPSJMaW5lIDM5NTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDE2KSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPg0KICA8L2c+DQo8L3N2Zz4NCg==" alt="" width="14">
+			<img
+				class="alert-icon"
+				src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMiIgaGVpZ2h0PSIyMiIgdmlld0JveD0iMCAwIDIyIDIyIj4NCiAgPGcgaWQ9ImFsZXJ0LWNpcmNsZS13aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIj4NCiAgICA8Y2lyY2xlIGlkPSJFbGxpcHNlXzU0MDgiIGRhdGEtbmFtZT0iRWxsaXBzZSA1NDA4IiBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIgMikiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiLz4NCiAgICA8bGluZSBpZD0iTGluZV8zOTUwIiBkYXRhLW5hbWU9IkxpbmUgMzk1MCIgeTI9IjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDgpIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+DQogICAgPGxpbmUgaWQ9IkxpbmVfMzk1MSIgZGF0YS1uYW1lPSJMaW5lIDM5NTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDE2KSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPg0KICA8L2c+DQo8L3N2Zz4NCg=="
+				alt=""
+				width="14"
+			/>
 			<div class="alert-line-2"></div>
-			<div class="alert-text"><b>Fehler:</b> {{(updateError$ | async)}}</div>
+			<div class="alert-text"><b>Fehler:</b> {{ updateError$ | async }}</div>
 		</div>
 	</div>
 
-    <div class="oops" *ngIf="(initializationError$ | async) !== undefined">
+	<div class="oops" *ngIf="(initializationError$ | async) !== undefined">
 		<div>
 			<h2
-			data-aos="gm-move-down"
-			data-aos-anchor="#backend"
-			data-aos-delay="100"
-			data-aos-duration="800"
-			data-aos-once="true">
-			Ups, 404-Alarm! Hier beginnt Land, wo noch nie ein Mensch zuvor gewesen ist.</h2>
+				data-aos="gm-move-down"
+				data-aos-anchor="#backend"
+				data-aos-delay="100"
+				data-aos-duration="800"
+				data-aos-once="true"
+			>
+				Ups, 404-Alarm! Hier beginnt Land, wo noch nie ein Mensch zuvor gewesen
+				ist.
+			</h2>
 			<p
-			data-aos="gm-move-down"
-			data-aos-anchor="#backend"
-			data-aos-delay="400"
-			data-aos-duration="800"
-			data-aos-once="true">Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns, wenn das Problem anhält.</p>
+				data-aos="gm-move-down"
+				data-aos-anchor="#backend"
+				data-aos-delay="400"
+				data-aos-duration="800"
+				data-aos-once="true"
+			>
+				Ein technischer Fehler ist aufgetreten. Bitte versuchen Sie es erneut
+				oder kontaktieren Sie uns, wenn das Problem anhält.
+			</p>
 			<button
-			data-aos="gm-move-down"
-			data-aos-anchor="#backend"
-			data-aos-delay="700"
-			data-aos-duration="800"
-			data-aos-once="true"
-			[routerLink]="['/']"
-			>Schnell weg hier!
+				data-aos="gm-move-down"
+				data-aos-anchor="#backend"
+				data-aos-delay="700"
+				data-aos-duration="800"
+				data-aos-once="true"
+				[routerLink]="['/']"
+			>
+				Schnell weg hier!
 			</button>
 		</div>
 	</div>
 
-    <main id="backend" *ngIf="isInitialized$ | async">
+	<main id="backend" *ngIf="isInitialized$ | async">
+		<header id="header">
+			<div class="common-container">
+				<h1
+					data-aos="gm-move-down"
+					data-aos-anchor="#backend"
+					data-aos-delay="100"
+					data-aos-duration="800"
+					data-aos-once="true"
+				>
+					Admin Bereich
+				</h1>
+				<h3
+					data-aos="gm-move-down"
+					data-aos-anchor="#backend"
+					data-aos-delay="400"
+					data-aos-duration="800"
+					data-aos-once="true"
+				>
+					Hier können Sie Ihre Daten verwalten, um Gastromio <br />
+					optimal an Ihre Bedürfnisse anzupassen.
+				</h3>
+			</div>
+		</header>
 
-        <header id="header">
-            <div class="common-container">
-                <h1
-                    data-aos="gm-move-down"
-                    data-aos-anchor="#backend"
-                    data-aos-delay="100"
-                    data-aos-duration="800"
-                    data-aos-once="true"
-                >
-                    Admin Bereich
-                </h1>
-                <h3
-                    data-aos="gm-move-down"
-                    data-aos-anchor="#backend"
-                    data-aos-delay="400"
-                    data-aos-duration="800"
-                    data-aos-once="true"
-                >
-                    Hier können Sie Ihre Daten verwalten, um Gastromio <br>
-                    optimal an Ihre Bedürfnisse anzupassen.
-                </h3>
-            </div>
-        </header>
+		<div class="common-container">
+			<aside id="drawer-mobile">
+				<scrollable-nav-bar
+					[links]="links"
+					(selected)="selectTab($event)"
+					[current]="selectedTab$ | async"
+				></scrollable-nav-bar>
+			</aside>
+			<section id="body">
+				<aside id="drawer">
+					<ul class="links">
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="500"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'users'"
+							(click)="selectTab('users')"
+						>
+							<div><a>Benutzer</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="700"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'cuisines'"
+							(click)="selectTab('cuisines')"
+						>
+							<div><a>Cuisines</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="800"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'restaurants'"
+							(click)="selectTab('restaurants')"
+						>
+							<div><a>Restaurants</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="900"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'restaurant-import'"
+							(click)="selectTab('restaurant-import')"
+						>
+							<div><a>Restaurantimport</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+						<li
+							class="drawer-item"
+							data-aos="gm-move-down"
+							data-aos-anchor="#backend"
+							data-aos-delay="1000"
+							data-aos-duration="800"
+							data-aos-once="true"
+							[class.active]="(selectedTab$ | async) === 'dish-import'"
+							(click)="selectTab('dish-import')"
+						>
+							<div><a>Speisenimport</a></div>
+							<div><span class="icon-right"></span></div>
+						</li>
+					</ul>
+				</aside>
 
-        <div class="common-container">
-            <aside id="drawer-mobile">
-                    <scrollable-nav-bar [links]='links' (selected)="selectTab($event)" [current]="(selectedTab$ | async)"></scrollable-nav-bar>
-            </aside>
-            <section id="body">
-
-                <aside id="drawer">
-                    <ul class="links">
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="500"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'users'"
-                            (click)="selectTab('users')"
-                        >
-                            <div><a>Benutzer</a></div>
-                            <div><span class="icon-right"></span></div>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="700"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'cuisines'"
-                            (click)="selectTab('cuisines')"
-                        >
-                            <div><a>Cuisines</a></div>
-                            <div><span class="icon-right"></span></div>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="800"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'restaurants'"
-                            (click)="selectTab('restaurants')"
-                        >
-                            <div><a>Restaurants</a></div>
-                            <div><span class="icon-right"></span></div>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="900"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'restaurant-import'"
-                            (click)="selectTab('restaurant-import')"
-                        >
-                            <div><a>Restaurantimport</a></div>
-                            <div><span class="icon-right"></span></div>
-                        </li>
-                        <li
-                            class="drawer-item"
-                            data-aos="gm-move-down"
-                            data-aos-anchor="#backend"
-                            data-aos-delay="1000"
-                            data-aos-duration="800"
-                            data-aos-once="true"
-                            [class.active]="(selectedTab$ | async) === 'dish-import'"
-                            (click)="selectTab('dish-import')"
-                        >
-                            <div><a>Speisenimport</a></div>
-                            <div><span class="icon-right"></span></div>
-                        </li>
-                    </ul>
-                </aside>
-
-                <section
-                    data-aos="fade"
-                    data-aos-delay="800"
-                    data-aos-duration="1200"
-                    data-aos-once="false"
-                    id="page"
-                >
-                    <app-admin-users *ngIf="(selectedTab$ | async) === 'users'"></app-admin-users>
-                    <app-admin-cuisines *ngIf="(selectedTab$ | async) === 'cuisines'"></app-admin-cuisines>
-                    <app-admin-restaurants *ngIf="(selectedTab$ | async) === 'restaurants'"></app-admin-restaurants>
-                    <app-admin-restaurant-import *ngIf="(selectedTab$ | async) === 'restaurant-import'"></app-admin-restaurant-import>
-                    <app-admin-dish-import *ngIf="(selectedTab$ | async) === 'dish-import'"></app-admin-dish-import>
-                </section>
-
-            </section>
-        </div>
-
-    </main>
+				<section
+					data-aos="fade"
+					data-aos-delay="800"
+					data-aos-duration="1200"
+					data-aos-once="false"
+					id="page"
+				>
+					<app-admin-users
+						*ngIf="(selectedTab$ | async) === 'users'"
+					></app-admin-users>
+					<app-admin-cuisines
+						*ngIf="(selectedTab$ | async) === 'cuisines'"
+					></app-admin-cuisines>
+					<app-admin-restaurants
+						*ngIf="(selectedTab$ | async) === 'restaurants'"
+					></app-admin-restaurants>
+					<app-admin-restaurant-import
+						*ngIf="(selectedTab$ | async) === 'restaurant-import'"
+					></app-admin-restaurant-import>
+					<app-admin-dish-import
+						*ngIf="(selectedTab$ | async) === 'dish-import'"
+					></app-admin-dish-import>
+				</section>
+			</section>
+		</div>
+	</main>
 </block-ui>
