@@ -189,6 +189,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
+  getLogoUrl(restaurant: RestaurantModel): string {
+    if (!restaurant) {
+      return undefined;
+    }
+    return '/api/v1/restaurants/' + restaurant.id + '/images/logo';
+  }
+
   getBannerStyle(): string {
     if (!this.restaurant) {
       return undefined;

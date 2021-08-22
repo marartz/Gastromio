@@ -155,6 +155,29 @@
 						</div>
 					</div>
 				</div>
+
+				<script type="application/ld+json">
+					{
+					  "@context": "https://schema.org",
+					  "@type": "Restaurant",
+					  "name": "{{ restaurant.name }}",
+					  "image": "getLogoUrl(restaurant)",
+					  "@id": "getLogoUrl(restaurant)",
+					  "url": "{{ restaurant.contactInfo.webSite }}",
+					  "telephone": "{{ restaurant.contactInfo.phone }}",
+					  "menu": "",
+					  "servesCuisine": "",
+					  "acceptsReservations": "false",
+					  "address": {
+						"@type": "PostalAddress",
+						"streetAddress": "{{ restaurant.address?.street }}",
+						"addressLocality": "{{ restaurant.address?.city }}",
+						"postalCode": "{{ restaurant.address?.zipCode }}",
+						"addressCountry": "DE"
+					  }  
+					}
+				</script>
+
 			</header>
 
 			<section id="order">
