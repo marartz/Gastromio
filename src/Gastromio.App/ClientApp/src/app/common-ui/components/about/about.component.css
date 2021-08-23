@@ -1,7 +1,5 @@
 #about {
-	background-color: #adcccb;
-	background-image: url("../../../../assets/images/rough/blue.png");
-	background-repeat: repeat;
+	background: var(--bg-rough-blue);
 	margin-top: -90px;
 }
 
@@ -46,14 +44,20 @@
 }
 
 .page-hero-content h1 {
-	color: #363636;
+	color: var(--grey);
 	max-width: 800px;
 	margin: 0 auto 16px;
 	font-weight: 600;
-	font-family: "Apercu", sans-serif;
+	font-family: var(--sans);
 	font-size: 64px;
 	line-height: 1.09;
 	letter-spacing: -0.33px;
+}
+
+@media (max-width: 767px) {
+	.page-hero-content h1 {
+		font-size: 42px;
+	}
 }
 
 .page-hero-content p {
@@ -61,7 +65,7 @@
 	margin: 0 0 32px;
 	font-size: 19px;
 	line-height: 1.47;
-	font-family: "Apercu", sans-serif;
+	font-family: var(--sans);
 }
 
 @media screen and (min-width: 768px) {
@@ -71,10 +75,7 @@
 	}
 }
 
-@media screen and (max-width: 768px) {
-	.page-hero-content h1 {
-		font-size: 46px;
-	}
+@media screen and (max-width: 767px) {
 	.page-hero-wrapper {
 		margin-bottom: 8px;
 		margin-top: 32px;
@@ -85,9 +86,7 @@
 }
 
 #about-gastromio {
-	background-color: #adcccb;
-	background-image: url("../../../../assets/images/rough/blue.png");
-	background-repeat: repeat;
+	background: var(--bg-rough-blue);
 }
 
 .about-wrapper::after {
@@ -121,8 +120,8 @@
 }
 
 .left p {
-	font-family: "Apercu", sans-serif;
-	color: #363636;
+	font-family: var(--sans);
+	color: var(--grey);
 	font-size: 14px;
 	font-weight: 300;
 	text-align: left;
@@ -136,16 +135,22 @@
 }
 
 .right h2 {
-	font-family: "Apercu", sans-serif;
-	color: #363636;
+	font-family: var(--sans);
+	color: var(--grey);
 	font-size: 32px;
 	font-weight: 700;
 	letter-spacing: -0.5;
 }
 
+@media (max-width: 767px) {
+	.right h2 {
+		font-size: 26px;
+	}
+}
+
 .right p {
-	font-family: "Apercu", sans-serif;
-	color: #363636;
+	font-family: var(--sans);
+	color: var(--grey);
 	font-size: 18px;
 	font-weight: 300;
 }
@@ -155,12 +160,18 @@
 }
 
 #partners h2 {
-	font-family: "Apercu", sans-serif;
-	color: #363636;
+	font-family: var(--sans);
+	color: var(--grey);
 	font-size: 32px;
 	font-weight: 700;
 	letter-spacing: -0.5;
 	margin-bottom: 40px;
+}
+
+@media (max-width: 767px) {
+	#partners h2 {
+		font-size: 28px;
+	}
 }
 
 #special {

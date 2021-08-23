@@ -24,6 +24,12 @@
 	cursor: pointer;
 }
 
+@media (max-width: 767px) {
+	#reservation a.proceed-to-reservation {
+		margin-left: 0px;
+	}
+}
+
 #reservation a.proceed-to-reservation:hover {
 	background-color: transparent;
 	border: 1px solid var(--yellow);

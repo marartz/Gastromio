@@ -18,11 +18,15 @@ import { OrderFacade } from '../../../order/order.facade';
   ],
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
+
+  initialized: boolean;
+
   restaurants$: Observable<RestaurantModel[]>;
 
   constructor(private orderFacade: OrderFacade, public router: Router) {}
 
   ngOnInit() {
+
     this.orderFacade.resetFilters();
 
     this.restaurants$ = this.orderFacade.getRestaurants$().pipe(
