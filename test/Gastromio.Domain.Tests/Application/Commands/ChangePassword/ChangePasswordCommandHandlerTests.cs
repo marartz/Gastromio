@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -15,7 +14,7 @@ using Xunit;
 namespace Gastromio.Domain.Tests.Application.Commands.ChangePassword
 {
     public class ChangePasswordCommandHandlerTests : CommandHandlerTestBase<ChangePasswordCommandHandler,
-        ChangePasswordCommand, bool>
+        ChangePasswordCommand>
     {
         private readonly Fixture fixture;
 
@@ -59,45 +58,37 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangePassword
         }
 
         [Fact]
-        public async Task HandleAsync_CommandWithInvalidPassword_ShouldFailBecauseOfInvalidPassword()
+        public async Task HandleAsync_CommandWithInvalidPassword_ShouldThrowDomainException()
         {
             // Arrange
             var testObject = fixture.CreateTestObject();
 
             // Act
-            var result = await testObject.HandleAsync(new ChangePasswordCommand("test"), fixture.UserWithMinimumRole, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(new ChangePasswordCommand("test"), fixture.UserWithMinimumRole, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-                result?.Should().BeOfType(typeof(FailureResult<bool>));
-                FailureResult<bool> fresult = (FailureResult<bool>)result;
-                fresult.Errors.Should().HaveCount(1);
-                fresult.Errors.Values.First().First().Code.Should().Be(FailureResultCode.PasswordIsNotValid);
+                await act.Should().ThrowAsync<DomainException>()
+                    .WithMessage("*Das Passwort ist nicht komplex*");
             }
         }
 
         [Fact]
-        public async Task HandleAsync_NoGivenUser_ShouldReturnUnauthorized()
+        public async Task HandleAsync_NoGivenUser_ShouldThrowDomainException()
         {
             // Arrange
             var testObject = fixture.CreateTestObject();
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, null, CancellationToken.None);
+            Func<Task> act = async () => await testObject.HandleAsync(command, null, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsFailure.Should().BeTrue();
-                result?.Should().BeOfType(typeof(FailureResult<bool>));
-                FailureResult<bool> fresult = (FailureResult<bool>)result;
-                fresult.Errors.Should().HaveCount(1);
-                fresult.Errors.Values.First().First().Code.Should().Be(FailureResultCode.SessionExpired);
+                await act.Should().ThrowAsync<DomainException>()
+                    .WithMessage("*nicht angemeldet*");
             }
         }
 
@@ -111,28 +102,25 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangePassword
             var command = fixture.CreateSuccessfulCommand();
 
             // Act
-            var result = await testObject.HandleAsync(command, fixture.User, CancellationToken.None);
+            await testObject.HandleAsync(command, fixture.User, CancellationToken.None);
 
             // Assert
             using (new AssertionScope())
             {
-                result.Should().NotBeNull();
-                result?.IsSuccess.Should().BeTrue();
-                var validationResult = fixture.User.ValidatePassword("Start2020!!!") as SuccessResult<bool>;
-                validationResult.Should().NotBeNull();
-                validationResult?.Value.Should().BeTrue();
+                var validationResult = fixture.User.ValidatePassword("Start2020!!!");
+                validationResult.Should().BeTrue();
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.User, Times.Once);
             }
         }
 
         protected override
-            CommandHandlerTestFixtureBase<ChangePasswordCommandHandler, ChangePasswordCommand, bool> FixtureBase
+            CommandHandlerTestFixtureBase<ChangePasswordCommandHandler, ChangePasswordCommand> FixtureBase
         {
             get { return fixture; }
         }
 
         private sealed class Fixture : CommandHandlerTestFixtureBase<ChangePasswordCommandHandler,
-            ChangePasswordCommand, bool>
+            ChangePasswordCommand>
         {
             public Fixture(Role? minimumRole) : base(minimumRole)
             {
