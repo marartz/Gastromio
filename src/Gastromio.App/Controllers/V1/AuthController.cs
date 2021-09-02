@@ -154,11 +154,7 @@ namespace Gastromio.App.Controllers.V1
                     passwordResetCode, changePasswordWithResetCodeModel.Password),
                 null
             );
-                    passwordResetCode, changePasswordWithResetCodeModel.Password), null);
-
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+            return Ok();
         }
 
         [Route("changepassword")]
@@ -173,8 +169,9 @@ namespace Gastromio.App.Controllers.V1
 
             var curUserId = new UserId(currentUserId);
 
-            var commandResult = await commandDispatcher.PostAsync<ChangePasswordCommand, bool>(
-                new ChangePasswordCommand(changeUserPasswordModel.Password), curUserId);
+            await commandDispatcher.PostAsync(
+                new ChangePasswordCommand(changeUserPasswordModel.Password),
+                curUserId);
 
             return Ok();
         }

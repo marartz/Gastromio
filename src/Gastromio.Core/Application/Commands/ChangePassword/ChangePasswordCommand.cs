@@ -1,6 +1,6 @@
 ﻿namespace Gastromio.Core.Application.Commands.ChangePassword
 {
-    public class ChangePasswordCommand : ICommand<bool>
+    public class ChangePasswordCommand : ICommand
     {
         public ChangePasswordCommand(string password)
         {
