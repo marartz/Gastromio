@@ -37,6 +37,15 @@
 							>Einstellungen</a
 						>
 					</ng-container>
+                    <a
+						class="top-bar__item settings"
+						data-aos="gm-move-left"
+						data-aos-duration="800"
+						data-aos-delay="900"
+						data-aos-once="true"
+						[routerLink]="['/changepassword']"
+						>Passwortänderung
+					</a>
 					<a class="top-bar__item" (click)="logout()">Abmelden</a>
 				</ng-container>
 			</ul>
