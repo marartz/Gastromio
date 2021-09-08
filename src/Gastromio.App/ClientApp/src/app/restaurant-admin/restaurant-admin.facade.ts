@@ -1379,7 +1379,7 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService
-      .decOrderOfDishAsync(this.restaurant$.value.id, dishId)
+      .decOrderOfDishAsync(this.restaurant$.value.id, dishCategoryId, dishId)
       .subscribe(
         () => {
           this.isUpdating$.next(false);
@@ -1419,7 +1419,7 @@ export class RestaurantAdminFacade {
 
     this.isUpdating$.next(true);
     this.restaurantAdminService
-      .incOrderOfDishAsync(this.restaurant$.value.id, dishId)
+      .incOrderOfDishAsync(this.restaurant$.value.id, dishCategoryId, dishId)
       .subscribe(
         () => {
           this.isUpdating$.next(false);
