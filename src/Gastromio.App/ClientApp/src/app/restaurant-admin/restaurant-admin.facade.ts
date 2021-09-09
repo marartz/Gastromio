@@ -1071,6 +1071,7 @@ export class RestaurantAdminFacade {
           });
           dishCategories.splice(index + 1, 0, dishCategory);
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
@@ -1107,6 +1108,7 @@ export class RestaurantAdminFacade {
           );
           dishCategories[index].name = name;
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
@@ -1139,6 +1141,7 @@ export class RestaurantAdminFacade {
           );
           dishCategories.splice(index, 1);
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
@@ -1173,6 +1176,7 @@ export class RestaurantAdminFacade {
             dishCategories[pos - 1],
           ];
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         },
@@ -1206,6 +1210,7 @@ export class RestaurantAdminFacade {
             dishCategories[pos],
           ];
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         },
@@ -1235,6 +1240,7 @@ export class RestaurantAdminFacade {
           const dishCategory = dishCategories[dishCategoryIndex];
           dishCategory.enabled = true;
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         },
@@ -1264,6 +1270,7 @@ export class RestaurantAdminFacade {
           const dishCategory = dishCategories[dishCategoryIndex];
           dishCategory.enabled = false;
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         },
@@ -1309,6 +1316,7 @@ export class RestaurantAdminFacade {
             dishCategory.dishes[dishIndex] = dish;
           }
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
@@ -1349,6 +1357,7 @@ export class RestaurantAdminFacade {
           );
           dishCategory.dishes.splice(dishIndex, 1);
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
@@ -1390,6 +1399,7 @@ export class RestaurantAdminFacade {
             dishCategory.dishes[pos - 1],
           ];
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         },
@@ -1430,6 +1440,7 @@ export class RestaurantAdminFacade {
             dishCategory.dishes[pos],
           ];
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         },
