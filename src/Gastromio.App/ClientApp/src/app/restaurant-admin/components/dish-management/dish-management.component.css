@@ -5,6 +5,10 @@
 	width: 100%;
 }
 
+.no-scroll {
+	overflow-x: hidden !important;
+}
+
 #table table {
 	align-items: center;
 	background-color: transparent;
@@ -58,9 +62,6 @@
 	position: relative;
 }
 
-#table table tbody tr th {
-}
-
 #table table tbody tr td {
 	background-color: #adcccb;
 }
@@ -102,6 +103,7 @@
 #table table tbody .actions {
 	padding: 8px;
 	text-align: right;
+	min-width: 8em;
 }
 
 input.failure {
