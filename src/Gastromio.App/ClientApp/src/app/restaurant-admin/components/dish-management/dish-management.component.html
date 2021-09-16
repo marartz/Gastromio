@@ -185,7 +185,7 @@
 				</table>
 			</a>
 			<ng-template ngbNavContent>
-				<div id="table">
+				<div id="table" class="no-scroll">
 					<table class="table table-sm">
 						<thead>
 							<tr>
@@ -219,14 +219,14 @@
 						</thead>
 						<tbody>
 							<tr *ngFor="let dish of dishCategory.dishes">
-								<th scope="row">
+								<td scope="row">
 									<p class="email">
 										{{ dish.name }} <br /><span style="font-size: 80%">{{
 											dish.description
 										}}</span>
 									</p>
-								</th>
-								<th>
+								</td>
+								<td>
 									<ng-container *ngIf="dish.variants?.length === 1">
 										<p class="email">
 											{{ getPriceOfVariant(dish.variants[0]) }}
@@ -241,8 +241,8 @@
 											{{ variant.name }}: {{ getPriceOfVariant(variant) }}
 										</p>
 									</ng-container>
-								</th>
-								<td class="actions" style="min-width: 8em">
+								</td>
+								<td class="actions">
 									<button
 										(click)="openEditDishForm(dishCategory, dish)"
 										class="action-item"
@@ -293,7 +293,7 @@
 										[disabled]="isFirstDish(dishCategory, dish)"
 										class="action-item"
 										placement="top"
-										ngbTooltip="Nach oben"
+										ngbTooltip="Hoch"
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +313,7 @@
 										[disabled]="isLastDish(dishCategory, dish)"
 										class="action-item"
 										placement="top"
-										ngbTooltip="Nach unten"
+										ngbTooltip="Runter"
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"

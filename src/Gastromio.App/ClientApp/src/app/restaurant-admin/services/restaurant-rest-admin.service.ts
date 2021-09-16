@@ -710,7 +710,7 @@ export class RestaurantRestAdminService {
       .pipe(take(1));
   }
 
-  public incOrderOfDishAsync(id: string, dishId: string): Observable<boolean> {
+  public incOrderOfDishAsync(id: string, dishCategoryId: string, dishId: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -724,13 +724,13 @@ export class RestaurantRestAdminService {
           '/restaurants/' +
           encodeURIComponent(id) +
           '/incorderofdish',
-        { dishId },
+        { dishCategoryId, dishId },
         httpOptions
       )
       .pipe(take(1));
   }
 
-  public decOrderOfDishAsync(id: string, dishId: string): Observable<boolean> {
+  public decOrderOfDishAsync(id: string, dishCategoryId: string, dishId: string): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -744,7 +744,7 @@ export class RestaurantRestAdminService {
           '/restaurants/' +
           encodeURIComponent(id) +
           '/decorderofdish',
-        { dishId },
+        { dishCategoryId, dishId },
         httpOptions
       )
       .pipe(take(1));
