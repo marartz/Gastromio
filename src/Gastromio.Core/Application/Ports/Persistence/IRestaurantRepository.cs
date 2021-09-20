@@ -23,6 +23,8 @@ namespace Gastromio.Core.Application.Ports.Persistence
         Task<IEnumerable<Restaurant>> FindByRestaurantNameAsync(string restaurantName, CancellationToken cancellationToken = default);
 
         Task<Restaurant> FindByImportIdAsync(string importId, CancellationToken cancellationToken = default);
+        
+        Task<bool> DoesImportIdAlreadyExistAsync(RestaurantId restaurantId, string importId, CancellationToken cancellationToken = default);
 
         Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId, CancellationToken cancellationToken = default);
 
