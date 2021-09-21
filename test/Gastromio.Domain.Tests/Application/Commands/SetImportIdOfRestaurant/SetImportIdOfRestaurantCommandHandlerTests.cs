@@ -51,6 +51,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
             // Arrange
             fixture.SetupRandomRestaurant(fixture.MinimumRole);
             fixture.SetupRandomImportId();
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
             fixture.SetupRestaurantRepositoryDuplicatedImportId(true);
 
             var testObject = fixture.CreateTestObject();
@@ -143,7 +144,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
 
             public void SetupRestaurantRepositoryDuplicatedImportId(bool duplicateShouldExist = false)
             {
-                RestaurantRepositoryMock.SetupDoesRestaurantImportIdAlreadyExist(Restaurant.Id, Restaurant.ImportId)
+                RestaurantRepositoryMock.SetupDoesRestaurantImportIdAlreadyExist(Restaurant.Id, ImportId)
                     .ReturnsAsync(duplicateShouldExist);
             }
 
