@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public static string DatabaseName = "gastromio_dev";
+        public static string DatabaseName = "gastromio";
         public static string CuisineCollectionName = "cuisines";
         public static string RestaurantCollectionName = "restaurants";
         public static string RestaurantImageCollectionName = "restaurant_images";
