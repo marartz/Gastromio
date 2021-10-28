@@ -68,6 +68,8 @@ namespace Gastromio.Core.Domain.Services
                             .Aggregate((i1, i2) => i1.OrderNo > i2.OrderNo ? i1 : i2);
 
                     category = restaurant.AddDishCategory(dishRow.Category, lastDishCategory?.Id, curUserId);
+                    restaurant.EnableDishCategory(category.Id, curUserId);
+                    restaurant.DishCategories.TryGetDishCategory(category.Id, out category);
 
                     log.AddLine(ImportLogLineType.Information, rowIndex,
                         "Lege für Restaurant '{0}' eine neue Kategorie mit Namen '{1}' und Sortierung '{2}' an",
