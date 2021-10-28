@@ -6,6 +6,7 @@ import {
   combineLatest,
   Observable,
   of,
+  Subject,
   throwError,
 } from 'rxjs';
 import {
@@ -62,9 +63,7 @@ export class SystemAdminFacade {
   private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     undefined
   );
-  private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    undefined
-  );
+  private updateError$: Subject<string> = new Subject<string>();
 
   static earliestOpeningTime: number = 4 * 60;
 
