@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subject, throwError} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { CuisineModel } from '../shared/models/cuisine.model';
@@ -57,9 +57,7 @@ export class RestaurantAdminFacade {
   private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     undefined
   );
-  private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    undefined
-  );
+  private updateError$: Subject<string> = new Subject<string>();
 
   static earliestOpeningTime: number = 4 * 60;
 

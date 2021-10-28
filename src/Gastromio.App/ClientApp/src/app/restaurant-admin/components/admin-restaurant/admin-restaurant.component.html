@@ -25,7 +25,7 @@
 		data-aos-anchor="block-ui"
 		data-aos-duration="400"
 		role="status"
-		*ngIf="(updateError$ | async) !== undefined"
+		*ngIf="updateError !== undefined"
 	>
 		<div class="alert-wrap">
 			<img
@@ -35,7 +35,7 @@
 				width="14"
 			/>
 			<div class="alert-line-2"></div>
-			<div class="alert-text"><b>Fehler:</b> {{ updateError$ | async }}</div>
+			<div class="alert-text"><b>Fehler:</b> {{ updateError }}</div>
 		</div>
 	</div>
 
