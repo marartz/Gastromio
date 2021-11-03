@@ -17,6 +17,7 @@
 	color: #363636;
 	margin-bottom: 16px;
 	width: 100%;
+	table-layout: fixed;
 }
 
 #table table > * {
@@ -64,6 +65,7 @@
 
 #table table tbody tr td {
 	background-color: #adcccb;
+	overflow: hidden;
 }
 
 #table table tbody tr th .email {
