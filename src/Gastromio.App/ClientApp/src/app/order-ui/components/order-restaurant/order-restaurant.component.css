@@ -136,6 +136,7 @@
 	flex-grow: 1;
 	margin-bottom: auto;
 	position: relative;
+	overflow: hidden;
 }
 
 #order-restaurant #order #menu .dish-category {
