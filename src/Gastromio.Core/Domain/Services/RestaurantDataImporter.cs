@@ -65,12 +65,12 @@ namespace Gastromio.Core.Domain.Services
 
                 var regularOpeningDays = new RegularOpeningDays(Enumerable.Empty<RegularOpeningDay>());
                 regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 0, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 1, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 2, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 3, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 4, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 5, restaurantRow.OpeningHoursMonday);
-                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 6, restaurantRow.OpeningHoursMonday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 1, restaurantRow.OpeningHoursTuesday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 2, restaurantRow.OpeningHoursWednesday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 3, restaurantRow.OpeningHoursThursday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 4, restaurantRow.OpeningHoursFriday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 5, restaurantRow.OpeningHoursSaturday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 6, restaurantRow.OpeningHoursSunday);
 
                 var deviatingOpeningDays = GetDeviatingOpeningDays(restaurantRow.DeviatingOpeningHours);
 
@@ -100,10 +100,12 @@ namespace Gastromio.Core.Domain.Services
                 var supportedOrderMode = GetSupportOrderMode(restaurantRow.SupportedOrderMode);
 
                 ExternalMenu externalMenu = null;
+                var externalMenuId = new ExternalMenuId(Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7"));
+
                 if (!string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuUrl))
                 {
                     externalMenu = new ExternalMenu(
-                        new ExternalMenuId(Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7")),
+                        externalMenuId,
                         !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuName)
                             ? restaurantRow.ExternalMenuName
                             : "Tageskarte",
@@ -141,7 +143,14 @@ namespace Gastromio.Core.Domain.Services
                     restaurant.Deactivate(curUserId);
                 restaurant.DisableSupport(curUserId);
                 restaurant.ChangeSupportedOrderMode(supportedOrderMode, curUserId);
-                restaurant.SetExternalMenu(externalMenu, curUserId);
+                if (externalMenu != null)
+                {
+                    restaurant.SetExternalMenu(externalMenu, curUserId);
+                }
+                else if (restaurant.TryGetExternalMenu(externalMenuId, out var _))
+                {
+                    restaurant.RemoveExternalMenu(externalMenuId, curUserId);
+                }
 
                 var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
                 log.AddLine(ImportLogLineType.Information, rowIndex,

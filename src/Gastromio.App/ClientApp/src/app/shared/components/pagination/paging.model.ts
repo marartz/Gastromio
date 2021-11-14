@@ -1,6 +1,5 @@
 ﻿export class PagingModel<TItem> {
-  constructor() {
-  }
+  constructor() {}
 
   public total: number;
 

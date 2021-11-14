@@ -1,17 +1,17 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {UserModel} from '../../../shared/models/user.model';
+import { UserModel } from '../../../shared/models/user.model';
 
-import {ConfirmPasswordValidator} from '../../../auth/validators/password.validator';
+import { ConfirmPasswordValidator } from '../../../auth/validators/password.validator';
 
-import {SystemAdminFacade} from "../../system-admin.facade";
+import { SystemAdminFacade } from '../../system-admin.facade';
 
 @Component({
   selector: 'app-change-user-password',
@@ -19,11 +19,12 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './change-user-password.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
-  ]
+    '../../../../assets/css/modals.component.min.css',
+    '../../../../assets/css/overlays/modals.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+  ],
 })
 export class ChangeUserPasswordComponent implements OnInit {
-
   @Input() public user: UserModel;
   @BlockUI() blockUI: NgBlockUI;
 
@@ -35,25 +36,34 @@ export class ChangeUserPasswordComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private facade: SystemAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.facade.getIsUpdating$()
-      .subscribe(isUpdating => {
-        if (isUpdating) {
-          this.blockUI.start('Verarbeite Daten...');
-        } else {
-          this.blockUI.stop();
-        }
-      });
+    this.facade.getIsUpdating$().subscribe((isUpdating) => {
+      if (isUpdating) {
+        this.blockUI.start('Verarbeite Daten...');
+      } else {
+        this.blockUI.stop();
+      }
+    });
 
     this.message$ = this.facade.getUpdateError$();
 
-    this.changeUserPasswordForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
-      passwordRepeat: ['']
-    }, {validators: ConfirmPasswordValidator('password', 'passwordRepeat')});
+    this.changeUserPasswordForm = this.formBuilder.group(
+      {
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}'
+            ),
+          ],
+        ],
+        passwordRepeat: [''],
+      },
+      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') }
+    );
   }
 
   get f() {
@@ -66,10 +76,10 @@ export class ChangeUserPasswordComponent implements OnInit {
       return;
     }
 
-    this.facade.changeUserPassword$(this.user.id, data.password)
+    this.facade
+      .changeUserPassword$(this.user.id, data.password)
       .subscribe(() => {
         this.activeModal.close('Close click');
       });
   }
-
 }

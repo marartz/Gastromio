@@ -1,5 +1,4 @@
 export class ImportLogLineModel {
-
   constructor(init?: Partial<ImportLogLineModel>) {
     if (init) {
       Object.assign(this, init);
@@ -19,8 +18,7 @@ export class ImportLogLineModel {
       timestamp: this.timestamp,
       type: this.type,
       rowIndex: this.rowIndex,
-      message: this.message
+      message: this.message,
     });
   }
-
 }

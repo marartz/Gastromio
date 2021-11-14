@@ -1,31 +1,39 @@
-import {PaymentMethodModel} from './payment-method.model';
-import {UserModel} from './user.model';
-import {CuisineModel} from './cuisine.model';
-import {DateModel} from "./date.model";
-import * as moment from "moment";
-import {DishCategoryModel} from "./dish-category.model";
+import { PaymentMethodModel } from './payment-method.model';
+import { UserModel } from './user.model';
+import { CuisineModel } from './cuisine.model';
+import { DateModel } from './date.model';
+import * as moment from 'moment';
+import { DishCategoryModel } from './dish-category.model';
 
 export class RestaurantModel {
-
   constructor(init?: Partial<RestaurantModel>) {
     if (init) {
       Object.assign(this, init);
     }
     this.address = new AddressModel(this.address);
     this.contactInfo = new ContactInfoModel(this.contactInfo);
-    this.regularOpeningDays = this.regularOpeningDays?.map(day => new RegularOpeningDayModel(day)) ?? new Array<RegularOpeningDayModel>();
-    this.deviatingOpeningDays = this.deviatingOpeningDays?.map(day => new DeviatingOpeningDayModel(day)) ?? new Array<DeviatingOpeningDayModel>();
+    this.regularOpeningDays =
+      this.regularOpeningDays?.map((day) => new RegularOpeningDayModel(day)) ??
+      new Array<RegularOpeningDayModel>();
+    this.deviatingOpeningDays =
+      this.deviatingOpeningDays?.map(
+        (day) => new DeviatingOpeningDayModel(day)
+      ) ?? new Array<DeviatingOpeningDayModel>();
     this.pickupInfo = new PickupInfoModel(this.pickupInfo);
     this.deliveryInfo = new DeliveryInfoModel(this.deliveryInfo);
     this.reservationInfo = new ReservationInfoModel(this.reservationInfo);
-    this.dishCategories = this.dishCategories?.map(dishCategory => new DishCategoryModel(dishCategory)) ?? new Array<DishCategoryModel>();
-    this.externalMenus = this.externalMenus?.map(menu => new ExternalMenu(menu)) ?? new Array<ExternalMenu>();
-    this.paymentMethods = this.paymentMethods?.map(paymentMethod => new PaymentMethodModel(paymentMethod))
+    this.dishCategories =
+      this.dishCategories?.map(
+        (dishCategory) => new DishCategoryModel(dishCategory)
+      ) ?? new Array<DishCategoryModel>();
+    this.externalMenus =
+      this.externalMenus?.map((menu) => new ExternalMenu(menu)) ??
+      new Array<ExternalMenu>();
+    this.paymentMethods = this.paymentMethods
+      ?.map((paymentMethod) => new PaymentMethodModel(paymentMethod))
       .sort((a, b) => {
-        if (a.name < b.name)
-          return -1
-        else if (a.name > b.name)
-          return 1;
+        if (a.name < b.name) return -1;
+        else if (a.name > b.name) return 1;
         return 0;
       });
 
@@ -39,7 +47,6 @@ export class RestaurantModel {
       this.updatedOnDate = updatedOnMoment.local().toDate();
     } catch (e) {}
   }
-
 
   public id: string;
 
@@ -111,9 +118,11 @@ export class RestaurantModel {
       alias: this.alias,
       address: this.address?.clone(),
       contactInfo: this.contactInfo?.clone(),
-      imageTypes: this.imageTypes?.map(imageType => imageType),
-      regularOpeningDays: this.regularOpeningDays?.map(day => day?.clone()),
-      deviatingOpeningDays: this.deviatingOpeningDays?.map(day => day?.clone()),
+      imageTypes: this.imageTypes?.map((imageType) => imageType),
+      regularOpeningDays: this.regularOpeningDays?.map((day) => day?.clone()),
+      deviatingOpeningDays: this.deviatingOpeningDays?.map((day) =>
+        day?.clone()
+      ),
       regularOpeningHoursText: this.regularOpeningHoursText,
       deviatingOpeningHoursText: this.deviatingOpeningHoursText,
       openingHoursTodayText: this.openingHoursTodayText,
@@ -121,42 +130,51 @@ export class RestaurantModel {
       deliveryInfo: this.deliveryInfo?.clone(),
       reservationInfo: this.reservationInfo?.clone(),
       hygienicHandling: this.hygienicHandling,
-      cuisines: this.cuisines?.map(cuisine => cuisine?.clone()),
+      cuisines: this.cuisines?.map((cuisine) => cuisine?.clone()),
       cuisinesText: this.cuisinesText,
-      paymentMethods: this.paymentMethods?.map(paymentMethod => paymentMethod?.clone()),
-      administrators: this.administrators?.map(administrator => administrator?.clone()),
+      paymentMethods: this.paymentMethods?.map((paymentMethod) =>
+        paymentMethod?.clone()
+      ),
+      administrators: this.administrators?.map((administrator) =>
+        administrator?.clone()
+      ),
       isActive: this.isActive,
       needsSupport: this.needsSupport,
       supportedOrderMode: this.supportedOrderMode,
-      dishCategories: this.dishCategories?.map(dishCategory => dishCategory?.clone()),
-      externalMenus: this.externalMenus?.map(menu => menu?.clone()),
+      dishCategories: this.dishCategories?.map((dishCategory) =>
+        dishCategory?.clone()
+      ),
+      externalMenus: this.externalMenus?.map((menu) => menu?.clone()),
       createdOn: this.createdOn,
       createdOnDate: this.createdOnDate,
       createdBy: this.createdBy.clone(),
       updatedOn: this.updatedOn,
       updatedOnDate: this.updatedOnDate,
-      updatedBy: this.updatedBy.clone()
+      updatedBy: this.updatedBy.clone(),
     });
   }
 
   public isOpen(dateTime: Date): boolean {
-    if (dateTime === undefined || dateTime < new Date())
-      dateTime = new Date();
+    if (dateTime === undefined || dateTime < new Date()) dateTime = new Date();
     return this.findOpeningPeriod(dateTime) !== undefined;
   }
 
   public getRestaurantClosedReason(dateTime: Date): string {
-    if (dateTime === undefined || dateTime < new Date())
-      dateTime = new Date();
-    const date = new DateModel(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate());
-    const deviatingOpeningDay = this.deviatingOpeningDays?.find(en => DateModel.isEqual(en.date, date));
-    if (!deviatingOpeningDay)
-      return "geschlossen";
+    if (dateTime === undefined || dateTime < new Date()) dateTime = new Date();
+    const date = new DateModel(
+      dateTime.getFullYear(),
+      dateTime.getMonth() + 1,
+      dateTime.getDate()
+    );
+    const deviatingOpeningDay = this.deviatingOpeningDays?.find((en) =>
+      DateModel.isEqual(en.date, date)
+    );
+    if (!deviatingOpeningDay) return 'geschlossen';
 
-    if (deviatingOpeningDay.status === "fully-booked") {
-      return "ausgebucht";
+    if (deviatingOpeningDay.status === 'fully-booked') {
+      return 'ausgebucht';
     } else {
-      return "geschlossen";
+      return 'geschlossen';
     }
   }
 
@@ -169,7 +187,11 @@ export class RestaurantModel {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const orderDate = new Date(orderDateTime.getFullYear(), orderDateTime.getMonth(), orderDateTime.getDate());
+    const orderDate = new Date(
+      orderDateTime.getFullYear(),
+      orderDateTime.getMonth(),
+      orderDateTime.getDate()
+    );
 
     if (this.supportedOrderMode === 'phone') {
       return false;
@@ -211,27 +233,37 @@ export class RestaurantModel {
     }
 
     if (this.deviatingOpeningDays) {
-      const date = new DateModel(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate());
-      const deviatingOpeningDay = this.deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+      const date = new DateModel(
+        dateTime.getFullYear(),
+        dateTime.getMonth() + 1,
+        dateTime.getDate()
+      );
+      const deviatingOpeningDay = this.deviatingOpeningDays.find((en) =>
+        DateModel.isEqual(en.date, date)
+      );
       if (deviatingOpeningDay) {
-        return deviatingOpeningDay?.openingPeriods.find(en => en.start <= time && time <= en.end);
+        return deviatingOpeningDay?.openingPeriods.find(
+          (en) => en.start <= time && time <= en.end
+        );
       }
     }
 
     if (this.regularOpeningDays) {
-      const regularOpeningDay = this.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
+      const regularOpeningDay = this.regularOpeningDays.find(
+        (en) => en.dayOfWeek === dayOfWeek
+      );
       if (regularOpeningDay) {
-        return regularOpeningDay?.openingPeriods.find(en => en.start <= time && time <= en.end);
+        return regularOpeningDay?.openingPeriods.find(
+          (en) => en.start <= time && time <= en.end
+        );
       }
     }
 
     return undefined;
   }
-
 }
 
 export class AddressModel {
-
   constructor(init?: Partial<AddressModel>) {
     if (init) {
       Object.assign(this, init);
@@ -248,14 +280,12 @@ export class AddressModel {
     return new AddressModel({
       street: this.street,
       zipCode: this.zipCode,
-      city: this.city
+      city: this.city,
     });
   }
-
 }
 
 export class ContactInfoModel {
-
   constructor(init?: Partial<ContactInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -284,14 +314,12 @@ export class ContactInfoModel {
       responsiblePerson: this.responsiblePerson,
       emailAddress: this.emailAddress,
       mobile: this.mobile,
-      orderNotificationByMobile: this.orderNotificationByMobile
+      orderNotificationByMobile: this.orderNotificationByMobile,
     });
   }
-
 }
 
 export class OpeningPeriodModel {
-
   constructor(init?: Partial<OpeningPeriodModel>) {
     if (init) {
       Object.assign(this, init);
@@ -305,19 +333,19 @@ export class OpeningPeriodModel {
   public clone(): OpeningPeriodModel {
     return new OpeningPeriodModel({
       start: this.start,
-      end: this.end
+      end: this.end,
     });
   }
-
 }
 
 export class RegularOpeningDayModel {
-
   constructor(init?: Partial<RegularOpeningDayModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.openingPeriods = this.openingPeriods?.map(period => new OpeningPeriodModel(period)) ?? new Array<OpeningPeriodModel>();
+    this.openingPeriods =
+      this.openingPeriods?.map((period) => new OpeningPeriodModel(period)) ??
+      new Array<OpeningPeriodModel>();
   }
 
   public dayOfWeek: number;
@@ -327,19 +355,19 @@ export class RegularOpeningDayModel {
   public clone(): RegularOpeningDayModel {
     return new RegularOpeningDayModel({
       dayOfWeek: this.dayOfWeek,
-      openingPeriods: this.openingPeriods?.map(period => period?.clone())
-    })
+      openingPeriods: this.openingPeriods?.map((period) => period?.clone()),
+    });
   }
-
 }
 
 export class DeviatingOpeningDayModel {
-
   constructor(init?: Partial<DeviatingOpeningDayModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.openingPeriods = this.openingPeriods?.map(period => new OpeningPeriodModel(period)) ?? new Array<OpeningPeriodModel>();
+    this.openingPeriods =
+      this.openingPeriods?.map((period) => new OpeningPeriodModel(period)) ??
+      new Array<OpeningPeriodModel>();
   }
 
   public date: DateModel;
@@ -352,14 +380,12 @@ export class DeviatingOpeningDayModel {
     return new DeviatingOpeningDayModel({
       date: this.date?.clone(),
       status: this.status,
-      openingPeriods: this.openingPeriods?.map(period => period?.clone())
+      openingPeriods: this.openingPeriods?.map((period) => period?.clone()),
     });
   }
-
 }
 
 export class PickupInfoModel {
-
   constructor(init?: Partial<PickupInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -385,14 +411,12 @@ export class PickupInfoModel {
       minimumOrderValue: this.minimumOrderValue,
       minimumOrderValueText: this.minimumOrderValueText,
       maximumOrderValue: this.maximumOrderValue,
-      maximumOrderValueText: this.maximumOrderValueText
+      maximumOrderValueText: this.maximumOrderValueText,
     });
   }
-
 }
 
 export class DeliveryInfoModel {
-
   constructor(init?: Partial<DeliveryInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -420,7 +444,7 @@ export class DeliveryInfoModel {
       minimumOrderValue: this.minimumOrderValue,
       minimumOrderValueText: this.minimumOrderValueText,
       maximumOrderValue: this.maximumOrderValue,
-      maximumOrderValueText: this.maximumOrderValueText
+      maximumOrderValueText: this.maximumOrderValueText,
     });
   }
 
@@ -429,16 +453,16 @@ export class DeliveryInfoModel {
     if (val === undefined) {
       return undefined;
     } else if (val > 0) {
-      return 'Min. ' + val.toLocaleString('de', {minimumFractionDigits: 2}) + ' €';
+      return (
+        'Min. ' + val.toLocaleString('de', { minimumFractionDigits: 2 }) + ' €'
+      );
     } else {
       return 'Gratis';
     }
   }
-
 }
 
 export class ReservationInfoModel {
-
   constructor(init?: Partial<ReservationInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -452,14 +476,12 @@ export class ReservationInfoModel {
   public clone(): ReservationInfoModel {
     return new ReservationInfoModel({
       enabled: this.enabled,
-      reservationSystemUrl: this.reservationSystemUrl
+      reservationSystemUrl: this.reservationSystemUrl,
     });
   }
-
 }
 
 export class ServiceInfoModel {
-
   constructor(init?: Partial<ServiceInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -502,14 +524,12 @@ export class ServiceInfoModel {
       deliveryCosts: this.deliveryCosts,
       reservationEnabled: this.reservationEnabled,
       reservationSystemUrl: this.reservationSystemUrl,
-      hygienicHandling: this.hygienicHandling
+      hygienicHandling: this.hygienicHandling,
     });
   }
-
 }
 
 export class ExternalMenu {
-
   constructor(init?: Partial<ExternalMenu>) {
     if (init) {
       Object.assign(this, init);
@@ -529,8 +549,7 @@ export class ExternalMenu {
       id: this.id,
       name: this.name,
       description: this.description,
-      url: this.url
+      url: this.url,
     });
   }
-
 }

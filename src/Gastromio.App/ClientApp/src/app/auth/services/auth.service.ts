@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import {Observable, throwError} from 'rxjs';
-import {catchError, map, take, tap} from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, take, tap } from 'rxjs/operators';
 
-import {UserModel} from '../../shared/models/user.model';
+import { UserModel } from '../../shared/models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -12,12 +12,10 @@ export class AuthService {
   private requestPasswordChangeUrl = 'api/v1/auth/requestpasswordchange';
   private validatePasswordResetCodeUrl = 'api/v1/auth/validatepasswordresetcode';
   private changePasswordWithResetCodeUrl = 'api/v1/auth/changepasswordwithresetcode';
+  private changePasswordUrl = 'api/v1/auth/changepassword';
   private pingUrl = 'api/v1/auth/ping';
 
-  constructor(
-    private http: HttpClient
-  ) {
-  }
+  constructor(private http: HttpClient) {}
 
   public isAuthenticated(): boolean {
     return this.getToken() !== undefined && this.getUser() !== undefined;
@@ -44,10 +42,11 @@ export class AuthService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
-      })
+      }),
     };
 
-    return this.http.post<LoginResultModel>(this.loginUrl, {email, password}, httpOptions)
+    return this.http
+      .post<LoginResultModel>(this.loginUrl, { email, password }, httpOptions)
       .pipe(
         take(1),
         tap((loginResult: LoginResultModel) => {
@@ -56,7 +55,7 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(loginResult.user));
         }),
         map((loginResult: LoginResultModel) => loginResult.user),
-        catchError(error => {
+        catchError((error) => {
           console.log('error: ', error);
           return throwError(error);
         })
@@ -68,40 +67,74 @@ export class AuthService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
-      })
+      }),
     };
 
-    return this.http.post(this.requestPasswordChangeUrl, {userEmail: email}, httpOptions)
+    return this.http
+      .post(this.requestPasswordChangeUrl, { userEmail: email }, httpOptions)
       .pipe(
         take(1),
         map(() => {})
       );
   }
 
-  public validatePasswordResetCodeAsync(userId: string, passwordResetCode: string): Observable<void> {
+  public validatePasswordResetCodeAsync(
+    userId: string,
+    passwordResetCode: string
+  ): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
-      })
+      }),
     };
 
-    return this.http.post(this.validatePasswordResetCodeUrl, {userId, passwordResetCode}, httpOptions)
+    return this.http
+      .post(
+        this.validatePasswordResetCodeUrl,
+        { userId, passwordResetCode },
+        httpOptions
+      )
       .pipe(
         take(1),
         map(() => {})
       );
   }
 
-  public changePasswordWithResetCodeAsync(userId: string, passwordResetCode: string, password: string): Observable<void> {
+  public changePasswordWithResetCodeAsync(
+    userId: string,
+    passwordResetCode: string,
+    password: string
+  ): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
+      }),
+    };
+
+    return this.http
+      .post(
+        this.changePasswordWithResetCodeUrl,
+        { userId, passwordResetCode, password },
+        httpOptions
+      )
+      .pipe(
+        take(1),
+        map(() => {})
+      );
+  }
+
+  public changePasswordAsync(password: string): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + this.getToken(),
       })
     };
 
-    return this.http.post(this.changePasswordWithResetCodeUrl, {userId, passwordResetCode, password}, httpOptions)
+    return this.http.post(this.changePasswordUrl, {password}, httpOptions)
       .pipe(
         take(1),
         map(() => {})
@@ -114,14 +147,13 @@ export class AuthService {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + this.getToken(),
-      })
+      }),
     };
 
-    return this.http.get<{}>(this.pingUrl, httpOptions)
-      .pipe(
-        take(1),
-        map(() => {})
-      );
+    return this.http.get<{}>(this.pingUrl, httpOptions).pipe(
+      take(1),
+      map(() => {})
+    );
   }
 
   public logout(): void {

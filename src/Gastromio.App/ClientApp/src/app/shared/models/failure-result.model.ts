@@ -1,5 +1,4 @@
-export class FailureResult
-{
+export class FailureResult {
   constructor(code: string, message: string) {
     this.code = code;
     this.message = message;
@@ -10,7 +9,6 @@ export class FailureResult
   public message: string;
 
   static createFromString(error: string): FailureResult {
-    return new FailureResult("InternalServerError", error);
+    return new FailureResult('InternalServerError', error);
   }
-
 }

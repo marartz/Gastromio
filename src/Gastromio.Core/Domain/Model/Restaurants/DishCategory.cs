@@ -164,8 +164,8 @@ namespace Gastromio.Core.Domain.Model.Restaurants
         {
             if (string.IsNullOrEmpty(name))
                 throw DomainException.CreateFrom(new DishCategoryNameRequiredFailure());
-            if (name.Length > 100)
-                throw DomainException.CreateFrom(new DishCategoryNameTooLongFailure(100));
+            if (name.Length > 60)
+                throw DomainException.CreateFrom(new DishCategoryNameTooLongFailure(60));
         }
 
         private static void ValidateOrderNo(int orderNo)

@@ -1,13 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {StoredCartModel} from "../models/stored-cart.model";
+import { StoredCartModel } from '../models/stored-cart.model';
 
 @Injectable()
 export class StoredCartService {
-
-  constructor(
-  ) {
-  }
+  constructor() {}
 
   public loadFromStorage(): StoredCartModel {
     const json = localStorage.getItem('cart');
@@ -42,16 +39,25 @@ export class StoredCartService {
 
       const knownItemIds = new Map<string, string>();
       for (const storedCartDishModel of storedCartModel.cartDishes) {
-        if (!storedCartDishModel.itemId || storedCartDishModel.itemId.length === 0) {
+        if (
+          !storedCartDishModel.itemId ||
+          storedCartDishModel.itemId.length === 0
+        ) {
           return undefined;
         }
         if (knownItemIds.get(storedCartDishModel.itemId)) {
           return undefined;
         }
-        if (!storedCartDishModel.dishId || storedCartDishModel.dishId.length === 0) {
+        if (
+          !storedCartDishModel.dishId ||
+          storedCartDishModel.dishId.length === 0
+        ) {
           return undefined;
         }
-        if (!storedCartDishModel.variantId || storedCartDishModel.variantId.length === 0) {
+        if (
+          !storedCartDishModel.variantId ||
+          storedCartDishModel.variantId.length === 0
+        ) {
           return undefined;
         }
         if (storedCartDishModel.count <= 0) {
@@ -75,5 +81,4 @@ export class StoredCartService {
     console.log('removed cart from storage');
     localStorage.removeItem('cart');
   }
-
 }

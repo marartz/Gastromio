@@ -1,26 +1,21 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import {Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-import {AuthService} from '../../auth/services/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 
-import {RestaurantModel} from '../../shared/models/restaurant.model';
-import {CuisineModel} from '../../shared/models/cuisine.model';
+import { RestaurantModel } from '../../shared/models/restaurant.model';
+import { CuisineModel } from '../../shared/models/cuisine.model';
 
-import {CheckoutModel} from '../models/checkout.model';
-import {OrderModel} from '../models/order.model';
-import {OrderType} from "../models/order-type";
+import { CheckoutModel } from '../models/checkout.model';
+import { OrderModel } from '../models/order.model';
+import { OrderType } from '../models/order-type';
 
 @Injectable()
 export class OrderService {
-
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService
-  ) {
-  }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private baseUrl = 'api/v1/order';
 
@@ -30,21 +25,26 @@ export class OrderService {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + this.authService.getToken(),
-      })
+      }),
     };
 
-    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions)
+    return this.http
+      .get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions)
       .pipe(take(1));
   }
 
-  public searchForRestaurantsAsync(search: string, orderType: OrderType, cuisineId: string,
-                                   openingHourFilter: string | undefined): Observable<RestaurantModel[]> {
+  public searchForRestaurantsAsync(
+    search: string,
+    orderType: OrderType,
+    cuisineId: string,
+    openingHourFilter: string | undefined
+  ): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + this.authService.getToken(),
-      })
+      }),
     };
 
     let orderTypeText: string;
@@ -59,7 +59,8 @@ export class OrderService {
         orderTypeText = 'reservation';
     }
 
-    let url = this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
+    let url =
+      this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
 
     if (orderType != undefined) {
       url += '&orderType=' + encodeURIComponent(orderTypeText);
@@ -76,8 +77,7 @@ export class OrderService {
       }
     }
 
-    return this.http.get<RestaurantModel[]>(url, httpOptions)
-      .pipe(take(1));
+    return this.http.get<RestaurantModel[]>(url, httpOptions).pipe(take(1));
   }
 
   public getRestaurantAsync(id: string): Observable<RestaurantModel> {
@@ -86,21 +86,27 @@ export class OrderService {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + this.authService.getToken(),
-      })
+      }),
     };
-    return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions)
+    return this.http
+      .get<RestaurantModel>(
+        this.baseUrl + '/restaurants/' + encodeURIComponent(id),
+        httpOptions
+      )
       .pipe(take(1));
   }
 
-  public sendCheckoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
+  public sendCheckoutAsync(
+    checkoutModel: CheckoutModel
+  ): Observable<OrderModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Accept: 'application/json'
-      })
+        Accept: 'application/json',
+      }),
     };
-    return this.http.post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions)
+    return this.http
+      .post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions)
       .pipe(take(1));
   }
-
 }

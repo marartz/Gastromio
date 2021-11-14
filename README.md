@@ -1,4 +1,5 @@
 <h1 align="center">Gastromio</h1>
+<p align="center">Online Essen bestellen und dabei lokale Gastronomen unterstützen.</p>
 
 <p align="center">
     <a href="https://github.com/marartz/Gastromio/blob/develop/LICENSE" target="_blank">
@@ -8,12 +9,14 @@
         <img src="https://img.shields.io/github/issues/marartz/Gastromio?style=flat-square" alt="Gastromio issues" />
     </a>
     <a href="https://www.gastromio.de/" target="blank">
-        <img src="https://img.shields.io/website?url=https%3A%2F%2Fwww.gastromio.de%2FGastromio&logo=github&style=flat-square" />
+        <img src="https://betteruptime.com/status-badges/v1/monitor/7q6q.svg" />
     </a>
-
+    <a href="https://gitmoji.carloscuesta.me">
+        <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square" alt="Gitmoji">
+    </a>
 </p>
 
-## Testen des Systems
+## Testen des Systems 🔎
 
 ### Voraussetzungen
 - Docker Community Edition
@@ -41,7 +44,7 @@ Wenn die Datenbank zurückgesetzt und Testdaten automatisiert angelegt werden so
 docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 -e SEED=true marartz/gastromio:<tag>
 ```
 
-## Projekt für die Entwicklung aufsetzen
+## Projekt für die Entwicklung aufsetzen 🔨
 1. Vorrausgesetzte Software installieren
     * .NET SDK 3.1
     * [MongoDB](https://www.mongodb.com/try/download/community) (+ [Compass](https://www.mongodb.com/try/download/compass) empfohlen)
@@ -66,7 +69,7 @@ docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:latest
 
 Ein Admin-User-Interface kann hier heruntergeladen werden: https://docs.mongodb.com/compass/master/install/
 
-## Lizenzierung
+## Lizenzierung 📑
 
 Copyright (c) 2021 Marco Artz. All Rights reserved.
 

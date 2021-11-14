@@ -1,5 +1,4 @@
 export class StoredCartDishModel {
-
   constructor(init?: Partial<StoredCartDishModel>) {
     if (init) {
       Object.assign(this, init);
@@ -22,8 +21,7 @@ export class StoredCartDishModel {
       dishId: this.dishId,
       variantId: this.variantId,
       count: this.count,
-      remarks: this.remarks
+      remarks: this.remarks,
     });
   }
-
 }

@@ -1,47 +1,63 @@
-import {Injectable} from "@angular/core";
-import {HttpErrorResponse} from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import {BehaviorSubject, combineLatest, Observable, throwError} from "rxjs";
-import {catchError, map, tap} from "rxjs/operators";
+import {BehaviorSubject, combineLatest, Observable, Subject, throwError} from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
-import {CuisineModel} from "../shared/models/cuisine.model";
-import {DishCategoryModel} from "../shared/models/dish-category.model";
-import {DishModel} from "../shared/models/dish.model";
+import { CuisineModel } from '../shared/models/cuisine.model';
+import { DishCategoryModel } from '../shared/models/dish-category.model';
+import { DishModel } from '../shared/models/dish.model';
 import {
   AddressModel,
   ContactInfoModel,
-  DeliveryInfoModel, DeviatingOpeningDayModel, ExternalMenu, OpeningPeriodModel,
-  PickupInfoModel, RegularOpeningDayModel,
+  DeliveryInfoModel,
+  DeviatingOpeningDayModel,
+  ExternalMenu,
+  OpeningPeriodModel,
+  PickupInfoModel,
+  RegularOpeningDayModel,
   ReservationInfoModel,
   RestaurantModel,
-  ServiceInfoModel
-} from "../shared/models/restaurant.model";
-import {PaymentMethodModel} from "../shared/models/payment-method.model";
+  ServiceInfoModel,
+} from '../shared/models/restaurant.model';
+import { PaymentMethodModel } from '../shared/models/payment-method.model';
 
-import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
+import { HttpErrorHandlingService } from '../shared/services/http-error-handling.service';
 
-import {RestaurantRestAdminService} from "./services/restaurant-rest-admin.service";
-import {DateModel} from "../shared/models/date.model";
-import {AuthService} from "../auth/services/auth.service";
+import { RestaurantRestAdminService } from './services/restaurant-rest-admin.service';
+import { DateModel } from '../shared/models/date.model';
+import { AuthService } from '../auth/services/auth.service';
 
 @Injectable()
 export class RestaurantAdminFacade {
-
   private restaurantId: string;
 
-  private isInitializing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  private isInitialized$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
-  private initializationError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  private isInitializing$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
+  private isInitialized$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(undefined);
+  private initializationError$: BehaviorSubject<string> =
+    new BehaviorSubject<string>(undefined);
 
-  private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(undefined);
-  private paymentMethods$: BehaviorSubject<PaymentMethodModel[]> = new BehaviorSubject<PaymentMethodModel[]>(undefined);
-  private restaurant$: BehaviorSubject<RestaurantModel> = new BehaviorSubject<RestaurantModel>(undefined);
+  private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<
+    CuisineModel[]
+  >(undefined);
+  private paymentMethods$: BehaviorSubject<PaymentMethodModel[]> =
+    new BehaviorSubject<PaymentMethodModel[]>(undefined);
+  private restaurant$: BehaviorSubject<RestaurantModel> =
+    new BehaviorSubject<RestaurantModel>(undefined);
 
-  private selectedTab$: BehaviorSubject<string> = new BehaviorSubject<string>("general");
+  private selectedTab$: BehaviorSubject<string> = new BehaviorSubject<string>(
+    'general'
+  );
 
-  private isUpdating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
-  private updateError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  private isUpdating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  private isUpdated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    undefined
+  );
+  private updateError$: Subject<string> = new Subject<string>();
 
   static earliestOpeningTime: number = 4 * 60;
 
@@ -49,24 +65,23 @@ export class RestaurantAdminFacade {
     private authService: AuthService,
     private restaurantAdminService: RestaurantRestAdminService,
     private httpErrorHandlingService: HttpErrorHandlingService
-  ) {
-  }
+  ) {}
 
   public initialize(restaurantId: string): void {
     this.restaurantId = restaurantId;
 
-    const getCuisines$ = this.restaurantAdminService.getCuisinesAsync()
-      .pipe(
-        tap(cuisines => {
-          this.cuisines$.next(cuisines);
-        })
-      );
+    const getCuisines$ = this.restaurantAdminService.getCuisinesAsync().pipe(
+      tap((cuisines) => {
+        this.cuisines$.next(cuisines);
+      })
+    );
 
-    const getPaymentMethods$ = this.restaurantAdminService.getPaymentMethodsAsync()
+    const getPaymentMethods$ = this.restaurantAdminService
+      .getPaymentMethodsAsync()
       .pipe(
-        tap(paymentMethods => {
-          this.paymentMethods$.next(paymentMethods
-            .sort((a, b) => {
+        tap((paymentMethods) => {
+          this.paymentMethods$.next(
+            paymentMethods.sort((a, b) => {
               if (a.name < b.name) {
                 return -1;
               }
@@ -79,9 +94,10 @@ export class RestaurantAdminFacade {
         })
       );
 
-    const getRestaurant$ = this.restaurantAdminService.getRestaurantAsync(restaurantId)
+    const getRestaurant$ = this.restaurantAdminService
+      .getRestaurantAsync(restaurantId)
       .pipe(
-        tap(restaurant => {
+        tap((restaurant) => {
           restaurant.cuisines.sort((a, b) => {
             if (a.name < b.name) {
               return -1;
@@ -106,24 +122,21 @@ export class RestaurantAdminFacade {
         })
       );
 
-    const observables = [
-      getCuisines$,
-      getPaymentMethods$,
-      getRestaurant$
-    ];
+    const observables = [getCuisines$, getPaymentMethods$, getRestaurant$];
 
-    combineLatest(observables)
-      .subscribe(
-        () => {
-          this.isInitializing$.next(false);
-          this.isInitialized$.next(true);
-        },
-        (error: HttpErrorResponse) => {
-          this.isInitializing$.next(false);
-          this.isInitialized$.next(false);
-          this.initializationError$.next(this.httpErrorHandlingService.handleError(error).message);
-        }
-      );
+    combineLatest(observables).subscribe(
+      () => {
+        this.isInitializing$.next(false);
+        this.isInitialized$.next(true);
+      },
+      (error: HttpErrorResponse) => {
+        this.isInitializing$.next(false);
+        this.isInitialized$.next(false);
+        this.initializationError$.next(
+          this.httpErrorHandlingService.handleError(error).message
+        );
+      }
+    );
   }
 
   public getIsInitializing$(): Observable<boolean> {
@@ -167,68 +180,82 @@ export class RestaurantAdminFacade {
   }
 
   public getHasLogo$(): Observable<boolean> {
-    return this.restaurant$.asObservable()
-      .pipe(
-        map(restaurant => {
-          if (!restaurant || !restaurant.imageTypes) {
-            return false;
-          }
-          return restaurant.imageTypes.some(en => en === 'logo');
-        })
-      );
+    return this.restaurant$.asObservable().pipe(
+      map((restaurant) => {
+        if (!restaurant || !restaurant.imageTypes) {
+          return false;
+        }
+        return restaurant.imageTypes.some((en) => en === 'logo');
+      })
+    );
   }
 
   public getLogoUrl$(): Observable<string> {
-    return this.restaurant$.asObservable()
-      .pipe(
-        map(restaurant => {
-          if (restaurant && restaurant.imageTypes && restaurant.imageTypes.some(en => en === 'logo')) {
-            return '/api/v1/restaurants/' + restaurant.id + '/images/logo?random=' + Math.random();
-          } else {
-            return undefined;
-          }
-        })
-      );
+    return this.restaurant$.asObservable().pipe(
+      map((restaurant) => {
+        if (
+          restaurant &&
+          restaurant.imageTypes &&
+          restaurant.imageTypes.some((en) => en === 'logo')
+        ) {
+          return (
+            '/api/v1/restaurants/' +
+            restaurant.id +
+            '/images/logo?random=' +
+            Math.random()
+          );
+        } else {
+          return undefined;
+        }
+      })
+    );
   }
 
   public getHasBanner$(): Observable<boolean> {
-    return this.restaurant$.asObservable()
-      .pipe(
-        map(restaurant => {
-          if (!restaurant || !restaurant.imageTypes) {
-            return false;
-          }
-          return restaurant.imageTypes.some(en => en === 'banner');
-        })
-      );
+    return this.restaurant$.asObservable().pipe(
+      map((restaurant) => {
+        if (!restaurant || !restaurant.imageTypes) {
+          return false;
+        }
+        return restaurant.imageTypes.some((en) => en === 'banner');
+      })
+    );
   }
 
   public getBannerUrl$(): Observable<string> {
-    return this.restaurant$.asObservable()
-      .pipe(
-        map(restaurant => {
-          if (restaurant && restaurant.imageTypes && restaurant.imageTypes.some(en => en === 'banner')) {
-            return '/api/v1/restaurants/' + restaurant.id + '/images/banner?random=' + Math.random();
-          } else {
-            return undefined;
-          }
-        })
-      );
+    return this.restaurant$.asObservable().pipe(
+      map((restaurant) => {
+        if (
+          restaurant &&
+          restaurant.imageTypes &&
+          restaurant.imageTypes.some((en) => en === 'banner')
+        ) {
+          return (
+            '/api/v1/restaurants/' +
+            restaurant.id +
+            '/images/banner?random=' +
+            Math.random()
+          );
+        } else {
+          return undefined;
+        }
+      })
+    );
   }
 
   public getPaymentMethodStatus$(): Observable<{}> {
-    return this.restaurant$.asObservable()
-      .pipe(
-        map(restaurant => {
-          const result = {};
-          for (let paymentMethod of this.paymentMethods$.value) {
-            result[paymentMethod.id] = restaurant.paymentMethods.some(en => en.id === paymentMethod.id);
-          }
-          return result;
-        })
-      );
+    return this.restaurant$.asObservable().pipe(
+      map((restaurant) => {
+        const result = {};
+        for (let paymentMethod of this.paymentMethods$.value) {
+          result[paymentMethod.id] = restaurant.paymentMethods.some(
+            (en) => en.id === paymentMethod.id
+          );
+        }
+        return result;
+      })
+    );
   }
-
 
   // actions
 
@@ -238,201 +265,274 @@ export class RestaurantAdminFacade {
 
   public changeAddress(address: AddressModel): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantAddressAsync(this.restaurant$.value.id, address)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeRestaurantAddressAsync(this.restaurant$.value.id, address)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        this.restaurant$.value.address = address;
+          this.restaurant$.value.address = address;
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, response => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public changeContactInfo(contactInfo: ContactInfoModel): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantContactInfoAsync(this.restaurant$.value.id, contactInfo)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
-        this.restaurant$.value.contactInfo = contactInfo;
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, response => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+    this.restaurantAdminService
+      .changeRestaurantContactInfoAsync(this.restaurant$.value.id, contactInfo)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+          this.restaurant$.value.contactInfo = contactInfo;
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public changeLogo(logo: string): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', logo)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', logo)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        if (!this.restaurant$.value.imageTypes) {
-          this.restaurant$.value.imageTypes = new Array<string>();
-        }
-        if (!this.restaurant$.value.imageTypes.some(en => en === 'logo')) {
-          this.restaurant$.value.imageTypes.push('logo');
-        }
+          if (!this.restaurant$.value.imageTypes) {
+            this.restaurant$.value.imageTypes = new Array<string>();
+          }
+          if (!this.restaurant$.value.imageTypes.some((en) => en === 'logo')) {
+            this.restaurant$.value.imageTypes.push('logo');
+          }
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public removeLogo(): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', undefined)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeRestaurantImageAsync(this.restaurant$.value.id, 'logo', undefined)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        this.restaurant$.value.imageTypes = this.restaurant$.value.imageTypes.filter(en => en !== 'logo');
+          this.restaurant$.value.imageTypes =
+            this.restaurant$.value.imageTypes.filter((en) => en !== 'logo');
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public changeBanner(banner: string): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', banner)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', banner)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        if (!this.restaurant$.value.imageTypes) {
-          this.restaurant$.value.imageTypes = new Array<string>();
-        }
-        if (!this.restaurant$.value.imageTypes.some(en => en === 'banner')) {
-          this.restaurant$.value.imageTypes.push('banner');
-        }
+          if (!this.restaurant$.value.imageTypes) {
+            this.restaurant$.value.imageTypes = new Array<string>();
+          }
+          if (
+            !this.restaurant$.value.imageTypes.some((en) => en === 'banner')
+          ) {
+            this.restaurant$.value.imageTypes.push('banner');
+          }
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public removeBanner(): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantImageAsync(this.restaurant$.value.id, 'banner', undefined)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeRestaurantImageAsync(
+        this.restaurant$.value.id,
+        'banner',
+        undefined
+      )
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        this.restaurant$.value.imageTypes = this.restaurant$.value.imageTypes.filter(en => en !== 'banner');
+          this.restaurant$.value.imageTypes =
+            this.restaurant$.value.imageTypes.filter((en) => en !== 'banner');
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public changeSupportedOrderMode(supportedOrderMode: string): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeSupportedOrderMode(this.restaurant$.value.id, supportedOrderMode)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeSupportedOrderMode(this.restaurant$.value.id, supportedOrderMode)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        this.restaurant$.value.supportedOrderMode = supportedOrderMode;
+          this.restaurant$.value.supportedOrderMode = supportedOrderMode;
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public changeServiceInfo(serviceInfo: ServiceInfoModel): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.changeRestaurantServiceInfoAsync(this.restaurant$.value.id, serviceInfo)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .changeRestaurantServiceInfoAsync(this.restaurant$.value.id, serviceInfo)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        this.restaurant$.value.pickupInfo = new PickupInfoModel({
-          enabled: serviceInfo.pickupEnabled,
-          averageTime: serviceInfo.pickupAverageTime,
-          minimumOrderValue: serviceInfo.pickupMinimumOrderValue,
-          maximumOrderValue: serviceInfo.pickupMaximumOrderValue,
-        });
+          this.restaurant$.value.pickupInfo = new PickupInfoModel({
+            enabled: serviceInfo.pickupEnabled,
+            averageTime: serviceInfo.pickupAverageTime,
+            minimumOrderValue: serviceInfo.pickupMinimumOrderValue,
+            maximumOrderValue: serviceInfo.pickupMaximumOrderValue,
+          });
 
-        this.restaurant$.value.deliveryInfo = new DeliveryInfoModel({
-          enabled: serviceInfo.deliveryEnabled,
-          averageTime: serviceInfo.deliveryAverageTime,
-          minimumOrderValue: serviceInfo.deliveryMinimumOrderValue,
-          maximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
-          costs: serviceInfo.deliveryCosts
-        });
+          this.restaurant$.value.deliveryInfo = new DeliveryInfoModel({
+            enabled: serviceInfo.deliveryEnabled,
+            averageTime: serviceInfo.deliveryAverageTime,
+            minimumOrderValue: serviceInfo.deliveryMinimumOrderValue,
+            maximumOrderValue: serviceInfo.deliveryMaximumOrderValue,
+            costs: serviceInfo.deliveryCosts,
+          });
 
-        this.restaurant$.value.reservationInfo = new ReservationInfoModel({
-          enabled: serviceInfo.reservationEnabled,
-          reservationSystemUrl: serviceInfo.reservationSystemUrl
-        });
+          this.restaurant$.value.reservationInfo = new ReservationInfoModel({
+            enabled: serviceInfo.reservationEnabled,
+            reservationSystemUrl: serviceInfo.reservationSystemUrl,
+          });
 
-        this.restaurant$.value.hygienicHandling = serviceInfo.hygienicHandling;
+          this.restaurant$.value.hygienicHandling =
+            serviceInfo.hygienicHandling;
 
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public togglePaymentMethod(paymentMethodId: string): void {
     let observable: Observable<boolean>;
 
-    const isCurrentlyEnabled = this.restaurant$.value.paymentMethods.some(en => en.id === paymentMethodId);
+    const isCurrentlyEnabled = this.restaurant$.value.paymentMethods.some(
+      (en) => en.id === paymentMethodId
+    );
     if (isCurrentlyEnabled) {
-      const cashPaymentMethodId = '8DBBC822-E4FF-47B6-8CA2-68F4F0C51AA3'.toLocaleLowerCase();
+      const cashPaymentMethodId =
+        '8DBBC822-E4FF-47B6-8CA2-68F4F0C51AA3'.toLocaleLowerCase();
       if (paymentMethodId === cashPaymentMethodId) {
-        this.updateError$.next("Barzahlung kann nicht deaktiviert werden.");
+        this.updateError$.next('Barzahlung kann nicht deaktiviert werden.');
         return;
       }
-      observable = this.restaurantAdminService.removePaymentMethodFromRestaurantAsync(this.restaurant$.value.id, paymentMethodId);
+      observable =
+        this.restaurantAdminService.removePaymentMethodFromRestaurantAsync(
+          this.restaurant$.value.id,
+          paymentMethodId
+        );
     } else {
-      observable = this.restaurantAdminService.addPaymentMethodToRestaurantAsync(this.restaurant$.value.id, paymentMethodId);
+      observable =
+        this.restaurantAdminService.addPaymentMethodToRestaurantAsync(
+          this.restaurant$.value.id,
+          paymentMethodId
+        );
     }
 
     this.isUpdating$.next(true);
-    observable
-      .subscribe(() => {
+    observable.subscribe(
+      () => {
         this.isUpdating$.next(false);
         this.updateError$.next(undefined);
 
         if (isCurrentlyEnabled) {
-          this.restaurant$.value.paymentMethods = this.restaurant$.value.paymentMethods.filter(en => en.id !== paymentMethodId);
+          this.restaurant$.value.paymentMethods =
+            this.restaurant$.value.paymentMethods.filter(
+              (en) => en.id !== paymentMethodId
+            );
         } else {
-          const paymentMethod = this.paymentMethods$.value.find(en => en.id === paymentMethodId);
+          const paymentMethod = this.paymentMethods$.value.find(
+            (en) => en.id === paymentMethodId
+          );
           this.restaurant$.value.paymentMethods.push(paymentMethod);
           this.restaurant$.value.paymentMethods.sort((a, b) => {
             if (a.name < b.name) {
@@ -446,150 +546,230 @@ export class RestaurantAdminFacade {
         }
 
         this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
+        this.restaurant$.next(this.restaurant$.value);
         this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
+      },
+      (response: HttpErrorResponse) => {
         this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+        this.updateError$.next(
+          this.httpErrorHandlingService.handleError(response).message
+        );
+      }
+    );
   }
 
-  public addRegularOpeningPeriod(dayOfWeek: number, start: number, end: number): Observable<boolean> {
+  public addRegularOpeningPeriod(
+    dayOfWeek: number,
+    start: number,
+    end: number
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.addRegularOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start, end)
+    return this.restaurantAdminService
+      .addRegularOpeningPeriodToRestaurantAsync(
+        this.restaurant$.value.id,
+        dayOfWeek,
+        start,
+        end
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
           const regularOpeningDays = this.restaurant$.value.regularOpeningDays;
-          let regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
+          let regularOpeningDay =
+            this.restaurant$.value.regularOpeningDays.find(
+              (en) => en.dayOfWeek === dayOfWeek
+            );
           if (regularOpeningDay === undefined) {
             regularOpeningDay = new RegularOpeningDayModel({
               dayOfWeek: dayOfWeek,
-              openingPeriods: new Array<OpeningPeriodModel>()
-            })
+              openingPeriods: new Array<OpeningPeriodModel>(),
+            });
             regularOpeningDays.push(regularOpeningDay);
           }
-          regularOpeningDay.openingPeriods.push(new OpeningPeriodModel({
-            start: start,
-            end: end
-          }));
+          regularOpeningDay.openingPeriods.push(
+            new OpeningPeriodModel({
+              start: start,
+              end: end,
+            })
+          );
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public changeRegularOpeningPeriod(dayOfWeek: number, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
+  public changeRegularOpeningPeriod(
+    dayOfWeek: number,
+    oldStart: number,
+    newStart: number,
+    newEnd: number
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.changeRegularOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, dayOfWeek, oldStart, newStart, newEnd)
+    return this.restaurantAdminService
+      .changeRegularOpeningPeriodOfRestaurantAsync(
+        this.restaurant$.value.id,
+        dayOfWeek,
+        oldStart,
+        newStart,
+        newEnd
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
-          const openingPeriod = regularOpeningDay.openingPeriods.find(en => en.start === oldStart);
+          const regularOpeningDay =
+            this.restaurant$.value.regularOpeningDays.find(
+              (en) => en.dayOfWeek === dayOfWeek
+            );
+          const openingPeriod = regularOpeningDay.openingPeriods.find(
+            (en) => en.start === oldStart
+          );
           openingPeriod.start = newStart;
           openingPeriod.end = newEnd;
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public removeRegularOpeningPeriod(dayOfWeek: number, start: number): Observable<boolean> {
+  public removeRegularOpeningPeriod(
+    dayOfWeek: number,
+    start: number
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.removeRegularOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, dayOfWeek, start)
-      .pipe(
-        tap(() => {
-            this.isUpdating$.next(false);
-            this.updateError$.next(undefined);
-
-            const regularOpeningDay = this.restaurant$.value.regularOpeningDays.find(en => en.dayOfWeek === dayOfWeek);
-            const index = regularOpeningDay.openingPeriods.findIndex(en => en.start === start);
-            regularOpeningDay.openingPeriods.splice(index, 1);
-
-            this.setUpdateInfoToRestaurant(this.restaurant$.value);
-            this.restaurant$.next(this.restaurant$.value)
-            this.isUpdated$.next(true);
-          }
-        ),
-        catchError((response: HttpErrorResponse) => {
-          this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-          return throwError(response);
-        })
-      );
-  }
-
-  public addDeviatingOpeningDay(date: DateModel, status: string): Observable<boolean> {
-    this.isUpdating$.next(true);
-    return this.restaurantAdminService.addDeviatingOpeningDayToRestaurantAsync(this.restaurant$.value.id, date, status)
+    return this.restaurantAdminService
+      .removeRegularOpeningPeriodFromRestaurantAsync(
+        this.restaurant$.value.id,
+        dayOfWeek,
+        start
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          let deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          const regularOpeningDay =
+            this.restaurant$.value.regularOpeningDays.find(
+              (en) => en.dayOfWeek === dayOfWeek
+            );
+          const index = regularOpeningDay.openingPeriods.findIndex(
+            (en) => en.start === start
+          );
+          regularOpeningDay.openingPeriods.splice(index, 1);
+
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        }),
+        catchError((response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+          return throwError(response);
+        })
+      );
+  }
+
+  public addDeviatingOpeningDay(
+    date: DateModel,
+    status: string
+  ): Observable<boolean> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService
+      .addDeviatingOpeningDayToRestaurantAsync(
+        this.restaurant$.value.id,
+        date,
+        status
+      )
+      .pipe(
+        tap(() => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const deviatingOpeningDays =
+            this.restaurant$.value.deviatingOpeningDays;
+          let deviatingOpeningDay = deviatingOpeningDays.find((en) =>
+            DateModel.isEqual(en.date, date)
+          );
           if (deviatingOpeningDay === undefined) {
             deviatingOpeningDay = new DeviatingOpeningDayModel({
               date: date,
               status: status,
-              openingPeriods: new Array<OpeningPeriodModel>()
-            })
+              openingPeriods: new Array<OpeningPeriodModel>(),
+            });
             deviatingOpeningDays.push(deviatingOpeningDay);
           }
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public changeDeviatingOpeningDayStatus(date: DateModel, status: string): Observable<boolean> {
+  public changeDeviatingOpeningDayStatus(
+    date: DateModel,
+    status: string
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.changeDeviatingOpeningDayStatusOfRestaurantAsync(this.restaurant$.value.id, date, status)
+    return this.restaurantAdminService
+      .changeDeviatingOpeningDayStatusOfRestaurantAsync(
+        this.restaurant$.value.id,
+        date,
+        status
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          const deviatingOpeningDays =
+            this.restaurant$.value.deviatingOpeningDays;
+          const deviatingOpeningDay = deviatingOpeningDays.find((en) =>
+            DateModel.isEqual(en.date, date)
+          );
           if (deviatingOpeningDay) {
             deviatingOpeningDay.status = status;
           }
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
@@ -597,210 +777,323 @@ export class RestaurantAdminFacade {
 
   public removeDeviatingOpeningDay(date: DateModel): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.removeDeviatingOpeningDayFromRestaurantAsync(this.restaurant$.value.id, date)
+    return this.restaurantAdminService
+      .removeDeviatingOpeningDayFromRestaurantAsync(
+        this.restaurant$.value.id,
+        date
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          const index = deviatingOpeningDays.findIndex(en => DateModel.isEqual(en.date, date));
+          const deviatingOpeningDays =
+            this.restaurant$.value.deviatingOpeningDays;
+          const index = deviatingOpeningDays.findIndex((en) =>
+            DateModel.isEqual(en.date, date)
+          );
           if (index >= 0) {
             deviatingOpeningDays.splice(index, 1);
           }
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public addDeviatingOpeningPeriod(date: DateModel, start: number, end: number): Observable<boolean> {
+  public addDeviatingOpeningPeriod(
+    date: DateModel,
+    start: number,
+    end: number
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.addDeviatingOpeningPeriodToRestaurantAsync(this.restaurant$.value.id, date, start, end)
+    return this.restaurantAdminService
+      .addDeviatingOpeningPeriodToRestaurantAsync(
+        this.restaurant$.value.id,
+        date,
+        start,
+        end
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          let deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
+          const deviatingOpeningDays =
+            this.restaurant$.value.deviatingOpeningDays;
+          let deviatingOpeningDay = deviatingOpeningDays.find((en) =>
+            DateModel.isEqual(en.date, date)
+          );
           if (deviatingOpeningDay === undefined) {
             deviatingOpeningDay = new DeviatingOpeningDayModel({
               date: date,
-              status: "open",
-              openingPeriods: new Array<OpeningPeriodModel>()
-            })
+              status: 'open',
+              openingPeriods: new Array<OpeningPeriodModel>(),
+            });
             deviatingOpeningDays.push(deviatingOpeningDay);
           }
-          deviatingOpeningDay.openingPeriods.push(new OpeningPeriodModel({
-            start: start,
-            end: end
-          }));
+          deviatingOpeningDay.openingPeriods.push(
+            new OpeningPeriodModel({
+              start: start,
+              end: end,
+            })
+          );
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public changeDeviatingOpeningPeriod(date: DateModel, oldStart: number, newStart: number, newEnd: number): Observable<boolean> {
+  public changeDeviatingOpeningPeriod(
+    date: DateModel,
+    oldStart: number,
+    newStart: number,
+    newEnd: number
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.changeDeviatingOpeningPeriodOfRestaurantAsync(this.restaurant$.value.id, date, oldStart, newStart, newEnd)
+    return this.restaurantAdminService
+      .changeDeviatingOpeningPeriodOfRestaurantAsync(
+        this.restaurant$.value.id,
+        date,
+        oldStart,
+        newStart,
+        newEnd
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
-          const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-          const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
-          const openingPeriod = deviatingOpeningDay.openingPeriods.find(en => en.start === oldStart);
+          const deviatingOpeningDays =
+            this.restaurant$.value.deviatingOpeningDays;
+          const deviatingOpeningDay = deviatingOpeningDays.find((en) =>
+            DateModel.isEqual(en.date, date)
+          );
+          const openingPeriod = deviatingOpeningDay.openingPeriods.find(
+            (en) => en.start === oldStart
+          );
           openingPeriod.start = newStart;
           openingPeriod.end = newEnd;
 
           this.setUpdateInfoToRestaurant(this.restaurant$.value);
-          this.restaurant$.next(this.restaurant$.value)
+          this.restaurant$.next(this.restaurant$.value);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public removeDeviatingOpeningPeriod(date: DateModel, start: number): Observable<boolean> {
+  public removeDeviatingOpeningPeriod(
+    date: DateModel,
+    start: number
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.removeDeviatingOpeningPeriodFromRestaurantAsync(this.restaurant$.value.id, date, start)
+    return this.restaurantAdminService
+      .removeDeviatingOpeningPeriodFromRestaurantAsync(
+        this.restaurant$.value.id,
+        date,
+        start
+      )
       .pipe(
         tap(() => {
-            this.isUpdating$.next(false);
-            this.updateError$.next(undefined);
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-            const deviatingOpeningDays = this.restaurant$.value.deviatingOpeningDays;
-            const deviatingOpeningDay = deviatingOpeningDays.find(en => DateModel.isEqual(en.date, date));
-            const index = deviatingOpeningDay.openingPeriods.findIndex(en => en.start === start);
-            deviatingOpeningDay.openingPeriods.splice(index, 1);
-            if (deviatingOpeningDay.openingPeriods.length === 0) {
-              deviatingOpeningDay.status = "closed";
-            }
-
-            this.setUpdateInfoToRestaurant(this.restaurant$.value);
-            this.restaurant$.next(this.restaurant$.value)
-            this.isUpdated$.next(true);
+          const deviatingOpeningDays =
+            this.restaurant$.value.deviatingOpeningDays;
+          const deviatingOpeningDay = deviatingOpeningDays.find((en) =>
+            DateModel.isEqual(en.date, date)
+          );
+          const index = deviatingOpeningDay.openingPeriods.findIndex(
+            (en) => en.start === start
+          );
+          deviatingOpeningDay.openingPeriods.splice(index, 1);
+          if (deviatingOpeningDay.openingPeriods.length === 0) {
+            deviatingOpeningDay.status = 'closed';
           }
-        ),
+
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public addOrChangeExternalMenu(externalMenuId: string, name: string, description: string, url: string): void {
+  public addOrChangeExternalMenu(
+    externalMenuId: string,
+    name: string,
+    description: string,
+    url: string
+  ): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.addOrChangeExternalMenu(this.restaurant$.value.id, externalMenuId, name, description, url)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .addOrChangeExternalMenu(
+        this.restaurant$.value.id,
+        externalMenuId,
+        name,
+        description,
+        url
+      )
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        const index = this.restaurant$.value.externalMenus?.findIndex(en => en.id === externalMenuId) ?? -1;
-        if (index < 0) {
-          if (!this.restaurant$.value.externalMenus)
-            this.restaurant$.value.externalMenus = new Array<ExternalMenu>();
-          this.restaurant$.value.externalMenus.push(new ExternalMenu({
-            id: externalMenuId,
-            name: name,
-            description: description,
-            url: url
-          }));
-        } else {
-          const externalMenu = this.restaurant$.value.externalMenus[index];
-          externalMenu.name = name;
-          externalMenu.description = description;
-          externalMenu.url = url;
+          const index =
+            this.restaurant$.value.externalMenus?.findIndex(
+              (en) => en.id === externalMenuId
+            ) ?? -1;
+          if (index < 0) {
+            if (!this.restaurant$.value.externalMenus)
+              this.restaurant$.value.externalMenus = new Array<ExternalMenu>();
+            this.restaurant$.value.externalMenus.push(
+              new ExternalMenu({
+                id: externalMenuId,
+                name: name,
+                description: description,
+                url: url,
+              })
+            );
+          } else {
+            const externalMenu = this.restaurant$.value.externalMenus[index];
+            externalMenu.name = name;
+            externalMenu.description = description;
+            externalMenu.url = url;
+          }
+
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
         }
-
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+      );
   }
 
   public removeExternalMenu(externalMenuId: string): void {
-    const index = this.restaurant$.value.externalMenus?.findIndex(en => en.id === externalMenuId) ?? -1;
-    if (index < 0)
-      return;
+    const index =
+      this.restaurant$.value.externalMenus?.findIndex(
+        (en) => en.id === externalMenuId
+      ) ?? -1;
+    if (index < 0) return;
 
     this.isUpdating$.next(true);
-    this.restaurantAdminService.removeExternalMenu(this.restaurant$.value.id, externalMenuId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .removeExternalMenu(this.restaurant$.value.id, externalMenuId)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        const index = this.restaurant$.value.externalMenus?.findIndex(en => en.id === externalMenuId) ?? -1;
-        if (index >= 0) {
-          this.restaurant$.value.externalMenus.splice(index, 1);
+          const index =
+            this.restaurant$.value.externalMenus?.findIndex(
+              (en) => en.id === externalMenuId
+            ) ?? -1;
+          if (index >= 0) {
+            this.restaurant$.value.externalMenus.splice(index, 1);
+          }
+
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(this.restaurant$.value);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
         }
-
-        this.setUpdateInfoToRestaurant(this.restaurant$.value);
-        this.restaurant$.next(this.restaurant$.value)
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+      );
   }
 
-  public addDishCategory(name: string, afterCategoryId: string): Observable<string> {
+  public addDishCategory(
+    name: string,
+    afterCategoryId: string
+  ): Observable<string> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.addDishCategoryToRestaurantAsync(this.restaurant$.value.id, name, afterCategoryId)
+    return this.restaurantAdminService
+      .addDishCategoryToRestaurantAsync(
+        this.restaurant$.value.id,
+        name,
+        afterCategoryId
+      )
       .pipe(
-        tap(id => {
+        tap((id) => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
           const restaurant = this.restaurant$.value;
           const dishCategories = restaurant.dishCategories;
-          const index = dishCategories.findIndex(en => en.id === afterCategoryId);
+          const index = dishCategories.findIndex(
+            (en) => en.id === afterCategoryId
+          );
           const dishCategory = new DishCategoryModel({
             id: id,
             name: name,
-            dishes: new Array<DishModel>()
+            dishes: new Array<DishModel>(),
           });
           dishCategories.splice(index + 1, 0, dishCategory);
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
   }
 
-  public changeDishCategory(dishCategoryId: string, name: string): Observable<boolean> {
+  public changeDishCategory(
+    dishCategoryId: string,
+    name: string
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.changeDishCategoryOfRestaurantAsync(this.restaurant$.value.id, dishCategoryId, name)
+    return this.restaurantAdminService
+      .changeDishCategoryOfRestaurantAsync(
+        this.restaurant$.value.id,
+        dishCategoryId,
+        name
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
@@ -808,15 +1101,20 @@ export class RestaurantAdminFacade {
 
           const restaurant = this.restaurant$.value;
           const dishCategories = restaurant.dishCategories;
-          const index = dishCategories.findIndex(en => en.id === dishCategoryId);
+          const index = dishCategories.findIndex(
+            (en) => en.id === dishCategoryId
+          );
           dishCategories[index].name = name;
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
@@ -824,7 +1122,11 @@ export class RestaurantAdminFacade {
 
   public removeDishCategory(dishCategoryId: string): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.removeDishCategoryFromRestaurantAsync(this.restaurant$.value.id, dishCategoryId)
+    return this.restaurantAdminService
+      .removeDishCategoryFromRestaurantAsync(
+        this.restaurant$.value.id,
+        dishCategoryId
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
@@ -832,15 +1134,20 @@ export class RestaurantAdminFacade {
 
           const restaurant = this.restaurant$.value;
           const dishCategories = restaurant.dishCategories;
-          const index = dishCategories.findIndex(en => en.id === dishCategoryId);
+          const index = dishCategories.findIndex(
+            (en) => en.id === dishCategoryId
+          );
           dishCategories.splice(index, 1);
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
       );
@@ -849,128 +1156,189 @@ export class RestaurantAdminFacade {
   public decOrderOfDishCategory(dishCategoryId: string): void {
     const restaurant = this.restaurant$.value;
     const dishCategories = restaurant.dishCategories;
-    const pos = dishCategories.findIndex(en => en.id === dishCategoryId);
+    const pos = dishCategories.findIndex((en) => en.id === dishCategoryId);
     if (pos < 1) {
       return;
     }
 
     this.isUpdating$.next(true);
-    this.restaurantAdminService.decOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .decOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        [dishCategories[pos - 1], dishCategories[pos]] = [dishCategories[pos], dishCategories[pos - 1]];
+          [dishCategories[pos - 1], dishCategories[pos]] = [
+            dishCategories[pos],
+            dishCategories[pos - 1],
+          ];
 
-        this.restaurant$.next(restaurant);
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(restaurant);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public incOrderOfDishCategory(dishCategoryId: string): void {
     const restaurant = this.restaurant$.value;
     const dishCategories = restaurant.dishCategories;
-    const pos = dishCategories.findIndex(en => en.id === dishCategoryId);
+    const pos = dishCategories.findIndex((en) => en.id === dishCategoryId);
     if (pos >= dishCategories.length - 1) {
       return;
     }
 
     this.isUpdating$.next(true);
-    this.restaurantAdminService.incOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .incOrderOfDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        [dishCategories[pos], dishCategories[pos + 1]] = [dishCategories[pos + 1], dishCategories[pos]];
+          [dishCategories[pos], dishCategories[pos + 1]] = [
+            dishCategories[pos + 1],
+            dishCategories[pos],
+          ];
 
-        this.restaurant$.next(restaurant);
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(restaurant);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public enableDishCategory(dishCategoryId: string): void {
     this.isUpdating$.next(true);
-    this.restaurantAdminService.enableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
-
-        const restaurant = this.restaurant$.value;
-        const dishCategories = restaurant.dishCategories;
-        const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
-        const dishCategory = dishCategories[dishCategoryIndex];
-        dishCategory.enabled = true;
-
-        this.restaurant$.next(restaurant);
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
-  }
-
-  public disableDishCategory(dishCategoryId: string): void {
-    this.isUpdating$.next(true);
-    this.restaurantAdminService.disableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
-
-        const restaurant = this.restaurant$.value;
-        const dishCategories = restaurant.dishCategories;
-        const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
-        const dishCategory = dishCategories[dishCategoryIndex];
-        dishCategory.enabled = false;
-
-        this.restaurant$.next(restaurant);
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
-  }
-
-  public addOrChangedDish(dishCategoryId: string, dish: DishModel): Observable<string> {
-    this.isUpdating$.next(true);
-    return this.restaurantAdminService.addOrChangeDishOfRestaurantAsync(this.restaurant$.value.id, dishCategoryId, dish)
-      .pipe(
-        tap(dishId => {
+    this.restaurantAdminService
+      .enableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(
+        () => {
           this.isUpdating$.next(false);
           this.updateError$.next(undefined);
 
           const restaurant = this.restaurant$.value;
           const dishCategories = restaurant.dishCategories;
-          const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+          const dishCategoryIndex = dishCategories.findIndex(
+            (en) => en.id === dishCategoryId
+          );
+          const dishCategory = dishCategories[dishCategoryIndex];
+          dishCategory.enabled = true;
+
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(restaurant);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
+  }
+
+  public disableDishCategory(dishCategoryId: string): void {
+    this.isUpdating$.next(true);
+    this.restaurantAdminService
+      .disableDishCategoryAsync(this.restaurant$.value.id, dishCategoryId)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const restaurant = this.restaurant$.value;
+          const dishCategories = restaurant.dishCategories;
+          const dishCategoryIndex = dishCategories.findIndex(
+            (en) => en.id === dishCategoryId
+          );
+          const dishCategory = dishCategories[dishCategoryIndex];
+          dishCategory.enabled = false;
+
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(restaurant);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
+  }
+
+  public addOrChangedDish(
+    dishCategoryId: string,
+    dish: DishModel
+  ): Observable<string> {
+    this.isUpdating$.next(true);
+    return this.restaurantAdminService
+      .addOrChangeDishOfRestaurantAsync(
+        this.restaurant$.value.id,
+        dishCategoryId,
+        dish
+      )
+      .pipe(
+        tap((dishId) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
+
+          const restaurant = this.restaurant$.value;
+          const dishCategories = restaurant.dishCategories;
+          const dishCategoryIndex = dishCategories.findIndex(
+            (en) => en.id === dishCategoryId
+          );
           const dishCategory = dishCategories[dishCategoryIndex];
 
           if (dish.id === undefined) {
             dish.id = dishId;
             dishCategory.dishes.push(dish);
           } else {
-            const dishIndex = dishCategory.dishes.findIndex(en => en.id === dish.id);
+            const dishIndex = dishCategory.dishes.findIndex(
+              (en) => en.id === dish.id
+            );
             dishCategory.dishes[dishIndex] = dish;
           }
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
-      )
+      );
   }
 
-  public removeDish(dishCategoryId: string, dishId: string): Observable<boolean> {
+  public removeDish(
+    dishCategoryId: string,
+    dishId: string
+  ): Observable<boolean> {
     this.isUpdating$.next(true);
-    return this.restaurantAdminService.removeDishFromRestaurantAsync(this.restaurant$.value.id, dishCategoryId, dishId)
+    return this.restaurantAdminService
+      .removeDishFromRestaurantAsync(
+        this.restaurant$.value.id,
+        dishCategoryId,
+        dishId
+      )
       .pipe(
         tap(() => {
           this.isUpdating$.next(false);
@@ -978,82 +1346,112 @@ export class RestaurantAdminFacade {
 
           const restaurant = this.restaurant$.value;
           const dishCategories = restaurant.dishCategories;
-          const dishCategoryIndex = dishCategories.findIndex(en => en.id === dishCategoryId);
+          const dishCategoryIndex = dishCategories.findIndex(
+            (en) => en.id === dishCategoryId
+          );
           const dishCategory = dishCategories[dishCategoryIndex];
-          const dishIndex = dishCategory.dishes.findIndex(en => en.id === dishId);
+          const dishIndex = dishCategory.dishes.findIndex(
+            (en) => en.id === dishId
+          );
           dishCategory.dishes.splice(dishIndex, 1);
 
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
           this.restaurant$.next(restaurant);
           this.isUpdated$.next(true);
         }),
         catchError((response: HttpErrorResponse) => {
           this.isUpdating$.next(false);
-          this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         })
-      )
+      );
   }
 
   public decOrderOfDish(dishCategoryId: string, dishId: string): void {
     const restaurant = this.restaurant$.value;
     const dishCategories = restaurant.dishCategories;
-    const indexDishCategory = dishCategories.findIndex(en => en.id === dishCategoryId);
+    const indexDishCategory = dishCategories.findIndex(
+      (en) => en.id === dishCategoryId
+    );
     if (indexDishCategory < 0) {
       return;
     }
     const dishCategory = dishCategories[indexDishCategory];
-    const pos = dishCategory.dishes.findIndex(en => en.id === dishId);
+    const pos = dishCategory.dishes.findIndex((en) => en.id === dishId);
     if (pos < 1) {
       return;
     }
 
     this.isUpdating$.next(true);
-    this.restaurantAdminService.decOrderOfDishAsync(this.restaurant$.value.id, dishId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .decOrderOfDishAsync(this.restaurant$.value.id, dishCategoryId, dishId)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        [dishCategory.dishes[pos - 1], dishCategory.dishes[pos]] = [dishCategory.dishes[pos], dishCategory.dishes[pos - 1]];
+          [dishCategory.dishes[pos - 1], dishCategory.dishes[pos]] = [
+            dishCategory.dishes[pos],
+            dishCategory.dishes[pos - 1],
+          ];
 
-        this.restaurant$.next(restaurant);
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(restaurant);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
   public incOrderOfDish(dishCategoryId: string, dishId: string): void {
     const restaurant = this.restaurant$.value;
     const dishCategories = restaurant.dishCategories;
-    const indexDishCategory = dishCategories.findIndex(en => en.id === dishCategoryId);
+    const indexDishCategory = dishCategories.findIndex(
+      (en) => en.id === dishCategoryId
+    );
     if (indexDishCategory < 0) {
       return;
     }
     const dishCategory = dishCategories[indexDishCategory];
-    const pos = dishCategory.dishes.findIndex(en => en.id === dishId);
+    const pos = dishCategory.dishes.findIndex((en) => en.id === dishId);
     if (pos >= dishCategory.dishes.length - 1) {
       return;
     }
 
     this.isUpdating$.next(true);
-    this.restaurantAdminService.incOrderOfDishAsync(this.restaurant$.value.id, dishId)
-      .subscribe(() => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(undefined);
+    this.restaurantAdminService
+      .incOrderOfDishAsync(this.restaurant$.value.id, dishCategoryId, dishId)
+      .subscribe(
+        () => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(undefined);
 
-        [dishCategory.dishes[pos], dishCategory.dishes[pos + 1]] = [dishCategory.dishes[pos + 1], dishCategory.dishes[pos]];
+          [dishCategory.dishes[pos], dishCategory.dishes[pos + 1]] = [
+            dishCategory.dishes[pos + 1],
+            dishCategory.dishes[pos],
+          ];
 
-        this.restaurant$.next(restaurant);
-        this.isUpdated$.next(true);
-      }, (response: HttpErrorResponse) => {
-        this.isUpdating$.next(false);
-        this.updateError$.next(this.httpErrorHandlingService.handleError(response).message);
-      });
+          this.setUpdateInfoToRestaurant(this.restaurant$.value);
+          this.restaurant$.next(restaurant);
+          this.isUpdated$.next(true);
+        },
+        (response: HttpErrorResponse) => {
+          this.isUpdating$.next(false);
+          this.updateError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
+        }
+      );
   }
 
-  private setUpdateInfoToRestaurant(restaurant: RestaurantModel)
-  {
+  private setUpdateInfoToRestaurant(restaurant: RestaurantModel) {
     restaurant.updatedOnDate = new Date();
     restaurant.updatedOn = restaurant.updatedOnDate.toISOString();
     restaurant.updatedBy = this.authService.getUser();

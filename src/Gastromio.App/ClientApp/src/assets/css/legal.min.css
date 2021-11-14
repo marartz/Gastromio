@@ -1,19 +1,15 @@
 /* #legal */
 #legal {
-	background-color: #363636;
-    background-image: url("../../assets/images/rough/grey.png");
-    background-repeat: repeat;
+	background: var(--bg-rough-grey);
 	margin-top: -90px;
-    position: relative;
-    width: 100%;
+	position: relative;
+	width: 100%;
 	overflow: hidden;
 }
 
 /* #legal > #hero */
 #legal #hero {
-	background-color: #DECF80;
-    background-image: url("../../assets/images/rough/yellow.png");
-    background-repeat: repeat;
+	background: var(--bg-rough-yellow);
 	padding: 80px 0px;
 }
 
@@ -40,8 +36,8 @@
 }
 
 #legal #hero .text h5 {
-	color: #363636;
-	font-family: "Apercu", sans-serif;
+	color: var(--grey);
+	font-family: var(--sans);
 	font-weight: 600;
 	font-size: 14px;
 	text-transform: uppercase;
@@ -49,16 +45,16 @@
 }
 
 #legal #hero .text h1 {
-	color: #363636;
-	font-family: "Apercu", sans-serif;
+	color: var(--grey);
+	font-family: var(--sans);
 	font-weight: 600;
 	font-size: 32px;
 	margin-bottom: 14px;
 }
 
 #legal #hero .text p {
-	color: #363636;
-	font-family: "Apercu", sans-serif;
+	color: var(--grey);
+	font-family: var(--sans);
 	font-weight: 400;
 	font-size: 16px;
 	margin-bottom: 0px;
@@ -89,20 +85,20 @@
 
 #legal #content .text {
 	width: 100%;
-	border-bottom: 1px solid #FFF;
-} 
+	border-bottom: 1px solid var(--white);
+}
 
 #legal #content .text div {
 	margin-bottom: 48px;
 }
 
 #legal #content .text p {
-	color: #fff;
-	font-family: "Apercu", sans-serif;
+	color: var(--white);
+	font-family: var(--sans);
 	font-size: 16px;
 	font-weight: 300;
 	margin-bottom: 16px;
-    margin-top: 0px;
+	margin-top: 0px;
 }
 
 #legal #content .text p b {
@@ -110,13 +106,13 @@
 }
 
 #legal #content .text h5 {
-    color: #FFF;
-    font-family: "Apercu", sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.5;
-    margin-bottom: 10px;
-    margin-top: 0px;
+	color: var(--white);
+	font-family: var(--sans);
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.5;
+	margin-bottom: 10px;
+	margin-top: 0px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -126,19 +122,17 @@
 }
 
 #legal #content .text h6 {
-    color: #FFF;
-    font-family: "Apercu", sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.5;
-    margin-bottom: 10px;
-    margin-top: 0px;
+	color: var(--white);
+	font-family: var(--sans);
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.5;
+	margin-bottom: 10px;
+	margin-top: 0px;
 }
 
 #legal #content .infocard {
-	background-color: #DECF80;
-    background-image: url("../../assets/images/rough/yellow.png");
-    background-repeat: repeat;
+	background: var(--bg-rough-yellow);
 	border-radius: 23px;
 	padding: 32px;
 	margin-left: -32px;
@@ -147,6 +141,6 @@
 }
 
 #legal #content .infocard > * {
-	color: #363636 !important;
+	color: var(--grey) !important;
 	overflow: hidden;
 }

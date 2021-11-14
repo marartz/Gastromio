@@ -202,6 +202,18 @@ namespace Gastromio.Persistence.MongoDB
             return document != null ? FromDocument(document) : null;
         }
 
+        public async Task<bool> DoesImportIdAlreadyExistAsync(RestaurantId restaurantId,
+            string importId, CancellationToken cancellationToken = default)
+        {
+            var collection = GetCollection();
+            var count = await collection.CountDocumentsAsync(
+                Builders<RestaurantModel>.Filter.And(
+                    Builders<RestaurantModel>.Filter.Eq(en => en.ImportId, importId),
+                    Builders<RestaurantModel>.Filter.Ne(en => en.Id, restaurantId.Value)),
+                cancellationToken: cancellationToken);
+            return count > 0;
+        }
+
         public async Task<IEnumerable<Restaurant>> FindByCuisineIdAsync(CuisineId cuisineId,
             CancellationToken cancellationToken = default)
         {

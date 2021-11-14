@@ -1,67 +1,104 @@
 <div class="modal-overlay">
-    <div class="modal_v3 bg-rough-blue">
-        <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
-        <header id="header">
-            <div class="left"></div>
-            <div class="middle"><h1 class="title" tabindex="-1">Zeit wählen</h1></div>
-            <div class="right"></div>
-        </header>
-        <div id="body" tabindex="0">
-            <div class="wrapper bg-rough-blue">
-                <style>
-                    :host /deep/ ngb-datepicker {
-                        width: 100%;
-                    }
-                    :host /deep/ ngb-datepicker > * {
-                        outline: none !important;
-                    }
-                    :host /deep/ ngb-datepicker {
-                        border: 0px solid transparent;
-                    }
-                    :host /deep/ ngb-datepicker .ngb-dp-header {
-                        background-color: #363636;
-                        border-radius: 23px 23px 0px 0px;
-                        padding: 8px;
-                    }
-                    :host /deep/ ngb-datepicker .ngb-dp-month {
-                        border-radius: 0px 0px 23px 23px;
-                        width: 100%;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-navigation .ngb-dp-navigation-chevron {
-                        border-width: 2px 2px 0px 0px;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link {
-                        color: #FFF;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link:disabled {
-                        color: #FFF;
-                        opacity: 0.5;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-navigation-select select {
-                        background-color: #363636;
-                        border: 0px solid transparent;
-                        color: #FFF;
-                        font-family: "Apercu", sans-serif;
-                        text-align: center;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekdays {
-                        background-color: #363636;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekday {
-                        color: #FFF;
-                        font-family: "Apercu", sans-serif;
-                        font-style: normal;
-                        width: 14.285714%;
-                    }
+	<div class="modal_v3">
+		<div id="close">
+			<button
+				type="button"
+				aria-label="Schließen"
+				(click)="activeModal.dismiss('Cross click')"
+			>
+				<svg
+					viewBox="0 0 32 32"
+					xmlns="http://www.w3.org/2000/svg"
+					role="presentation"
+					focusable="false"
+					style="
+						display: block;
+						fill: none;
+						height: 16px;
+						width: 16px;
+						stroke: currentcolor;
+						stroke-width: 3;
+						overflow: visible;
+					"
+				>
+					<path d="m6 6 20 20"></path>
+					<path d="m26 6-20 20"></path>
+				</svg>
+			</button>
+		</div>
+		<header id="header">
+			<div class="left"></div>
+			<div class="middle"><h1 class="title" tabindex="-1">Zeit wählen</h1></div>
+			<div class="right"></div>
+		</header>
+		<div id="body" tabindex="0">
+			<div class="wrapper bg-rough-blue">
+				<style>
+					:host /deep/ ngb-datepicker {
+						width: 100%;
+					}
+					:host /deep/ ngb-datepicker > * {
+						outline: none !important;
+					}
+					:host /deep/ ngb-datepicker {
+						border: 0px solid transparent;
+					}
+					:host /deep/ ngb-datepicker .ngb-dp-header {
+						background-color: var(--grey);
+						border-radius: 23px 23px 0px 0px;
+						padding: 8px;
+					}
+					:host /deep/ ngb-datepicker .ngb-dp-month {
+						border-radius: 0px 0px 23px 23px;
+						width: 100%;
+					}
+					:host
+						/deep/
+						ngb-datepicker
+						ngb-datepicker-navigation
+						.ngb-dp-navigation-chevron {
+						border-width: 2px 2px 0px 0px;
+					}
+					:host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link {
+						color: #fff;
+					}
+					:host
+						/deep/
+						ngb-datepicker
+						ngb-datepicker-navigation
+						.btn-link:disabled {
+						color: #fff;
+						opacity: 0.5;
+					}
+					:host /deep/ ngb-datepicker ngb-datepicker-navigation-select select {
+						background-color: #363636;
+						border: 0px solid transparent;
+						color: #fff;
+						font-family: "Apercu", sans-serif;
+						text-align: center;
+					}
+					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekdays {
+						background-color: #363636;
+					}
+					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekday {
+						color: #fff;
+						font-family: "Apercu", sans-serif;
+						font-style: normal;
+						width: 14.285714%;
+					}
 					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week {
-                        border-radius: 0 0 23px 23px;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week:not(.ngb-dp-weekdays) {
-                        background-color: transparent;
-                    }
+						border-radius: 0 0 23px 23px;
+					}
+					:host
+						/deep/
+						ngb-datepicker
+						ngb-datepicker-month
+						.ngb-dp-week:not(.ngb-dp-weekdays) {
+						background-color: transparent;
+					}
 					:host /deep/ ngb-datepicker [ngbDatepickerDayView] {
 						border-radius: 23px;
-						transition: all .3s ease;
+						transition: all 0.3s ease;
 					}
 					:host /deep/ ngb-datepicker .btn-light:hover,
 					:host /deep/ ngb-datepicker .btn-light:active {
@@ -69,172 +106,68 @@
 						background-color: #363636 !important;
 						border-color: #363636 !important;
 					}
-                    :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day {
-                        font-family: "Apercu", sans-serif;
-                        font-style: normal;
-                        width: 14.285714%;
-                        color: #363636;
-                        opacity: 1;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day.disabled {
-                        cursor: not-allowed;
-                        color: #363636;
-                        opacity: 0.5;
-                    }
-                    :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day div {
-                        width: unset;
-                        transition: all .2s ease;
-                    }
-                    :host /deep/ ngb-datepicker .bg-primary {
-                        background-color: #81B67C !important;
-                    }
-                </style>
-                            
-                <style>
-                                :host /deep/ ngb-timepicker > * {
-                                    outline: none !important;
-                                }
-                                :host /deep/ ngb-timepicker button {
-                                    color: #363636;
-                                }
-                                :host /deep/ ngb-timepicker input {
-                                    background-color: transparent;
-                                    border: 0px solid transparent;
-                                    font-family: "Apercu", sans-serif;
-                                    font-size: 28px;
-                                    font-weight: 700;
-                                }
-                                :host /deep/ ngb-timepicker .ngb-tp-chevron::before {
-                                    border-width: 2px 2px 0px 0px;
-                                }
-                            </style>
-                <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
-                <ngb-timepicker class="timepicker" [(ngModel)]="time" [minuteStep]="15" (ngModelChange)="onTimeChanged()" style="margin-left: auto; margin-right: auto; display: flex; justify-content: center;"></ngb-timepicker>
-            </div>
-            <div id="submit"><button class="bg-grey" type="button" (click)="onClose()">Uhrzeit wählen</button></div>
-        </div>
-    </div>
+					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day {
+						font-family: "Apercu", sans-serif;
+						font-style: normal;
+						width: 14.285714%;
+						color: #363636;
+						opacity: 1;
+					}
+					:host
+						/deep/
+						ngb-datepicker
+						ngb-datepicker-month
+						.ngb-dp-day.disabled {
+						cursor: not-allowed;
+						color: #363636;
+						opacity: 0.5;
+					}
+					:host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day div {
+						width: unset;
+						transition: all 0.2s ease;
+					}
+					:host /deep/ ngb-datepicker .bg-primary {
+						background-color: #81b67c !important;
+					}
+				</style>
+
+				<style>
+					:host /deep/ ngb-timepicker > * {
+						outline: none !important;
+					}
+					:host /deep/ ngb-timepicker button {
+						color: #363636;
+					}
+					:host /deep/ ngb-timepicker input {
+						background-color: transparent;
+						border: 0px solid transparent;
+						font-family: "Apercu", sans-serif;
+						font-size: 28px;
+						font-weight: 700;
+					}
+					:host /deep/ ngb-timepicker .ngb-tp-chevron::before {
+						border-width: 2px 2px 0px 0px;
+					}
+				</style>
+				<ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
+				<ngb-timepicker
+					class="timepicker"
+					[(ngModel)]="time"
+					[minuteStep]="15"
+					(ngModelChange)="onTimeChanged()"
+					style="
+						margin-left: auto;
+						margin-right: auto;
+						display: flex;
+						justify-content: center;
+					"
+				></ngb-timepicker>
+			</div>
+			<div id="submit">
+				<button class="bg-grey" type="button" (click)="onClose()">
+					Uhrzeit wählen
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
-
-
-<!--div id="modal">
-    <div class="wrapper">
-        <div class="inner">
-
-            <header id="header">
-                <h1 class="dish-name">Zeit wählen</h1>
-                <div class="close">
-                    <button type="button" (click)="activeModal.dismiss('Cross click')" aria-label="Close"><span><svg height="24" width="24" viewBox="0 0 24 24"><path d="M12.0001 10.2322L5.88398 4.11612L4.11621 5.88389L10.2323 12L4.11621 18.1161L5.88398 19.8839L12.0001 13.7678L18.1162 19.8839L19.884 18.1161L13.7679 12L19.884 5.88389L18.1162 4.11612L12.0001 10.2322Z"></path></svg></span></button>
-                </div>
-            </header>
-
-            <div id="options">
-                <div class="wrapper" style="align-content: center; justify-content: center; display: flex;">
-                    <style>
-                        :host /deep/ ngb-datepicker > * {
-                            outline: none !important;
-                        }
-                        :host /deep/ ngb-datepicker {
-                            border: 0px solid transparent;
-                        }
-                        :host /deep/ ngb-datepicker .ngb-dp-header {
-                            background-color: #363636;
-                            border-radius: 23px 23px 0px 0px;
-                            padding: 8px;
-                        }
-                        :host /deep/ ngb-datepicker .ngb-dp-month {
-                            border-radius: 0px 0px 23px 23px;
-                            width: 100%;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-navigation .ngb-dp-navigation-chevron {
-                            border-width: 2px 2px 0px 0px;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link {
-                            color: #FFF;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-navigation .btn-link:disabled {
-                            color: #FFF;
-                            opacity: 0.5;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-navigation-select select {
-                            background-color: #363636;
-                            border: 0px solid transparent;
-                            color: #FFF;
-                            font-family: "Apercu", sans-serif;
-                            text-align: center;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekdays {
-                            background-color: #363636;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-weekday {
-                            color: #FFF;
-                            font-family: "Apercu", sans-serif;
-                            font-style: normal;
-                            width: 14.285714%;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-week:not(.ngb-dp-weekdays) {
-                            background-color: #DECF80;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day {
-                            font-family: "Apercu", sans-serif;
-                            font-style: normal;
-                            width: 14.285714%;
-                            color: #363636;
-                            opacity: 1;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day.disabled {
-                            cursor: not-allowed;
-                            color: #363636;
-                            opacity: 0.5;
-                        }
-                        :host /deep/ ngb-datepicker ngb-datepicker-month .ngb-dp-day div {
-                            width: unset;
-                            transition: all .2s ease;
-                        }
-                        :host /deep/ ngb-datepicker .bg-primary {
-                            background-color: #81B67C !important;
-                        }
-                    </style>
-                    <ngb-datepicker [(ngModel)]="date" [minDate]="minDate"></ngb-datepicker>
-                    <style>
-                        :host /deep/ ngb-timepicker > * {
-                            outline: none !important;
-                        }
-                        :host /deep/ ngb-timepicker button {
-                            color: #363636;
-                        }
-                        :host /deep/ ngb-timepicker input {
-                            background-color: transparent;
-                            border: 0px solid transparent;
-                            font-family: "Apercu", sans-serif;
-                            font-size: 28px;
-                            font-weight: 700;
-                        }
-                        :host /deep/ ngb-timepicker .ngb-tp-chevron::before {
-                            border-width: 2px 2px 0px 0px;
-                        }
-                    </style>
-                    <ngb-timepicker class="timepicker" [(ngModel)]="time" [minuteStep]="15" (ngModelChange)="onTimeChanged()" style="margin-left: auto; margin-right: auto;"></ngb-timepicker>
-                </div>
-            </div>
-
-            <footer id="footer">
-                <div class="wrapper">
-                    <div class="inner">
-                        <span class="add">
-                            <span class="inner">
-                                <button type="button" (click)="onClose()"><span>Uhrzeit wählen</span></button>
-                            </span>
-                        </span>
-                        <span class="cancel">
-                            <span class="inner">
-                                <button type="button" (click)="activeModal.dismiss('Cross click')"><span>Abbrechen</span></button>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </footer>
-
-        </div>
-    </div>
-</div-->

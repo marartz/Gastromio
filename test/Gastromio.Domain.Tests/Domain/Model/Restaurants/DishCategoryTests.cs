@@ -66,13 +66,13 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         }
 
         [Fact]
-        public void ChangeName_NameLength100_ChangesName()
+        public void ChangeName_NameLength60_ChangesName()
         {
             // Arrange
             fixture.SetupChangedBy();
             var testObject = fixture.CreateTestObject();
 
-            var name = RandomStringBuilder.BuildWithLength(100);
+            var name = RandomStringBuilder.BuildWithLength(60);
 
             // Act
             var result = testObject.ChangeName(name);

@@ -1,5 +1,4 @@
 export class PaymentMethodModel {
-
   constructor(init?: Partial<PaymentMethodModel>) {
     if (init) {
       Object.assign(this, init);
@@ -19,8 +18,7 @@ export class PaymentMethodModel {
       id: this.id,
       name: this.name,
       description: this.description,
-      imageName: this.imageName
+      imageName: this.imageName,
     });
   }
-
 }

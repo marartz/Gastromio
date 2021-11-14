@@ -1,57 +1,95 @@
-import {Injectable} from "@angular/core";
-import {HttpErrorResponse} from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import {BehaviorSubject, combineLatest, Observable, of, throwError} from "rxjs";
-import {catchError, debounceTime, distinctUntilChanged, map, take, tap} from "rxjs/operators";
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  of,
+  throwError,
+} from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  take,
+  tap,
+} from 'rxjs/operators';
 
-import {CuisineModel} from "../shared/models/cuisine.model";
-import {DishModel} from "../shared/models/dish.model";
-import {DishVariantModel} from "../shared/models/dish-variant.model";
-import {RestaurantModel} from "../shared/models/restaurant.model";
+import { CuisineModel } from '../shared/models/cuisine.model';
+import { DishModel } from '../shared/models/dish.model';
+import { DishVariantModel } from '../shared/models/dish-variant.model';
+import { RestaurantModel } from '../shared/models/restaurant.model';
 
-import {HttpErrorHandlingService} from "../shared/services/http-error-handling.service";
+import { HttpErrorHandlingService } from '../shared/services/http-error-handling.service';
 
-import {CartModel} from "./models/cart.model";
-import {CartDishModel} from "./models/cart-dish.model";
-import {OrderType} from "./models/order-type";
-import {OrderTypeConverter} from "./models/order-type-converter";
-import {StoredCartModel} from "./models/stored-cart.model";
+import { CartModel } from './models/cart.model';
+import { CartDishModel } from './models/cart-dish.model';
+import { OrderType } from './models/order-type';
+import { OrderTypeConverter } from './models/order-type-converter';
+import { StoredCartModel } from './models/stored-cart.model';
 
-import {OrderService} from "./services/order.service";
-import {StoredCartService} from "./services/stored-cart.service";
-import {StoredCartDishModel} from "./models/stored-cart-dish.model";
-import {Guid} from "guid-typescript";
-import {CheckoutModel} from "./models/checkout.model";
-import {OrderModel} from "./models/order.model";
+import { OrderService } from './services/order.service';
+import { StoredCartService } from './services/stored-cart.service';
+import { StoredCartDishModel } from './models/stored-cart-dish.model';
+import { Guid } from 'guid-typescript';
+import { CheckoutModel } from './models/checkout.model';
+import { OrderModel } from './models/order.model';
 
 @Injectable()
 export class OrderFacade {
+  private isInitializing$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
+  private isInitialized$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(undefined);
+  private initializationError$: BehaviorSubject<string> =
+    new BehaviorSubject<string>(undefined);
+  private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<
+    CuisineModel[]
+  >(new Array<CuisineModel>());
 
-  private isInitializing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  private isInitialized$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
-  private initializationError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-  private cuisines$: BehaviorSubject<CuisineModel[]> = new BehaviorSubject<CuisineModel[]>(new Array<CuisineModel>());
+  private isSearching$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  private selectedSearchPhrase$: BehaviorSubject<string> =
+    new BehaviorSubject<string>('');
+  private selectedOrderType$: BehaviorSubject<OrderType> =
+    new BehaviorSubject<OrderType>(OrderType.Pickup);
+  private selectedOrderTime$: BehaviorSubject<Date> = new BehaviorSubject<Date>(
+    undefined
+  );
+  private selectedCuisine$: BehaviorSubject<string> =
+    new BehaviorSubject<string>(undefined);
+  private restaurants$: BehaviorSubject<RestaurantModel[]> =
+    new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
+  private openedRestaurants$: BehaviorSubject<RestaurantModel[]> =
+    new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
+  private closedRestaurants$: BehaviorSubject<RestaurantModel[]> =
+    new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
 
-  private isSearching$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private selectedSearchPhrase$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  private selectedOrderType$: BehaviorSubject<OrderType> = new BehaviorSubject<OrderType>(OrderType.Pickup);
-  private selectedOrderTime$: BehaviorSubject<Date> = new BehaviorSubject<Date>(undefined);
-  private selectedCuisine$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-  private restaurants$: BehaviorSubject<RestaurantModel[]> = new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
-  private openedRestaurants$: BehaviorSubject<RestaurantModel[]> = new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
-  private closedRestaurants$: BehaviorSubject<RestaurantModel[]> = new BehaviorSubject<RestaurantModel[]>(new Array<RestaurantModel>());
+  private storedCart$: BehaviorSubject<StoredCartModel> =
+    new BehaviorSubject<StoredCartModel>(undefined);
+  private selectedRestaurant$: BehaviorSubject<RestaurantModel> =
+    new BehaviorSubject<RestaurantModel>(undefined);
 
-  private storedCart$: BehaviorSubject<StoredCartModel> = new BehaviorSubject<StoredCartModel>(undefined);
-  private selectedRestaurant$: BehaviorSubject<RestaurantModel> = new BehaviorSubject<RestaurantModel>(undefined);
+  private cart$: BehaviorSubject<CartModel> = new BehaviorSubject<CartModel>(
+    undefined
+  );
 
-  private cart$: BehaviorSubject<CartModel> = new BehaviorSubject<CartModel>(undefined);
+  private isCartVisible$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
-  private isCartVisible$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  private isCheckingOut$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private isCheckedOut$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private checkoutError$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-  private order$: BehaviorSubject<OrderModel> = new BehaviorSubject<OrderModel>(undefined);
+  private isCheckingOut$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  private isCheckedOut$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  private checkoutError$: BehaviorSubject<string> = new BehaviorSubject<string>(
+    undefined
+  );
+  private order$: BehaviorSubject<OrderModel> = new BehaviorSubject<OrderModel>(
+    undefined
+  );
 
   constructor(
     private orderService: OrderService,
@@ -59,12 +97,14 @@ export class OrderFacade {
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {
     combineLatest([
-      this.selectedSearchPhrase$.pipe(debounceTime(500), distinctUntilChanged()),
+      this.selectedSearchPhrase$.pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      ),
       this.selectedOrderType$.pipe(distinctUntilChanged()),
       this.selectedOrderTime$.pipe(distinctUntilChanged()),
-      this.selectedCuisine$.pipe(distinctUntilChanged())
-    ])
-      .subscribe(() => this.updateRestaurantSearchResult());
+      this.selectedCuisine$.pipe(distinctUntilChanged()),
+    ]).subscribe(() => this.updateRestaurantSearchResult());
   }
 
   public getIsInitializing$(): Observable<boolean> {
@@ -86,10 +126,10 @@ export class OrderFacade {
 
     const observables = new Array<Observable<void>>();
 
-    observables.push(this.orderService.getAllCuisinesAsync()
-      .pipe(
+    observables.push(
+      this.orderService.getAllCuisinesAsync().pipe(
         take(1),
-        map(cuisines => {
+        map((cuisines) => {
           this.cuisines$.next(cuisines);
         })
       )
@@ -100,10 +140,10 @@ export class OrderFacade {
     if (storedCart !== undefined) {
       this.storedCart$.next(storedCart);
 
-      observables.push(this.orderService.getRestaurantAsync(storedCart.restaurantId)
-        .pipe(
+      observables.push(
+        this.orderService.getRestaurantAsync(storedCart.restaurantId).pipe(
           take(1),
-          map(restaurant => {
+          map((restaurant) => {
             this.selectedRestaurant$.next(new RestaurantModel(restaurant));
           }),
           catchError((error: HttpErrorResponse) => {
@@ -115,24 +155,24 @@ export class OrderFacade {
 
     this.isInitialized$.next(undefined);
     this.isInitializing$.next(true);
-    combineLatest(observables)
-      .subscribe(
-        () => {
-          this.updateCartModel();
-          this.isInitializing$.next(false);
-          this.isInitialized$.next(true);
-        },
-        (error: HttpErrorResponse | Error) => {
-          this.isInitializing$.next(false);
-          this.isInitialized$.next(false);
-          if (error instanceof HttpErrorResponse) {
-            const errorText = this.httpErrorHandlingService.handleError(error).message;
-            this.initializationError$.next(errorText);
-          } else if (error instanceof Error) {
-            this.initializationError$.next(error.message);
-          }
+    combineLatest(observables).subscribe(
+      () => {
+        this.updateCartModel();
+        this.isInitializing$.next(false);
+        this.isInitialized$.next(true);
+      },
+      (error: HttpErrorResponse | Error) => {
+        this.isInitializing$.next(false);
+        this.isInitialized$.next(false);
+        if (error instanceof HttpErrorResponse) {
+          const errorText =
+            this.httpErrorHandlingService.handleError(error).message;
+          this.initializationError$.next(errorText);
+        } else if (error instanceof Error) {
+          this.initializationError$.next(error.message);
         }
-      );
+      }
+    );
   }
 
   public getCuisines$(): Observable<CuisineModel[]> {
@@ -142,7 +182,6 @@ export class OrderFacade {
   public getCuisines(): CuisineModel[] {
     return this.cuisines$.value;
   }
-
 
   public getIsSearching$(): Observable<boolean> {
     return this.isSearching$;
@@ -225,7 +264,6 @@ export class OrderFacade {
     return this.closedRestaurants$;
   }
 
-
   public getSelectedRestaurant$(): Observable<RestaurantModel> {
     return this.selectedRestaurant$;
   }
@@ -234,18 +272,22 @@ export class OrderFacade {
     return this.selectedRestaurant$.value;
   }
 
-  public selectRestaurantId$(restaurantId: string): Observable<RestaurantModel> {
-    return this.orderService.getRestaurantAsync(restaurantId)
-      .pipe(
-        take(1),
-        tap(restaurant => {
-          this.selectRestaurant(restaurant);
-        })
-      );
+  public selectRestaurantId$(
+    restaurantId: string
+  ): Observable<RestaurantModel> {
+    return this.orderService.getRestaurantAsync(restaurantId).pipe(
+      take(1),
+      tap((restaurant) => {
+        this.selectRestaurant(restaurant);
+      })
+    );
   }
 
   public selectRestaurant(restaurant: RestaurantModel) {
-    if (this.selectedRestaurant$.value === undefined || this.selectedRestaurant$.value.id !== restaurant.id) {
+    if (
+      this.selectedRestaurant$.value === undefined ||
+      this.selectedRestaurant$.value.id !== restaurant.id
+    ) {
       this.storedCart$.next(undefined);
       this.storedCartService.removeFromStorage();
     }
@@ -264,18 +306,33 @@ export class OrderFacade {
 
     switch (orderType) {
       case OrderType.Pickup:
-        if (!selectedRestaurant.pickupInfo || !selectedRestaurant.pickupInfo.enabled) {
-          throw new Error('Entschuldigung, die Bestellart Abholung wird von dem Restaurant nicht unterstützt');
+        if (
+          !selectedRestaurant.pickupInfo ||
+          !selectedRestaurant.pickupInfo.enabled
+        ) {
+          throw new Error(
+            'Entschuldigung, die Bestellart Abholung wird von dem Restaurant nicht unterstützt'
+          );
         }
         break;
       case OrderType.Delivery:
-        if (!selectedRestaurant.deliveryInfo || !selectedRestaurant.deliveryInfo.enabled) {
-          throw new Error('Entschuldigung, die Bestellart Lieferung wird von dem Restaurant nicht unterstützt');
+        if (
+          !selectedRestaurant.deliveryInfo ||
+          !selectedRestaurant.deliveryInfo.enabled
+        ) {
+          throw new Error(
+            'Entschuldigung, die Bestellart Lieferung wird von dem Restaurant nicht unterstützt'
+          );
         }
         break;
       case OrderType.Reservation:
-        if (!selectedRestaurant.reservationInfo || !selectedRestaurant.reservationInfo.enabled) {
-          throw new Error('Entschuldigung, die Bestellart Reservierung wird von dem Restaurant nicht unterstützt');
+        if (
+          !selectedRestaurant.reservationInfo ||
+          !selectedRestaurant.reservationInfo.enabled
+        ) {
+          throw new Error(
+            'Entschuldigung, die Bestellart Reservierung wird von dem Restaurant nicht unterstützt'
+          );
         }
         break;
     }
@@ -313,7 +370,12 @@ export class OrderFacade {
     return this.cart$.value;
   }
 
-  public addDishToCart(dish: DishModel, variant: DishVariantModel, count: number, remarks: string): void {
+  public addDishToCart(
+    dish: DishModel,
+    variant: DishVariantModel,
+    count: number,
+    remarks: string
+  ): void {
     const storedCart = this.storedCart$.value;
 
     if (!storedCart) {
@@ -324,7 +386,9 @@ export class OrderFacade {
       return;
     }
 
-    let storedCartDish = storedCart.cartDishes.find(en => en.dishId === dish.id && en.variantId === variant.variantId);
+    let storedCartDish = storedCart.cartDishes.find(
+      (en) => en.dishId === dish.id && en.variantId === variant.variantId
+    );
 
     if (storedCartDish !== undefined) {
       storedCartDish.count += count;
@@ -353,7 +417,7 @@ export class OrderFacade {
       throw new Error('no cart defined');
     }
 
-    const index = storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    const index = storedCart.cartDishes.findIndex((en) => en.itemId === itemId);
     if (index < 0) {
       return;
     }
@@ -375,7 +439,7 @@ export class OrderFacade {
       throw new Error('no cart defined');
     }
 
-    const index = storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    const index = storedCart.cartDishes.findIndex((en) => en.itemId === itemId);
     if (index < 0) {
       return;
     }
@@ -394,7 +458,7 @@ export class OrderFacade {
       throw new Error('no cart defined');
     }
 
-    const index = storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    const index = storedCart.cartDishes.findIndex((en) => en.itemId === itemId);
     if (index < 0) {
       return;
     }
@@ -416,7 +480,7 @@ export class OrderFacade {
     if (!storedCart) {
       throw new Error('no cart defined');
     }
-    const index = storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    const index = storedCart.cartDishes.findIndex((en) => en.itemId === itemId);
     if (index < 0) {
       return;
     }
@@ -434,7 +498,7 @@ export class OrderFacade {
     if (!storedCart) {
       throw new Error('no cart defined');
     }
-    const index = storedCart.cartDishes.findIndex(en => en.itemId === itemId);
+    const index = storedCart.cartDishes.findIndex((en) => en.itemId === itemId);
     if (index < 0) {
       return;
     }
@@ -485,9 +549,11 @@ export class OrderFacade {
   public checkout(checkoutModel: CheckoutModel): void {
     this.isCheckedOut$.next(undefined);
     this.isCheckingOut$.next(true);
-    this.orderService.sendCheckoutAsync(checkoutModel)
+    this.orderService
+      .sendCheckoutAsync(checkoutModel)
       .pipe(take(1))
-      .subscribe(order => {
+      .subscribe(
+        (order) => {
           this.isCheckingOut$.next(false);
           this.isCheckedOut$.next(true);
           this.order$.next(order);
@@ -496,7 +562,9 @@ export class OrderFacade {
         (response: HttpErrorResponse) => {
           this.isCheckingOut$.next(false);
           this.isCheckedOut$.next(false);
-          this.checkoutError$.next(this.httpErrorHandlingService.handleError(response).message);
+          this.checkoutError$.next(
+            this.httpErrorHandlingService.handleError(response).message
+          );
           return throwError(response);
         }
       );
@@ -513,9 +581,16 @@ export class OrderFacade {
 
   private updateRestaurantSearchResult() {
     this.isSearching$.next(true);
-    this.orderService.searchForRestaurantsAsync(this.selectedSearchPhrase$.value, this.selectedOrderType$.value, this.selectedCuisine$.value, undefined)
+    this.orderService
+      .searchForRestaurantsAsync(
+        this.selectedSearchPhrase$.value,
+        this.selectedOrderType$.value,
+        this.selectedCuisine$.value,
+        undefined
+      )
       .pipe(take(1))
-      .subscribe(result => {
+      .subscribe(
+        (result) => {
           this.isSearching$.next(false);
 
           if (result === undefined) {
@@ -553,7 +628,8 @@ export class OrderFacade {
           this.restaurants$.next(new Array<RestaurantModel>());
           this.openedRestaurants$.next(new Array<RestaurantModel>());
           this.closedRestaurants$.next(new Array<RestaurantModel>());
-        });
+        }
+      );
   }
 
   private updateCartModel() {
@@ -617,9 +693,13 @@ export class OrderFacade {
         throw new Error('dish with id ' + storedCartDish.dishId + ' not known');
       }
 
-      const variant = dish.variants.find(en => en.variantId === storedCartDish.variantId);
+      const variant = dish.variants.find(
+        (en) => en.variantId === storedCartDish.variantId
+      );
       if (!variant) {
-        throw new Error('variant with id ' + storedCartDish.variantId + ' not known');
+        throw new Error(
+          'variant with id ' + storedCartDish.variantId + ' not known'
+        );
       }
 
       const CartDish = new CartDishModel(
@@ -636,9 +716,10 @@ export class OrderFacade {
     let serviceTime: Date = undefined;
     try {
       const dt = storedCart.serviceTime.split(/[: T-]/).map(parseFloat);
-      serviceTime = new Date(Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0));
-    } catch {
-    }
+      serviceTime = new Date(
+        Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0)
+      );
+    } catch {}
 
     return new CartModel(
       OrderTypeConverter.convertFromString(storedCart.orderType),
@@ -654,7 +735,10 @@ export class OrderFacade {
     );
   }
 
-  private static restaurantSortFunc(a: RestaurantModel, b: RestaurantModel): number {
+  private static restaurantSortFunc(
+    a: RestaurantModel,
+    b: RestaurantModel
+  ): number {
     if (a.name < b.name) {
       return -1;
     } else if (a.name > b.name) {
@@ -663,5 +747,4 @@ export class OrderFacade {
       return 0;
     }
   }
-
 }

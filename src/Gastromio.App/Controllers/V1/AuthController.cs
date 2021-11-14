@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Gastromio.App.Models;
 using Gastromio.Core.Application.Commands;
+using Gastromio.Core.Application.Commands.ChangePassword;
 using Gastromio.Core.Application.Commands.ChangePasswordWithResetCode;
 using Gastromio.Core.Application.Commands.Login;
 using Gastromio.Core.Application.Commands.RequestPasswordChange;
@@ -152,6 +154,24 @@ namespace Gastromio.App.Controllers.V1
                     passwordResetCode, changePasswordWithResetCodeModel.Password),
                 null
             );
+            return Ok();
+        }
+
+        [Route("changepassword")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangePasswordAsync(
+            [FromBody] ChangeUserPasswordModel changeUserPasswordModel)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var curUserId = new UserId(currentUserId);
+
+            await commandDispatcher.PostAsync(
+                new ChangePasswordCommand(changeUserPasswordModel.Password),
+                curUserId);
 
             return Ok();
         }

@@ -1,16 +1,14 @@
-import {DishModel} from '../../shared/models/dish.model';
-import {DishVariantModel} from '../../shared/models/dish-variant.model';
+import { DishModel } from '../../shared/models/dish.model';
+import { DishVariantModel } from '../../shared/models/dish-variant.model';
 
 export class CartDishModel {
-
   constructor(
     private itemId: string,
     private dish: DishModel,
     private variant: DishVariantModel,
     private count: number,
     private remarks: string
-  ) {
-  }
+  ) {}
 
   public getItemId(): string {
     return this.itemId;
@@ -38,7 +36,7 @@ export class CartDishModel {
 
   public getPriceText(): string {
     const val = this.getPrice();
-    return val.toLocaleString('de', {minimumFractionDigits: 2});
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   public clone(): CartDishModel {
@@ -50,5 +48,4 @@ export class CartDishModel {
       this.remarks
     );
   }
-
 }

@@ -29,9 +29,14 @@ namespace Gastromio.Core.Application.Commands.SetImportIdOfRestaurant
             if (currentUser.Role < Role.SystemAdmin)
                 throw DomainException.CreateFrom(new ForbiddenFailure());
 
+
             var restaurant = await restaurantRepository.FindByRestaurantIdAsync(command.RestaurantId, cancellationToken);
             if (restaurant == null)
                 throw DomainException.CreateFrom(new RestaurantDoesNotExistFailure());
+
+            var doesImportIdAlreadyExist = await restaurantRepository.DoesImportIdAlreadyExistAsync(command.RestaurantId, command.ImportId, cancellationToken);
+            if (doesImportIdAlreadyExist)
+                throw DomainException.CreateFrom(new RestaurantImportIdDuplicateFailure());
 
             restaurant.ChangeImportId(command.ImportId, currentUser.Id);
 

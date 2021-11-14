@@ -1,0 +1,17 @@
+.select-group {
+	background-color: var(--white);
+	border: 0px;
+	border-radius: 23px;
+	color: var(--grey);
+	display: block;
+	font-family: var(--sans);
+	font-size: 16px;
+	font-weight: 400;
+	height: 46px;
+	letter-spacing: 0px;
+	line-height: 1.5;
+	margin-bottom: 10px;
+	padding: 10px 20px;
+	text-overflow: ellipsis;
+	width: 100%;
+}

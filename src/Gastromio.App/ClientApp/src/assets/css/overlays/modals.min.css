@@ -1,0 +1,306 @@
+.modals {
+	bottom: 0px;
+	left: 0px;
+	overflow-y: auto;
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	z-index: 10;
+}
+
+.modal-wrapper {
+	align-items: flex-end;
+	display: flex;
+	min-height: 100vh;
+	justify-content: center;
+	padding-bottom: 5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 1rem;
+	text-align: center;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-wrapper {
+		display: block;
+		padding: 0px;
+	}
+}
+
+.modal-background {
+	background-color: rgba(54, 54, 54, 0.75);
+	bottom: 0px;
+	left: 0px;
+	opacity: 0.75;
+	position: fixed;
+	right: 0px;
+	top: 0px;
+}
+
+.center-modal {
+	display: none;
+}
+
+@media screen and (min-width: 640px) {
+	.center-modal {
+		display: inline-block;
+		height: 100vh;
+		vertical-align: middle;
+	}
+}
+
+.modal-content {
+	background-color: var(--blue);
+	border-radius: 23px;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+		rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+	display: inline-block;
+	overflow: hidden;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-content {
+		margin-bottom: 2rem;
+		margin-top: 2rem;
+		max-width: 32rem;
+		vertical-align: middle;
+		width: 100%;
+	}
+}
+
+.modal-body {
+	background: var(--bg-rough-blue);
+	padding-bottom: 1rem;
+	padding-top: 1.25rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-body {
+		padding: 1.5rem;
+		padding-bottom: 1rem;
+	}
+	.modal-body-flex {
+		align-items: flex-start;
+		display: flex;
+	}
+}
+
+.modal-body-icon {
+	align-items: center;
+	background-color: #fee2e2;
+	border-radius: 9999px;
+	display: flex;
+	flex-shrink: 0;
+	justify-content: center;
+	margin-left: auto;
+	margin-right: auto;
+	height: 3rem;
+	width: 3rem;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-body-icon {
+		height: 2.5rem;
+		margin-left: 0;
+		margin-right: 0;
+		width: 2.5rem;
+	}
+}
+
+.modal-body-icon svg {
+	color: #dc2626;
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+.modal-body-text {
+	margin-top: 0.75rem;
+	text-align: center;
+	width: 100%;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-body-text {
+		margin-left: 1rem;
+		margin-top: 0;
+		text-align: left;
+	}
+}
+
+.modal-body-text h3 {
+	color: var(--grey);
+	line-height: 1.5rem;
+	font-weight: 500;
+	font-size: 18px;
+	margin: 0px;
+	font-family: var(--sans);
+}
+
+.modal-body-text p {
+	color: var(--grey);
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	margin: 0;
+	margin-top: 0.5rem;
+	font-family: var(--sans);
+	font-weight: 400;
+}
+
+.modal-body-text p.help-text {
+	color: #dc2626;
+}
+
+.modal-actions {
+	background-color: var(--blue);
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-actions {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+		flex-direction: row-reverse;
+		display: flex;
+	}
+}
+
+.modal-actions .delete {
+	background-color: #dc2626;
+	border-radius: 23px;
+	border-width: 1px;
+	border-color: transparent;
+	justify-content: center;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	color: var(--white);
+	font-weight: 400;
+	display: inline-flex;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	width: 100%;
+	-webkit-appearance: button;
+	cursor: pointer;
+	font-family: var(--sans);
+}
+
+.modal-actions .delete:hover,
+.modal-actions .delete:focus {
+	background-color: #b91c1c;
+}
+
+.modal-actions .delete:focus {
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+		rgb(239, 68, 68) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-actions .delete {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		width: auto;
+		margin-left: 0.75rem;
+	}
+}
+
+.modal-actions .submit {
+	background-color: var(--green);
+	border-radius: 23px;
+	border-width: 1px;
+	border-color: transparent;
+	justify-content: center;
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	color: var(--white);
+	font-weight: 400;
+	display: inline-flex;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	width: 100%;
+	-webkit-appearance: button;
+	cursor: pointer;
+	font-family: var(--sans);
+}
+
+.modal-actions .submit:hover,
+.modal-actions .submit:focus {
+	background-color: var(--green);
+}
+
+.modal-actions .submit:focus {
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+		rgb(129, 182, 124) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+@media screen and (min-width: 640px) {
+	.modal-actions .submit {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		width: auto;
+		margin-left: 0.75rem;
+	}
+}
+
+.modal-actions .cancel {
+	box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	border-color: #d1d5db;
+	border-radius: 23px;
+	border-width: 1px;
+	font-weight: 400;
+	justify-content: center;
+	color: var(--grey);
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding-left: 1rem;
+	margin-top: 0.75rem;
+	padding-right: 1rem;
+	display: inline-flex;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	cursor: pointer;
+	background-color: var(--white);
+	width: 100%;
+	font-family: var(--sans);
+}
+
+@media screen and (min-width: 640px) {
+	.modal-actions .cancel {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		width: auto;
+		margin-left: 0.75rem;
+		margin-top: 0;
+	}
+}
+
+.modal-actions .cancel:hover,
+.modal-actions .cancel:focus {
+	background-color: rgb(249, 250, 251);
+}
+
+.modal-actions .cancel:focus {
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+		rgb(99, 102, 241) 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}

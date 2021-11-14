@@ -1,34 +1,34 @@
-import {Component, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
-import {PaymentMethodModel} from '../../../shared/models/payment-method.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
+import { PaymentMethodModel } from '../../../shared/models/payment-method.model';
 
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+import { HttpErrorHandlingService } from '../../../shared/services/http-error-handling.service';
 
-import {CartDishModel} from '../../../order/models/cart-dish.model';
-import {CartModel} from '../../../order/models/cart.model';
-import {CheckoutModel} from '../../../order/models/checkout.model';
-import {OrderTypeConverter} from "../../../order/models/order-type-converter";
-import {StoredCartDishModel} from '../../../order/models/stored-cart-dish.model';
+import { CartDishModel } from '../../../order/models/cart-dish.model';
+import { CartModel } from '../../../order/models/cart.model';
+import { CheckoutModel } from '../../../order/models/checkout.model';
+import { OrderTypeConverter } from '../../../order/models/order-type-converter';
+import { StoredCartDishModel } from '../../../order/models/stored-cart-dish.model';
 
-import {OrderFacade} from "../../../order/order.facade";
+import { OrderFacade } from '../../../order/order.facade';
 
-import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
-import {EditCartDishComponent} from '../edit-cart-dish/edit-cart-dish.component';
+import { OpeningHourFilterComponent } from '../opening-hour-filter/opening-hour-filter.component';
+import { EditCartDishComponent } from '../edit-cart-dish/edit-cart-dish.component';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: [
     './checkout.component.css',
-    '../../../../assets/css/frontend_v3.min.css'
-  ]
+    '../../../../assets/css/frontend_v3.min.css',
+  ],
 })
 export class CheckoutComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -59,25 +59,22 @@ export class CheckoutComponent implements OnInit {
     private httpErrorHandlingService: HttpErrorHandlingService,
     private router: Router,
     private location: Location
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.initialized = false;
 
-    this.orderFacade.getIsInitializing$()
-      .subscribe(isInitializing => {
-        if (isInitializing) {
-          this.blockUI.start();
-        } else {
-          this.blockUI.stop();
-        }
-      })
+    this.orderFacade.getIsInitializing$().subscribe((isInitializing) => {
+      if (isInitializing) {
+        this.blockUI.start();
+      } else {
+        this.blockUI.stop();
+      }
+    });
 
-    this.orderFacade.getIsInitialized$()
-      .subscribe(isInitialized => {
-        if (!isInitialized)
-          return;
+    this.orderFacade.getIsInitialized$().subscribe(
+      (isInitialized) => {
+        if (!isInitialized) return;
 
         const cart = this.orderFacade.getCart();
         if (!cart) {
@@ -92,46 +89,48 @@ export class CheckoutComponent implements OnInit {
         this.restaurant = this.orderFacade.getSelectedRestaurant();
         this.serviceTime = this.orderFacade.getCart().getServiceTime();
 
-        if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
+        if (
+          this.restaurant.supportedOrderMode === 'anytime' &&
+          this.restaurant.isOpen(undefined) &&
+          !this.serviceTime
+        ) {
           this.serviceTime = CheckoutComponent.roundOnQuarterHours(new Date());
         }
-      }, error => {
+      },
+      (error) => {
         this.blockUI.stop();
-        this.generalError = this.httpErrorHandlingService.handleError(error).message;
-      });
+        this.generalError =
+          this.httpErrorHandlingService.handleError(error).message;
+      }
+    );
 
-    this.orderFacade.getInitializationError$()
-      .subscribe(initializationError => {
+    this.orderFacade
+      .getInitializationError$()
+      .subscribe((initializationError) => {
         this.generalError = initializationError;
-      })
-
-    this.orderFacade.getIsCheckingOut$()
-      .subscribe(isCheckingOut => {
-        if (isCheckingOut) {
-          this.blockUI.start('Bestellung wird verarbeitet...');
-        } else {
-          this.blockUI.stop();
-        }
-      })
-
-    this.orderFacade.getIsCheckedOut$()
-      .subscribe(isCheckedOut => {
-        if (!isCheckedOut)
-          return;
-        this.router.navigateByUrl('/order-summary');
-      })
-
-    this.orderFacade.getCheckoutError$()
-      .subscribe(checkoutError => {
-        this.generalError = checkoutError;
       });
+
+    this.orderFacade.getIsCheckingOut$().subscribe((isCheckingOut) => {
+      if (isCheckingOut) {
+        this.blockUI.start('Bestellung wird verarbeitet...');
+      } else {
+        this.blockUI.stop();
+      }
+    });
+
+    this.orderFacade.getIsCheckedOut$().subscribe((isCheckedOut) => {
+      if (!isCheckedOut) return;
+      this.router.navigateByUrl('/order-summary');
+    });
+
+    this.orderFacade.getCheckoutError$().subscribe((checkoutError) => {
+      this.generalError = checkoutError;
+    });
 
     this.orderFacade.initialize();
   }
 
-  getBannerStyle(
-    restaurant: RestaurantModel
-  ): string {
+  getBannerStyle(restaurant: RestaurantModel): string {
     if (!restaurant) {
       return undefined;
     }
@@ -151,24 +150,21 @@ export class CheckoutComponent implements OnInit {
   }
 
   getStreetError(): string {
-    if (!this.getCart().isDelivery())
-      return undefined;
+    if (!this.getCart().isDelivery()) return undefined;
     if (!this.street || this.street.trim().length === 0)
       return 'Bitte gib eine Straße an.';
     return undefined;
   }
 
   getZipCodeError(): string {
-    if (!this.getCart().isDelivery())
-      return undefined;
+    if (!this.getCart().isDelivery()) return undefined;
     if (!this.zipCode || this.zipCode < 10000 || this.zipCode > 99999)
       return 'Bitte gib eine Postleitzahl an.';
     return undefined;
   }
 
   getCityError(): string {
-    if (!this.getCart().isDelivery())
-      return undefined;
+    if (!this.getCart().isDelivery()) return undefined;
     if (!this.city || this.city.trim().length === 0)
       return 'Bitte gib eine Stadt an.';
     return undefined;
@@ -177,7 +173,8 @@ export class CheckoutComponent implements OnInit {
   getPhoneError(): string {
     if (!this.phone || this.phone.trim().length === 0)
       return 'Bitte gib eine Telefonnummer an.';
-    const regex = /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/;
+    const regex =
+      /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/;
     if (!regex.test(this.phone))
       return 'Bitte gib eine gültige Telefonnummer an.';
     return undefined;
@@ -207,17 +204,20 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSelectServiceTime(): void {
-    const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
-    modalRef.componentInstance.value = this.serviceTime;
-    modalRef.result.then((value: Date) => {
-      this.serviceTime = value;
-    }, () => {
+    const modalRef = this.modalService.open(OpeningHourFilterComponent, {
+      centered: true,
     });
+    modalRef.componentInstance.value = this.serviceTime;
+    modalRef.result.then(
+      (value: Date) => {
+        this.serviceTime = value;
+      },
+      () => {}
+    );
   }
 
   getServiceTimeText(): string {
-    if (!this.serviceTime)
-      return undefined;
+    if (!this.serviceTime) return undefined;
 
     let hoursText = this.serviceTime.getHours().toString();
     hoursText = ('0' + hoursText).slice(-2);
@@ -225,7 +225,13 @@ export class CheckoutComponent implements OnInit {
     let minutesText = this.serviceTime.getMinutes().toString();
     minutesText = ('0' + minutesText).slice(-2);
 
-    return this.serviceTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
+    return (
+      this.serviceTime.toLocaleDateString() +
+      ', ' +
+      hoursText +
+      ':' +
+      minutesText
+    );
   }
 
   getServiceTimeError(): string {
@@ -254,9 +260,10 @@ export class CheckoutComponent implements OnInit {
   public onEditCartDish(cartDish: CartDishModel): void {
     const modalRef = this.modalService.open(EditCartDishComponent);
     modalRef.componentInstance.cartDish = cartDish;
-    modalRef.result.then(() => {
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {},
+      () => {}
+    );
   }
 
   public onRemoveDishVariantFromCart(cartDishVariant: CartDishModel): void {
@@ -271,7 +278,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   isValid(): boolean {
-    return !this.getGivenNameError() &&
+    return (
+      !this.getGivenNameError() &&
       !this.getLastNameError() &&
       !this.getStreetError() &&
       !this.getZipCodeError() &&
@@ -281,6 +289,7 @@ export class CheckoutComponent implements OnInit {
       !this.getPaymentError() &&
       !this.getServiceTimeError() &&
       !this.getCartError()
+    );
   }
 
   onCheckout(): void {
@@ -301,7 +310,9 @@ export class CheckoutComponent implements OnInit {
     checkoutModel.phone = this.phone;
     checkoutModel.email = this.email;
     checkoutModel.addAddressInfo = this.comments;
-    checkoutModel.orderType = OrderTypeConverter.convertToString(cart.getOrderType());
+    checkoutModel.orderType = OrderTypeConverter.convertToString(
+      cart.getOrderType()
+    );
     checkoutModel.restaurantId = cart.getRestaurantId();
     checkoutModel.cartDishes = new Array<StoredCartDishModel>();
 
@@ -325,8 +336,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   private static roundOnQuarterHours(date: Date): Date {
-    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    let minutesToAdd =
+      Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
     return new Date(date.getTime() + minutesToAdd * 60000);
   }
-
 }

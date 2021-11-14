@@ -1,60 +1,60 @@
 {
-    "name": "Gastromio",
-    "short_name": "Gastromio",
-    "dir": "ltr",
-    "lang": "de",
-    "start_url": "/",
-    "scope": "/",
-    "display": "standalone",
-    "theme_color": "#ADCCCB",
-    "background_color": "#ADCCCB",
-    "icons": [
-        {
-            "src": "/assets/img/favicons/favicon-512x512.png",
-            "type": "image/png",
-            "sizes": "512x512"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-384x384.png",
-            "type": "image/png",
-            "sizes": "384x384"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-256x256.png",
-            "type": "image/png",
-            "sizes": "256x256"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-192x192.png",
-            "type": "image/png",
-            "sizes": "192x192"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-144x144.png",
-            "type": "image/png",
-            "sizes": "144x144"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-72x72.png",
-            "type": "image/png",
-            "sizes": "72x72"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-48x48.png",
-            "type": "image/png",
-            "sizes": "48x48"
-        },
-        {
-            "src": "/assets/img/favicons/favicon-36x36.png",
-            "type": "image/png",
-            "sizes": "36x36"
-        }
-    ],
-    "prefer_related_applications": true,
-    "related_applications": [
-        {
-            "platform": "web",
-            "url": "https://www.gastromio.de/"
-        }
-    ]
+  "name": "Gastromio",
+  "short_name": "Gastromio",
+  "dir": "ltr",
+  "lang": "de",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#ADCCCB",
+  "background_color": "#ADCCCB",
+  "icons": [
+    {
+      "src": "/assets/img/favicons/favicon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-384x384.png",
+      "type": "image/png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-72x72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-48x48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "/assets/img/favicons/favicon-36x36.png",
+      "type": "image/png",
+      "sizes": "36x36"
+    }
+  ],
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://www.gastromio.de/"
+    }
+  ]
 }

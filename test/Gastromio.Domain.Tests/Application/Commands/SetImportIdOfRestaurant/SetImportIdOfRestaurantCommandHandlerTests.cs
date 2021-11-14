@@ -46,6 +46,25 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
         }
 
         [Fact]
+        public async Task HandleAsync_RestaurantImportIdDuplicate_ThrowsDomainException()
+        {
+            // Arrange
+            fixture.SetupRandomRestaurant(fixture.MinimumRole);
+            fixture.SetupRandomImportId();
+            fixture.SetupRestaurantRepositoryFindingRestaurantById();
+            fixture.SetupRestaurantRepositoryDuplicatedImportId(true);
+
+            var testObject = fixture.CreateTestObject();
+            var command = fixture.CreateSuccessfulCommand();
+
+            // Act
+            Func<Task> act = async () => await testObject.HandleAsync(command, fixture.UserWithMinimumRole, CancellationToken.None);
+
+            // Assert
+            await act.Should().ThrowAsync<DomainException<RestaurantImportIdDuplicateFailure>>();
+        }
+
+        [Fact]
         public async Task HandleAsync_AllValid_ChangesImportIdOfRestaurant()
         {
             // Arrange
@@ -123,6 +142,12 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
                     .ReturnsAsync(Restaurant);
             }
 
+            public void SetupRestaurantRepositoryDuplicatedImportId(bool duplicateShouldExist = false)
+            {
+                RestaurantRepositoryMock.SetupDoesRestaurantImportIdAlreadyExist(Restaurant.Id, ImportId)
+                    .ReturnsAsync(duplicateShouldExist);
+            }
+
             public void SetupRestaurantRepositoryNotFindingRestaurantById()
             {
                 RestaurantRepositoryMock.SetupFindByRestaurantIdAsync(Restaurant.Id)
@@ -141,6 +166,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.SetImportIdOfRestaurant
                 SetupRandomImportId();
                 SetupRestaurantRepositoryFindingRestaurantById();
                 SetupRestaurantRepositoryStoringRestaurant();
+                SetupRestaurantRepositoryDuplicatedImportId();
             }
         }
     }
