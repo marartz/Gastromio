@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Queries;
 using Gastromio.Core.Application.Queries.GetRestaurantImage;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.RestaurantImage;
+using Gastromio.Core.Common;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.RestaurantImages;
+using Gastromio.Core.Domain.Model.Restaurants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Gastromio.App.Controllers.V1
 {
@@ -13,33 +14,36 @@ namespace Gastromio.App.Controllers.V1
     [ApiController]
     public class RestaurantImageController : ControllerBase
     {
-        private readonly ILogger logger;
         private readonly IQueryDispatcher queryDispatcher;
 
-        public RestaurantImageController(ILogger<OrderController> logger, IQueryDispatcher queryDispatcher)
+        public RestaurantImageController(IQueryDispatcher queryDispatcher)
         {
-            this.logger = logger;
             this.queryDispatcher = queryDispatcher;
         }
-        
+
         [Route("restaurants/{restaurantId}/images/{type}")]
         [HttpGet]
         public async Task<IActionResult> GetRestaurantImageAsync(Guid restaurantId, string type)
         {
-            var query = new GetRestaurantImageQuery(new RestaurantId(restaurantId), type);
-            var queryResult = await queryDispatcher.PostAsync<GetRestaurantImageQuery, RestaurantImage>(query, null);
-            if (queryResult.IsFailure)
-                return NotFound();
-
-            var data = queryResult.Value.Data;
-            var updatedOn = queryResult.Value.UpdatedOn;
-
-            var fileContentResult = new FileContentResult(data, "image/jpeg")
+            try
             {
-                LastModified = new DateTimeOffset(updatedOn),
-            };
+                var query = new GetRestaurantImageQuery(new RestaurantId(restaurantId), type);
+                var restaurantImage = await queryDispatcher.PostAsync<GetRestaurantImageQuery, RestaurantImage>(query, null);
 
-            return fileContentResult;
+                var data = restaurantImage.Data;
+                var updatedOn = restaurantImage.UpdatedOn;
+
+                var fileContentResult = new FileContentResult(data, "image/jpeg")
+                {
+                    LastModified = updatedOn
+                };
+
+                return fileContentResult;
+            }
+            catch (DomainException<RestaurantImageNotValidFailure>)
+            {
+                return NotFound();
+            }
         }
     }
 }

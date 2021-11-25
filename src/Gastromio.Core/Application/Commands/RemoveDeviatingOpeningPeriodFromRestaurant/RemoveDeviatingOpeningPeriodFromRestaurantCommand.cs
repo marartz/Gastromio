@@ -1,10 +1,10 @@
 using System;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Restaurant;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.RemoveDeviatingOpeningPeriodFromRestaurant
 {
-    public class RemoveDeviatingOpeningPeriodFromRestaurantCommand : ICommand<bool>
+    public class RemoveDeviatingOpeningPeriodFromRestaurantCommand : ICommand
     {
         public RemoveDeviatingOpeningPeriodFromRestaurantCommand(RestaurantId restaurantId, Date date, TimeSpan start)
         {

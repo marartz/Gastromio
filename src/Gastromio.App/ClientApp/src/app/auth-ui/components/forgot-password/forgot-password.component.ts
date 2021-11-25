@@ -1,18 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import {HttpErrorHandlingService} from '../../../shared/services/http-error-handling.service';
+import { HttpErrorHandlingService } from '../../../shared/services/http-error-handling.service';
 
-import {AuthService} from '../../../auth/services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css']
+  styleUrls: [
+    './forgot-password.component.css',
+    '../../../../assets/css/frontend_v3.min.css',
+    '../../../../assets/css/application-ui/forms/sign-in-and-registration.min.css',
+  ],
 })
 export class ForgotPasswordComponent implements OnInit {
-
   forgotPasswordForm: FormGroup;
   message: string;
   submitted: boolean = false;
@@ -23,12 +26,11 @@ export class ForgotPasswordComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private httpErrorHandlingService: HttpErrorHandlingService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.forgotPasswordForm = this.formBuilder.group({
-      email: ['', [Validators.required]]
+      email: ['', [Validators.required]],
     });
   }
 
@@ -37,8 +39,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit(data) {
-    if (this.sent)
-      return;
+    if (this.sent) return;
 
     this.submitted = true;
     if (this.forgotPasswordForm.invalid) {
@@ -46,17 +47,17 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     this.sending = true;
-    this.authService.requestPasswordChangeAsync(data.email)
-      .subscribe(
-        () => {
-          this.sending = false;
-          this.sent = true;
-          this.message = undefined;
-        },
-        (response: HttpErrorResponse) => {
-          this.sending = false;
-          this.message = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-        }
-      );
+    this.authService.requestPasswordChangeAsync(data.email).subscribe(
+      () => {
+        this.sending = false;
+        this.sent = true;
+        this.message = undefined;
+      },
+      (response: HttpErrorResponse) => {
+        this.sending = false;
+        this.message =
+          this.httpErrorHandlingService.handleError(response).message;
+      }
+    );
   }
 }

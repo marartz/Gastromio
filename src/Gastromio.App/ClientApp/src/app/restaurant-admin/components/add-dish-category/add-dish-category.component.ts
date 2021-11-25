@@ -1,13 +1,13 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
+import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
 
 @Component({
   selector: 'app-add-dish-category',
@@ -15,11 +15,10 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
   styleUrls: [
     './add-dish-category.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
-  ]
+    '../../../../assets/css/modals.component.min.css',
+  ],
 })
 export class AddDishCategoryComponent implements OnInit {
-
   @Input() public afterCategoryId: string;
   @BlockUI() blockUI: NgBlockUI;
 
@@ -33,7 +32,7 @@ export class AddDishCategoryComponent implements OnInit {
     private facade: RestaurantAdminFacade
   ) {
     this.addDishCategoryForm = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
     });
   }
 
@@ -51,11 +50,11 @@ export class AddDishCategoryComponent implements OnInit {
       return;
     }
 
-    this.facade.addDishCategory(data.name, this.afterCategoryId)
-      .subscribe(id => {
+    this.facade
+      .addDishCategory(data.name, this.afterCategoryId)
+      .subscribe((id) => {
         this.addDishCategoryForm.reset();
         this.activeModal.close(id);
       });
   }
-
 }

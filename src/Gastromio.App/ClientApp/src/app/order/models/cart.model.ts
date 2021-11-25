@@ -1,8 +1,7 @@
-import {CartDishModel} from './cart-dish.model';
-import {OrderType} from "./order-type";
+import { CartDishModel } from './cart-dish.model';
+import { OrderType } from './order-type';
 
 export class CartModel {
-
   constructor(
     private orderType: OrderType,
     private restaurantId: string,
@@ -14,8 +13,7 @@ export class CartModel {
     private cartDishes: CartDishModel[],
     private visible: boolean,
     private serviceTime: Date
-  ) {
-  }
+  ) {}
 
   public getOrderType(): OrderType {
     return this.orderType;
@@ -29,7 +27,6 @@ export class CartModel {
         return 'Lieferung';
       case OrderType.Reservation:
         return 'Tischreservierung';
-
     }
   }
 
@@ -58,9 +55,10 @@ export class CartModel {
   }
 
   public getMinimumOrderValueText(): string {
-    if (!this.minimumOrderValue)
-        return '0';
-    return this.minimumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
+    if (!this.minimumOrderValue) return '0';
+    return this.minimumOrderValue.toLocaleString('de', {
+      minimumFractionDigits: 2,
+    });
   }
 
   public getMaximumOrderValue(): number {
@@ -68,9 +66,10 @@ export class CartModel {
   }
 
   public getMaximumOrderValueText(): string {
-    if (!this.maximumOrderValue)
-      return '0';
-    return this.maximumOrderValue.toLocaleString('de', {minimumFractionDigits: 2});
+    if (!this.maximumOrderValue) return '0';
+    return this.maximumOrderValue.toLocaleString('de', {
+      minimumFractionDigits: 2,
+    });
   }
 
   public getCosts(): number {
@@ -82,7 +81,7 @@ export class CartModel {
     if (val === undefined) {
       return undefined;
     } else if (val > 0) {
-      return val.toLocaleString('de', {minimumFractionDigits: 2});
+      return val.toLocaleString('de', { minimumFractionDigits: 2 });
     } else {
       return 'Gratis';
     }
@@ -121,7 +120,7 @@ export class CartModel {
 
   public getValueOfOrderText(): string {
     const val = this.getValueOfOrder();
-    return val.toLocaleString('de', {minimumFractionDigits: 2});
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   public getMissingValueToMinimum(): number {
@@ -139,7 +138,7 @@ export class CartModel {
 
   public getMissingValueToMinimumText(): string {
     const val = this.getMissingValueToMinimum();
-    return val.toLocaleString('de', {minimumFractionDigits: 2});
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   public getTotalPrice(): number {
@@ -152,7 +151,7 @@ export class CartModel {
 
   public getTotalPriceText(): string {
     const val = this.getTotalPrice();
-    return val.toLocaleString('de', {minimumFractionDigits: 2});
+    return val.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   public isVisible(): boolean {
@@ -171,11 +170,19 @@ export class CartModel {
     const valueOfOrder = this.getValueOfOrder();
 
     if (this.minimumOrderValue && valueOfOrder < this.minimumOrderValue) {
-      return 'Der Mindestbestellwert von € ' + this.getMinimumOrderValueText() + ' ist nicht erreicht.';
+      return (
+        'Der Mindestbestellwert von € ' +
+        this.getMinimumOrderValueText() +
+        ' ist nicht erreicht.'
+      );
     }
 
     if (this.maximumOrderValue && valueOfOrder > this.maximumOrderValue) {
-      return 'Der Maximalbestellwert von € ' + this.getMaximumOrderValueText() + ' ist überschritten';
+      return (
+        'Der Maximalbestellwert von € ' +
+        this.getMaximumOrderValueText() +
+        ' ist überschritten'
+      );
     }
 
     return undefined;
@@ -190,11 +197,9 @@ export class CartModel {
       this.maximumOrderValue,
       this.costs,
       this.hygienicHandling,
-      this.cartDishes?.map(dish => dish?.clone()),
+      this.cartDishes?.map((dish) => dish?.clone()),
       this.visible,
       this.serviceTime
-    )
+    );
   }
-
 }
-

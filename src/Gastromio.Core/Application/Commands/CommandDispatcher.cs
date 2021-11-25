@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
-using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gastromio.Core.Application.Commands
@@ -17,14 +16,21 @@ namespace Gastromio.Core.Application.Commands
 
         public static void Initialize(IServiceCollection services)
         {
-            var commandHandlerType = typeof(ICommandHandler<,>);
+            InitializeHandlersOfType(services, typeof(ICommandHandler<>));
+            InitializeHandlersOfType(services, typeof(ICommandHandler<,>));
+        }
+
+        private static void InitializeHandlersOfType(IServiceCollection services, Type commandHandlerType)
+        {
             var handlerTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.GetInterfaces().Any(intf => intf.IsGenericType && intf.GetGenericTypeDefinition() == commandHandlerType));
+                .Where(type => type.GetInterfaces().Any(@interface =>
+                    @interface.IsGenericType && @interface.GetGenericTypeDefinition() == commandHandlerType));
             foreach (var handlerType in handlerTypes)
             {
-                var commandHandlerIntf = handlerType.GetInterfaces().First(intf => intf.IsGenericType && intf.GetGenericTypeDefinition() == commandHandlerType);
-                var commandType = commandHandlerIntf.GetGenericArguments()[0];
+                var commandHandlerInterface = handlerType.GetInterfaces().First(@interface =>
+                    @interface.IsGenericType && @interface.GetGenericTypeDefinition() == commandHandlerType);
+                var commandType = commandHandlerInterface.GetGenericArguments()[0];
                 CommandHandlerMapping.Add(commandType, handlerType);
                 services.AddTransient(handlerType);
             }
@@ -35,7 +41,7 @@ namespace Gastromio.Core.Application.Commands
             this.serviceProvider = serviceProvider;
         }
 
-        public async Task<Result<TResult>> PostAsync<TCommand, TResult>(TCommand command, UserId currentUserId, CancellationToken cancellationToken = default) where TCommand : ICommand<TResult>
+        public async Task PostAsync<TCommand>(TCommand command, UserId currentUserId, CancellationToken cancellationToken = default) where TCommand : ICommand
         {
             User currentUser = null;
 
@@ -46,11 +52,37 @@ namespace Gastromio.Core.Application.Commands
             }
 
             var commandType = typeof(TCommand);
-            
+
+            if (!CommandHandlerMapping.TryGetValue(commandType, out var handlerType))
+                throw new InvalidOperationException($"could not find handler for command with type {commandType.FullName}");
+
+            var handler = serviceProvider.GetService(handlerType) as ICommandHandler<TCommand>;
+            if (handler == null)
+                throw new InvalidOperationException(
+                    $"handler of type {handlerType} could not be get from service provider");
+
+            await handler.HandleAsync(command, currentUser, cancellationToken);
+        }
+
+        public async Task<TResult> PostAsync<TCommand, TResult>(TCommand command, UserId currentUserId, CancellationToken cancellationToken = default) where TCommand : ICommand<TResult>
+        {
+            User currentUser = null;
+
+            if (currentUserId != null)
+            {
+                var userRepository = serviceProvider.GetService<IUserRepository>();
+                currentUser = await userRepository.FindByUserIdAsync(currentUserId, cancellationToken);
+            }
+
+            var commandType = typeof(TCommand);
+
             if (!CommandHandlerMapping.TryGetValue(commandType, out var handlerType))
                 throw new InvalidOperationException($"could not find handler for command with type {commandType.FullName}");
 
             var handler = serviceProvider.GetService(handlerType) as ICommandHandler<TCommand, TResult>;
+            if (handler == null)
+                throw new InvalidOperationException(
+                    $"handler of type {handlerType} could not be get from service provider");
 
             return await handler.HandleAsync(command, currentUser, cancellationToken);
         }

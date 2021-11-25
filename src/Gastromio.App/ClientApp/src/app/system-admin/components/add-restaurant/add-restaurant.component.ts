@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {SystemAdminFacade} from "../../system-admin.facade";
+import { SystemAdminFacade } from '../../system-admin.facade';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -15,8 +15,11 @@ import {SystemAdminFacade} from "../../system-admin.facade";
   styleUrls: [
     './add-restaurant.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
-  ]
+    '../../../../assets/css/modals.component.min.css',
+    '../../../../assets/css/overlays/modals.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+    '../../../../assets/css/application-ui/forms/radio-groups.min.css',
+  ],
 })
 export class AddRestaurantComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -31,19 +34,18 @@ export class AddRestaurantComponent implements OnInit {
     private facade: SystemAdminFacade
   ) {
     this.addRestaurantForm = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    this.facade.getIsUpdating$()
-      .subscribe(isUpdating => {
-        if (isUpdating) {
-          this.blockUI.start('Verarbeite Daten...');
-        } else {
-          this.blockUI.stop();
-        }
-      });
+    this.facade.getIsUpdating$().subscribe((isUpdating) => {
+      if (isUpdating) {
+        this.blockUI.start('Verarbeite Daten...');
+      } else {
+        this.blockUI.stop();
+      }
+    });
 
     this.message$ = this.facade.getUpdateError$();
   }
@@ -58,9 +60,8 @@ export class AddRestaurantComponent implements OnInit {
       return;
     }
 
-    this.facade.addRestaurant$(data.name)
-      .subscribe(() => {
-        this.activeModal.close('Close click');
-      });
+    this.facade.addRestaurant$(data.name).subscribe(() => {
+      this.activeModal.close('Close click');
+    });
   }
 }

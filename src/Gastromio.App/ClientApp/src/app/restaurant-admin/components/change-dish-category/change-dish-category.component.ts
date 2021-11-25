@@ -1,15 +1,15 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {DishCategoryModel} from '../../../shared/models/dish-category.model';
+import { DishCategoryModel } from '../../../shared/models/dish-category.model';
 
-import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
+import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
 
 @Component({
   selector: 'app-change-dish-category',
@@ -17,8 +17,8 @@ import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
   styleUrls: [
     './change-dish-category.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
-  ]
+    '../../../../assets/css/modals.component.min.css',
+  ],
 })
 export class ChangeDishCategoryComponent implements OnInit {
   @Input() public dishCategory: DishCategoryModel;
@@ -31,14 +31,13 @@ export class ChangeDishCategoryComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private facade: RestaurantAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.message$ = this.facade.getUpdateError$();
 
     this.changeDishCategoryForm = this.formBuilder.group({
-      name: [this.dishCategory.name, Validators.required]
+      name: [this.dishCategory.name, Validators.required],
     });
   }
 
@@ -51,7 +50,8 @@ export class ChangeDishCategoryComponent implements OnInit {
       return;
     }
 
-    this.facade.changeDishCategory(this.dishCategory.id, data.name)
+    this.facade
+      .changeDishCategory(this.dishCategory.id, data.name)
       .subscribe(() => {
         this.changeDishCategoryForm.reset();
         this.activeModal.close();

@@ -1,5 +1,4 @@
 export class OrderedDishInfoModel {
-
   constructor(init?: Partial<OrderedDishInfoModel>) {
     if (init) {
       Object.assign(this, init);
@@ -31,8 +30,7 @@ export class OrderedDishInfoModel {
       variantName: this.variantName,
       variantPrice: this.variantPrice,
       count: this.count,
-      remarks: this.remarks
+      remarks: this.remarks,
     });
   }
-
 }

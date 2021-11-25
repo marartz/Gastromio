@@ -1,12 +1,11 @@
-import {DishVariantExtraModel} from './dish-variant-extra.model';
+import { DishVariantExtraModel } from './dish-variant-extra.model';
 
 export class DishVariantModel {
-
   constructor(init?: Partial<DishVariantModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.extras = this.extras?.map(extra => new DishVariantExtraModel(extra));
+    this.extras = this.extras?.map((extra) => new DishVariantExtraModel(extra));
   }
 
   public variantId: string;
@@ -22,8 +21,7 @@ export class DishVariantModel {
       variantId: this.variantId,
       name: this.name,
       price: this.price,
-      extras: this.extras?.map(extra => extra?.clone())
+      extras: this.extras?.map((extra) => extra?.clone()),
     });
   }
-
 }

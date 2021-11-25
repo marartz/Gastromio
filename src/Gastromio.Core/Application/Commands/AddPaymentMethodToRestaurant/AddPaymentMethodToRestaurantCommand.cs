@@ -1,9 +1,9 @@
-﻿using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
+﻿using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.Commands.AddPaymentMethodToRestaurant
 {
-    public class AddPaymentMethodToRestaurantCommand : ICommand<bool>
+    public class AddPaymentMethodToRestaurantCommand : ICommand
     {
         public AddPaymentMethodToRestaurantCommand(RestaurantId restaurantId, PaymentMethodId paymentMethodId)
         {

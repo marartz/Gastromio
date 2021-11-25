@@ -1,5 +1,4 @@
 export class DishVariantExtraModel {
-
   constructor(init?: Partial<DishVariantExtraModel>) {
     if (init) {
       Object.assign(this, init);
@@ -19,8 +18,7 @@ export class DishVariantExtraModel {
       extraId: this.extraId,
       name: this.name,
       productInfo: this.productInfo,
-      price: this.price
+      price: this.price,
     });
   }
-
 }

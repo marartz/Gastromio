@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {DishModel} from '../../../shared/models/dish.model';
-import {DishVariantModel} from '../../../shared/models/dish-variant.model';
+import { DishModel } from '../../../shared/models/dish.model';
+import { DishVariantModel } from '../../../shared/models/dish-variant.model';
 
-import {OrderFacade} from "../../../order/order.facade";
+import { OrderFacade } from '../../../order/order.facade';
 
 @Component({
   selector: 'app-add-dish-to-cart',
@@ -12,8 +12,8 @@ import {OrderFacade} from "../../../order/order.facade";
   styleUrls: [
     './add-dish-to-cart.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css'
-  ]
+    '../../../../assets/css/modals.component.min.css',
+  ],
 })
 export class AddDishToCartComponent implements OnInit {
   @Input() public dish: DishModel;
@@ -34,12 +34,14 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   getVariantPrice(variant: DishVariantModel): string {
-    return '€' + variant.price.toLocaleString('de', {minimumFractionDigits: 2});
+    return (
+      '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 })
+    );
   }
 
   getTotalPrice(): string {
     const totalPrice = this.selectedVariant.price * this.count;
-    return totalPrice.toLocaleString('de', {minimumFractionDigits: 2}) + ' €';
+    return totalPrice.toLocaleString('de', { minimumFractionDigits: 2 }) + ' €';
   }
 
   getVariantText(variant: DishVariantModel): string {
@@ -58,7 +60,12 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderFacade.addDishToCart(this.dish, this.selectedVariant, this.count, this.remarks);
+    this.orderFacade.addDishToCart(
+      this.dish,
+      this.selectedVariant,
+      this.count,
+      this.remarks
+    );
     this.activeModal.close();
   }
 

@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.Cuisine;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.Restaurant;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.Cuisines;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Restaurants;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Domain.Services
 {
     public class RestaurantDataImporter : IRestaurantDataImporter
     {
-        private readonly IFailureMessageService failureMessageService;
         private readonly IRestaurantFactory restaurantFactory;
         private readonly IRestaurantRepository restaurantRepository;
         private readonly ICuisineFactory cuisineFactory;
@@ -23,7 +24,6 @@ namespace Gastromio.Core.Domain.Services
         private readonly IUserRepository userRepository;
 
         public RestaurantDataImporter(
-            IFailureMessageService failureMessageService,
             IRestaurantFactory restaurantFactory,
             IRestaurantRepository restaurantRepository,
             ICuisineFactory cuisineFactory,
@@ -33,7 +33,6 @@ namespace Gastromio.Core.Domain.Services
             IUserRepository userRepository
         )
         {
-            this.failureMessageService = failureMessageService;
             this.restaurantFactory = restaurantFactory;
             this.restaurantRepository = restaurantRepository;
             this.cuisineFactory = cuisineFactory;
@@ -46,271 +45,164 @@ namespace Gastromio.Core.Domain.Services
         public async Task ImportRestaurantAsync(ImportLog log, int rowIndex, RestaurantRow restaurantRow,
             UserId curUserId, bool dryRun, CancellationToken cancellationToken = default)
         {
-            Result<bool> boolResult;
-
-            var newRestaurant = false;
-
-            var restaurant = await restaurantRepository.FindByImportIdAsync(restaurantRow.ImportId, cancellationToken);
-            if (restaurant == null)
+            try
             {
-                newRestaurant = true;
+                var address = new Address(
+                    restaurantRow.Street,
+                    restaurantRow.ZipCode,
+                    restaurantRow.City
+                );
 
-                var restaurantResult = restaurantFactory.CreateWithName(restaurantRow.Name, curUserId);
-                if (restaurantResult.IsFailure)
+                var contactInfo = new ContactInfo(
+                    restaurantRow.Phone,
+                    restaurantRow.Fax,
+                    restaurantRow.WebSite,
+                    restaurantRow.ResponsiblePerson,
+                    restaurantRow.OrderEmailAddress,
+                    null,
+                    false
+                );
+
+                var regularOpeningDays = new RegularOpeningDays(Enumerable.Empty<RegularOpeningDay>());
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 0, restaurantRow.OpeningHoursMonday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 1, restaurantRow.OpeningHoursTuesday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 2, restaurantRow.OpeningHoursWednesday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 3, restaurantRow.OpeningHoursThursday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 4, restaurantRow.OpeningHoursFriday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 5, restaurantRow.OpeningHoursSaturday);
+                regularOpeningDays = AddRegularOpeningDays(regularOpeningDays, 6, restaurantRow.OpeningHoursSunday);
+
+                var deviatingOpeningDays = GetDeviatingOpeningDays(restaurantRow.DeviatingOpeningHours);
+
+                var minimumOrderValuePickup = restaurantRow.MinimumOrderValuePickup.HasValue
+                    ? (decimal?) restaurantRow.MinimumOrderValuePickup.Value
+                    : null;
+
+                var minimumOrderValueDelivery = restaurantRow.MinimumOrderValueDelivery.HasValue
+                    ? (decimal?) restaurantRow.MinimumOrderValueDelivery.Value
+                    : null;
+
+                var deliveryCosts = restaurantRow.DeliveryCosts.HasValue
+                    ? (decimal?) restaurantRow.DeliveryCosts.Value
+                    : null;
+
+                var (pickupInfo, deliveryInfo, reservationInfo) = GetServices(restaurantRow.OrderTypes,
+                    restaurantRow.AverageTime.HasValue ? (int?) restaurantRow.AverageTime.Value.TotalMinutes : null,
+                    minimumOrderValuePickup, minimumOrderValueDelivery, deliveryCosts);
+
+                var cuisines = await GetOrAddCuisinesAsync(log, rowIndex, restaurantRow.Cuisines, dryRun, curUserId);
+
+                var paymentMethods = await GetPaymentMethodsAsync(restaurantRow.PaymentMethods);
+
+                var administrators = await GetOrAddAdministratorAsync(log, rowIndex,
+                    restaurantRow.AdministratorUserEmailAddress, dryRun, curUserId);
+
+                var supportedOrderMode = GetSupportOrderMode(restaurantRow.SupportedOrderMode);
+
+                ExternalMenu externalMenu = null;
+                var externalMenuId = new ExternalMenuId(Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7"));
+
+                if (!string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuUrl))
                 {
-                    AddFailureMessageToLog(log, rowIndex, restaurantResult);
-                    return;
+                    externalMenu = new ExternalMenu(
+                        externalMenuId,
+                        !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuName)
+                            ? restaurantRow.ExternalMenuName
+                            : "Tageskarte",
+                        !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuDescription)
+                            ? restaurantRow.ExternalMenuDescription
+                            : "Täglich wechselnde Tageskarte, nur telefonisch bestellbar.",
+                        restaurantRow.ExternalMenuUrl
+                    );
                 }
 
-                restaurant = restaurantResult.Value;
-
-                boolResult = restaurant.ChangeImportId(restaurantRow.ImportId, curUserId);
-                if (boolResult.IsFailure)
+                var newRestaurant = false;
+                var restaurant =
+                    await restaurantRepository.FindByImportIdAsync(restaurantRow.ImportId, cancellationToken);
+                if (restaurant == null)
                 {
-                    AddFailureMessageToLog(log, rowIndex, boolResult);
-                    return;
+                    newRestaurant = true;
+                    restaurant = restaurantFactory.CreateWithName(restaurantRow.Name, curUserId);
                 }
-            }
 
-            var address = new Address(
-                restaurantRow.Street,
-                restaurantRow.ZipCode,
-                restaurantRow.City
-            );
-            boolResult = restaurant.ChangeAddress(address, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            var contactInfo = new ContactInfo(
-                restaurantRow.Phone,
-                restaurantRow.Fax,
-                restaurantRow.WebSite,
-                restaurantRow.ResponsiblePerson,
-                restaurantRow.OrderEmailAddress,
-                null,
-                false
-            );
-            boolResult = restaurant.ChangeContactInfo(contactInfo, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = restaurant.RemoveAllOpeningDays(curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 0, restaurantRow.OpeningHoursMonday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 1, restaurantRow.OpeningHoursTuesday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 2, restaurantRow.OpeningHoursWednesday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 3, restaurantRow.OpeningHoursThursday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 4, restaurantRow.OpeningHoursFriday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 5, restaurantRow.OpeningHoursSaturday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddOpeningHours(restaurant, 6, restaurantRow.OpeningHoursSunday, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = AddDeviatingOpeningHours(restaurant, restaurantRow.DeviatingOpeningHours, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            var minimumOrderValuePickup = restaurantRow.MinimumOrderValuePickup.HasValue
-                ? (decimal?) restaurantRow.MinimumOrderValuePickup.Value
-                : null;
-
-            var minimumOrderValueDelivery = restaurantRow.MinimumOrderValueDelivery.HasValue
-                ? (decimal?) restaurantRow.MinimumOrderValueDelivery.Value
-                : null;
-
-            var deliveryCosts = restaurantRow.DeliveryCosts.HasValue
-                ? (decimal?) restaurantRow.DeliveryCosts.Value
-                : null;
-
-            boolResult = AddServices(restaurant, restaurantRow.OrderTypes,
-                restaurantRow.AverageTime.HasValue ? (int?) restaurantRow.AverageTime.Value.TotalMinutes : null,
-                minimumOrderValuePickup, minimumOrderValueDelivery, deliveryCosts, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = restaurant.ChangeHygienicHandling(restaurantRow.HygienicHandling, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = await AddCuisinesAsync(log, rowIndex, restaurant, restaurantRow.Cuisines, dryRun, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult = await AddPaymentMethodsAsync(restaurant, restaurantRow.PaymentMethods, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            boolResult =
-                await AddAdministratorAsync(log, rowIndex, restaurant, restaurantRow.AdministratorUserEmailAddress, dryRun, curUserId);
-            if (boolResult.IsFailure)
-            {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
-            }
-
-            if (restaurantRow.IsActive)
-            {
-                boolResult = restaurant.Activate(curUserId);
-                if (boolResult.IsFailure)
+                restaurant.ChangeAddress(address, curUserId);
+                restaurant.ChangeContactInfo(contactInfo, curUserId);
+                restaurant.ChangeRegularOpeningDays(regularOpeningDays, curUserId);
+                restaurant.ChangeDeviatingOpeningDays(deviatingOpeningDays, curUserId);
+                restaurant.ChangePickupInfo(pickupInfo, curUserId);
+                restaurant.ChangeDeliveryInfo(deliveryInfo, curUserId);
+                restaurant.ChangeReservationInfo(reservationInfo, curUserId);
+                restaurant.ChangeHygienicHandling(restaurantRow.HygienicHandling, curUserId);
+                restaurant.ChangeCuisines(cuisines, curUserId);
+                restaurant.ChangePaymentMethods(paymentMethods, curUserId);
+                restaurant.ChangeAdministrators(administrators, curUserId);
+                restaurant.ChangeImportId(restaurantRow.ImportId, curUserId);
+                if (restaurantRow.IsActive)
+                    restaurant.Activate(curUserId);
+                else
+                    restaurant.Deactivate(curUserId);
+                restaurant.DisableSupport(curUserId);
+                restaurant.ChangeSupportedOrderMode(supportedOrderMode, curUserId);
+                if (externalMenu != null)
                 {
-                    AddFailureMessageToLog(log, rowIndex, boolResult);
-                    return;
+                    restaurant.SetExternalMenu(externalMenu, curUserId);
                 }
-            }
-            else
-            {
-                boolResult = restaurant.Deactivate(curUserId);
-                if (boolResult.IsFailure)
+                else if (restaurant.TryGetExternalMenu(externalMenuId, out var _))
                 {
-                    AddFailureMessageToLog(log, rowIndex, boolResult);
-                    return;
+                    restaurant.RemoveExternalMenu(externalMenuId, curUserId);
                 }
-            }
 
-            boolResult = SetSupportOrderMode(restaurant, restaurantRow.SupportedOrderMode, curUserId);
-            if (boolResult.IsFailure)
+                var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
+                log.AddLine(ImportLogLineType.Information, rowIndex,
+                    newRestaurant
+                        ? "Lege ein neues Restaurant '{0}' an ({1})."
+                        : "Aktualisiere das bereits existierende Restaurant '{0}' ({1}).", restaurant.Name,
+                    activityStatus);
+
+                if (!dryRun)
+                    await restaurantRepository.StoreAsync(restaurant, cancellationToken);
+            }
+            catch (DomainException e)
             {
-                AddFailureMessageToLog(log, rowIndex, boolResult);
-                return;
+                AddFailureMessageToLog(log, rowIndex, e.Failure);
             }
-
-            if (!string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuUrl))
-            {
-                var externalMenuId = Guid.Parse("EA9D3F69-4709-4F4A-903C-7EA68C0A36C7");
-                boolResult = restaurant.SetExternalMenu(new ExternalMenu(
-                    externalMenuId,
-                    !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuName)
-                        ? restaurantRow.ExternalMenuName
-                        : "Tageskarte",
-                    !string.IsNullOrWhiteSpace(restaurantRow.ExternalMenuDescription)
-                        ? restaurantRow.ExternalMenuDescription
-                        : "Täglich wechselnde Tageskarte, nur telefonisch bestellbar.",
-                    restaurantRow.ExternalMenuUrl
-                ), curUserId);
-                if (boolResult.IsFailure)
-                {
-                    AddFailureMessageToLog(log, rowIndex, boolResult);
-                    return;
-                }
-            }
-
-            var activityStatus = restaurantRow.IsActive ? "aktiv" : "inaktiv";
-
-            log.AddLine(ImportLogLineType.Information, rowIndex,
-                newRestaurant
-                    ? "Lege ein neues Restaurant '{0}' an ({1})."
-                    : "Aktualisiere das bereits existierende Restaurant '{0}' ({1}).", restaurant.Name, activityStatus);
-
-            if (!dryRun)
-                await restaurantRepository.StoreAsync(restaurant, cancellationToken);
         }
 
-        private Result<bool> AddOpeningHours(Restaurant restaurant, int dayOfWeek, string openingHoursText,
-            UserId curUserId)
+        private RegularOpeningDays AddRegularOpeningDays(RegularOpeningDays regularOpeningDays, int dayOfWeek, string openingHoursText)
         {
             if (string.IsNullOrWhiteSpace(openingHoursText))
-                return SuccessResult<bool>.Create(true);
-
+                return regularOpeningDays;
             if (openingHoursText.Trim() == "-")
-                return SuccessResult<bool>.Create(true);
+                return regularOpeningDays;
 
             openingHoursText = openingHoursText.Replace(",", ";");
 
             var openingPeriodTexts = openingHoursText.Split(';');
+
             foreach (var openingPeriodText in openingPeriodTexts)
             {
                 var trimmedOpeningPeriodText = openingPeriodText.Trim();
                 var openingPeriodParts = trimmedOpeningPeriodText.Split('-');
                 if (openingPeriodParts.Length != 2)
-                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingPeriodText));
 
-                var parseStartTimeResult = ParseTime(openingPeriodParts[0]);
-                if (parseStartTimeResult.IsFailure)
-                    return parseStartTimeResult.Cast<bool>();
+                var parsedStartTime = ParseTime(openingPeriodParts[0]);
+                var parsedEndTime = ParseTime(openingPeriodParts[1]);
 
-                var parseEndTimeResult = ParseTime(openingPeriodParts[1]);
-                if (parseEndTimeResult.IsFailure)
-                    return parseEndTimeResult.Cast<bool>();
+                var openingPeriod = new OpeningPeriod(parsedStartTime, parsedEndTime);
 
-                var addOpeningPeriodResult = restaurant.AddRegularOpeningPeriod(dayOfWeek,
-                    new OpeningPeriod(parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
-                if (addOpeningPeriodResult.IsFailure)
-                    return addOpeningPeriodResult;
+                regularOpeningDays = regularOpeningDays.AddOpeningPeriod(dayOfWeek, openingPeriod);
             }
 
-            return SuccessResult<bool>.Create(true);
+            return regularOpeningDays;
         }
 
-        private Result<bool> AddDeviatingOpeningHours(Restaurant restaurant, string openingHoursText,
-            UserId curUserId)
+        private DeviatingOpeningDays GetDeviatingOpeningDays(string openingHoursText)
         {
+            var deviatingOpeningDays = new DeviatingOpeningDays(Enumerable.Empty<DeviatingOpeningDay>());
+
             if (string.IsNullOrWhiteSpace(openingHoursText))
-                return SuccessResult<bool>.Create(true);
+                return deviatingOpeningDays;
 
             openingHoursText = openingHoursText.Replace(",", ";");
 
@@ -324,19 +216,19 @@ namespace Gastromio.Core.Domain.Services
 
                 var index = tempOpeningDay.IndexOf(':');
                 if (index < 1)
-                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
                 var dateText = tempOpeningDay.Substring(0, index);
                 var dateTextParts = dateText.Split('.');
 
                 if (dateTextParts.Length == 0)
-                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
 
                 var dateParts = new int[dateTextParts.Length];
                 for (var partIdx = 0; partIdx < dateParts.Length; partIdx++)
                 {
                     var dateTextPart = dateTextParts[partIdx];
                     if (!int.TryParse(dateTextPart, out var datePart))
-                        return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
                     dateParts[partIdx] = datePart;
                 }
 
@@ -347,34 +239,30 @@ namespace Gastromio.Core.Domain.Services
                 }
                 else if (dateParts.Length == 2)
                 {
-                    date = dateParts[1] >= DateTime.Today.Month
-                        ? new Date(DateTime.Today.Year, dateParts[1], dateParts[0])
-                        : new Date(DateTime.Today.Year + 1, dateParts[1], dateParts[0]);
+                    var today = DateTimeOffset.UtcNow.ToUtcDate();
+
+                    date = dateParts[1] >= today.Month
+                        ? new Date(today.Year, dateParts[1], dateParts[0])
+                        : new Date(today.Year + 1, dateParts[1], dateParts[0]);
                 }
                 else
                 {
-                    return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, openingHoursText);
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
                 }
 
                 tempOpeningDay = tempOpeningDay.Substring(index + 1).Trim();
 
                 if (tempOpeningDay == "geschlossen")
                 {
-                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.Closed, curUserId);
-                    if (addOpeningDayResult.IsFailure)
-                        return addOpeningDayResult;
+                    deviatingOpeningDays = deviatingOpeningDays.AddOpeningDay(date, DeviatingOpeningDayStatus.Closed);
                 }
                 else if (tempOpeningDay == "ausgebucht")
                 {
-                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.FullyBooked, curUserId);
-                    if (addOpeningDayResult.IsFailure)
-                        return addOpeningDayResult;
+                    deviatingOpeningDays = deviatingOpeningDays.AddOpeningDay(date, DeviatingOpeningDayStatus.FullyBooked);
                 }
                 else
                 {
-                    var addOpeningDayResult = restaurant.AddDeviatingOpeningDay(date, DeviatingOpeningDayStatus.Open, curUserId);
-                    if (addOpeningDayResult.IsFailure)
-                        return addOpeningDayResult;
+                    deviatingOpeningDays = deviatingOpeningDays.AddOpeningDay(date, DeviatingOpeningDayStatus.Open);
 
                     var openingPeriodTexts = tempOpeningDay.Split(';');
                     foreach (var openingPeriodText in openingPeriodTexts)
@@ -382,29 +270,22 @@ namespace Gastromio.Core.Domain.Services
                         var trimmedOpeningPeriodText = openingPeriodText.Trim();
                         var openingPeriodParts = trimmedOpeningPeriodText.Split('-');
                         if (openingPeriodParts.Length != 2)
-                            return FailureResult<bool>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid,
-                                openingHoursText);
+                            throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(openingHoursText));
 
-                        var parseStartTimeResult = ParseTime(openingPeriodParts[0]);
-                        if (parseStartTimeResult.IsFailure)
-                            return parseStartTimeResult.Cast<bool>();
+                        var parsedStartTime = ParseTime(openingPeriodParts[0]);
+                        var parsedEndTime = ParseTime(openingPeriodParts[1]);
 
-                        var parseEndTimeResult = ParseTime(openingPeriodParts[1]);
-                        if (parseEndTimeResult.IsFailure)
-                            return parseEndTimeResult.Cast<bool>();
+                        var openingPeriod = new OpeningPeriod(parsedStartTime, parsedEndTime);
 
-                        var addOpeningPeriodResult = restaurant.AddDeviatingOpeningPeriod(date,
-                            new OpeningPeriod(parseStartTimeResult.Value, parseEndTimeResult.Value), curUserId);
-                        if (addOpeningPeriodResult.IsFailure)
-                            return addOpeningPeriodResult;
+                        deviatingOpeningDays = deviatingOpeningDays.AddOpeningPeriod(date, openingPeriod);
                     }
                 }
             }
 
-            return SuccessResult<bool>.Create(true);
+            return deviatingOpeningDays;
         }
 
-        private Result<TimeSpan> ParseTime(string timeText)
+        private TimeSpan ParseTime(string timeText)
         {
             var trimmedTimeText = timeText.Trim().Replace(".", ":");
             var timeTextParts = trimmedTimeText.Split(':');
@@ -414,27 +295,26 @@ namespace Gastromio.Core.Domain.Services
                 {
                     var hourText = timeTextParts[0];
                     if (!int.TryParse(hourText, out var hours))
-                        return FailureResult<TimeSpan>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, timeText);
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
                     var minuteText = timeTextParts[1];
                     if (!int.TryParse(minuteText, out var minutes))
-                        return FailureResult<TimeSpan>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, timeText);
-                    return SuccessResult<TimeSpan>.Create(new TimeSpan(0, hours, minutes, 0));
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
+                    return new TimeSpan(0, hours, minutes, 0);
                 }
                 case 1:
                 {
                     var hourText = timeTextParts[0];
                     if (!int.TryParse(hourText, out var hours))
-                        return FailureResult<TimeSpan>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, timeText);
-                    return SuccessResult<TimeSpan>.Create(new TimeSpan(0, hours, 0, 0));
+                        throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
+                    return new TimeSpan(0, hours, 0, 0);
                 }
                 default:
-                    return FailureResult<TimeSpan>.Create(FailureResultCode.ImportOpeningPeriodIsInvalid, timeText);
+                    throw DomainException.CreateFrom(new ImportOpeningPeriodIsInvalidFailure(timeText));
             }
         }
 
-        private Result<bool> AddServices(Restaurant restaurant, string orderTypesText, int? averageTime,
-            decimal? minimumOrderValuePickup, decimal? minimumOrderValueDelivery, decimal? deliveryCosts,
-            UserId curUserId)
+        private (PickupInfo, DeliveryInfo, ReservationInfo) GetServices(string orderTypesText, int? averageTime,
+            decimal? minimumOrderValuePickup, decimal? minimumOrderValueDelivery, decimal? deliveryCosts)
         {
             var orderTypeTexts = orderTypesText?.Split(',') ?? new string[0];
 
@@ -470,173 +350,141 @@ namespace Gastromio.Core.Domain.Services
                         break;
                     }
                     default:
-                        return FailureResult<bool>.Create(FailureResultCode.ImportOrderTypeIsInvalid, orderTypeTextTrimmed);
+                        throw DomainException.CreateFrom(new ImportOrderTypeIsInvalidFailure(orderTypeText));
                 }
             }
 
-            var boolResult = restaurant.ChangePickupInfo(
-                new PickupInfo(hadPickup, averageTime, minimumOrderValuePickup, null),
-                curUserId);
-            if (boolResult.IsFailure)
-                return boolResult;
+            var pickupInfo =
+                new PickupInfo(hadPickup, averageTime, minimumOrderValuePickup, null);
+            var deliveryInfo =
+                new DeliveryInfo(hadDelivery, averageTime, minimumOrderValueDelivery, null, deliveryCosts);
+            var reservationInfo =
+                new ReservationInfo(hadReservation, null);
 
-            boolResult =
-                restaurant.ChangeDeliveryInfo(
-                    new DeliveryInfo(hadDelivery, averageTime, minimumOrderValueDelivery, null, deliveryCosts),
-                    curUserId);
-            if (boolResult.IsFailure)
-                return boolResult;
-
-            boolResult = restaurant.ChangeReservationInfo(new ReservationInfo(hadReservation, null), curUserId);
-            if (boolResult.IsFailure)
-                return boolResult;
-
-            return SuccessResult<bool>.Create(true);
+            return (pickupInfo, deliveryInfo, reservationInfo);
         }
 
-        private async Task<Result<bool>> AddCuisinesAsync(ImportLog log, int rowIndex, Restaurant restaurant,
-            string cuisinesText, bool dryRun, UserId curUserId)
+        private async Task<ISet<CuisineId>> GetOrAddCuisinesAsync(ImportLog log, int rowIndex, string cuisinesText, bool dryRun, UserId curUserId)
         {
             if (string.IsNullOrWhiteSpace(cuisinesText))
-                return FailureResult<bool>.Create(FailureResultCode.ImportCuisinesNotFound, "Cuisines");
+                throw DomainException.CreateFrom(new ImportCuisinesNotFoundFailure());
+
+            var cuisineIds = new HashSet<CuisineId>();
 
             var cuisineNames = cuisinesText.Split(',');
             foreach (var cuisineName in cuisineNames)
             {
-                var boolResult =
-                    await AddCuisineAsync(log, rowIndex, restaurant, cuisineName.Trim(), dryRun, curUserId);
-                if (boolResult.IsFailure)
-                    return boolResult;
+                var cuisineId = await GetOrAddCuisineAsync(log, rowIndex, cuisineName.Trim(), dryRun, curUserId);
+                cuisineIds.Add(cuisineId);
             }
 
-            return SuccessResult<bool>.Create(true);
+            return cuisineIds;
         }
 
-        private async Task<Result<bool>> AddCuisineAsync(ImportLog log, int rowIndex, Restaurant restaurant,
-            string cuisineName, bool dryRun, UserId curUserId)
-        {
-            var cuisine = await cuisineRepository.FindByNameAsync(cuisineName);
-
-            if (cuisine == null)
-            {
-                var createNewCuisineResult = await CreateNewCuisineAsync(log, rowIndex, cuisineName, dryRun, curUserId);
-                if (createNewCuisineResult.IsFailure)
-                    return createNewCuisineResult.Cast<bool>();
-                cuisine = createNewCuisineResult.Value;
-            }
-
-            return restaurant.AddCuisine(cuisine.Id, curUserId);
-        }
-
-        private async Task<Result<Cuisine>> CreateNewCuisineAsync(ImportLog log, int rowIndex,
-            string cuisineName, bool dryRun, UserId curUserId)
-        {
-            var createCuisineResult = cuisineFactory.Create(cuisineName, curUserId);
-            if (createCuisineResult.IsFailure)
-                return createCuisineResult;
-            log.AddLine(ImportLogLineType.Information, rowIndex, "Lege eine neue Cuisine mit Namen '{0}' an.",
-                cuisineName);
-            if (!dryRun)
-                await cuisineRepository.StoreAsync(createCuisineResult.Value);
-            return createCuisineResult;
-        }
-
-        private async Task<Result<bool>> AddPaymentMethodsAsync(Restaurant restaurant, string paymentMethodsText,
+        private async Task<CuisineId> GetOrAddCuisineAsync(ImportLog log, int rowIndex, string cuisineName, bool dryRun,
             UserId curUserId)
         {
+            var cuisine = await cuisineRepository.FindByNameAsync(cuisineName) ??
+                          await CreateNewCuisineAsync(log, rowIndex, cuisineName, dryRun, curUserId);
+            return cuisine.Id;
+        }
+
+        private async Task<Cuisine> CreateNewCuisineAsync(ImportLog log, int rowIndex, string cuisineName, bool dryRun,
+            UserId curUserId)
+        {
+            var cuisine = cuisineFactory.Create(cuisineName, curUserId);
+
+            log.AddLine(ImportLogLineType.Information, rowIndex, "Lege eine neue Cuisine mit Namen '{0}' an.",
+                cuisineName);
+
+            if (!dryRun)
+                await cuisineRepository.StoreAsync(cuisine);
+
+            return cuisine;
+        }
+
+        private async Task<ISet<PaymentMethodId>> GetPaymentMethodsAsync(string paymentMethodsText)
+        {
             if (string.IsNullOrWhiteSpace(paymentMethodsText))
-                return FailureResult<bool>.Create(FailureResultCode.ImportPaymentMethodsNotFound);
+                throw DomainException.CreateFrom(new ImportPaymentMethodsNotFoundFailure());
+
+            var paymentMethodIds = new HashSet<PaymentMethodId>();
 
             var paymentMethodNames = paymentMethodsText.Split(',');
             foreach (var paymentMethodName in paymentMethodNames)
             {
-                var boolResult = await AddPaymentMethodAsync(restaurant, paymentMethodName.Trim(), curUserId);
-                if (boolResult.IsFailure)
-                    return boolResult;
+                var paymentMethodId = await GetPaymentMethodAsync(paymentMethodName.Trim());
+                paymentMethodIds.Add(paymentMethodId);
             }
 
-            return SuccessResult<bool>.Create(true);
+            return paymentMethodIds;
         }
 
-        private async Task<Result<bool>> AddPaymentMethodAsync(Restaurant restaurant, string paymentMethodName,
-            UserId curUserId)
+        private async Task<PaymentMethodId> GetPaymentMethodAsync(string paymentMethodName)
         {
             var paymentMethodNameTrimmed = paymentMethodName.Trim();
             var paymentMethod = await paymentMethodRepository.FindByNameAsync(paymentMethodNameTrimmed, true);
             return paymentMethod != null
-                ? restaurant.AddPaymentMethod(paymentMethod.Id, curUserId)
-                : FailureResult<bool>.Create(FailureResultCode.ImportPaymentMethodNotFound, paymentMethodNameTrimmed);
+                ? paymentMethod.Id
+                : throw DomainException.CreateFrom(new ImportPaymentMethodNotFoundFailure(paymentMethodName));
         }
 
-        private async Task<Result<bool>> AddAdministratorAsync(ImportLog log, int rowIndex,
-            Restaurant restaurant, string administratorEmailAddress, bool dryRun, UserId curUserId)
+        private async Task<ISet<UserId>> GetOrAddAdministratorAsync(ImportLog log, int rowIndex, string administratorEmailAddress, bool dryRun, UserId curUserId)
         {
+            var administrators = new HashSet<UserId>();
+
             if (string.IsNullOrWhiteSpace(administratorEmailAddress))
-                return SuccessResult<bool>.Create(true);
+                return administrators;
 
             var user = await userRepository.FindByEmailAsync(administratorEmailAddress.Trim().ToLowerInvariant());
-
             if (user == null)
             {
-                var createNewUserResult =
-                    await CreateNewUserAsync(log, rowIndex, administratorEmailAddress, dryRun, curUserId);
-                if (createNewUserResult.IsFailure)
-                    return createNewUserResult.Cast<bool>();
-                user = createNewUserResult.Value;
+                user = await CreateNewUserAsync(log, rowIndex, administratorEmailAddress.Trim().ToLowerInvariant(),
+                    dryRun, curUserId);
             }
 
-            return restaurant.AddAdministrator(user.Id, curUserId);
+            administrators.Add(user.Id);
+
+            return administrators;
         }
 
-        private async Task<Result<User>> CreateNewUserAsync(ImportLog log, int rowIndex,
+        private async Task<User> CreateNewUserAsync(ImportLog log, int rowIndex,
             string userEmailAddress, bool dryRun, UserId curUserId)
         {
             var password = "Start2020!";
-            var createUserResult =
-                userFactory.Create(Role.RestaurantAdmin, userEmailAddress, password, false, curUserId);
-            if (createUserResult.IsFailure)
-                return createUserResult;
-            log.AddLine(ImportLogLineType.Information, rowIndex, "Lege einen neuen Benutzer mit Email-Adresse '{0}' und Passwort '{1}' an.",
+            var user = userFactory.Create(Role.RestaurantAdmin, userEmailAddress, password, false, curUserId);
+
+            log.AddLine(ImportLogLineType.Information, rowIndex,
+                "Lege einen neuen Benutzer mit Email-Adresse '{0}' und Passwort '{1}' an.",
                 userEmailAddress, password);
+
             if (!dryRun)
-                await userRepository.StoreAsync(createUserResult.Value);
-            return createUserResult;
+                await userRepository.StoreAsync(user);
+
+            return user;
         }
 
-        private Result<bool> SetSupportOrderMode(Restaurant restaurant, string supportedOrderModeText, UserId curUserId)
+        private SupportedOrderMode GetSupportOrderMode(string supportedOrderModeText)
         {
-            SupportedOrderMode supportedOrderMode;
+            if (string.IsNullOrEmpty(supportedOrderModeText))
+                return SupportedOrderMode.OnlyPhone;
 
-            if (!string.IsNullOrEmpty(supportedOrderModeText))
+            switch (supportedOrderModeText)
             {
-                switch (supportedOrderModeText)
-                {
-                    case "Telefonisch":
-                        supportedOrderMode = SupportedOrderMode.OnlyPhone;
-                        break;
-                    case "Schicht":
-                        supportedOrderMode = SupportedOrderMode.AtNextShift;
-                        break;
-                    case "Jederzeit":
-                        supportedOrderMode = SupportedOrderMode.Anytime;
-                        break;
-                    default:
-                        return FailureResult<bool>.Create(FailureResultCode.ImportUnknownSupportedOrderMode,
-                            supportedOrderModeText);
-                }
+                case "Telefonisch":
+                    return SupportedOrderMode.OnlyPhone;
+                case "Schicht":
+                    return SupportedOrderMode.AtNextShift;
+                case "Jederzeit":
+                    return SupportedOrderMode.Anytime;
+                default:
+                    throw DomainException.CreateFrom(new ImportUnknownSupportedOrderModeFailure(supportedOrderModeText));
             }
-            else
-            {
-                supportedOrderMode = SupportedOrderMode.OnlyPhone;
-            }
-
-            return restaurant.ChangeSupportedOrderMode(supportedOrderMode, curUserId);
         }
 
-        private void AddFailureMessageToLog<T>(ImportLog log, int rowIndex, Result<T> result)
+        private static void AddFailureMessageToLog(ImportLog log, int rowIndex, Failure failure)
         {
-            var message = failureMessageService.GetTranslatedMessage((FailureResult<T>) result);
-            log.AddLine(ImportLogLineType.Error, rowIndex, message);
+            log.AddLine(ImportLogLineType.Error, rowIndex, failure.Message);
         }
     }
 }

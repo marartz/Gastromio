@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.PaymentMethod;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Model.PaymentMethods;
+using Gastromio.Core.Domain.Model.Users;
 
 
 namespace Gastromio.Core.Application.Queries.GetAllPaymentMethods
@@ -20,14 +20,14 @@ namespace Gastromio.Core.Application.Queries.GetAllPaymentMethods
             this.paymentMethodRepository = paymentMethodRepository;
         }
 
-        public async Task<Result<ICollection<PaymentMethodDTO>>> HandleAsync(GetAllPaymentMethodsQuery query, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<ICollection<PaymentMethodDTO>> HandleAsync(GetAllPaymentMethodsQuery query, User currentUser, CancellationToken cancellationToken = default)
         {
             if (query == null)
                 throw new ArgumentNullException(nameof(query));
 
             var paymentMethods = await paymentMethodRepository.FindAllAsync(cancellationToken);
 
-            return SuccessResult<ICollection<PaymentMethodDTO>>.Create(paymentMethods.Select(en => new PaymentMethodDTO(en)).ToList());
+            return paymentMethods.Select(en => new PaymentMethodDTO(en)).ToList();
         }
     }
 }

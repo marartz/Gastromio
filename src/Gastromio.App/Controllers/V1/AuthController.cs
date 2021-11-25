@@ -1,19 +1,20 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Gastromio.App.Helper;
 using Gastromio.App.Models;
 using Gastromio.Core.Application.Commands;
+using Gastromio.Core.Application.Commands.ChangePassword;
 using Gastromio.Core.Application.Commands.ChangePasswordWithResetCode;
 using Gastromio.Core.Application.Commands.Login;
 using Gastromio.Core.Application.Commands.RequestPasswordChange;
 using Gastromio.Core.Application.Commands.ValidatePasswordResetCode;
 using Gastromio.Core.Application.DTOs;
-using Gastromio.Core.Application.Services;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -31,21 +32,18 @@ namespace Gastromio.App.Controllers.V1
         private readonly ILogger logger;
         private readonly IConfiguration config;
         private readonly ICommandDispatcher commandDispatcher;
-        private readonly IFailureMessageService failureMessageService;
         private readonly IMemoryCache memoryCache;
 
         public AuthController(
             ILogger<AuthController> logger,
             IConfiguration config,
             ICommandDispatcher commandDispatcher,
-            IFailureMessageService failureMessageService,
             IMemoryCache memoryCache
         )
         {
             this.logger = logger;
             this.config = config;
             this.commandDispatcher = commandDispatcher;
-            this.failureMessageService = failureMessageService;
             this.memoryCache = memoryCache;
         }
 
@@ -60,16 +58,20 @@ namespace Gastromio.App.Controllers.V1
                 logger.LogInformation($"Waiting {delay} ms");
                 await Task.Delay(delay);
             }
-            
-            var commandResult = await commandDispatcher.PostAsync<LoginCommand, UserDTO>(new LoginCommand(loginModel.Email, loginModel.Password), null);
-            if (commandResult is SuccessResult<UserDTO> successResult)
+
+            try
             {
+                var user = await commandDispatcher.PostAsync<LoginCommand, UserDTO>(
+                    new LoginCommand(loginModel.Email, loginModel.Password),
+                    null
+                );
                 memoryCache.Remove(cacheKey);
-                
-                var tokenString = GenerateJSONWebToken(successResult.Value);
-                return Ok(new { token = tokenString, user = successResult.Value });
+
+                var tokenString = GenerateJSONWebToken(user);
+
+                return Ok(new {token = tokenString, user});
             }
-            else
+            catch (DomainException<WrongCredentialsFailure>)
             {
                 if (delay == 0)
                 {
@@ -85,9 +87,9 @@ namespace Gastromio.App.Controllers.V1
                 }
 
                 memoryCache.Set(cacheKey, delay);
-            }
 
-            return ResultHelper.HandleResult(commandResult, failureMessageService);
+                throw;
+            }
         }
 
         [AllowAnonymous]
@@ -96,13 +98,12 @@ namespace Gastromio.App.Controllers.V1
         public async Task<IActionResult> PostRequestPasswordChangeAsync(
             [FromBody] RequestPasswordChangeModel requestPasswordChangeModel)
         {
-            var commandResult =
-                await commandDispatcher.PostAsync<RequestPasswordChangeCommand, bool>(
-                    new RequestPasswordChangeCommand(requestPasswordChangeModel.UserEmail), null);
+            await commandDispatcher.PostAsync(
+                new RequestPasswordChangeCommand(requestPasswordChangeModel.UserEmail),
+                null
+            );
 
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -112,7 +113,7 @@ namespace Gastromio.App.Controllers.V1
             [FromBody] ValidatePasswordResetCodeModel validatePasswordResetCodeModel)
         {
             byte[] passwordResetCode;
-            
+
             try
             {
                 passwordResetCode = Convert.FromBase64String(validatePasswordResetCodeModel.PasswordResetCode);
@@ -122,13 +123,13 @@ namespace Gastromio.App.Controllers.V1
                 return BadRequest();
             }
 
-            var commandResult = await commandDispatcher.PostAsync<ValidatePasswordResetCodeCommand, bool>(
+            await commandDispatcher.PostAsync(
                 new ValidatePasswordResetCodeCommand(new UserId(validatePasswordResetCodeModel.UserId),
-                    passwordResetCode), null);
+                    passwordResetCode),
+                null
+            );
 
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -138,7 +139,7 @@ namespace Gastromio.App.Controllers.V1
             [FromBody] ChangePasswordWithResetCodeModel changePasswordWithResetCodeModel)
         {
             byte[] passwordResetCode;
-            
+
             try
             {
                 passwordResetCode = Convert.FromBase64String(changePasswordWithResetCodeModel.PasswordResetCode);
@@ -148,13 +149,31 @@ namespace Gastromio.App.Controllers.V1
                 return BadRequest();
             }
 
-            var commandResult = await commandDispatcher.PostAsync<ChangePasswordWithResetCodeCommand, bool>(
+            await commandDispatcher.PostAsync(
                 new ChangePasswordWithResetCodeCommand(new UserId(changePasswordWithResetCodeModel.UserId),
-                    passwordResetCode, changePasswordWithResetCodeModel.Password), null);
+                    passwordResetCode, changePasswordWithResetCodeModel.Password),
+                null
+            );
+            return Ok();
+        }
 
-            return commandResult is SuccessResult<bool>
-                ? Ok()
-                : ResultHelper.HandleResult(commandResult, failureMessageService);
+        [Route("changepassword")]
+        [HttpPost]
+        public async Task<IActionResult> PostChangePasswordAsync(
+            [FromBody] ChangeUserPasswordModel changeUserPasswordModel)
+        {
+            var identityName = (User.Identity as ClaimsIdentity).Claims
+                .FirstOrDefault(en => en.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (identityName == null || !Guid.TryParse(identityName, out var currentUserId))
+                return Unauthorized();
+
+            var curUserId = new UserId(currentUserId);
+
+            await commandDispatcher.PostAsync(
+                new ChangePasswordCommand(changeUserPasswordModel.Password),
+                curUserId);
+
+            return Ok();
         }
 
         [Route("ping")]
@@ -168,7 +187,7 @@ namespace Gastromio.App.Controllers.V1
         {
             return $"FailureCount:{userHostAddress}";
         }
-        
+
         private string GenerateJSONWebToken(UserDTO user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));

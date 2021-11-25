@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Gastromio.Core.Application.DTOs;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.Login
 {
@@ -17,28 +18,26 @@ namespace Gastromio.Core.Application.Commands.Login
             this.userRepository = userRepository;
         }
 
-        public async Task<Result<UserDTO>> HandleAsync(LoginCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task<UserDTO> HandleAsync(LoginCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
-            
+
             if (string.IsNullOrWhiteSpace(command.Email))
-                return FailureResult<UserDTO>.Create(FailureResultCode.LoginEmailRequired);
+                throw DomainException.CreateFrom(new LoginEmailRequiredFailure());
 
             if (string.IsNullOrWhiteSpace(command.Password))
-                return FailureResult<UserDTO>.Create(FailureResultCode.LoginPasswordRequired);
+                throw DomainException.CreateFrom(new LoginPasswordRequiredFailure());
 
             var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
             if (user == null)
-                return FailureResult<UserDTO>.Unauthorized(FailureResultCode.WrongCredentials);
+                throw DomainException.CreateFrom(new WrongCredentialsFailure());
 
-            var validationResult = user.ValidatePassword(command.Password);
-            if (validationResult.IsFailure)
-                return FailureResult<UserDTO>.Unauthorized(FailureResultCode.WrongCredentials);
-            if (!validationResult.Value)
-                return FailureResult<UserDTO>.Unauthorized(FailureResultCode.WrongCredentials);
+            var valid = user.ValidatePassword(command.Password);
+            if (!valid)
+                throw DomainException.CreateFrom(new WrongCredentialsFailure());
 
-            return SuccessResult<UserDTO>.Create(new UserDTO(user));
+            return new UserDTO(user);
         }
     }
 }

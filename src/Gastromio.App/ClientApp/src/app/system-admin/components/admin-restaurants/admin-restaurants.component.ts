@@ -1,19 +1,28 @@
-import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
 
-import {ServerPaginationComponent, FetchPageInfo} from '../../../shared/components/pagination/server-pagination.component';
+import {
+  ServerPaginationComponent,
+  FetchPageInfo,
+} from '../../../shared/components/pagination/server-pagination.component';
 
-import {SystemAdminFacade} from "../../system-admin.facade";
+import { SystemAdminFacade } from '../../system-admin.facade';
 
-import {AddRestaurantComponent} from '../add-restaurant/add-restaurant.component';
-import {ChangeRestaurantAccessSettingsComponent} from "../change-restaurant-access-settings/change-restaurant-access-settings.component";
-import {ChangeRestaurantGeneralSettingsComponent} from "../change-restaurant-general-settings/change-restaurant-general-settings.component";
-import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.component';
+import { AddRestaurantComponent } from '../add-restaurant/add-restaurant.component';
+import { ChangeRestaurantAccessSettingsComponent } from '../change-restaurant-access-settings/change-restaurant-access-settings.component';
+import { ChangeRestaurantGeneralSettingsComponent } from '../change-restaurant-general-settings/change-restaurant-general-settings.component';
+import { RemoveRestaurantComponent } from '../remove-restaurant/remove-restaurant.component';
 
 @Component({
   selector: 'app-admin-restaurants',
@@ -21,12 +30,14 @@ import {RemoveRestaurantComponent} from '../remove-restaurant/remove-restaurant.
   styleUrls: [
     './admin-restaurants.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
-  ]
+    '../../../../assets/css/backend_v2.min.css',
+  ],
 })
-export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  @ViewChild(ServerPaginationComponent) pagingComponent: ServerPaginationComponent;
+export class AdminRestaurantsComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  @ViewChild(ServerPaginationComponent)
+  pagingComponent: ServerPaginationComponent;
   pageOfRestaurants: RestaurantModel[];
 
   public searchPhrase$: Observable<string>;
@@ -34,17 +45,13 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
   constructor(
     private modalService: NgbModal,
     private facade: SystemAdminFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.searchPhrase$ = this.facade.getRestaurantSearchPhrase$();
-    this.searchPhrase$
-      .subscribe(
-        () => {
-          this.pagingComponent.triggerFetchPage(1);
-        }
-      );
+    this.searchPhrase$.subscribe(() => {
+      this.pagingComponent.triggerFetchPage(1);
+    });
   }
 
   ngAfterViewInit() {
@@ -52,83 +59,90 @@ export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestr
     this.pagingComponent.triggerFetchPage(1);
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   onUpdateSearch(value: string) {
     this.facade.setRestaurantSearchPhrase(value);
   }
 
   onFetchPage(info: FetchPageInfo) {
-    this.facade.searchForRestaurants$(info.skip, info.take)
-      .subscribe((result) => {
+    this.facade.searchForRestaurants$(info.skip, info.take).subscribe(
+      (result) => {
         this.pageOfRestaurants = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);
-      }, () => {
-      });
+      },
+      () => {}
+    );
   }
 
   openAddRestaurantForm(): void {
     const modalRef = this.modalService.open(AddRestaurantComponent);
-    modalRef.result.then(() => {
-      this.pagingComponent.triggerFetchPage();
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.pagingComponent.triggerFetchPage();
+      },
+      () => {}
+    );
   }
 
   openChangeRestaurantGeneralSettingsForm(restaurant: RestaurantModel): void {
-    const modalRef = this.modalService.open(ChangeRestaurantGeneralSettingsComponent);
+    const modalRef = this.modalService.open(
+      ChangeRestaurantGeneralSettingsComponent
+    );
     modalRef.componentInstance.restaurant = restaurant;
-    modalRef.result.then(() => {
-      this.pagingComponent.triggerFetchPage();
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.pagingComponent.triggerFetchPage();
+      },
+      () => {}
+    );
   }
 
   openChangeRestaurantAccessSettingsForm(restaurant: RestaurantModel): void {
-    const modalRef = this.modalService.open(ChangeRestaurantAccessSettingsComponent);
+    const modalRef = this.modalService.open(
+      ChangeRestaurantAccessSettingsComponent
+    );
     modalRef.componentInstance.restaurant = restaurant;
-    modalRef.result.then(() => {
-      this.pagingComponent.triggerFetchPage();
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.pagingComponent.triggerFetchPage();
+      },
+      () => {}
+    );
   }
 
   openRemoveRestaurantForm(restaurant: RestaurantModel): void {
     const modalRef = this.modalService.open(RemoveRestaurantComponent);
     modalRef.componentInstance.restaurant = restaurant;
-    modalRef.result.then(() => {
-      this.pagingComponent.triggerFetchPage();
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.pagingComponent.triggerFetchPage();
+      },
+      () => {}
+    );
   }
 
   onActivate(restaurant: RestaurantModel): void {
-    this.facade.activateRestaurant$(restaurant.id)
-      .subscribe(() => {
-        restaurant.isActive = true;
-      });
+    this.facade.activateRestaurant$(restaurant.id).subscribe(() => {
+      restaurant.isActive = true;
+    });
   }
 
   onDeactivate(restaurant: RestaurantModel): void {
-    this.facade.deactivateRestaurant$(restaurant.id)
-      .subscribe(() => {
-        restaurant.isActive = false;
-      });
+    this.facade.deactivateRestaurant$(restaurant.id).subscribe(() => {
+      restaurant.isActive = false;
+    });
   }
 
   onEnableSupport(restaurant: RestaurantModel): void {
-    this.facade.enableSupportForRestaurant$(restaurant.id)
-      .subscribe(() => {
-        restaurant.needsSupport = true;
-      });
+    this.facade.enableSupportForRestaurant$(restaurant.id).subscribe(() => {
+      restaurant.needsSupport = true;
+    });
   }
 
   onDisableSupport(restaurant: RestaurantModel): void {
-    this.facade.disableSupportForRestaurant$(restaurant.id)
-      .subscribe(() => {
-        restaurant.needsSupport = false;
-      });
+    this.facade.disableSupportForRestaurant$(restaurant.id).subscribe(() => {
+      restaurant.needsSupport = false;
+    });
   }
-
 }

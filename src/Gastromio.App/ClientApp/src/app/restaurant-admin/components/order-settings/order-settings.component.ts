@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {debounceTime} from "rxjs/operators";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
-import {RestaurantAdminFacade} from "../../restaurant-admin.facade";
-import {Subscription} from "rxjs";
-import {ServiceInfoModel} from "../../../shared/models/restaurant.model";
+import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
+import { Subscription } from 'rxjs';
+import { ServiceInfoModel } from '../../../shared/models/restaurant.model';
 
 @Component({
   selector: 'app-order-settings',
@@ -12,11 +12,12 @@ import {ServiceInfoModel} from "../../../shared/models/restaurant.model";
   styleUrls: [
     './order-settings.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
-  ]
+    '../../../../assets/css/backend_v2.min.css',
+    '../../../../assets/css/application-ui/forms/input-groups.min.css',
+    '../../../../assets/css/application-ui/forms/radio-groups.min.css',
+  ],
 })
 export class OrderSettingsComponent implements OnInit, OnDestroy {
-
   supportedOrderMode: string;
 
   pickupEnabled: boolean;
@@ -39,12 +40,15 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
       deliveryMaximumOrderValue: [null],
       deliveryCosts: [null],
       reservationSystemUrl: [null],
-      hygienicHandling: ['']
+      hygienicHandling: [''],
     });
     this.changeServiceInfoForm.valueChanges
       .pipe(debounceTime(1000))
-      .subscribe(value => {
-        if (this.changeServiceInfoForm.dirty && this.changeServiceInfoForm.valid) {
+      .subscribe((value) => {
+        if (
+          this.changeServiceInfoForm.dirty &&
+          this.changeServiceInfoForm.valid
+        ) {
           this.updateData(
             this.pickupEnabled,
             this.deliveryEnabled,
@@ -57,8 +61,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.facade.getRestaurant$().subscribe(restaurant => {
-
+    this.subscription = this.facade.getRestaurant$().subscribe((restaurant) => {
       this.supportedOrderMode = restaurant.supportedOrderMode;
 
       this.pickupEnabled = restaurant.pickupInfo?.enabled ?? false;
@@ -67,14 +70,18 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
 
       this.changeServiceInfoForm.patchValue({
         pickupAverageTime: restaurant.pickupInfo?.averageTime ?? null,
-        pickupMinimumOrderValue: restaurant.pickupInfo?.minimumOrderValue ?? null,
-        pickupMaximumOrderValue: restaurant.pickupInfo?.maximumOrderValue ?? null,
+        pickupMinimumOrderValue:
+          restaurant.pickupInfo?.minimumOrderValue ?? null,
+        pickupMaximumOrderValue:
+          restaurant.pickupInfo?.maximumOrderValue ?? null,
         deliveryAverageTime: restaurant.deliveryInfo?.averageTime ?? null,
-        deliveryMinimumOrderValue: restaurant.deliveryInfo?.minimumOrderValue ?? null,
-        deliveryMaximumOrderValue: restaurant.deliveryInfo?.maximumOrderValue ?? null,
+        deliveryMinimumOrderValue:
+          restaurant.deliveryInfo?.minimumOrderValue ?? null,
+        deliveryMaximumOrderValue:
+          restaurant.deliveryInfo?.maximumOrderValue ?? null,
         deliveryCosts: restaurant.deliveryInfo?.costs ?? null,
         reservationSystemUrl: restaurant.reservationInfo.reservationSystemUrl,
-        hygienicHandling: restaurant.hygienicHandling
+        hygienicHandling: restaurant.hygienicHandling,
       });
 
       this.changeServiceInfoForm.markAsPristine();
@@ -116,21 +123,27 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private updateData(pickupEnabled: boolean, deliveryEnabled: boolean, reservationEnabled: boolean, value: any): void {
-    this.facade.changeServiceInfo(new ServiceInfoModel({
-      pickupEnabled: pickupEnabled,
-      pickupAverageTime: value.pickupAverageTime,
-      pickupMinimumOrderValue: value.pickupMinimumOrderValue,
-      pickupMaximumOrderValue: value.pickupMaximumOrderValue,
-      deliveryEnabled: deliveryEnabled,
-      deliveryAverageTime: value.deliveryAverageTime,
-      deliveryMinimumOrderValue: value.deliveryMinimumOrderValue,
-      deliveryMaximumOrderValue: value.deliveryMaximumOrderValue,
-      deliveryCosts: value.deliveryCosts,
-      reservationEnabled: reservationEnabled,
-      reservationSystemUrl: value.reservationSystemUrl,
-      hygienicHandling: value.hygienicHandling
-    }));
+  private updateData(
+    pickupEnabled: boolean,
+    deliveryEnabled: boolean,
+    reservationEnabled: boolean,
+    value: any
+  ): void {
+    this.facade.changeServiceInfo(
+      new ServiceInfoModel({
+        pickupEnabled: pickupEnabled,
+        pickupAverageTime: value.pickupAverageTime,
+        pickupMinimumOrderValue: value.pickupMinimumOrderValue,
+        pickupMaximumOrderValue: value.pickupMaximumOrderValue,
+        deliveryEnabled: deliveryEnabled,
+        deliveryAverageTime: value.deliveryAverageTime,
+        deliveryMinimumOrderValue: value.deliveryMinimumOrderValue,
+        deliveryMaximumOrderValue: value.deliveryMaximumOrderValue,
+        deliveryCosts: value.deliveryCosts,
+        reservationEnabled: reservationEnabled,
+        reservationSystemUrl: value.reservationSystemUrl,
+        hygienicHandling: value.hygienicHandling,
+      })
+    );
   }
-
 }

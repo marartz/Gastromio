@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.User;
+﻿using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.RemoveUser
 {
-    public class RemoveUserCommand : ICommand<bool>
+    public class RemoveUserCommand : ICommand
     {
         public RemoveUserCommand(UserId userId)
         {

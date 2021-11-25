@@ -1,29 +1,63 @@
-import { Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-server-pagination',
-  template: `
-    <ul *ngIf='pager.pages && pager.pages.length' class='pagination justify-content-center'>
-      <li [ngClass]='{disabled:pager.currentPage === 1}' class='page-item first-item'>
-        <a (click)='triggerFetchPage(1)' class='page-link' [routerLink]=''><i class='fas fa-angle-double-left'></i></a>
-      </li>
-      <li [ngClass]='{disabled:pager.currentPage === 1}' class='page-item previous-item'>
-        <a (click)='triggerFetchPage(pager.currentPage - 1)' class='page-link' [routerLink]=''><i class='fas fa-angle-left'></i></a>
-      </li>
-      <li *ngFor='let page of pager.pages' [ngClass]='{active:pager.currentPage === page}'
-          class='page-item number-item'>
-        <a (click)='triggerFetchPage(page)' class='page-link' [routerLink]=''>{{page}}</a>
-      </li>
-      <li [ngClass]='{disabled:pager.currentPage === pager.totalPages}' class='page-item next-item'>
-        <a (click)='triggerFetchPage(pager.currentPage + 1)' class='page-link' [routerLink]=''><i class='fas fa-angle-right'></i></a>
-      </li>
-      <li [ngClass]='{disabled:pager.currentPage === pager.totalPages}' class='page-item last-item'>
-        <a (click)='triggerFetchPage(pager.totalPages)' class='page-link' [routerLink]=''><i
-          class='fas fa-angle-double-right'></i></a>
-      </li>
-    </ul>`
+  template: ` <ul
+    *ngIf="pager.pages && pager.pages.length"
+    class="pagination justify-content-center"
+  >
+    <li
+      [ngClass]="{ disabled: pager.currentPage === 1 }"
+      class="page-item first-item"
+    >
+      <a (click)="triggerFetchPage(1)" class="page-link" [routerLink]=""
+        ><i class="fas fa-angle-double-left"></i
+      ></a>
+    </li>
+    <li
+      [ngClass]="{ disabled: pager.currentPage === 1 }"
+      class="page-item previous-item"
+    >
+      <a
+        (click)="triggerFetchPage(pager.currentPage - 1)"
+        class="page-link"
+        [routerLink]=""
+        ><i class="fas fa-angle-left"></i
+      ></a>
+    </li>
+    <li
+      *ngFor="let page of pager.pages"
+      [ngClass]="{ active: pager.currentPage === page }"
+      class="page-item number-item"
+    >
+      <a (click)="triggerFetchPage(page)" class="page-link" [routerLink]="">{{
+        page
+      }}</a>
+    </li>
+    <li
+      [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
+      class="page-item next-item"
+    >
+      <a
+        (click)="triggerFetchPage(pager.currentPage + 1)"
+        class="page-link"
+        [routerLink]=""
+        ><i class="fas fa-angle-right"></i
+      ></a>
+    </li>
+    <li
+      [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
+      class="page-item last-item"
+    >
+      <a
+        (click)="triggerFetchPage(pager.totalPages)"
+        class="page-link"
+        [routerLink]=""
+        ><i class="fas fa-angle-double-right"></i
+      ></a>
+    </li>
+  </ul>`,
 })
-
 export class ServerPaginationComponent {
   @Output() private fetchPage = new EventEmitter<FetchPageInfo>(true);
   @Input() private _pageSize = 10; // fetch default: 'take = 10'
@@ -37,7 +71,7 @@ export class ServerPaginationComponent {
     endPage: 0,
     startIndex: 0, // fetch default: 'skip = 0'
     endIndex: 0,
-    pages: []
+    pages: [],
   };
 
   pager: PagingInfo = this.emptyPager;
@@ -45,13 +79,18 @@ export class ServerPaginationComponent {
   triggerFetchPage(page: number = this.pager.currentPage) {
     // update startIndex if page has changed
     if (page !== this.pager.currentPage) {
-      this.pager = this.paginate(this.pager.totalItems, page, this._pageSize, this._maxPages);
+      this.pager = this.paginate(
+        this.pager.totalItems,
+        page,
+        this._pageSize,
+        this._maxPages
+      );
     }
 
     // trigger page fetch in parent component
     return this.fetchPage.emit({
       skip: this.pager.startIndex,
-      take: this._pageSize
+      take: this._pageSize,
     });
   }
 
@@ -59,8 +98,7 @@ export class ServerPaginationComponent {
     // fallback to first page when current page is empty (eg. if last item on page was deleted)
     if (!pageItems && totalItems) {
       this.triggerFetchPage(1);
-    }
-    else {
+    } else {
       this.pager = this.paginate(totalItems);
     }
   }
@@ -116,7 +154,9 @@ export class ServerPaginationComponent {
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
     // create an array of pages to ng-repeat in the pager control
-    const pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
+    const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(
+      (i) => startPage + i
+    );
 
     // return object with all pager properties required by the view
     return {
@@ -127,7 +167,7 @@ export class ServerPaginationComponent {
       endPage,
       startIndex,
       endIndex,
-      pages
+      pages,
     };
   }
 }

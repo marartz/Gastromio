@@ -4,7 +4,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.Users;
 using Gastromio.Core.Domain.Services;
 using NPOI.XSSF.UserModel;
 
@@ -19,22 +20,22 @@ namespace Gastromio.Core.Application.Commands.ImportRestaurantData
             this.restaurantDataImporter = restaurantDataImporter;
         }
 
-        public async Task<Result<ImportLog>> HandleAsync(ImportRestaurantDataCommand command, User currentUser,
+        public async Task<ImportLog> HandleAsync(ImportRestaurantDataCommand command, User currentUser,
             CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<ImportLog>.Unauthorized().Cast<ImportLog>();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.RestaurantAdmin)
-                return FailureResult<ImportLog>.Forbidden().Cast<ImportLog>();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             return await ProcessFileAsync(command.RestaurantDataStream, currentUser.Id, command.DryRun);
         }
 
-        private async Task<Result<ImportLog>> ProcessFileAsync(Stream stream, UserId curUserId, bool dryRun)
+        private async Task<ImportLog> ProcessFileAsync(Stream stream, UserId curUserId, bool dryRun)
         {
             var log = new ImportLog();
 
@@ -166,7 +167,7 @@ namespace Gastromio.Core.Application.Commands.ImportRestaurantData
                 }
             }
 
-            return SuccessResult<ImportLog>.Create(log);
+            return log;
         }
     }
 }

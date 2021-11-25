@@ -1,20 +1,21 @@
-### VS Code ###
-.vscode/
-.vscode-test
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# See https://help.github.com/ignore-files/ for more about ignoring files.
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-.idea_modules/
-.history/*
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
 
-# IDEs and other editors
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
 .project
 .classpath
 .c9/
@@ -22,16 +23,22 @@
 .settings/
 *.sublime-workspace
 
-# Logs
+# IDE - VSCode
+.vscode/*
+.vscode-test
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Log Files
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 testem.log*
-
-# Dependency directories and files
-node_modules/
 
 # Package Files
 *.jar
@@ -43,20 +50,11 @@ node_modules/
 *.tgz
 *.rar
 
-# Compiled Output
-/dist
-/tmp
-/out-tsc
-# Only exists if Bazel was run
-/bazel-out
-
-# Profiling Files
-chrome-profiler-events*.json
-speed-measure-plugin*.json
-
 # System Files
 *.DS_Store
 Thumbs.db
+
+yarn.lock
 
 # Project specifics
 /.sass-cache

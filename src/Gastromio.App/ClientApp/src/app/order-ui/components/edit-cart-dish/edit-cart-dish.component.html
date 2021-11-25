@@ -1,49 +1,129 @@
 <div class="modal-overlay">
-    <div class="modal_v3 bg-rough-yellow">
-        <div id="close"><button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;"><path d="m6 6 20 20"></path><path d="m26 6-20 20"></path></svg></button></div>
-        <div id="body" tabindex="0">
-            <div class="form">
-                <section style="margin-top: 32px">
-                    <h1 class="dish-name">{{cartDish.getDish().name}}</h1>
-                    <p class="dish-description">{{cartDish.getDish().description}}</p>
-                </section>
-                <section *ngIf="cartDish.getDish().variants.length == 1" style="margin-bottom: 16px; margin-top: 30px">
-                    <div id="count">
-                        <div class="c-wrapper">
-                            <button type="button" class="decrease" (click)="incCount()">+</button>
-                            <span class="dish-count"><span>{{count}}</span></span>
-                            <button type="button" class="increase" (click)="decCount()">-</button>
-                        </div>
-                    </div>
-                </section>
-                <section *ngIf="cartDish.getDish().variants.length > 1" style="margin-bottom: 16px; margin-top: 30px">
-                    <div class="count-wrapper">
-                        <div id="variant">
-                            <select><option>{{cartDish.getVariant().name}}</option></select>
-                        </div>
-                        <div id="count">
-                            <div class="c-wrapper">
-                                <button type="button" class="decrease" (click)="incCount()">+</button>
-                                <span class="dish-count"><span>{{count}}</span></span>
-                                <button type="button" class="increase" (click)="decCount()">-</button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <div class="wrapper">
-                    <div class="input-wrapper">
-                        <div class="input-inner">
-                            <div style="background: none; border-radius: 23px; bottom: -1px; left: 0px; right: 0px; top: 0px;"></div>
-                            <label>
-                                <div class="label">Anmerkungen (optional)</div>
-                                <input type="text" mozactionhint="send" autocomplete="off" autocapitalize="off" spellcheck="true" [(ngModel)]="remarks">
-                            </label>
-                            <div class="border" style="border: 1px solid rgb(176, 176, 176); border-radius: 23px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="submit"><button class="bg-green" type="button" (click)="onSubmit()">Speichern {{getVariantPrice(cartDish.getVariant())}}</button></div>
-            </div>
-        </div>
-    </div>
+	<div class="modal_v3" style="background: var(--bg-rough-yellow)">
+		<div id="close">
+			<button
+				type="button"
+				aria-label="Schließen"
+				(click)="activeModal.dismiss('Cross click')"
+			>
+				<svg
+					viewBox="0 0 32 32"
+					xmlns="http://www.w3.org/2000/svg"
+					role="presentation"
+					focusable="false"
+					style="
+						display: block;
+						fill: none;
+						height: 16px;
+						width: 16px;
+						stroke: currentcolor;
+						stroke-width: 3;
+						overflow: visible;
+					"
+				>
+					<path d="m6 6 20 20"></path>
+					<path d="m26 6-20 20"></path>
+				</svg>
+			</button>
+		</div>
+		<div id="body" tabindex="0">
+			<div class="form">
+				<section style="margin-top: 32px">
+					<h1 class="dish-name">{{ cartDish.getDish().name }}</h1>
+					<p class="dish-description">{{ cartDish.getDish().description }}</p>
+				</section>
+				<section
+					*ngIf="cartDish.getDish().variants.length == 1"
+					style="margin-bottom: 16px; margin-top: 30px"
+				>
+					<div id="count">
+						<div class="c-wrapper">
+							<button type="button" class="decrease" (click)="incCount()">
+								+
+							</button>
+							<span class="dish-count"
+								><span>{{ count }}</span></span
+							>
+							<button type="button" class="increase" (click)="decCount()">
+								-
+							</button>
+						</div>
+					</div>
+				</section>
+				<section
+					*ngIf="cartDish.getDish().variants.length > 1"
+					style="margin-bottom: 16px; margin-top: 30px"
+				>
+					<div class="count-wrapper">
+						<div id="variant">
+							<select>
+								<option>{{ cartDish.getVariant().name }}</option>
+							</select>
+						</div>
+						<div id="count">
+							<div class="c-wrapper">
+								<button type="button" class="decrease" (click)="incCount()">
+									+
+								</button>
+								<span class="dish-count"
+									><span>{{ count }}</span></span
+								>
+								<button type="button" class="increase" (click)="decCount()">
+									-
+								</button>
+							</div>
+						</div>
+					</div>
+				</section>
+				<div class="wrapper">
+					<div class="input-wrapper">
+						<div class="input-inner">
+							<div
+								style="
+									background: none;
+									border-radius: 23px;
+									bottom: -1px;
+									left: 0px;
+									right: 0px;
+									top: 0px;
+								"
+							></div>
+							<label>
+								<div class="label">Anmerkungen (optional)</div>
+								<input
+									type="text"
+									mozactionhint="send"
+									autocomplete="off"
+									autocapitalize="off"
+									spellcheck="true"
+									[(ngModel)]="remarks"
+								/>
+							</label>
+							<div
+								class="border"
+								style="
+									border: 1px solid rgb(176, 176, 176);
+									border-radius: 23px;
+									bottom: -1px;
+									left: 0px;
+									right: 0px;
+									top: 0px;
+									z-index: 0;
+								"
+							></div>
+						</div>
+					</div>
+				</div>
+				<div id="submit">
+					<button
+						type="button"
+						(click)="onSubmit()"
+						style="background: var(--green)"
+					>
+						Speichern {{ getVariantPrice(cartDish.getVariant()) }}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

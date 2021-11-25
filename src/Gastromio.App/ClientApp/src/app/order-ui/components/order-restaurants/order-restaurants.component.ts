@@ -1,20 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
-import {CuisineModel} from '../../../shared/models/cuisine.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
+import { CuisineModel } from '../../../shared/models/cuisine.model';
 
-import {OrderFacade} from "../../../order/order.facade";
-import {OrderType} from '../../../order/models/order-type';
-import {OrderTypeConverter} from "../../../order/models/order-type-converter";
+import { OrderFacade } from '../../../order/order.facade';
+import { OrderType } from '../../../order/models/order-type';
+import { OrderTypeConverter } from '../../../order/models/order-type-converter';
 
-import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-filter.component';
+import { OpeningHourFilterComponent } from '../opening-hour-filter/opening-hour-filter.component';
 
 @Component({
   selector: 'app-order-restaurants',
@@ -23,10 +23,10 @@ import {OpeningHourFilterComponent} from '../opening-hour-filter/opening-hour-fi
     './order-restaurants.component.css',
     '../../../../assets/css/frontend_v3.min.css',
     '../../../../assets/css/components/_1_hero.min.css',
-	'../../../../assets/css/components/_2_action-bar.min.css',
-	'../../../../assets/css/components/_2_restaurants-row.min.css',
-	'../../../../assets/css/components/_3_advanced-filter.min.css'
-  ]
+    '../../../../assets/css/components/_2_action-bar.min.css',
+    '../../../../assets/css/components/_2_restaurants-row.min.css',
+    '../../../../assets/css/components/_3_advanced-filter.min.css',
+  ],
 })
 export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI: NgBlockUI;
@@ -49,72 +49,72 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
   constructor(
     private orderFacade: OrderFacade,
-    private modalService: NgbModal,
-  ) {
-  }
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.orderFacade.setSelectedOrderTypeIfNotSet(OrderType.Pickup);
 
-    this.orderFacade.getIsSearching$()
-      .subscribe(isSearching => {
-        if (isSearching) {
-          this.blockUI.start('Suche läuft');
-        } else {
-          this.blockUI.stop();
-        }
-      });
+    this.orderFacade.getIsSearching$().subscribe((isSearching) => {
+      if (isSearching) {
+        this.blockUI.start('Suche läuft');
+      } else {
+        this.blockUI.stop();
+      }
+    });
 
     this.selectedSearchPhrase$ = this.orderFacade.getSelectedSearchPhrase$();
 
-    this.selectedOrderType$ = this.orderFacade.getSelectedOrderType$()
+    this.selectedOrderType$ = this.orderFacade
+      .getSelectedOrderType$()
       .pipe(
-        map(selectedOrderType => OrderTypeConverter.convertToString(selectedOrderType))
+        map((selectedOrderType) =>
+          OrderTypeConverter.convertToString(selectedOrderType)
+        )
       );
 
     this.selectedOrderTime$ = this.orderFacade.getSelectedOrderTime$();
 
-    this.selectedOrderTimeText$ = this.selectedOrderTime$
-      .pipe(
-        map(selectedOrderTime => {
-          if (!selectedOrderTime)
-            return undefined;
+    this.selectedOrderTimeText$ = this.selectedOrderTime$.pipe(
+      map((selectedOrderTime) => {
+        if (!selectedOrderTime) return undefined;
 
-          let hoursText = selectedOrderTime.getHours().toString();
-          hoursText = ('0' + hoursText).slice(-2);
+        let hoursText = selectedOrderTime.getHours().toString();
+        hoursText = ('0' + hoursText).slice(-2);
 
-          let minutesText = selectedOrderTime.getMinutes().toString();
-          minutesText = ('0' + minutesText).slice(-2);
+        let minutesText = selectedOrderTime.getMinutes().toString();
+        minutesText = ('0' + minutesText).slice(-2);
 
-          return selectedOrderTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
-        })
-      );
+        return (
+          selectedOrderTime.toLocaleDateString() +
+          ', ' +
+          hoursText +
+          ':' +
+          minutesText
+        );
+      })
+    );
 
-    this.orderFacade.getCuisines$()
-      .subscribe((cuisines) => {
-        this.cuisines = cuisines;
-      });
+    this.orderFacade.getCuisines$().subscribe((cuisines) => {
+      this.cuisines = cuisines;
+    });
 
-    this.totalRestaurantCount$ = this.orderFacade.getRestaurants$()
-      .pipe(
-        map(restaurants => restaurants?.length ?? 0)
-      )
+    this.totalRestaurantCount$ = this.orderFacade
+      .getRestaurants$()
+      .pipe(map((restaurants) => restaurants?.length ?? 0));
 
     this.openedRestaurants$ = this.orderFacade.getOpenedRestaurants$();
-    this.openedRestaurantCount$ = this.orderFacade.getOpenedRestaurants$()
-      .pipe(
-        map(openedRestaurants => openedRestaurants?.length ?? 0)
-      );
+    this.openedRestaurantCount$ = this.orderFacade
+      .getOpenedRestaurants$()
+      .pipe(map((openedRestaurants) => openedRestaurants?.length ?? 0));
 
     this.closedRestaurants$ = this.orderFacade.getClosedRestaurants$();
-    this.closedRestaurantCount$ = this.orderFacade.getClosedRestaurants$()
-      .pipe(
-        map(closedRestaurants => closedRestaurants?.length ?? 0)
-      );
+    this.closedRestaurantCount$ = this.orderFacade
+      .getClosedRestaurants$()
+      .pipe(map((closedRestaurants) => closedRestaurants?.length ?? 0));
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   onToggleMobileFilterDetails(): void {
     this.showMobileFilterDetails = !this.showMobileFilterDetails;
@@ -125,17 +125,20 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   openOpeningHourFilter(): void {
-    const modalRef = this.modalService.open(OpeningHourFilterComponent, {centered: true});
-    modalRef.componentInstance.value = this.orderFacade.getSelectedOrderTime() ?? new Date();
-    modalRef.result.then((value: Date) => {
-      this.orderFacade.setSelectedOrderTime(value);
-    }, () => {
+    const modalRef = this.modalService.open(OpeningHourFilterComponent, {
+      centered: true,
     });
+    modalRef.componentInstance.value =
+      this.orderFacade.getSelectedOrderTime() ?? new Date();
+    modalRef.result.then(
+      (value: Date) => {
+        this.orderFacade.setSelectedOrderTime(value);
+      },
+      () => {}
+    );
   }
 
-  getBannerStyle(
-    restaurant: RestaurantModel
-  ): string {
+  getBannerStyle(restaurant: RestaurantModel): string {
     if (!restaurant) {
       return undefined;
     }
@@ -170,11 +173,8 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   selectCuisine(cuisine: CuisineModel): void {
     if (!cuisine) {
       this.orderFacade.setSelectedCuisine('');
-    }
-    else
-    {
+    } else {
       this.orderFacade.setSelectedCuisine(cuisine.id);
     }
   }
-
 }

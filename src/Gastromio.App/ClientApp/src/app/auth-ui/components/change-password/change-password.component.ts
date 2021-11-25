@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Location } from '@angular/common';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
-
-import {concatMap} from 'rxjs/operators';
 
 import {BlockUI, NgBlockUI} from 'ng-block-ui';
 
@@ -21,9 +19,6 @@ import {ConfirmPasswordValidator} from '../../../auth/validators/password.valida
 export class ChangePasswordComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
-  userId: string;
-  passwordResetCode: string;
-  valid: boolean = false;
   success: boolean = false;
 
   changePasswordForm: FormGroup;
@@ -31,10 +26,10 @@ export class ChangePasswordComponent implements OnInit {
   submitted = false;
 
   constructor(
-    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
+    private location: Location
   ) {
   }
 
@@ -43,28 +38,6 @@ export class ChangePasswordComponent implements OnInit {
       password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
       passwordRepeat: ['']
     }, {validators: ConfirmPasswordValidator('password', 'passwordRepeat')});
-
-    this.blockUI.start('Initialisiere...');
-
-    this.route.queryParams
-      .pipe(
-        concatMap(params => {
-          this.userId = params.userId;
-          this.passwordResetCode = params.passwordResetCode;
-          return this.authService.validatePasswordResetCodeAsync(this.userId, this.passwordResetCode)
-        })
-      )
-      .subscribe(
-        () => {
-          this.valid = true;
-          this.blockUI.stop();
-        },
-        (response: HttpErrorResponse) => {
-          this.valid = false;
-          this.errorMessage = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
-          this.blockUI.stop();
-        },
-      );
   }
 
   get f() {
@@ -78,7 +51,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     this.blockUI.start('Ändere Dein Passwort...');
-    this.authService.changePasswordWithResetCodeAsync(this.userId, this.passwordResetCode, data.password)
+    this.authService.changePasswordAsync(data.password)
       .subscribe(() => {
         this.blockUI.stop();
         this.submitted = false;
@@ -87,7 +60,11 @@ export class ChangePasswordComponent implements OnInit {
         this.changePasswordForm.reset();
       }, (response: HttpErrorResponse) => {
         this.blockUI.stop();
-        this.errorMessage = this.httpErrorHandlingService.handleError(response).getJoinedGeneralErrors();
+        this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
       });
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 }

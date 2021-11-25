@@ -1,8 +1,8 @@
-﻿using Gastromio.Core.Domain.Model.User;
+﻿using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeUserPassword
 {
-    public class ChangeUserPasswordCommand : ICommand<bool>
+    public class ChangeUserPasswordCommand : ICommand
     {
         public ChangeUserPasswordCommand(UserId userId, string password)
         {

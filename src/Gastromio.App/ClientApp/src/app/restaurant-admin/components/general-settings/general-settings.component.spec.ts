@@ -8,9 +8,8 @@ describe('RestaurantSettingsGeneralComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RestaurantSettingsGeneralComponent ]
-    })
-    .compileComponents();
+      declarations: [RestaurantSettingsGeneralComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

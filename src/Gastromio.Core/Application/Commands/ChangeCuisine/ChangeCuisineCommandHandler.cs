@@ -3,11 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gastromio.Core.Application.Ports.Persistence;
 using Gastromio.Core.Common;
-using Gastromio.Core.Domain.Model.User;
+using Gastromio.Core.Domain.Failures;
+using Gastromio.Core.Domain.Model.Users;
 
 namespace Gastromio.Core.Application.Commands.ChangeCuisine
 {
-    public class ChangeCuisineCommandHandler : ICommandHandler<ChangeCuisineCommand, bool>
+    public class ChangeCuisineCommandHandler : ICommandHandler<ChangeCuisineCommand>
     {
         private readonly ICuisineRepository cuisineRepository;
 
@@ -16,28 +17,24 @@ namespace Gastromio.Core.Application.Commands.ChangeCuisine
             this.cuisineRepository = cuisineRepository;
         }
 
-        public async Task<Result<bool>> HandleAsync(ChangeCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(ChangeCuisineCommand command, User currentUser, CancellationToken cancellationToken = default)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             if (currentUser == null)
-                return FailureResult<bool>.Unauthorized();
+                throw DomainException.CreateFrom(new SessionExpiredFailure());
 
             if (currentUser.Role < Role.SystemAdmin)
-                return FailureResult<bool>.Forbidden();
+                throw DomainException.CreateFrom(new ForbiddenFailure());
 
             var cuisine = await cuisineRepository.FindByCuisineIdAsync(command.CuisineId, cancellationToken);
             if (cuisine == null)
-                return FailureResult<bool>.Create(FailureResultCode.CuisineDoesNotExist);
+                throw DomainException.CreateFrom(new CuisineDoesNotExistFailure());
 
-            var result = cuisine.ChangeName(command.Name, currentUser.Id);
-            if (result.IsFailure)
-                return result;
+            cuisine.ChangeName(command.Name, currentUser.Id);
 
             await cuisineRepository.StoreAsync(cuisine, cancellationToken);
-
-            return SuccessResult<bool>.Create(true);
         }
     }
 }

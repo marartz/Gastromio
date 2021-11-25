@@ -1,11 +1,11 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
 
-import {AuthService} from '../../../auth/services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 
-import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.service';
+import { RestaurantRestAdminService } from '../../services/restaurant-rest-admin.service';
 
 @Component({
   selector: 'app-admin-my-restaurants',
@@ -13,8 +13,8 @@ import {RestaurantRestAdminService} from '../../services/restaurant-rest-admin.s
   styleUrls: [
     './admin-my-restaurants.component.css',
     '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css'
-  ]
+    '../../../../assets/css/backend_v2.min.css',
+  ],
 })
 export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
   restaurants: RestaurantModel[];
@@ -23,15 +23,13 @@ export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
     private restaurantAdminService: RestaurantRestAdminService,
     private authService: AuthService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.updateSearch();
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   logout(): void {
     this.authService.logout();
@@ -39,11 +37,13 @@ export class AdminMyRestaurantsComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(): void {
-    this.restaurantAdminService.getMyRestaurantsAsync()
-      .subscribe((result) => {
+    this.restaurantAdminService.getMyRestaurantsAsync().subscribe(
+      (result) => {
         this.restaurants = result;
-      }, (error) => {
+      },
+      (error) => {
         // TODO
-      });
+      }
+    );
   }
 }

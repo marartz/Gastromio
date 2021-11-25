@@ -1,12 +1,11 @@
-import {DishModel} from './dish.model';
+import { DishModel } from './dish.model';
 
 export class DishCategoryModel {
-
   constructor(init?: Partial<DishCategoryModel>) {
     if (init) {
       Object.assign(this, init);
     }
-    this.dishes = this.dishes?.map(dish => new DishModel(dish));
+    this.dishes = this.dishes?.map((dish) => new DishModel(dish));
   }
 
   public id: string;
@@ -22,8 +21,7 @@ export class DishCategoryModel {
       id: this.id,
       name: this.name,
       enabled: this.enabled,
-      dishes: this.dishes?.map(dish => dish?.clone())
+      dishes: this.dishes?.map((dish) => dish?.clone()),
     });
   }
-
 }

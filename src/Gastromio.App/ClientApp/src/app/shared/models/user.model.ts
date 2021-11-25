@@ -1,5 +1,4 @@
 export class UserModel {
-
   constructor(init?: Partial<UserModel>) {
     if (init) {
       Object.assign(this, init);
@@ -16,8 +15,7 @@ export class UserModel {
     return new UserModel({
       id: this.id,
       role: this.role,
-      email: this.email
+      email: this.email,
     });
   }
-
 }

@@ -1,23 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using Gastromio.Core.Domain.Model.Dish;
+using Gastromio.Core.Domain.Model.Restaurants;
 
 namespace Gastromio.Core.Application.DTOs
 {
     public class DishDTO
     {
-        public DishDTO(Guid id, string name, string description, string productInfo, int orderNo, IEnumerable<DishVariant> variants)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            ProductInfo = productInfo;
-            OrderNo = orderNo;
-            Variants = new ReadOnlyCollection<DishVariant>(variants.ToList());
-        }
-
         internal DishDTO(Dish dish)
         {
             Id = dish.Id.Value;
@@ -25,19 +14,19 @@ namespace Gastromio.Core.Application.DTOs
             Description = dish.Description;
             ProductInfo = dish.ProductInfo;
             OrderNo = dish.OrderNo;
-            Variants = dish.Variants;
+            Variants = dish.Variants.Select(en => new DishVariantDTO(en)).ToList();
         }
 
         public Guid Id { get; }
-        
+
         public string Name { get; }
-        
+
         public string Description { get; }
-        
+
         public string ProductInfo { get; }
-        
+
         public int OrderNo { get; }
-        
-        public IReadOnlyCollection<DishVariant> Variants { get; }
+
+        public IReadOnlyCollection<DishVariantDTO> Variants { get; }
     }
 }
