@@ -1,59 +1,59 @@
 .oops {
-	display: table;
-	width: 100vw;
-	min-height: 100vh;
-	position: relative;
-	padding: 30px 15px 80px 15px;
-	background: var(--bg-rough-blue);
-	margin-top: -90px;
+  display: table;
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  padding: 30px 15px 80px 15px;
+  background: var(--bg-rough-blue);
+  margin-top: -90px;
 }
 
 .oops > div {
-	display: table-cell;
-	vertical-align: middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .oops h2 {
-	max-width: 560px;
-	text-align: center;
-	margin: 0 auto;
-	font-weight: 700;
-	color: var(--grey);
-	font-family: var(--sans);
-	font-size: 40px;
+  max-width: 560px;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: 700;
+  color: var(--grey);
+  font-family: var(--sans);
+  font-size: 40px;
 }
 
 .oops p {
-	max-width: 560px;
-	text-align: center;
-	margin: 0 auto;
-	font-weight: 400;
-	color: var(--grey);
-	font-family: var(--sans);
-	font-size: 18px;
-	margin-top: 20px;
+  max-width: 560px;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: 400;
+  color: var(--grey);
+  font-family: var(--sans);
+  font-size: 18px;
+  margin-top: 20px;
 }
 
 .oops button {
-	background-color: var(--grey);
-	border: none;
-	border-radius: 23px;
-	color: var(--white);
-	cursor: pointer;
-	display: flex;
-	margin-left: auto;
-	margin-right: auto;
-	font-size: 18px;
-	font-weight: 600;
-	line-height: 20px;
-	margin-top: 30px;
-	outline: none;
-	padding-bottom: 14px;
-	padding-left: 44px;
-	padding-right: 44px;
-	padding-top: 14px;
-	text-align: center;
-	text-decoration: none;
-	touch-action: manipulation;
-	-ms-touch-action: manipulation;
+  background-color: var(--grey);
+  border: none;
+  border-radius: 23px;
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: 30px;
+  outline: none;
+  padding-bottom: 14px;
+  padding-left: 44px;
+  padding-right: 44px;
+  padding-top: 14px;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
 }

@@ -1,45 +1,39 @@
 .cuisine {
-	margin: 0;
-	padding: 26px 36px 10px 12px;
-	width: 100%;
+  margin: 0;
+  padding: 26px 36px 10px 12px;
+  width: 100%;
 }
 
 .cuisine-name {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 
 .badge {
-	border-radius: 6px;
-	font-family: "Apercu", sans-serif;
-	font-size: 80%;
-	font-weight: 500;
-	line-height: 1;
-	padding: 6px 8px;
-	margin: 2px 2px;
-	text-align: center;
-	text-transform: none;
-	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	-moz-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	-ms-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	-o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	-webkit-transition: color 0.15s ease-in-out,
-		background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-		box-shadow 0.15s ease-in-out;
-	vertical-align: baseline;
-	white-space: nowrap;
-	cursor: pointer;
+  border-radius: 6px;
+  font-family: "Apercu", sans-serif;
+  font-size: 80%;
+  font-weight: 500;
+  line-height: 1;
+  padding: 6px 8px;
+  margin: 2px 2px;
+  text-align: center;
+  text-transform: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -moz-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -ms-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  vertical-align: baseline;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .badge.active {
-	background-color: #5cc9a7;
-	color: #fff;
+  background-color: #5cc9a7;
+  color: #fff;
 }
 
 .badge.inactive {
-	background-color: #f25767;
-	color: #fff;
+  background-color: #f25767;
+  color: #fff;
 }

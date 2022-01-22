@@ -1,88 +1,77 @@
 <section
-	data-aos="fade"
-	data-aos-anchor="#page-dish-import"
-	data-aos-delay="400"
-	data-aos-duration="1000"
-	data-aos-once="false"
-	id="page-dish-import"
+  data-aos="fade"
+  data-aos-anchor="#page-dish-import"
+  data-aos-delay="400"
+  data-aos-duration="1000"
+  data-aos-once="false"
+  id="page-dish-import"
 >
-	<header class="section-header">
-		<h3>Speisen importieren</h3>
-		<p>Anlegen und Aktualisieren von Speisendaten per Import.</p>
-	</header>
+  <header class="section-header">
+    <h3>Speisen importieren</h3>
+    <p>Anlegen und Aktualisieren von Speisendaten per Import.</p>
+  </header>
 
-	<section id="settings">
-		<div class="file-input">
-			<input
-				autocomplete="off"
-				capture=""
-				class="upload-file"
-				id="import-file"
-				mozactionhint="send"
-				type="file"
-				(change)="handleDishImportFileInput($event.target)"
-			/>
-			<label class="file-label" for="import-file">
-				<span>
-					<svg viewBox="0 0 64 64">
-						<path
-							fill="currentColor"
-							d="M51,27c-.374,0-.742.025-1.109.056a18,18,0,0,0-35.782,0C13.742,27.025,13.374,27,13,27a13,13,0,0,0,0,26H51a13,13,0,0,0,0-26Z"
-						></path>
-						<path
-							d="M43.764,41.354l-11-13a1.033,1.033,0,0,0-1.526,0l-11,13A1,1,0,0,0,21,43h7V59h8V43h7a1,1,0,0,0,.764-1.646Z"
-							fill="#363636"
-						></path>
-					</svg>
-					<h4>Datei auswählen</h4>
-					<h5 *ngIf="dishImportFile">{{ dishImportFile.name }}</h5>
-					<h5 *ngIf="!dishImportFile">XLS oder XLSX<br /></h5>
-				</span>
-			</label>
-		</div>
-		<div class="import-footer">
-			<button *ngIf="dishImportFile" (click)="onSimulateDishes()">
-				Simulieren
-			</button>
-			<button *ngIf="dishImportFile" (click)="onImportDishes()">
-				Importieren
-			</button>
-		</div>
-	</section>
+  <section id="settings">
+    <div class="file-input">
+      <input
+        autocomplete="off"
+        capture=""
+        class="upload-file"
+        id="import-file"
+        mozactionhint="send"
+        type="file"
+        (change)="handleDishImportFileInput($event.target)"
+      />
+      <label class="file-label" for="import-file">
+        <span>
+          <svg viewBox="0 0 64 64">
+            <path
+              fill="currentColor"
+              d="M51,27c-.374,0-.742.025-1.109.056a18,18,0,0,0-35.782,0C13.742,27.025,13.374,27,13,27a13,13,0,0,0,0,26H51a13,13,0,0,0,0-26Z"
+            ></path>
+            <path d="M43.764,41.354l-11-13a1.033,1.033,0,0,0-1.526,0l-11,13A1,1,0,0,0,21,43h7V59h8V43h7a1,1,0,0,0,.764-1.646Z" fill="#363636"></path>
+          </svg>
+          <h4>Datei auswählen</h4>
+          <h5 *ngIf="dishImportFile">{{ dishImportFile.name }}</h5>
+          <h5 *ngIf="!dishImportFile">XLS oder XLSX<br /></h5>
+        </span>
+      </label>
+    </div>
+    <div class="import-footer">
+      <button *ngIf="dishImportFile" (click)="onSimulateDishes()">Simulieren</button>
+      <button *ngIf="dishImportFile" (click)="onImportDishes()">Importieren</button>
+    </div>
+  </section>
 
-	<header class="section-header">
-		<h3>Protokoll:</h3>
-	</header>
+  <header class="section-header">
+    <h3>Protokoll:</h3>
+  </header>
 
-	<section id="log">
-		<div class="row">
-			<div class="col-md-12" id="table">
-				<table class="table" role="grid">
-					<thead>
-						<tr role="row">
-							<th rowspan="1" colspan="1">Zeile</th>
-							<th rowspan="1" colspan="1">Meldung</th>
-						</tr>
-					</thead>
-					<tbody>
-						<ng-container *ngIf="!logLines || logLines.length === 0">
-							<tr role="row">
-								<td colspan="3" style="font-style: italic">Keine Einträge</td>
-							</tr>
-						</ng-container>
-						<ng-container *ngIf="logLines && logLines.length > 0">
-							<tr
-								role="row"
-								*ngFor="let line of logLines"
-								[style.color]="getColorForLogLineType(line.type)"
-							>
-								<td>{{ line.rowIndex }}</td>
-								<td>{{ line.message }}</td>
-							</tr>
-						</ng-container>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</section>
+  <section id="log">
+    <div class="row">
+      <div class="col-md-12" id="table">
+        <table class="table" role="grid">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1">Zeile</th>
+              <th rowspan="1" colspan="1">Meldung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="!logLines || logLines.length === 0">
+              <tr role="row">
+                <td colspan="3" style="font-style: italic">Keine Einträge</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="logLines && logLines.length > 0">
+              <tr role="row" *ngFor="let line of logLines" [style.color]="getColorForLogLineType(line.type)">
+                <td>{{ line.rowIndex }}</td>
+                <td>{{ line.message }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 </section>

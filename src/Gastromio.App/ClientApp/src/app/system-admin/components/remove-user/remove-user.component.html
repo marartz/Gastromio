@@ -1,71 +1,40 @@
 <block-ui>
-	<div
-		class="modals"
-		aria-labelledby="Benutzer löschen"
-		role="dialog"
-		aria-modal="true"
-	>
-		<div class="modal-wrapper">
-			<div
-				class="modal-background"
-				data-aos="gm-ease"
-				data-aos-duration="500"
-				data-aos-once="true"
-			></div>
-			<!--  This element is to trick the browser into centering the modal contents.  -->
-			<span class="center-modal" aria-hidden="true">&#8203;</span>
-			<div
-				class="modal-content"
-				data-aos="gm-move-up"
-				data-aos-delay="300"
-				data-aos-duration="800"
-				data-aos-once="true"
-			>
-				<div class="modal-body">
-					<div class="modal-body-flex">
-						<div class="modal-body-icon">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-								></path>
-							</svg>
-						</div>
-						<div class="modal-body-text">
-							<h3>Benutzer löschen</h3>
-							<p>
-								Möchtest Du den Benutzer mit der E-Mail-Adresse
-								{{ user.email }} wirklich löschen? Alle zugeordneten Daten
-								werden dauerhaft entfernt. Diese Aktion kann nicht rückgängig
-								gemacht werden.
-							</p>
-							<p class="help-text" *ngIf="(message$ | async) !== undefined">
-								{{ message$ | async }}
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="modal-actions">
-					<button class="delete" type="button" (click)="onSubmit()">
-						Löschen
-					</button>
-					<button
-						class="cancel"
-						type="button"
-						(click)="activeModal.dismiss('Cross click')"
-					>
-						Abbrechen
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="modals" aria-labelledby="Benutzer löschen" role="dialog" aria-modal="true">
+    <div class="modal-wrapper">
+      <div class="modal-background" data-aos="gm-ease" data-aos-duration="500" data-aos-once="true"></div>
+      <!--  This element is to trick the browser into centering the modal contents.  -->
+      <span class="center-modal" aria-hidden="true">&#8203;</span>
+      <div class="modal-content" data-aos="gm-move-up" data-aos-delay="300" data-aos-duration="800" data-aos-once="true">
+        <div class="modal-body">
+          <div class="modal-body-flex">
+            <div class="modal-body-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                ></path>
+              </svg>
+            </div>
+            <div class="modal-body-text">
+              <h3>Benutzer löschen</h3>
+              <p>
+                Möchtest Du den Benutzer mit der E-Mail-Adresse
+                {{ user.email }} wirklich löschen? Alle zugeordneten Daten werden dauerhaft entfernt. Diese Aktion kann nicht rückgängig gemacht
+                werden.
+              </p>
+              <p class="help-text" *ngIf="(message$ | async) !== undefined">
+                {{ message$ | async }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="delete" type="button" (click)="onSubmit()">Löschen</button>
+          <button class="cancel" type="button" (click)="activeModal.dismiss('Cross click')">Abbrechen</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </block-ui>

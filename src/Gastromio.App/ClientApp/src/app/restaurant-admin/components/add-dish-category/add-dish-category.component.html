@@ -1,115 +1,71 @@
 <block-ui delayStart="500">
-	<div class="modal-overlay">
-		<div class="modal_v3">
-			<div id="close">
-				<button
-					type="button"
-					aria-label="Schließen"
-					(click)="activeModal.dismiss('Cross click')"
-				>
-					<svg
-						viewBox="0 0 32 32"
-						xmlns="http://www.w3.org/2000/svg"
-						role="presentation"
-						focusable="false"
-						style="
-							display: block;
-							fill: none;
-							height: 16px;
-							width: 16px;
-							stroke: currentcolor;
-							stroke-width: 3;
-							overflow: visible;
-						"
-					>
-						<path d="m6 6 20 20"></path>
-						<path d="m26 6-20 20"></path>
-					</svg>
-				</button>
-			</div>
-			<header id="header">
-				<div class="left"></div>
-				<div class="middle">
-					<h1 class="title" tabindex="-1">Kategorie erstellen</h1>
-				</div>
-				<div class="right"></div>
-			</header>
-			<div id="body" tabindex="0">
-				<form
-					[formGroup]="addDishCategoryForm"
-					(ngSubmit)="onSubmit(addDishCategoryForm.value)"
-				>
-					<div class="wrapper">
-						<div class="input-wrapper">
-							<div class="input-inner">
-								<div
-									style="
-										background: none;
-										border-radius: 23px;
-										bottom: -1px;
-										left: 0px;
-										right: 0px;
-										top: 0px;
-									"
-								></div>
-								<label>
-									<div class="label">Name der Kategorie</div>
-									<input
-										type="text"
-										mozactionhint="send"
-										autocapitalize="sentences"
-										autocomplete="off"
-										inputmode="latin"
-										maxlength="60"
-										minlength="3"
-										required=""
-										spellcheck="true"
-										id="name"
-										formControlName="name"
-										ngbAutofocus
-										[ngClass]="{ 'is-invalid': submitted && f.name.errors }"
-									/>
-								</label>
-								<div
-									class="border"
-									style="
-										border: 1px solid rgb(176, 176, 176);
-										border-radius: 23px;
-										bottom: -1px;
-										left: 0px;
-										right: 0px;
-										top: 0px;
-										z-index: 0;
-									"
-								></div>
-							</div>
-						</div>
-					</div>
-					<div id="feedback">
-						<div
-							class="help-text"
-							style="color: red"
-							*ngIf="submitted && f.name.errors"
-						>
-							<span *ngIf="f.name.errors.required"
-								>Bitte gebe einen Namen für die Kategorie an.</span
-							>
-						</div>
-						<div
-							class="help-text"
-							style="color: red"
-							*ngIf="(message$ | async) !== undefined"
-						>
-							{{ message$ | async }}
-						</div>
-					</div>
-					<div id="submit">
-						<button type="submit" style="background: var(--grey)">
-							Hinzufügen
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+  <div class="modal-overlay">
+    <div class="modal_v3">
+      <div id="close">
+        <button type="button" aria-label="Schließen" (click)="activeModal.dismiss('Cross click')">
+          <svg
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            role="presentation"
+            focusable="false"
+            style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible"
+          >
+            <path d="m6 6 20 20"></path>
+            <path d="m26 6-20 20"></path>
+          </svg>
+        </button>
+      </div>
+      <header id="header">
+        <div class="left"></div>
+        <div class="middle">
+          <h1 class="title" tabindex="-1">Kategorie erstellen</h1>
+        </div>
+        <div class="right"></div>
+      </header>
+      <div id="body" tabindex="0">
+        <form [formGroup]="addDishCategoryForm" (ngSubmit)="onSubmit(addDishCategoryForm.value)">
+          <div class="wrapper">
+            <div class="input-wrapper">
+              <div class="input-inner">
+                <div style="background: none; border-radius: 23px; bottom: -1px; left: 0px; right: 0px; top: 0px"></div>
+                <label>
+                  <div class="label">Name der Kategorie</div>
+                  <input
+                    type="text"
+                    mozactionhint="send"
+                    autocapitalize="sentences"
+                    autocomplete="off"
+                    inputmode="latin"
+                    maxlength="60"
+                    minlength="3"
+                    required=""
+                    spellcheck="true"
+                    id="name"
+                    formControlName="name"
+                    ngbAutofocus
+                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+                  />
+                </label>
+                <div
+                  class="border"
+                  style="border: 1px solid rgb(176, 176, 176); border-radius: 23px; bottom: -1px; left: 0px; right: 0px; top: 0px; z-index: 0"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div id="feedback">
+            <div class="help-text" style="color: red" *ngIf="submitted && f.name.errors">
+              <span *ngIf="f.name.errors.required">Bitte gebe einen Namen für die Kategorie an.</span>
+            </div>
+            <div class="help-text" style="color: red" *ngIf="(message$ | async) !== undefined">
+              {{ message$ | async }}
+            </div>
+          </div>
+          <div id="submit">
+            <button type="submit" style="background: var(--grey)">Hinzufügen</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </block-ui>
