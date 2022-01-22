@@ -10,6 +10,10 @@
 .top-bar .top-bar__nav {
 	align-items: center;
 	display: flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flex;
 	justify-content: space-between;
 	padding: 21px 0px;
 	-moz-box-align: center;
@@ -36,14 +40,18 @@
 }
 
 .top-bar .top-bar__items {
-	align-items: flex-end;
-	display: flex;
-	flex: 1 1 0%;
-	justify-content: flex-end;
-	margin: 0px;
-	width: 100%;
-	-moz-box-align: flex-end;
-	-moz-box-pack: justify;
+    align-items: flex-end;
+    display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex: 1 1 0%;
+    justify-content: flex-end;
+    margin: 0px;
+    width: 100%;
+    -moz-box-align: end;
+    -moz-box-pack: justify;
 }
 
 .top-bar .top-bar__item {
@@ -64,6 +72,15 @@
 	text-decoration: none;
 	vertical-align: middle;
 }
+
+.top-bar .top-bar__item:hover {
+    text-decoration: none;
+}
+
+    .top-bar .top-bar__item:hover,
+    .top-bar .top-bar__item:active {
+        outline: 0;
+    }
 
 .top-bar .top-bar__item.settings {
 	margin-right: 16px;

@@ -1,3 +1,5 @@
+
+
 <header
 	class="top-bar"
 	data-aos="gm-move-down"
@@ -8,12 +10,12 @@
 		<nav class="top-bar__nav">
 			<a class="top-bar__logo" [routerLink]="['/']"></a>
 			<ul class="top-bar__items">
-				<!-- 👇 layout 1 -> user not logged in -->
+
 				<ng-container *ngIf="getUserEmail() === undefined">
 					<a class="top-bar__item" [routerLink]="['/login']">Anmelden</a>
 				</ng-container>
 
-				<!-- 👇 layout 2 -> user logged in -->
+
 				<ng-container *ngIf="getUserEmail() !== undefined">
 					<ng-container *ngIf="isSystemAdmin()">
 						<a

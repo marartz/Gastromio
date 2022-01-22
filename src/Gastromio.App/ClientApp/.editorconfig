@@ -8,12 +8,6 @@ indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.css]
-indent_size = tab
-
-[*.html]
-indent_size = tab
-
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
@@ -21,9 +15,3 @@ trim_trailing_whitespace = false
 [*.ts]
 indent_size = 2
 quote_type = single
-
-[*.txt]
-indent_size = tab
-
-[*.xml]
-indent_size = tab
