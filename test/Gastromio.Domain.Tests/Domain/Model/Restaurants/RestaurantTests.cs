@@ -906,22 +906,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now.AddHours(1).AddMinutes(1));
 
             // Assert
-
-            // Error in GitHub Workflow 
-
-            // Error Message:
-            // Expected result to be false, but found True.
-            // Stack Trace:
-            //  at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-            // at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-            // at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
-            // at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-            // at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-            // at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
-            // at FluentAssertions.Primitives.BooleanAssertions.BeFalse(String because, Object[] becauseArgs)
-            // at Gastromio.Domain.Tests.Domain.Model.Restaurants.RestaurantTests.IsOrderPossible_AtNextShift_NowOpenedRestOfDay_ReturnsFalse() in /home/runner/work/Gastromio/Gastromio/test/Gastromio.Domain.Tests/Domain/Model/Restaurants/RestaurantTests.cs:line 909
-                   // result.Should().BeTrue();
-            // }
+            result.Should().BeTrue();
+        }
 
         [Fact]
         public void IsOrderPossible_Anytime_NoRegular_NoDeviating_ReturnsFalse()
