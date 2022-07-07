@@ -2,23 +2,45 @@
 <p align="center">Online Essen bestellen und dabei lokale Gastronomen unterstützen.</p>
 
 <p align="center">
-    <a href="https://github.com/marartz/Gastromio/blob/develop/LICENSE" target="_blank">
-        <img src="https://img.shields.io/github/license/marartz/Gastromio?style=flat-square" alt="Gastromio licence" />
+    <a href="https://github.com/marartz/Gastromio/LICENSE" target="_blank">
+        <img src="https://img.shields.io/github/license/marartz/Gastromio?style=flat-square&logo=github&logoColor=white" alt="Gastromio licence" />
     </a>
     <a href="https://github.com/marartz/Gastromio/issues" target="_blank">
-        <img src="https://img.shields.io/github/issues/marartz/Gastromio?style=flat-square" alt="Gastromio issues" />
+        <img src="https://img.shields.io/github/issues-raw/marartz/Gastromio?style=flat-square&logo=github&logoColor=white" alt="Gastromio issues" />
     </a>
     <a href="https://www.gastromio.de/" target="blank">
         <img src="https://betteruptime.com/status-badges/v1/monitor/7q6q.svg" />
     </a>
-    <a href="https://gitmoji.carloscuesta.me">
-        <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square" alt="Gitmoji">
-    </a>
 </p>
 
-## Testen des Systems 🔎
+<br />
 
-### Voraussetzungen
+
+<div align="center">
+
+**[HINTERGRUND](https://github.com/marartz/Gastromio/README.md#-projekthintergrund) • 
+[MITWIRKEN](https://github.com/marartz/Gastromio/README.md#%EF%B8%8F-mitwirken) • 
+[UNTERSTÜTZEN](https://github.com/marartz/Gastromio/README.md#-unterst%C3%BCtze-uns) • 
+[LIZENZ](https://github.com/marartz/Gastromio/README.md#%EF%B8%8F-lizenzierung)**
+
+</div>
+
+---
+
+<br />
+
+# 🧐 Projekthintergrund
+
+> Mit Gastromio möchten wir das Angebot der Gastronomie erweitern und sie in die Lage versetzen, jederzeit angepasst an die geltenden Bestimmungen ihr Angebot anzubieten. Im- oder außerhalb vom Lokal, zur Abholung oder Lieferung nach Hause.
+> 
+> Gastromio ist eine ehrenamtliche Initiative der Corona Hilfe Bocholt, die das Ziel hat, die bunte Vielfalt an Gastronomie zu erhalten und daher völlig kostenfrei für jeden, der darüber bestellen oder sein Angebot einstellen möchte.
+
+**Mehr findest du auf der Homepage der [Corona Hilfe Bocholt](https://coronahilfe-bocholt.de/de/).**
+
+# ✍️ Mitwirken
+### Testen des Systems
+
+Voraussetzungen
 - Docker Community Edition
 - MongoDB
 
@@ -44,7 +66,7 @@ Wenn die Datenbank zurückgesetzt und Testdaten automatisiert angelegt werden so
 docker run -p80:80 -e CONNECTIONSTRINGS__MONGODB=mongodb://host.docker.internal:27017 -e SEED=true marartz/gastromio:<tag>
 ```
 
-## Projekt für die Entwicklung aufsetzen 🔨
+### Projekt für die Entwicklung aufsetzen
 1. Vorrausgesetzte Software installieren
     * .NET SDK 3.1
     * [MongoDB](https://www.mongodb.com/try/download/community) (+ [Compass](https://www.mongodb.com/try/download/compass) empfohlen)
@@ -69,11 +91,15 @@ docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:latest
 
 Ein Admin-User-Interface kann hier heruntergeladen werden: https://docs.mongodb.com/compass/master/install/
 
-## Lizenzierung 📑
+# 🌟 Unterstütze uns!
 
-Copyright (c) 2021 Marco Artz. All Rights reserved.
+Wenn du dich bedanken und/oder die aktive Weiterentwicklung von Gastromio unterstützen möchtest:
 
-Licensed under the **MIT License** (the "License").
-You may obtain a copy of the License at https://opensource.org/licenses/MIT.
+- Gib dem GitHub Projekt einen Stern!
+- Das Projekt in den sozialen Medien verbreiten!
+  - Tagge [@gastromio.de](https://www.instagram.com/gastromio.de/) und/oder `#Gastromio`
+- Hinterlasse uns eine Bewertung [auf Google](https://g.page/r/CR0IONVwaT6kEAI/review)!
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the conditions mentioned in [LICENSE](./LICENSE).
+# ⚠️ Lizenzierung
+
+Gastromio ist freie Open-Source-Software, die unter der GNU General Public License v3.0 lizenziert ist. Alle Designs wurden von [Gastromio](https://github.com/Gastromio) erstellt und unter der Creative Commons license (CC BY-SA 4.0 International) vertrieben.
