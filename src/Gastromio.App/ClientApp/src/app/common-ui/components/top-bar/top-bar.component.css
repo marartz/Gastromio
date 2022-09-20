@@ -1,0 +1,107 @@
+.navbar {
+  background-color: transparent;
+  position: relative;
+  z-index: 110;
+}
+
+.navbar-container {
+  align-items: center;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flex;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1160px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  position: relative;
+  width: 90%;
+  -ms-flex-align: center;
+  -ms-flex-pack: justify;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+}
+
+@media screen and (max-width: 991px) {
+  .navbar-container {
+    flex-direction: row;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    position: static;
+    -webkit-box-direction: row;
+    -webkit-box-orient: horizontal;
+  }
+}
+
+.brand-link {
+  color: var(--grey);
+  float: left;
+  position: relative;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+  .brand-link {
+    padding-left: 10px;
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .brand-link {
+    padding-left: 0px;
+    width: 50%;
+  }
+}
+
+.navbar-button-wrapper {
+  align-items: center;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flex;
+  flex-direction: row;
+  -ms-flex-align: center;
+  -ms-flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -webkit-flex-direction: row;
+}
+
+@media screen and (max-width: 991px) {
+  .navbar-button-wrapper {
+    margin-left: auto;
+  }
+}
+
+.white-login-link {
+  color: var(--white);
+  display: inline-block;
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: auto;
+  margin-right: 14px;
+  padding: 5px 10px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+  .white-login-link {
+    margin-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .white-login-link {
+    display: none;
+  }
+}
+
+
