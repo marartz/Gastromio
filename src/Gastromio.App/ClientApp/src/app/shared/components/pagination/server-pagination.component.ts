@@ -10,7 +10,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       [ngClass]="{ disabled: pager.currentPage === 1 }"
       class="page-item first-item"
     >
-      <a (click)="triggerFetchPage(1)" class="page-link" [routerLink]=""
+      <a (click)="triggerFetchPage(1)" class="page-link" [routerLink]="[]"
         ><i class="fas fa-angle-double-left"></i
       ></a>
     </li>
@@ -21,7 +21,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       <a
         (click)="triggerFetchPage(pager.currentPage - 1)"
         class="page-link"
-        [routerLink]=""
+        [routerLink]="[]"
         ><i class="fas fa-angle-left"></i
       ></a>
     </li>
@@ -30,7 +30,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       [ngClass]="{ active: pager.currentPage === page }"
       class="page-item number-item"
     >
-      <a (click)="triggerFetchPage(page)" class="page-link" [routerLink]="">{{
+      <a (click)="triggerFetchPage(page)" class="page-link" [routerLink]="[]">{{
         page
       }}</a>
     </li>
@@ -41,7 +41,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       <a
         (click)="triggerFetchPage(pager.currentPage + 1)"
         class="page-link"
-        [routerLink]=""
+        [routerLink]="[]"
         ><i class="fas fa-angle-right"></i
       ></a>
     </li>
@@ -52,7 +52,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       <a
         (click)="triggerFetchPage(pager.totalPages)"
         class="page-link"
-        [routerLink]=""
+        [routerLink]="[]"
         ><i class="fas fa-angle-double-right"></i
       ></a>
     </li>

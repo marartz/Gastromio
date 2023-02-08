@@ -19,7 +19,7 @@ import {
       [ngClass]="{ disabled: pager.currentPage === 1 }"
       class="page-item first-item"
     >
-      <a (click)="setPage(1)" class="page-link" [routerLink]=""
+      <a (click)="setPage(1)" class="page-link" [routerLink]="[]"
         ><i class="fas fa-angle-double-left"></i
       ></a>
     </li>
@@ -30,7 +30,7 @@ import {
       <a
         (click)="setPage(pager.currentPage - 1)"
         class="page-link"
-        [routerLink]=""
+        [routerLink]="[]"
         ><i class="fas fa-angle-left"></i
       ></a>
     </li>
@@ -39,7 +39,7 @@ import {
       [ngClass]="{ active: pager.currentPage === page }"
       class="page-item number-item"
     >
-      <a (click)="setPage(page)" class="page-link" [routerLink]="">{{
+      <a (click)="setPage(page)" class="page-link" [routerLink]="[]">{{
         page
       }}</a>
     </li>
@@ -50,7 +50,7 @@ import {
       <a
         (click)="setPage(pager.currentPage + 1)"
         class="page-link"
-        [routerLink]=""
+        [routerLink]="[]"
         ><i class="fas fa-angle-right"></i
       ></a>
     </li>
@@ -58,7 +58,7 @@ import {
       [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
       class="page-item last-item"
     >
-      <a (click)="setPage(pager.totalPages)" class="page-link" [routerLink]=""
+      <a (click)="setPage(pager.totalPages)" class="page-link" [routerLink]="[]"
         ><i class="fas fa-angle-double-right"></i
       ></a>
     </li>

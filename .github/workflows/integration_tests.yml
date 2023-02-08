@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 7.x
         
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.8.0
