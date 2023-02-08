@@ -1,15 +1,4 @@
 ﻿<!DOCTYPE html>
-<!--
-
-          .oooooo.                           .                                         o8o
-         d8P'  `Y8b                        .o8                                         `"'
-        888            .oooo.    .oooo.o .o888oo oooo d8b  .ooooo.  ooo. .oo.  .oo.   oooo   .ooooo.
-        888           `P  )88b  d88(  "8   888   `888""8P d88' `88b `888P"Y88bP"Y88b  `888  d88' `88b
-        888     ooooo  .oP"888  `"Y88b.    888    888     888   888  888   888   888   888  888   888
-        `88.    .88'  d8(  888  o.  )88b   888 .  888     888   888  888   888   888   888  888   888
-         `Y8bood8P'   `Y888""8o 8""888P'   "888" d888b    `Y8bod8P' o888o o888o o888o o888o `Y8bod8P'
-
--->
 <html lang="de" dir="ltr" xmlns:fb="http://ogp.me/ns/fb#" xmlns:og="http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
@@ -25,22 +14,7 @@
     <link rel="alternate" href="https://www.gastromio.de/" hreflang="de-LI" />
     <link rel="alternate" href="https://www.gastromio.de/" hreflang="de-LU" />
 
-    <!-- CookiePro Cookie-Einwilligungshinweis – Anfang für www.gastromio.de -->
-
-    <script
-      src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js"
-      type="text/javascript"
-      charset="UTF-8"
-      data-domain-script="85899f3e-b290-448a-a663-84fab828b0b4"
-    ></script>
-
-    <script type="text/javascript">
-      function OptanonWrapper() {}
-    </script>
-
-    <!-- CookiePro-Cookie-Einwilligungshinweis – Ende für www.gastromio.de -->
-
-    <link rel="preload" href="/assets/css/frontend_v3.min.css" as="style" type="text/css" />
+    <link rel="preload" as="style" type="text/css" href="./styles.css" />
 
     <!-- Google Tag Manager -->
     <script>
@@ -75,6 +49,7 @@
     <meta name="format-detection" content="date=no" />
     <meta name="format-detection" content="address=no" />
     <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=yes" />
 
     <title>Gastromio &ndash; Essen lokal bestellen</title>
 
@@ -232,204 +207,9 @@
         ]
       }
     </script>
-
-    <style>
-      /* Outdated Browser */
-
-      .browser-detect {
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.59);
-        bottom: 0;
-        display: none;
-        justify-content: center;
-        left: 0;
-        opacity: 0;
-        padding: 325px 150px;
-        position: fixed;
-        right: 0;
-        top: 0;
-        z-index: 9999;
-        -ms-flex-align: center;
-        -ms-flex-pack: center;
-        -webkit-align-items: center;
-        -webkit-box-align: center;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-      }
-
-      .browser-warning {
-        align-items: center;
-        background-color: #363636;
-        border-radius: 15px;
-        box-shadow: 11px 11px 55px 0 rgba(53, 90, 164, 0.1);
-        display: flex;
-        display: -ms-flexbox;
-        display: -webkit-box;
-        display: -webkit-flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: auto;
-        max-width: 600px;
-        padding: 40px;
-        -ms-flex-align: center;
-        -ms-flex-direction: column;
-        -ms-flex-pack: center;
-        -webkit-align-items: center;
-        -webkit-box-align: center;
-        -webkit-box-direction: normal;
-        -webkit-box-orient: vertical;
-        -webkit-box-pack: center;
-        -webkit-flex-direction: column;
-        -webkit-justify-content: center;
-      }
-
-      .ie_logo {
-        display: block;
-        margin-bottom: 25px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 70px;
-      }
-
-      .browser_header {
-        color: #fff;
-        font-size: 32px;
-        letter-spacing: -0.33px;
-        line-height: 40px;
-        margin-top: 0;
-        margin-bottom: 15px;
-        text-align: center;
-      }
-
-      .browser_details {
-        color: #fff;
-        font-family: "Apercu", sans-serif;
-        font-size: 18px;
-        letter-spacing: -0.33px;
-        line-height: 1.2;
-        font-weight: 500;
-        text-align: center;
-      }
-
-      .browser_wrap {
-        display: flex;
-        display: -ms-flexbox;
-        display: -webkit-box;
-        display: -webkit-flex;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 25px;
-        max-width: 300px;
-        min-height: 50px;
-      }
-
-      .browser_link {
-        align-items: center;
-        display: flex;
-        display: -ms-flexbox;
-        display: -webkit-box;
-        display: -webkit-flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 16px;
-        text-decoration: none;
-        width: 33.333333333333336%;
-        -ms-flex-align: center;
-        -ms-flex-direction: column;
-        -ms-flex-pack: center;
-        -webkit-align-items: center;
-        -webkit-box-align: center;
-        -webkit-box-direction: normal;
-        -webkit-box-orient: vertical;
-        -webkit-box-pack: center;
-        -webkit-flex-direction: column;
-        -webkit-justify-content: center;
-      }
-
-      .icon_browser {
-        border-radius: 100px;
-        height: 55px;
-        margin-bottom: 5px;
-        padding: 6px;
-        width: 55px;
-      }
-
-      .browser_icon {
-        border-radius: 100px;
-        height: 55px;
-        margin-bottom: 5px;
-        width: 55px;
-      }
-
-      .browser_title {
-        font-family: "Apercu", sans-serif;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 500;
-        margin-left: 10px;
-        text-decoration: none;
-      }
-
-      @media screen and (max-width: 768px) {
-        .browser-warning {
-          display: block;
-          padding: 25px;
-        }
-      }
-
-      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        .browser-detect {
-          display: block;
-          opacity: 1;
-        }
-      }
-    </style>
   </head>
   <body>
-    <!-- Outdated Browser -->
-    <div class="browser-detect" data-aos="gm-move-down" data-aos-anchor="body" data-aos-delay="600" data-aos-duration="800" data-aos-once="true">
-      <div class="browser-warning">
-        <img
-          class="ie_logo"
-          src="/assets/images/browser/ie.png"
-          sizes="100vw"
-          srcset="/assets/images/browser/ie-500.png 500w, /assets/images/browser/ie-800.png 800w, /assets/images/browser/ie.png 1043w"
-          alt=""
-        />
-        <h4 class="browser_header">Hey, dein Browser ist veraltet!</h4>
-        <div class="browser_details">
-          Derzeit verwendest du eine alte Version vom Internet Explorer.
-          <br />Wir empfehlen dir,
-          <a class="link_span" target="_blank" href="https://browsehappy.com/?locale=de_DE">deinen Browser zu aktualisieren</a>.
-        </div>
-        <div class="browser_wrap">
-          <a class="browser_link" target="_blank" href="https://www.mozilla.org/de/firefox/new/">
-            <div class="icon_browser">
-              <img class="browser_icon" src="/assets/images/browser/firefox.png" alt="" />
-            </div>
-            <div class="browser_title">Firefox</div>
-          </a>
-          <a class="browser_link" target="_blank" href="https://support.apple.com/de_DE/downloads/safari">
-            <div class="icon_browser">
-              <img class="browser_icon" src="/assets/images/browser/safari.png" alt="" />
-            </div>
-            <div class="browser_title">Safari</div>
-          </a>
-          <a class="browser_link" target="_blank" href="https://www.google.com/chrome/">
-            <div class="icon_browser">
-              <img class="browser_icon" src="/assets/images/browser/chrome.png" alt="" />
-            </div>
-            <div class="browser_title">Chrome</div>
-          </a>
-        </div>
-      </div>
-    </div>
-
     <app-root></app-root>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXMXHJS" height="0" width="0" style="display: none; visibility: hidden"></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXMXHJS" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
   </body>
 </html>

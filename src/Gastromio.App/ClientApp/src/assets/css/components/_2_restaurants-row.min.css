@@ -1,16 +1,9 @@
-/* -------------------------------- 
-
-File#: _2_restaurants-row
-Title: Restaurant Row
-Descr: Restaurants listed in row
-Copyr: gastromio.de/imprint
-
--------------------------------- */
-
-#restaurant {
+.restaurant {
   background-color: var(--blue);
   border: 0px none;
   border-radius: 23px;
+  -moz-box-direction: row;
+  -webkit-box-direction: row;
   cursor: pointer;
   display: flex;
   display: -moz-box;
@@ -18,9 +11,7 @@ Copyr: gastromio.de/imprint
   display: -webkit-box;
   display: -webkit-flex;
   flex-direction: row;
-  -moz-box-direction: row;
   -ms-flex-direction: row;
-  -webkit-box-direction: row;
   -webkit-flex-direction: row;
   margin: 10px 0px;
   min-height: 126px;
@@ -28,7 +19,7 @@ Copyr: gastromio.de/imprint
   position: relative;
 }
 
-#restaurant:hover {
+.restaurant:hover {
   box-shadow: 0px 12px 12px 0px rgba(0, 0, 0, 0.05);
   transform: scale(1.024);
   -moz-transform: scale(1.024);
@@ -40,7 +31,7 @@ Copyr: gastromio.de/imprint
   -webkit-transition: all 0.3s ease;
 }
 
-#restaurant:active {
+.restaurant:active {
   transform: scale(0.98);
   -moz-transform: scale(0.98);
   -ms-transform: scale(0.98);
@@ -51,26 +42,26 @@ Copyr: gastromio.de/imprint
   -webkit-transition: all 0.3s ease;
 }
 
-#order-restaurant #order #restaurants #restaurant.dish {
+#order-restaurant #order #restaurants .restaurant.dish {
   min-height: 84px;
 }
 
 /* 3.2.2.2.1 #order-restaurant > #order > #restaurants > #restaurant > #logo */
-#order-restaurant #order #restaurants #restaurant #logo {
+#order-restaurant #order #restaurants .restaurant #logo {
+  -moz-box-direction: column;
+  -webkit-box-direction: column;
+  -moz-box-flex: 0 0 160px;
+  -webkit-box-flex: 0 0 160px;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
   flex: 0 0 160px;
-  -moz-box-flex: 0 0 160px;
   -ms-flex: 0 0 160px;
-  -webkit-box-flex: 0 0 160px;
   -webkit-flex: 0 0 160px;
   flex-direction: column;
-  -moz-box-direction: column;
   -ms-flex-direction: column;
-  -webkit-box-direction: column;
   -webkit-flex-direction: column;
   justify-content: center;
   min-height: 126px;
@@ -78,7 +69,7 @@ Copyr: gastromio.de/imprint
   text-align: center;
 }
 
-#order-restaurant #order #restaurants #restaurant #logo .logo-wrapper {
+#order-restaurant #order #restaurants .restaurant #logo .logo-wrapper {
   background-color: var(--blue);
   height: 100%;
   margin: auto;
@@ -86,12 +77,12 @@ Copyr: gastromio.de/imprint
   width: 100%;
 }
 
-#order-restaurant #order #restaurants #restaurant #logo .logo-wrapper img {
+#order-restaurant #order #restaurants .restaurant #logo .logo-wrapper img {
   height: 100%;
   width: 100%;
 }
 
-#order-restaurant #order #restaurants #restaurant #logo .logo-wrapper img.placeholder {
+#order-restaurant #order #restaurants .restaurant #logo .logo-wrapper img.placeholder {
   /*transform: rotate(-10deg);*/
   display: block;
   margin-left: auto;
@@ -99,21 +90,21 @@ Copyr: gastromio.de/imprint
 }
 
 /* 3.2.2.2.2 #order-restaurant > #order > #restaurants > #restaurant > #infos */
-#order-restaurant #order #restaurants #restaurant #infos {
+#order-restaurant #order #restaurants .restaurant #infos {
+  -moz-box-direction: column;
+  -webkit-box-direction: column;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
   flex: 1;
-  -moz-box-flex: 1;
   -ms-flex: 1;
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex-direction: column;
-  -moz-box-direction: column;
   -ms-flex-direction: column;
-  -webkit-box-direction: column;
   -webkit-flex-direction: column;
   line-height: 1.7;
   min-height: 120px;
@@ -121,7 +112,7 @@ Copyr: gastromio.de/imprint
   padding: 20px 0px 0px 20px;
 }
 
-#order-restaurant #order #restaurants #restaurant #infos .restaurant-name {
+#order-restaurant #order #restaurants .restaurant #infos .restaurant-name {
   color: var(--grey);
   font-family: var(--sans);
   font-size: 20px;
@@ -129,63 +120,63 @@ Copyr: gastromio.de/imprint
   letter-spacing: 0px;
   margin: 0px 8px 0px 0px;
   max-height: 66px;
+  max-height: 25px;
   overflow: hidden !important;
   padding: 0px;
   word-break: break-all;
-  max-height: 25px;
 }
 
-#order-restaurant #order #restaurants #restaurant #infos .restaurant-address {
+#order-restaurant #order #restaurants .restaurant #infos .restaurant-address {
   color: var(--grey);
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 300;
 }
 
-#order-restaurant #order #restaurants #restaurant #infos .cuisines {
-  font-size: 12px;
-  line-height: 32px;
+#order-restaurant #order #restaurants .restaurant #infos .cuisines {
+  -moz-box-direction: column;
+  -webkit-box-direction: column;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   flex-direction: column;
-  -moz-box-direction: column;
   -ms-flex-direction: column;
-  -webkit-box-direction: column;
   -webkit-flex-direction: column;
+  flex-wrap: wrap;
+  font-size: 12px;
+  justify-content: space-between;
+  line-height: 32px;
   margin-bottom: 3px;
   margin-top: auto;
   max-height: 35px;
-  overflow-y: hidden;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
-#order-restaurant #order #restaurants #restaurant #infos .cuisines .cuisine-container {
+#order-restaurant #order #restaurants .restaurant #infos .cuisines .cuisine-container {
+  -moz-box-direction: row;
+  -webkit-box-direction: row;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
   flex-direction: row;
-  -moz-box-direction: row;
   -ms-flex-direction: row;
-  -webkit-box-direction: row;
   -webkit-flex-direction: row;
   flex-wrap: wrap;
   line-height: 24px;
   width: 100%;
 }
 
-#order-restaurant #order #restaurants #restaurant #infos .cuisines .cuisine-container .cuisine-pill {
+#order-restaurant #order #restaurants .restaurant #infos .cuisines .cuisine-container .cuisine-pill {
   margin: 0px 0px 20px;
   transition: opacity 0.25s ease, transform 0.5s cubic-bezier(0.18, 0.8, 0.4, 1);
 }
 
-#order-restaurant #order #restaurants #restaurant #infos .cuisines .cuisine-container .cuisine-pill span {
+#order-restaurant #order #restaurants .restaurant #infos .cuisines .cuisine-container .cuisine-pill span {
   background-color: var(--yellow);
   border-radius: 23px;
   color: var(--grey);
@@ -198,17 +189,18 @@ Copyr: gastromio.de/imprint
 }
 
 @media only screen and (min-width: 570px) {
-  #order-restaurant #order #restaurants #restaurant #infos .cuisines {
+  #order-restaurant #order #restaurants .restaurant #infos .cuisines {
     line-height: 16px;
     margin-bottom: 6px;
   }
 }
 
-#restaurant {
-  transition: all 0.3s ease;
+.restaurant {
   background-color: var(--blue);
   border: 0px solid transparent;
   border-radius: 23px;
+  -moz-box-direction: row;
+  -webkit-box-direction: row;
   cursor: pointer;
   display: flex;
   display: -moz-box;
@@ -216,45 +208,44 @@ Copyr: gastromio.de/imprint
   display: -webkit-box;
   display: -webkit-flex;
   flex-direction: row;
-  -moz-box-direction: row;
   -ms-flex-direction: row;
-  -webkit-box-direction: row;
   -webkit-flex-direction: row;
   margin: 10px 0px;
   min-height: 126px;
   overflow: hidden;
   position: relative;
+  transition: all 0.3s ease;
 }
 
-#restaurant:hover {
+.restaurant:hover {
   transform: scale(1.03);
   -moz-transform: scale(1.03);
   -ms-transform: scale(1.03);
   -webkit-transform: scale(1.03);
 }
 
-#restaurant:active {
+.restaurant:active {
   transform: scale(0.98);
   -moz-transform: scale(0.98);
   -ms-transform: scale(0.98);
   -webkit-transform: scale(0.98);
 }
 
-#restaurant #logo {
+.restaurant #logo {
+  -moz-box-direction: column;
+  -webkit-box-direction: column;
+  -moz-box-flex: 0 0 160px;
+  -webkit-box-flex: 0 0 160px;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
   flex: 0 0 160px;
-  -moz-box-flex: 0 0 160px;
   -ms-flex: 0 0 160px;
-  -webkit-box-flex: 0 0 160px;
   -webkit-flex: 0 0 160px;
   flex-direction: column;
-  -moz-box-direction: column;
   -ms-flex-direction: column;
-  -webkit-box-direction: column;
   -webkit-flex-direction: column;
   justify-content: center;
   min-height: 126px;
@@ -262,7 +253,7 @@ Copyr: gastromio.de/imprint
   text-align: center;
 }
 
-#restaurant #logo .logo-wrapper {
+.restaurant #logo .logo-wrapper {
   background-color: var(--blue);
   height: 100%;
   margin: auto;
@@ -270,33 +261,33 @@ Copyr: gastromio.de/imprint
   width: 100%;
 }
 
-#restaurant #logo .logo-wrapper img {
+.restaurant #logo .logo-wrapper img {
   height: 100%;
   width: 100%;
 }
 
-#restaurant #logo .logo-wrapper img.placeholder {
+.restaurant #logo .logo-wrapper img.placeholder {
   /*transform: rotate(-10deg);*/
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-#restaurant #infos {
+.restaurant #infos {
+  -moz-box-direction: column;
+  -webkit-box-direction: column;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
   flex: 1;
-  -moz-box-flex: 1;
   -ms-flex: 1;
-  -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex-direction: column;
-  -moz-box-direction: column;
   -ms-flex-direction: column;
-  -webkit-box-direction: column;
   -webkit-flex-direction: column;
   line-height: 1.7;
   min-height: 120px;
@@ -304,7 +295,7 @@ Copyr: gastromio.de/imprint
   padding: 20px 0px 0px 20px;
 }
 
-#restaurant #infos .restaurant-name {
+.restaurant #infos .restaurant-name {
   color: var(--grey);
   font-family: var(--sans);
   font-size: 20px;
@@ -312,62 +303,62 @@ Copyr: gastromio.de/imprint
   letter-spacing: 0px;
   margin: 0px 8px 0px 0px;
   max-height: 66px;
+  max-height: 25px;
   overflow: hidden !important;
   padding: 0px;
   word-break: break-all;
-  max-height: 25px;
 }
 
-#restaurant #infos .restaurant-address {
+.restaurant #infos .restaurant-address {
   color: var(--grey);
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 300;
 }
 
-#restaurant #infos .cuisines {
-  font-size: 12px;
-  line-height: 32px;
+.restaurant #infos .cuisines {
+  -moz-box-direction: column;
+  -webkit-box-direction: column;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   flex-direction: column;
-  -moz-box-direction: column;
   -ms-flex-direction: column;
-  -webkit-box-direction: column;
   -webkit-flex-direction: column;
+  flex-wrap: wrap;
+  font-size: 12px;
+  justify-content: space-between;
+  line-height: 32px;
   margin-bottom: 3px;
   margin-top: auto;
   max-height: 35px;
-  overflow-y: hidden;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
-#restaurant #infos .cuisines .cuisine-container {
+.restaurant #infos .cuisines .cuisine-container {
+  -moz-box-direction: row;
+  -webkit-box-direction: row;
   display: flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
   flex-direction: row;
-  -moz-box-direction: row;
   -ms-flex-direction: row;
-  -webkit-box-direction: row;
   -webkit-flex-direction: row;
   flex-wrap: wrap;
   line-height: 24px;
   width: 100%;
 }
 
-#restaurant #infos .cuisines .cuisine-container .cuisine-pill {
+.restaurant #infos .cuisines .cuisine-container .cuisine-pill {
   margin: 0px 0px 20px;
 }
 
-#restaurant #infos .cuisines .cuisine-container .cuisine-pill span {
+.restaurant #infos .cuisines .cuisine-container .cuisine-pill span {
   background-color: var(--yellow);
   border-radius: 23px;
   color: var(--grey);
@@ -379,7 +370,7 @@ Copyr: gastromio.de/imprint
 }
 
 @media only screen and (min-width: 570px) {
-  #restaurant #infos .cuisines {
+  .restaurant #infos .cuisines {
     line-height: 16px;
     margin-bottom: 6px;
   }

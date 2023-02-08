@@ -31,8 +31,6 @@ import { OrderRestaurantImprintComponent } from '../order-restaurant-imprint/ord
   templateUrl: './order-restaurant.component.html',
   styleUrls: [
     './order-restaurant.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/components/_1_hero.min.css',
     '../../../../assets/css/components/_2_action-bar.min.css',
     '../../../../assets/css/components/_3_advanced-filter.min.css',
   ],

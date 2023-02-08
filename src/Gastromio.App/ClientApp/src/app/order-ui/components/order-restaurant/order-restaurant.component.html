@@ -6,10 +6,6 @@
 
     <div
       class="warning closed-rest"
-      data-aos="gm-move-up"
-      data-aos-anchor="body"
-      data-aos-delay="200"
-      data-aos-duration="400"
       id="flash-message"
       role="status"
       *ngIf="restaurant && !restaurant.isOpen(undefined)"
@@ -23,111 +19,42 @@
     </div>
 
     <main id="order-restaurant" *ngIf="generalError === undefined && initialized">
-      <header class="overlay" id="hero" style="background-repeat: no-repeat; background-size: cover" [style.background-image]="getBannerStyle()">
-        <div class="common-container">
-          <div id="text">
-            <h1
-              class="restaurant-name"
-              data-aos="gm-move-up"
-              data-aos-anchor="#order"
-              data-aos-delay="100"
-              data-aos-duration="800"
-              data-aos-once="true"
-              (click)="openImprintModal()"
-            >
-              {{ restaurant.name }}
-            </h1>
-            <div id="sub-text">
-              <h2
-                class="restaurant-address"
-                data-aos="gm-move-up"
-                data-aos-anchor="#order"
-                data-aos-delay="200"
-                data-aos-duration="800"
-                data-aos-once="true"
-              >
-                {{ restaurant.address?.street }}, {{ restaurant.address?.city }}
-              </h2>
-              <h2
-                class="restaurant-hours"
-                data-aos="gm-move-up"
-                data-aos-anchor="#order"
-                data-aos-delay="300"
-                data-aos-duration="800"
-                data-aos-once="true"
-              >
+
+      <section class="hero overlay" style="background-repeat: no-repeat; background-size: cover" [style.background-image]="getBannerStyle()">
+        <div class="container">
+          <div class="hero-box">
+            <h1 class="restaurant-name" (click)="openImprintModal()" style="cursor: pointer;">{{ restaurant.name }}</h1>
+            <div style="float: left;">
+              <h2 class="restaurant-address">{{ restaurant.address?.street }}, {{ restaurant.address?.city }}</h2>
+              <h2 class="restaurant-hours">
                 <ng-container *ngIf="!restaurant.isOpen(undefined)">
-                  <span style="text-transform: capitalize; font-weight: 500"
-                    >{{ restaurant.getRestaurantClosedReason(undefined) }}
-                    &mdash;
-                  </span>
+                  <span style="text-transform: capitalize; font-weight: 500">{{ restaurant.getRestaurantClosedReason(undefined) }} &mdash;</span>
                 </ng-container>
                 <ng-container *ngIf="restaurant.openingHoursTodayText !== null">
                   <span>Geöffnet von {{ restaurant.openingHoursTodayText }} Uhr</span>
                 </ng-container>
               </h2>
-              <h2
-                class="restaurant-info"
-                data-aos="gm-move-up"
-                data-aos-anchor="#order"
-                data-aos-delay="400"
-                data-aos-duration="800"
-                data-aos-once="true"
-              >
+              <h2 class="restaurant-info">
                 <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"><span>Telefonisch</span></ng-container>
-                <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span>Telefonisch & Online-Vorbestellung</span></ng-container>
-                <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"
-                  ><span>Telefonisch & Online-Vorbestellung & Online-Bestellung</span></ng-container
-                >
+                <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"><span>Telefonisch &amp; Online-Vorbestellung</span></ng-container>
+                <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"><span>Telefonisch &amp; Online-Vorbestellung &amp; Online-Bestellung</span></ng-container>
               </h2>
             </div>
-            <div
-              data-aos="gm-move-right"
-              data-aos-anchor="#order"
-              data-aos-delay="1000"
-              data-aos-duration="1200"
-              data-aos-once="true"
-              *ngIf="isReservationEnabled()"
-              id="reservation"
-            >
-              <a
-                *ngIf="!hasExternalReservationSystem()"
-                class="proceed-to-reservation"
-                [routerLink]="['/restaurants', restaurant.alias, 'reservation']"
-              >
+            <div class="reservation" *ngIf="isReservationEnabled()">
+              <a [routerLink]="['/restaurants', restaurant.alias, 'reservation']" *ngIf="!hasExternalReservationSystem()">
                 <span>Tisch reservieren</span>
-                <!--span style="font-size: 11px;"> (gem. CSV)</span-->
               </a>
-              <a
-                *ngIf="hasExternalReservationSystem()"
-                class="proceed-to-reservation"
-                href="{{ restaurant.reservationInfo.reservationSystemUrl }}"
-                target="_blank"
-                rel="nofollow noreferrer"
-              >
+              <a href="{{ restaurant.reservationInfo.reservationSystemUrl }}" target="_blank" rel="nofollow noreferrer noopener" *ngIf="hasExternalReservationSystem()">
                 <span>Tisch reservieren </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  width="16"
-                  height="16"
-                  style="display: inline"
-                >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" x2="21" y1="14" y2="3"/>
                 </svg>
-                <!--span style="font-size: 11px"> (gem. CSV)</span-->
               </a>
             </div>
           </div>
         </div>
-
         <script type="application/ld+json">
           {
             "@context": "https://schema.org",
@@ -137,30 +64,23 @@
             "@id": "getLogoUrl(restaurant)",
             "url": "{{ restaurant.contactInfo.webSite }}",
             "telephone": "{{ restaurant.contactInfo.phone }}",
-            "menu": "",
+            "menu": "{{ restaurant.contactInfo.webSite }}",
             "servesCuisine": "",
-            "acceptsReservations": "false",
+            "acceptsReservations": "true",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "{{ restaurant.address?.street }}",
               "addressLocality": "{{ restaurant.address?.city }}",
               "postalCode": "{{ restaurant.address?.zipCode }}",
               "addressCountry": "DE"
-            }
+            }  
           }
-        </script>
-      </header>
+          </script>
+      </section>
 
       <section id="order">
         <!-- START: _3_advanced-filter -->
-        <section
-          data-aos="gm-move-down"
-          data-aos-anchor="#order"
-          data-aos-delay="300"
-          data-aos-duration="800"
-          data-aos-once="true"
-          id="filter-mobile"
-        >
+        <section id="filter-mobile">
           <button *ngIf="allowCart" class="cart-open" type="button" (click)="toggleCartVisibility()">Warenkorb</button>
           <div class="search">
             <div class="icon-wrapper"><div class="icon"></div></div>
@@ -179,7 +99,7 @@
 
         <div class="wrapper">
           <div class="inner">
-            <section data-aos="gm-move-down" data-aos-anchor="#order" data-aos-delay="300" data-aos-duration="800" data-aos-once="true" id="actions">
+            <section id="actions">
               <h2 class="title">Speisekarte</h2>
               <div class="restaurant-actions">
                 <div class="restaurant-search">
