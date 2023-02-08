@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
@@ -23,13 +23,13 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
   pickupEnabled: boolean;
   deliveryEnabled: boolean;
   reservationEnabled: boolean;
-  changeServiceInfoForm: FormGroup;
+  changeServiceInfoForm: UntypedFormGroup;
 
   subscription: Subscription;
 
   constructor(
     private facade: RestaurantAdminFacade,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.changeServiceInfoForm = this.formBuilder.group({
       pickupAverageTime: [null],

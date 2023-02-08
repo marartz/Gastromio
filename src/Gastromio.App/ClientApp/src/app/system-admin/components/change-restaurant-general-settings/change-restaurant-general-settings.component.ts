@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -30,12 +30,12 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
     CuisineStatus[]
   >(new Array<CuisineStatus>());
 
-  changeSettingsForm: FormGroup;
+  changeSettingsForm: UntypedFormGroup;
   message$: Observable<string>;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private facade: SystemAdminFacade
   ) {}
 

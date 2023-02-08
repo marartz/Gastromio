@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -28,13 +28,13 @@ export class ChangeUserPasswordComponent implements OnInit {
   @Input() public user: UserModel;
   @BlockUI() blockUI: NgBlockUI;
 
-  changeUserPasswordForm: FormGroup;
+  changeUserPasswordForm: UntypedFormGroup;
   message$: Observable<string>;
   submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private facade: SystemAdminFacade
   ) {}
 

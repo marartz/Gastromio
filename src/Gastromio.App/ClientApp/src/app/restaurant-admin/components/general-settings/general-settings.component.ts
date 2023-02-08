@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
@@ -39,14 +39,14 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
   bannerUrl$: Observable<string>;
   @ViewChild('banner') bannerElement: ElementRef;
 
-  changeAddressForm: FormGroup;
-  changeContactInfoForm: FormGroup;
+  changeAddressForm: UntypedFormGroup;
+  changeContactInfoForm: UntypedFormGroup;
 
   subscription: Subscription;
 
   constructor(
     private facade: RestaurantAdminFacade,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.changeAddressForm = this.formBuilder.group({
       street: [

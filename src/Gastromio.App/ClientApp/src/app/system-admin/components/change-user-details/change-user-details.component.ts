@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -27,12 +27,12 @@ export class ChangeUserDetailsComponent implements OnInit {
   @Input() public user: UserModel;
   @BlockUI() blockUI: NgBlockUI;
 
-  changeUserDetailsForm: FormGroup;
+  changeUserDetailsForm: UntypedFormGroup;
   message$: Observable<string>;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private facade: SystemAdminFacade
   ) {}
 

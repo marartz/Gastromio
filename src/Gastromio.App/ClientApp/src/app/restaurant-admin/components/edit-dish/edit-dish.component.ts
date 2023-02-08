@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -31,7 +31,7 @@ export class EditDishComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   isNew: boolean;
-  editDishForm: FormGroup;
+  editDishForm: UntypedFormGroup;
   message$: Observable<string>;
   submitted = false;
 
@@ -39,7 +39,7 @@ export class EditDishComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private facade: RestaurantAdminFacade
   ) {}
 

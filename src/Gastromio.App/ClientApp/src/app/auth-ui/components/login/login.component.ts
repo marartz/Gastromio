@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -21,7 +21,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   generalError: string;
   submitted = false;
   returnUrl = '';
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {

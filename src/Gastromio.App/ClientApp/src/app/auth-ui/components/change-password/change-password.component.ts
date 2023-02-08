@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import { Location } from '@angular/common';
 import {HttpErrorResponse} from '@angular/common/http';
 
@@ -21,12 +21,12 @@ export class ChangePasswordComponent implements OnInit {
 
   success: boolean = false;
 
-  changePasswordForm: FormGroup;
+  changePasswordForm: UntypedFormGroup;
   errorMessage: string;
   submitted = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private location: Location

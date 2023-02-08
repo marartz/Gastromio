@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -24,13 +24,13 @@ import { SystemAdminFacade } from '../../system-admin.facade';
 export class AddRestaurantComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
-  addRestaurantForm: FormGroup;
+  addRestaurantForm: UntypedFormGroup;
   message$: Observable<string>;
   submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private facade: SystemAdminFacade
   ) {
     this.addRestaurantForm = this.formBuilder.group({

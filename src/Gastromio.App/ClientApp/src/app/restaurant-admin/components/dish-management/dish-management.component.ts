@@ -15,7 +15,7 @@ import { ChangeDishCategoryComponent } from '../change-dish-category/change-dish
 import { EditDishComponent } from '../edit-dish/edit-dish.component';
 import { RemoveDishCategoryComponent } from '../remove-dish-category/remove-dish-category.component';
 import { RemoveDishComponent } from '../remove-dish/remove-dish.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 @Component({
@@ -30,7 +30,7 @@ import { debounceTime } from 'rxjs/operators';
   ],
 })
 export class DishManagementComponent implements OnInit, OnDestroy {
-  public externalMenuForm: FormGroup;
+  public externalMenuForm: UntypedFormGroup;
 
   public dishCategories: DishCategoryModel[];
 
@@ -44,7 +44,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
 
   constructor(
     private facade: RestaurantAdminFacade,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private modalService: NgbModal
   ) {}
 

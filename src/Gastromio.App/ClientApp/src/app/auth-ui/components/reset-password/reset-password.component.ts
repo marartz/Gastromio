@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 
@@ -25,13 +25,13 @@ export class ResetPasswordComponent implements OnInit {
   valid: boolean = false;
   success: boolean = false;
 
-  changePasswordForm: FormGroup;
+  changePasswordForm: UntypedFormGroup;
   errorMessage: string;
   submitted = false;
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
     private httpErrorHandlingService: HttpErrorHandlingService
   ) {}

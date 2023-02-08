@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -24,11 +24,11 @@ export class AddDeviatingDateComponent implements OnInit {
   minDate: NgbDateStruct;
   date: NgbDateStruct;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     const now = new Date();
     this.minDate = {

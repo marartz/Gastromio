@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -22,13 +22,13 @@ export class AddDishCategoryComponent implements OnInit {
   @Input() public afterCategoryId: string;
   @BlockUI() blockUI: NgBlockUI;
 
-  addDishCategoryForm: FormGroup;
+  addDishCategoryForm: UntypedFormGroup;
   message$: Observable<string>;
   submitted = false;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private facade: RestaurantAdminFacade
   ) {
     this.addDishCategoryForm = this.formBuilder.group({
