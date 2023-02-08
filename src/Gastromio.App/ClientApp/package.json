@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "^13.3.12",
     "@angular/router": "^13.3.12",
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "acorn": "^8.8.2",
     "aos": "^2.3.4",
     "bootstrap": "^5.2.3",
