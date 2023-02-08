@@ -59,7 +59,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.RemoveAdminFromRestaurant
             // Assert
             using (new AssertionScope())
             {
-                fixture.Restaurant.Administrators.Should().BeEquivalentTo(fixture.UserId);
+                fixture.Restaurant.Administrators.Should().BeEquivalentTo(new[] { fixture.UserId });
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }

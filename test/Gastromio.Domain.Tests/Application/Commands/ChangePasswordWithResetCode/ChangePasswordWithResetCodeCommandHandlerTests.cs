@@ -37,7 +37,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.ChangePasswordWithResetCod
             // Assert
             using (new AssertionScope())
             {
-                fixture.User.UpdatedOn.Should().BeCloseTo(DateTimeOffset.Now, 1000);
+                fixture.User.UpdatedOn.Should().BeCloseTo(DateTimeOffset.Now, TimeSpan.FromSeconds(1));
                 fixture.UserRepositoryMock.VerifyStoreAsync(fixture.User, Times.Once);
             }
         }

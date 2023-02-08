@@ -58,7 +58,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddOrChangeExternalMenuOfR
             // Assert
             using (new AssertionScope())
             {
-                fixture.Restaurant.ExternalMenus.Should().BeEquivalentTo(fixture.ExternalMenu);
+                fixture.Restaurant.ExternalMenus.Should().BeEquivalentTo(new[] { fixture.ExternalMenu });
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }

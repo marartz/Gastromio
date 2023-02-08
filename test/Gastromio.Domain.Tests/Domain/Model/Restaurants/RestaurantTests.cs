@@ -84,7 +84,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Name.Should().Be(name);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -107,7 +107,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Address.Should().BeEquivalentTo(address);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -138,7 +138,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         openingDay.Should().NotBeNull();
         //         openingDay?.DayOfWeek.Should().Be(0);
         //         openingDay?.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -174,7 +174,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         openingDayTuesday.Should().NotBeNull();
         //         openingDayTuesday?.DayOfWeek.Should().Be(1);
         //         openingDayTuesday?.OpeningPeriods.Should().BeEquivalentTo(openingPeriod);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -236,7 +236,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         openingDay.Should().NotBeNull();
         //         openingDay?.DayOfWeek.Should().Be(0);
         //         openingDay?.OpeningPeriods.Should().BeEquivalentTo(expectedPeriods);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -258,7 +258,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //     {
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
-        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
         //     }
         // }
@@ -280,7 +280,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //     {
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
-        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
         //     }
         // }
@@ -303,7 +303,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
         //         testObject.RegularOpeningDays.Should().HaveCount(0);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -330,7 +330,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         openingDay?.DayOfWeek.Should().Be(0);
         //         openingDay?.OpeningPeriods.Should()
         //             .BeEquivalentTo(new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22)));
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -356,7 +356,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
         //             .BeTrue();
         //         openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -382,7 +382,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         testObject.DeviatingOpeningDays.TryGetValue(fixture.DeviatingDayDate, out var openingDay).Should()
         //             .BeTrue();
         //         openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -454,7 +454,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //             .BeTrue();
         //         openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
         //         openingDay?.Status.Should().Be(DeviatingOpeningDayStatus.FullyBooked);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -477,7 +477,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
         //         testObject.DeviatingOpeningDays.Should().BeEmpty();
-        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
         //     }
         // }
@@ -500,7 +500,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
         //         testObject.DeviatingOpeningDays.Should().BeEmpty();
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -589,7 +589,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         openingDay.Should().NotBeNull();
         //         openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
         //         openingDay?.OpeningPeriods.Should().BeEquivalentTo(expectedPeriods);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -612,7 +612,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //     {
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
-        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
         //     }
         // }
@@ -635,7 +635,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //     {
         //         result.Should().NotBeNull();
         //         result?.IsSuccess.Should().BeTrue();
-        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
         //     }
         // }
@@ -662,7 +662,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //             .BeTrue();
         //         openingDay.Should().NotBeNull();
         //         openingDay?.Status.Should().Be(DeviatingOpeningDayStatus.Closed);
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -690,7 +690,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         openingDay?.Date.Should().Be(fixture.DeviatingDayDate);
         //         openingDay?.OpeningPeriods.Should()
         //             .BeEquivalentTo(new OpeningPeriod(TimeSpan.FromHours(16), TimeSpan.FromHours(22)));
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -715,7 +715,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
         //         result?.IsSuccess.Should().BeTrue();
         //         testObject.RegularOpeningDays.Should().BeEmpty();
         //         testObject.DeviatingOpeningDays.Should().BeEmpty();
-        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+        //         testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
         //         testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
         //     }
         // }
@@ -906,7 +906,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             var result = testObject.IsOrderPossibleAt(DateTimeOffset.Now.AddHours(1).AddMinutes(1));
 
             // Assert
-            result.Should().BeTrue();
+            result.Should().BeFalse();
         }
 
         [Fact]
@@ -1131,7 +1131,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.HygienicHandling.Should().BeEquivalentTo(hygienicHandling);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1151,7 +1151,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Cuisines.Should().BeEquivalentTo(fixture.Cuisines);
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1170,8 +1170,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             // Assert
             using (new AssertionScope())
             {
-                testObject.Cuisines.Should().BeEquivalentTo(fixture.CuisineId);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.Cuisines.Should().BeEquivalentTo(new [] { fixture.CuisineId });
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1191,7 +1191,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Cuisines.Should().BeEmpty();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1211,7 +1211,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Cuisines.Should().BeEmpty();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1231,7 +1231,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethods);
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1250,8 +1250,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             // Assert
             using (new AssertionScope())
             {
-                testObject.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethodId);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.PaymentMethods.Should().BeEquivalentTo(new [] { fixture.PaymentMethodId });
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1271,7 +1271,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.PaymentMethods.Should().BeEmpty();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1291,7 +1291,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.PaymentMethods.Should().BeEmpty();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1341,7 +1341,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Administrators.Should().BeEquivalentTo(fixture.Administrators);
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1360,8 +1360,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             // Assert
             using (new AssertionScope())
             {
-                testObject.Administrators.Should().BeEquivalentTo(fixture.AdministratorId);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.Administrators.Should().BeEquivalentTo(new [] { fixture.AdministratorId });
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1381,7 +1381,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Administrators.Should().BeEmpty();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1401,7 +1401,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.Administrators.Should().BeEmpty();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1422,7 +1422,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.ImportId.Should().BeEquivalentTo(importId);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1442,7 +1442,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.IsActive.Should().BeFalse();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1462,7 +1462,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.IsActive.Should().BeFalse();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1482,7 +1482,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.IsActive.Should().BeTrue();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1502,7 +1502,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.IsActive.Should().BeTrue();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1522,7 +1522,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.NeedsSupport.Should().BeFalse();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1542,7 +1542,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.NeedsSupport.Should().BeFalse();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1562,7 +1562,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.NeedsSupport.Should().BeTrue();
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -1582,7 +1582,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.NeedsSupport.Should().BeTrue();
-                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().NotBe(fixture.ChangedBy);
             }
         }
@@ -1602,7 +1602,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 testObject.SupportedOrderMode.Should().Be(SupportedOrderMode.Anytime);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }

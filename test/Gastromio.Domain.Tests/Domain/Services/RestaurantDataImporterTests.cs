@@ -180,7 +180,7 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
                 deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
-                    new OpeningPeriod(TimeSpan.FromHours(10), TimeSpan.FromHours(14))
+                    new [] { new OpeningPeriod(TimeSpan.FromHours(10), TimeSpan.FromHours(14)) }
                 );
             }
         }
@@ -207,10 +207,11 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date);
-                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(new[]
+                {
                     new OpeningPeriod(TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
                     new OpeningPeriod(TimeSpan.FromHours(17), TimeSpan.FromHours(20))
-                );
+                });
             }
         }
 
@@ -270,19 +271,21 @@ namespace Gastromio.Domain.Tests.Domain.Services
                 storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date1, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date1);
-                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(new[]
+                {
                     new OpeningPeriod(TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
                     new OpeningPeriod(TimeSpan.FromHours(22), TimeSpan.FromHours(26))
-                );
+                });
 
                 deviatingOpeningDay = null;
                 storedRestaurant?.DeviatingOpeningDays?.TryGetOpeningDay(date2, out deviatingOpeningDay);
                 deviatingOpeningDay.Should().NotBeNull();
                 deviatingOpeningDay?.Date.Should().BeEquivalentTo(date2);
-                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(
+                deviatingOpeningDay?.OpeningPeriods.Should().BeEquivalentTo(new[]
+                {
                     new OpeningPeriod(TimeSpan.FromHours(18), TimeSpan.FromHours(20)),
                     new OpeningPeriod(TimeSpan.FromHours(22), TimeSpan.FromHours(26))
-                );
+                });
             }
         }
 

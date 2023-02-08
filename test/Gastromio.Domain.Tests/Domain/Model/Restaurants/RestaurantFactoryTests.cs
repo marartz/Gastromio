@@ -49,9 +49,9 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
                 result.Cuisines.Should().BeEquivalentTo(fixture.Cuisines);
                 result.PaymentMethods.Should().BeEquivalentTo(fixture.PaymentMethods);
                 result.Administrators.Should().BeEquivalentTo(fixture.Administrators);
-                result.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 result.CreatedBy.Should().Be(fixture.CreatedBy);
-                result.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 result.UpdatedBy.Should().Be(fixture.CreatedBy);
             }
         }

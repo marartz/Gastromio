@@ -1,8 +1,8 @@
 ﻿using Gastromio.Core.Application.Ports.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using MongoDBMigrations;
 using MongoDBMigrations.Document;
 
 namespace Gastromio.Persistence.MongoDB
@@ -29,7 +29,7 @@ namespace Gastromio.Persistence.MongoDB
             {
                 cm.AutoMap();
                 cm.GetMemberMap(x => x.Ver)
-                .SetSerializer(new VerstionSerializer());
+                .SetSerializer(new VersionSerializer());
             });
         }
     }

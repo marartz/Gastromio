@@ -127,7 +127,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result.OpeningPeriods.Should().BeEquivalentTo(curPeriod);
+                result.OpeningPeriods.Should().BeEquivalentTo(new [] { curPeriod });
             }
         }
 
@@ -318,7 +318,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result.OpeningPeriods.Should().BeEquivalentTo(period);
+                result.OpeningPeriods.Should().BeEquivalentTo(new [] { period });
             }
         }
 
@@ -356,7 +356,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Restaurants
             using (new AssertionScope())
             {
                 result.Should().NotBeNull();
-                result?.OpeningPeriods.Should().BeEquivalentTo(curPeriod);
+                result?.OpeningPeriods.Should().BeEquivalentTo(new [] { curPeriod });
             }
         }
 

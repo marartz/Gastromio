@@ -139,7 +139,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Cuisines
             using (new AssertionScope())
             {
                 testObject.Name.Should().Be(name);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.UpdatedBy);
             }
         }

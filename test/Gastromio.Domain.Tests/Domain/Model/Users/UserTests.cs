@@ -39,7 +39,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             {
                 testObject.Role.Should().Be(role);
                 testObject.Email.Should().Be(email);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -108,7 +108,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             {
                 testObject.PasswordSalt.Should().NotBeEquivalentTo(saltBefore);
                 testObject.PasswordHash.Should().NotBeEquivalentTo(hashBefore);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -134,7 +134,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             {
                 testObject.PasswordSalt.Should().NotBeEquivalentTo(saltBefore);
                 testObject.PasswordHash.Should().NotBeEquivalentTo(hashBefore);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -258,7 +258,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             {
                 testObject.PasswordSalt.Should().NotBeEquivalentTo(saltBefore);
                 testObject.PasswordHash.Should().NotBeEquivalentTo(hashBefore);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 testObject.UpdatedBy.Should().Be(fixture.ChangedBy);
             }
         }
@@ -281,7 +281,7 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
             using (new AssertionScope())
             {
                 testObject.PasswordResetCode.Should().NotBeEquivalentTo(resetCodeBefore);
-                testObject.PasswordResetExpiration.Should().BeCloseTo(DateTimeOffset.UtcNow.AddMinutes(30), 1000);
+                testObject.PasswordResetExpiration.Should().BeCloseTo(DateTimeOffset.UtcNow.AddMinutes(30), TimeSpan.FromSeconds(1));
             }
         }
 

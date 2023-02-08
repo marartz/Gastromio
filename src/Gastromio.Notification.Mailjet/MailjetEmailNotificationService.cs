@@ -104,11 +104,7 @@ namespace Gastromio.Notification.Mailjet
                 return new EmailNotificationResponse(true, "skipped due to missing Mailjet configuration");
             }
 
-            var client = new MailjetClient(configuration.ApiKey, configuration.ApiSecret)
-            {
-                Version = ApiVersion.V3_1,
-            };
-
+            var client = new MailjetClient(configuration.ApiKey, configuration.ApiSecret);
             var response = await client.PostAsync(request);
 
             if (response.IsSuccessStatusCode)

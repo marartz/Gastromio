@@ -113,8 +113,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
                 testObject.CustomerNotificationInfo?.Status.Should().BeTrue();
                 testObject.CustomerNotificationInfo?.Attempt.Should().Be(1);
                 testObject.CustomerNotificationInfo?.Message.Should().Be(message);
-                testObject.CustomerNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.CustomerNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
 
@@ -138,8 +138,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
                 testObject.CustomerNotificationInfo?.Status.Should().BeTrue();
                 testObject.CustomerNotificationInfo?.Attempt.Should().Be(fixture.CustomerNotificationInfo.Attempt + 1);
                 testObject.CustomerNotificationInfo?.Message.Should().Be(message);
-                testObject.CustomerNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.CustomerNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
 
@@ -163,8 +163,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
                 testObject.RestaurantEmailNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantEmailNotificationInfo?.Attempt.Should().Be(1);
                 testObject.RestaurantEmailNotificationInfo?.Message.Should().Be(message);
-                testObject.RestaurantEmailNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.RestaurantEmailNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
 
@@ -188,8 +188,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
                 testObject.RestaurantEmailNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantEmailNotificationInfo?.Attempt.Should().Be(fixture.RestaurantEmailNotificationInfo.Attempt + 1);
                 testObject.RestaurantEmailNotificationInfo?.Message.Should().Be(message);
-                testObject.RestaurantEmailNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.RestaurantEmailNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
 
@@ -213,8 +213,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
                 testObject.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantMobileNotificationInfo?.Attempt.Should().Be(1);
                 testObject.RestaurantMobileNotificationInfo?.Message.Should().Be(message);
-                testObject.RestaurantMobileNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.RestaurantMobileNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
 
@@ -238,8 +238,8 @@ namespace Gastromio.Domain.Tests.Domain.Model.Orders
                 testObject.RestaurantMobileNotificationInfo?.Status.Should().BeTrue();
                 testObject.RestaurantMobileNotificationInfo?.Attempt.Should().Be(fixture.RestaurantMobileNotificationInfo.Attempt + 1);
                 testObject.RestaurantMobileNotificationInfo?.Message.Should().Be(message);
-                testObject.RestaurantMobileNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
-                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                testObject.RestaurantMobileNotificationInfo?.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
+                testObject.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
 

@@ -4,7 +4,6 @@ using FluentAssertions.Execution;
 using Gastromio.Core.Common;
 using Gastromio.Core.Domain.Failures;
 using Gastromio.Core.Domain.Model.Users;
-using Gastromio.Domain.TestKit.Common;
 using Gastromio.Domain.TestKit.Domain.Model.Users;
 using Xunit;
 
@@ -47,9 +46,9 @@ namespace Gastromio.Domain.Tests.Domain.Model.Users
                 result?.PasswordHash.Should().NotBeNull();
                 result?.PasswordResetCode.Should().BeNull();
                 result?.PasswordResetExpiration.Should().BeNull();
-                result?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result?.CreatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 result?.CreatedBy.Should().Be(fixture.CreatedBy);
-                result?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, 1000);
+                result?.UpdatedOn.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
                 result?.UpdatedBy.Should().Be(fixture.CreatedBy);
             }
         }

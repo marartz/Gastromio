@@ -62,7 +62,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddRegularOpeningPeriodToR
             using (new AssertionScope())
             {
                 fixture.Restaurant.RegularOpeningDays.First().OpeningPeriods.Should()
-                    .BeEquivalentTo(fixture.OpeningPeriod);
+                    .BeEquivalentTo(new[] { fixture.OpeningPeriod });
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }

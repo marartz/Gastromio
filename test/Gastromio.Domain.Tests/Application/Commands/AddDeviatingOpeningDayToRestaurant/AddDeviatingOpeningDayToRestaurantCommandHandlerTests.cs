@@ -59,7 +59,7 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddDeviatingOpeningDayToRe
             // Assert
             using (new AssertionScope())
             {
-                fixture.Restaurant.DeviatingOpeningDays.Should().BeEquivalentTo(fixture.DeviatingOpeningDay);
+                fixture.Restaurant.DeviatingOpeningDays.Should().BeEquivalentTo(new[] { fixture.DeviatingOpeningDay });
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }

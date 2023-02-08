@@ -58,7 +58,8 @@ namespace Gastromio.Domain.Tests.Application.Commands.AddAdminToRestaurant
             // Assert
             using (new AssertionScope())
             {
-                fixture.Restaurant.Administrators.Should().BeEquivalentTo(fixture.UserId, fixture.AdministratorId);
+                fixture.Restaurant.Administrators.Should()
+                    .BeEquivalentTo(new[] { fixture.UserId, fixture.AdministratorId });
                 fixture.RestaurantRepositoryMock.VerifyStoreAsync(fixture.Restaurant, Times.Once);
             }
         }
