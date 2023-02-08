@@ -38,7 +38,7 @@
   "author": "Marco Artz <marco@gastromio.de>, Luca Wieczorek <luca@gastromio.de>",
   "license": "MIT",
   "devDependencies": {
-    "@angular-devkit/build-angular": "^12.2.2",
+    "@angular-devkit/build-angular": "^15.1.5",
     "@angular/cli": "^12.2.2",
     "@angular/compiler-cli": "^12.2.2",
     "@angular/language-service": "^12.2.2",
