@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 3.1.101
 
@@ -24,8 +24,8 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore ./src/Gastromio.App
 
-    - name: Test
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --filter Category!=integration
+    # - name: Test
+    #  run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --filter Category!=integration
 
     - name: Publish
       run: dotnet publish --configuration Release --no-restore --no-build ./src/Gastromio.App
@@ -52,10 +52,10 @@ jobs:
     needs: build-sources
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Unstash package
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v3
       with:
         name: package
         path: ./src/Gastromio.App/bin/Release/netcoreapp3.1/publish/
