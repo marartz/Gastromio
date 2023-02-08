@@ -2,5 +2,8 @@
 *.js
 *.json
 *.md
-*.ts
 *.yml
+.angular/*
+.github/*
+.vscode/*
+node_modules/*

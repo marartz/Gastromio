@@ -250,3 +250,4 @@ speed-measure-plugin*.json
 *.DS_Store
 Thumbs.db
 *.txt
+.gitconfig.user
