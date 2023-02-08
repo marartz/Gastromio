@@ -1,13 +1,12 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDBMigrations;
-using System;
 
 namespace Gastromio.Persistence.MongoDB.Migrations
 {
     public class CorrectRestaurantAliasesMigration : IMigration
     {
-        public MongoDBMigrations.Version Version => DatabaseVersions.CorrectRestaurantAliases;
+        public Version Version => DatabaseVersions.CorrectRestaurantAliases;
         public string Name => "Correct Restaurant Aliases";
 
         public void Down(IMongoDatabase database)

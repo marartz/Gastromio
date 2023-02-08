@@ -1,6 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDBMigrations;
 using System.Collections.Generic;
 
 namespace Gastromio.Persistence.MongoDB.Migrations
@@ -11,7 +11,7 @@ namespace Gastromio.Persistence.MongoDB.Migrations
         private static string DishCollectionName = "dishes";
         private static string RestaurantCollectionName = "restaurants";
 
-        public MongoDBMigrations.Version Version => DatabaseVersions.MoveDishesToRestaurantSchema;
+        public Version Version => DatabaseVersions.MoveDishesToRestaurantSchema;
 
         public string Name => "Change database schema so that DishCategories, Dishes and DishVariants are all directly in the Restaurant Model";
 

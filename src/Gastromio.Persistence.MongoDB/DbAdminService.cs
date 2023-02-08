@@ -1,5 +1,4 @@
 using MongoDB.Driver;
-using MongoDBMigrations;
 using System.Reflection;
 
 namespace Gastromio.Persistence.MongoDB
@@ -11,7 +10,6 @@ namespace Gastromio.Persistence.MongoDB
         private readonly string databaseName;
 
         private readonly Assembly usedAssembly;
-        private readonly IMigrationRunner migration;
 
         public DbAdminService(IMongoClient client, string connectionString, string databaseName)
         {
@@ -19,10 +17,6 @@ namespace Gastromio.Persistence.MongoDB
             this.connectionString = connectionString;
             this.databaseName = databaseName;
             usedAssembly = typeof(DbAdminService).Assembly;
-            migration = new MigrationEngine()
-                .UseDatabase(connectionString, databaseName)
-                .UseAssembly(usedAssembly)
-                .UseSchemeValidation(false);
         }
 
         public void PurgeDatabase()
@@ -32,10 +26,6 @@ namespace Gastromio.Persistence.MongoDB
 
         public void PrepareDatabase()
         {
-            if (MongoDatabaseStateChecker.IsDatabaseOutdated(connectionString, databaseName, usedAssembly))
-            {
-                migration.Run();
-            }
         }
     }
 }

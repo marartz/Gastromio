@@ -1,9 +1,6 @@
 ﻿using Gastromio.Core.Application.Ports.Persistence;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using MongoDBMigrations.Document;
 
 namespace Gastromio.Persistence.MongoDB
 {
@@ -23,14 +20,6 @@ namespace Gastromio.Persistence.MongoDB
             services.AddTransient<IRestaurantImageRepository, RestaurantImageRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
-
-            // Workaround: https://bitbucket.org/i_am_a_kernel/mongodbmigrations/issues/9/mongodatabasestatecheckerisdatabaseoutdate
-            BsonClassMap.RegisterClassMap<SpecificationItem>(cm =>
-            {
-                cm.AutoMap();
-                cm.GetMemberMap(x => x.Ver)
-                .SetSerializer(new VersionSerializer());
-            });
         }
     }
 }
