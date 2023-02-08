@@ -8,9 +8,8 @@ import { OrderUiModule } from './order-ui/order-ui.module';
 import { SystemAdminModule } from './system-admin/system-admin.module';
 import { RestaurantAdminModule } from './restaurant-admin/restaurant-admin.module';
 
-import { AnimateOnScrollModule } from 'ng2-animate-on-scroll';
-
 import { AppComponent } from './app.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -21,7 +20,7 @@ import { AppComponent } from './app.component';
     SystemAdminModule,
     RestaurantAdminModule,
     RouterModule.forRoot([]),
-    AnimateOnScrollModule.forRoot(),
+    NgbModule
   ],
   declarations: [AppComponent],
   providers: [],
