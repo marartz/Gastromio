@@ -1,12 +1,3 @@
-/* --------------------------------
-
-File#: _3_advanced-filter
-Title: Advanced Filter
-Descr: A filter panel
-Copyr: gastromio.de/imprint
-
--------------------------------- */
-
 /* #filter */
 #filter {
   display: none;
@@ -17,7 +8,7 @@ Copyr: gastromio.de/imprint
   position: relative;
 }
 
-@media only screen and (min-width: 1030px) {
+@media screen and (min-width: 1030px) {
   #filter {
     display: block;
     float: left;
@@ -29,7 +20,7 @@ Copyr: gastromio.de/imprint
 #filter .title,
 #filter-details .title {
   color: var(--grey);
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 300;
   letter-spacing: -0.33px;
@@ -70,17 +61,26 @@ Copyr: gastromio.de/imprint
   -webkit-box-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   font-size: 16px;
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-weight: 500;
   justify-content: flex-start;
   -ms-flex-pack: start;
   height: 42px;
   line-height: 26px;
   outline: none;
-  padding: 8px 8px 8px 8px;
+  padding: 8px;
   position: relative;
   text-align: center;
   vertical-align: baseline;
+  background: var(--blue);
+  border: 0px none;
+  border-radius: 23px;
+  align-content: center;
+  justify-content: center;
+  -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(.175, .885, .32, 1.275), -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
 }
 
 #filter #ordertype-filter .filter .switch.active,
@@ -90,6 +90,7 @@ Copyr: gastromio.de/imprint
   border-radius: 23px;
   line-height: 24px;
   width: 50%;
+  padding: 8px;
 }
 
 #filter #ordertype-filter .filter .switch.active span,
@@ -112,17 +113,20 @@ Copyr: gastromio.de/imprint
 #filter-details .filter-divider {
   display: flex;
   width: 222px;
+  align-content: center;
+  justify-content: center;
 }
 
 #filter .filter-divider p,
 #filter-details .filter-divider p {
   color: var(--grey);
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 14px;
   font-weight: 300;
   letter-spacing: -0.33px;
   text-align: center;
   margin-bottom: 4px;
+  margin-top: 4px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -130,23 +134,28 @@ Copyr: gastromio.de/imprint
 #filter button.reservation,
 #filter-details button.reservation {
   background-color: var(--blue);
+  border: 0px none;
   border-radius: 23px;
   color: var(--grey);
   cursor: pointer;
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 500;
   height: 42px;
   margin-bottom: 22px;
   outline: none;
   width: 222px;
+  -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(.175, .885, .32, 1.275), -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
 }
 
 #filter button.reservation span,
 #filter-details button.reservation span {
   background-color: var(--green);
   color: var(--white);
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 12px;
   font-weight: 500;
   padding: 3px;
@@ -164,52 +173,37 @@ Copyr: gastromio.de/imprint
 }
 
 #filter button.reservation:hover {
-  transform: scale(1.024);
-  -moz-transform: scale(1.024);
-  -ms-transform: scale(1.024);
-  -webkit-transform: scale(1.024);
-  transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* #filter > #opening-hour-filter */
 #filter #opening-hour-filter button,
 #filter-details #opening-hour-filter button {
-  background-color: #adcccb;
+  background-color: var(--blue);
+  border: 0px none;
   border-radius: 23px;
-  color: #363636;
+  color: var(--grey);
   cursor: pointer;
-  font-family: "Apercu", sans-serif;
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 500;
   height: 42px;
   margin-bottom: 22px;
   outline: none;
   width: 222px;
+  -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(.175, .885, .32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(.175, .885, .32, 1.275), -webkit-transform 500ms cubic-bezier(.175, .885, .32, 1.275);
 }
 
 #filter #opening-hour-filter button:hover {
-  transform: scale(1.024);
-  -moz-transform: scale(1.024);
-  -ms-transform: scale(1.024);
-  -webkit-transform: scale(1.024);
-  transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-}
-
-#filter #opening-hour-filter button:active {
-  transform: scale(0.98);
-  -moz-transform: scale(0.98);
-  -ms-transform: scale(0.98);
-  -webkit-transform: scale(0.98);
-  transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
+  transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  -webkit-transform: scale(1.05);
 }
 
 /* #filter > #categories */
@@ -227,9 +221,10 @@ Copyr: gastromio.de/imprint
 #filter #categories .category button,
 #filter-details #categories .category button {
   background-color: var(--blue);
+  border: 0px none;
   border-radius: 23px;
   color: var(--grey);
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 4px;
@@ -257,7 +252,7 @@ Copyr: gastromio.de/imprint
   display: none;
 }
 
-@media only screen and (max-width: 1030px) {
+@media screen and (max-width: 1030px) {
   #filter-mobile {
     display: inline-flex;
     height: 42px;
@@ -271,8 +266,9 @@ Copyr: gastromio.de/imprint
     height: 42px;
     width: 50%;
     background-color: var(--blue);
+    border: 0px none;
     color: var(--grey);
-    font-family: var(--sans);
+    font-family: var(--apercu);
     font-size: 16px;
     font-weight: 500;
     line-height: 26px;
@@ -285,7 +281,7 @@ Copyr: gastromio.de/imprint
     width: 50%;
     background-color: var(--yellow);
     color: var(--grey);
-    font-family: var(--sans);
+    font-family: var(--apercu);
     font-size: 16px;
     font-weight: 500;
     line-height: 26px;
@@ -311,7 +307,7 @@ Copyr: gastromio.de/imprint
   }
   #filter-mobile .search .icon {
     background-color: transparent;
-    background-image: url("../../../assets/images/svg/search.svg");
+    background-image: url("../../images/svg/search.svg");
     background-size: 100% 100%;
     height: 24px;
     left: 10px;
@@ -321,7 +317,7 @@ Copyr: gastromio.de/imprint
   }
   #filter-mobile .search input {
     border: 0px;
-    font-family: var(--sans);
+    font-family: var(--apercu);
     font-size: 16px;
     font-weight: 400;
     height: 42px;
@@ -347,7 +343,7 @@ Copyr: gastromio.de/imprint
   }
   #mobile-info .restaurant-count {
     color: var(--grey);
-    font-family: var(--sans);
+    font-family: var(--apercu);
     font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.42px;
@@ -377,7 +373,7 @@ Copyr: gastromio.de/imprint
 
 #filter-details .content .top h4 {
   color: var(--grey);
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.42px;
@@ -390,7 +386,7 @@ Copyr: gastromio.de/imprint
 }
 
 #filter-details .content .top button::after {
-  background-image: url("../../../assets/images/svg/plus.svg");
+  background-image: url("../../images/svg/plus.svg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   content: " ";

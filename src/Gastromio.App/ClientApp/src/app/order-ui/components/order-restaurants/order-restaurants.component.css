@@ -1,4 +1,4 @@
-#order #restaurants {
+.order #restaurants {
   float: left;
   margin-left: 10px;
   margin-top: -8px;
@@ -7,7 +7,7 @@
 }
 
 @media only screen and (min-width: 570px) {
-  #order #restaurants {
+  .order #restaurants {
     float: left;
     margin-left: 10px;
     width: calc(100% - 20px);
@@ -15,7 +15,7 @@
 }
 
 @media only screen and (min-width: 1004px) {
-  #order #restaurants {
+  .order #restaurants {
     margin-left: 20px;
     margin-bottom: 30px;
     width: calc(75% - 20px);

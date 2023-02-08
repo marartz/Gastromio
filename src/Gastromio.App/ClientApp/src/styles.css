@@ -106,6 +106,13 @@ body::backdrop {
   background-color: var(--blue);
 }
 
+.main {
+  background: var(--bg-rough-blue);
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
 /* * CONTAINER */
 .container {
   margin-left: auto;
@@ -131,8 +138,8 @@ body::backdrop {
   background: var(--bg-rough-grey);
   background-image: url('./assets/images/hero/asiatisch-2.jpg');
   display: flex;
-  height: 360px;
-  max-height: 360px;
+  height: 260px;
+  max-height: 260px;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;

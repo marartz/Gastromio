@@ -14,6 +14,7 @@ Copyr: gastromio.de/imprint
   margin-top: 16px;
   margin-bottom: 16px;
   position: relative;
+  align-items: center;
 }
 
 @media screen and (max-width: 1029px) {
@@ -25,15 +26,14 @@ Copyr: gastromio.de/imprint
 
 #actions .title {
   color: var(--grey);
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.42px;
   line-height: 32px;
   flex-grow: 1;
-  margin-bottom: 0px;
+  margin: 0px;
   position: relative;
-  margin-top: auto;
 }
 
 #actions .restaurant-actions {
@@ -76,7 +76,7 @@ Copyr: gastromio.de/imprint
 
 #actions .restaurant-search input {
   border: 0px;
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 400;
   height: 42px;
@@ -117,7 +117,7 @@ Copyr: gastromio.de/imprint
 
 #actions .restaurant-open-cart .cart-icon span {
   text-align: center;
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-weight: 300;
   font-size: 12px;
   color: var(--grey);
