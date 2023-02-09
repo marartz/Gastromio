@@ -34,19 +34,13 @@ export class DishManagementComponent implements OnInit, OnDestroy {
 
   public dishCategories: DishCategoryModel[];
 
-  public activeDishCategoryId$: BehaviorSubject<string> =
-    new BehaviorSubject<string>(undefined);
+  public activeDishCategoryId$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
 
   private restaurantSubscription: Subscription;
 
-  private externalMenuId: string =
-    'EA9D3F69-4709-4F4A-903C-7EA68C0A36C7'.toLocaleLowerCase();
+  private externalMenuId: string = 'EA9D3F69-4709-4F4A-903C-7EA68C0A36C7'.toLocaleLowerCase();
 
-  constructor(
-    private facade: RestaurantAdminFacade,
-    private formBuilder: UntypedFormBuilder,
-    private modalService: NgbModal
-  ) {}
+  constructor(private facade: RestaurantAdminFacade, private formBuilder: UntypedFormBuilder, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.externalMenuForm = this.formBuilder.group({
@@ -55,73 +49,61 @@ export class DishManagementComponent implements OnInit, OnDestroy {
       description: [''],
       url: [''],
     });
-    this.externalMenuForm.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe((value) => {
-        const nameControl = this.externalMenuForm.get('name');
-        const descriptionControl = this.externalMenuForm.get('description');
-        const urlControl = this.externalMenuForm.get('url');
+    this.externalMenuForm.valueChanges.pipe(debounceTime(1000)).subscribe((value) => {
+      const nameControl = this.externalMenuForm.get('name');
+      const descriptionControl = this.externalMenuForm.get('description');
+      const urlControl = this.externalMenuForm.get('url');
 
+      if (this.externalMenuForm.value.enabled) {
+        nameControl.setValidators([Validators.required]);
+        nameControl.updateValueAndValidity();
+        descriptionControl.setValidators([Validators.required]);
+        descriptionControl.updateValueAndValidity();
+        urlControl.setValidators([
+          Validators.required,
+          Validators.pattern(
+            /^(https?:\/\/){1,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/,
+          ),
+        ]);
+        urlControl.updateValueAndValidity();
+      } else {
+        nameControl.setValidators(null);
+        nameControl.updateValueAndValidity();
+        descriptionControl.setValidators(null);
+        descriptionControl.updateValueAndValidity();
+        urlControl.setValidators(null);
+        urlControl.updateValueAndValidity();
+      }
+
+      if (this.externalMenuForm.dirty && this.externalMenuForm.valid) {
         if (this.externalMenuForm.value.enabled) {
-          nameControl.setValidators([Validators.required]);
-          nameControl.updateValueAndValidity();
-          descriptionControl.setValidators([Validators.required]);
-          descriptionControl.updateValueAndValidity();
-          urlControl.setValidators([
-            Validators.required,
-            Validators.pattern(
-              /^(https?:\/\/){1,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/
-            ),
-          ]);
-          urlControl.updateValueAndValidity();
+          this.facade.addOrChangeExternalMenu(this.externalMenuId, value.name, value.description, value.url);
         } else {
-          nameControl.setValidators(null);
-          nameControl.updateValueAndValidity();
-          descriptionControl.setValidators(null);
-          descriptionControl.updateValueAndValidity();
-          urlControl.setValidators(null);
-          urlControl.updateValueAndValidity();
+          this.facade.removeExternalMenu(this.externalMenuId);
         }
+      }
+      this.externalMenuForm.markAsPristine();
+    });
 
-        if (this.externalMenuForm.dirty && this.externalMenuForm.valid) {
-          if (this.externalMenuForm.value.enabled) {
-            this.facade.addOrChangeExternalMenu(
-              this.externalMenuId,
-              value.name,
-              value.description,
-              value.url
-            );
-          } else {
-            this.facade.removeExternalMenu(this.externalMenuId);
-          }
-        }
+    this.restaurantSubscription = this.facade.getRestaurant$().subscribe((restaurant) => {
+      this.dishCategories = restaurant.dishCategories;
+
+      const index = restaurant.externalMenus?.findIndex((en) => en.id === this.externalMenuId) ?? -1;
+      if (index >= 0) {
+        const externalMenu = restaurant.externalMenus[index];
+        this.externalMenuForm.patchValue({
+          enabled: true,
+          name: externalMenu.name,
+          description: externalMenu.description,
+          url: externalMenu.url,
+        });
         this.externalMenuForm.markAsPristine();
-      });
-
-    this.restaurantSubscription = this.facade
-      .getRestaurant$()
-      .subscribe((restaurant) => {
-        this.dishCategories = restaurant.dishCategories;
-
-        const index =
-          restaurant.externalMenus?.findIndex(
-            (en) => en.id === this.externalMenuId
-          ) ?? -1;
-        if (index >= 0) {
-          const externalMenu = restaurant.externalMenus[index];
-          this.externalMenuForm.patchValue({
-            enabled: true,
-            name: externalMenu.name,
-            description: externalMenu.description,
-            url: externalMenu.url,
-          });
-          this.externalMenuForm.markAsPristine();
-        } else {
-          this.externalMenuForm.patchValue({
-            enabled: false,
-          });
-        }
-      });
+      } else {
+        this.externalMenuForm.patchValue({
+          enabled: false,
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -133,23 +115,16 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   }
 
   public isFirstDishCategory(dishCategory: DishCategoryModel): boolean {
-    const pos = this.dishCategories.findIndex(
-      (en) => en.id === dishCategory.id
-    );
+    const pos = this.dishCategories.findIndex((en) => en.id === dishCategory.id);
     return pos === 0;
   }
 
   public isLastDishCategory(dishCategory: DishCategoryModel): boolean {
-    const pos = this.dishCategories.findIndex(
-      (en) => en.id === dishCategory.id
-    );
+    const pos = this.dishCategories.findIndex((en) => en.id === dishCategory.id);
     return pos === this.dishCategories.length - 1;
   }
 
-  public isFirstDish(
-    dishCategory: DishCategoryModel,
-    dish: DishModel
-  ): boolean {
+  public isFirstDish(dishCategory: DishCategoryModel, dish: DishModel): boolean {
     const pos = dishCategory.dishes.findIndex((en) => en.id === dish.id);
     return pos === 0;
   }
@@ -160,9 +135,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   }
 
   public getPriceOfVariant(variant: DishVariantModel): string {
-    return (
-      '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 })
-    );
+    return '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   public onChangeActiveDishCategoryId(dishCategoryId: string): void {
@@ -172,14 +145,13 @@ export class DishManagementComponent implements OnInit, OnDestroy {
   public openAddDishCategoryForm(): void {
     const modalRef = this.modalService.open(AddDishCategoryComponent);
     if (this.dishCategories !== undefined && this.dishCategories.length > 0) {
-      modalRef.componentInstance.afterCategoryId =
-        this.dishCategories[this.dishCategories.length - 1].id;
+      modalRef.componentInstance.afterCategoryId = this.dishCategories[this.dishCategories.length - 1].id;
     }
     modalRef.result.then(
       (id) => {
         this.activeDishCategoryId$.next(id);
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -188,7 +160,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.dishCategory = dishCategory.clone();
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
@@ -205,7 +177,7 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.dishCategory = dishCategory.clone();
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
@@ -217,43 +189,31 @@ export class DishManagementComponent implements OnInit, OnDestroy {
     this.facade.incOrderOfDishCategory(dishCategory.id);
   }
 
-  public openEditDishForm(
-    dishCategory: DishCategoryModel,
-    dish: DishModel
-  ): void {
+  public openEditDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
     const modalRef = this.modalService.open(EditDishComponent);
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
     modalRef.componentInstance.dish = dish.clone();
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
-  public openRemoveDishForm(
-    dishCategory: DishCategoryModel,
-    dish: DishModel
-  ): void {
+  public openRemoveDishForm(dishCategory: DishCategoryModel, dish: DishModel): void {
     const modalRef = this.modalService.open(RemoveDishComponent);
     modalRef.componentInstance.dishCategoryId = dishCategory.id;
     modalRef.componentInstance.dish = dish.clone();
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
-  public decOrderOfDish(
-    dishCategory: DishCategoryModel,
-    dish: DishModel
-  ): void {
+  public decOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
     this.facade.decOrderOfDish(dishCategory.id, dish.id);
   }
 
-  public incOrderOfDish(
-    dishCategory: DishCategoryModel,
-    dish: DishModel
-  ): void {
+  public incOrderOfDish(dishCategory: DishCategoryModel, dish: DishModel): void {
     this.facade.incOrderOfDish(dishCategory.id, dish.id);
   }
 }

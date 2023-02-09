@@ -27,10 +27,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  constructor(
-    private facade: RestaurantAdminFacade,
-    private formBuilder: UntypedFormBuilder
-  ) {
+  constructor(private facade: RestaurantAdminFacade, private formBuilder: UntypedFormBuilder) {
     this.changeServiceInfoForm = this.formBuilder.group({
       pickupAverageTime: [null],
       pickupMinimumOrderValue: [null],
@@ -42,22 +39,12 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
       reservationSystemUrl: [null],
       hygienicHandling: [''],
     });
-    this.changeServiceInfoForm.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe((value) => {
-        if (
-          this.changeServiceInfoForm.dirty &&
-          this.changeServiceInfoForm.valid
-        ) {
-          this.updateData(
-            this.pickupEnabled,
-            this.deliveryEnabled,
-            this.reservationEnabled,
-            value
-          );
-        }
-        this.changeServiceInfoForm.markAsPristine();
-      });
+    this.changeServiceInfoForm.valueChanges.pipe(debounceTime(1000)).subscribe((value) => {
+      if (this.changeServiceInfoForm.dirty && this.changeServiceInfoForm.valid) {
+        this.updateData(this.pickupEnabled, this.deliveryEnabled, this.reservationEnabled, value);
+      }
+      this.changeServiceInfoForm.markAsPristine();
+    });
   }
 
   ngOnInit(): void {
@@ -70,15 +57,11 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
 
       this.changeServiceInfoForm.patchValue({
         pickupAverageTime: restaurant.pickupInfo?.averageTime ?? null,
-        pickupMinimumOrderValue:
-          restaurant.pickupInfo?.minimumOrderValue ?? null,
-        pickupMaximumOrderValue:
-          restaurant.pickupInfo?.maximumOrderValue ?? null,
+        pickupMinimumOrderValue: restaurant.pickupInfo?.minimumOrderValue ?? null,
+        pickupMaximumOrderValue: restaurant.pickupInfo?.maximumOrderValue ?? null,
         deliveryAverageTime: restaurant.deliveryInfo?.averageTime ?? null,
-        deliveryMinimumOrderValue:
-          restaurant.deliveryInfo?.minimumOrderValue ?? null,
-        deliveryMaximumOrderValue:
-          restaurant.deliveryInfo?.maximumOrderValue ?? null,
+        deliveryMinimumOrderValue: restaurant.deliveryInfo?.minimumOrderValue ?? null,
+        deliveryMaximumOrderValue: restaurant.deliveryInfo?.maximumOrderValue ?? null,
         deliveryCosts: restaurant.deliveryInfo?.costs ?? null,
         reservationSystemUrl: restaurant.reservationInfo.reservationSystemUrl,
         hygienicHandling: restaurant.hygienicHandling,
@@ -97,38 +80,18 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
   }
 
   togglePickupEnabled() {
-    this.updateData(
-      !this.pickupEnabled,
-      this.deliveryEnabled,
-      this.reservationEnabled,
-      this.changeServiceInfoForm.value
-    );
+    this.updateData(!this.pickupEnabled, this.deliveryEnabled, this.reservationEnabled, this.changeServiceInfoForm.value);
   }
 
   toggleDeliveryEnabled() {
-    this.updateData(
-      this.pickupEnabled,
-      !this.deliveryEnabled,
-      this.reservationEnabled,
-      this.changeServiceInfoForm.value
-    );
+    this.updateData(this.pickupEnabled, !this.deliveryEnabled, this.reservationEnabled, this.changeServiceInfoForm.value);
   }
 
   toggleReservationEnabled() {
-    this.updateData(
-      this.pickupEnabled,
-      this.deliveryEnabled,
-      !this.reservationEnabled,
-      this.changeServiceInfoForm.value
-    );
+    this.updateData(this.pickupEnabled, this.deliveryEnabled, !this.reservationEnabled, this.changeServiceInfoForm.value);
   }
 
-  private updateData(
-    pickupEnabled: boolean,
-    deliveryEnabled: boolean,
-    reservationEnabled: boolean,
-    value: any
-  ): void {
+  private updateData(pickupEnabled: boolean, deliveryEnabled: boolean, reservationEnabled: boolean, value: any): void {
     this.facade.changeServiceInfo(
       new ServiceInfoModel({
         pickupEnabled: pickupEnabled,
@@ -143,7 +106,7 @@ export class OrderSettingsComponent implements OnInit, OnDestroy {
         reservationEnabled: reservationEnabled,
         reservationSystemUrl: value.reservationSystemUrl,
         hygienicHandling: value.hygienicHandling,
-      })
+      }),
     );
   }
 }

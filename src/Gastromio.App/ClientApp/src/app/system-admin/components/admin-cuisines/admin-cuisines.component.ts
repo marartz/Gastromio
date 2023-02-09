@@ -14,19 +14,12 @@ import { SystemAdminFacade } from '../../system-admin.facade';
 @Component({
   selector: 'app-admin-cuisines',
   templateUrl: './admin-cuisines.component.html',
-  styleUrls: [
-    './admin-cuisines.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css',
-  ],
+  styleUrls: ['./admin-cuisines.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css'],
 })
 export class AdminCuisinesComponent implements OnInit {
   cuisines$: Observable<CuisineModel[]>;
 
-  constructor(
-    private modalService: NgbModal,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(private modalService: NgbModal, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.cuisines$ = this.facade.getCuisines$();

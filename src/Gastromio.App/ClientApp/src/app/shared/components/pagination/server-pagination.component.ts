@@ -2,59 +2,21 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-server-pagination',
-  template: ` <ul
-    *ngIf="pager.pages && pager.pages.length"
-    class="pagination justify-content-center"
-  >
-    <li
-      [ngClass]="{ disabled: pager.currentPage === 1 }"
-      class="page-item first-item"
-    >
-      <a (click)="triggerFetchPage(1)" class="page-link" [routerLink]="[]"
-        ><i class="fas fa-angle-double-left"></i
-      ></a>
+  template: ` <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+    <li [ngClass]="{ disabled: pager.currentPage === 1 }" class="page-item first-item">
+      <a (click)="triggerFetchPage(1)" class="page-link" [routerLink]="[]"><i class="fas fa-angle-double-left"></i></a>
     </li>
-    <li
-      [ngClass]="{ disabled: pager.currentPage === 1 }"
-      class="page-item previous-item"
-    >
-      <a
-        (click)="triggerFetchPage(pager.currentPage - 1)"
-        class="page-link"
-        [routerLink]="[]"
-        ><i class="fas fa-angle-left"></i
-      ></a>
+    <li [ngClass]="{ disabled: pager.currentPage === 1 }" class="page-item previous-item">
+      <a (click)="triggerFetchPage(pager.currentPage - 1)" class="page-link" [routerLink]="[]"><i class="fas fa-angle-left"></i></a>
     </li>
-    <li
-      *ngFor="let page of pager.pages"
-      [ngClass]="{ active: pager.currentPage === page }"
-      class="page-item number-item"
-    >
-      <a (click)="triggerFetchPage(page)" class="page-link" [routerLink]="[]">{{
-        page
-      }}</a>
+    <li *ngFor="let page of pager.pages" [ngClass]="{ active: pager.currentPage === page }" class="page-item number-item">
+      <a (click)="triggerFetchPage(page)" class="page-link" [routerLink]="[]">{{ page }}</a>
     </li>
-    <li
-      [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
-      class="page-item next-item"
-    >
-      <a
-        (click)="triggerFetchPage(pager.currentPage + 1)"
-        class="page-link"
-        [routerLink]="[]"
-        ><i class="fas fa-angle-right"></i
-      ></a>
+    <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }" class="page-item next-item">
+      <a (click)="triggerFetchPage(pager.currentPage + 1)" class="page-link" [routerLink]="[]"><i class="fas fa-angle-right"></i></a>
     </li>
-    <li
-      [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
-      class="page-item last-item"
-    >
-      <a
-        (click)="triggerFetchPage(pager.totalPages)"
-        class="page-link"
-        [routerLink]="[]"
-        ><i class="fas fa-angle-double-right"></i
-      ></a>
+    <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }" class="page-item last-item">
+      <a (click)="triggerFetchPage(pager.totalPages)" class="page-link" [routerLink]="[]"><i class="fas fa-angle-double-right"></i></a>
     </li>
   </ul>`,
 })
@@ -79,12 +41,7 @@ export class ServerPaginationComponent {
   triggerFetchPage(page: number = this.pager.currentPage) {
     // update startIndex if page has changed
     if (page !== this.pager.currentPage) {
-      this.pager = this.paginate(
-        this.pager.totalItems,
-        page,
-        this._pageSize,
-        this._maxPages
-      );
+      this.pager = this.paginate(this.pager.totalItems, page, this._pageSize, this._maxPages);
     }
 
     // trigger page fetch in parent component
@@ -107,7 +64,7 @@ export class ServerPaginationComponent {
     totalItems: number,
     currentPage: number = this.pager.currentPage,
     pageSize: number = this._pageSize,
-    maxPages: number = this._maxPages
+    maxPages: number = this._maxPages,
   ): PagingInfo {
     // return empty pager to skip rendering empty pagination component
     if (!totalItems || !pageSize || !maxPages) {
@@ -154,9 +111,7 @@ export class ServerPaginationComponent {
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
     // create an array of pages to ng-repeat in the pager control
-    const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(
-      (i) => startPage + i
-    );
+    const pages = Array.from(Array(endPage + 1 - startPage).keys()).map((i) => startPage + i);
 
     // return object with all pager properties required by the view
     return {

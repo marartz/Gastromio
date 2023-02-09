@@ -12,11 +12,7 @@ import { SystemAdminFacade } from '../../system-admin.facade';
 @Component({
   selector: 'app-remove-user',
   templateUrl: './remove-user.component.html',
-  styleUrls: [
-    './remove-user.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/overlays/modals.min.css',
-  ],
+  styleUrls: ['./remove-user.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/overlays/modals.min.css'],
 })
 export class RemoveUserComponent implements OnInit {
   @Input() public user: UserModel;
@@ -24,10 +20,7 @@ export class RemoveUserComponent implements OnInit {
 
   message$: Observable<string>;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.facade.getIsUpdating$().subscribe((isUpdating) => {

@@ -1,19 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  NgbActiveModal,
-  NgbCalendar,
-  NgbDateStruct,
-  NgbTimeStruct,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCalendar, NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-opening-hour-filter',
   templateUrl: './opening-hour-filter.component.html',
-  styleUrls: [
-    './opening-hour-filter.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css',
-  ],
+  styleUrls: ['./opening-hour-filter.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/modals.component.min.css'],
 })
 export class OpeningHourFilterComponent implements OnInit {
   @Input() public value: Date;
@@ -22,10 +13,7 @@ export class OpeningHourFilterComponent implements OnInit {
   date: NgbDateStruct;
   time: NgbTimeStruct;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private calendar: NgbCalendar
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private calendar: NgbCalendar) {}
 
   ngOnInit() {
     const now = OpeningHourFilterComponent.roundOnQuarterHours(new Date());
@@ -79,20 +67,11 @@ export class OpeningHourFilterComponent implements OnInit {
   }
 
   private static roundOnQuarterHours(date: Date): Date {
-    let minutesToAdd =
-      Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
     return new Date(date.getTime() + minutesToAdd * 60000);
   }
 
   private calculateDate(): Date {
-    return new Date(
-      this.date.year,
-      this.date.month - 1,
-      this.date.day,
-      this.time.hour,
-      this.time.minute,
-      0,
-      0
-    );
+    return new Date(this.date.year, this.date.month - 1, this.date.day, this.time.hour, this.time.minute, 0, 0);
   }
 }

@@ -5,9 +5,7 @@ export class CartInfoModel {
     if (init) {
       Object.assign(this, init);
     }
-    this.orderedDishes = this.orderedDishes?.map(
-      (dish) => new OrderedDishInfoModel(dish)
-    );
+    this.orderedDishes = this.orderedDishes?.map((dish) => new OrderedDishInfoModel(dish));
   }
 
   public orderType: number;

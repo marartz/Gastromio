@@ -1,14 +1,14 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {concat, merge, Observable, of, Subscription} from 'rxjs';
-import {delay, switchMap} from 'rxjs/operators';
-import {BlockUI, NgBlockUI} from 'ng-block-ui';
+import { concat, merge, Observable, of, Subscription } from 'rxjs';
+import { delay, switchMap } from 'rxjs/operators';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
-import {RestaurantModel} from '../../../shared/models/restaurant.model';
+import { RestaurantModel } from '../../../shared/models/restaurant.model';
 
-import {RestaurantAdminFacade} from '../../restaurant-admin.facade';
-import {LinkInfo} from '../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component';
+import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
+import { LinkInfo } from '../../../shared/components/scrollable-nav-bar/scrollable-nav-bar.component';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -34,18 +34,14 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
   private updateErrorSubscription: Subscription;
 
   public links: Array<LinkInfo> = [
-    {id: 'general', name: 'Allgemein'},
-    {id: 'order', name: 'Bestellung'},
-    {id: 'payment', name: 'Zahlung'},
-    {id: 'opening-hours', name: 'Zeiten'},
-    {id: 'dishes', name: 'Speisen'},
+    { id: 'general', name: 'Allgemein' },
+    { id: 'order', name: 'Bestellung' },
+    { id: 'payment', name: 'Zahlung' },
+    { id: 'opening-hours', name: 'Zeiten' },
+    { id: 'dishes', name: 'Speisen' },
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private facade: RestaurantAdminFacade
-  ) {
-  }
+  constructor(private route: ActivatedRoute, private facade: RestaurantAdminFacade) {}
 
   ngOnInit() {
     this.facade.getIsInitializing$().subscribe((isInitializing) => {
@@ -79,17 +75,17 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
         } else {
           return of(false);
         }
-      })
+      }),
     );
 
     this.updateErrorSubscription = concat(
       of(undefined),
-      this.facade.getUpdateError$()
-        .pipe(switchMap((message) => {
-            console.log("message: ", message);
-            return concat(of(message), of(undefined).pipe(delay(5000)));
-          })
-        )
+      this.facade.getUpdateError$().pipe(
+        switchMap((message) => {
+          console.log('message: ', message);
+          return concat(of(message), of(undefined).pipe(delay(5000)));
+        }),
+      ),
     ).subscribe((message) => {
       this.updateError = message;
     });
@@ -100,8 +96,7 @@ export class AdminRestaurantComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   selectTab(tab: string): void {
     this.facade.selectTab(tab);

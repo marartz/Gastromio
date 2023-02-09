@@ -9,11 +9,7 @@ import AOS from 'aos';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private titleService: Title,
-    private router: Router
-  ) {}
+  constructor(private activatedRoute: ActivatedRoute, private titleService: Title, private router: Router) {}
 
   ngOnInit() {
     AOS.init();

@@ -35,16 +35,7 @@ import { SystemAdminComponent } from './components/system-admin/system-admin.com
 import { SystemAdminFacade } from './system-admin.facade';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
-    BlockUIModule.forRoot(),
-    SystemAdminRoutingModule,
-    SharedModule,
-    AuthModule,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule, BlockUIModule.forRoot(), SystemAdminRoutingModule, SharedModule, AuthModule],
   declarations: [
     AddCuisineComponent,
     AddRestaurantComponent,
@@ -64,11 +55,6 @@ import { SystemAdminFacade } from './system-admin.facade';
     RemoveUserComponent,
     SystemAdminComponent,
   ],
-  providers: [
-    CuisineAdminService,
-    RestaurantSysAdminService,
-    UserAdminService,
-    SystemAdminFacade,
-  ],
+  providers: [CuisineAdminService, RestaurantSysAdminService, UserAdminService, SystemAdminFacade],
 })
 export class SystemAdminModule {}

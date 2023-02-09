@@ -3,59 +3,55 @@
 
 /* * APERCU */
 @font-face {
-  font-family: "Apercu";
+  font-family: 'Apercu';
   font-style: normal;
   font-weight: 300;
-  src: url("./assets/fonts/apercu/apercu-light-pro.eot") format("eot");
-  src: url("./assets/fonts/apercu/apercu-light-pro.woff2") format("woff2"),
-    url("./assets/fonts/apercu/apercu-light-pro.woff") format("woff"),
-    url("./assets/fonts/apercu/apercu-light-pro.ttf") format("truetype");
+  src: url('./assets/fonts/apercu/apercu-light-pro.eot') format('eot');
+  src: url('./assets/fonts/apercu/apercu-light-pro.woff2') format('woff2'), url('./assets/fonts/apercu/apercu-light-pro.woff') format('woff'),
+    url('./assets/fonts/apercu/apercu-light-pro.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Apercu";
+  font-family: 'Apercu';
   font-style: normal;
   font-weight: 400;
-  src: url("./assets/fonts/apercu/apercu-regular-pro.eot") format("eot");
-  src: url("./assets/fonts/apercu/apercu-regular-pro.woff2") format("woff2"),
-    url("./assets/fonts/apercu/apercu-regular-pro.woff") format("woff"),
-    url("./assets/fonts/apercu/apercu-regular-pro.ttf") format("truetype");
+  src: url('./assets/fonts/apercu/apercu-regular-pro.eot') format('eot');
+  src: url('./assets/fonts/apercu/apercu-regular-pro.woff2') format('woff2'), url('./assets/fonts/apercu/apercu-regular-pro.woff') format('woff'),
+    url('./assets/fonts/apercu/apercu-regular-pro.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Apercu";
+  font-family: 'Apercu';
   font-style: normal;
   font-weight: 500;
-  src: url("./assets/fonts/apercu/apercu-medium-pro.eot") format("eot");
-  src: url("./assets/fonts/apercu/apercu-medium-pro.woff2") format("woff2"),
-    url("./assets/fonts/apercu/apercu-medium-pro.woff") format("woff"),
-    url("./assets/fonts/apercu/apercu-medium-pro.ttf") format("truetype");
+  src: url('./assets/fonts/apercu/apercu-medium-pro.eot') format('eot');
+  src: url('./assets/fonts/apercu/apercu-medium-pro.woff2') format('woff2'), url('./assets/fonts/apercu/apercu-medium-pro.woff') format('woff'),
+    url('./assets/fonts/apercu/apercu-medium-pro.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Apercu";
+  font-family: 'Apercu';
   font-style: normal;
   font-weight: 700;
-  src: url("./assets/fonts/apercu/apercu-bold-pro.eot") format("eot");
-  src: url("./assets/fonts/apercu/apercu-bold-pro.woff2") format("woff2"),
-    url("./assets/fonts/apercu/apercu-bold-pro.woff") format("woff"),
-    url("./assets/fonts/apercu/apercu-bold-pro.ttf") format("truetype");
+  src: url('./assets/fonts/apercu/apercu-bold-pro.eot') format('eot');
+  src: url('./assets/fonts/apercu/apercu-bold-pro.woff2') format('woff2'), url('./assets/fonts/apercu/apercu-bold-pro.woff') format('woff'),
+    url('./assets/fonts/apercu/apercu-bold-pro.ttf') format('truetype');
 }
 
 /* * THEMES */
 :root {
-  --apercu: "Apercu", "sans-serif";
-  --blue: #ADCCCB;
-  --green: #81B67C;
+  --apercu: 'Apercu', 'sans-serif';
+  --blue: #adcccb;
+  --green: #81b67c;
   --grey: #363636;
-  --yellow: #DECF80;
-  --white: #FFFFFF;
+  --yellow: #decf80;
+  --white: #ffffff;
   --transparent: transparent;
-  --bg-rough-blue: var(--blue) url("./assets/images/rough/blue.png") repeat;
-  --bg-rough-green: var(--green) url("./assets/images/rough/green.png") repeat;
-  --bg-rough-grey: var(--grey) url("./assets/images/rough/grey.png") repeat;
-  --bg-rough-yellow: var(--yellow) url("./assets/images/rough/yellow.png") repeat;
-  --sans: "Apercu", "sans-serif";
+  --bg-rough-blue: var(--blue) url('./assets/images/rough/blue.png') repeat;
+  --bg-rough-green: var(--green) url('./assets/images/rough/green.png') repeat;
+  --bg-rough-grey: var(--grey) url('./assets/images/rough/grey.png') repeat;
+  --bg-rough-yellow: var(--yellow) url('./assets/images/rough/yellow.png') repeat;
+  --sans: 'Apercu', 'sans-serif';
 }
 
 /* * GENERAL */
@@ -154,7 +150,7 @@ body::backdrop {
     background-position: bottom;
   }
   .hero::before {
-    content: "";
+    content: '';
     height: 100%;
     position: absolute;
     width: 100%;
@@ -163,7 +159,7 @@ body::backdrop {
 
 .hero.overlay::before {
   background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
-  content: "";
+  content: '';
   height: 100%;
   position: absolute;
   width: 100%;
@@ -204,7 +200,7 @@ body::backdrop {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' fill='%23fff' fill-rule='evenodd'%3E%3Cpath d='M15.167 6.367c.8 0 1.467.667 1.467 1.467s-.667 1.467-1.467 1.467S13.7 8.634 13.7 7.834s.667-1.467 1.467-1.467zm0 5.067c.4 0 .8.267.8.8v9.467h1.467c.4 0 .8.267.8.667s-.267.8-.8.8h-4.4c-.4 0-.667-.267-.667-.8 0-.4.267-.667.667-.667h1.467v-8.8h-.8c-.4 0-.667-.267-.667-.667s.267-.8.667-.8h1.467zm0-9.467c-7.333 0-13.2 5.867-13.2 13.2s5.867 13.2 13.2 13.2 13.2-5.867 13.2-13.2-5.867-13.2-13.2-13.2zm0-1.467a14.625 14.625 0 0 1 14.667 14.667c0 8.134-6.533 14.667-14.667 14.667S.5 23.301.5 15.167 7.033.5 15.167.5z' stroke='none' fill-rule='nonzero'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  content: " ";
+  content: ' ';
   cursor: pointer;
   height: 22px;
   margin-left: 4px;
@@ -224,46 +220,46 @@ body::backdrop {
 }
 
 /* Snippet aus node_modules/aos/dist/aos.css */
-[data-aos="gm-move-up"] {
+[data-aos='gm-move-up'] {
   opacity: 0;
   transform: translateY(10px);
   transition-property: transform, opacity;
 }
-[data-aos="gm-move-down"] {
+[data-aos='gm-move-down'] {
   opacity: 0;
   transform: translateY(-10px);
   transition-property: transform, opacity;
 }
-[data-aos="gm-move-right"] {
+[data-aos='gm-move-right'] {
   opacity: 0;
   transform: translateX(-10px);
   transition-property: transform, opacity;
 }
-[data-aos="gm-move-left"] {
+[data-aos='gm-move-left'] {
   opacity: 0;
   transform: translateX(10px);
   transition-property: transform, opacity;
 }
-[data-aos="gm-move-up"].aos-animate {
+[data-aos='gm-move-up'].aos-animate {
   opacity: 1;
   transform: translateY(0px);
 }
-[data-aos="gm-move-down"].aos-animate {
+[data-aos='gm-move-down'].aos-animate {
   opacity: 1;
   transform: translateY(0px);
 }
-[data-aos="gm-move-right"].aos-animate {
+[data-aos='gm-move-right'].aos-animate {
   opacity: 1;
   transform: translateX(0px);
 }
-[data-aos="gm-move-left"].aos-animate {
+[data-aos='gm-move-left'].aos-animate {
   opacity: 1;
   transform: translateX(0px);
 }
-[data-aos="gm-ease"] {
+[data-aos='gm-ease'] {
   opacity: 0;
   transition-property: opacity;
 }
-[data-aos="gm-ease"].aos-animate {
+[data-aos='gm-ease'].aos-animate {
   opacity: 1;
 }

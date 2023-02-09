@@ -17,11 +17,7 @@ import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
 @Component({
   selector: 'app-edit-dish',
   templateUrl: './edit-dish.component.html',
-  styleUrls: [
-    './edit-dish.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css',
-  ],
+  styleUrls: ['./edit-dish.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/modals.component.min.css'],
 })
 export class EditDishComponent implements OnInit {
   public readonly maxStringLength = 500;
@@ -37,11 +33,7 @@ export class EditDishComponent implements OnInit {
 
   price: number;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: RestaurantAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: RestaurantAdminFacade) {}
 
   ngOnInit() {
     this.message$ = this.facade.getUpdateError$();
@@ -55,14 +47,8 @@ export class EditDishComponent implements OnInit {
 
     this.editDishForm = this.formBuilder.group({
       name: [this.dish.name, Validators.required],
-      description: [
-        this.dish.description,
-        Validators.maxLength(this.maxStringLength),
-      ],
-      productInfo: [
-        this.dish.productInfo,
-        Validators.maxLength(this.maxStringLength),
-      ],
+      description: [this.dish.description, Validators.maxLength(this.maxStringLength)],
+      productInfo: [this.dish.productInfo, Validators.maxLength(this.maxStringLength)],
     });
 
     if (this.dish.variants.length === 0) {
@@ -83,9 +69,7 @@ export class EditDishComponent implements OnInit {
   }
 
   onRemoveVariant(variant: DishVariantModel): void {
-    const index = this.dish.variants.findIndex(
-      (en) => en.variantId === variant.variantId
-    );
+    const index = this.dish.variants.findIndex((en) => en.variantId === variant.variantId);
     this.dish.variants.splice(index, 1);
 
     if (this.dish.variants.length === 1) {
@@ -118,10 +102,8 @@ export class EditDishComponent implements OnInit {
       this.dish.variants[0].price = this.price;
     }
 
-    this.facade
-      .addOrChangedDish(this.dishCategoryId, this.dish)
-      .subscribe(() => {
-        this.activeModal.close();
-      });
+    this.facade.addOrChangedDish(this.dishCategoryId, this.dish).subscribe(() => {
+      this.activeModal.close();
+    });
   }
 }

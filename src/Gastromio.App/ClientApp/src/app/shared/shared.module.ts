@@ -9,16 +9,8 @@ import { ScrollableNavBarComponent } from './components/scrollable-nav-bar/scrol
 
 @NgModule({
   imports: [CommonModule, RouterModule],
-  declarations: [
-    ClientPaginationComponent,
-    ServerPaginationComponent,
-    ScrollableNavBarComponent,
-  ],
+  declarations: [ClientPaginationComponent, ServerPaginationComponent, ScrollableNavBarComponent],
   providers: [HttpErrorHandlingService],
-  exports: [
-    ClientPaginationComponent,
-    ServerPaginationComponent,
-    ScrollableNavBarComponent,
-  ],
+  exports: [ClientPaginationComponent, ServerPaginationComponent, ScrollableNavBarComponent],
 })
 export class SharedModule {}

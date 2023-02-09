@@ -28,16 +28,14 @@ export class OrderService {
       }),
     };
 
-    return this.http
-      .get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions)
-      .pipe(take(1));
+    return this.http.get<CuisineModel[]>(this.baseUrl + '/cuisines', httpOptions).pipe(take(1));
   }
 
   public searchForRestaurantsAsync(
     search: string,
     orderType: OrderType,
     cuisineId: string,
-    openingHourFilter: string | undefined
+    openingHourFilter: string | undefined,
   ): Observable<RestaurantModel[]> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -59,8 +57,7 @@ export class OrderService {
         orderTypeText = 'reservation';
     }
 
-    let url =
-      this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
+    let url = this.baseUrl + '/restaurants?search=' + encodeURIComponent(search);
 
     if (orderType != undefined) {
       url += '&orderType=' + encodeURIComponent(orderTypeText);
@@ -88,25 +85,16 @@ export class OrderService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       }),
     };
-    return this.http
-      .get<RestaurantModel>(
-        this.baseUrl + '/restaurants/' + encodeURIComponent(id),
-        httpOptions
-      )
-      .pipe(take(1));
+    return this.http.get<RestaurantModel>(this.baseUrl + '/restaurants/' + encodeURIComponent(id), httpOptions).pipe(take(1));
   }
 
-  public sendCheckoutAsync(
-    checkoutModel: CheckoutModel
-  ): Observable<OrderModel> {
+  public sendCheckoutAsync(checkoutModel: CheckoutModel): Observable<OrderModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
       }),
     };
-    return this.http
-      .post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions)
-      .pipe(take(1));
+    return this.http.post<OrderModel>(this.baseUrl + '/checkout', checkoutModel, httpOptions).pipe(take(1));
   }
 }

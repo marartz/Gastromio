@@ -5,9 +5,7 @@ export class DishModel {
     if (init) {
       Object.assign(this, init);
     }
-    this.variants = this.variants?.map(
-      (variant) => new DishVariantModel(variant)
-    );
+    this.variants = this.variants?.map((variant) => new DishVariantModel(variant));
   }
 
   public id: string;

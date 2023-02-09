@@ -12,7 +12,7 @@ export class CartModel {
     private hygienicHandling: string,
     private cartDishes: CartDishModel[],
     private visible: boolean,
-    private serviceTime: Date
+    private serviceTime: Date,
   ) {}
 
   public getOrderType(): OrderType {
@@ -170,19 +170,11 @@ export class CartModel {
     const valueOfOrder = this.getValueOfOrder();
 
     if (this.minimumOrderValue && valueOfOrder < this.minimumOrderValue) {
-      return (
-        'Der Mindestbestellwert von € ' +
-        this.getMinimumOrderValueText() +
-        ' ist nicht erreicht.'
-      );
+      return 'Der Mindestbestellwert von € ' + this.getMinimumOrderValueText() + ' ist nicht erreicht.';
     }
 
     if (this.maximumOrderValue && valueOfOrder > this.maximumOrderValue) {
-      return (
-        'Der Maximalbestellwert von € ' +
-        this.getMaximumOrderValueText() +
-        ' ist überschritten'
-      );
+      return 'Der Maximalbestellwert von € ' + this.getMaximumOrderValueText() + ' ist überschritten';
     }
 
     return undefined;
@@ -199,7 +191,7 @@ export class CartModel {
       this.hygienicHandling,
       this.cartDishes?.map((dish) => dish?.clone()),
       this.visible,
-      this.serviceTime
+      this.serviceTime,
     );
   }
 }

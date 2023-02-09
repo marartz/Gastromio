@@ -25,7 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
   ) {}
 
   ngOnInit() {
@@ -55,9 +55,8 @@ export class ForgotPasswordComponent implements OnInit {
       },
       (response: HttpErrorResponse) => {
         this.sending = false;
-        this.message =
-          this.httpErrorHandlingService.handleError(response).message;
-      }
+        this.message = this.httpErrorHandlingService.handleError(response).message;
+      },
     );
   }
 }

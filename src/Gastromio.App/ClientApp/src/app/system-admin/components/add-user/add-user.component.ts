@@ -14,11 +14,7 @@ import { SystemAdminFacade } from '../../system-admin.facade';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: [
-    './add-user.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css',
-  ],
+  styleUrls: ['./add-user.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/modals.component.min.css'],
 })
 export class AddUserComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -27,34 +23,15 @@ export class AddUserComponent implements OnInit {
   message$: Observable<string>;
   submitted = false;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {
     this.addUserForm = this.formBuilder.group(
       {
         role: ['', Validators.required],
-        email: [
-          '',
-          [
-            Validators.required,
-            Validators.email,
-            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-          ],
-        ],
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}'
-            ),
-          ],
-        ],
+        email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+        password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
         passwordRepeat: [''],
       },
-      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') }
+      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') },
     );
   }
 

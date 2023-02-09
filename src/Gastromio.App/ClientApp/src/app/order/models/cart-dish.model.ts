@@ -2,13 +2,7 @@ import { DishModel } from '../../shared/models/dish.model';
 import { DishVariantModel } from '../../shared/models/dish-variant.model';
 
 export class CartDishModel {
-  constructor(
-    private itemId: string,
-    private dish: DishModel,
-    private variant: DishVariantModel,
-    private count: number,
-    private remarks: string
-  ) {}
+  constructor(private itemId: string, private dish: DishModel, private variant: DishVariantModel, private count: number, private remarks: string) {}
 
   public getItemId(): string {
     return this.itemId;
@@ -40,12 +34,6 @@ export class CartDishModel {
   }
 
   public clone(): CartDishModel {
-    return new CartDishModel(
-      this.itemId,
-      this.dish?.clone(),
-      this.variant?.clone(),
-      this.count,
-      this.remarks
-    );
+    return new CartDishModel(this.itemId, this.dish?.clone(), this.variant?.clone(), this.count, this.remarks);
   }
 }

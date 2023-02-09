@@ -32,11 +32,7 @@ export class ChangeUserPasswordComponent implements OnInit {
   message$: Observable<string>;
   submitted = false;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.facade.getIsUpdating$().subscribe((isUpdating) => {
@@ -51,18 +47,10 @@ export class ChangeUserPasswordComponent implements OnInit {
 
     this.changeUserPasswordForm = this.formBuilder.group(
       {
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}'
-            ),
-          ],
-        ],
+        password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
         passwordRepeat: [''],
       },
-      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') }
+      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') },
     );
   }
 
@@ -76,10 +64,8 @@ export class ChangeUserPasswordComponent implements OnInit {
       return;
     }
 
-    this.facade
-      .changeUserPassword$(this.user.id, data.password)
-      .subscribe(() => {
-        this.activeModal.close('Close click');
-      });
+    this.facade.changeUserPassword$(this.user.id, data.password).subscribe(() => {
+      this.activeModal.close('Close click');
+    });
   }
 }

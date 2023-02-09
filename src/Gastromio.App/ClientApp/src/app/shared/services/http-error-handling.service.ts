@@ -18,7 +18,7 @@ export class HttpErrorHandlingService {
 
   createDefaultResult(): FailureResult {
     return FailureResult.createFromString(
-      'Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.'
+      'Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es erneut bzw. kontaktieren Sie uns, wenn das Problem anhält.',
     );
   }
 }

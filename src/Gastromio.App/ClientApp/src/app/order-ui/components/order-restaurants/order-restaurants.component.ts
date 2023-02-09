@@ -47,10 +47,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
   closedRestaurants$: Observable<RestaurantModel[]>;
   closedRestaurantCount$: Observable<number>;
 
-  constructor(
-    private orderFacade: OrderFacade,
-    private modalService: NgbModal
-  ) {}
+  constructor(private orderFacade: OrderFacade, private modalService: NgbModal) {}
 
   ngOnInit() {
     this.orderFacade.setSelectedOrderTypeIfNotSet(OrderType.Pickup);
@@ -67,11 +64,7 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
 
     this.selectedOrderType$ = this.orderFacade
       .getSelectedOrderType$()
-      .pipe(
-        map((selectedOrderType) =>
-          OrderTypeConverter.convertToString(selectedOrderType)
-        )
-      );
+      .pipe(map((selectedOrderType) => OrderTypeConverter.convertToString(selectedOrderType)));
 
     this.selectedOrderTime$ = this.orderFacade.getSelectedOrderTime$();
 
@@ -85,33 +78,21 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
         let minutesText = selectedOrderTime.getMinutes().toString();
         minutesText = ('0' + minutesText).slice(-2);
 
-        return (
-          selectedOrderTime.toLocaleDateString() +
-          ', ' +
-          hoursText +
-          ':' +
-          minutesText
-        );
-      })
+        return selectedOrderTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
+      }),
     );
 
     this.orderFacade.getCuisines$().subscribe((cuisines) => {
       this.cuisines = cuisines;
     });
 
-    this.totalRestaurantCount$ = this.orderFacade
-      .getRestaurants$()
-      .pipe(map((restaurants) => restaurants?.length ?? 0));
+    this.totalRestaurantCount$ = this.orderFacade.getRestaurants$().pipe(map((restaurants) => restaurants?.length ?? 0));
 
     this.openedRestaurants$ = this.orderFacade.getOpenedRestaurants$();
-    this.openedRestaurantCount$ = this.orderFacade
-      .getOpenedRestaurants$()
-      .pipe(map((openedRestaurants) => openedRestaurants?.length ?? 0));
+    this.openedRestaurantCount$ = this.orderFacade.getOpenedRestaurants$().pipe(map((openedRestaurants) => openedRestaurants?.length ?? 0));
 
     this.closedRestaurants$ = this.orderFacade.getClosedRestaurants$();
-    this.closedRestaurantCount$ = this.orderFacade
-      .getClosedRestaurants$()
-      .pipe(map((closedRestaurants) => closedRestaurants?.length ?? 0));
+    this.closedRestaurantCount$ = this.orderFacade.getClosedRestaurants$().pipe(map((closedRestaurants) => closedRestaurants?.length ?? 0));
   }
 
   ngOnDestroy() {}
@@ -128,13 +109,12 @@ export class OrderRestaurantsComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(OpeningHourFilterComponent, {
       centered: true,
     });
-    modalRef.componentInstance.value =
-      this.orderFacade.getSelectedOrderTime() ?? new Date();
+    modalRef.componentInstance.value = this.orderFacade.getSelectedOrderTime() ?? new Date();
     modalRef.result.then(
       (value: Date) => {
         this.orderFacade.setSelectedOrderTime(value);
       },
-      () => {}
+      () => {},
     );
   }
 

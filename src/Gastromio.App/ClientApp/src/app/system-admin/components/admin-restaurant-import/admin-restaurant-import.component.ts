@@ -7,11 +7,7 @@ import { SystemAdminFacade } from '../../system-admin.facade';
 @Component({
   selector: 'app-admin-restaurant-import',
   templateUrl: './admin-restaurant-import.component.html',
-  styleUrls: [
-    './admin-restaurant-import.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css',
-  ],
+  styleUrls: ['./admin-restaurant-import.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css'],
 })
 export class AdminRestaurantImportComponent implements OnInit {
   restaurantImportFile: File;
@@ -35,7 +31,7 @@ export class AdminRestaurantImportComponent implements OnInit {
       },
       () => {
         this.logLines = undefined;
-      }
+      },
     );
   }
 
@@ -48,7 +44,7 @@ export class AdminRestaurantImportComponent implements OnInit {
       },
       () => {
         this.logLines = undefined;
-      }
+      },
     );
   }
 

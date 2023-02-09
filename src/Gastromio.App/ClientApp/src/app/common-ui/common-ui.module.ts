@@ -14,20 +14,8 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { CommonUiRoutingModule } from './common-ui.routing.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgbModule,
-    CommonUiRoutingModule,
-    AuthModule,
-    OrderModule,
-  ],
-  declarations: [
-    AboutComponent,
-    BottomBarComponent,
-    ImprintComponent,
-    PrivacyPolicyComponent,
-    TopBarComponent,
-  ],
+  imports: [CommonModule, NgbModule, CommonUiRoutingModule, AuthModule, OrderModule],
+  declarations: [AboutComponent, BottomBarComponent, ImprintComponent, PrivacyPolicyComponent, TopBarComponent],
   providers: [],
   exports: [TopBarComponent, BottomBarComponent],
 })

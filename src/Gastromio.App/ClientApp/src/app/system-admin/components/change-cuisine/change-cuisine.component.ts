@@ -29,11 +29,7 @@ export class ChangeCuisineComponent implements OnInit {
   changeCuisineForm: UntypedFormGroup;
   message$: Observable<string>;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.facade.getIsUpdating$().subscribe((isUpdating) => {

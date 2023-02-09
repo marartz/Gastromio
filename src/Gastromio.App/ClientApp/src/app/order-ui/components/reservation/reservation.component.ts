@@ -27,10 +27,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
-  styleUrls: [
-    './reservation.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-  ],
+  styleUrls: ['./reservation.component.css', '../../../../assets/css/frontend_v3.min.css'],
 })
 export class ReservationComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -63,7 +60,7 @@ export class ReservationComponent implements OnInit {
     private route: ActivatedRoute,
     private titleService: Title,
     private router: Router,
-    private location: Location
+    private location: Location,
   ) {}
 
   ngOnInit() {
@@ -72,15 +69,13 @@ export class ReservationComponent implements OnInit {
     this.blockUI.start('Restaurant wird geladen ...');
 
     const observables = [
-      this.orderFacade
-        .getIsInitialized$()
-        .pipe(filter((isInitialized) => isInitialized === true)),
+      this.orderFacade.getIsInitialized$().pipe(filter((isInitialized) => isInitialized === true)),
       this.route.paramMap.pipe(
         tap((params) => {
           const restaurantId = params.get('restaurantId');
           console.log('restaurantId from params: ', restaurantId);
           if (restaurantId) this.restaurantId = restaurantId;
-        })
+        }),
       ),
     ];
 
@@ -95,28 +90,19 @@ export class ReservationComponent implements OnInit {
               this.restaurant = this.orderFacade.getSelectedRestaurant();
 
               if (!this.restaurant.reservationInfo?.enabled) {
-                this.generalError =
-                  'Das Restaurant unterstützt im Moment noch keine elektronische Reservierungsanfrage';
+                this.generalError = 'Das Restaurant unterstützt im Moment noch keine elektronische Reservierungsanfrage';
                 return;
               }
 
               this.serviceTime = this.orderFacade?.getCart()?.getServiceTime();
 
-              if (
-                this.restaurant.supportedOrderMode === 'anytime' &&
-                this.restaurant.isOpen(undefined) &&
-                !this.serviceTime
-              ) {
+              if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
                 let now = new Date();
-                if (now < this.orderFacade.getStartDateOfReservation())
-                  now = this.orderFacade.getStartDateOfReservation();
-                this.serviceTime =
-                  ReservationComponent.roundOnQuarterHours(now);
+                if (now < this.orderFacade.getStartDateOfReservation()) now = this.orderFacade.getStartDateOfReservation();
+                this.serviceTime = ReservationComponent.roundOnQuarterHours(now);
               }
 
-              this.titleService.setTitle(
-                this.restaurant.name + ' Tischreservierung - Gastromio'
-              );
+              this.titleService.setTitle(this.restaurant.name + ' Tischreservierung - Gastromio');
 
               this.initialized = true;
             } catch (e) {
@@ -130,9 +116,8 @@ export class ReservationComponent implements OnInit {
           (error) => {
             console.log('error: ', error);
             this.blockUI.stop();
-            this.generalError =
-              this.httpErrorHandlingService.handleError(error).message;
-          }
+            this.generalError = this.httpErrorHandlingService.handleError(error).message;
+          },
         );
       });
 
@@ -144,11 +129,9 @@ export class ReservationComponent implements OnInit {
       }
     });
 
-    this.orderFacade
-      .getInitializationError$()
-      .subscribe((initializationError) => {
-        this.generalError = initializationError;
-      });
+    this.orderFacade.getInitializationError$().subscribe((initializationError) => {
+      this.generalError = initializationError;
+    });
 
     this.orderFacade.getIsCheckingOut$().subscribe((isCheckingOut) => {
       if (isCheckingOut) {
@@ -178,51 +161,42 @@ export class ReservationComponent implements OnInit {
   }
 
   getGivenNameError(): string {
-    if (!this.givenName || this.givenName.trim().length === 0)
-      return 'Bitte gib Deinen Vornamen an.';
+    if (!this.givenName || this.givenName.trim().length === 0) return 'Bitte gib Deinen Vornamen an.';
     return undefined;
   }
 
   getLastNameError(): string {
-    if (!this.lastName || this.lastName.trim().length === 0)
-      return 'Bitte gib Deinen Nachnamen an.';
+    if (!this.lastName || this.lastName.trim().length === 0) return 'Bitte gib Deinen Nachnamen an.';
     return undefined;
   }
 
   getStreetError(): string {
-    if (!this.street || this.street.trim().length === 0)
-      return 'Bitte gib eine Straße an.';
+    if (!this.street || this.street.trim().length === 0) return 'Bitte gib eine Straße an.';
     return undefined;
   }
 
   getZipCodeError(): string {
-    if (!this.zipCode || this.zipCode < 10000 || this.zipCode > 99999)
-      return 'Bitte gib eine Postleitzahl an.';
+    if (!this.zipCode || this.zipCode < 10000 || this.zipCode > 99999) return 'Bitte gib eine Postleitzahl an.';
     return undefined;
   }
 
   getCityError(): string {
-    if (!this.city || this.city.trim().length === 0)
-      return 'Bitte gib eine Stadt an.';
+    if (!this.city || this.city.trim().length === 0) return 'Bitte gib eine Stadt an.';
     return undefined;
   }
 
   getPhoneError(): string {
-    if (!this.phone || this.phone.trim().length === 0)
-      return 'Bitte gib eine Telefonnummer an.';
+    if (!this.phone || this.phone.trim().length === 0) return 'Bitte gib eine Telefonnummer an.';
     const regex =
       /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/;
-    if (!regex.test(this.phone))
-      return 'Bitte gib eine gültige Telefonnummer an.';
+    if (!regex.test(this.phone)) return 'Bitte gib eine gültige Telefonnummer an.';
     return undefined;
   }
 
   getEmailError(): string {
-    if (!this.email || this.email.trim().length === 0)
-      return 'Bitte gib eine E-Mail Adresse an.';
+    if (!this.email || this.email.trim().length === 0) return 'Bitte gib eine E-Mail Adresse an.';
     const regex = RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
-    if (!regex.test(this.email))
-      return 'Bitte gib eine gültige E-Mail Adresse an.';
+    if (!regex.test(this.email)) return 'Bitte gib eine gültige E-Mail Adresse an.';
     return undefined;
   }
 
@@ -239,7 +213,7 @@ export class ReservationComponent implements OnInit {
       (value: Date) => {
         this.serviceTime = value;
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -252,13 +226,7 @@ export class ReservationComponent implements OnInit {
     let minutesText = this.serviceTime.getMinutes().toString();
     minutesText = ('0' + minutesText).slice(-2);
 
-    return (
-      this.serviceTime.toLocaleDateString() +
-      ', ' +
-      hoursText +
-      ':' +
-      minutesText
-    );
+    return this.serviceTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
   }
 
   getServiceTimeError(): string {
@@ -279,7 +247,7 @@ export class ReservationComponent implements OnInit {
     modalRef.componentInstance.cartDish = cartDish;
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
@@ -323,9 +291,7 @@ export class ReservationComponent implements OnInit {
     checkoutModel.phone = this.phone;
     checkoutModel.email = this.email;
     checkoutModel.addAddressInfo = this.comments;
-    checkoutModel.orderType = OrderTypeConverter.convertToString(
-      OrderType.Reservation
-    );
+    checkoutModel.orderType = OrderTypeConverter.convertToString(OrderType.Reservation);
     checkoutModel.restaurantId = this.restaurantId;
     checkoutModel.cartDishes = new Array<StoredCartDishModel>();
 
@@ -338,8 +304,7 @@ export class ReservationComponent implements OnInit {
   }
 
   private static roundOnQuarterHours(date: Date): Date {
-    let minutesToAdd =
-      Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
     return new Date(date.getTime() + minutesToAdd * 60000);
   }
 }

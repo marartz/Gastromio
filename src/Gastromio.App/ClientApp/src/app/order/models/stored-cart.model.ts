@@ -5,9 +5,7 @@ export class StoredCartModel {
     if (init) {
       Object.assign(this, init);
     }
-    this.cartDishes = this.cartDishes?.map(
-      (dish) => new StoredCartDishModel(dish)
-    );
+    this.cartDishes = this.cartDishes?.map((dish) => new StoredCartDishModel(dish));
   }
 
   public orderType: string;

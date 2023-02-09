@@ -18,7 +18,6 @@ import { OrderFacade } from '../../../order/order.facade';
   ],
 })
 export class OrderHomeComponent implements OnInit, OnDestroy {
-
   initialized: boolean;
 
   restaurants$: Observable<RestaurantModel[]>;
@@ -26,15 +25,11 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
   constructor(private orderFacade: OrderFacade, public router: Router) {}
 
   ngOnInit() {
-
     this.orderFacade.resetFilters();
 
     this.restaurants$ = this.orderFacade.getRestaurants$().pipe(
       map((restaurants) => {
-        if (
-          this.orderFacade.getSelectedSearchPhrase().length === 0 ||
-          restaurants === undefined
-        ) {
+        if (this.orderFacade.getSelectedSearchPhrase().length === 0 || restaurants === undefined) {
           return new Array<RestaurantModel>();
         }
 
@@ -45,7 +40,7 @@ export class OrderHomeComponent implements OnInit, OnDestroy {
         }
 
         return result;
-      })
+      }),
     );
   }
 

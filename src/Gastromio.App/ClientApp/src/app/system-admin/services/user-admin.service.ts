@@ -15,11 +15,7 @@ export class UserAdminService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  public searchForUsersAsync(
-    search: string,
-    skipCount: number,
-    takeCount: number
-  ): Observable<PagingModel<UserModel>> {
+  public searchForUsersAsync(search: string, skipCount: number, takeCount: number): Observable<PagingModel<UserModel>> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -29,23 +25,13 @@ export class UserAdminService {
     };
     return this.http
       .get<PagingModel<UserModel>>(
-        this.baseUrl +
-          '/users?search=' +
-          encodeURIComponent(search) +
-          '&skip=' +
-          skipCount +
-          '&take=' +
-          takeCount,
-        httpOptions
+        this.baseUrl + '/users?search=' + encodeURIComponent(search) + '&skip=' + skipCount + '&take=' + takeCount,
+        httpOptions,
       )
       .pipe(take(1));
   }
 
-  public addUserAsync(
-    role: string,
-    email: string,
-    password: string
-  ): Observable<UserModel> {
+  public addUserAsync(role: string, email: string, password: string): Observable<UserModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -53,20 +39,10 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       }),
     };
-    return this.http
-      .post<UserModel>(
-        this.baseUrl + '/users',
-        { role, email, password },
-        httpOptions
-      )
-      .pipe(take(1));
+    return this.http.post<UserModel>(this.baseUrl + '/users', { role, email, password }, httpOptions).pipe(take(1));
   }
 
-  public changeUserDetailsAsync(
-    userId: string,
-    role: string,
-    email: string
-  ): Observable<UserModel> {
+  public changeUserDetailsAsync(userId: string, role: string, email: string): Observable<UserModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -74,19 +50,10 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       }),
     };
-    return this.http
-      .post<UserModel>(
-        this.baseUrl + '/users/' + userId + '/changedetails',
-        { role, email },
-        httpOptions
-      )
-      .pipe(take(1));
+    return this.http.post<UserModel>(this.baseUrl + '/users/' + userId + '/changedetails', { role, email }, httpOptions).pipe(take(1));
   }
 
-  public changeUserPasswordAsync(
-    userId: string,
-    password: string
-  ): Observable<UserModel> {
+  public changeUserPasswordAsync(userId: string, password: string): Observable<UserModel> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -94,13 +61,7 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       }),
     };
-    return this.http
-      .post<UserModel>(
-        this.baseUrl + '/users/' + userId + '/changepassword',
-        { password },
-        httpOptions
-      )
-      .pipe(take(1));
+    return this.http.post<UserModel>(this.baseUrl + '/users/' + userId + '/changepassword', { password }, httpOptions).pipe(take(1));
   }
 
   public removeUserAsync(userId: string): Observable<void> {
@@ -111,8 +72,6 @@ export class UserAdminService {
         Authorization: 'Bearer ' + this.authService.getToken(),
       }),
     };
-    return this.http
-      .delete<void>(this.baseUrl + '/users/' + userId, httpOptions)
-      .pipe(take(1));
+    return this.http.delete<void>(this.baseUrl + '/users/' + userId, httpOptions).pipe(take(1));
   }
 }

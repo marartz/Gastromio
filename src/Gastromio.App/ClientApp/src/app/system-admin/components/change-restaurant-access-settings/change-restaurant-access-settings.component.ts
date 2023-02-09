@@ -2,17 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 
 import { Observable, of } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
-import {
-  NgbActiveModal,
-  NgbTypeaheadSelectItemEvent,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
@@ -40,11 +32,7 @@ export class ChangeRestaurantAccessSettingsComponent implements OnInit {
   administrators: UserModel[];
   message$: Observable<string>;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {}
 
   ngOnInit(): void {
     this.facade.getIsUpdating$().subscribe((isUpdating) => {
@@ -78,20 +66,17 @@ export class ChangeRestaurantAccessSettingsComponent implements OnInit {
               } else {
                 return users;
               }
-            })
+            }),
           );
         }
-      })
+      }),
     );
 
   formatUser(user: UserModel): string {
     return user.email;
   }
 
-  onUserSelected(
-    event: NgbTypeaheadSelectItemEvent,
-    input: HTMLInputElement
-  ): void {
+  onUserSelected(event: NgbTypeaheadSelectItemEvent, input: HTMLInputElement): void {
     const user: UserModel = event.item;
 
     event.preventDefault();
@@ -118,10 +103,8 @@ export class ChangeRestaurantAccessSettingsComponent implements OnInit {
   }
 
   onSave(): void {
-    this.facade
-      .updateAdministratorsOfRestaurant$(this.restaurant, this.administrators)
-      .subscribe(() => {
-        this.activeModal.close('Close click');
-      });
+    this.facade.updateAdministratorsOfRestaurant$(this.restaurant, this.administrators).subscribe(() => {
+      this.activeModal.close('Close click');
+    });
   }
 }

@@ -20,7 +20,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SystemAdminModule,
     RestaurantAdminModule,
     RouterModule.forRoot([]),
-    NgbModule
+    NgbModule,
   ],
   declarations: [AppComponent],
   providers: [],

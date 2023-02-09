@@ -15,7 +15,7 @@ import { ConfirmPasswordValidator } from '../../../auth/validators/password.vali
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css']
+  styleUrls: ['./reset-password.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css'],
 })
 export class ResetPasswordComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -33,24 +33,16 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
   ) {}
 
   ngOnInit() {
     this.changePasswordForm = this.formBuilder.group(
       {
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}'
-            ),
-          ],
-        ],
+        password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{6,}')]],
         passwordRepeat: [''],
       },
-      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') }
+      { validators: ConfirmPasswordValidator('password', 'passwordRepeat') },
     );
 
     this.blockUI.start('Initialisiere...');
@@ -60,11 +52,8 @@ export class ResetPasswordComponent implements OnInit {
         concatMap((params) => {
           this.userId = params.userId;
           this.passwordResetCode = params.passwordResetCode;
-          return this.authService.validatePasswordResetCodeAsync(
-            this.userId,
-            this.passwordResetCode
-          );
-        })
+          return this.authService.validatePasswordResetCodeAsync(this.userId, this.passwordResetCode);
+        }),
       )
       .subscribe(
         () => {
@@ -73,10 +62,9 @@ export class ResetPasswordComponent implements OnInit {
         },
         (response: HttpErrorResponse) => {
           this.valid = false;
-          this.errorMessage =
-            this.httpErrorHandlingService.handleError(response).message;
+          this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
           this.blockUI.stop();
-        }
+        },
       );
   }
 
@@ -91,25 +79,18 @@ export class ResetPasswordComponent implements OnInit {
     }
 
     this.blockUI.start('Ändere Dein Passwort...');
-    this.authService
-      .changePasswordWithResetCodeAsync(
-        this.userId,
-        this.passwordResetCode,
-        data.password
-      )
-      .subscribe(
-        () => {
-          this.blockUI.stop();
-          this.submitted = false;
-          this.errorMessage = undefined;
-          this.success = true;
-          this.changePasswordForm.reset();
-        },
-        (response: HttpErrorResponse) => {
-          this.blockUI.stop();
-          this.errorMessage =
-            this.httpErrorHandlingService.handleError(response).message;
-        }
-      );
+    this.authService.changePasswordWithResetCodeAsync(this.userId, this.passwordResetCode, data.password).subscribe(
+      () => {
+        this.blockUI.stop();
+        this.submitted = false;
+        this.errorMessage = undefined;
+        this.success = true;
+        this.changePasswordForm.reset();
+      },
+      (response: HttpErrorResponse) => {
+        this.blockUI.stop();
+        this.errorMessage = this.httpErrorHandlingService.handleError(response).message;
+      },
+    );
   }
 }

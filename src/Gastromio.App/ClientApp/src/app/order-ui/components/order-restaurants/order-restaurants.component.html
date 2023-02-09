@@ -1,5 +1,4 @@
 <main class="main" role="main">
-
   <header class="hero">
     <div class="container">
       <div class="hero-box">
@@ -95,106 +94,114 @@
       </ng-container>
 
       <div id="mobile-info">
-        <div class="restaurant-count">
-          {{ openedRestaurantCount$ | async }} von {{ totalRestaurantCount$ | async }} Restaurants
-        </div>
+        <div class="restaurant-count">{{ openedRestaurantCount$ | async }} von {{ totalRestaurantCount$ | async }} Restaurants</div>
       </div>
 
       <div class="container">
-          <!-- START: _2_action-bar -->
-          <aside id="actions">
-            <h2 class="title">{{ openedRestaurantCount$ | async }} von {{ totalRestaurantCount$ | async }} Restaurants</h2>
-            <div class="restaurant-actions">
-              <div class="restaurant-search" style="margin-right: 0px">
-                <div class="icon-wrapper"><div class="icon"></div></div>
-                <input
-                  autocomplete="off"
-                  inputmode="latin"
-                  maxlength="100"
-                  placeholder="Restaurant suchen ..."
-                  spellcheck="false"
-                  type="text"
-                  (keyup)="onSearchType($event.target.value)"
-                />
-              </div>
+        <!-- START: _2_action-bar -->
+        <aside id="actions">
+          <h2 class="title">{{ openedRestaurantCount$ | async }} von {{ totalRestaurantCount$ | async }} Restaurants</h2>
+          <div class="restaurant-actions">
+            <div class="restaurant-search" style="margin-right: 0px">
+              <div class="icon-wrapper"><div class="icon"></div></div>
+              <input
+                autocomplete="off"
+                inputmode="latin"
+                maxlength="100"
+                placeholder="Restaurant suchen ..."
+                spellcheck="false"
+                type="text"
+                (keyup)="onSearchType($event.target.value)"
+              />
             </div>
-          </aside>
-          <!-- ENDE: _2_action-bar -->
-
-          <!-- START: _3_advanced-filter -->
-          <aside id="filter">
-            <div class="filter-wrapper">
-              <section id="ordertype-filter">
-                <p class="title">
-                  Wie kommt das Essen zu dir?
-                </p>
-                <div class="filter">
-                  <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
-                    <button type="button" class="switch active">
-                      <span>Abholung</span>
-                    </button>
-                    <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
-                  </ng-container>
-                  <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
-                    <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
-                    <button type="button" class="switch active">
-                      <span>Lieferung</span>
-                    </button>
-                  </ng-container>
-                  <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
-                    <button type="button" class="switch" style="margin-left: 10px" (click)="onPickupSelected()">Abholung</button>
-                    <button type="button" class="switch" style="margin-left: 10px" (click)="onDeliverySelected()">Lieferung</button>
-                  </ng-container>
-                </div>
-                <div class="filter-divider">
-                  <p>oder</p>
-                </div>
-                <button class="reservation" type="button" *ngIf="(selectedOrderType$ | async) === 'pickup'" (click)="onReservationSelected()">
-                  Tischreservierung 
-                </button>
-                <button class="reservation" type="button" *ngIf="(selectedOrderType$ | async) === 'delivery'" (click)="onReservationSelected()">
-                  Tischreservierung
-                </button>
-                <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
-                  <button class="reservation active" type="button">Tischreservierung</button>
-                </ng-container>
-              </section>
-              <section id="opening-hour-filter">
-                <p class="title">Für wann möchtest du bestellen?</p>
-                <button type="button" *ngIf="!(selectedOrderTime$ | async)" (click)="openOpeningHourFilter()">Zeit wählen</button>
-                <button *ngIf="selectedOrderTime$ | async" type="button" (click)="openOpeningHourFilter()">{{ selectedOrderTimeText$ | async }}</button>
-              </section>
-              <section id="categories">
-                <p class="title">Filter</p>
-                <div class="category-container">
-                  <div class="category active" [class.active]="isCuisineSelected(undefined)">
-                    <button type="button" (click)="selectCuisine(undefined)">Alle</button>
-                  </div>
-                  <div class="category" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)">
-                    <button type="button" (click)="selectCuisine(cuisine)">{{ cuisine.name }}</button>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </aside>
-          <!-- ENDE: _3_advanced-filter -->
-
-          <div id="restaurants">
-            <app-order-restaurants-row *ngFor="let restaurant of openedRestaurants$ | async" [restaurant]="restaurant" [orderType]="selectedOrderType$ | async" [selectedOpeningHourFilter]="selectedOrderTime$ | async"></app-order-restaurants-row>
-
-            <div class="preorder" *ngIf="(closedRestaurants$ | async) !== undefined && (closedRestaurants$ | async).length > 0">
-              <h3>
-                <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">Für Abholung geschlossen</ng-container>
-                <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">Für Lieferung geschlossen</ng-container>
-                <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">Im Moment geschlossen</ng-container>
-              </h3>
-              <p>Die folgenden Restaurants haben um diese Uhrzeit nicht geöffnet, <br />bei einigen von Ihnen kannst Du aber für eine spätere Öffnungszeit vorbestellen.
-              </p>
-            </div>
-
-            <app-order-restaurants-row *ngFor="let restaurant of closedRestaurants$ | async" [restaurant]="restaurant" [orderType]="selectedOrderType$ | async" [selectedOpeningHourFilter]="selectedOrderTime$ | async"></app-order-restaurants-row>
           </div>
+        </aside>
+        <!-- ENDE: _2_action-bar -->
+
+        <!-- START: _3_advanced-filter -->
+        <aside id="filter">
+          <div class="filter-wrapper">
+            <section id="ordertype-filter">
+              <p class="title">Wie kommt das Essen zu dir?</p>
+              <div class="filter">
+                <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">
+                  <button type="button" class="switch active">
+                    <span>Abholung</span>
+                  </button>
+                  <button type="button" class="switch" (click)="onDeliverySelected()">Lieferung</button>
+                </ng-container>
+                <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">
+                  <button type="button" class="switch" (click)="onPickupSelected()">Abholung</button>
+                  <button type="button" class="switch active">
+                    <span>Lieferung</span>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+                  <button type="button" class="switch" style="margin-left: 10px" (click)="onPickupSelected()">Abholung</button>
+                  <button type="button" class="switch" style="margin-left: 10px" (click)="onDeliverySelected()">Lieferung</button>
+                </ng-container>
+              </div>
+              <div class="filter-divider">
+                <p>oder</p>
+              </div>
+              <button class="reservation" type="button" *ngIf="(selectedOrderType$ | async) === 'pickup'" (click)="onReservationSelected()">
+                Tischreservierung
+              </button>
+              <button class="reservation" type="button" *ngIf="(selectedOrderType$ | async) === 'delivery'" (click)="onReservationSelected()">
+                Tischreservierung
+              </button>
+              <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">
+                <button class="reservation active" type="button">Tischreservierung</button>
+              </ng-container>
+            </section>
+            <section id="opening-hour-filter">
+              <p class="title">Für wann möchtest du bestellen?</p>
+              <button type="button" *ngIf="!(selectedOrderTime$ | async)" (click)="openOpeningHourFilter()">Zeit wählen</button>
+              <button *ngIf="selectedOrderTime$ | async" type="button" (click)="openOpeningHourFilter()">{{ selectedOrderTimeText$ | async }}</button>
+            </section>
+            <section id="categories">
+              <p class="title">Filter</p>
+              <div class="category-container">
+                <div class="category active" [class.active]="isCuisineSelected(undefined)">
+                  <button type="button" (click)="selectCuisine(undefined)">Alle</button>
+                </div>
+                <div class="category" *ngFor="let cuisine of cuisines" [class.active]="isCuisineSelected(cuisine)">
+                  <button type="button" (click)="selectCuisine(cuisine)">{{ cuisine.name }}</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </aside>
+        <!-- ENDE: _3_advanced-filter -->
+
+        <div id="restaurants">
+          <app-order-restaurants-row
+            *ngFor="let restaurant of openedRestaurants$ | async"
+            [restaurant]="restaurant"
+            [orderType]="selectedOrderType$ | async"
+            [selectedOpeningHourFilter]="selectedOrderTime$ | async"
+          ></app-order-restaurants-row>
+
+          <div class="preorder" *ngIf="(closedRestaurants$ | async) !== undefined && (closedRestaurants$ | async).length > 0">
+            <h3>
+              <ng-container *ngIf="(selectedOrderType$ | async) === 'pickup'">Für Abholung geschlossen</ng-container>
+              <ng-container *ngIf="(selectedOrderType$ | async) === 'delivery'">Für Lieferung geschlossen</ng-container>
+              <ng-container *ngIf="(selectedOrderType$ | async) === 'reservation'">Im Moment geschlossen</ng-container>
+            </h3>
+            <p>
+              Die folgenden Restaurants haben um diese Uhrzeit nicht geöffnet, <br />bei einigen von Ihnen kannst Du aber für eine spätere
+              Öffnungszeit vorbestellen.
+            </p>
+          </div>
+
+          <app-order-restaurants-row
+            *ngFor="let restaurant of closedRestaurants$ | async"
+            [restaurant]="restaurant"
+            [orderType]="selectedOrderType$ | async"
+            [selectedOpeningHourFilter]="selectedOrderTime$ | async"
+          ></app-order-restaurants-row>
         </div>
+      </div>
     </section>
   </block-ui>
 </main>

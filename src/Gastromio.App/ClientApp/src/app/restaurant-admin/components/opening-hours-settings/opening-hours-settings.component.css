@@ -18,7 +18,7 @@
 #table table thead th {
   background-color: transparent;
   border: 0px;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0px;
@@ -51,7 +51,7 @@
 
 #table table tbody tr th .email {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
@@ -60,7 +60,7 @@
 
 #table table tbody tr td .role {
   color: #718096;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;

@@ -1,22 +1,9 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, OnInit, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'scrollable-nav-bar',
   templateUrl: './scrollable-nav-bar.component.html',
-  styleUrls: [
-    './scrollable-nav-bar.component.css',
-    '../../../../assets/css/backend_v2.min.css',
-  ],
+  styleUrls: ['./scrollable-nav-bar.component.css', '../../../../assets/css/backend_v2.min.css'],
 })
 export class ScrollableNavBarComponent implements OnInit, OnDestroy {
   @Input('links') links;
@@ -31,19 +18,13 @@ export class ScrollableNavBarComponent implements OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     const currentChange = changes['current'];
-    if (
-      currentChange &&
-      currentChange.previousValue !== currentChange.currentValue
-    ) {
+    if (currentChange && currentChange.previousValue !== currentChange.currentValue) {
       this.selectLink(this.current);
     }
   }
 
   ngAfterViewInit() {
-    this.navElement.nativeElement.addEventListener(
-      'scroll',
-      this.onScroll.bind(this)
-    );
+    this.navElement.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
   }
 
   ngAfterViewChecked() {
@@ -70,8 +51,7 @@ export class ScrollableNavBarComponent implements OnInit, OnDestroy {
   clickedRight(): void {
     const element = this.navElement.nativeElement;
     let newScrollLeft = element.scrollLeft + element.clientWidth - 20;
-    if (newScrollLeft > element.scrollWidth)
-      newScrollLeft = element.scrollWidth;
+    if (newScrollLeft > element.scrollWidth) newScrollLeft = element.scrollWidth;
     element.scrollLeft = newScrollLeft;
   }
 
@@ -79,13 +59,9 @@ export class ScrollableNavBarComponent implements OnInit, OnDestroy {
     const element = this.navElement.nativeElement;
 
     if (element.scrollWidth !== element.clientWidth) {
-      const percent = Math.round(
-        (element.scrollLeft / (element.scrollWidth - element.clientWidth)) * 100
-      );
-      this.leftElement.nativeElement.className =
-        percent !== 0 ? 'show' : 'hide';
-      this.rightElement.nativeElement.className =
-        percent !== 100 ? 'show' : 'hide';
+      const percent = Math.round((element.scrollLeft / (element.scrollWidth - element.clientWidth)) * 100);
+      this.leftElement.nativeElement.className = percent !== 0 ? 'show' : 'hide';
+      this.rightElement.nativeElement.className = percent !== 100 ? 'show' : 'hide';
     } else {
       this.leftElement.nativeElement.className = 'hide';
       this.rightElement.nativeElement.className = 'hide';

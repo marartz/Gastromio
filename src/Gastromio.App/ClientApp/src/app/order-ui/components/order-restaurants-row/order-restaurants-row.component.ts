@@ -64,26 +64,10 @@ export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
 
       if (day !== nowDay || month !== nowMonth) {
         return (
-          'Am ' +
-          day +
-          '.' +
-          month +
-          '. ' +
-          hour +
-          ':' +
-          minute +
-          ' Uhr ' +
-          restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter)
+          'Am ' + day + '.' + month + '. ' + hour + ':' + minute + ' Uhr ' + restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter)
         );
       } else {
-        return (
-          'Um ' +
-          hour +
-          ':' +
-          minute +
-          ' Uhr ' +
-          restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter)
-        );
+        return 'Um ' + hour + ':' + minute + ' Uhr ' + restaurant.getRestaurantClosedReason(this.selectedOpeningHourFilter);
       }
     }
   }

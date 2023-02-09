@@ -27,11 +27,7 @@ export class ChangeDishCategoryComponent implements OnInit {
   changeDishCategoryForm: UntypedFormGroup;
   message$: Observable<string>;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: RestaurantAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: RestaurantAdminFacade) {}
 
   ngOnInit() {
     this.message$ = this.facade.getUpdateError$();
@@ -50,11 +46,9 @@ export class ChangeDishCategoryComponent implements OnInit {
       return;
     }
 
-    this.facade
-      .changeDishCategory(this.dishCategory.id, data.name)
-      .subscribe(() => {
-        this.changeDishCategoryForm.reset();
-        this.activeModal.close();
-      });
+    this.facade.changeDishCategory(this.dishCategory.id, data.name).subscribe(() => {
+      this.changeDishCategoryForm.reset();
+      this.activeModal.close();
+    });
   }
 }

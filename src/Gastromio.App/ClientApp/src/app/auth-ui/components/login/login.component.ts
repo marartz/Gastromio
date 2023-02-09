@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
-    private httpErrorHandlingService: HttpErrorHandlingService
+    private httpErrorHandlingService: HttpErrorHandlingService,
   ) {
     this.loginForm = this.formBuilder.group({
       Email: ['', Validators.required],
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
         const errors = this.httpErrorHandlingService.handleError(error);
         this.generalError = errors.message;
         this.blockUI.stop();
-      }
+      },
     );
   }
 

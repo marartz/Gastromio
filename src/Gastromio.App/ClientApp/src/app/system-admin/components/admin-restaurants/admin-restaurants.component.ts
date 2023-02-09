@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -12,10 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { RestaurantModel } from '../../../shared/models/restaurant.model';
 
-import {
-  ServerPaginationComponent,
-  FetchPageInfo,
-} from '../../../shared/components/pagination/server-pagination.component';
+import { ServerPaginationComponent, FetchPageInfo } from '../../../shared/components/pagination/server-pagination.component';
 
 import { SystemAdminFacade } from '../../system-admin.facade';
 
@@ -27,25 +18,16 @@ import { RemoveRestaurantComponent } from '../remove-restaurant/remove-restauran
 @Component({
   selector: 'app-admin-restaurants',
   templateUrl: './admin-restaurants.component.html',
-  styleUrls: [
-    './admin-restaurants.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css',
-  ],
+  styleUrls: ['./admin-restaurants.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css'],
 })
-export class AdminRestaurantsComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class AdminRestaurantsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(ServerPaginationComponent)
   pagingComponent: ServerPaginationComponent;
   pageOfRestaurants: RestaurantModel[];
 
   public searchPhrase$: Observable<string>;
 
-  constructor(
-    private modalService: NgbModal,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(private modalService: NgbModal, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.searchPhrase$ = this.facade.getRestaurantSearchPhrase$();
@@ -71,7 +53,7 @@ export class AdminRestaurantsComponent
         this.pageOfRestaurants = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -81,33 +63,29 @@ export class AdminRestaurantsComponent
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 
   openChangeRestaurantGeneralSettingsForm(restaurant: RestaurantModel): void {
-    const modalRef = this.modalService.open(
-      ChangeRestaurantGeneralSettingsComponent
-    );
+    const modalRef = this.modalService.open(ChangeRestaurantGeneralSettingsComponent);
     modalRef.componentInstance.restaurant = restaurant;
     modalRef.result.then(
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 
   openChangeRestaurantAccessSettingsForm(restaurant: RestaurantModel): void {
-    const modalRef = this.modalService.open(
-      ChangeRestaurantAccessSettingsComponent
-    );
+    const modalRef = this.modalService.open(ChangeRestaurantAccessSettingsComponent);
     modalRef.componentInstance.restaurant = restaurant;
     modalRef.result.then(
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -118,7 +96,7 @@ export class AdminRestaurantsComponent
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 

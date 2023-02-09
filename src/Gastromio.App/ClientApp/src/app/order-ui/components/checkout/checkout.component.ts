@@ -25,10 +25,7 @@ import { EditCartDishComponent } from '../edit-cart-dish/edit-cart-dish.componen
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: [
-    './checkout.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-  ],
+  styleUrls: ['./checkout.component.css', '../../../../assets/css/frontend_v3.min.css'],
 })
 export class CheckoutComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -58,7 +55,7 @@ export class CheckoutComponent implements OnInit {
     private modalService: NgbModal,
     private httpErrorHandlingService: HttpErrorHandlingService,
     private router: Router,
-    private location: Location
+    private location: Location,
   ) {}
 
   ngOnInit() {
@@ -89,26 +86,19 @@ export class CheckoutComponent implements OnInit {
         this.restaurant = this.orderFacade.getSelectedRestaurant();
         this.serviceTime = this.orderFacade.getCart().getServiceTime();
 
-        if (
-          this.restaurant.supportedOrderMode === 'anytime' &&
-          this.restaurant.isOpen(undefined) &&
-          !this.serviceTime
-        ) {
+        if (this.restaurant.supportedOrderMode === 'anytime' && this.restaurant.isOpen(undefined) && !this.serviceTime) {
           this.serviceTime = CheckoutComponent.roundOnQuarterHours(new Date());
         }
       },
       (error) => {
         this.blockUI.stop();
-        this.generalError =
-          this.httpErrorHandlingService.handleError(error).message;
-      }
+        this.generalError = this.httpErrorHandlingService.handleError(error).message;
+      },
     );
 
-    this.orderFacade
-      .getInitializationError$()
-      .subscribe((initializationError) => {
-        this.generalError = initializationError;
-      });
+    this.orderFacade.getInitializationError$().subscribe((initializationError) => {
+      this.generalError = initializationError;
+    });
 
     this.orderFacade.getIsCheckingOut$().subscribe((isCheckingOut) => {
       if (isCheckingOut) {
@@ -138,60 +128,50 @@ export class CheckoutComponent implements OnInit {
   }
 
   getGivenNameError(): string {
-    if (!this.givenName || this.givenName.trim().length === 0)
-      return 'Bitte gib Deinen Vornamen an.';
+    if (!this.givenName || this.givenName.trim().length === 0) return 'Bitte gib Deinen Vornamen an.';
     return undefined;
   }
 
   getLastNameError(): string {
-    if (!this.lastName || this.lastName.trim().length === 0)
-      return 'Bitte gib Deinen Nachnamen an.';
+    if (!this.lastName || this.lastName.trim().length === 0) return 'Bitte gib Deinen Nachnamen an.';
     return undefined;
   }
 
   getStreetError(): string {
     if (!this.getCart().isDelivery()) return undefined;
-    if (!this.street || this.street.trim().length === 0)
-      return 'Bitte gib eine Straße an.';
+    if (!this.street || this.street.trim().length === 0) return 'Bitte gib eine Straße an.';
     return undefined;
   }
 
   getZipCodeError(): string {
     if (!this.getCart().isDelivery()) return undefined;
-    if (!this.zipCode || this.zipCode < 10000 || this.zipCode > 99999)
-      return 'Bitte gib eine Postleitzahl an.';
+    if (!this.zipCode || this.zipCode < 10000 || this.zipCode > 99999) return 'Bitte gib eine Postleitzahl an.';
     return undefined;
   }
 
   getCityError(): string {
     if (!this.getCart().isDelivery()) return undefined;
-    if (!this.city || this.city.trim().length === 0)
-      return 'Bitte gib eine Stadt an.';
+    if (!this.city || this.city.trim().length === 0) return 'Bitte gib eine Stadt an.';
     return undefined;
   }
 
   getPhoneError(): string {
-    if (!this.phone || this.phone.trim().length === 0)
-      return 'Bitte gib eine Telefonnummer an.';
+    if (!this.phone || this.phone.trim().length === 0) return 'Bitte gib eine Telefonnummer an.';
     const regex =
       /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/;
-    if (!regex.test(this.phone))
-      return 'Bitte gib eine gültige Telefonnummer an.';
+    if (!regex.test(this.phone)) return 'Bitte gib eine gültige Telefonnummer an.';
     return undefined;
   }
 
   getEmailError(): string {
-    if (!this.email || this.email.trim().length === 0)
-      return 'Bitte gib eine E-Mail Adresse an.';
+    if (!this.email || this.email.trim().length === 0) return 'Bitte gib eine E-Mail Adresse an.';
     const regex = RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
-    if (!regex.test(this.email))
-      return 'Bitte gib eine gültige E-Mail Adresse an.';
+    if (!regex.test(this.email)) return 'Bitte gib eine gültige E-Mail Adresse an.';
     return undefined;
   }
 
   getPaymentError(): string {
-    if (!this.paymentMethodId || this.paymentMethodId.trim().length === 0)
-      return 'Bitte wähle eine Zahlungsmethode aus.';
+    if (!this.paymentMethodId || this.paymentMethodId.trim().length === 0) return 'Bitte wähle eine Zahlungsmethode aus.';
     return undefined;
   }
 
@@ -212,7 +192,7 @@ export class CheckoutComponent implements OnInit {
       (value: Date) => {
         this.serviceTime = value;
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -225,27 +205,18 @@ export class CheckoutComponent implements OnInit {
     let minutesText = this.serviceTime.getMinutes().toString();
     minutesText = ('0' + minutesText).slice(-2);
 
-    return (
-      this.serviceTime.toLocaleDateString() +
-      ', ' +
-      hoursText +
-      ':' +
-      minutesText
-    );
+    return this.serviceTime.toLocaleDateString() + ', ' + hoursText + ':' + minutesText;
   }
 
   getServiceTimeError(): string {
-    if (!this.restaurant.isOrderPossibleAt(this.serviceTime))
-      return 'Eine elektronische Bestellung zum gewählten Zeitpunkt ist nicht möglich.';
+    if (!this.restaurant.isOrderPossibleAt(this.serviceTime)) return 'Eine elektronische Bestellung zum gewählten Zeitpunkt ist nicht möglich.';
 
     return undefined;
   }
 
   getCartError(): string {
-    if (this.getCart().getCartDishes().length === 0)
-      return 'Der Warenkorb ist leer. Bitte wähle erst ein oder mehrere Gerichte aus.';
-    else if (!this.getCart().isValid())
-      return this.getCart().getValidationError();
+    if (this.getCart().getCartDishes().length === 0) return 'Der Warenkorb ist leer. Bitte wähle erst ein oder mehrere Gerichte aus.';
+    else if (!this.getCart().isValid()) return this.getCart().getValidationError();
     return undefined;
   }
 
@@ -262,7 +233,7 @@ export class CheckoutComponent implements OnInit {
     modalRef.componentInstance.cartDish = cartDish;
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
@@ -310,9 +281,7 @@ export class CheckoutComponent implements OnInit {
     checkoutModel.phone = this.phone;
     checkoutModel.email = this.email;
     checkoutModel.addAddressInfo = this.comments;
-    checkoutModel.orderType = OrderTypeConverter.convertToString(
-      cart.getOrderType()
-    );
+    checkoutModel.orderType = OrderTypeConverter.convertToString(cart.getOrderType());
     checkoutModel.restaurantId = cart.getRestaurantId();
     checkoutModel.cartDishes = new Array<StoredCartDishModel>();
 
@@ -336,8 +305,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   private static roundOnQuarterHours(date: Date): Date {
-    let minutesToAdd =
-      Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
+    let minutesToAdd = Math.ceil(date.getMinutes() / 15) * 15 - date.getMinutes();
     return new Date(date.getTime() + minutesToAdd * 60000);
   }
 }

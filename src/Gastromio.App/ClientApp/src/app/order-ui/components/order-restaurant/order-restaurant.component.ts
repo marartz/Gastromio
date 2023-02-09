@@ -64,7 +64,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private orderFacade: OrderFacade,
     private httpErrorHandlingService: HttpErrorHandlingService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit() {
@@ -77,13 +77,11 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     let serviceTime: Date;
 
     const observables = [
-      this.orderFacade
-        .getIsInitialized$()
-        .pipe(filter((isInitialized) => isInitialized === true)),
+      this.orderFacade.getIsInitialized$().pipe(filter((isInitialized) => isInitialized === true)),
       this.route.paramMap.pipe(
         tap((params) => {
           this.restaurantId = params.get('restaurantId');
-        })
+        }),
       ),
       this.route.queryParams.pipe(
         tap((params) => {
@@ -111,20 +109,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
           if (serviceTimeText) {
             try {
               const dt = serviceTimeText.split(/[: T-]/).map(parseFloat);
-              serviceTime = new Date(
-                Date.UTC(
-                  dt[0],
-                  dt[1] - 1,
-                  dt[2],
-                  dt[3] || 0,
-                  dt[4] || 0,
-                  dt[5] || 0,
-                  0
-                )
-              );
+              serviceTime = new Date(Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0));
             } catch {}
           }
-        })
+        }),
       ),
     ];
 
@@ -153,18 +141,13 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
                 }
               }
 
-              if (
-                !cart ||
-                cart.getOrderType() !== orderType ||
-                cart.getServiceTime() != serviceTime
-              ) {
+              if (!cart || cart.getOrderType() !== orderType || cart.getServiceTime() != serviceTime) {
                 this.orderFacade.startOrder(orderType, serviceTime);
               }
 
-          this.allowCart = orderType !== OrderType.Reservation;
-          this.enabledDishCategories = this.restaurant.dishCategories
-            .filter(category => category.enabled);
-          this.filterDishCategories();
+              this.allowCart = orderType !== OrderType.Reservation;
+              this.enabledDishCategories = this.restaurant.dishCategories.filter((category) => category.enabled);
+              this.filterDishCategories();
 
               this.titleService.setTitle(this.restaurant.name + ' - Gastromio');
 
@@ -180,9 +163,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
           (error) => {
             console.log('error: ', error);
             this.blockUI.stop();
-            this.generalError =
-              this.httpErrorHandlingService.handleError(error).message;
-          }
+            this.generalError = this.httpErrorHandlingService.handleError(error).message;
+          },
         );
       });
   }
@@ -200,9 +182,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     if (!this.restaurant) {
       return undefined;
     }
-    return (
-      "url('/api/v1/restaurants/" + this.restaurant.id + '/images/banner' + "')"
-    );
+    return "url('/api/v1/restaurants/" + this.restaurant.id + '/images/banner' + "')";
   }
 
   scrollToDishCategory(dishCategoryId: string): void {
@@ -235,12 +215,10 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   openOpeningHoursModal(): void {
-    const modalRef = this.modalService.open(
-      OrderRestaurantOpeningHoursComponent
-    );
+    const modalRef = this.modalService.open(OrderRestaurantOpeningHoursComponent);
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
@@ -249,7 +227,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.restaurant = this.restaurant;
     modalRef.result.then(
       () => {},
-      () => {}
+      () => {},
     );
   }
 
@@ -263,7 +241,6 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   filterDishCategories(): void {
-
     if (!this.searchPhrase) {
       this.filteredDishCategories = this.enabledDishCategories;
       return;
@@ -280,12 +257,8 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       dishCategoryClone.dishes = new Array<DishModel>();
 
       for (let dish of dishCategory.dishes) {
-        const nameContainsSearchPhrase =
-          dish.name &&
-          dish.name.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
-        const descriptionContainsSearchPhrase =
-          dish.description &&
-          dish.description.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
+        const nameContainsSearchPhrase = dish.name && dish.name.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
+        const descriptionContainsSearchPhrase = dish.description && dish.description.toLocaleLowerCase().indexOf(this.searchPhrase) > -1;
         if (nameContainsSearchPhrase || descriptionContainsSearchPhrase) {
           dishCategoryClone.dishes.push(dish);
           hasMatch = true;
@@ -299,11 +272,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   getFirstDishVariant(dish: DishModel): string {
-    if (
-      dish === undefined ||
-      dish.variants === undefined ||
-      dish.variants.length === 0
-    ) {
+    if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
       return '0,00';
     }
 
@@ -315,11 +284,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   public onAddDishToCart(dish: DishModel): void {
     if (!this.allowCart) return;
 
-    if (
-      dish === undefined ||
-      dish.variants === undefined ||
-      dish.variants.length === 0
-    ) {
+    if (dish === undefined || dish.variants === undefined || dish.variants.length === 0) {
       return;
     }
     const modalRef = this.modalService.open(AddDishToCartComponent);
@@ -328,7 +293,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       () => {
         this.proceedError = undefined;
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -339,7 +304,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
       () => {
         this.proceedError = undefined;
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -381,10 +346,7 @@ export class OrderRestaurantComponent implements OnInit, OnDestroy {
   }
 
   public hasExternalReservationSystem(): boolean {
-    return (
-      this.restaurant.reservationInfo.reservationSystemUrl &&
-      this.restaurant.reservationInfo.reservationSystemUrl.length > 0
-    );
+    return this.restaurant.reservationInfo.reservationSystemUrl && this.restaurant.reservationInfo.reservationSystemUrl.length > 0;
   }
 
   toggleCartVisibility(): void {

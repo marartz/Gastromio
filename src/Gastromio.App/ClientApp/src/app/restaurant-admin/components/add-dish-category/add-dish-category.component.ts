@@ -12,11 +12,7 @@ import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
 @Component({
   selector: 'app-add-dish-category',
   templateUrl: './add-dish-category.component.html',
-  styleUrls: [
-    './add-dish-category.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css',
-  ],
+  styleUrls: ['./add-dish-category.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/modals.component.min.css'],
 })
 export class AddDishCategoryComponent implements OnInit {
   @Input() public afterCategoryId: string;
@@ -26,11 +22,7 @@ export class AddDishCategoryComponent implements OnInit {
   message$: Observable<string>;
   submitted = false;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: RestaurantAdminFacade
-  ) {
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: RestaurantAdminFacade) {
     this.addDishCategoryForm = this.formBuilder.group({
       name: ['', Validators.required],
     });
@@ -50,11 +42,9 @@ export class AddDishCategoryComponent implements OnInit {
       return;
     }
 
-    this.facade
-      .addDishCategory(data.name, this.afterCategoryId)
-      .subscribe((id) => {
-        this.addDishCategoryForm.reset();
-        this.activeModal.close(id);
-      });
+    this.facade.addDishCategory(data.name, this.afterCategoryId).subscribe((id) => {
+      this.addDishCategoryForm.reset();
+      this.activeModal.close(id);
+    });
   }
 }

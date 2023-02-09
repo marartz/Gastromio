@@ -108,7 +108,7 @@
 
 .modal_v3 #close button::before {
   border-radius: 50%;
-  content: "";
+  content: '';
   display: block;
   height: 32px;
   left: 50%;

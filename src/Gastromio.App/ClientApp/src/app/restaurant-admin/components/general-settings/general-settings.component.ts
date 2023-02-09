@@ -1,19 +1,10 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 
-import {
-  AddressModel,
-  ContactInfoModel,
-} from '../../../shared/models/restaurant.model';
+import { AddressModel, ContactInfoModel } from '../../../shared/models/restaurant.model';
 
 import { RestaurantAdminFacade } from '../../restaurant-admin.facade';
 
@@ -44,35 +35,18 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  constructor(
-    private facade: RestaurantAdminFacade,
-    private formBuilder: UntypedFormBuilder
-  ) {
+  constructor(private facade: RestaurantAdminFacade, private formBuilder: UntypedFormBuilder) {
     this.changeAddressForm = this.formBuilder.group({
-      street: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^(([a-zA-ZäöüÄÖÜß]\D*)\s+\d+?\s*.*)$/),
-        ],
-      ],
-      zipCode: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$/),
-        ],
-      ],
+      street: ['', [Validators.required, Validators.pattern(/^(([a-zA-ZäöüÄÖÜß]\D*)\s+\d+?\s*.*)$/)]],
+      zipCode: ['', [Validators.required, Validators.pattern(/^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$/)]],
       city: ['', Validators.required],
     });
-    this.changeAddressForm.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe((value) => {
-        if (this.changeAddressForm.dirty && this.changeAddressForm.valid) {
-          this.facade.changeAddress(new AddressModel(value));
-        }
-        this.changeAddressForm.markAsPristine();
-      });
+    this.changeAddressForm.valueChanges.pipe(debounceTime(1000)).subscribe((value) => {
+      if (this.changeAddressForm.dirty && this.changeAddressForm.valid) {
+        this.facade.changeAddress(new AddressModel(value));
+      }
+      this.changeAddressForm.markAsPristine();
+    });
 
     this.changeContactInfoForm = this.formBuilder.group({
       phone: [
@@ -80,49 +54,38 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.pattern(
-            /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/
+            /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/,
           ),
         ],
       ],
       fax: [
         '',
         Validators.pattern(
-          /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/
+          /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/,
         ),
       ],
       webSite: [
         '',
         Validators.pattern(
-          /^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/
+          /^(https?:\/\/){0,1}(www\.)?[-a-zäöüA-ZÄÖÜ0-9@:%._\+~#=]{1,256}\.[a-zäöüA-ZÄÖÜ0-9()]{1,6}\b([-a-zäöüA-ZÄÖÜ0-9()@:%_\+.~#?&//=]*)$/,
         ),
       ],
       responsiblePerson: ['', Validators.required],
-      emailAddress: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-        ],
-      ],
+      emailAddress: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       mobile: [
         '',
         Validators.pattern(
-          /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/
+          /^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/,
         ),
       ],
       orderNotificationByMobile: [false],
     });
-    this.changeContactInfoForm.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe((value) => {
-        if (
-          this.changeContactInfoForm.dirty &&
-          this.changeContactInfoForm.valid
-        ) {
-          this.facade.changeContactInfo(new ContactInfoModel(value));
-        }
-        this.changeContactInfoForm.markAsPristine();
-      });
+    this.changeContactInfoForm.valueChanges.pipe(debounceTime(1000)).subscribe((value) => {
+      if (this.changeContactInfoForm.dirty && this.changeContactInfoForm.valid) {
+        this.facade.changeContactInfo(new ContactInfoModel(value));
+      }
+      this.changeContactInfoForm.markAsPristine();
+    });
   }
 
   get af() {
@@ -134,9 +97,7 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.restaurantName$ = this.facade
-      .getRestaurant$()
-      .pipe(map((restaurant) => restaurant.name));
+    this.restaurantName$ = this.facade.getRestaurant$().pipe(map((restaurant) => restaurant.name));
 
     this.hasLogo$ = this.facade.getHasLogo$();
     this.logoUrl$ = this.facade.getLogoUrl$();
@@ -159,8 +120,7 @@ export class GeneralSettingsComponent implements OnInit, OnDestroy {
         responsiblePerson: restaurant.contactInfo?.responsiblePerson ?? '',
         emailAddress: restaurant.contactInfo?.emailAddress ?? '',
         mobile: restaurant.contactInfo?.mobile ?? '',
-        orderNotificationByMobile:
-          restaurant.contactInfo?.orderNotificationByMobile ?? false,
+        orderNotificationByMobile: restaurant.contactInfo?.orderNotificationByMobile ?? false,
       });
       this.changeContactInfoForm.markAsPristine();
     });

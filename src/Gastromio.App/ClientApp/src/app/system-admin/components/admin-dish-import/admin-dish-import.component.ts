@@ -7,11 +7,7 @@ import { SystemAdminFacade } from '../../system-admin.facade';
 @Component({
   selector: 'app-admin-dish-import',
   templateUrl: './admin-dish-import.component.html',
-  styleUrls: [
-    './admin-dish-import.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css',
-  ],
+  styleUrls: ['./admin-dish-import.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css'],
 })
 export class AdminDishImportComponent implements OnInit {
   dishImportFile: File;
@@ -35,7 +31,7 @@ export class AdminDishImportComponent implements OnInit {
       },
       () => {
         this.logLines = undefined;
-      }
+      },
     );
   }
 
@@ -48,7 +44,7 @@ export class AdminDishImportComponent implements OnInit {
       },
       () => {
         this.logLines = undefined;
-      }
+      },
     );
   }
 

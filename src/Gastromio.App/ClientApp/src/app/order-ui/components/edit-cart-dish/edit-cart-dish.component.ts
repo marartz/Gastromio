@@ -9,11 +9,7 @@ import { OrderFacade } from '../../../order/order.facade';
 @Component({
   selector: 'app-edit-cart-dish',
   templateUrl: './edit-cart-dish.component.html',
-  styleUrls: [
-    './edit-cart-dish.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css',
-  ],
+  styleUrls: ['./edit-cart-dish.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/modals.component.min.css'],
 })
 export class EditCartDishComponent implements OnInit {
   @Input() public cartDish: CartDishModel;
@@ -21,10 +17,7 @@ export class EditCartDishComponent implements OnInit {
   count: number;
   remarks: string;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private orderFacade: OrderFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private orderFacade: OrderFacade) {}
 
   ngOnInit() {
     this.count = this.cartDish.getCount();
@@ -32,9 +25,7 @@ export class EditCartDishComponent implements OnInit {
   }
 
   getVariantPrice(variant: DishVariantModel): string {
-    return (
-      '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 })
-    );
+    return '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   incCount(): void {
@@ -50,10 +41,7 @@ export class EditCartDishComponent implements OnInit {
 
   onSubmit(): void {
     this.orderFacade.setCountOfCartDish(this.cartDish.getItemId(), this.count);
-    this.orderFacade.changeRemarksOfCartDish(
-      this.cartDish.getItemId(),
-      this.remarks
-    );
+    this.orderFacade.changeRemarksOfCartDish(this.cartDish.getItemId(), this.remarks);
     this.activeModal.close();
   }
 

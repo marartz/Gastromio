@@ -19,7 +19,7 @@
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (max-width: 767px) {
@@ -33,11 +33,6 @@
   border: 1px solid var(--yellow);
   color: var(--white);
 }
-
-
-
-
-
 
 #order #menu {
   float: left;
@@ -86,7 +81,7 @@
   flex-direction: row;
   -ms-flex-direction: row;
   -webkit-flex-direction: row;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   margin: 10px 0px;
   min-height: 84px;
   overflow: hidden;
@@ -160,10 +155,10 @@
 }
 
 #order-restaurant #order #menu .dish .dish-name.vegan::after {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAsQAAALEBxi1JjQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAL2SURBVEiJrZVNaFRXGIafMxnTiaNpo4kKJkyoVSpadBFQRCkUaqFYhBKnC7HVpUo3daegA1bFGBCSOEKMGKv0Z4KmuK0yIsYWN7owrWBaBbHqjONMMpnfe+/5XJhh/u6dmYVnde73fe/7nvf8fFfR6AiFmiA6Aq6z+PfebRTmaqgqEHChIueB3aB/4/JA67sTEFGs7ggi6ru5SDfzmk40KqBqZsMBN5H2YZTaU5HRwKf499+uJ+Ds4KdTXqJLxm3I53BqqB45ODm4OrQYU10DNtVEC5/xzf5w4fNyLNCqzObtN5PGB+c+OjII4K4CXRnyYbpugKxoYHnfX3gc+PO9Fs/nIrIDg69FkF+m08+AwWoHoTPLgL8AXy3epS3C2jaDDYvNV2vaTA+woJD7Yzb3dDSR7iRveNl0OlN0IKIYC150Ive6hS+W59nYYbB8vi6E20trMlpnf53JdAHQ7PEBD4sCoeA2FFvtyLcsNdi1IovXLbWMcWk668nquRqlKwSU+gGqCXZ+mOXLznxNYoD7WYNbqbK6Dihc09DIIpDNlaCvunINkadEGImnkbIFSrooILl1VNyo7gUWO3y5uuQAF+Np4pauiJYKuOiqBPV252hqoFOFU3km0jYutXpdFACrNNfh0axfZNYl/ztnciGRtktZNOvJooC4npdmP2kz6zQpiJiagVgKS2xv1h3W9aeKAobc420DA6DTW7mf5SNhCSdfzZLUTnUyVpi9Fdi5Lw5cLwQX1rjvCUtzLDrDC9NyKomRVaPlAgCihwtTt8PhTlvC8egs/5s1HIo6xOa+ZLXAP7Fx4IETLmJqjkaTPHNeOUCInpPDpYGiQCCgQfrsUP/mTY5EkjyvTf4772e+RZW3g4rNWPIz8Kg0MpHO82M0yYzjgZIDDvLf415WDla9zHIBv98C1Q9ggVxKZAi+TpG3P/MkcI4m18f09J3AP2Zrr/qHQ/toyjV14PDL5KonhjWnxQwQBzWFYhIIIy036AnYvrLS8QakuCksIrAk9gAAAABJRU5ErkJggg==");
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAsQAAALEBxi1JjQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAL2SURBVEiJrZVNaFRXGIafMxnTiaNpo4kKJkyoVSpadBFQRCkUaqFYhBKnC7HVpUo3daegA1bFGBCSOEKMGKv0Z4KmuK0yIsYWN7owrWBaBbHqjONMMpnfe+/5XJhh/u6dmYVnde73fe/7nvf8fFfR6AiFmiA6Aq6z+PfebRTmaqgqEHChIueB3aB/4/JA67sTEFGs7ggi6ru5SDfzmk40KqBqZsMBN5H2YZTaU5HRwKf499+uJ+Ds4KdTXqJLxm3I53BqqB45ODm4OrQYU10DNtVEC5/xzf5w4fNyLNCqzObtN5PGB+c+OjII4K4CXRnyYbpugKxoYHnfX3gc+PO9Fs/nIrIDg69FkF+m08+AwWoHoTPLgL8AXy3epS3C2jaDDYvNV2vaTA+woJD7Yzb3dDSR7iRveNl0OlN0IKIYC150Ive6hS+W59nYYbB8vi6E20trMlpnf53JdAHQ7PEBD4sCoeA2FFvtyLcsNdi1IovXLbWMcWk668nquRqlKwSU+gGqCXZ+mOXLznxNYoD7WYNbqbK6Dihc09DIIpDNlaCvunINkadEGImnkbIFSrooILl1VNyo7gUWO3y5uuQAF+Np4pauiJYKuOiqBPV252hqoFOFU3km0jYutXpdFACrNNfh0axfZNYl/ztnciGRtktZNOvJooC4npdmP2kz6zQpiJiagVgKS2xv1h3W9aeKAobc420DA6DTW7mf5SNhCSdfzZLUTnUyVpi9Fdi5Lw5cLwQX1rjvCUtzLDrDC9NyKomRVaPlAgCihwtTt8PhTlvC8egs/5s1HIo6xOa+ZLXAP7Fx4IETLmJqjkaTPHNeOUCInpPDpYGiQCCgQfrsUP/mTY5EkjyvTf4772e+RZW3g4rNWPIz8Kg0MpHO82M0yYzjgZIDDvLf415WDla9zHIBv98C1Q9ggVxKZAi+TpG3P/MkcI4m18f09J3AP2Zrr/qHQ/toyjV14PDL5KonhjWnxQwQBzWFYhIIIy036AnYvrLS8QakuCksIrAk9gAAAABJRU5ErkJggg==');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  content: " ";
+  content: ' ';
   height: 22px;
   margin-left: 8px;
   position: absolute;
@@ -190,7 +185,7 @@
 
 #checkout {
   background-color: #decf80;
-  background-image: url("../../../../assets/images/rough/yellow.png");
+  background-image: url('../../../../assets/images/rough/yellow.png');
   background-repeat: repeat;
   height: 100%;
   overflow: hidden;
@@ -243,7 +238,7 @@
 #checkout #close button::before {
   background-color: transparent;
   border-radius: 50%;
-  content: "";
+  content: '';
   display: block;
   height: 32px;
   left: 50%;
@@ -286,7 +281,7 @@
 /* #chekout > #my-order */
 #checkout #cart {
   background-color: #decf80;
-  background-image: url("../../../../assets/images/rough/yellow.png");
+  background-image: url('../../../../assets/images/rough/yellow.png');
   background-repeat: repeat;
   border-radius: 23px;
   display: flex;
@@ -305,7 +300,7 @@
 
 #checkout #cart .title {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 32px;
   font-weight: 700;
   letter-spacing: 0px;
@@ -339,7 +334,7 @@
 
 #checkout #cart #dishes .dish {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0px;
@@ -384,10 +379,10 @@
 }
 
 #checkout #cart #dishes .dish .top .edit::before {
-  background-image: url("../../../../assets/images/svg/edit.svg");
+  background-image: url('../../../../assets/images/svg/edit.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  content: " ";
+  content: ' ';
   cursor: pointer;
   display: inline-block;
   float: right;
@@ -406,10 +401,10 @@
 }
 
 #checkout #cart #dishes .dish .top .remove::before {
-  background-image: url("../../../../assets/images/svg/delete.svg");
+  background-image: url('../../../../assets/images/svg/delete.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  content: " ";
+  content: ' ';
   cursor: pointer;
   display: inline-block;
   float: right;
@@ -420,7 +415,7 @@
 
 #checkout #cart #dishes .dish .top .description {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -435,7 +430,7 @@
 
 #checkout #cart #dishes .dish .top .remarks {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -470,7 +465,7 @@
 #checkout #cart #order-fees .fee-title {
   color: #363636;
   float: left;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -487,7 +482,7 @@
 #checkout #cart #order-fees .fee-price {
   color: #363636;
   float: right;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -503,7 +498,7 @@
 #checkout #cart .invalid-feedback {
   color: darkred;
   display: block;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 400;
   margin-left: 9px;
@@ -513,7 +508,7 @@
   background-color: #363636;
   border-radius: 23px;
   color: #fff;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 16px;
   font-weight: 700;
   height: 46px;
@@ -530,7 +525,7 @@
 #fp-alert {
   align-items: center;
   background-color: #adcccb;
-  background-image: url("../../../../assets/images/rough/blue.png");
+  background-image: url('../../../../assets/images/rough/blue.png');
   background-repeat: repeat;
   display: flex;
   height: 100vh;
@@ -543,7 +538,7 @@
 
 #fp-alert p {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 46px;
   font-weight: 700;
 }

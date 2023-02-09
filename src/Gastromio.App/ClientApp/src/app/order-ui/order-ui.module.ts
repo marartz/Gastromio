@@ -22,14 +22,7 @@ import { OrderSummaryComponent } from './components/order-summary/order-summary.
 import { ReservationComponent } from './components/reservation/reservation.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
-    BlockUIModule.forRoot(),
-    OrderUiRoutingModule,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule, BlockUIModule.forRoot(), OrderUiRoutingModule],
   declarations: [
     AddDishToCartComponent,
     CheckoutComponent,

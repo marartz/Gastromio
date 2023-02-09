@@ -26,18 +26,12 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
   @Input() public restaurant: RestaurantModel;
   @BlockUI() blockUI: NgBlockUI;
 
-  cuisineStatusArray$: BehaviorSubject<CuisineStatus[]> = new BehaviorSubject<
-    CuisineStatus[]
-  >(new Array<CuisineStatus>());
+  cuisineStatusArray$: BehaviorSubject<CuisineStatus[]> = new BehaviorSubject<CuisineStatus[]>(new Array<CuisineStatus>());
 
   changeSettingsForm: UntypedFormGroup;
   message$: Observable<string>;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {}
 
   ngOnInit(): void {
     this.facade.getIsUpdating$().subscribe((isUpdating) => {
@@ -53,16 +47,14 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
     this.facade.getCuisines$().subscribe((cuisines) => {
       const cuisineStatusArray = this.cuisineStatusArray$.value;
       for (let cuisine of cuisines) {
-        const status = this.restaurant.cuisines.some(
-          (en) => en.id === cuisine.id
-        );
+        const status = this.restaurant.cuisines.some((en) => en.id === cuisine.id);
         cuisineStatusArray.push(
           new CuisineStatus({
             id: cuisine.id,
             name: cuisine.name,
             oldStatus: status,
             newStatus: status,
-          })
+          }),
         );
       }
       this.cuisineStatusArray$.next(this.cuisineStatusArray$.value);
@@ -93,15 +85,8 @@ export class ChangeRestaurantGeneralSettingsComponent implements OnInit {
 
     const cuisineStatusArray = this.cuisineStatusArray$.value;
 
-    this.facade
-      .updateRestaurantGeneralSettings$(
-        this.restaurant,
-        cuisineStatusArray,
-        data.name,
-        data.importId
-      )
-      .subscribe(() => {
-        this.activeModal.close();
-      });
+    this.facade.updateRestaurantGeneralSettings$(this.restaurant, cuisineStatusArray, data.name, data.importId).subscribe(() => {
+      this.activeModal.close();
+    });
   }
 }

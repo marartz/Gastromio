@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -12,10 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { UserModel } from '../../../shared/models/user.model';
 
-import {
-  FetchPageInfo,
-  ServerPaginationComponent,
-} from '../../../shared/components/pagination/server-pagination.component';
+import { FetchPageInfo, ServerPaginationComponent } from '../../../shared/components/pagination/server-pagination.component';
 
 import { SystemAdminFacade } from '../../system-admin.facade';
 
@@ -27,11 +18,7 @@ import { RemoveUserComponent } from '../remove-user/remove-user.component';
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
-  styleUrls: [
-    './admin-users.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/backend_v2.min.css',
-  ],
+  styleUrls: ['./admin-users.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/backend_v2.min.css'],
 })
 export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(ServerPaginationComponent)
@@ -40,10 +27,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public searchPhrase$: Observable<string>;
 
-  constructor(
-    private modalService: NgbModal,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(private modalService: NgbModal, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.searchPhrase$ = this.facade.getUserSearchPhrase$();
@@ -69,7 +53,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pageOfUsers = result.items;
         this.pagingComponent.updatePaging(result.total, result.items.length);
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -79,7 +63,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -90,7 +74,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -106,7 +90,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit, OnDestroy {
       () => {
         this.pagingComponent.triggerFetchPage();
       },
-      () => {}
+      () => {},
     );
   }
 

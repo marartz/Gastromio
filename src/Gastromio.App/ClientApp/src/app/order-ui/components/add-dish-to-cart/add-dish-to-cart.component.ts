@@ -9,11 +9,7 @@ import { OrderFacade } from '../../../order/order.facade';
 @Component({
   selector: 'app-add-dish-to-cart',
   templateUrl: './add-dish-to-cart.component.html',
-  styleUrls: [
-    './add-dish-to-cart.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/modals.component.min.css',
-  ],
+  styleUrls: ['./add-dish-to-cart.component.css', '../../../../assets/css/frontend_v3.min.css', '../../../../assets/css/modals.component.min.css'],
 })
 export class AddDishToCartComponent implements OnInit {
   @Input() public dish: DishModel;
@@ -22,10 +18,7 @@ export class AddDishToCartComponent implements OnInit {
   count: number;
   remarks: string;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private orderFacade: OrderFacade
-  ) {
+  constructor(public activeModal: NgbActiveModal, private orderFacade: OrderFacade) {
     this.count = 1;
   }
 
@@ -34,9 +27,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   getVariantPrice(variant: DishVariantModel): string {
-    return (
-      '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 })
-    );
+    return '€' + variant.price.toLocaleString('de', { minimumFractionDigits: 2 });
   }
 
   getTotalPrice(): string {
@@ -60,12 +51,7 @@ export class AddDishToCartComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.orderFacade.addDishToCart(
-      this.dish,
-      this.selectedVariant,
-      this.count,
-      this.remarks
-    );
+    this.orderFacade.addDishToCart(this.dish, this.selectedVariant, this.count, this.remarks);
     this.activeModal.close();
   }
 

@@ -12,10 +12,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 @Component({
   selector: 'app-order-summary',
   templateUrl: './order-summary.component.html',
-  styleUrls: [
-    './order-summary.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-  ],
+  styleUrls: ['./order-summary.component.css', '../../../../assets/css/frontend_v3.min.css'],
 })
 export class OrderSummaryComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
@@ -47,8 +44,6 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   getOrderTypeText(): string {
-    return this.order.cartInfo.orderType === 2
-      ? 'Reservierungsanfrage'
-      : 'Bestellung';
+    return this.order.cartInfo.orderType === 2 ? 'Reservierungsanfrage' : 'Bestellung';
   }
 }

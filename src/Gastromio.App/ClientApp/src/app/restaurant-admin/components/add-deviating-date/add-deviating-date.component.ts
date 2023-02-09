@@ -26,10 +26,7 @@ export class AddDeviatingDateComponent implements OnInit {
 
   form: UntypedFormGroup;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder
-  ) {
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder) {
     const now = new Date();
     this.minDate = {
       year: now.getFullYear(),
@@ -45,8 +42,6 @@ export class AddDeviatingDateComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(): void {
-    this.activeModal.close(
-      new DateModel(this.date.year, this.date.month, this.date.day)
-    );
+    this.activeModal.close(new DateModel(this.date.year, this.date.month, this.date.day));
   }
 }

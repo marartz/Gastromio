@@ -30,7 +30,7 @@ export class PaymentSettingsComponent implements OnInit {
     return this.facade.getPaymentMethodStatus$().pipe(
       map((status) => {
         return status[paymentMethodId];
-      })
+      }),
     );
   }
 

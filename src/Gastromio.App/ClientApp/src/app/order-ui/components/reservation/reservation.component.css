@@ -134,7 +134,7 @@
 
 #checkout #body #infocard label {
   color: #333;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -151,7 +151,7 @@
   border: 0px;
   border-radius: 23px;
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   display: block;
   font-size: 16px;
   font-weight: 400;
@@ -249,7 +249,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' fill='%23fff' fill-rule='evenodd'%3E%3Cpath d='M15.167 28.367c-7.333 0-13.2-5.867-13.2-13.2s5.867-13.2 13.2-13.2 13.2 5.867 13.2 13.2-5.867 13.2-13.2 13.2zm0-27.867A14.625 14.625 0 0 0 .5 15.167c0 8.134 6.533 14.667 14.667 14.667a14.625 14.625 0 0 0 14.667-14.667C29.834 7.033 23.301.5 15.167.5z' stroke='none' fill='%23363636' fill-rule='nonzero'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  content: " ";
+  content: ' ';
   height: 22px;
   width: 22px;
   position: absolute;
@@ -269,7 +269,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' fill='%23fff' fill-rule='evenodd'%3E%3Cpath d='M19.7 11.034c.267-.267.667-.4 1.067-.133.267.267.4.667.133 1.067l-5.867 7.333c-.133.133-.267.267-.533.267-.133 0-.4-.133-.533-.267l-3.6-3.6c-.267-.267-.267-.8 0-1.067s.8-.267 1.067 0l3.067 3.067 5.2-6.667zm-4.533-9.067c-7.333 0-13.2 5.867-13.2 13.2s5.867 13.2 13.2 13.2 13.2-5.867 13.2-13.2-5.867-13.2-13.2-13.2zm0-1.467a14.625 14.625 0 0 1 14.667 14.667c0 8.134-6.533 14.667-14.667 14.667A14.625 14.625 0 0 1 .5 15.167C.5 7.033 7.033.5 15.167.5z' stroke='none' fill='%23363636' fill-rule='nonzero'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  content: " ";
+  content: ' ';
   height: 22px;
   width: 22px;
   position: absolute;
@@ -341,7 +341,7 @@
 #fp-alert {
   align-items: center;
   background-color: #adcccb;
-  background-image: url("../../../../assets/images/rough/blue.png");
+  background-image: url('../../../../assets/images/rough/blue.png');
   background-repeat: repeat;
   display: flex;
   height: 100vh;
@@ -354,7 +354,7 @@
 
 #fp-alert p {
   color: #363636;
-  font-family: "Apercu", sans-serif;
+  font-family: 'Apercu', sans-serif;
   font-size: 46px;
   font-weight: 700;
   text-align: center;

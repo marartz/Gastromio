@@ -21,10 +21,7 @@ export class RemoveDishCategoryComponent implements OnInit {
   @Input() public dishCategory: DishCategoryModel;
   @BlockUI() blockUI: NgBlockUI;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    public facade: RestaurantAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, public facade: RestaurantAdminFacade) {}
 
   ngOnInit() {}
 

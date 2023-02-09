@@ -45,21 +45,19 @@ export class AuthService {
       }),
     };
 
-    return this.http
-      .post<LoginResultModel>(this.loginUrl, { email, password }, httpOptions)
-      .pipe(
-        take(1),
-        tap((loginResult: LoginResultModel) => {
-          console.log('loginResult: ', loginResult);
-          localStorage.setItem('token', loginResult.token);
-          localStorage.setItem('user', JSON.stringify(loginResult.user));
-        }),
-        map((loginResult: LoginResultModel) => loginResult.user),
-        catchError((error) => {
-          console.log('error: ', error);
-          return throwError(error);
-        })
-      );
+    return this.http.post<LoginResultModel>(this.loginUrl, { email, password }, httpOptions).pipe(
+      take(1),
+      tap((loginResult: LoginResultModel) => {
+        console.log('loginResult: ', loginResult);
+        localStorage.setItem('token', loginResult.token);
+        localStorage.setItem('user', JSON.stringify(loginResult.user));
+      }),
+      map((loginResult: LoginResultModel) => loginResult.user),
+      catchError((error) => {
+        console.log('error: ', error);
+        return throwError(error);
+      }),
+    );
   }
 
   public requestPasswordChangeAsync(email: string): Observable<void> {
@@ -70,18 +68,13 @@ export class AuthService {
       }),
     };
 
-    return this.http
-      .post(this.requestPasswordChangeUrl, { userEmail: email }, httpOptions)
-      .pipe(
-        take(1),
-        map(() => {})
-      );
+    return this.http.post(this.requestPasswordChangeUrl, { userEmail: email }, httpOptions).pipe(
+      take(1),
+      map(() => {}),
+    );
   }
 
-  public validatePasswordResetCodeAsync(
-    userId: string,
-    passwordResetCode: string
-  ): Observable<void> {
+  public validatePasswordResetCodeAsync(userId: string, passwordResetCode: string): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -89,23 +82,13 @@ export class AuthService {
       }),
     };
 
-    return this.http
-      .post(
-        this.validatePasswordResetCodeUrl,
-        { userId, passwordResetCode },
-        httpOptions
-      )
-      .pipe(
-        take(1),
-        map(() => {})
-      );
+    return this.http.post(this.validatePasswordResetCodeUrl, { userId, passwordResetCode }, httpOptions).pipe(
+      take(1),
+      map(() => {}),
+    );
   }
 
-  public changePasswordWithResetCodeAsync(
-    userId: string,
-    passwordResetCode: string,
-    password: string
-  ): Observable<void> {
+  public changePasswordWithResetCodeAsync(userId: string, passwordResetCode: string, password: string): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -113,16 +96,10 @@ export class AuthService {
       }),
     };
 
-    return this.http
-      .post(
-        this.changePasswordWithResetCodeUrl,
-        { userId, passwordResetCode, password },
-        httpOptions
-      )
-      .pipe(
-        take(1),
-        map(() => {})
-      );
+    return this.http.post(this.changePasswordWithResetCodeUrl, { userId, passwordResetCode, password }, httpOptions).pipe(
+      take(1),
+      map(() => {}),
+    );
   }
 
   public changePasswordAsync(password: string): Observable<void> {
@@ -131,14 +108,13 @@ export class AuthService {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + this.getToken(),
-      })
+      }),
     };
 
-    return this.http.post(this.changePasswordUrl, {password}, httpOptions)
-      .pipe(
-        take(1),
-        map(() => {})
-      );
+    return this.http.post(this.changePasswordUrl, { password }, httpOptions).pipe(
+      take(1),
+      map(() => {}),
+    );
   }
 
   public pingAsync(): Observable<void> {
@@ -152,7 +128,7 @@ export class AuthService {
 
     return this.http.get<{}>(this.pingUrl, httpOptions).pipe(
       take(1),
-      map(() => {})
+      map(() => {}),
     );
   }
 

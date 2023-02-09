@@ -30,11 +30,7 @@ export class ChangeUserDetailsComponent implements OnInit {
   changeUserDetailsForm: UntypedFormGroup;
   message$: Observable<string>;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {}
 
   ngOnInit() {
     this.facade.getIsUpdating$().subscribe((isUpdating) => {
@@ -49,14 +45,7 @@ export class ChangeUserDetailsComponent implements OnInit {
 
     this.changeUserDetailsForm = this.formBuilder.group({
       role: [this.user.role, Validators.required],
-      email: [
-        this.user.email,
-        [
-          Validators.required,
-          Validators.email,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-        ],
-      ],
+      email: [this.user.email, [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
     });
   }
 
@@ -69,10 +58,8 @@ export class ChangeUserDetailsComponent implements OnInit {
       return;
     }
 
-    this.facade
-      .changeUserDetails$(this.user.id, data.role, data.email)
-      .subscribe(() => {
-        this.activeModal.close('Close click');
-      });
+    this.facade.changeUserDetails$(this.user.id, data.role, data.email).subscribe(() => {
+      this.activeModal.close('Close click');
+    });
   }
 }

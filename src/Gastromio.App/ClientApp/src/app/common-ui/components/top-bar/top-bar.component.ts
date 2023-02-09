@@ -12,17 +12,10 @@ import { OrderFacade } from '../../../order/order.facade';
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: [
-    './top-bar.component.css'
-  ],
+  styleUrls: ['./top-bar.component.css'],
 })
 export class TopBarComponent implements OnInit {
-  constructor(
-    private modalService: NgbModal,
-    private authService: AuthService,
-    private router: Router,
-    private orderFacade: OrderFacade
-  ) {}
+  constructor(private modalService: NgbModal, private authService: AuthService, private router: Router, private orderFacade: OrderFacade) {}
 
   ngOnInit() {
     this.orderFacade.initialize();
@@ -40,20 +33,12 @@ export class TopBarComponent implements OnInit {
 
   isSystemAdmin(): boolean {
     const currentUser: UserModel = this.authService.getUser();
-    return (
-      currentUser !== undefined &&
-      currentUser.role !== undefined &&
-      currentUser.role === 'SystemAdmin'
-    );
+    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === 'SystemAdmin';
   }
 
   isRestaurantAdmin(): boolean {
     const currentUser: UserModel = this.authService.getUser();
-    return (
-      currentUser !== undefined &&
-      currentUser.role !== undefined &&
-      currentUser.role === 'RestaurantAdmin'
-    );
+    return currentUser !== undefined && currentUser.role !== undefined && currentUser.role === 'RestaurantAdmin';
   }
 
   logout(): void {

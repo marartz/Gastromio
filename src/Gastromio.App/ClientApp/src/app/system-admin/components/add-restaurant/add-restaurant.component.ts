@@ -28,11 +28,7 @@ export class AddRestaurantComponent implements OnInit {
   message$: Observable<string>;
   submitted = false;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private formBuilder: UntypedFormBuilder,
-    private facade: SystemAdminFacade
-  ) {
+  constructor(public activeModal: NgbActiveModal, private formBuilder: UntypedFormBuilder, private facade: SystemAdminFacade) {
     this.addRestaurantForm = this.formBuilder.group({
       name: ['', Validators.required],
     });
