@@ -6,49 +6,32 @@
   [queryParams]="{
     orderType: orderType,
     serviceTime: selectedOpeningHourFilter?.toISOString()
-  }"
->
-  <div id="logo">
-    <div class="logo-wrapper">
-      <img *ngIf="!hasLogo(restaurant)" src="../../assets/images/logo/no-logo.jpg" alt="{{ restaurant.name }}" />
-      <img *ngIf="hasLogo(restaurant)" [src]="getLogoUrl(restaurant)" alt="{{ restaurant.name }}" />
-    </div>
+  }">
+  <div class="restaurant-logo">
+    <img *ngIf="!hasLogo(restaurant)" src="../../../../assets/images/logo/no-logo.jpg" alt="{{ restaurant.name }}" />
+    <img *ngIf="hasLogo(restaurant)" [src]="getLogoUrl(restaurant)" alt="{{ restaurant.name }}" />
   </div>
-  <div id="infos">
-    <h2 class="restaurant-name">
-      {{ restaurant.name }}
-    </h2>
-    <p class="restaurant-address">
-      <ng-container *ngIf="!isRestaurantOpen(restaurant)">
-        <span style="font-weight: 500; text-transform: capitalize">{{ getRestaurantClosedText(restaurant) }}</span>
-      </ng-container>
-      <ng-container *ngIf="isRestaurantOpen(restaurant)">
-        <ng-container *ngIf="orderType === 'pickup'"
-          ><span>{{ restaurant.address?.street }}, {{ restaurant.address?.city }}</span></ng-container
-        >
-        <ng-container *ngIf="orderType === 'reservation'"
-          ><span>{{ restaurant.address?.street }}, {{ restaurant.address?.city }}</span></ng-container
-        >
-        <ng-container *ngIf="orderType === 'delivery'"
-          ><span>Lieferzeit {{ restaurant.deliveryInfo.averageTime }} Minuten | {{ restaurant.deliveryInfo.getCostsText() }}</span></ng-container
-        >
-      </ng-container>
-      <ng-container *ngIf="restaurant.supportedOrderMode === 'phone'"
-        ><span> <br />Telefonisch</span></ng-container
-      >
-      <ng-container *ngIf="restaurant.supportedOrderMode === 'shift'"
-        ><span> <br />Telefonisch & Online-Vorbestellung</span></ng-container
-      >
-      <ng-container *ngIf="restaurant.supportedOrderMode === 'anytime'"
-        ><span> <br />Telefonisch & Online-Vorbestellung & Online-Bestellung</span></ng-container
-      >
-    </p>
-    <div class="cuisines">
-      <div class="cuisine-container">
-        <div class="cuisine-pill" *ngFor="let cuisine of restaurant.cuisines">
-          <span>{{ cuisine.name }}</span>
-        </div>
+  <div class="restaurant-content">
+    <div class="restaurant-name">{{ restaurant.name }}</div>
+    <div class="restaurant-address">
+      <ng-container *ngIf="orderType === 'pickup'">{{ restaurant.address?.street }}, {{ restaurant.address?.city }}</ng-container>
+      <ng-container *ngIf="orderType === 'delivery'">Lieferzeit {{ restaurant.deliveryInfo.averageTime }} min. | Mindestbestellwert {{ restaurant.deliveryInfo.getCostsText() }}</ng-container>
+      <ng-container *ngIf="orderType === 'reservation'">{{ restaurant.address?.street }}, {{ restaurant.address?.city }}</ng-container>
+    </div>
+    <div class="restaurant-cuisines">
+      <div class="restaurant-cuisine" *ngFor="let cuisine of restaurant.cuisines">
+        <span class="cuisine-name">{{ cuisine.name }}</span>
       </div>
     </div>
   </div>
 </a>
+
+<!--
+  <div id="infos">
+    <p class="restaurant-address">
+      <ng-container *ngIf="!isRestaurantOpen(restaurant)">
+        <span style="font-weight: 500; text-transform: capitalize">{{ getRestaurantClosedText(restaurant) }}</span>
+      </ng-container>
+    </p>
+  </div>
+</a-->

@@ -1,35 +1,38 @@
 /* #filter */
 #filter {
   display: none;
-  float: left;
-  font-size: 15px;
-  height: auto;
+  flex-direction: column;
   padding: 0px;
-  position: relative;
+  position: sticky;
+  position: -webkit-sticky;
+  width: 25%;
+  top: 0;
 }
 
 @media screen and (min-width: 1030px) {
   #filter {
-    display: block;
-    float: left;
-    margin-bottom: 60px;
-    width: 25%;
+    display: flex;
   }
 }
 
 #filter .title,
-#filter-details .title {
+.mobile-menu .title {
   color: var(--grey);
   font-family: var(--apercu);
   font-size: 16px;
   font-weight: 300;
   letter-spacing: -0.33px;
   margin-bottom: 8px;
+  margin-top: 20px;
+}
+
+#filter .title.first {
+  margin-top: 0px;
 }
 
 /* #filter > #ordertype-filter */
 #filter #ordertype-filter .filter,
-#filter-details #ordertype-filter .filter {
+.mobile-menu #ordertype-filter .filter {
   background-color: var(--blue);
   border-radius: 23px;
   cursor: pointer;
@@ -38,13 +41,15 @@
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
+  flex-direction: row;
   height: 42px;
-  margin-bottom: 4px;
+  padding: 2px;
   width: 222px;
+  justify-content: space-between;
 }
 
 #filter #ordertype-filter .filter .switch,
-#filter-details #ordertype-filter .filter .switch {
+.mobile-menu #ordertype-filter .filter .switch {
   align-items: center;
   -ms-flex-align: center;
   -ms-flex-pack: center;
@@ -55,63 +60,54 @@
   display: -ms-flexbox;
   display: -webkit-box;
   display: -webkit-flex;
-  flex: 1 1 auto;
-  -moz-box-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  -webkit-box-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
   font-size: 16px;
   font-family: var(--apercu);
   font-weight: 500;
-  justify-content: flex-start;
-  -ms-flex-pack: start;
-  height: 42px;
+  justify-content: center;
+  -ms-flex-pack: center;
+  height: 100%;
   line-height: 26px;
   outline: none;
-  padding: 8px;
+  padding-left: 14px;
+  padding-right: 14px;
   position: relative;
   text-align: center;
-  vertical-align: baseline;
   background: var(--blue);
   border: 0px none;
   border-radius: 23px;
   align-content: center;
   justify-content: center;
-  -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: background-color 300ms ease, transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: background-color 300ms ease, transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  width: 101px;
 }
 
 #filter #ordertype-filter .filter .switch.active,
-#filter-details #ordertype-filter .filter .switch.active {
+.mobile-menu #ordertype-filter .filter .switch.active {
   background-color: var(--yellow);
-  border: 2px solid var(--blue);
+  border: 0px none;
   border-radius: 23px;
   line-height: 24px;
-  width: 50%;
-  padding: 8px;
+  width: 121px;
+  padding: 9px 7px;
 }
 
 #filter #ordertype-filter .filter .switch.active span,
-#filter-details #ordertype-filter .filter .switch.active span {
+.mobile-menu #ordertype-filter .filter .switch.active span {
   margin-left: 4px;
 }
 
 #filter #ordertype-filter .filter .switch.active::before,
-#filter-details #ordertype-filter .filter .switch.active::before {
+.mobile-menu #ordertype-filter .filter .switch.active::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' fill='%23fff' fill-rule='evenodd'%3E%3Cpath d='M19.7 11.034c.267-.267.667-.4 1.067-.133.267.267.4.667.133 1.067l-5.867 7.333c-.133.133-.267.267-.533.267-.133 0-.4-.133-.533-.267l-3.6-3.6c-.267-.267-.267-.8 0-1.067s.8-.267 1.067 0l3.067 3.067 5.2-6.667zm-4.533-9.067c-7.333 0-13.2 5.867-13.2 13.2s5.867 13.2 13.2 13.2 13.2-5.867 13.2-13.2-5.867-13.2-13.2-13.2zm0-1.467a14.625 14.625 0 0 1 14.667 14.667c0 8.134-6.533 14.667-14.667 14.667A14.625 14.625 0 0 1 .5 15.167C.5 7.033 7.033.5 15.167.5z' stroke='none' fill='%23363636' fill-rule='nonzero'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   content: ' ';
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   position: relative;
 }
 
 #filter .filter-divider,
-#filter-details .filter-divider {
+.mobile-menu .filter-divider {
   display: flex;
   width: 222px;
   align-content: center;
@@ -119,7 +115,7 @@
 }
 
 #filter .filter-divider p,
-#filter-details .filter-divider p {
+.mobile-menu .filter-divider p {
   color: var(--grey);
   font-family: var(--apercu);
   font-size: 14px;
@@ -133,7 +129,7 @@
 }
 
 #filter button.reservation,
-#filter-details button.reservation {
+.mobile-menu button.reservation {
   background-color: var(--blue);
   border: 0px none;
   border-radius: 23px;
@@ -143,7 +139,7 @@
   font-size: 16px;
   font-weight: 500;
   height: 42px;
-  margin-bottom: 22px;
+  margin-bottom: 0px;
   outline: none;
   width: 222px;
   -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -154,7 +150,7 @@
 }
 
 #filter button.reservation span,
-#filter-details button.reservation span {
+.mobile-menu button.reservation span {
   background-color: var(--green);
   color: var(--white);
   font-family: var(--apercu);
@@ -162,15 +158,13 @@
   font-weight: 500;
   padding: 3px;
   padding-right: 3px;
-  padding-left: 3px;
-  border-radius: 3px;
   padding-left: 6px;
   padding-right: 6px;
   margin-left: 4px;
 }
 
 #filter button.reservation.active,
-#filter-details button.reservation.active {
+.mobile-menu button.reservation.active {
   background-color: var(--yellow);
 }
 
@@ -182,7 +176,7 @@
 
 /* #filter > #opening-hour-filter */
 #filter #opening-hour-filter button,
-#filter-details #opening-hour-filter button {
+.mobile-menu #opening-hour-filter button {
   background-color: var(--blue);
   border: 0px none;
   border-radius: 23px;
@@ -192,7 +186,7 @@
   font-size: 16px;
   font-weight: 500;
   height: 42px;
-  margin-bottom: 22px;
+  margin-bottom: 0px;
   outline: none;
   width: 222px;
   -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -211,18 +205,18 @@
 
 /* #filter > #categories */
 #filter #categories .category-container,
-#filter-details #categories .category-container {
+.mobile-menu #categories .category-container {
   overflow-x: unset;
 }
 
 #filter #categories .category,
-#filter-details #categories .category {
+.mobile-menu #categories .category {
   display: contents;
   margin: 0px 0px 4px;
 }
 
 #filter #categories .category button,
-#filter-details #categories .category button {
+.mobile-menu #categories .category button {
   background-color: var(--blue);
   border: 0px none;
   border-radius: 23px;
@@ -233,170 +227,19 @@
   margin-bottom: 4px;
   margin-right: 4.7px;
   padding: 3px 12px;
+  -webkit-transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background-color 300ms ease, -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background-color 300ms ease, transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    -webkit-transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #filter #categories .category.active button,
-#filter-details #categories .category.active button {
+.mobile-menu #categories .category.active button {
   background-color: var(--yellow);
 }
 
 #filter #categories .category button:hover,
-#filter-details #categories .category button:hover {
+.mobile-menu #categories .category button:hover {
   background-color: var(--yellow);
-  transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-}
-
-/* #filter-mobile */
-#filter-mobile,
-#mobile-info {
-  display: none;
-}
-
-@media screen and (max-width: 1030px) {
-  #filter-mobile {
-    display: inline-flex;
-    height: 42px;
-    position: relative;
-    width: 100%;
-    margin: 0px;
-    margin-bottom: 16px;
-    padding: 0px;
-  }
-  #filter-mobile .filtern {
-    height: 42px;
-    width: 50%;
-    background-color: var(--blue);
-    border: 0px none;
-    color: var(--grey);
-    font-family: var(--apercu);
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 26px;
-    text-align: center;
-    margin: 0px;
-    padding: 0px;
-  }
-  #filter-mobile .cart-open {
-    height: 42px;
-    width: 50%;
-    background-color: var(--yellow);
-    color: var(--grey);
-    font-family: var(--apercu);
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 26px;
-    text-align: center;
-    margin: 0px;
-    padding: 0px;
-  }
-  #filter-mobile .search {
-    background-color: var(--white);
-    border: 0px solid transparent;
-    border-radius: 0px;
-    display: block;
-    height: 42px;
-    overflow: hidden;
-    width: 50%;
-  }
-  #filter-mobile .search .icon-wrapper {
-    background-color: transparent;
-    display: inline-block;
-    height: 14px;
-    position: relative;
-    width: 14px;
-  }
-  #filter-mobile .search .icon {
-    background-color: transparent;
-    background-image: url('../../images/svg/search.svg');
-    background-size: 100% 100%;
-    height: 24px;
-    left: 10px;
-    position: relative;
-    top: -4px;
-    width: 24px;
-  }
-  #filter-mobile .search input {
-    border: 0px;
-    font-family: var(--apercu);
-    font-size: 16px;
-    font-weight: 400;
-    height: 42px;
-    margin-left: 20px;
-    padding: 10px 10px;
-    width: inherit;
-  }
-  #filter-mobile .search input::placeholder {
-    color: #94918e;
-    font-weight: 300;
-    opacity: 0.85;
-  }
-
-  #filter-mobile .search input:focus {
-    outline: none;
-  }
-  #mobile-info {
-    display: block;
-    position: relative;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-  }
-  #mobile-info .restaurant-count {
-    color: var(--grey);
-    font-family: var(--apercu);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.42px;
-    line-height: 32px;
-    margin-left: 20px;
-    margin-bottom: 8px;
-  }
-}
-
-#filter-details {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 2000;
-}
-
-#filter-details .content {
-  width: 100%;
-  background: var(--bg-rough-blue);
-  padding: 22px;
-}
-
-#filter-details .content .top {
-  margin-bottom: 40px;
-}
-
-#filter-details .content .top h4 {
-  color: var(--grey);
-  font-family: var(--apercu);
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.42px;
-  line-height: 32px;
-  float: left;
-}
-
-#filter-details .content .top button {
-  float: right;
-}
-
-#filter-details .content .top button::after {
-  background-image: url('../../images/svg/plus.svg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  content: ' ';
-  cursor: pointer;
-  height: 26px;
-  width: 26px;
-  position: absolute;
-  right: 16px;
-  transform: rotate(45deg);
 }

@@ -9,7 +9,7 @@
   border-radius: 23px;
   color: var(--grey);
   cursor: pointer;
-  font-family: var(--sans);
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0px;
@@ -184,9 +184,7 @@
 }
 
 #checkout {
-  background-color: #decf80;
-  background-image: url('../../../../assets/images/rough/yellow.png');
-  background-repeat: repeat;
+  background: var(--bg-rough-yellow);
   height: 100%;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
@@ -257,7 +255,7 @@
   background-color: transparent;
   border: none;
   border-radius: 50%;
-  color: #363636;
+  color: var(--grey);
   cursor: pointer;
   display: inline-block;
   margin: 0px;
@@ -269,7 +267,7 @@
 }
 
 #checkout #close:hover button {
-  color: #363636;
+  color: var(--grey);
 }
 
 @media screen and (min-width: 744px) {
@@ -280,9 +278,7 @@
 
 /* #chekout > #my-order */
 #checkout #cart {
-  background-color: #decf80;
-  background-image: url('../../../../assets/images/rough/yellow.png');
-  background-repeat: repeat;
+  background: var(--bg-rough-yellow);
   border-radius: 23px;
   display: flex;
   flex-direction: column;
@@ -299,8 +295,8 @@
 }
 
 #checkout #cart .title {
-  color: #363636;
-  font-family: 'Apercu', sans-serif;
+  color: var(--grey);
+  font-family: var(--apercu);
   font-size: 32px;
   font-weight: 700;
   letter-spacing: 0px;
@@ -333,8 +329,8 @@
 }
 
 #checkout #cart #dishes .dish {
-  color: #363636;
-  font-family: 'Apercu', sans-serif;
+  color: var(--grey);
+  font-family: var(--apercu);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0px;
@@ -414,8 +410,8 @@
 }
 
 #checkout #cart #dishes .dish .top .description {
-  color: #363636;
-  font-family: 'Apercu', sans-serif;
+  color: var(--grey);
+  font-family: var(--apercu);
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -429,8 +425,8 @@
 }
 
 #checkout #cart #dishes .dish .top .remarks {
-  color: #363636;
-  font-family: 'Apercu', sans-serif;
+  color: var(--grey);
+  font-family: var(--apercu);
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -463,9 +459,9 @@
 }
 
 #checkout #cart #order-fees .fee-title {
-  color: #363636;
+  color: var(--grey);
   float: left;
-  font-family: 'Apercu', sans-serif;
+  font-family: var(--apercu));
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -480,9 +476,9 @@
 }
 
 #checkout #cart #order-fees .fee-price {
-  color: #363636;
+  color: var(--grey);
   float: right;
-  font-family: 'Apercu', sans-serif;
+  font-family: var(--apercu);
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0px;
@@ -498,17 +494,17 @@
 #checkout #cart .invalid-feedback {
   color: darkred;
   display: block;
-  font-family: 'Apercu', sans-serif;
+  font-family: var(--apercu);
   font-size: 14px;
   font-weight: 400;
   margin-left: 9px;
 }
 
 #checkout #cart button.proceed-to-checkout {
-  background-color: #363636;
+  background-color: var(--grey);
   border-radius: 23px;
-  color: #fff;
-  font-family: 'Apercu', sans-serif;
+  color: var(--white);
+  font-family: var(--apercu);
   font-size: 16px;
   font-weight: 700;
   height: 46px;
@@ -520,25 +516,4 @@
   padding: 11px;
   text-align: center;
   width: calc(100% - 40px);
-}
-
-#fp-alert {
-  align-items: center;
-  background-color: #adcccb;
-  background-image: url('../../../../assets/images/rough/blue.png');
-  background-repeat: repeat;
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  margin-top: -72px;
-  padding: 16px;
-  position: relative;
-  width: 100%;
-}
-
-#fp-alert p {
-  color: #363636;
-  font-family: 'Apercu', sans-serif;
-  font-size: 46px;
-  font-weight: 700;
 }

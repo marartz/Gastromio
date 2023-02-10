@@ -11,8 +11,8 @@ Copyr: gastromio.de/imprint
   display: flex;
   flex: 1;
   flex-direction: row;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 27px;
+  margin-bottom: 11px;
   position: relative;
   align-items: center;
 }
@@ -29,7 +29,7 @@ Copyr: gastromio.de/imprint
   font-family: var(--apercu);
   font-size: 22px;
   font-weight: 700;
-  letter-spacing: -0.42px;
+  letter-spacing: -0.33px;
   line-height: 32px;
   flex-grow: 1;
   margin: 0px;
@@ -49,7 +49,10 @@ Copyr: gastromio.de/imprint
 #actions .restaurant-search {
   background-color: var(--white);
   border-radius: 23px;
-  height: 42px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 46px;
   max-width: 264px;
   overflow: hidden;
   margin-right: 16px;
@@ -58,9 +61,9 @@ Copyr: gastromio.de/imprint
 #actions .restaurant-search .icon-wrapper {
   background-color: transparent;
   display: inline-block;
-  height: 14px;
+  height: 24px;
   position: relative;
-  width: 14px;
+  width: 24px;
 }
 
 #actions .restaurant-search .icon-wrapper .icon {
@@ -68,9 +71,8 @@ Copyr: gastromio.de/imprint
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' stroke='none' stroke-linecap='round' stroke-linejoin='round' fill='%23363636' fill-rule='nonzero'%3E%3Cpath d='M20.501 10.5c0-1.333-.267-2.667-.8-3.867s-1.2001-2.267-2.1331-3.2-1.9999-1.6-3.1999-2.133C13.035.767 11.835.5 10.501.5s-2.533.267-3.867.8c-1.2.4-2.267 1.2-3.2 2.133s-1.733 2-2.267 3.333c-.4 1.2-.667 2.4-.667 3.733 0 1.2.267 2.533.667 3.733.533 1.2 1.2 2.267 2.133 3.333.933.933 2 1.6 3.2 2.133s2.533.8 3.733.8c1.333 0 2.667-.267 3.867-.8s2.267-1.2 3.2-2.133 1.6-2 2.133-3.2c.8-1.333 1.067-2.533 1.067-3.867zm-2.267 3.2c-.4 1.067-1.0671 1.867-1.867 2.667s-1.733 1.467-2.8 1.867-2.133.667-3.2.667-2.133-.267-3.2001-.667S5.3 17.167 4.5 16.367s-1.467-1.733-1.8671-2.8-.6669-2.133-.6669-3.2.267-2.133.6669-3.067C3.166 6.233 3.7 5.3 4.5 4.5s1.733-1.467 2.6669-1.867c1.0671-.4 2.0001-.667 3.2001-.667 1.067 0 2.133.267 3.2.667 1.067.533 2 1.067 2.8 1.867s1.467 1.733 1.867 2.667c.4 1.067.667 2.133.667 3.2 0 1.2-.267 2.267-.667 3.333zm8.667 9.6c-.133-.4-.4-.667-.6671-.933l-4.6669-4.533-1.067 1.067 4.667 4.667c.1329.133.267.267.267.533 0 .133 0 .133.133.267v.4c0 .134-.133.4-.2671.533s-.2669.267-.4.267H24.5c-.1331 0-.4 0-.667-.133l-5.067-5.067-1.067 1.067 4.8 4.8c.267.267.5329.533.933.667s.667.267 1.0669.267h0c.4 0 .6671 0 1.0671-.133.2669-.133.533-.267.8-.533s.3999-.533.533-.933.133-.667.133-1.067c.1329-.533 0-.8-.133-1.2z'/%3E%3C/svg%3E");
   background-size: 100% 100%;
   height: 24px;
-  left: 12px;
+  left: 10px;
   position: relative;
-  top: -3px;
   width: 24px;
 }
 
@@ -80,12 +82,13 @@ Copyr: gastromio.de/imprint
   font-size: 16px;
   font-weight: 400;
   height: 42px;
-  margin-left: 20px;
-  padding: 10px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
 }
 
 #actions .restaurant-search input::placeholder {
-  color: #94918e;
+  color: #94918E;
   font-weight: 300;
   opacity: 0.85;
 }

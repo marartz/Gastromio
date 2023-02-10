@@ -6,9 +6,7 @@ import { RestaurantModel } from '../../../shared/models/restaurant.model';
   selector: 'app-order-restaurants-row',
   templateUrl: './order-restaurants-row.component.html',
   styleUrls: [
-    './order-restaurants-row.component.css',
-    '../../../../assets/css/frontend_v3.min.css',
-    '../../../../assets/css/components/_2_restaurants-row.min.css',
+    './order-restaurants-row.component.css'
   ],
 })
 export class OrderRestaurantsRowComponent implements OnInit, OnDestroy {
